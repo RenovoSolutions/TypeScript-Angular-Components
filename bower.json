@@ -1,0 +1,23 @@
+{
+  "name": "components",
+  "version": "0.1.0",
+  "authors": [
+    "Josh Graber <jgraber@renovo1.com>"
+  ],
+  "description": "Reusable responsive angular components",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "components",
+    "angular",
+    "responsive"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "libraries",
+    "test",
+    "tests"
+  ]
+}
