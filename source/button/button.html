@@ -1,0 +1,3 @@
+﻿<button type="button" class="btn btn-{{type}}" ng-click="button.trigger()" ng-disabled="button.busy || ngDisabled">
+	<busy ng-show="buttonRightAligned" loading="button.busy" /> <span ng-transclude></span> <busy ng-hide="buttonRightAligned" loading="button.busy" />
+</button>
