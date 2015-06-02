@@ -19,5 +19,8 @@
     "libraries",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "gulp-utilities": "../gulp-utilities#~0.1.0"
+  }
 }
