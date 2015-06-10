@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"emitDecoratorMetadata": true,
+		"declaration": true,
+		"module": "amd",
+		"target": "ES5"
+	},
+	"files": [
+		"./typings/tsd.d.ts",
+		"./source/utilities.ts"
+	],
+	"version": "1.5"
+}
