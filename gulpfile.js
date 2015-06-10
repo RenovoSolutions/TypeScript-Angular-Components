@@ -2,20 +2,17 @@
 var gulp = require('gulp');
 var gulpUtilities = require('gulp-utilities');
 
-var browserify = gulpUtilities.browserify;
-var main = 'components'; 
+var packageName = 'rl-components'; 
 
-gulp.task('compile.debug', function(done) {
-	return browserify.compileDebug(main);
-});
+var locationConfig = {
+	source: 'source',
+	libraries: 'libraries',
+	assets: 'assets',
+	debug: 'debug',
+	release: 'release',
+};
 
-gulp.task('compile.release', function(done) {
-	return browserify.compileRelease(main);
-});
-
-gulp.task('compile', ['compile.debug']);
-
-gulpUtilities.build.config(gulp, 'compile.debug', 'compile.release');
+gulpUtilities.build.config(gulp, packageName, locationConfig, false);
 gulpUtilities.teamCity.config(gulp);
 gulpUtilities.test.config(gulp, __dirname + '/karma.conf.js');
 
