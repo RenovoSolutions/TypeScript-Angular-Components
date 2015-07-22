@@ -1,11 +1,11 @@
-﻿/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
+﻿/// <reference path='../../typings/chai/chai.d.ts' />
+/// <reference path='../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../typings/angularMocks.d.ts' />
 /// <reference path='../../typings/chaiAssertions.d.ts' />
 
-import __userRatingModule = require('./userRating.module');
-import __userRating = require('./userRating');
-import __angularFixture = require('../../test/angularFixture');
+// import __userRatingModule = require('./userRating.module');
+// import __userRating = require('./userRating');
+// import __angularFixture = require('../../test/angularFixture');
 
 interface INgModelMock {
 	$setViewValue(value: number): void;
@@ -13,11 +13,11 @@ interface INgModelMock {
 }
 
 describe('UserRatingController', () => {
-	var scope: __userRating.IUserRatingScope;
-	var userRating: __userRating.IUserRatingController;
+	var scope: rl.components.userRating.IUserRatingScope;
+	var userRating: rl.components.userRating.IUserRatingController;
 
 	beforeEach(() => {
-		angular.mock.module(__userRatingModule.name);
+		angular.mock.module(rl.components.userRating.moduleName);
 
 		buildController();
 	});
@@ -59,10 +59,10 @@ describe('UserRatingController', () => {
 			$setViewValue: (value: number): void => { ngModel.$viewValue = value; },
 			$viewValue: null,
 		};
-		var controllerResult: __angularFixture.IControllerResult<__userRating.IUserRatingController>
-			= __angularFixture.angularFixture.controller<__userRating.IUserRatingController>(__userRating.controllerName, { ngModel: ngModel });
+		var controllerResult: rl.utilities.test.IControllerResult<rl.components.userRating.IUserRatingController>
+			= rl.utilities.test.angularFixture.controller<rl.components.userRating.IUserRatingController>(rl.components.userRating.controllerName, { ngModel: ngModel });
 
-		scope = <__userRating.IUserRatingScope>controllerResult.scope;
+		scope = <rl.components.userRating.IUserRatingScope>controllerResult.scope;
 		userRating = controllerResult.controller;
 	}
 });

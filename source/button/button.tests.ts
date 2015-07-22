@@ -1,19 +1,19 @@
-﻿/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
+﻿/// <reference path='../../typings/chai/chai.d.ts' />
+/// <reference path='../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../typings/angularMocks.d.ts' />
 /// <reference path='../../typings/chaiAssertions.d.ts' />
 
-import buttonModule = require('./button.module');
-import __button = require('./button');
-import angularFixture = require('../../test/angularFixture');
+// import buttonModule = require('./button.module');
+// import __button = require('./button');
+// import angularFixture = require('../../test/angularFixture');
 
 describe('ButtonController', () => {
-	var scope: __button.IButtonScope;
-	var button: __button.IButtonController;
+	var scope: rl.components.button.IButtonScope;
+	var button: rl.components.button.IButtonController;
 	var actionSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		angular.mock.module(buttonModule.name);
+		angular.mock.module(rl.components.button.moduleName);
 
 		actionSpy = sinon.spy();
 	});
@@ -52,7 +52,7 @@ describe('ButtonController', () => {
 		var deferred: ng.IDeferred<any>;
 
 		beforeEach((): void => {
-			var $q: ng.IQService = angularFixture.angularFixture.inject('$q').$q;
+			var $q: ng.IQService = rl.utilities.test.angularFixture.inject('$q').$q;
 			deferred = $q.defer();
 
 			actionSpy = sinon.spy((): ng.IPromise<any> => {
@@ -90,11 +90,11 @@ describe('ButtonController', () => {
 		sinon.assert.notCalled(actionSpy);
 	});
 
-	function buildController(busy: boolean = false): __button.IButtonController {
-		var controllerResult: angularFixture.IControllerResult<__button.IButtonController>
-			= angularFixture.angularFixture.controller<__button.IButtonController>(__button.controllerName, { busy: busy, action: actionSpy });
+	function buildController(busy: boolean = false): rl.components.button.IButtonController {
+		var controllerResult: rl.utilities.test.IControllerResult<rl.components.button.IButtonController>
+			= rl.utilities.test.angularFixture.controller<rl.components.button.IButtonController>(rl.components.button.controllerName, { busy: busy, action: actionSpy });
 
-		scope = <__button.IButtonScope>controllerResult.scope;
+		scope = <rl.components.button.IButtonScope> controllerResult.scope;
 		return controllerResult.controller;
 	}
 });
