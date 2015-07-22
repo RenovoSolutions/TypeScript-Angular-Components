@@ -1,18 +1,18 @@
-﻿/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
+﻿/// <reference path='../../typings/chai/chai.d.ts' />
+/// <reference path='../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../typings/angularMocks.d.ts' />
 /// <reference path='../../typings/chaiAssertions.d.ts' />
 
-import dialogModule = require('./dialog.module');
-import __dialog = require('./dialog');
-import angularFixture = require('../../test/angularFixture');
+// import dialogModule = require('./dialog.module');
+// import __dialog = require('./dialog');
+// import angularFixture = require('../../test/angularFixture');
 
 describe('DialogController', () => {
-	var scope: __dialog.IDialogScope;
-	var dialog: __dialog.IDialogController;
+	var scope: rl.components.dialog.IDialogScope;
+	var dialog: rl.components.dialog.IDialogController;
 
 	beforeEach(() => {
-		angular.mock.module(dialogModule.name);
+		angular.mock.module(rl.components.dialog.moduleName);
 
 		dialog = buildController();
 	});
@@ -62,11 +62,11 @@ describe('DialogController', () => {
 		expect(scope.isOpen).to.be.false;
 	});
 
-	function buildController(): __dialog.IDialogController {
-		var controllerResult: angularFixture.IControllerResult<__dialog.IDialogController>
-			= angularFixture.angularFixture.controller<__dialog.IDialogController>(__dialog.controllerName);
+	function buildController(): rl.components.dialog.IDialogController {
+		var controllerResult: rl.utilities.test.IControllerResult<rl.components.dialog.IDialogController>
+			= rl.utilities.test.angularFixture.controller<rl.components.dialog.IDialogController>(rl.components.dialog.controllerName);
 
-		scope = <__dialog.IDialogScope>controllerResult.scope;
+		scope = <rl.components.dialog.IDialogScope>controllerResult.scope;
 		return controllerResult.controller;
 	}
 });
