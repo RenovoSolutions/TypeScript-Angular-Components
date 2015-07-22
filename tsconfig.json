@@ -2,12 +2,13 @@
 	"compilerOptions": {
 		"emitDecoratorMetadata": true,
 		"declaration": true,
-		"module": "amd",
-		"target": "ES5"
+		"target": "ES5",
+		"out": "components.js"
 	},
 	"files": [
 		"./typings/tsd.d.ts",
-		"./source/utilities.ts"
+		"./libraries/rl-utilities/typings/utilities.d.ts",
+		"./source/components.ts"
 	],
 	"version": "1.5"
 }
