@@ -1,6 +1,7 @@
 ﻿// uses typings/angularjs
+// uses typings/lodash
 
-module rl.components.userRating {
+module rl.ui.components.userRating {
 	'use strict';
 	
 	export var moduleName: string = 'rl.components.userRating';
