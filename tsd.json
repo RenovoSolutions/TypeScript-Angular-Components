@@ -28,6 +28,12 @@
     },
     "requirejs/require.d.ts": {
       "commit": "52dc8fc39354569838b7bc09e24df690b852b4d9"
+    },
+    "moment/moment.d.ts": {
+      "commit": "7f07bd88d1083e995a0dae317a333c9641320cc8"
+    },
+    "moment/moment-node.d.ts": {
+      "commit": "7f07bd88d1083e995a0dae317a333c9641320cc8"
     }
   }
 }
