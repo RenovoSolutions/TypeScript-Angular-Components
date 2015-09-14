@@ -4,17 +4,14 @@ var gulpUtilities = require('gulp-utilities');
 
 var packageName = 'rl-components'; 
 
-var locationConfig = {
-	source: 'source',
-	libraries: 'libraries',
-	assets: 'assets',
-	debug: 'debug',
-	release: 'release',
-	tests: 'tests',
-};
+var locationConfig = require('./locations.json');
 
-gulpUtilities.build.config(gulp, packageName, locationConfig, false);
-gulpUtilities.teamCity.config(gulp);
-gulpUtilities.test.config(gulp, __dirname + '/karma.conf.js', locationConfig);
+gulpUtilities.build.config({
+	locations: locationConfig,
+	includeLibraries: false,
+}, gulp);
+gulpUtilities.teamCity.config('tc', gulp);
+gulpUtilities.test.config(__dirname + '/karma.conf.js', { locations: locationConfig }, gulp);
 
 gulp.task('default', ['build']);
+gulp.task('build', ['build.library']);
