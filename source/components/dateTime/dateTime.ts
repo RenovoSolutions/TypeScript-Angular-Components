@@ -1,8 +1,10 @@
 // uses typings/angularjs
+// uses typings/jquery
+// uses typings/moment
 // uses typescript-angular-utilities
 
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
-///// <reference path="../../../typings/jquery/jquery.d.ts"/>
+// /// <reference path="../../../typings/jquery/jquery.d.ts"/>
 // /// <reference path='../../../typings/moment/moment-node.d.ts' />
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
