@@ -5,6 +5,7 @@
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='filterOption/filterOption.ts' />
+/// <reference path='modeFilterGroup/modeFilterGroup.service.ts' />
 /// <reference path='filterGroup.service.ts' />
 /// <reference path='filterGroup.directive.ts' />
 
@@ -17,6 +18,7 @@ module rl.ui.components.cardContainer.filters.filterGroup {
 		rl.utilities.services.object.moduleName,
 		
 		filterOption.moduleName,
+		modeFilterGroup.moduleName,
 	])
 		.factory(factoryName, filterGroupFactory)
 		.directive(directiveName, filterGroup)
