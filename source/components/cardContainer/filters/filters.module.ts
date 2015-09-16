@@ -2,10 +2,14 @@
 
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 
+/// <reference path='columnSearchFilter/columnSearchFilter.service.ts' />
+
 module rl.ui.components.cardContainer.filters {
 	'use strict';
 
 	export var moduleName: string = 'rl.ui.components.cardContainer.filters';
 	
-	angular.module(moduleName, []);
+	angular.module(moduleName, [
+		columnSearchFilter.moduleName,
+	]);
 }
