@@ -5,6 +5,11 @@
 /// <reference path='busy/busy.ts' />
 /// <reference path='button/button.ts' />
 /// <reference path='buttonToggle/buttonToggle.ts' />
+/// <reference path='dateTime/dateTime.ts' />
+/// <reference path='genericContainer/genericContainer.ts' />
+/// <reference path='lazyLoad/lazyLoad.ts' />
+/// <reference path='longClickButton/longClickButton.ts' />
+/// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
@@ -16,6 +21,11 @@ module rl.ui.components {
 		busy.moduleName,
 		button.moduleName,
 		buttonToggle.moduleName,
-		userRating.moduleName,		
+		dateTime.moduleName,
+		genericContainer.moduleName,
+		lazyLoad.moduleName,
+		longClickButton.moduleName,
+		multiStepIndicator.moduleName,
+		userRating.moduleName,
 	]);
 }
