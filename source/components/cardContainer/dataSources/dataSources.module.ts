@@ -4,7 +4,7 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='../sorts/sorter/sorter.service.ts' />
+/// <reference path='../sorts/sorts.module.ts' />
 /// <reference path='dataPager/dataPager.service.ts' />
 /// <reference path='simpleDataSource/simpleDataSource.service.ts' />
 /// <reference path='dataSourceProcessor.service.ts' />
@@ -16,7 +16,7 @@ module rl.ui.components.cardContainer.dataSources {
 	
 	angular.module(moduleName, [
 		rl.utilities.services.object.moduleName,
-		sorts.sorter.moduleName,
+		sorts.moduleName,
 		
 		dataPager.moduleName,
 		simpleDataSource.moduleName,

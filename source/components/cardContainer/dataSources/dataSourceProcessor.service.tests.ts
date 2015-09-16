@@ -30,7 +30,6 @@ module rl.ui.components.cardContainer.dataSources {
 		var pager: dataPager.IDataPager;
 	
 		beforeEach(() => {
-			angular.mock.module(sorts.moduleName);
 			angular.mock.module(moduleName);
 
 			var services: any = test.angularFixture.inject(processorServiceName, dataPager.factoryName);
