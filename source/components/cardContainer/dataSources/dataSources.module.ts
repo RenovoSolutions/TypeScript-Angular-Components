@@ -6,6 +6,7 @@
 
 /// <reference path='../sorts/sorter/sorter.service.ts' />
 /// <reference path='dataPager/dataPager.service.ts' />
+/// <reference path='simpleDataSource/simpleDataSource.service.ts' />
 /// <reference path='dataSourceProcessor.service.ts' />
 
 module rl.ui.components.cardContainer.dataSources {
@@ -18,6 +19,7 @@ module rl.ui.components.cardContainer.dataSources {
 		sorts.sorter.moduleName,
 		
 		dataPager.moduleName,
+		simpleDataSource.moduleName,
 	])
 		.service(processorServiceName, DataSourceProcessor);
 }
