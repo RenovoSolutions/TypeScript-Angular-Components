@@ -6,6 +6,7 @@
 
 /// <reference path='filterOption/filterOption.ts' />
 /// <reference path='filterGroup.service.ts' />
+/// <reference path='filterGroup.directive.ts' />
 
 module rl.ui.components.cardContainer.filters.filterGroup {
 	'use strict';
@@ -17,5 +18,7 @@ module rl.ui.components.cardContainer.filters.filterGroup {
 		
 		filterOption.moduleName,
 	])
-		.factory(factoryName, filterGroupFactory);
+		.factory(factoryName, filterGroupFactory)
+		.directive(directiveName, filterGroup)
+		.controller(controllerName, FilterGroupController);
 }
