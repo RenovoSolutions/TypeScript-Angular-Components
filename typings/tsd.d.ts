@@ -7,4 +7,4 @@
 /// <reference path="moment/moment.d.ts" />
 /// <reference path="angular-ui-router/angular-ui-router.d.ts" />
 
-undefined
+/// <reference path="../libraries/typescript-angular-utilities/typings/utility.d.ts" />
