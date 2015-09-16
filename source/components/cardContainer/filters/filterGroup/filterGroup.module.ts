@@ -6,6 +6,7 @@
 
 /// <reference path='filterOption/filterOption.ts' />
 /// <reference path='modeFilterGroup/modeFilterGroup.service.ts' />
+/// <reference path='rangeFilterGroup/rangeFilterGroup.service.ts' />
 /// <reference path='filterGroup.service.ts' />
 /// <reference path='filterGroup.directive.ts' />
 
@@ -19,6 +20,7 @@ module rl.ui.components.cardContainer.filters.filterGroup {
 		
 		filterOption.moduleName,
 		modeFilterGroup.moduleName,
+		rangeFilterGroup.moduleName,
 	])
 		.factory(factoryName, filterGroupFactory)
 		.directive(directiveName, filterGroup)
