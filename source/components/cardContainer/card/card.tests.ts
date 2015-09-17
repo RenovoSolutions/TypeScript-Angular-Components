@@ -235,7 +235,7 @@ module rl.ui.components.cardContainer.card {
 			var controllerResult: test.IControllerResult<CardController>
 				= test.angularFixture.controller<CardController>(controllerName, card, null, true);
 	
-			scope = <ICardScope>controllerResult.scope;
+			scope = <ICardScope>_.extend(controllerResult.scope, scope);
 			card = controllerResult.controller;
 	
 			var autosaveBehavior: IAutosaveBehaviorMock = {
