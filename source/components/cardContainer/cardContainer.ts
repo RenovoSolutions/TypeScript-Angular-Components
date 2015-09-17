@@ -75,7 +75,7 @@ module rl.ui.components.cardContainer {
 		disableSelection: {(item: any): string};
 		
 		dataSource: dataSources.IDataSource<any>;
-		sortDirection: string;
+		sortDirection: sorts.ISortDirections;
 		numberSelected: number = 0;
 		selectionColumn: IColumn;
 		pager: dataSources.dataPager.IDataPager;
@@ -95,6 +95,7 @@ module rl.ui.components.cardContainer {
 			this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 			this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 			this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
+			this.sortDirection = sorts.SortDirection;
 	
 			this.syncFilters();
 	
