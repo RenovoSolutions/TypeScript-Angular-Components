@@ -8,6 +8,8 @@
 // /// <reference path='../../typings/jquery/jquery.d.ts' />
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
+/// <reference path='headerColumn/headerColumn.module.ts' />
+
 /// <reference path='../dataSources/dataSource.ts' />
 /// <reference path='../column.ts' />
 /// <reference path='../cardContainer.ts' />
@@ -228,7 +230,12 @@ module rl.ui.components.cardContainer.card {
 		};
 	}
 	
-	angular.module(moduleName, [__parentChild.moduleName, __object.moduleName])
+	angular.module(moduleName, [
+		__parentChild.moduleName, 
+		__object.moduleName,
+		
+		headerColumn.moduleName,
+	])
 		.directive(directiveName, card)
 		.controller(controllerName, CardController);
 }
