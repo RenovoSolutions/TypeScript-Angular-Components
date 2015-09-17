@@ -3,6 +3,7 @@
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
 /// <reference path='dataSources/dataSources.module.ts' />
 /// <reference path='filters/filters.module.ts' />
+/// <reference path='selectionControl/selectionControl.ts' />
 /// <reference path='sorts/sorts.module.ts' />
 /// <reference path='cardContainer.ts' />
 
@@ -14,11 +15,16 @@ module rl.ui.components.cardContainer {
 	import __parentChild = rl.utilities.services.parentChildBehavior;
 	
 	angular.module(moduleName, [
+		// dependencies
 		dataSources.dataPager.moduleName,
 		__object.moduleName,
 		__array.moduleName,
 		__parentChild.moduleName,
 		
+		// components
+		selectionControl.moduleName,
+		
+		// submodules
 		dataSources.moduleName,
 		filters.moduleName,
 		sorts.moduleName,
