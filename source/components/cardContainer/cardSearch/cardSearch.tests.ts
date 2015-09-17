@@ -42,7 +42,7 @@ module rl.ui.components.cardContainer.cardSearch {
 			$timeout = services.$timeout;
 		});
 	
-		it('should looup the search filter from the card container', (): void => {
+		it('should lookup the search filter from the card container', (): void => {
 			buildController();
 			sinon.assert.calledOnce(cardContainerController.lookupFilter);
 			expect(cardSearch.hasSearchFilter).to.be.true;
