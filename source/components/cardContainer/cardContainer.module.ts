@@ -2,6 +2,7 @@
 
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
 
+/// <reference path='itemCount/itemCount.ts' />
 /// <reference path='pager/pager.ts' />
 /// <reference path='pageSize/pageSize.ts' />
 /// <reference path='selectionControl/selectionControl.ts' />
@@ -27,6 +28,7 @@ module rl.ui.components.cardContainer {
 		__parentChild.moduleName,
 		
 		// components
+		itemCount.moduleName,
 		pager.moduleName,
 		pageSize.moduleName,
 		selectionControl.moduleName,
