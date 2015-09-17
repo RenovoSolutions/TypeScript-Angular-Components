@@ -2,6 +2,7 @@
 
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
 
+/// <reference path='cardSearch/cardSearch.ts' />
 /// <reference path='columnHeader/columnHeader.ts' />
 /// <reference path='itemCount/itemCount.ts' />
 /// <reference path='pager/pager.ts' />
@@ -29,6 +30,7 @@ module rl.ui.components.cardContainer {
 		__parentChild.moduleName,
 		
 		// components
+		cardSearch.moduleName,
 		columnHeader.moduleName,
 		itemCount.moduleName,
 		pager.moduleName,
