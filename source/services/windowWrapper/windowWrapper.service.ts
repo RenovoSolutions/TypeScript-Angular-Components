@@ -3,7 +3,7 @@
 // /// <reference path='../../typings/jquery/jquery.d.ts' />
 // /// <reference path='../../typings/angularjs/angular.d.ts' />
 
-module rl.ui.services {
+module rl.ui.services.windowWrapper {
 	'use strict';
 	
 	export var moduleName: string = 'rl.ui.services.windowWrapper';
