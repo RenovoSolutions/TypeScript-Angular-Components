@@ -1,10 +1,14 @@
 // /// <reference path='../../typings/angularjs/angular.d.ts' />
 
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
+
+/// <reference path='pageSize/pageSize.ts' />
+/// <reference path='selectionControl/selectionControl.ts' />
+
 /// <reference path='dataSources/dataSources.module.ts' />
 /// <reference path='filters/filters.module.ts' />
-/// <reference path='selectionControl/selectionControl.ts' />
 /// <reference path='sorts/sorts.module.ts' />
+
 /// <reference path='cardContainer.ts' />
 
 module rl.ui.components.cardContainer {
@@ -22,6 +26,7 @@ module rl.ui.components.cardContainer {
 		__parentChild.moduleName,
 		
 		// components
+		pageSize.moduleName,
 		selectionControl.moduleName,
 		
 		// submodules
