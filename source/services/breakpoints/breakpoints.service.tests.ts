@@ -78,7 +78,7 @@ module rl.ui.services.breakpoints {
 	
 			test.angularFixture.mock({
 				visibleBreakpoint: mockVisibleBreakpointService,
-				windowControl: mockWindowControl,
+				windowWrapper: mockWindowControl,
 			});
 	
 			var services: any = test.angularFixture.inject(breakpointServiceName);
