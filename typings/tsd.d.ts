@@ -5,5 +5,6 @@
 /// <reference path="requirejs/require.d.ts" />
 /// <reference path="moment/moment-node.d.ts" />
 /// <reference path="moment/moment.d.ts" />
+/// <reference path="angular-ui-router/angular-ui-router.d.ts" />
 
-/// <reference path='../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+/// <reference path="../libraries/typescript-angular-utilities/typings/utility.d.ts" />
