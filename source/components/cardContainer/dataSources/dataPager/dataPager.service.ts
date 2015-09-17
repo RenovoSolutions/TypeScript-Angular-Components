@@ -1,6 +1,7 @@
 // uses typings/lodash
 
 // /// <reference path='../../../typings/lodash/lodash.d.ts' />
+// /// <reference path='../../../../../typings/lodashTypeExtensions.d.ts' />
 
 module rl.ui.components.cardContainer.dataSources.dataPager {
 	'use strict';
