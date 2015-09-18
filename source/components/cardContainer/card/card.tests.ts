@@ -46,8 +46,6 @@ module rl.ui.components.cardContainer.card {
 			parentChild = services[__parentChild.serviceName];
 	
 			card = <any>{};
-			scope = <any>{};
-			scope.rlCardContainer = <any>cardContainer;
 		});
 	
 		it('should set the selected property', (): void => {
@@ -235,7 +233,8 @@ module rl.ui.components.cardContainer.card {
 			var controllerResult: test.IControllerResult<CardController>
 				= test.angularFixture.controller<CardController>(controllerName, card, null, true);
 	
-			scope = <ICardScope>_.extend(controllerResult.scope, scope);
+			scope = <ICardScope>controllerResult.scope;
+			scope.rlCardContainer = <any>cardContainer;
 			card = controllerResult.controller;
 	
 			var autosaveBehavior: IAutosaveBehaviorMock = {
