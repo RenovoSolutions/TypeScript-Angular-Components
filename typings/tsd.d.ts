@@ -8,3 +8,4 @@
 /// <reference path="angular-ui-router/angular-ui-router.d.ts" />
 
 /// <reference path="../libraries/typescript-angular-utilities/typings/utility.d.ts" />
+/// <reference path="bootstrap-touchspin/bootstrap-touchspin.d.ts" />

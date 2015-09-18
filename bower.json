@@ -22,7 +22,7 @@
     "jquery": "~2.1.4",
     "lodash": "~3.5.0",
     "requirejs": "~2.1.18",
-    "typescript-angular-utilities": "~1.1.0"
+    "typescript-angular-utilities": "~1.1.1"
   },
   "devDependencies": {
     "angular-mocks": "~1.4.5"
