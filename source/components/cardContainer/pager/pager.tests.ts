@@ -322,7 +322,7 @@ module rl.ui.components.cardContainer.pager {
 			};
 	
 			var controllerResult: test.IControllerResult<PagerController>
-				= test.angularFixture.controller<PagerController>(controllerName, bindings, { $element: $element }, true);
+				= test.angularFixture.controllerWithBindings<PagerController>(controllerName, bindings, { $element: $element });
 	
 			scope = controllerResult.scope;
 			pager = controllerResult.controller;

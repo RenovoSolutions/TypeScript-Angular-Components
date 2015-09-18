@@ -122,7 +122,7 @@ describe('AutosaveComponentController', () => {
 
 	function buildController(): void {
 		var controllerResult: __angularFixture.IControllerResult<__autosaveComponent.IAutosaveComponentController>
-			= __angularFixture.angularFixture.controller<__autosaveComponent.IAutosaveComponentController>(__autosaveComponent.controllerName
+			= __angularFixture.angularFixture.controllerWithBindings<__autosaveComponent.IAutosaveComponentController>(__autosaveComponent.controllerName, null, null
 				, {
 					childLink: {},
 					save: saveSpy,

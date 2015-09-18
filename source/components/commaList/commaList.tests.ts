@@ -77,7 +77,7 @@ module rl.ui.components.commaList {
 			}
 	
 			var controllerResult: test.IControllerResult<CommaListController>
-				= test.angularFixture.controller<CommaListController>(controllerName, bindings, { $attrs: $attrs }, true);
+				= test.angularFixture.controllerWithBindings<CommaListController>(controllerName, bindings, { $attrs: $attrs });
 	
 			scope = <ng.IScope>controllerResult.scope;
 			commaList = controllerResult.controller;

@@ -41,7 +41,7 @@ module rl.ui.components.lazyLoad {
 	
 		function buildController(expression: boolean): void {
 			var controllerResult: test.IControllerResult<LazyLoadController>
-				= test.angularFixture.controller<LazyLoadController>(controllerName, { show: expression }, null, true);
+				= test.angularFixture.controllerWithBindings<LazyLoadController>(controllerName, { show: expression });
 	
 			scope = <ng.IScope>controllerResult.scope;
 			lazyLoad = controllerResult.controller;
