@@ -107,6 +107,7 @@ module rl.ui.components.spinner {
 							unbindModel = scope.$watch((): void => {
 								return ngModel.$viewValue;
 							}, (newValue: any): void => {
+								newValue = numberUtility.roundToStep(newValue, scope.step);
 								var valueString: string = newValue != null ? newValue.toString() : '';
 								touchspin.val(valueString);
 							});
