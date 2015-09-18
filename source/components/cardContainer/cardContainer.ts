@@ -11,7 +11,6 @@
 /// <reference path='../../types/viewData.d.ts' />
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
 /// <reference path='dataSources/dataSources.module.ts' />
-/// <reference path='filters/filters.module.ts' />
 /// <reference path='column.ts' />
 /// <reference path='sorts/sorts.module.ts' />
 /// <reference path='sorts/sortDirection.ts' />
@@ -30,7 +29,7 @@ module rl.ui.components.cardContainer {
 	
 	export interface ICardContainerBindings {
 		source: dataSources.IDataSource<any>;
-		filters: filters.IFilter[] | { [index: string]: filters.IFilter };
+		filters: utilities.filters.IFilter[] | { [index: string]: utilities.filters.IFilter };
 		paging: boolean;
 		columns: IColumn[];
 		containerData: any;
@@ -61,7 +60,7 @@ module rl.ui.components.cardContainer {
 	export class CardContainerController {
 		// bindings
 		source: dataSources.IDataSource<any>;
-		filters: filters.IFilter[] | { [index: string]: filters.IFilter };
+		filters: utilities.filters.IFilter[] | { [index: string]: utilities.filters.IFilter };
 		paging: boolean;
 		columns: IColumn[];
 		containerData: any;
@@ -128,7 +127,7 @@ module rl.ui.components.cardContainer {
 			}
 		}
 	
-		lookupFilter(type: string): filters.IFilter {
+		lookupFilter(type: string): utilities.filters.IFilter {
 			return this.filters[type];
 		}
 	
@@ -209,10 +208,10 @@ module rl.ui.components.cardContainer {
 			if (this.filters != null) {
 				// Convert filter array to dictionary if necessary
 				if (_.isArray(this.filters)) {
-					this.filters = this.array.toDictionary(<filters.IFilter[]>this.filters, (filter: filters.IFilter): string => { return filter.type; });
+					this.filters = this.array.toDictionary(<utilities.filters.IFilter[]>this.filters, (filter: utilities.filters.IFilter): string => { return filter.type; });
 				}
 	
-				this.dataSource.filters = <{ [index: string]: filters.IFilter }>this.filters;
+				this.dataSource.filters = <{ [index: string]: utilities.filters.IFilter }>this.filters;
 				this.dataSource.refresh();
 			} else if (this.dataSource.filters != null) {
 				this.filters = this.dataSource.filters;

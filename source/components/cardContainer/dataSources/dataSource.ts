@@ -3,7 +3,6 @@
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='dataPager/dataPager.service.ts' />
-/// <reference path='../filters/filter.ts' />
 /// <reference path='../sorts/sort.ts' />
 
 module rl.ui.components.cardContainer.dataSources {
@@ -16,7 +15,7 @@ module rl.ui.components.cardContainer.dataSources {
 		filteredDataSet: TDataType[];
 		rawDataSet: TDataType[];
 		sorts: sorts.ISort[];
-		filters: { [index: string]: filters.IFilter };
+		filters: { [index: string]: utilities.filters.IFilter };
 		pager: dataPager.IDataPager;
 		count: number;
 	

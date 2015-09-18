@@ -5,7 +5,6 @@
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='dataPager/dataPager.service.ts' />
-/// <reference path='../filters/filter.ts' />
 /// <reference path='../sorts/sort.ts' />
 /// <reference path='../sorts/sorter/sorter.service.ts' />
 
@@ -29,11 +28,11 @@ module rl.ui.components.cardContainer.dataSources {
 	
 	export interface IDataSourceProcessor {
 		process<TDataType>(sorts: sorts.ISort[]
-						, filters: { [index: string]: filters.IFilter }
+						, filters: { [index: string]: utilities.filters.IFilter }
 						, pager: dataPager.IDataPager
 						, data: TDataType[]): IProcessResult<TDataType>;
 		processAndCount<TDataType>(sorts: sorts.ISort[]
-								, filters: { [index: string]: filters.IFilterWithCounts }
+								, filters: { [index: string]: utilities.filters.IFilterWithCounts }
 								, pager: dataPager.IDataPager
 								, data: TDataType[]): IProcessResult<TDataType>;
 	}
@@ -44,7 +43,7 @@ module rl.ui.components.cardContainer.dataSources {
 				, private sorter: sorts.sorter.ISorter) { }
 	
 		process<TDataType>(sorts: sorts.ISort[]
-						, filters: { [index: string]: filters.IFilter }
+						, filters: { [index: string]: utilities.filters.IFilter }
 						, pager: dataPager.IDataPager
 						, data: TDataType[]): IProcessResult<TDataType> {
 			var processedData: TDataType[] = data;
@@ -54,7 +53,7 @@ module rl.ui.components.cardContainer.dataSources {
 			}
 	
 			if (this.object.isNullOrEmpty(filters) === false) {
-				processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
+				processedData = _.reduce(filters, (filteredData: TDataType[], filter: utilities.filters.IFilter): TDataType[] => {
 					// Filter the data set using the filter function on the filter
 					return _.filter(filteredData, filter.filter, filter);
 				}, processedData);
@@ -74,12 +73,12 @@ module rl.ui.components.cardContainer.dataSources {
 		}
 	
 		processAndCount<TDataType>(sorts: sorts.ISort[]
-								, filters: { [index: string]: filters.IFilterWithCounts }
+								, filters: { [index: string]: utilities.filters.IFilterWithCounts }
 								, pager: dataPager.IDataPager
 								, data: TDataType[]): IProcessResult<TDataType> {
 			// If there are no filters that need to updated option counts, use the normal processor
 			if (this.object.isNullOrEmpty(filters)
-				|| _.any(filters, (filter: filters.IFilterWithCounts): boolean => { return _.isFunction(filter.updateOptionCounts); }) === false) {
+				|| _.any(filters, (filter: utilities.filters.IFilterWithCounts): boolean => { return _.isFunction(filter.updateOptionCounts); }) === false) {
 				return this.process(sorts, filters, pager, data);
 			}
 	
@@ -92,14 +91,14 @@ module rl.ui.components.cardContainer.dataSources {
 			var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 	
 			// Run filtration logic and compute visible items
-			_.each(filters, (filter: filters.IFilterWithCounts): void => {
+			_.each(filters, (filter: utilities.filters.IFilterWithCounts): void => {
 				_.each(wrappedData, (item: IWrappedItem<TDataType>): void => {
 					item.filterData[filter.type] = filter.filter(item.data);
 				});
 			});
 	
 			// Give each filter a chance to update option counts
-			_.each(filters, (filter: filters.IFilterWithCounts): void => {
+			_.each(filters, (filter: utilities.filters.IFilterWithCounts): void => {
 				if (_.isFunction(filter.updateOptionCounts)) {
 					var otherFiltersApplied: IWrappedItem<TDataType>[] = _.filter(wrappedData, (item: IWrappedItem<TDataType>): boolean => {
 						// Omit the true or false of the current filter an

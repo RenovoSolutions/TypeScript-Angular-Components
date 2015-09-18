@@ -2,9 +2,8 @@
 // uses typescript-angular-utilities
 
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+// /// <reference path='../../../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='../filter.ts' />
 /// <reference path='../../column.ts' />
 
 module rl.ui.components.cardContainer.filters.columnSearchFilter {
@@ -17,7 +16,7 @@ module rl.ui.components.cardContainer.filters.columnSearchFilter {
 	import __object = rl.utilities.services.object;
 	import __string = rl.utilities.services.string;
 
-	export interface IColumnSearchFilter extends IFilter {
+	export interface IColumnSearchFilter extends utilities.filters.IFilter {
 		searchText: string;
 		caseSensitive: boolean;
 		column: IColumn;

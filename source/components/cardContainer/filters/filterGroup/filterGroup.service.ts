@@ -4,9 +4,7 @@
 
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/lodash/lodash.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
-
-/// <reference path='../filter.ts' />
+// /// <reference path='../../../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 module rl.ui.components.cardContainer.filters.filterGroup {
 	'use strict';
@@ -21,12 +19,12 @@ module rl.ui.components.cardContainer.filters.filterGroup {
 		options: IFilterOption[];
 	}
 	
-	export interface IFilterOption extends IFilter {
+	export interface IFilterOption extends utilities.filters.IFilter {
 		label: string;
 		count: number;
 	}
 	
-	export interface IFilterGroup extends IFilterWithCounts {
+	export interface IFilterGroup extends utilities.filters.IFilterWithCounts {
 		label: string;
 		type: string;
 		options: IFilterOption[];

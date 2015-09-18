@@ -5,7 +5,6 @@
 /// <reference path='dataSource.ts' />
 /// <reference path='dataSourceProcessor.service.ts' />
 /// <reference path='dataPager/dataPager.service.ts' />
-/// <reference path='../filters/filter.ts' />
 /// <reference path='../sorts/sort.ts' />
 
 module rl.ui.components.cardContainer.dataSources {
@@ -19,7 +18,7 @@ module rl.ui.components.cardContainer.dataSources {
 		filteredDataSet: TDataType[];
 		rawDataSet: TDataType[];
 		sorts: sorts.ISort[] = [];
-		filters: { [index: string]: filters.IFilter } = {};
+		filters: { [index: string]: utilities.filters.IFilter } = {};
 		pager: dataPager.IDataPager;
 		count: number = 0;
 	
@@ -44,7 +43,7 @@ module rl.ui.components.cardContainer.dataSources {
 	
 			if (this.countFilterGroups) {
 				processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
-																				, <{ [index: string]: filters.IFilterWithCounts }>this.filters
+																				, <{ [index: string]: utilities.filters.IFilterWithCounts }>this.filters
 																				, this.pager
 																				, this.rawDataSet);
 			} else {
