@@ -99,7 +99,7 @@ module rl.ui.components.button {
 	
 		function buildController(busy: boolean = false): IButtonController {
 			var controllerResult: test.IControllerResult<IButtonController>
-				= test.angularFixture.controller<IButtonController>(controllerName, { busy: busy, action: actionSpy });
+				= test.angularFixture.controllerWithBindings<IButtonController>(controllerName, null, null, { busy: busy, action: actionSpy });
 	
 			scope = <IButtonScope>controllerResult.scope;
 			return controllerResult.controller;

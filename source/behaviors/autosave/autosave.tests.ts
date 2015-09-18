@@ -95,8 +95,8 @@ module rl.ui.behaviors.autosave {
 			};
 	
 			var controllerResult: test.IControllerResult<AutosaveController>
-				= test.angularFixture.controller<AutosaveController>(controllerName
-					, { childLink: childLink, }, { $element: $element, $parse: $parse });
+				= test.angularFixture.controllerWithBindings<AutosaveController>(controllerName
+					, null, { $element: $element, $parse: $parse }, { childLink: childLink, });
 	
 			scope = <IParentScope>controllerResult.scope;
 			autosave = controllerResult.controller;

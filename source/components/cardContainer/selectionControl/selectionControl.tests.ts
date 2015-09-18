@@ -150,7 +150,7 @@ module rl.ui.components.cardContainer.selectionControl {
 			};
 	
 			var controllerResult: test.IControllerResult<SelectionControlController> =
-				test.angularFixture.controller<SelectionControlController>(controllerName, {}, { $element: $element });
+				test.angularFixture.controllerWithBindings<SelectionControlController>(controllerName, {}, { $element: $element });
 	
 			scope = controllerResult.scope;
 			selection = controllerResult.controller;

@@ -64,7 +64,7 @@ module rl.ui.components.userRating {
 				$viewValue: null,
 			};
 			var controllerResult: test.IControllerResult<IUserRatingController>
-				= test.angularFixture.controller<IUserRatingController>(controllerName, { ngModel: ngModel });
+				= test.angularFixture.controllerWithBindings<IUserRatingController>(controllerName, null, null, { ngModel: ngModel });
 	
 			scope = <IUserRatingScope>controllerResult.scope;
 			userRating = controllerResult.controller;

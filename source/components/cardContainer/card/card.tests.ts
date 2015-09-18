@@ -231,7 +231,7 @@ module rl.ui.components.cardContainer.card {
 			card.item = item;
 	
 			var controllerResult: test.IControllerResult<CardController>
-				= test.angularFixture.controller<CardController>(controllerName, card, null, true);
+				= test.angularFixture.controllerWithBindings<CardController>(controllerName, card);
 	
 			scope = <ICardScope>controllerResult.scope;
 			scope.rlCardContainer = <any>cardContainer;

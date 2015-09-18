@@ -22,12 +22,12 @@ module rl.ui.components.genericContainer {
 		function buildController(selector: any, templates: any): void {
 			swapSpy = sinon.spy();
 			var controllerResult: test.IControllerResult<GenericContainerController>
-				= test.angularFixture.controller<GenericContainerController>(controllerName, {
+				= test.angularFixture.controllerWithBindings<GenericContainerController>(controllerName, {
 				selector: selector,
 				templates: templates,
 				default: { template: 'default' },
 				swapTemplates: swapSpy,
-			}, null, true);
+			});
 	
 			controller = controllerResult.controller;
 			scope = controllerResult.scope;

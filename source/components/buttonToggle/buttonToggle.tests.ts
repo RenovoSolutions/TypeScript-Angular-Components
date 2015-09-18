@@ -87,7 +87,7 @@ module rl.ui.components.buttonToggle {
 			};
 	
 			var controllerResult: test.IControllerResult<IButtonToggleController>
-				= test.angularFixture.controller<IButtonToggleController>(controllerName, newScope);
+				= test.angularFixture.controllerWithBindings<IButtonToggleController>(controllerName, null, null, newScope);
 	
 			scope = <IButtonToggleScope>controllerResult.scope;
 			buttonToggle = controllerResult.controller;

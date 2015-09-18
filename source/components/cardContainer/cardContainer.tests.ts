@@ -623,7 +623,7 @@ module rl.ui.components.cardContainer {
 			}
 	
 			var controllerResult: test.IControllerResult<CardContainerController>
-				= test.angularFixture.controller<CardContainerController>(controllerName, cardContainer, null, true);
+				= test.angularFixture.controllerWithBindings<CardContainerController>(controllerName, cardContainer);
 	
 			scope = controllerResult.scope;
 			cardContainer = controllerResult.controller;

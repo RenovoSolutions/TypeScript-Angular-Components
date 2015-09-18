@@ -121,7 +121,7 @@ module rl.ui.components.cardContainer.cardSearch {
 			};
 	
 			var controllerResult: test.IControllerResult<CardSearchController>
-				= test.angularFixture.controller<CardSearchController>(controllerName, bindings, { $element: $element }, true);
+				= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings, { $element: $element });
 	
 			scope = controllerResult.scope;
 			cardSearch = controllerResult.controller;

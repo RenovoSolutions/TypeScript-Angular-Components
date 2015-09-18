@@ -48,7 +48,7 @@ module rl.ui.components.multiStepIndicator {
 	
 		function buildController(steps: IStep[]): void {
 			var controllerResult: test.IControllerResult<MultiStepIndicatorController>
-				= test.angularFixture.controller<MultiStepIndicatorController>(controllerName, { steps: steps }, null, true);
+				= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps });
 	
 			scope = <ng.IScope>controllerResult.scope;
 			multiStepIndicator = controllerResult.controller;
