@@ -77,14 +77,11 @@ module rl.ui.components.spinner {
 				, attrs: ng.IAttributes
 				, ngModel: ng.INgModelController): void {
 
-				ngModel.$parsers.push(stringUtility.toNumber);
-				ngModel.$formatters.push(roundAndConvertToString);
-
-				var unbindModel: Function;
+				var unbindWatches: Function;
 				scope.$watch('ngDisabled', (disabled: boolean): void => {
 					if (disabled) {
-						if (_.isFunction(unbindModel)) {
-							unbindModel();
+						if (_.isFunction(unbindWatches)) {
+							unbindWatches();
 						}
 					} else {
 						// Initialize the spinner after $timeout to give angular a chance initialize ngModel
@@ -103,29 +100,37 @@ module rl.ui.components.spinner {
 							touchspin.on('change', (): void => {
 								scope.$apply((): void => {
 									var spinValue: string = touchspin.val();
-									ngModel.$setViewValue(spinValue);
+									ngModel.$setViewValue(stringUtility.toNumber(spinValue));
 								});
 							});
 
-							unbindModel = scope.$watch((): void => {
+							var unbindViewWatch = scope.$watch((): void => {
 								return ngModel.$viewValue;
 							}, (newValue: any): void => {
-								touchspin.val(newValue);
+								touchspin.val(newValue != null ? newValue.toString() : '');
 							});
+
+							var unbindModelWatch = scope.$watch((): void => {
+								return ngModel.$modelValue;
+							}, (newValue: any): void => {
+								newValue = round(newValue);
+							});
+
+							unbindWatches = (): void => {
+								unbindViewWatch();
+								unbindModelWatch();
+							}
 						});
 					}
 				});
 
-				function roundAndConvertToString(num: number): string {
-					let valueString: string = '';
-
+				function round(num: number): number {
 					if (num != null && scope.roundToStep) {
 						num = numberUtility.roundToStep(num, scope.step);
 						num = numberUtility.preciseRound(num, scope.decimals);
-						valueString = num.toString();
 					}
 
-					return valueString;
+					return num;
 				}
 			}
 		};
