@@ -107,12 +107,14 @@ module rl.ui.components.spinner {
 							unbindModel = scope.$watch((): void => {
 								return ngModel.$viewValue;
 							}, (newValue: any): void => {
+								var valueString: string = '';
+
 								if (newValue != null && scope.roundToStep) {
-									newValue = numberUtility.roundToStep(newValue, scope.step);
-									newValue = numberUtility.preciseRound(newValue, scope.decimals);
+									var num: number = numberUtility.roundToStep(newValue, scope.step);
+									num = numberUtility.preciseRound(num, scope.decimals);
+									valueString = num.toString();
 								}
 
-								var valueString: string = newValue != null ? newValue.toString() : '';
 								touchspin.val(valueString);
 							});
 						});
