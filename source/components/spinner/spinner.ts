@@ -112,8 +112,8 @@ module rl.ui.components.spinner {
 
 							var unbindModelWatch = scope.$watch((): void => {
 								return ngModel.$modelValue;
-							}, (newValue: any): void => {
-								newValue = round(newValue);
+							}, (newModel: any): void => {
+								newModel = round(newModel);
 							});
 
 							unbindWatches = (): void => {
