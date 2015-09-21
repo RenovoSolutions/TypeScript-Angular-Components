@@ -86,7 +86,7 @@ module rl.ui.components.spinner {
 					} else {
 						// Initialize the spinner after $timeout to give angular a chance initialize ngModel
 						$timeout((): void => {
-							var touchspin: JQuery = element.find('input.spinner').TouchSpin({
+							let touchspin: JQuery = element.find('input.spinner').TouchSpin({
 								min: (scope.min != null ? scope.min : Number.MIN_VALUE),
 								max: (scope.max != null ? scope.max : Number.MAX_VALUE),
 								step: scope.step,
@@ -99,21 +99,21 @@ module rl.ui.components.spinner {
 
 							touchspin.on('change', (): void => {
 								scope.$apply((): void => {
-									var spinValue: string = touchspin.val();
+									let spinValue: string = touchspin.val();
 									ngModel.$setViewValue(stringUtility.toNumber(spinValue));
 								});
 							});
 
-							var unbindViewWatch = scope.$watch((): void => {
+							let unbindViewWatch = scope.$watch((): void => {
 								return ngModel.$viewValue;
 							}, (newValue: any): void => {
 								touchspin.val(newValue != null ? newValue.toString() : '');
 							});
 
-							var unbindModelWatch = scope.$watch((): void => {
+							let unbindModelWatch = scope.$watch((): void => {
 								return ngModel.$modelValue;
 							}, (newModel: any): void => {
-								newModel = round(newModel);
+								scope.ngModel = round(newModel);
 							});
 
 							unbindWatches = (): void => {
