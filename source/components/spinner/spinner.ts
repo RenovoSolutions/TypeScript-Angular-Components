@@ -77,6 +77,9 @@ module rl.ui.components.spinner {
 				, attrs: ng.IAttributes
 				, ngModel: ng.INgModelController): void {
 
+				ngModel.$parsers.push(stringUtility.toNumber);
+				ngModel.$formatters.push(roundAndConvertToString);
+
 				var unbindModel: Function;
 				scope.$watch('ngDisabled', (disabled: boolean): void => {
 					if (disabled) {
@@ -93,33 +96,37 @@ module rl.ui.components.spinner {
 								prefix: scope.prefix,
 								postfix: scope.postfix,
 								decimals: scope.decimals,
-								initval: ngModel.$modelValue,
+								initval: ngModel.$viewValue,
 								forcestepdivisibility: scope.roundToStep ? 'round' : 'none',
 							});
 
 							touchspin.on('change', (): void => {
 								scope.$apply((): void => {
 									var spinValue: string = touchspin.val();
-									ngModel.$setViewValue(stringUtility.toNumber(spinValue));
+									ngModel.$setViewValue(spinValue);
 								});
 							});
 
 							unbindModel = scope.$watch((): void => {
 								return ngModel.$viewValue;
 							}, (newValue: any): void => {
-								var valueString: string = '';
-
-								if (newValue != null && scope.roundToStep) {
-									var num: number = numberUtility.roundToStep(newValue, scope.step);
-									num = numberUtility.preciseRound(num, scope.decimals);
-									valueString = num.toString();
-								}
-
-								touchspin.val(valueString);
+								touchspin.val(newValue);
 							});
 						});
 					}
 				});
+
+				function roundAndConvertToString(num: number): string {
+					let valueString: string = '';
+
+					if (num != null && scope.roundToStep) {
+						num = numberUtility.roundToStep(num, scope.step);
+						num = numberUtility.preciseRound(num, scope.decimals);
+						valueString = num.toString();
+					}
+
+					return valueString;
+				}
 			}
 		};
 	}
