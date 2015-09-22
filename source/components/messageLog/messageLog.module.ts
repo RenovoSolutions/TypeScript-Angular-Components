@@ -3,18 +3,15 @@
 
 /// <reference path='messageLog.service.ts' />
 /// <reference path='messageLog.directive.ts' />
+/// <reference path='editableMessageLog/editableMessageLog.ts' />
 
 module rl.ui.components.messageLog {
 	'use strict';
 
 	export var moduleName: string = 'rl.ui.components.messageLog';
 
-	import __object = rl.utilities.services.object;
-
-	angular.module(moduleName, [__object.moduleName])
+	angular.module(moduleName, [editableMessageLog.moduleName])
 		.factory(factoryName, messageLogFactory)
 		.directive(directiveName, messageLog)
 		.controller(controllerName, MessageLogController);
-		// .directive(__editableMessageLog.directiveName, __editableMessageLog.editableMessageLog)
-		// .controller(__editableMessageLog.controllerName, __editableMessageLog.EditableMessageLogController);
 }
