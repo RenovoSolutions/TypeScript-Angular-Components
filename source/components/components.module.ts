@@ -14,6 +14,7 @@
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='ratingBar/ratingBar.ts' />
 /// <reference path='richTextEditor/richTextEditor.ts' />
+/// <reference path='signaturePad/signaturePad.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
 /// <reference path='userRating/userRating.ts' />
 
@@ -35,6 +36,7 @@ module rl.ui.components {
 		multiStepIndicator.moduleName,
 		ratingBar.moduleName,
 		richTextEditor.moduleName,
+		signaturePad.moduleName,
 		simpleCardList.moduleName,
 		userRating.moduleName,
 	]);
