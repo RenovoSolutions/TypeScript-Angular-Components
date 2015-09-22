@@ -277,7 +277,7 @@ module rl.ui.components.typeahead {
 				select: selectSpy,
 				useClientSearching: useClientSearching,
 				childLink: {},
-				transform: transform,
+				transformInParent: transform,
 				apply: apply,
 			};
 
@@ -295,8 +295,8 @@ module rl.ui.components.typeahead {
 				$attrs.apply = 'apply';
 			}
 
-			var controllerResult: test.IControllerResult<TypeaheadController> = test.angularFixture.controller
-				<TypeaheadController>(controllerName, bindings, { $attrs: $attrs });
+			var controllerResult: test.IControllerResult<TypeaheadController> =
+				test.angularFixture.controllerWithBindings<TypeaheadController>(controllerName, bindings, { $attrs: $attrs });
 
 			scope = controllerResult.scope;
 			typeahead = controllerResult.controller;
