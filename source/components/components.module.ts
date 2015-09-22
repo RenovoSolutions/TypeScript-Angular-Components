@@ -10,12 +10,13 @@
 /// <reference path='genericContainer/genericContainer.ts' />
 /// <reference path='lazyLoad/lazyLoad.ts' />
 /// <reference path='longClickButton/longClickButton.ts' />
+/// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
 	export var moduleName: string = 'rl.ui.components';
-	
+
 	angular.module(moduleName, [
 		// autosaveComponent.moduleName,
 		autosaveDialogFooter.moduleName,
@@ -27,6 +28,7 @@ module rl.ui.components {
 		genericContainer.moduleName,
 		lazyLoad.moduleName,
 		longClickButton.moduleName,
+		messageLog.moduleName,
 		multiStepIndicator.moduleName,
 		userRating.moduleName,
 	]);
