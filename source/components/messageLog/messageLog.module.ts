@@ -1,5 +1,5 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='messageLog.service.ts' />
 /// <reference path='messageLog.directive.ts' />
