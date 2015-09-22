@@ -31,7 +31,7 @@ module rl.ui.components.messageLog {
 
 			dataService = test.mock.service();
 			test.mock.promiseWithCallback(dataService, 'saveMessage', (message: any): void => { allMessages.unshift(message); });
-			test.mock.promiseWithCallback(dataService, 'getMessages', (startFrom: number, quantity: number): __messageLog.IGetMessagesResult => {
+			test.mock.promiseWithCallback(dataService, 'getMessages', (startFrom: number, quantity: number): IGetMessagesResult => {
 				var hasMoreMessages: boolean = startFrom + quantity < allMessages.length;
 				return {
 					hasMoreMessages: hasMoreMessages,
