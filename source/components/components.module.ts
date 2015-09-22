@@ -18,6 +18,7 @@
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
 /// <reference path='spinner/spinner.ts' />
 /// <reference path='stringWithWatermark/stringWithWatermark.ts' />
+/// <reference path='typeahead/typeahead.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
@@ -42,6 +43,7 @@ module rl.ui.components {
 		simpleCardList.moduleName,
 		spinner.moduleName,
 		stringWithWatermark.moduleName,
+		typeahead.moduleName,
 		userRating.moduleName,
 	]);
 }
