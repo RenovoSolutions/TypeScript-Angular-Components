@@ -7,7 +7,7 @@
 module rl.ui.components.simpleCardList {
 	'use strict';
 
-	export var moduleName: string = 'rl21.components.simpleCardList';
+	export var moduleName: string = 'rl.ui.components.simpleCardList';
 
 	import __observable = rl.utilities.services.observable;
 	import __parentChild = rl.utilities.services.parentChildBehavior;

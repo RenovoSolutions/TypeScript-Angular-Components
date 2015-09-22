@@ -4,7 +4,7 @@
 module rl.ui.components.richTextEditor {
 	'use strict';
 
-	export var moduleName: string = 'rl21.components.richTextEditor';
+	export var moduleName: string = 'rl.ui.components.richTextEditor';
 	export var directiveName: string = 'rlRichTextEditor';
 	export var controllerName: string = 'RichTextEditorController';
 
