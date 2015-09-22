@@ -12,6 +12,7 @@
 /// <reference path='longClickButton/longClickButton.ts' />
 /// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
+/// <reference path='ratingBar/ratingBar.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
@@ -30,6 +31,7 @@ module rl.ui.components {
 		longClickButton.moduleName,
 		messageLog.moduleName,
 		multiStepIndicator.moduleName,
+		ratingBar.moduleName,
 		userRating.moduleName,
 	]);
 }
