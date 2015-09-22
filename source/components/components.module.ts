@@ -17,6 +17,7 @@
 /// <reference path='signaturePad/signaturePad.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
 /// <reference path='spinner/spinner.ts' />
+/// <reference path='stringWithWatermark/stringWithWatermark.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
@@ -40,6 +41,7 @@ module rl.ui.components {
 		signaturePad.moduleName,
 		simpleCardList.moduleName,
 		spinner.moduleName,
+		stringWithWatermark.moduleName,
 		userRating.moduleName,
 	]);
 }
