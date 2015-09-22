@@ -16,6 +16,7 @@
 /// <reference path='richTextEditor/richTextEditor.ts' />
 /// <reference path='signaturePad/signaturePad.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
+/// <reference path='spinner/spinner.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
@@ -38,6 +39,7 @@ module rl.ui.components {
 		richTextEditor.moduleName,
 		signaturePad.moduleName,
 		simpleCardList.moduleName,
+		spinner.moduleName,
 		userRating.moduleName,
 	]);
 }
