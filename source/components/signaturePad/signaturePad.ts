@@ -1,5 +1,5 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../typings/signature_pad/signature_pad.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../typings/signature_pad/signature_pad.d.ts' />
 
 module rl.ui.components.signaturePad {
 	'use strict';

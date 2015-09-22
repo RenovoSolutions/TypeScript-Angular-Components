@@ -1,5 +1,5 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../typings/lodash/lodash.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../typings/lodash/lodash.d.ts' />
 
 module rl.ui.components.richTextEditor {
 	'use strict';
