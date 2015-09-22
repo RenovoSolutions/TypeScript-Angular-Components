@@ -10,7 +10,7 @@ module rl.ui.components.messageLog {
 
 	import __object = rl.utilities.services.object;
 
-	angular.module(name, [__object.moduleName])
+	angular.module(moduleName, [__object.moduleName])
 		.factory(factoryName, messageLogFactory);
 		// .directive(__messageLogDirective.directiveName, __messageLogDirective.messageLog)
 		// .controller(__messageLogDirective.controllerName, __messageLogDirective.MessageLogController)
