@@ -40,6 +40,9 @@
     },
     "bootstrap-touchspin/bootstrap-touchspin.d.ts": {
       "commit": "6f6e5c7dd9effe21fee14eb65fe340ecbbc8580a"
+    },
+    "signature_pad/signature_pad.d.ts": {
+      "commit": "68d9d43ce884e1ffb6ec0daf4ee7be9392c5b7bc"
     }
   }
 }
