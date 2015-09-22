@@ -13,6 +13,7 @@
 /// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='ratingBar/ratingBar.ts' />
+/// <reference path='richTextEditor/richTextEditor.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
 /// <reference path='userRating/userRating.ts' />
 
@@ -33,6 +34,7 @@ module rl.ui.components {
 		messageLog.moduleName,
 		multiStepIndicator.moduleName,
 		ratingBar.moduleName,
+		richTextEditor.moduleName,
 		simpleCardList.moduleName,
 		userRating.moduleName,
 	]);
