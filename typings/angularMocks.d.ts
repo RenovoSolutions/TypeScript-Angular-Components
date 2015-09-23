@@ -10,8 +10,9 @@ declare module angular {
 		inject(params: any[]): any;
 		module(moduleFunc: ($provider: ng.auto.IProvideService) => void): void;
 		module(moduleName: string): void;
+		module(moduleName: string, injectFunc: {(provider: any): void}): void;
 	}
-	
+
 	interface IHttpBackendService {
 		expect(method: string
 			, url: string | RegExp | { (): string }
@@ -29,15 +30,15 @@ declare module angular {
 		expectDELETE(url: string | RegExp | { (): string }
 			, data?: string | RegExp | { (): string } | Object
 			, header?: Object | { (): Object }): IHttpExpectation;
-			
+
 		flush(count?: number);
-		
+
 		verifyNoOutstandingExpectation();
 		verifyNoOutstandingRequest();
-		
+
 		resetExpectations();
 	}
-	
+
 	interface IHttpExpectation {
 		respond(data: any, headers?: Object, statusText?: string): IHttpExpectation;
 		respond(status: number, data: any, headers?: Object, statusText?: string): IHttpExpectation;
