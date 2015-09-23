@@ -26,7 +26,7 @@ module rl.ui.components.spinner {
 		name: string;
 	}
 
-	spinner.$inject = ['$timeout', __string.serviceName];
+	spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
 	function spinner($timeout: ng.ITimeoutService
 					, stringUtility: __string.IStringUtilityService
 					, numberUtility: __number.INumberUtility): ng.IDirective {
