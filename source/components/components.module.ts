@@ -10,12 +10,20 @@
 /// <reference path='genericContainer/genericContainer.ts' />
 /// <reference path='lazyLoad/lazyLoad.ts' />
 /// <reference path='longClickButton/longClickButton.ts' />
+/// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
+/// <reference path='ratingBar/ratingBar.ts' />
+/// <reference path='richTextEditor/richTextEditor.ts' />
+/// <reference path='signaturePad/signaturePad.ts' />
+/// <reference path='simpleCardList/simpleCardList.module.ts' />
+/// <reference path='spinner/spinner.ts' />
+/// <reference path='stringWithWatermark/stringWithWatermark.ts' />
+/// <reference path='typeahead/typeahead.ts' />
 /// <reference path='userRating/userRating.ts' />
 
 module rl.ui.components {
 	export var moduleName: string = 'rl.ui.components';
-	
+
 	angular.module(moduleName, [
 		// autosaveComponent.moduleName,
 		autosaveDialogFooter.moduleName,
@@ -27,7 +35,15 @@ module rl.ui.components {
 		genericContainer.moduleName,
 		lazyLoad.moduleName,
 		longClickButton.moduleName,
+		messageLog.moduleName,
 		multiStepIndicator.moduleName,
+		ratingBar.moduleName,
+		richTextEditor.moduleName,
+		signaturePad.moduleName,
+		simpleCardList.moduleName,
+		spinner.moduleName,
+		stringWithWatermark.moduleName,
+		typeahead.moduleName,
 		userRating.moduleName,
 	]);
 }
