@@ -1,5 +1,5 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../typings/sinon/sinon.d.ts' />
 
 /// <reference path="responsiveCard.ts" />
 

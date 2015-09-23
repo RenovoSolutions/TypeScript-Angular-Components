@@ -1,6 +1,6 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
+// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 module rl.ui.components.spinner {
 	'use strict';

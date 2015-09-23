@@ -1,6 +1,6 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='../dialog/dialog.service.ts' />
 /// <reference path='autosaveDialog.controller.ts' />
