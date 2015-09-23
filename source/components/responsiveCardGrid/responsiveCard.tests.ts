@@ -7,7 +7,7 @@
 
 /// <reference path="responsiveCardGrid.module.ts" />
 /// <reference path="responsiveCard.ts" />
-/// <reference path="responsiveCardGrid.mock.ts" />
+/// <reference path="responsiveCardGrid.mock.tests.ts" />
 
 module rl.ui.components.responsiveCard {
 	import test = rl.utilities.services.test;
