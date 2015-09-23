@@ -1,6 +1,8 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 
+/// <reference path='baseDialogImplementation.service.ts' />
+
 module rl.ui.services.dialog {
 	'use strict';
 
@@ -16,7 +18,6 @@ module rl.ui.services.dialog {
 	}
 
 	export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
-		static $inject: string[] = ['$modal'];
 		constructor(private dialog: IDialogImplementation<TDialogSettings>) { }
 
 		open(options: TDialogSettings): void {
@@ -29,12 +30,12 @@ module rl.ui.services.dialog {
 		$get(): IDialogService<TDialogSettings>;
 	}
 
-	dialogServiceProvider.$inject = ['$modal'];
-	export function dialogServiceProvider<TDialogSettings>($modal: ng.ui.bootstrap.IModalService): IDialogServiceProvider<TDialogSettings> {
+	dialogServiceProvider.$inject = [baseDialogServiceName];
+	export function dialogServiceProvider<TDialogSettings>(baseDialog: BaseDialogService): IDialogServiceProvider<TDialogSettings> {
 		'use strict';
 
 		return {
-			dialogImplementation: $modal,
+			dialogImplementation: baseDialog,
 			setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 				this.dialogImplementation = dialogImplementation;
 			},
@@ -45,5 +46,6 @@ module rl.ui.services.dialog {
 	}
 
 	angular.module(moduleName, [])
+		.service(baseDialogServiceName, BaseDialogService)
 		.provider(serviceName, dialogServiceProvider);
 }
