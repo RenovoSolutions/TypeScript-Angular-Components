@@ -53,9 +53,9 @@ module rl.ui.services.autosaveDialog {
 			autosaveDialog = services[serviceName];
 		});
 
-		it('should open a modal dialog and build an autosave service to put on the scope', (): void => {
+		it('should open a modal dialog with the specified settings', (): void => {
 			var scope: IAutosaveDialogScope = <any>{ prop: 1 };
-			var resolve: any = { prop: 4 };
+			var data: any = { prop: 4 };
 			var formGetter: Sinon.SinonSpy = sinon.spy();
 			var save: Sinon.SinonSpy = sinon.spy();
 			var validate: Sinon.SinonSpy = sinon.spy();
@@ -64,7 +64,7 @@ module rl.ui.services.autosaveDialog {
 				scope: scope,
 				size: 'sm',
 				template: '<div></div>',
-				data: resolve,
+				data: data,
 
 				formGetter: formGetter,
 				save: save,
@@ -76,14 +76,43 @@ module rl.ui.services.autosaveDialog {
 			sinon.assert.calledOnce(autosaveFactory.getInstance);
 			sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
 
-			expect(scope.autosave).to.equal(autosave);
 			expect(scope.formGetter).to.equal(formGetter);
+			expect(scope.data).to.equal(data);
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dialog.open);
 			var dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
 			expect(dialogOptions.scope).to.equal(scope);
 			expect(dialogOptions.size).to.equal('sm');
 			expect(dialogOptions.template).to.equal('<div></div>');
+		});
+
+		describe('autosaveCloseHandler', (): void => {
+			let closeHandler: dialog.IDialogCloseHandler;
+			let options: IAutosaveDialogSettings;
+
+			beforeEach((): void => {
+				dialog.open = sinon.spy((settings: any, handler: dialog.IDialogCloseHandler): void => {
+					closeHandler = handler;
+				});
+
+				options = <any>{};
+			});
+
+			it('should return true if explicitly closed', (): void => {
+				autosaveDialog.open(options);
+
+				let canClose: boolean = closeHandler(true);
+
+				expect(canClose).to.be.true;
+			});
+
+			it('should autosave if the dialog wasnt closed explicitly', (): void => {
+				autosaveDialog.open(options);
+
+				closeHandler(false);
+
+				sinon.assert.calledOnce(autosave.autosave);
+			});
 		});
 	});
 }

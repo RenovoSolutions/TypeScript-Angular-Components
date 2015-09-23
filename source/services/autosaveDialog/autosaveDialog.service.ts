@@ -1,6 +1,6 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='../dialog/dialog.service.ts' />
 /// <reference path='autosaveDialog.controller.ts' />
@@ -31,14 +31,29 @@ module rl.ui.services.autosaveDialog {
 		formGetter?: { (scope: ng.IScope): ng.IFormController };
 	}
 
+	interface IDialogSettings {
+		scope?: ng.IScope;
+		template?: string;
+		templateUrl?: string;
+		size?: string;
+		data?: any;
+
+		controller?: string;
+		controllerAs?: string;
+		bindToController?: boolean;
+	}
+
 	export interface IAutosaveDialogScope extends ng.IScope {
-		autosave: __autosave.IAutosaveService;
 		form?: string;
 		formGetter?: { (scope: ng.IScope): ng.IFormController };
+		setForm(form: ng.IFormController): void;
 		data: any;
 	}
 
 	export class AutosaveDialogService implements IAutosaveDialogService {
+		private autosave: __autosave.IAutosaveService;
+		private data: any;
+
 		static $inject: string[] = ['$rootScope', dialog.serviceName, __autosave.factoryName];
 		constructor(private $rootScope: ng.IRootScopeService
 			, private dialog: dialog.IDialogService<IAutosaveDialogSettings>
@@ -52,16 +67,32 @@ module rl.ui.services.autosaveDialog {
 				options.scope = scope;
 			}
 
-			scope.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+			this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+
 			scope.form = options.form;
 			scope.formGetter = options.formGetter;
+			scope.setForm = this.setForm;
+			this.data = options.data;
 			scope.data = options.data;
 
-			var modalOptions: ng.ui.bootstrap.IModalSettings = <ng.ui.bootstrap.IModalSettings>options;
-			modalOptions.controller = controllerName;
-			modalOptions.controllerAs = 'dialog';
+			var dialogOptions: IDialogSettings = <IDialogSettings>options;
+			dialogOptions.controller = controllerName;
+			dialogOptions.controllerAs = 'dialog';
+			dialogOptions.bindToController = true;
 
-			return this.dialog.open(options);
+			return this.dialog.open(options, this.autosaveCloseHandler);
+		}
+
+		private autosaveCloseHandler: dialog.IDialogCloseHandler = (explicit: boolean): boolean => {
+			if (explicit) {
+				return true;
+			}
+
+			var canClose: boolean = this.autosave.autosave(this.data);
+		}
+
+		private setForm: { (form: ng.IFormController): void } = (form: ng.IFormController): void => {
+			this.autosave.contentForm = form;
 		}
 	}
 }

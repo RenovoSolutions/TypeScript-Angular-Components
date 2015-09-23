@@ -11,44 +11,28 @@ module rl.ui.services.autosaveDialog {
 	export var controllerName: string = 'AutosaveDialogController';
 
 	export class AutosaveDialogController {
+		form: string;
+		formGetter: { (scope: ng.IScope): ng.IFormController };
+		setForm: { (form: ng.IFormController): void };
+		data: any;
+
 		static $inject: string[] = ['$scope'];
-		constructor(private $scope: IAutosaveDialogScope) {
-			_.each($scope.data, (property: any, key: string): void => {
-				// don't allow data properties to overwrite controller properties
-				if (this[key] == null) {
-					this[key] = property;
-				}
-			});
-
-			$scope.$on('modal.closing', this.dialogClosing);
-
-			if ($scope.form != null) {
-				var unbind: Function = $scope.$watch((): any => { return $scope[$scope.form]; }, (form: ng.IFormController): void => {
+		constructor(private $scope: ng.IScope) {
+			if (this.form != null) {
+				var unbind: Function = $scope.$watch(this.form, (form: ng.IFormController): void => {
 					if (form != null) {
-						$scope.autosave.contentForm = form;
+						this.setForm(form);
 						unbind();
 					}
 				});
 			}
-			else if ($scope.formGetter != null) {
-				var unbind: Function = $scope.$watch((): any => { return $scope.formGetter($scope); }, (form: ng.IFormController): void => {
+			else if (this.formGetter != null) {
+				var unbind: Function = $scope.$watch((): any => { return this.formGetter($scope); }, (form: ng.IFormController): void => {
 					if (form != null) {
-						$scope.autosave.contentForm = form;
+						this.setForm(form);
 						unbind();
 					}
 				});
-			}
-		}
-
-		dialogClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }
-		= (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void => {
-			if (explicitlyClosed) {
-				return;
-			}
-
-			var canClose: boolean = this.$scope.autosave.autosave(this);
-			if (!canClose) {
-				event.preventDefault();
 			}
 		}
 	}

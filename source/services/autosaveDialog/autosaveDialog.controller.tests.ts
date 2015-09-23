@@ -20,93 +20,52 @@ module rl.ui.services.autosaveDialog {
 	describe('AutosaveDialogController', () => {
 		var scope: IAutosaveDialogScope;
 		var dialog: AutosaveDialogController;
+		var setForm: Sinon.SinonSpy;
 
 		beforeEach(() => {
 			angular.mock.module(moduleName);
+
+			setForm = sinon.spy();
 		});
 
-		it('should set the content form if a form name is specified', (): void => {
+		it('should set the form if a form name is specified', (): void => {
 			var form: any = {};
-			var autosave: IAutosaveMock = <any>{};
 			var formName: string = 'myForm';
-			buildController(autosave, null, null, form, formName);
+			buildController(null, form, formName);
 
 			scope.$digest();
 
-			expect(autosave.contentForm).to.equal(form);
+			sinon.assert.calledOnce(setForm);
+			sinon.assert.calledWith(setForm, form);
 		});
 
-		it('should set the content form if a formGetter is specified', (): void => {
+		it('should set the form if a formGetter is specified', (): void => {
 			var form: any = {};
-			var autosave: IAutosaveMock = <any>{};
 			var formGetter: Sinon.SinonSpy = sinon.spy((): any => { return form; });
-			buildController(autosave, formGetter);
+			buildController(formGetter);
 
 			scope.$digest();
 
 			sinon.assert.calledOnce(formGetter);
-			expect(autosave.contentForm).to.equal(form);
+			sinon.assert.calledOnce(setForm);
+			sinon.assert.calledWith(setForm, form);
 		});
 
-		describe('dialogClosing', (): void => {
-			var autosave: IAutosaveMock;
-
-			beforeEach((): void => {
-				autosave = {
-					autosave: sinon.spy((): boolean => { return true; }),
-				};
-			});
-
-			it('should autosave if the dialog closes passively', (): void => {
-				var data: any = {
-					prop: 1,
-				};
-
-				buildController(autosave, null, data);
-
-				dialog.dialogClosing(null, null, false);
-
-				sinon.assert.calledOnce(autosave.autosave);
-				expect(autosave.autosave.firstCall.args[0].prop).to.equal(data.prop);
-			});
-
-			it('should prevent the dialog from closing if the autosave fails', (): void => {
-				autosave.autosave = sinon.spy((): boolean => { return false; });
-				buildController(autosave);
-
-				var event: any = {
-					preventDefault: sinon.spy(),
-				};
-
-				dialog.dialogClosing(event, null, false);
-
-				sinon.assert.calledOnce(autosave.autosave);
-				sinon.assert.calledOnce(event.preventDefault);
-			});
-
-			it('should not autosave if the dialog closes explicitly', (): void => {
-				buildController(autosave);
-
-				dialog.dialogClosing(null, null, true);
-
-				sinon.assert.notCalled(autosave.autosave);
-			});
-		});
-
-		function buildController(autosave?: any, formGetter?: Sinon.SinonSpy, data?: any, form?: any, formName?: string): void {
-			var newScope: any = {
-				autosave: autosave,
+		function buildController(formGetter?: Sinon.SinonSpy, form?: any, formName?: string): void {
+			var bindings: any = {
 				form: formName,
 				formGetter: formGetter,
-				data: data,
+				setForm: setForm,
 			};
+
+			var newScope: any = {};
 
 			if (formName != null) {
 				newScope[formName] = form;
 			}
 
 			var controllerResult: test.IControllerResult<AutosaveDialogController>
-				= test.angularFixture.controllerWithBindings<AutosaveDialogController>(controllerName, null, null, newScope);
+				= test.angularFixture.controllerWithBindings<AutosaveDialogController>(controllerName, bindings, null, newScope);
 
 			scope = <IAutosaveDialogScope>controllerResult.scope;
 			dialog = controllerResult.controller;
