@@ -7,7 +7,7 @@
 module rl.ui {
 	export var moduleName: string = 'rl.ui';
 
-	angular.module(name, [
+	angular.module(moduleName, [
 		behaviors.moduleName,
 		components.moduleName,
 		services.moduleName,
