@@ -27,6 +27,10 @@ module rl.ui.services.dialog {
 				dialogProvider.setImplementation(testImplementation);
 			});
 
+			test.angularFixture.mock({
+				baseDialog: {},
+			});
+
 			var services: any = test.angularFixture.inject(serviceName);
 			dialog = services[serviceName];
 		});

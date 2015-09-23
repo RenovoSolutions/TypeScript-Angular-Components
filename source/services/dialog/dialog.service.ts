@@ -27,22 +27,25 @@ module rl.ui.services.dialog {
 
 	export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
 		setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-		$get(): IDialogService<TDialogSettings>;
+		$get(baseDialog: BaseDialogService): IDialogService<TDialogSettings>;
 	}
 
-	dialogServiceProvider.$inject = [baseDialogServiceName];
-	export function dialogServiceProvider<TDialogSettings>(baseDialog: BaseDialogService): IDialogServiceProvider<TDialogSettings> {
+	export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
 		'use strict';
 
-		return {
-			dialogImplementation: baseDialog,
+		var provider: IDialogServiceProvider<TDialogSettings> = {
 			setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 				this.dialogImplementation = dialogImplementation;
 			},
-			$get: (): IDialogImplementation<TDialogSettings> => {
-				return new DialogService<TDialogSettings>(this.dialogImplementation);
+			$get: (baseDialog: BaseDialogService): IDialogImplementation<TDialogSettings> => {
+				let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
+																				? this.dialogImplementation
+																				: baseDialog;
+				return new DialogService<TDialogSettings>(dialogImplementation);
 			},
 		};
+		provider.$get.$inject = [baseDialogServiceName];
+		return provider;
 	}
 
 	angular.module(moduleName, [])
