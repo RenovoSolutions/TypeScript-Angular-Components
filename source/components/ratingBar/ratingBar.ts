@@ -75,7 +75,13 @@ module rl.ui.components.ratingBar {
 		'use strict';
 		return {
 			restrict: 'E',
-			templateUrl: 'components/ratingBar/ratingBar.html',
+			template: `
+				<div class="rating-bar">
+					<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == min }" ng-style="ratingBar.dimensions">
+						<div ng-class="ratingBar.class" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
+					</div>
+				</div>
+			`,
 			controller: controllerName,
 			controllerAs: 'ratingBar',
 			scope: {},
