@@ -159,7 +159,7 @@ module rl.ui.components.responsiveCardGrid {
 				fillEmptySpace: '=',
 			},
 			link: {
-				post(scope: ng.IScope
+				pre(scope: ng.IScope
 					, element: ng.IAugmentedJQuery
 					, attrs: ng.IAttributes
 					, grid: ResponsiveCardGridController): void {
