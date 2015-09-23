@@ -145,7 +145,7 @@ module rl.ui.components.responsiveCardGrid {
 		return {
 			restrict: 'E',
 			transclude: true,
-			templateUrl: `
+			template: `
 				<div>
 					<div class="col-lg-4 col-md-6 col-sm-12 smallCardsList" ng-repeat="emptyCard in grid.emptyCards" ng-if="grid.fillEmptySpace"></div>
 					<div ng-transclude></div>

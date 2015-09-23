@@ -33,7 +33,7 @@ module rl.ui.components.spinner {
 		'use strict';
 		return {
 			restrict: 'E',
-			templateUrl: `
+			template: `
 				<rl-generic-container selector="ngDisabled">
 					<template default>
 						<input name="{{name}}" class="spinner" ng-hide="ngDisabled" id="{{spinnerId}}" type="text" />

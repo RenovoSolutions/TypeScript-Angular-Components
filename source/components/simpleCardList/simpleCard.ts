@@ -113,7 +113,7 @@ module rl.ui.components.simpleCard {
 			restrict: 'E',
 			transclude: true,
 			require: '?^^rlSimpleCardList',
-			templateUrl: `
+			template: `
 				<div class="card col-xs-12">
 					<div class="header row" ng-class="{ 'active': card.canOpen }" ng-click="card.toggleContent()">
 						<div class="header-template"></div>
