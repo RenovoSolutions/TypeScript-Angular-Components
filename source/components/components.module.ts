@@ -13,6 +13,7 @@
 /// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='ratingBar/ratingBar.ts' />
+/// <reference path='responsiveCardGrid/responsiveCardGrid.module.ts' />
 /// <reference path='richTextEditor/richTextEditor.ts' />
 /// <reference path='signaturePad/signaturePad.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
@@ -38,6 +39,7 @@ module rl.ui.components {
 		messageLog.moduleName,
 		multiStepIndicator.moduleName,
 		ratingBar.moduleName,
+		responsiveCardGrid.moduleName,
 		richTextEditor.moduleName,
 		signaturePad.moduleName,
 		simpleCardList.moduleName,
