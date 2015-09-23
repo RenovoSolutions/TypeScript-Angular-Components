@@ -9,19 +9,23 @@ module rl.ui.services.dialog {
 	export var moduleName: string = 'rl.ui.services.dialog';
 	export var serviceName: string = 'dialog';
 
+	export interface IDialogCloseHandler {
+		(explicit: boolean): boolean;
+	}
+
 	export interface IDialogImplementation<TDialogSettings> {
-		open(options: TDialogSettings): void;
+		open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void;
 	}
 
 	export interface IDialogService<TDialogSettings> {
-		open(options: TDialogSettings): void;
+		open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void;
 	}
 
 	export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
 		constructor(private dialog: IDialogImplementation<TDialogSettings>) { }
 
-		open(options: TDialogSettings): void {
-			this.dialog.open(options);
+		open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void {
+			this.dialog.open(options, closeHandler);
 		}
 	}
 
