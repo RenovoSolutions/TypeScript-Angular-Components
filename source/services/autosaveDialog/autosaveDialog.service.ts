@@ -25,11 +25,15 @@ module rl.ui.services.autosaveDialog {
 
 		save: { (...data: any[]): ng.IPromise<void> };
 		validate?: { (): boolean };
+		form?: string;
+
+		// optional - instead of specifying a form name
 		formGetter?: { (scope: ng.IScope): ng.IFormController };
 	}
 
 	export interface IAutosaveDialogScope extends ng.IScope {
 		autosave: __autosave.IAutosaveService;
+		form?: string;
 		formGetter?: { (scope: ng.IScope): ng.IFormController };
 		data: any;
 	}
@@ -49,6 +53,7 @@ module rl.ui.services.autosaveDialog {
 			}
 
 			scope.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+			scope.form = options.form;
 			scope.formGetter = options.formGetter;
 			scope.data = options.data;
 

@@ -22,7 +22,15 @@ module rl.ui.services.autosaveDialog {
 
 			$scope.$on('modal.closing', this.dialogClosing);
 
-			if ($scope.formGetter != null) {
+			if ($scope.form != null) {
+				var unbind: Function = $scope.$watch((): any => { return $scope[$scope.form]; }, (form: ng.IFormController): void => {
+					if (form != null) {
+						$scope.autosave.contentForm = form;
+						unbind();
+					}
+				});
+			}
+			else if ($scope.formGetter != null) {
 				var unbind: Function = $scope.$watch((): any => { return $scope.formGetter($scope); }, (form: ng.IFormController): void => {
 					if (form != null) {
 						$scope.autosave.contentForm = form;

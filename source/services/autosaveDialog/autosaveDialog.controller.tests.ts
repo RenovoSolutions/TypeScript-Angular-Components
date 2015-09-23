@@ -25,6 +25,17 @@ module rl.ui.services.autosaveDialog {
 			angular.mock.module(moduleName);
 		});
 
+		it('should set the content form if a form name is specified', (): void => {
+			var form: any = {};
+			var autosave: IAutosaveMock = <any>{};
+			var formName: string = 'myForm';
+			buildController(autosave, null, null, form, formName);
+
+			scope.$digest();
+
+			expect(autosave.contentForm).to.equal(form);
+		});
+
 		it('should set the content form if a formGetter is specified', (): void => {
 			var form: any = {};
 			var autosave: IAutosaveMock = <any>{};
@@ -82,12 +93,17 @@ module rl.ui.services.autosaveDialog {
 			});
 		});
 
-		function buildController(autosave?: any, formGetter?: Sinon.SinonSpy, data?: any): void {
+		function buildController(autosave?: any, formGetter?: Sinon.SinonSpy, data?: any, form?: any, formName?: string): void {
 			var newScope: any = {
 				autosave: autosave,
+				form: formName,
 				formGetter: formGetter,
 				data: data,
 			};
+
+			if (formName != null) {
+				newScope[formName] = form;
+			}
 
 			var controllerResult: test.IControllerResult<AutosaveDialogController>
 				= test.angularFixture.controllerWithBindings<AutosaveDialogController>(controllerName, null, null, newScope);
