@@ -2,23 +2,25 @@
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 // /// <reference path='../../../typings/lodash/lodash.d.ts' />
 
-/// <reference path='dialog.service.ts' />
+/// <reference path='../dialog.service.ts' />
 
-module rl.ui.services.dialog {
+module rl.ui.services.dialog.baseDialog {
 	'use strict';
 
-	export var baseDialogServiceName: string = 'baseDialog';
+	export var serviceName: string = 'baseDialog';
+
+	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
 
 	export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
 		closeHandler: IDialogCloseHandler;
 
 		static $inject: string[] = ['$modal', '$rootScope'];
-		constructor(private $modal: ng.ui.bootstrap.IModalService, $rootScope: ng.IRootScopeService) {
-			$rootScope.$on('modal.closing', this.modalClosing);
-		}
+		constructor(private $modal: ng.ui.bootstrap.IModalService
+				, private $rootScope: ng.IRootScopeService) { }
 
 		open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
 			this.closeHandler = closeHandler;
+			options = this.configureModalSettings(options);
 			this.$modal.open(options);
 		}
 
@@ -33,6 +35,23 @@ module rl.ui.services.dialog {
 			if (!canClose) {
 				event.preventDefault();
 			}
+		}
+
+		private configureModalSettings(options: ng.ui.bootstrap.IModalSettings): ng.ui.bootstrap.IModalSettings {
+			if (options == null) {
+				options = <any>{};
+			}
+
+			let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
+
+			if (modalScope == null) {
+				modalScope = <IBaseDialogScope>this.$rootScope.$new();
+			}
+
+			modalScope.modalController = options.controller;
+			options.controller = controllerName;
+			options.scope = modalScope;
+			return options;
 		}
 	}
 }

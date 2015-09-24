@@ -1,7 +1,7 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 
-/// <reference path='baseDialogImplementation.service.ts' />
+/// <reference path='baseDialog/baseDialog.module.ts' />
 
 module rl.ui.services.dialog {
 	'use strict';
@@ -31,7 +31,7 @@ module rl.ui.services.dialog {
 
 	export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
 		setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-		$get(baseDialog: BaseDialogService): IDialogService<TDialogSettings>;
+		$get(baseDialog: baseDialog.BaseDialogService): IDialogService<TDialogSettings>;
 	}
 
 	export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
@@ -41,18 +41,17 @@ module rl.ui.services.dialog {
 			setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 				this.dialogImplementation = dialogImplementation;
 			},
-			$get: (baseDialog: BaseDialogService): IDialogImplementation<TDialogSettings> => {
+			$get: (baseDialog: baseDialog.BaseDialogService): IDialogImplementation<TDialogSettings> => {
 				let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																				? this.dialogImplementation
 																				: baseDialog;
 				return new DialogService<TDialogSettings>(dialogImplementation);
 			},
 		};
-		provider.$get.$inject = [baseDialogServiceName];
+		provider.$get.$inject = [baseDialog.serviceName];
 		return provider;
 	}
 
-	angular.module(moduleName, [])
-		.service(baseDialogServiceName, BaseDialogService)
+	angular.module(moduleName, [baseDialog.moduleName])
 		.provider(serviceName, dialogServiceProvider);
 }

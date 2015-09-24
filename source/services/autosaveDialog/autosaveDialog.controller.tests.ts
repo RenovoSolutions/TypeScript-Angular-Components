@@ -52,20 +52,18 @@ module rl.ui.services.autosaveDialog {
 		});
 
 		function buildController(formGetter?: Sinon.SinonSpy, form?: any, formName?: string): void {
-			var bindings: any = {
+			var newScope: any = {
 				form: formName,
 				formGetter: formGetter,
 				setForm: setForm,
 			};
-
-			var newScope: any = {};
 
 			if (formName != null) {
 				newScope[formName] = form;
 			}
 
 			var controllerResult: test.IControllerResult<AutosaveDialogController>
-				= test.angularFixture.controllerWithBindings<AutosaveDialogController>(controllerName, bindings, null, newScope);
+				= test.angularFixture.controllerWithBindings<AutosaveDialogController>(controllerName, null, null, newScope);
 
 			scope = <IAutosaveDialogScope>controllerResult.scope;
 			dialog = controllerResult.controller;
