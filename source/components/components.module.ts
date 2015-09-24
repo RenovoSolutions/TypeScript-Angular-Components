@@ -1,10 +1,10 @@
 // /// <reference path='../../typings/angularjs/angular.d.ts' />
 
-/// <reference path='autosaveComponent/autosaveComponent.ts' />
 /// <reference path='autosaveDialogFooter/autosaveDialogFooter.ts' />
 /// <reference path='busy/busy.ts' />
 /// <reference path='button/button.ts' />
 /// <reference path='cardContainer/cardContainer.module.ts' />
+/// <reference path='commaList/commaList.ts' />
 /// <reference path='buttonToggle/buttonToggle.ts' />
 /// <reference path='dateTime/dateTime.ts' />
 /// <reference path='genericContainer/genericContainer.ts' />
@@ -13,6 +13,7 @@
 /// <reference path='messageLog/messageLog.module.ts' />
 /// <reference path='multiStepIndicator/multiStepIndicator.ts' />
 /// <reference path='ratingBar/ratingBar.ts' />
+/// <reference path='responsiveCardGrid/responsiveCardGrid.module.ts' />
 /// <reference path='richTextEditor/richTextEditor.ts' />
 /// <reference path='signaturePad/signaturePad.ts' />
 /// <reference path='simpleCardList/simpleCardList.module.ts' />
@@ -25,12 +26,12 @@ module rl.ui.components {
 	export var moduleName: string = 'rl.ui.components';
 
 	angular.module(moduleName, [
-		// autosaveComponent.moduleName,
 		autosaveDialogFooter.moduleName,
 		busy.moduleName,
 		button.moduleName,
 		buttonToggle.moduleName,
 		cardContainer.moduleName,
+		commaList.moduleName,
 		dateTime.moduleName,
 		genericContainer.moduleName,
 		lazyLoad.moduleName,
@@ -38,6 +39,7 @@ module rl.ui.components {
 		messageLog.moduleName,
 		multiStepIndicator.moduleName,
 		ratingBar.moduleName,
+		responsiveCardGrid.moduleName,
 		richTextEditor.moduleName,
 		signaturePad.moduleName,
 		simpleCardList.moduleName,

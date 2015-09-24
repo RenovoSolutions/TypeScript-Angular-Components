@@ -1,6 +1,6 @@
-/// <reference path='../../../typings/angularjs/angular.d.ts' />
-/// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+// /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
+// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 module rl.ui.components.spinner {
 	'use strict';
@@ -26,14 +26,14 @@ module rl.ui.components.spinner {
 		name: string;
 	}
 
-	spinner.$inject = ['$timeout', __string.serviceName];
+	spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
 	function spinner($timeout: ng.ITimeoutService
 					, stringUtility: __string.IStringUtilityService
 					, numberUtility: __number.INumberUtility): ng.IDirective {
 		'use strict';
 		return {
 			restrict: 'E',
-			templateUrl: `
+			template: `
 				<rl-generic-container selector="ngDisabled">
 					<template default>
 						<input name="{{name}}" class="spinner" ng-hide="ngDisabled" id="{{spinnerId}}" type="text" />

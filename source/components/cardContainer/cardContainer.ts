@@ -8,7 +8,7 @@
 // /// <reference path='../../typings/jquery/jquery.d.ts' />
 // /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='../../types/viewData.d.ts' />
+// /// <reference path='../../types/viewData.d.ts' />
 /// <reference path='dataSources/dataPager/dataPager.service.ts' />
 /// <reference path='dataSources/dataSources.module.ts' />
 /// <reference path='column.ts' />
@@ -19,14 +19,14 @@
 module rl.ui.components.cardContainer {
 	export var directiveName: string = 'rlCardContainer';
 	export var controllerName: string = 'CardContainerController';
-	
+
 	export var defaultMaxColumnSorts: number = 2;
 	export var defaultSelectionTitle: string = 'Select card';
-	
+
 	import __object = rl.utilities.services.object;
 	import __array = rl.utilities.services.array;
 	import __parentChild = rl.utilities.services.parentChildBehavior;
-	
+
 	export interface ICardContainerBindings {
 		source: dataSources.IDataSource<any>;
 		filters: utilities.filters.IFilter[] | { [index: string]: utilities.filters.IFilter };
@@ -42,21 +42,21 @@ module rl.ui.components.cardContainer {
 		selectableCards: boolean;
 		disableSelection(item: any): string;
 	}
-	
+
 	export interface ICardBehavior {
 		close(): boolean;
 	}
-	
+
 	export interface ICardContainerAttrs extends ng.IAttributes {
 		disableSelection: string;
 	}
-	
+
 	export interface ISelectionViewData {
 		selected: boolean;
 		selectionTitle?: string;
 		disabledSelection?: boolean;
 	}
-	
+
 	export class CardContainerController {
 		// bindings
 		source: dataSources.IDataSource<any>;
@@ -72,7 +72,7 @@ module rl.ui.components.cardContainer {
 		permanentFooters: boolean;
 		selectableCards: boolean;
 		disableSelection: {(item: any): string};
-		
+
 		dataSource: dataSources.IDataSource<any>;
 		sortDirection: sorts.ISortDirections;
 		numberSelected: number = 0;
@@ -80,9 +80,9 @@ module rl.ui.components.cardContainer {
 		pager: dataSources.dataPager.IDataPager;
 		private maxColSorts: number;
 		private disablingSelections: boolean;
-	
+
 		makeCard: ng.ITranscludeFunction;
-	
+
 		static $inject: string[] = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataSources.dataPager.factoryName, __parentChild.serviceName];
 		constructor(private $scope: ng.IScope
 				, $attrs: ICardContainerAttrs
@@ -95,23 +95,23 @@ module rl.ui.components.cardContainer {
 			this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 			this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
 			this.sortDirection = sorts.SortDirection;
-	
+
 			this.syncFilters();
-	
+
 			this.setupPaging();
-	
+
 			this.buildColumnSizes();
-	
+
 			if (this.selectableCards) {
 				//*use card container event service?
 				$scope.$on('selectionChanged', this.updateSelected);
 				$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
-	
+
 				this.dataSource.watch(this.addViewData, 'changed');
 				this.dataSource.watch(this.clearFilteredSelections, 'redrawing');
-	
+
 				this.addViewData();
-	
+
 				this.selectionColumn = {
 					label: null,
 					size: null,
@@ -121,40 +121,40 @@ module rl.ui.components.cardContainer {
 					flipSort: true,
 				};
 			}
-	
+
 			if (this.dataSource.sorts == null) {
 				this.dataSource.sorts = [];
 			}
 		}
-	
+
 		lookupFilter(type: string): utilities.filters.IFilter {
 			return this.filters[type];
 		}
-	
+
 		sortSelected(): void {
 			this.sort(this.selectionColumn);
 		}
-	
+
 		openCard(): boolean {
 			var behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
-	
+
 			return _.all(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 		}
-	
+
 		sort(column: IColumn): void {
 			var sortList: sorts.ISort[] = this.dataSource.sorts;
 			var firstSort: sorts.ISort = sortList[0];
-	
+
 			// If column is already the primary sort, change the direction
 			if (firstSort != null
 				&& firstSort.column === column) {
 				firstSort.direction = sorts.toggle(firstSort.direction);
-	
+
 				// Clear sort
 				if (firstSort.direction === sorts.SortDirection.none) {
 					this.clearVisualSortIndicator(firstSort);
 					firstSort = null;
-	
+
 					// If the column has secondary sorts don't fall back to a
 					//  secondary sort, instead just clear all sorts
 					if (column.secondarySorts != null) {
@@ -165,25 +165,25 @@ module rl.ui.components.cardContainer {
 				}
 			} else {
 				// Else make column primary ascending sort
-	
+
 				// Remove any existing non-primary sorts on column
 				this.array.remove(sortList, (sort: sorts.ISort): boolean => {
 					return column === sort.column;
 				});
-	
+
 				// Build ascending sort for column
 				var newSort: sorts.ISort = {
 					column: column,
 					direction: sorts.SortDirection.ascending,
 				};
-	
+
 				sortList.unshift(newSort);
-	
+
 				firstSort = newSort;
 			}
-	
+
 			this.updateVisualColumnSorting();
-	
+
 			// If column has secondary sorts, wipe the sort order and just apply the secondary sorts
 			if (firstSort != null && column.secondarySorts != null) {
 				sortList.length = 0;
@@ -195,29 +195,29 @@ module rl.ui.components.cardContainer {
 				//  of sorts applied to the maximum number of sorts
 				this.dataSource.sorts = _.take(sortList, this.maxColSorts);
 			}
-	
+
 			this.dataSource.refresh();
 		}
-	
+
 		selectionChanged(): void {
 			this.updateSelected();
 			this.$scope.$emit('selectionChanged');
 		}
-	
+
 		private syncFilters(): void {
 			if (this.filters != null) {
 				// Convert filter array to dictionary if necessary
 				if (_.isArray(this.filters)) {
 					this.filters = this.array.toDictionary(<utilities.filters.IFilter[]>this.filters, (filter: utilities.filters.IFilter): string => { return filter.type; });
 				}
-	
+
 				this.dataSource.filters = <{ [index: string]: utilities.filters.IFilter }>this.filters;
 				this.dataSource.refresh();
 			} else if (this.dataSource.filters != null) {
 				this.filters = this.dataSource.filters;
 			}
 		}
-	
+
 		private setupPaging(): void {
 			// If paging flag is specified, card container controls pager instance
 			if (this.paging != null) {
@@ -232,7 +232,7 @@ module rl.ui.components.cardContainer {
 				this.pager = this.dataSource.pager;
 			}
 		}
-	
+
 		private buildColumnSizes(): void {
 			_.each(this.columns, (column: IColumn): void => {
 				var sizes: IBreakpointSize | number = column.size;
@@ -251,7 +251,7 @@ module rl.ui.components.cardContainer {
 				}
 			});
 		}
-	
+
 		private addViewData: {(): void} = (): void => {
 			_.each(this.dataSource.rawDataSet, (item: rl.ui.types.IViewDataEntity<ISelectionViewData>): void => {
 				if (_.isUndefined(item.viewData)) {
@@ -260,39 +260,39 @@ module rl.ui.components.cardContainer {
 					};
 				}
 			});
-	
+
 			this.updateDisabledSelections();
 		}
-	
+
 		private lookupColumn(label: string): IColumn {
 			return _.find(this.columns, (column: IColumn): boolean => {
 				return column.label === label;
 			});
 		}
-	
+
 		private clearFilteredSelections: {(): void} = (): void => {
 			var nonVisibleItems: any[] = _.difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
-	
+
 			_.each(nonVisibleItems, (item: rl.ui.types.IViewDataEntity<ISelectionViewData>): void => {
 				if (_.isUndefined(item.viewData)) {
 					item.viewData = {
 						selected: false,
 					};
 				}
-	
+
 				item.viewData.selected = false;
 				item.viewData.selectionTitle = defaultSelectionTitle;
 			});
-	
+
 			this.updateSelected();
 		}
-	
+
 		private updateSelected: {(): void} = (): void => {
 			this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: rl.ui.types.IViewDataEntity<ISelectionViewData>): boolean => {
 				return item.viewData.selected;
 			}).length;
 		}
-	
+
 		private updateDisabledSelections: {(): void} = (): void => {
 			if (this.disablingSelections) {
 				_.each(this.dataSource.rawDataSet, (item: rl.ui.types.IViewDataEntity<ISelectionViewData>): void => {
@@ -302,7 +302,7 @@ module rl.ui.components.cardContainer {
 				});
 			}
 		}
-	
+
 		private buildSecondarySorts(direction: sorts.SortDirection, secondarySorts: ISecondarySorts): sorts.ISort[] {
 			var sortList: sorts.IPartialSort[] = secondarySorts[sorts.getFullName(direction)];
 			return _.map(sortList, (sort: sorts.IPartialSort): sorts.ISort => {
@@ -312,7 +312,7 @@ module rl.ui.components.cardContainer {
 				};
 			});
 		}
-	
+
 		private updateVisualColumnSorting(): void {
 			_.each(this.dataSource.sorts, (sort: sorts.ISort, index: number): void => {
 				// Only first sort should have visible direction
@@ -323,16 +323,16 @@ module rl.ui.components.cardContainer {
 				}
 			});
 		}
-	
+
 		private updateVisualSortIndicator(sort: sorts.ISort): void {
 			sort.column.sortDirection = sort.direction;
 		}
-	
+
 		private clearVisualSortIndicator(sort: sorts.ISort): void {
 			sort.column.sortDirection = null;
 		}
 	}
-	
+
 	cardContainer.$inject = ['$compile'];
 	export function cardContainer($compile: ng.ICompileService): ng.IDirective {
 		'use strict';
@@ -362,17 +362,17 @@ module rl.ui.components.cardContainer {
 				//     loadingDataSet: A boolean indicating if the dataSet is being refreshed / loaded,
 				// }
 				source: '=',
-	
+
 				// summary: A list of filters to be applied to the data source
 				// remarks: Each filter should implement the data filter contract: {
 				//     type: A name that can be used to look up the filter,
-				//     filter: function(item) { takes an item and returns false if it should be removed from the data set },         
+				//     filter: function(item) { takes an item and returns false if it should be removed from the data set },
 				// }
 				filters: '=',
-	
+
 				// summary: Turn paging on or off (true / false)
 				paging: '=',
-	
+
 				// summary: A list of the columns for building the column header and card headers.
 				// remarks: Each column object should be in the following format: {
 				//     label: The label for the column header,
@@ -406,10 +406,10 @@ module rl.ui.components.cardContainer {
 				//     }
 				// }
 				columns: '=',
-	
+
 				// summary: container-wide data available in cards
 				containerData: '=',
-	
+
 				// summary: controller shared by all components on a card
 				// remarks: this controller cannot override any of the following variable names:
 				//          columns
@@ -426,24 +426,24 @@ module rl.ui.components.cardContainer {
 				//          selected
 				//          setSelected
 				cardController: '@',
-	
+
 				// summary: controller alias specified using controllerAs syntax
 				cardControllerAs: '@',
-	
+
 				// summary: name used to access the card data
 				cardAs: '@',
-	
+
 				// summary: Indicates if cards should show active state on mouse over
 				clickableCards: '=',
-	
+
 				// summary: The number of sorts that can be applied at a time.
 				maxColumnSorts: '=',
-	
+
 				permanentFooters: '=',
-	
+
 				// summary: If true, turns on selection for cards via the cardData.viewData.selected property
 				selectableCards: '=',
-				// summary: Function called with each item. If true is returned selection is disabled for this item. 
+				// summary: Function called with each item. If true is returned selection is disabled for this item.
 				//          If function is not defined, selection is enabled for all by default.
 				disableSelection: '&',
 			},
@@ -454,28 +454,28 @@ module rl.ui.components.cardContainer {
 				, transclude: ng.ITranscludeFunction): void {
 				var headerArea: JQuery = element.find('.container-header-template');
 				var footerArea: JQuery = element.find('.container-footer-template');
-	
+
 				controller.makeCard = transclude;
-	
+
 				transclude(scope, (clone: JQuery): void => {
 					var header: JQuery = clone.filter('container-header');
-	
+
 					if (header.length === 0) {
 						header = $compile('<div ng-include="\''
 							+ 'components/cardContainer/defaultCardContainerHeader.html'
 							+ '\'"></div>')(scope);
 					}
-	
+
 					headerArea.append(header);
-	
+
 					var footer: JQuery = clone.filter('container-footer');
-	
+
 					if (footer.length === 0) {
 						footer = $compile('<div ng-include="\''
 							+ 'components/cardContainer/defaultCardContainerFooter.html'
 							+ '\'"></div>')(scope);
 					}
-	
+
 					footerArea.append(footer);
 				});
 			}
