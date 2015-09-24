@@ -9,6 +9,8 @@ module rl.ui.services.dialog {
 
 	export var baseDialogServiceName: string = 'baseDialog';
 
+	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
+
 	export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
 		closeHandler: IDialogCloseHandler;
 
