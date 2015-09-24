@@ -5,6 +5,7 @@
 /// <reference path='../../../../typings/chaiAssertions.d.ts' />
 /// <reference path='../../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
+/// <reference path='baseDialog.module.ts' />
 /// <reference path='baseDialog.controller.ts' />
 
 module rl.ui.services.dialog.baseDialog {
@@ -52,9 +53,9 @@ module rl.ui.services.dialog.baseDialog {
 			sinon.assert.calledOnce(baseDialog.modalClosing);
 		});
 
-		function buildController(dialogController?: any, controllerName?: string): void {
+		function buildController(dialogController?: any, dialogControllerName?: string): void {
 			let newScope: any = {
-				modalController: controllerName,
+				modalController: dialogControllerName,
 			};
 
 			$controller = sinon.spy((): any => { return dialogController; });
