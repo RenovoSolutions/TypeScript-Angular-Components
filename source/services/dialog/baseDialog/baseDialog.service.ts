@@ -3,12 +3,10 @@
 // /// <reference path='../../../typings/lodash/lodash.d.ts' />
 
 /// <reference path='../dialog.service.ts' />
-/// <reference path='baseDialog.controller.ts' />
 
 module rl.ui.services.dialog.baseDialog {
 	'use strict';
 
-	export var moduleName: string = 'rl.ui.services.dialog.baseDialog';
 	export var serviceName: string = 'baseDialog';
 
 	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
@@ -52,8 +50,4 @@ module rl.ui.services.dialog.baseDialog {
 			return options;
 		}
 	}
-
-	angular.module(moduleName, [])
-		.controller(controllerName, BaseDialogController)
-		.service(serviceName, BaseDialogService);
 }

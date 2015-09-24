@@ -1,7 +1,7 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 
-/// <reference path='baseDialog/baseDialog.service.ts' />
+/// <reference path='baseDialog/baseDialog.module.ts' />
 
 module rl.ui.services.dialog {
 	'use strict';

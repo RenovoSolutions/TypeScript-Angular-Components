@@ -5,6 +5,7 @@
 /// <reference path='../../../../typings/chaiAssertions.d.ts' />
 /// <reference path='../../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
+/// <reference path='baseDialog.module.ts' />
 /// <reference path='baseDialog.service.ts' />
 
 module rl.ui.services.dialog.baseDialog {
