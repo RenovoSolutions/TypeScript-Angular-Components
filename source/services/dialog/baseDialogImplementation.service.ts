@@ -12,15 +12,15 @@ module rl.ui.services.dialog {
 	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
 
 	export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
+		private unbindWatcher: Function;
 		closeHandler: IDialogCloseHandler;
 
-		static $inject: string[] = ['$modal', '$rootScope'];
-		constructor(private $modal: ng.ui.bootstrap.IModalService, $rootScope: ng.IRootScopeService) {
-			$rootScope.$on('modal.closing', this.modalClosing);
-		}
+		static $inject: string[] = ['$modal'];
+		constructor(private $modal: ng.ui.bootstrap.IModalService) {}
 
 		open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
 			this.closeHandler = closeHandler;
+			this.unbindWatcher = options.scope.$on('modal.closing', this.modalClosing);
 			this.$modal.open(options);
 		}
 
@@ -35,6 +35,8 @@ module rl.ui.services.dialog {
 			if (!canClose) {
 				event.preventDefault();
 			}
+
+			this.unbindWatcher();
 		}
 	}
 }
