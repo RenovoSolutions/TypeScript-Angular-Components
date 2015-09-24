@@ -1,14 +1,13 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/angularMocks.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+/// <reference path='../../../../typings/chai/chai.d.ts' />
+/// <reference path='../../../../typings/mocha/mocha.d.ts' />
+/// <reference path='../../../../typings/sinon/sinon.d.ts' />
+/// <reference path='../../../../typings/angularMocks.d.ts' />
+/// <reference path='../../../../typings/chaiAssertions.d.ts' />
+/// <reference path='../../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='dialog.service.ts' />
-/// <reference path='baseDialogImplementation.service.ts' />
+/// <reference path='baseDialog.service.ts' />
 
-module rl.ui.services.dialog {
+module rl.ui.services.dialog.baseDialog {
 	import test = rl.utilities.services.test;
 
 	interface IModalMock {
@@ -30,8 +29,8 @@ module rl.ui.services.dialog {
 				$modal: $modal,
 			});
 
-			var services: any = test.angularFixture.inject(baseDialogServiceName);
-			baseDialog = services[baseDialogServiceName];
+			var services: any = test.angularFixture.inject(serviceName);
+			baseDialog = services[serviceName];
 		});
 
 		it('should call the closeHandler when the dialog closes', (): void => {

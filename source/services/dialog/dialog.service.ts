@@ -1,7 +1,7 @@
 // /// <reference path='../../../typings/angularjs/angular.d.ts' />
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 
-/// <reference path='baseDialogImplementation.service.ts' />
+/// <reference path='baseDialog/baseDialog.service.ts' />
 
 module rl.ui.services.dialog {
 	'use strict';
@@ -52,8 +52,6 @@ module rl.ui.services.dialog {
 		return provider;
 	}
 
-	angular.module(moduleName, [])
-		.controller(baseDialogControllerName, BaseDialogController)
-		.service(baseDialogServiceName, BaseDialogService)
+	angular.module(moduleName, [baseDialog.moduleName])
 		.provider(serviceName, dialogServiceProvider);
 }

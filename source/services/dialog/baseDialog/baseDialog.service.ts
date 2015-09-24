@@ -2,13 +2,14 @@
 // /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
 // /// <reference path='../../../typings/lodash/lodash.d.ts' />
 
-/// <reference path='dialog.service.ts' />
+/// <reference path='../dialog.service.ts' />
+/// <reference path='baseDialog.controller.ts' />
 
-module rl.ui.services.dialog {
+module rl.ui.services.dialog.baseDialog {
 	'use strict';
 
-	export var baseDialogServiceName: string = 'baseDialog';
-	export var baseDialogControllerName: string = 'BaseDialogController';
+	export var moduleName: string = 'rl.ui.services.dialog.baseDialog';
+	export var serviceName: string = 'baseDialog';
 
 	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
 
@@ -46,30 +47,13 @@ module rl.ui.services.dialog {
 			}
 
 			modalScope.modalController = options.controller;
-			options.controller = baseDialogControllerName;
+			options.controller = controllerName;
 			options.scope = modalScope;
 			return options;
 		}
 	}
 
-	export interface IBaseDialogScope extends ng.IScope {
-		modalController: string | Function;
-	}
-
-	export class BaseDialogController {
-		static $inject: string[] = ['$scope', '$controller', baseDialogServiceName];
-		constructor($scope: IBaseDialogScope
-				, $controller: ng.IControllerService
-				, baseDialog: BaseDialogService) {
-			let controller: any;
-
-			if ($scope.modalController != null) {
-				controller = $controller(<any>$scope.modalController, { $scope: $scope });
-			}
-
-			$scope.$on('modal.closing', baseDialog.modalClosing);
-
-			return controller;
-		}
-	}
+	angular.module(moduleName, [])
+		.controller(controllerName, BaseDialogController)
+		.service(serviceName, BaseDialogService);
 }
