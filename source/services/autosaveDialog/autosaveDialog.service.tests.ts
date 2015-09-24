@@ -77,7 +77,7 @@ module rl.ui.services.autosaveDialog {
 			sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
 
 			expect(scope.formGetter).to.equal(formGetter);
-			expect(scope.data).to.equal(data);
+			expect(scope.dialog).to.equal(data);
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dialog.open);
 			var dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
