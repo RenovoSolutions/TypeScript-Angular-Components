@@ -4,6 +4,7 @@
 /// <reference path='busy/busy.ts' />
 /// <reference path='button/button.ts' />
 /// <reference path='cardContainer/cardContainer.module.ts' />
+/// <reference path='commaList/commaList.ts' />
 /// <reference path='buttonToggle/buttonToggle.ts' />
 /// <reference path='dateTime/dateTime.ts' />
 /// <reference path='genericContainer/genericContainer.ts' />
@@ -30,6 +31,7 @@ module rl.ui.components {
 		button.moduleName,
 		buttonToggle.moduleName,
 		cardContainer.moduleName,
+		commaList.moduleName,
 		dateTime.moduleName,
 		genericContainer.moduleName,
 		lazyLoad.moduleName,
