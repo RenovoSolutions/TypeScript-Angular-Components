@@ -8,19 +8,20 @@ module rl.ui.services.dialog {
 	'use strict';
 
 	export var baseDialogServiceName: string = 'baseDialog';
+	export var baseDialogControllerName: string = 'BaseDialogController';
 
 	export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
 
 	export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
-		private unbindWatcher: Function;
 		closeHandler: IDialogCloseHandler;
 
-		static $inject: string[] = ['$modal'];
-		constructor(private $modal: ng.ui.bootstrap.IModalService) {}
+		static $inject: string[] = ['$modal', '$rootScope'];
+		constructor(private $modal: ng.ui.bootstrap.IModalService
+				, private $rootScope: ng.IRootScopeService) { }
 
 		open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
 			this.closeHandler = closeHandler;
-			this.unbindWatcher = options.scope.$on('modal.closing', this.modalClosing);
+			options = this.configureModalSettings(options);
 			this.$modal.open(options);
 		}
 
@@ -35,8 +36,40 @@ module rl.ui.services.dialog {
 			if (!canClose) {
 				event.preventDefault();
 			}
+		}
 
-			this.unbindWatcher();
+		private configureModalSettings(options: ng.ui.bootstrap.IModalSettings): ng.ui.bootstrap.IModalSettings {
+			let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
+
+			if (modalScope == null) {
+				modalScope = <IBaseDialogScope>this.$rootScope.$new();
+			}
+
+			modalScope.modalController = options.controller;
+			options.controller = baseDialogControllerName;
+			options.scope = modalScope;
+			return options;
+		}
+	}
+
+	export interface IBaseDialogScope extends ng.IScope {
+		modalController: string | Function;
+	}
+
+	export class BaseDialogController {
+		static $inject: string[] = ['$scope', '$controller', baseDialogServiceName];
+		constructor($scope: IBaseDialogScope
+				, $controller: ng.IControllerService
+				, baseDialog: BaseDialogService) {
+			let controller: any;
+
+			if ($scope.modalController != null) {
+				controller = $controller(<any>$scope.modalController, { $scope: $scope });
+			}
+
+			$scope.$on('modal.closing', baseDialog.modalClosing);
+
+			return controller;
 		}
 	}
 }

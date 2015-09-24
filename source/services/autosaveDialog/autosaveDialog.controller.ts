@@ -17,19 +17,19 @@ module rl.ui.services.autosaveDialog {
 		data: any;
 
 		static $inject: string[] = ['$scope'];
-		constructor(private $scope: ng.IScope) {
-			if (this.form != null) {
-				var unbind: Function = $scope.$watch(this.form, (form: ng.IFormController): void => {
+		constructor(private $scope: IAutosaveDialogScope) {
+			if ($scope.form != null) {
+				var unbind: Function = $scope.$watch($scope.form, (form: ng.IFormController): void => {
 					if (form != null) {
-						this.setForm(form);
+						$scope.setForm(form);
 						unbind();
 					}
 				});
 			}
-			else if (this.formGetter != null) {
-				var unbind: Function = $scope.$watch((): any => { return this.formGetter($scope); }, (form: ng.IFormController): void => {
+			else if ($scope.formGetter != null) {
+				var unbind: Function = $scope.$watch((): any => { return $scope.formGetter($scope); }, (form: ng.IFormController): void => {
 					if (form != null) {
-						this.setForm(form);
+						$scope.setForm(form);
 						unbind();
 					}
 				});

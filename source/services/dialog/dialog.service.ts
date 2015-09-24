@@ -53,6 +53,7 @@ module rl.ui.services.dialog {
 	}
 
 	angular.module(moduleName, [])
+		.controller(baseDialogControllerName, BaseDialogController)
 		.service(baseDialogServiceName, BaseDialogService)
 		.provider(serviceName, dialogServiceProvider);
 }

@@ -47,7 +47,7 @@ module rl.ui.services.autosaveDialog {
 		form?: string;
 		formGetter?: { (scope: ng.IScope): ng.IFormController };
 		setForm(form: ng.IFormController): void;
-		data: any;
+		dialog: any;
 	}
 
 	export class AutosaveDialogService implements IAutosaveDialogService {
@@ -73,12 +73,11 @@ module rl.ui.services.autosaveDialog {
 			scope.formGetter = options.formGetter;
 			scope.setForm = this.setForm;
 			this.data = options.data;
-			scope.data = options.data;
+			scope.dialog = options.data;
 
 			var dialogOptions: IDialogSettings = <IDialogSettings>options;
 			dialogOptions.controller = controllerName;
-			dialogOptions.controllerAs = 'dialog';
-			dialogOptions.bindToController = true;
+			dialogOptions.controllerAs = 'controller';
 
 			return this.dialog.open(options, this.autosaveCloseHandler);
 		}
