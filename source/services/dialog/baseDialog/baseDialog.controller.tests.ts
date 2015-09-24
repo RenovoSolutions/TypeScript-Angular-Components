@@ -40,7 +40,7 @@ module rl.ui.services.dialog.baseDialog {
 			sinon.assert.calledOnce($controller);
 			let args: any = $controller.firstCall.args;
 			expect(args[0]).to.equal('test');
-			expect(args[1].scope).to.equal(scope);
+			expect(args[1].$scope).to.equal(scope);
 
 			expect(dialog).to.equal(dialogController);
 		});
