@@ -241,7 +241,25 @@ module rl.ui.components.typeahead {
 		'use strict';
 		return {
 			restrict: 'E',
-			templateUrl: 'components/typeahead/typeahead.html',
+			template: `
+				<div class="input-group" ng-class="{ 'has-error': typeahead.hasError }">
+					<input type="text" ng-model="typeahead.selection" class="form-control"
+						placeholder="{{typeahead.placeholder}}" typeahead="object as typeahead.transform(object) for object in typeahead.getItems($viewValue)"
+						typeahead-loading="typeahead.loading" typeahead-wait-ms="typeahead.loadDelay" />
+					<div class="input-group-addon" ng-if="typeahead.showSearch">
+						<rl-busy loading="typeahead.loading"></rl-busy>
+						<span ng-hide="typeahead.loading">
+							<i class="fa fa-search" ng-hide="typeahead.hasSelection"></i>
+							<i class="fa fa-check" ng-show="typeahead.hasSelection"></i>
+						</span>
+					</div>
+					<div class="input-group-btn" ng-if="typeahead.useApply">
+						<rl-button type="default" action="typeahead.applyItem()" button-right-aligned="true" ng-disabled="!typeahead.hasSelection">
+							<i class="fa fa-plus new"></i>
+						</rl-button>
+					</div>
+				</div>
+			`,
 			controller: controllerName,
 			controllerAs: 'typeahead',
 			scope: {},
