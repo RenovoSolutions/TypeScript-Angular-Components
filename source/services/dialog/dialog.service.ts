@@ -31,7 +31,7 @@ module rl.ui.services.dialog {
 
 	export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
 		setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-		$get(baseDialog: BaseDialogService): IDialogService<TDialogSettings>;
+		$get(baseDialog: baseDialog.BaseDialogService): IDialogService<TDialogSettings>;
 	}
 
 	export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
@@ -41,14 +41,14 @@ module rl.ui.services.dialog {
 			setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 				this.dialogImplementation = dialogImplementation;
 			},
-			$get: (baseDialog: BaseDialogService): IDialogImplementation<TDialogSettings> => {
+			$get: (baseDialog: baseDialog.BaseDialogService): IDialogImplementation<TDialogSettings> => {
 				let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																				? this.dialogImplementation
 																				: baseDialog;
 				return new DialogService<TDialogSettings>(dialogImplementation);
 			},
 		};
-		provider.$get.$inject = [baseDialogServiceName];
+		provider.$get.$inject = [baseDialog.serviceName];
 		return provider;
 	}
 
