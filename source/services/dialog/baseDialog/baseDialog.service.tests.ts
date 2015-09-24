@@ -36,7 +36,7 @@ module rl.ui.services.dialog.baseDialog {
 
 		it('should call the closeHandler when the dialog closes', (): void => {
 			let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return true; });
-			baseDialog.open({}, closeHandler);
+			baseDialog.open(null, closeHandler);
 
 			baseDialog.modalClosing(null, null, true);
 
@@ -46,7 +46,7 @@ module rl.ui.services.dialog.baseDialog {
 
 		it('should prevent the dialog from closing if the close handler returns false', (): void => {
 			let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return false; });
-			baseDialog.open({}, closeHandler);
+			baseDialog.open(null, closeHandler);
 
 			var event: any = {
 				preventDefault: sinon.spy(),

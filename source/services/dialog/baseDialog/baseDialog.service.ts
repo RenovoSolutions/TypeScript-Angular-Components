@@ -38,6 +38,10 @@ module rl.ui.services.dialog.baseDialog {
 		}
 
 		private configureModalSettings(options: ng.ui.bootstrap.IModalSettings): ng.ui.bootstrap.IModalSettings {
+			if (options == null) {
+				options = <any>{};
+			}
+
 			let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
 
 			if (modalScope == null) {
