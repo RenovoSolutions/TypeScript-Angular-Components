@@ -87,7 +87,7 @@ module rl.ui.services.autosaveDialog {
 				return true;
 			}
 
-			var canClose: boolean = this.autosave.autosave(this.data);
+			return this.autosave.autosave(this.data);
 		}
 
 		private setForm: { (form: ng.IFormController): void } = (form: ng.IFormController): void => {
