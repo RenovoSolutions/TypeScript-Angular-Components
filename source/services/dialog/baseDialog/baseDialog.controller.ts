@@ -12,7 +12,7 @@ module rl.ui.services.dialog.baseDialog {
 	}
 
 	export class BaseDialogController {
-		static $inject: string[] = ['$scope', '$controller', baseDialog.serviceName];
+		static $inject: string[] = ['$scope', '$controller', serviceName];
 		constructor($scope: IBaseDialogScope
 				, $controller: ng.IControllerService
 				, baseDialog: BaseDialogService) {
