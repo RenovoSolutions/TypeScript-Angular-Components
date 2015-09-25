@@ -1,29 +1,31 @@
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path="../../../libraries/typescript-angular-utilities/typings/utility.d.ts" />
+'use strict';
 
-/// <reference path="responsiveCardGrid.ts" />
-/// <reference path="responsiveCard.ts" />
+import * as angular from 'angular';
 
-module rl.ui.components.responsiveCardGrid {
-	'use strict';
+import { services } from 'typescript-angular-utilities';
 
-	export var moduleName: string = 'rl.ui.components.responsiveCardGrid';
+import __parentChildBehavior = services.parentChildBehavior;
+import __observable = services.observable;
+import __promiseUtility = services.promise;
+import __numberUtility = services.number;
 
-	import __jqueryHelper = rl.utilities.services.jquery;
-	import __parentChildBehavior = rl.utilities.services.parentChildBehavior;
-	import __observable = rl.utilities.services.observable;
-	import __promiseUtility = rl.utilities.services.promise;
-	import __numberUtility = rl.utilities.services.number;
+import { moduleName as jqueryModuleName } from '../../services/jquery/jquery.service';
 
-	angular.module(moduleName, [
-		__jqueryHelper.moduleName,
-		__parentChildBehavior.moduleName,
-		__observable.moduleName,
-		__promiseUtility.moduleName,
-		__numberUtility.moduleName,
-	])
-		.directive(directiveName, responsiveCardGrid)
-		.controller(controllerName, ResponsiveCardGridController)
-		.directive(responsiveCard.directiveName, responsiveCard.responsiveCard)
-		.controller(responsiveCard.controllerName, responsiveCard.ResponsiveCardController);
-}
+import * as grid from './responsiveCardGrid';
+import * as card from './responsiveCard';
+
+export { grid as responsiveCardGrid, card as responsiveCard };
+
+export var moduleName: string = 'rl.ui.components.responsiveCardGrid';
+
+angular.module(moduleName, [
+	jqueryModuleName,
+	__parentChildBehavior.moduleName,
+	__observable.moduleName,
+	__promiseUtility.moduleName,
+	__numberUtility.moduleName,
+])
+	.directive(grid.directiveName, grid.responsiveCardGrid)
+	.controller(grid.controllerName, grid.ResponsiveCardGridController)
+	.directive(card.directiveName, card.responsiveCard)
+	.controller(card.controllerName, card.ResponsiveCardController);
