@@ -9,4 +9,5 @@
 /// <reference path="bootstrap-touchspin/bootstrap-touchspin.d.ts" />
 /// <reference path="signature_pad/signature_pad.d.ts" />
 /// <reference path="angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
+/// <reference path="q/Q.d.ts" />
 /// <reference path="angularjs/angular-mocks.d.ts" />
