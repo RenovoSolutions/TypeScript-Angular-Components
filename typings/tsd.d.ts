@@ -11,3 +11,5 @@
 /// <reference path="angular-ui-bootstrap/angular-ui-bootstrap.d.ts" />
 /// <reference path="q/Q.d.ts" />
 /// <reference path="angularjs/angular-mocks.d.ts" />
+
+/// <reference path="commonjs.d.ts" />
