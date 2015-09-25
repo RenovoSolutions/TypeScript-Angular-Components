@@ -1,118 +1,131 @@
 /// <reference path='../../../typings/chai/chai.d.ts' />
 /// <reference path='../../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/angularMocks.d.ts' />
 /// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
 /// <reference path='autosaveDialog.module.ts' />
 /// <reference path='autosaveDialog.service.ts' />
 
-module rl.ui.services.autosaveDialog {
-	import test = rl.utilities.services.test;
+'use strict';
 
-	interface IDialogMock {
-		open: Sinon.SinonSpy;
-	}
+import { services } from 'typescript-angular-utilities';
 
-	interface IAutosaveFactoryMock {
-		getInstance: Sinon.SinonSpy;
-	}
+import {
+	moduleName,
+	serviceName,
+	IAutosaveDialogSettings,
+	IAutosaveDialogService,
+	IAutosaveDialogScope,
+} from './autosaveDialog.module';
 
-	interface IAutosaveMock {
-		autosave: Sinon.SinonSpy;
-	}
+import { IDialogCloseHandler } from '../dialog/dialog.service';
 
-	describe('autosaveDialog', () => {
-		var autosaveDialog: IAutosaveDialogService;
-		var dialog: IDialogMock;
-		var autosaveFactory: IAutosaveFactoryMock;
-		var autosave: IAutosaveMock;
+import * as angular from 'angular';
+import 'angular-mocks';
 
-		beforeEach(() => {
-			angular.mock.module(moduleName);
+import test = services.test;
 
-			dialog = {
-				open: sinon.spy(),
-			};
+interface IDialogMock {
+	open: Sinon.SinonSpy;
+}
 
-			autosave = {
-				autosave: sinon.spy(),
-			};
+interface IAutosaveFactoryMock {
+	getInstance: Sinon.SinonSpy;
+}
 
-			autosaveFactory = {
-				getInstance: sinon.spy((): IAutosaveMock => { return autosave; }),
-			};
+interface IAutosaveMock {
+	autosave: Sinon.SinonSpy;
+}
 
-			test.angularFixture.mock({
-				dialog: dialog,
-				autosaveFactory: autosaveFactory,
-			});
+describe('autosaveDialog', () => {
+	var autosaveDialog: IAutosaveDialogService;
+	var dialog: IDialogMock;
+	var autosaveFactory: IAutosaveFactoryMock;
+	var autosave: IAutosaveMock;
 
-			var services: any = test.angularFixture.inject(serviceName);
-			autosaveDialog = services[serviceName];
+	beforeEach(() => {
+		angular.mock.module(moduleName);
+
+		dialog = {
+			open: sinon.spy(),
+		};
+
+		autosave = {
+			autosave: sinon.spy(),
+		};
+
+		autosaveFactory = {
+			getInstance: sinon.spy((): IAutosaveMock => { return autosave; }),
+		};
+
+		test.angularFixture.mock({
+			dialog: dialog,
+			autosaveFactory: autosaveFactory,
 		});
 
-		it('should open a modal dialog with the specified settings', (): void => {
-			var scope: IAutosaveDialogScope = <any>{ prop: 1 };
-			var data: any = { prop: 4 };
-			var formGetter: Sinon.SinonSpy = sinon.spy();
-			var save: Sinon.SinonSpy = sinon.spy();
-			var validate: Sinon.SinonSpy = sinon.spy();
+		var services: any = test.angularFixture.inject(serviceName);
+		autosaveDialog = services[serviceName];
+	});
 
-			var options: IAutosaveDialogSettings = {
-				scope: scope,
-				size: 'sm',
-				template: '<div></div>',
-				data: data,
+	it('should open a modal dialog with the specified settings', (): void => {
+		var scope: IAutosaveDialogScope = <any>{ prop: 1 };
+		var data: any = { prop: 4 };
+		var formGetter: Sinon.SinonSpy = sinon.spy();
+		var save: Sinon.SinonSpy = sinon.spy();
+		var validate: Sinon.SinonSpy = sinon.spy();
 
-				formGetter: formGetter,
-				save: save,
-				validate: validate,
-			};
+		var options: IAutosaveDialogSettings = {
+			scope: scope,
+			size: 'sm',
+			template: '<div></div>',
+			data: data,
 
+			formGetter: formGetter,
+			save: save,
+			validate: validate,
+		};
+
+		autosaveDialog.open(options);
+
+		sinon.assert.calledOnce(autosaveFactory.getInstance);
+		sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
+
+		expect(scope.formGetter).to.equal(formGetter);
+		expect(scope.dialog).to.equal(data);
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>dialog.open);
+		var dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
+		expect(dialogOptions.scope).to.equal(scope);
+		expect(dialogOptions.size).to.equal('sm');
+		expect(dialogOptions.template).to.equal('<div></div>');
+	});
+
+	describe('autosaveCloseHandler', (): void => {
+		let closeHandler: IDialogCloseHandler;
+		let options: IAutosaveDialogSettings;
+
+		beforeEach((): void => {
+			dialog.open = sinon.spy((settings: any, handler: IDialogCloseHandler): void => {
+				closeHandler = handler;
+			});
+
+			options = <any>{};
+		});
+
+		it('should return true if explicitly closed', (): void => {
 			autosaveDialog.open(options);
 
-			sinon.assert.calledOnce(autosaveFactory.getInstance);
-			sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
+			let canClose: boolean = closeHandler(true);
 
-			expect(scope.formGetter).to.equal(formGetter);
-			expect(scope.dialog).to.equal(data);
-
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dialog.open);
-			var dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
-			expect(dialogOptions.scope).to.equal(scope);
-			expect(dialogOptions.size).to.equal('sm');
-			expect(dialogOptions.template).to.equal('<div></div>');
+			expect(canClose).to.be.true;
 		});
 
-		describe('autosaveCloseHandler', (): void => {
-			let closeHandler: dialog.IDialogCloseHandler;
-			let options: IAutosaveDialogSettings;
+		it('should autosave if the dialog wasnt closed explicitly', (): void => {
+			autosaveDialog.open(options);
 
-			beforeEach((): void => {
-				dialog.open = sinon.spy((settings: any, handler: dialog.IDialogCloseHandler): void => {
-					closeHandler = handler;
-				});
+			closeHandler(false);
 
-				options = <any>{};
-			});
-
-			it('should return true if explicitly closed', (): void => {
-				autosaveDialog.open(options);
-
-				let canClose: boolean = closeHandler(true);
-
-				expect(canClose).to.be.true;
-			});
-
-			it('should autosave if the dialog wasnt closed explicitly', (): void => {
-				autosaveDialog.open(options);
-
-				closeHandler(false);
-
-				sinon.assert.calledOnce(autosave.autosave);
-			});
+			sinon.assert.calledOnce(autosave.autosave);
 		});
 	});
-}
+});

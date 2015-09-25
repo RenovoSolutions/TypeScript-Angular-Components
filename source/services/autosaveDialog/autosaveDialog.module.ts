@@ -1,14 +1,15 @@
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+'use strict';
 
-/// <reference path='autosaveDialog.service.ts' />
-/// <reference path='autosaveDialog.controller.ts' />
+import * as angular from 'angular';
 
-module rl.ui.services.autosaveDialog {
-	'use strict';
+import { serviceName, AutosaveDialogService } from './autosaveDialog.service';
+import { controllerName, AutosaveDialogController } from './autosaveDialog.controller';
 
-	export var moduleName: string = 'rl.ui.services.autosaveDialog';
+export * from './autosaveDialog.service';
+export * from './autosaveDialog.controller';
 
-	angular.module(moduleName, [])
-		.service(serviceName, AutosaveDialogService)
-		.controller(controllerName, AutosaveDialogController);
-}
+export var moduleName: string = 'rl.ui.services.autosaveDialog';
+
+angular.module(moduleName, [])
+	.service(serviceName, AutosaveDialogService)
+	.controller(controllerName, AutosaveDialogController);

@@ -1,51 +1,54 @@
 /// <reference path='../../../typings/chai/chai.d.ts' />
 /// <reference path='../../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/angularMocks.d.ts' />
 /// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='dialog.service.ts' />
+'use strict';
 
-module rl.ui.services.dialog {
-	import test = rl.utilities.services.test;
+import { services } from 'typescript-angular-utilities';
 
-	interface IDialogMock {
-		open: Sinon.SinonSpy;
-	}
+import { moduleName, serviceName, IDialogService, IDialogServiceProvider } from './dialog.service';
 
-	describe('dialog', () => {
-		var dialog: IDialogService<any>;
-		var testImplementation: IDialogMock;
+import * as angular from 'angular';
+import 'angular-mocks';
 
-		beforeEach(() => {
-			testImplementation = {
-				open: sinon.spy(),
-			};
+import test = services.test;
 
-			angular.mock.module(moduleName, (dialogProvider: IDialogServiceProvider<any>): void => {
-				dialogProvider.setImplementation(testImplementation);
-			});
-
-			test.angularFixture.mock({
-				baseDialog: {},
-			});
-
-			var services: any = test.angularFixture.inject(serviceName);
-			dialog = services[serviceName];
-		});
-
-		it('should open a dialog using the configured implementation', (): void => {
-			var options: any = {
-				scope: {},
-				controller: 'controller',
-				resolve: {},
-				size: 'sm',
-				template: '<div></div>'
-			};
-			dialog.open(options);
-			sinon.assert.calledOnce(testImplementation.open);
-			sinon.assert.calledWith(testImplementation.open, options);
-		});
-	});
+interface IDialogMock {
+	open: Sinon.SinonSpy;
 }
+
+describe('dialog', () => {
+	var dialog: IDialogService<any>;
+	var testImplementation: IDialogMock;
+
+	beforeEach(() => {
+		testImplementation = {
+			open: sinon.spy(),
+		};
+
+		angular.mock.module(moduleName, (dialogProvider: IDialogServiceProvider<any>): void => {
+			dialogProvider.setImplementation(testImplementation);
+		});
+
+		test.angularFixture.mock({
+			baseDialog: {},
+		});
+
+		var services: any = test.angularFixture.inject(serviceName);
+		dialog = services[serviceName];
+	});
+
+	it('should open a dialog using the configured implementation', (): void => {
+		var options: any = {
+			scope: {},
+			controller: 'controller',
+			resolve: {},
+			size: 'sm',
+			template: '<div></div>'
+		};
+		dialog.open(options);
+		sinon.assert.calledOnce(testImplementation.open);
+		sinon.assert.calledWith(testImplementation.open, options);
+	});
+});
