@@ -44,9 +44,10 @@
     "angular-ui-bootstrap": "^0.13.4",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
-    "signature_pad": "~1.5.0",
-    "textAngular": "~1.4.6",
-    "typescript-angular-utilities": "~1.1.1"
+    "moment": "^2.10.6",
+    "signature_pad": "~1.4.0",
+    "textangular": "~1.4.6",
+    "typescript-angular-utilities": "~2.0.2"
   },
   "license": "GPL 3"
 }
