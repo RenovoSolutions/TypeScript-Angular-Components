@@ -16,10 +16,10 @@ import * as messageLog from './messageLog/messageLog.module';
 import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
-// import * as richTextEditor from './richTextEditor/richTextEditor';
-// import * as signaturePad from './signaturePad/signaturePad';
+import * as richTextEditor from './richTextEditor/richTextEditor';
+import * as signaturePad from './signaturePad/signaturePad';
 // import * as simpleCardList from './simpleCardList/simpleCardList';
-// import * as spinner from './spinner/spinner';
+import * as spinner from './spinner/spinner';
 // import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 // import * as typeahead from './typeahead/typeahead';
 // import * as userRating from './userRating/userRating';
@@ -39,10 +39,10 @@ export {
 	multiStepIndicator,
 	ratingBar,
 	responsiveCardGrid,
-	// richTextEditor,
-	// signaturePad,
+	richTextEditor,
+	signaturePad,
 	// simpleCardList,
-	// spinner,
+	spinner,
 	// stringWithWatermark,
 	// typeahead,
 	// userRating,
@@ -65,10 +65,10 @@ angular.module(moduleName, [
 	multiStepIndicator.moduleName,
 	ratingBar.moduleName,
 	responsiveCardGrid.moduleName,
-	// richTextEditor.moduleName,
-	// signaturePad.moduleName,
+	richTextEditor.moduleName,
+	signaturePad.moduleName,
 	// simpleCardList.moduleName,
-	// spinner.moduleName,
+	spinner.moduleName,
 	// stringWithWatermark.moduleName,
 	// typeahead.moduleName,
 	// userRating.moduleName,
