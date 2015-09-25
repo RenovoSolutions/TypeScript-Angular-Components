@@ -17,7 +17,8 @@
     "update": "npm install && tsd update",
     "test": "karma start",
     "test.debug": "karma start karma.debug.conf.js",
-    "test.full": "karma start karma.full.conf.js"
+    "test.full": "karma start karma.full.conf.js",
+    "build": "tsc"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.6",
