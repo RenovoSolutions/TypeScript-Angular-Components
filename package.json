@@ -36,6 +36,7 @@
     "karma-sinon": "^1.0.3",
     "karma-teamcity-reporter": "^0.1.1",
     "karma-webpack": "^1.7.0",
+    "sinon": "^1.17.0",
     "ts-loader": "^0.5.5",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"
@@ -50,5 +51,5 @@
     "textangular": "~1.4.6",
     "typescript-angular-utilities": "~2.0.2"
   },
-  "license": "GPL 3"
+  "license": "GPL-3.0"
 }
