@@ -1,21 +1,17 @@
-// uses typings/angularjs
+'use strict';
 
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+import * as angular from 'angular';
 
-module rl.ui.components.autosaveDialogFooter {
+export var moduleName: string = 'rl.ui.components.autosaveDialogFooter';
+export var directiveName: string = 'rlAutosaveDialogFooter';
+
+function autosaveDialogFooter(): angular.IDirective {
 	'use strict';
-	
-	export var moduleName: string = 'rl.ui.components.autosaveDialogFooter';
-	export var directiveName: string = 'rlAutosaveDialogFooter';
-	
-	function autosaveDialogFooter(): ng.IDirective {
-		'use strict';
-		return {
-			restrict: 'E',
-			templateUrl: 'components/autosaveDialogFooter/autosaveDialogFooter.html',
-		};
-	}
-	
-	angular.module(moduleName, [])
-		.directive(directiveName, autosaveDialogFooter);
+	return {
+		restrict: 'E',
+		template: require('./autosaveDialogFooter.html'),
+	};
 }
+
+angular.module(moduleName, [])
+	.directive(directiveName, autosaveDialogFooter);
