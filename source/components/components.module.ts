@@ -9,10 +9,10 @@ import * as buttonToggle from './buttonToggle/buttonToggle';
 // import * as cardContainer from './cardContainer/cardContainer.module';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
-// import * as genericContainer from './genericContainer/genericContainer';
-// import * as lazyLoad from './lazyLoad/lazyLoad';
-// import * as longClickButton from './longClickButton/longClickButton';
-// import * as messageLog from './messageLog/messageLog.module';
+import * as genericContainer from './genericContainer/genericContainer';
+import * as lazyLoad from './lazyLoad/lazyLoad';
+import * as longClickButton from './longClickButton/longClickButton';
+import * as messageLog from './messageLog/messageLog.module';
 // import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 // import * as ratingBar from './ratingBar/ratingBar';
 // import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
@@ -32,10 +32,10 @@ export {
 	// cardContainer,
 	commaList,
 	dateTime,
-	// genericContainer,
-	// lazyLoad,
-	// longClickButton,
-	// messageLog,
+	genericContainer,
+	lazyLoad,
+	longClickButton,
+	messageLog,
 	// multiStepIndicator,
 	// ratingBar,
 	// responsiveCardGrid,
@@ -58,10 +58,10 @@ angular.module(moduleName, [
 	// cardContainer.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
-	// genericContainer.moduleName,
-	// lazyLoad.moduleName,
-	// longClickButton.moduleName,
-	// messageLog.moduleName,
+	genericContainer.moduleName,
+	lazyLoad.moduleName,
+	longClickButton.moduleName,
+	messageLog.moduleName,
 	// multiStepIndicator.moduleName,
 	// ratingBar.moduleName,
 	// responsiveCardGrid.moduleName,
