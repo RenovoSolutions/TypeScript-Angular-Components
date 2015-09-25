@@ -5,10 +5,10 @@ import * as angular from 'angular';
 import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
 import * as button from './button/button';
+import * as buttonToggle from './buttonToggle/buttonToggle';
 // import * as cardContainer from './cardContainer/cardContainer.module';
-// import * as commaList from './commaList/commaList';
-// import * as buttonToggle from './buttonToggle/buttonToggle';
-// import * as dateTime from './dateTime/dateTime';
+import * as commaList from './commaList/commaList';
+import * as dateTime from './dateTime/dateTime';
 // import * as genericContainer from './genericContainer/genericContainer';
 // import * as lazyLoad from './lazyLoad/lazyLoad';
 // import * as longClickButton from './longClickButton/longClickButton';
@@ -28,10 +28,10 @@ export {
 	autosaveDialogFooter,
 	busy,
 	button,
-	// buttonToggle,
+	buttonToggle,
 	// cardContainer,
-	// commaList,
-	// dateTime,
+	commaList,
+	dateTime,
 	// genericContainer,
 	// lazyLoad,
 	// longClickButton,
@@ -54,10 +54,10 @@ angular.module(moduleName, [
 	autosaveDialogFooter.moduleName,
 	busy.moduleName,
 	button.moduleName,
-	// buttonToggle.moduleName,
+	buttonToggle.moduleName,
 	// cardContainer.moduleName,
-	// commaList.moduleName,
-	// dateTime.moduleName,
+	commaList.moduleName,
+	dateTime.moduleName,
 	// genericContainer.moduleName,
 	// lazyLoad.moduleName,
 	// longClickButton.moduleName,
