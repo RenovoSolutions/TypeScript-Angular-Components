@@ -18,7 +18,7 @@ import * as ratingBar from './ratingBar/ratingBar';
 import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
 import * as richTextEditor from './richTextEditor/richTextEditor';
 import * as signaturePad from './signaturePad/signaturePad';
-// import * as simpleCardList from './simpleCardList/simpleCardList';
+import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
 // import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 // import * as typeahead from './typeahead/typeahead';
@@ -41,7 +41,7 @@ export {
 	responsiveCardGrid,
 	richTextEditor,
 	signaturePad,
-	// simpleCardList,
+	simpleCardList,
 	spinner,
 	// stringWithWatermark,
 	// typeahead,
@@ -67,7 +67,7 @@ angular.module(moduleName, [
 	responsiveCardGrid.moduleName,
 	richTextEditor.moduleName,
 	signaturePad.moduleName,
-	// simpleCardList.moduleName,
+	simpleCardList.moduleName,
 	spinner.moduleName,
 	// stringWithWatermark.moduleName,
 	// typeahead.moduleName,

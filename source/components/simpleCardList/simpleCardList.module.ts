@@ -1,20 +1,24 @@
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path="../../../libraries/typescript-angular-utilities/typings/utility.d.ts" />
+'use strict';
 
-/// <reference path='simpleCardList.ts' />
-/// <reference path='simpleCard.ts' />
+import * as angular from 'angular';
 
-module rl.ui.components.simpleCardList {
-	'use strict';
+import { services } from 'typescript-angular-utilities';
+import __observable = services.observable;
+import __parentChild = services.parentChildBehavior;
 
-	export var moduleName: string = 'rl.ui.components.simpleCardList';
+import * as card from './simpleCard';
+import * as list from './simpleCardList';
 
-	import __observable = rl.utilities.services.observable;
-	import __parentChild = rl.utilities.services.parentChildBehavior;
+export {
+	card as simpleCard,
+	list as simpleCardList,
+};
 
-	angular.module(moduleName, [__observable.moduleName, __parentChild.moduleName])
-		.directive(directiveName, simpleCardList)
-		.controller(controllerName, SimpleCardListController)
-		.directive(simpleCard.directiveName, simpleCard.simpleCard)
-		.controller(simpleCard.controllerName, simpleCard.SimpleCardController);
-}
+export var moduleName: string = 'rl.ui.components.simpleCardList';
+
+
+angular.module(moduleName, [__observable.moduleName, __parentChild.moduleName])
+	.directive(list.directiveName, list.simpleCardList)
+	.controller(list.controllerName, list.SimpleCardListController)
+	.directive(card.directiveName, card.simpleCard)
+	.controller(card.controllerName, card.SimpleCardController);
