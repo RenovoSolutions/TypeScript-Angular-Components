@@ -20,9 +20,9 @@ import * as richTextEditor from './richTextEditor/richTextEditor';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
-// import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
-// import * as typeahead from './typeahead/typeahead';
-// import * as userRating from './userRating/userRating';
+import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
+import * as typeahead from './typeahead/typeahead';
+import * as userRating from './userRating/userRating';
 
 export {
 	autosaveDialogFooter,
@@ -43,9 +43,9 @@ export {
 	signaturePad,
 	simpleCardList,
 	spinner,
-	// stringWithWatermark,
-	// typeahead,
-	// userRating,
+	stringWithWatermark,
+	typeahead,
+	userRating,
 };
 
 export var moduleName: string = 'rl.ui.components';
@@ -69,7 +69,7 @@ angular.module(moduleName, [
 	signaturePad.moduleName,
 	simpleCardList.moduleName,
 	spinner.moduleName,
-	// stringWithWatermark.moduleName,
-	// typeahead.moduleName,
-	// userRating.moduleName,
+	stringWithWatermark.moduleName,
+	typeahead.moduleName,
+	userRating.moduleName,
 ]);
