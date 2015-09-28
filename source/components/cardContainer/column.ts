@@ -1,32 +1,30 @@
-/// <reference path='sorts/sortDirection.ts' />
-/// <reference path='sorts/sort.ts' />
+'use strict';
 
-module rl.ui.components.cardContainer {
-	'use strict';
+import { IPartialSort } from './sorts/sort';
+import { SortDirection } from './sorts/sortDirection';
 
-	export interface IBreakpointSize {
-		xs?: number;
-		sm?: number;
-		md?: number;
-		lg?: number;
-	}
-	
-	export interface ISecondarySorts {
-		ascending?: sorts.IPartialSort[];
-		descending?: sorts.IPartialSort[];
-	}
-	
-	export interface IColumn {
-		label: string;
-		description?: string;
-		size: IBreakpointSize | number;
-		getValue<TItemType>(item: TItemType): number | string | boolean;
-		headerTemplateUrl?: string;
-		headerTemplate?: string;
-		templateUrl?: string;
-		template?: string;
-		secondarySorts?: ISecondarySorts;
-		flipSort?: boolean;
-		sortDirection?: sorts.SortDirection;
-	}
+export interface IBreakpointSize {
+	xs?: number;
+	sm?: number;
+	md?: number;
+	lg?: number;
+}
+
+export interface ISecondarySorts {
+	ascending?: IPartialSort[];
+	descending?: IPartialSort[];
+}
+
+export interface IColumn {
+	label: string;
+	description?: string;
+	size: IBreakpointSize | number;
+	getValue<TItemType>(item: TItemType): number | string | boolean;
+	headerTemplateUrl?: string;
+	headerTemplate?: string;
+	templateUrl?: string;
+	template?: string;
+	secondarySorts?: ISecondarySorts;
+	flipSort?: boolean;
+	sortDirection?: SortDirection;
 }

@@ -1,17 +1,21 @@
-// uses typings/angularjs
+'use strict';
 
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+import * as angular from 'angular';
 
-/// <reference path='mergeSort/mergeSort.service.ts' />
-/// <reference path='sorter/sorter.service.ts' />
+import * as mergeSort from './mergeSort/mergeSort.service';
+import * as sorter from './sorter/sorter.service';
 
-module rl.ui.components.cardContainer.sorts {
-	'use strict';
+export * from './sort';
+export * from './sortDirection';
 
-	export var moduleName: string = 'rl.ui.components.cardContainer.sorts';
-	
-	angular.module(moduleName, [
-		mergeSort.moduleName,
-		sorter.moduleName,
-	]);
-}
+export {
+	mergeSort,
+	sorter,
+};
+
+export var moduleName: string = 'rl.ui.components.cardContainer.sorts';
+
+angular.module(moduleName, [
+	mergeSort.moduleName,
+	sorter.moduleName,
+]);

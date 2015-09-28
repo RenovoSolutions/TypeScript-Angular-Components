@@ -1,16 +1,17 @@
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+'use strict';
 
-/// <reference path='headerColumn.ts' />
-/// <reference path='sizeForBreakpoints.ts' />
+import * as angular from 'angular';
 
-module rl.ui.components.cardContainer.card.headerColumn {
-	export var moduleName: string = 'rl.ui.components.cardContainer.card.headerColumn';
-	
-	angular.module(moduleName, [
-		utilities.services.string.moduleName,
-	])
-		.directive(sizeForBreakpointsName, sizeForBreakpoints)
-		.directive(directiveName, headerColumn)
-		.controller(controllerName, HeaderColumnController);
-}
+import { services } from 'typescript-angular-utilities';
+
+import { directiveName, headerColumn, controllerName, HeaderColumnController } from './headerColumn';
+import { sizeForBreakpointsName, sizeForBreakpoints } from './sizeForBreakpoints';
+
+export var moduleName: string = 'rl.ui.components.cardContainer.card.headerColumn';
+
+angular.module(moduleName, [
+	services.string.moduleName,
+])
+	.directive(sizeForBreakpointsName, sizeForBreakpoints)
+	.directive(directiveName, headerColumn)
+	.controller(controllerName, HeaderColumnController);

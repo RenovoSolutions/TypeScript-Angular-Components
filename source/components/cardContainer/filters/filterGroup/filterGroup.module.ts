@@ -1,28 +1,33 @@
-// uses typings/angularjs
-// uses typescript-angular-utilities
+'use strict';
 
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+import * as angular from 'angular';
+import { services } from 'typescript-angular-utilities';
 
-/// <reference path='filterOption/filterOption.ts' />
-/// <reference path='modeFilterGroup/modeFilterGroup.service.ts' />
-/// <reference path='rangeFilterGroup/rangeFilterGroup.service.ts' />
-/// <reference path='filterGroup.service.ts' />
-/// <reference path='filterGroup.directive.ts' />
+import * as filterOption from './filterOption/filterOption';
+import * as modeFilterGroup from './modeFilterGroup/modeFilterGroup.service';
+import * as rangeFilterGroup from './rangeFilterGroup/rangeFilterGroup.service';
 
-module rl.ui.components.cardContainer.filters.filterGroup {
-	'use strict';
+export {
+	filterOption,
+	modeFilterGroup,
+	rangeFilterGroup,
+};
 
-	export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
-	
-	angular.module(moduleName, [
-		rl.utilities.services.object.moduleName,
-		
-		filterOption.moduleName,
-		modeFilterGroup.moduleName,
-		rangeFilterGroup.moduleName,
-	])
-		.factory(factoryName, filterGroupFactory)
-		.directive(directiveName, filterGroup)
-		.controller(controllerName, FilterGroupController);
-}
+import { factoryName, filterGroupFactory } from './filterGroup.service';
+import { directiveName, filterGroup, controllerName, FilterGroupController } from './filterGroup.directive';
+
+export * from './filterGroup.directive';
+export * from './filterGroup.service';
+
+export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
+
+angular.module(moduleName, [
+	services.object.moduleName,
+
+	filterOption.moduleName,
+	modeFilterGroup.moduleName,
+	rangeFilterGroup.moduleName,
+])
+	.factory(factoryName, filterGroupFactory)
+	.directive(directiveName, filterGroup)
+	.controller(controllerName, FilterGroupController);

@@ -6,7 +6,7 @@ import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFoot
 import * as busy from './busy/busy';
 import * as button from './button/button';
 import * as buttonToggle from './buttonToggle/buttonToggle';
-// import * as cardContainer from './cardContainer/cardContainer.module';
+import * as cardContainer from './cardContainer/cardContainer.module';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as genericContainer from './genericContainer/genericContainer';
@@ -29,7 +29,7 @@ export {
 	busy,
 	button,
 	buttonToggle,
-	// cardContainer,
+	cardContainer,
 	commaList,
 	dateTime,
 	genericContainer,
@@ -55,7 +55,7 @@ angular.module(moduleName, [
 	busy.moduleName,
 	button.moduleName,
 	buttonToggle.moduleName,
-	// cardContainer.moduleName,
+	cardContainer.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
 	genericContainer.moduleName,

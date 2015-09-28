@@ -1,40 +1,35 @@
-// uses typings/angularjs
+'use strict';
 
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
+import * as angular from 'angular';
 
-/// <reference path='../dataSources/dataSource.ts' />
-/// <reference path='../cardContainer.ts' />
+import { IDataSource } from '../dataSources/dataSources.module';
+import { CardContainerController } from '../cardContainer';
 
-module rl.ui.components.cardContainer.itemCount {
-	'use strict';
-	
-	export var moduleName: string = 'rl.ui.components.cardContainer.itemCount';
-	export var directiveName: string = 'rlItemCount';
-	
-	export interface IItemCountScope extends ng.IScope {
-		source: dataSources.IDataSource<any>;
-	}
-	
-	export function itemCount(): ng.IDirective {
-		'use strict';
-		return {
-			restrict: 'E',
-			require: '^^rlCardContainer',
-			template: `
-				<p ng-show="!source.loadingDataSet">
-					Showing <strong>{{source.dataSet.length}} of {{source.count}}</strong> total items
-				</p>
-			`,
-			scope: true,
-			link(scope: IItemCountScope
-				, element: ng.IAugmentedJQuery
-				, attrs: ng.IAttributes
-				, cardContainerController: CardContainerController): void {
-				scope.source = cardContainerController.dataSource;
-			}
-		};
-	}
-	
-	angular.module(moduleName, [])
-		.directive(directiveName, itemCount);
+export var moduleName: string = 'rl.ui.components.cardContainer.itemCount';
+export var directiveName: string = 'rlItemCount';
+
+export interface IItemCountScope extends angular.IScope {
+	source: IDataSource<any>;
 }
+
+export function itemCount(): angular.IDirective {
+	'use strict';
+	return {
+		restrict: 'E',
+		require: '^^rlCardContainer',
+		template: `
+<p ng-show="!source.loadingDataSet">
+	Showing <strong>{{source.dataSet.length}} of {{source.count}}</strong> total items
+</p>`,
+		scope: true,
+		link(scope: IItemCountScope
+			, element: angular.IAugmentedJQuery
+			, attrs: angular.IAttributes
+			, cardContainerController: CardContainerController): void {
+			scope.source = cardContainerController.dataSource;
+		}
+	};
+}
+
+angular.module(moduleName, [])
+	.directive(directiveName, itemCount);
