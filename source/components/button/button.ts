@@ -67,7 +67,7 @@ function button(): angular.IDirective {
 	return {
 		restrict: 'E',
 		transclude: true,
-		templateUrl: require('./button.html'),
+		template: require('./button.html'),
 		scope: {
 			busy: '=',
 			action: '&',
