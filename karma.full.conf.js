@@ -1,6 +1,6 @@
-// Karma default configuration
+// Karma full browser configuration
 
-var karmaSettings = require('gulp-utilities').karma.standard;
+var karmaSettings = require('gulp-utilities').karma.full;
 var webpackRawLoader = require('./webpack.raw-loader');
 
 module.exports = function (karma) {
