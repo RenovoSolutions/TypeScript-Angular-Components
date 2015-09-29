@@ -2,7 +2,7 @@
 	"entry": "./source/ui.module",
 	"path": "output",
 	"filename": "components.js",
-	"library": "rl-components",
+	"library": "rl_components",
 	"externals": {
 		"angular": "angular",
 		"jquery": "$",
