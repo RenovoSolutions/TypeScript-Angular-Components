@@ -4,12 +4,12 @@ export declare var directiveName: string;
 export declare var controllerName: string;
 export interface IMessageLogBindings {
     pageSize: number;
-    dataService: IMessageLogDataService;
+    service: IMessageLogDataService;
     messageLogBinding: IMessageLog;
 }
 export declare class MessageLogController {
     pageSize: number;
-    dataService: IMessageLogDataService;
+    service: IMessageLogDataService;
     messageLogBinding: IMessageLog;
     messages: IMessage[];
     hasNextPage: boolean;

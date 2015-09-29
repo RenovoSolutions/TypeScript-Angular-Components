@@ -26,7 +26,7 @@ var MessageLogController = (function () {
             }
         });
         this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
-        this.messageLog.dataService = this.dataService;
+        this.messageLog.dataService = this.service;
     }
     MessageLogController.prototype.getOlder = function () {
         return this.messageLog.getNextPage();
@@ -47,7 +47,7 @@ function messageLog() {
         controllerAs: 'log',
         scope: {},
         bindToController: {
-            dataService: '=',
+            service: '=',
             pageSize: '=',
             messageLogBinding: '=messageLog',
         },
