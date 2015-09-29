@@ -1,15 +1,17 @@
-// uses angularjs
+'use strict';
 
-/// <reference path='behaviors/behaviors.module.ts' />
-/// <reference path='components/components.module.ts' />
-/// <reference path='services/services.module.ts' />
+import * as angular from 'angular';
 
-module rl.ui {
-	export var moduleName: string = 'rl.ui';
+import * as behaviors from './behaviors/behaviors.module';
+import * as components from './components/components.module';
+import * as services from './services/services.module';
 
-	angular.module(moduleName, [
-		behaviors.moduleName,
-		components.moduleName,
-		services.moduleName,
-	]);
-}
+export { behaviors, components, services };
+
+export var moduleName: string = 'rl.ui';
+
+angular.module(moduleName, [
+	behaviors.moduleName,
+	components.moduleName,
+	services.moduleName,
+]);

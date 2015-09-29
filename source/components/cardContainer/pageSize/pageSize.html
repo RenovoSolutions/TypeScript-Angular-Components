@@ -1,0 +1,4 @@
+<div ng-show="controller.hasPageFilter">
+	<select class="form-control" title="Cards per page" ng-model="controller.selectedPageSize"
+			ng-options="pageSize for pageSize in controller.pageSizes"></select>
+</div>

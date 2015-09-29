@@ -1,11 +1,11 @@
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
+import * as angular from 'angular';
 
-/// <reference path='autosave/autosave.ts' />
+import * as autosave from './autosave/autosave';
 
-module rl.ui.behaviors {
-	export var moduleName: string = 'rl.ui.behaviors';
-	
-	angular.module(moduleName, [
-		autosave.moduleName,
-	]);
-}
+export { autosave };
+
+export var moduleName: string = 'rl.ui.behaviors';
+
+angular.module(moduleName, [
+	autosave.moduleName,
+]);

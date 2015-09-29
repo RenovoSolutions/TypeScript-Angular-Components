@@ -1,26 +1,20 @@
-// uses typescript-angular-utilities
+'use strict';
 
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+import { types } from 'typescript-angular-utilities';
 
-/// <reference path='sortDirection.ts' />
-/// <reference path='../column.ts' />
+import { IColumn } from '../column';
+import { SortDirection } from './sortDirection';
 
-module rl.ui.components.cardContainer.sorts {
-	'use strict';
+export interface ICompareFunction<TDataType> {
+	(a: TDataType, b: TDataType): types.CompareResult;
+}
 
-	import __compareResult = rl.utilities.types.compareResult;
+export interface ISort {
+	column: IColumn;
+	direction: SortDirection;
+}
 
-	export interface ICompareFunction<TDataType> {
-		(a: TDataType, b: TDataType): __compareResult.CompareResult;
-	}
-	
-	export interface ISort {
-		column: cardContainer.IColumn;
-		direction: SortDirection;
-	}
-	
-	export interface IPartialSort {
-		column: string;
-		direction: SortDirection;
-	}
+export interface IPartialSort {
+	column: string;
+	direction: SortDirection;
 }

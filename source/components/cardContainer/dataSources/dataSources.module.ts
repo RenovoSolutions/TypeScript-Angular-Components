@@ -1,27 +1,33 @@
-// uses typings/angularjs
-// uses typescript-angular-utilities
+'use strict';
 
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+import * as angular from 'angular';
+import { services } from 'typescript-angular-utilities';
 
-/// <reference path='../sorts/sorts.module.ts' />
-/// <reference path='dataPager/dataPager.service.ts' />
-/// <reference path='dataServiceDataSource/dataServiceDataSource.service.ts' />
-/// <reference path='simpleDataSource/simpleDataSource.service.ts' />
-/// <reference path='dataSourceProcessor.service.ts' />
+import { moduleName as sortsModuleName } from '../sorts/sorts.module';
+import * as dataPager from './dataPager/dataPager.service';
+import * as dataServiceDataSource from './dataServiceDataSource/dataServiceDataSource.service';
+import * as simpleDataSource from './simpleDataSource/simpleDataSource.service';
+import * as dataSourceProcessor from './dataSourceProcessor.service';
+import * as dataSourceBase from './dataSourceBase.service';
 
-module rl.ui.components.cardContainer.dataSources {
-	'use strict';
+export {
+	dataPager,
+	dataServiceDataSource,
+	simpleDataSource,
+	dataSourceProcessor,
+	dataSourceBase,
+};
 
-	export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
-	
-	angular.module(moduleName, [
-		rl.utilities.services.object.moduleName,
-		sorts.moduleName,
-		
-		dataPager.moduleName,
-		dataServiceDataSource.moduleName,
-		simpleDataSource.moduleName,
-	])
-		.service(processorServiceName, DataSourceProcessor);
-}
+export * from './dataSource';
+
+export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
+
+angular.module(moduleName, [
+	services.object.moduleName,
+	sortsModuleName,
+
+	dataPager.moduleName,
+	dataServiceDataSource.moduleName,
+	simpleDataSource.moduleName,
+])
+	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);

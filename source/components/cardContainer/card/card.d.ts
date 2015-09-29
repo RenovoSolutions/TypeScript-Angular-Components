@@ -1,0 +1,78 @@
+import * as angular from 'angular';
+import { services } from 'typescript-angular-utilities';
+import __parentChild = services.parentChildBehavior;
+import __object = services.object;
+import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
+import { IDataSource } from '../dataSources/dataSource';
+import { IColumn } from '../column';
+import { CardContainerController } from '../cardContainer';
+export declare var moduleName: string;
+export declare var directiveName: string;
+export declare var controllerName: string;
+export interface ICardBindings {
+    columns: IColumn[];
+    item: any;
+    clickable: boolean;
+    source: IDataSource<any>;
+    containerData: any;
+    cardController: string;
+    cardControllerAs: string;
+    cardAs: string;
+    permanentFooter: boolean;
+    selectable: boolean;
+    selectionChanged(): void;
+}
+export interface ICardScope extends angular.IScope {
+    rlCardContainer: CardContainerController;
+    initContents(hasBody: boolean, hasFooter: boolean): void;
+}
+export interface ICardBehavior {
+    close(): boolean;
+}
+export interface ICardChildBehavior {
+    initCard?: {
+        (): void;
+    };
+    validateCard?: {
+        (): boolean;
+    };
+    saveCard?: {
+        (): angular.IPromise<void>;
+    };
+    clickCard?: {
+        (): void;
+    };
+}
+export declare class CardController {
+    private $scope;
+    private $q;
+    private parentChild;
+    columns: IColumn[];
+    item: any;
+    clickable: boolean;
+    source: IDataSource<any>;
+    containerData: any;
+    cardController: string;
+    cardControllerAs: string;
+    cardAs: string;
+    permanentFooter: boolean;
+    selectable: boolean;
+    selectionChanged: {
+        (): void;
+    };
+    showContent: boolean;
+    dirty: boolean;
+    autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
+    hasBody: boolean;
+    hasFooter: boolean;
+    static $inject: string[];
+    constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
+    toggleContent(): void;
+    setSelected(value: boolean): void;
+    validateCard(): boolean;
+    saveCard(): angular.IPromise<void>;
+    clickCard(): void;
+    private autosave;
+    private open();
+}
+export declare function card(): angular.IDirective;

@@ -1,5 +1,3 @@
-declare module rl.ui.types {
-	interface IViewDataEntity<TViewDataType> {
-		viewData: TViewDataType;
-	}
+export interface IViewDataEntity<TViewDataType> {
+    viewData: TViewDataType;
 }

@@ -1,17 +1,15 @@
-// uses typings/angularjs
+'use strict';
 
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
+import * as angular from 'angular';
 
-/// <reference path='columnSearchFilter/columnSearchFilter.service.ts' />
-/// <reference path='filterGroup/filterGroup.module.ts' />
+import * as columnSearchFilter from './columnSearchFilter/columnSearchFilter.service';
+import * as filterGroup from './filterGroup/filterGroup.module';
 
-module rl.ui.components.cardContainer.filters {
-	'use strict';
+export { columnSearchFilter, filterGroup };
 
-	export var moduleName: string = 'rl.ui.components.cardContainer.filters';
-	
-	angular.module(moduleName, [
-		columnSearchFilter.moduleName,
-		filterGroup.moduleName,
-	]);
-}
+export var moduleName: string = 'rl.ui.components.cardContainer.filters';
+
+angular.module(moduleName, [
+	columnSearchFilter.moduleName,
+	filterGroup.moduleName,
+]);

@@ -1,16 +1,15 @@
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
-// /// <reference path='../../../typings/lodash/lodash.d.ts' />
+'use strict';
 
-/// <reference path='baseDialog.controller.ts' />
-/// <reference path='baseDialog.service.ts' />
+import * as angular from 'angular';
 
-module rl.ui.services.dialog.baseDialog {
-	'use strict';
+import { controllerName, BaseDialogController } from './baseDialog.controller';
+import { serviceName, BaseDialogService } from './baseDialog.service';
 
-	export var moduleName: string = 'rl.ui.services.dialog.baseDialog';
+export * from './baseDialog.controller';
+export * from './baseDialog.service';
 
-	angular.module(moduleName, [])
-		.controller(controllerName, BaseDialogController)
-		.service(serviceName, BaseDialogService);
-}
+export var moduleName: string = 'rl.ui.services.dialog.baseDialog';
+
+angular.module(moduleName, [])
+	.controller(controllerName, BaseDialogController)
+	.service(serviceName, BaseDialogService);

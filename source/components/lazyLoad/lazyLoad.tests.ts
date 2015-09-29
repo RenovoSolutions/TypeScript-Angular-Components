@@ -1,50 +1,57 @@
 /// <reference path='../../../typings/chai/chai.d.ts' />
 /// <reference path='../../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/angularMocks.d.ts' />
 /// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='lazyLoad.ts' />
+'use strict';
 
-module rl.ui.components.lazyLoad {
-	import test = utilities.services.test;
-	
-	interface ITestObject {
-		prop: string;
-	}
-	
-	describe('LazyLoadController', () => {
-		var scope: ng.IScope;
-		var lazyLoad: LazyLoadController;
-	
-		beforeEach(() => {
-			angular.mock.module(moduleName);
-		});
-	
-		it('should set init true when the expression first evaluates to true', (): void => {
-			buildController(false);
-			scope.$digest();
-	
-			expect(lazyLoad.init).to.be.false;
-	
-			lazyLoad.show = true;
-			scope.$digest();
-	
-			expect(lazyLoad.init).to.be.true;
-	
-			lazyLoad.show = false;
-			scope.$digest();
-	
-			expect(lazyLoad.init).to.be.true;
-		});
-	
-		function buildController(expression: boolean): void {
-			var controllerResult: test.IControllerResult<LazyLoadController>
-				= test.angularFixture.controllerWithBindings<LazyLoadController>(controllerName, { show: expression });
-	
-			scope = <ng.IScope>controllerResult.scope;
-			lazyLoad = controllerResult.controller;
-		}
-	});
+import { services } from 'typescript-angular-utilities';
+
+import {
+	moduleName,
+	controllerName,
+	LazyLoadController,
+} from './lazyLoad';
+
+import * as angular from 'angular';
+import 'angular-mocks';
+
+import test = services.test;
+
+interface ITestObject {
+	prop: string;
 }
+
+describe('LazyLoadController', () => {
+	var scope: angular.IScope;
+	var lazyLoad: LazyLoadController;
+
+	beforeEach(() => {
+		angular.mock.module(moduleName);
+	});
+
+	it('should set init true when the expression first evaluates to true', (): void => {
+		buildController(false);
+		scope.$digest();
+
+		expect(lazyLoad.init).to.be.false;
+
+		lazyLoad.show = true;
+		scope.$digest();
+
+		expect(lazyLoad.init).to.be.true;
+
+		lazyLoad.show = false;
+		scope.$digest();
+
+		expect(lazyLoad.init).to.be.true;
+	});
+
+	function buildController(expression: boolean): void {
+		var controllerResult: test.IControllerResult<LazyLoadController>
+			= test.angularFixture.controllerWithBindings<LazyLoadController>(controllerName, { show: expression });
+
+		scope = <angular.IScope>controllerResult.scope;
+		lazyLoad = controllerResult.controller;
+	}
+});

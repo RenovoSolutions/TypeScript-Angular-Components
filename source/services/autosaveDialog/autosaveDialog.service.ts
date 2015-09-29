@@ -1,97 +1,100 @@
-// /// <reference path='../../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../typings/angular-ui-bootstrap/angular-ui-bootstrap.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+'use strict';
 
-/// <reference path='../dialog/dialog.service.ts' />
-/// <reference path='autosaveDialog.controller.ts' />
+import * as ng from 'angular';
 
-module rl.ui.services.autosaveDialog {
-	'use strict';
+import { services } from 'typescript-angular-utilities';
 
-	export var serviceName: string = 'autosaveDialog';
+import {
+	IDialogService,
+	IDialogCloseHandler,
+	serviceName as dialogServiceName
+} from '../dialog/dialog.service';
 
-	import __autosave = rl.utilities.services.autosave;
+import { controllerName } from './autosaveDialog.controller';
 
-	export interface IAutosaveDialogService {
-		open(options: IAutosaveDialogSettings): void;
-	}
+export var serviceName: string = 'autosaveDialog';
 
-	export interface IAutosaveDialogSettings {
-		scope?: ng.IScope;
-		template?: string;
-		templateUrl?: string;
-		size?: string;
-		data?: any;
+import __autosave = services.autosave;
 
-		save: { (...data: any[]): ng.IPromise<void> };
-		validate?: { (): boolean };
-		form?: string;
+export interface IAutosaveDialogService {
+	open(options: IAutosaveDialogSettings): void;
+}
 
-		// optional - instead of specifying a form name
-		formGetter?: { (scope: ng.IScope): ng.IFormController };
-	}
+export interface IAutosaveDialogSettings {
+	scope?: ng.IScope;
+	template?: string;
+	templateUrl?: string;
+	size?: string;
+	data?: any;
 
-	interface IDialogSettings {
-		scope?: ng.IScope;
-		template?: string;
-		templateUrl?: string;
-		size?: string;
-		data?: any;
+	save: { (...data: any[]): ng.IPromise<void> };
+	validate?: { (): boolean };
+	form?: string;
 
-		controller?: string;
-		controllerAs?: string;
-		bindToController?: boolean;
-	}
+	// optional - instead of specifying a form name
+	formGetter?: { (scope: ng.IScope): ng.IFormController };
+}
 
-	export interface IAutosaveDialogScope extends ng.IScope {
-		form?: string;
-		formGetter?: { (scope: ng.IScope): ng.IFormController };
-		setForm(form: ng.IFormController): void;
-		dialog: any;
-	}
+interface IDialogSettings {
+	scope?: ng.IScope;
+	template?: string;
+	templateUrl?: string;
+	size?: string;
+	data?: any;
 
-	export class AutosaveDialogService implements IAutosaveDialogService {
-		private autosave: __autosave.IAutosaveService;
-		private data: any;
+	controller?: string;
+	controllerAs?: string;
+	bindToController?: boolean;
+}
 
-		static $inject: string[] = ['$rootScope', dialog.serviceName, __autosave.factoryName];
-		constructor(private $rootScope: ng.IRootScopeService
-			, private dialog: dialog.IDialogService<IAutosaveDialogSettings>
-			, private autosaveFactory: __autosave.IAutosaveServiceFactory) { }
+export interface IAutosaveDialogScope extends ng.IScope {
+	form?: string;
+	formGetter?: { (scope: ng.IScope): ng.IFormController };
+	setForm(form: ng.IFormController): void;
+	dialog: any;
+}
 
-		open(options: IAutosaveDialogSettings): void {
-			var scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
+export class AutosaveDialogService implements IAutosaveDialogService {
+	private autosave: __autosave.IAutosaveService;
+	private data: any;
 
-			if (scope == null) {
-				scope = <IAutosaveDialogScope>this.$rootScope.$new();
-				options.scope = scope;
-			}
+	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName];
+	constructor(private $rootScope: ng.IRootScopeService
+		, private dialog: IDialogService<IAutosaveDialogSettings>
+		, private autosaveFactory: __autosave.IAutosaveServiceFactory) { }
 
-			this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+	open(options: IAutosaveDialogSettings): void {
+		var scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
 
-			scope.form = options.form;
-			scope.formGetter = options.formGetter;
-			scope.setForm = this.setForm;
-			this.data = options.data;
-			scope.dialog = options.data;
-
-			var dialogOptions: IDialogSettings = <IDialogSettings>options;
-			dialogOptions.controller = controllerName;
-			dialogOptions.controllerAs = 'controller';
-
-			return this.dialog.open(options, this.autosaveCloseHandler);
+		if (scope == null) {
+			scope = <IAutosaveDialogScope>this.$rootScope.$new();
+			options.scope = scope;
 		}
 
-		private autosaveCloseHandler: dialog.IDialogCloseHandler = (explicit: boolean): boolean => {
-			if (explicit) {
-				return true;
-			}
+		this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
 
-			return this.autosave.autosave(this.data);
+		scope.form = options.form;
+		scope.formGetter = options.formGetter;
+		scope.setForm = this.setForm;
+		this.data = options.data;
+		scope.dialog = options.data;
+
+		var dialogOptions: IDialogSettings = <IDialogSettings>options;
+		dialogOptions.controller = controllerName;
+		dialogOptions.controllerAs = 'controller';
+
+		return this.dialog.open(options, this.autosaveCloseHandler);
+	}
+
+	private autosaveCloseHandler: IDialogCloseHandler = (explicit: boolean): boolean => {
+		if (explicit) {
+			return true;
 		}
 
-		private setForm: { (form: ng.IFormController): void } = (form: ng.IFormController): void => {
-			this.autosave.contentForm = form;
-		}
+		return this.autosave.autosave(this.data);
+	}
+
+	private setForm: { (form: ng.IFormController): void } = (form: ng.IFormController): void => {
+		this.autosave.contentForm = form;
 	}
 }

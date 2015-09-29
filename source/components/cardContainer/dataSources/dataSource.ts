@@ -1,36 +1,31 @@
-// uses typescript-angular-utilities
+'use strict';
 
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+import { services, filters } from 'typescript-angular-utilities';
+import __observable = services.observable;
 
-/// <reference path='dataPager/dataPager.service.ts' />
-/// <reference path='../sorts/sort.ts' />
+import { ISort } from '../sorts/sort';
+import { IDataPager } from './dataPager/dataPager.service';
 
-module rl.ui.components.cardContainer.dataSources {
-	'use strict';
-	
-	import __observable = rl.utilities.services.observable;
-	
-	export interface IDataSource<TDataType> {
-		dataSet: TDataType[];
-		filteredDataSet: TDataType[];
-		rawDataSet: TDataType[];
-		sorts: sorts.ISort[];
-		filters: { [index: string]: utilities.filters.IFilter };
-		pager: dataPager.IDataPager;
-		count: number;
-	
-		countFilterGroups: boolean;
-	
-		loadingDataSet: boolean;
-	
-		watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
-		observable: __observable.IObservableService;
-	
-		processData(): void;
-	
-		refresh(): void;
-		remove(data: TDataType): void;
-		push(data: TDataType): void;
-		replace(oldData: TDataType, newData: TDataType): void;
-	}
+export interface IDataSource<TDataType> {
+	dataSet: TDataType[];
+	filteredDataSet: TDataType[];
+	rawDataSet: TDataType[];
+	sorts: ISort[];
+	filters: { [index: string]: filters.IFilter };
+	pager: IDataPager;
+	count: number;
+
+	countFilterGroups: boolean;
+
+	loadingDataSet: boolean;
+
+	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
+	observable: __observable.IObservableService;
+
+	processData(): void;
+
+	refresh(): void;
+	remove(data: TDataType): void;
+	push(data: TDataType): void;
+	replace(oldData: TDataType, newData: TDataType): void;
 }

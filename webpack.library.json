@@ -1,0 +1,13 @@
+{
+	"entry": "./source/ui.module",
+	"path": "output",
+	"filename": "components.js",
+	"library": "rl-components",
+	"externals": {
+		"angular": "angular",
+		"jquery": "$",
+		"moment": "moment",
+		"lodash": "_",
+		"typescript-angular-utilities": "rl.utilities"
+	}
+}

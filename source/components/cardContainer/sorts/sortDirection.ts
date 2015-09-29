@@ -1,20 +1,19 @@
-module rl.ui.components.cardContainer.sorts {
-	'use strict';
+'use strict';
 
-	export enum SortDirection {
-		none = 0,
-		ascending = 1,
-		descending = 2,
-	}
-	
-	export interface ISortDirections {
-		ascending: SortDirection;
-		descending: SortDirection;
-		none: SortDirection;
-	}
-	
-	export function toggle(direction: SortDirection): SortDirection {
-		'use strict';
+export interface ISortDirections {
+	ascending: SortDirection;
+	descending: SortDirection;
+	none: SortDirection;
+}
+
+export class SortDirection {
+	public static none: SortDirection = new SortDirection(0);
+	public static ascending: SortDirection = new SortDirection(1);
+	public static descending: SortDirection = new SortDirection(2);
+
+	constructor(private value: number) { }
+
+	public static toggle(direction: SortDirection): SortDirection {
 		if (direction === SortDirection.ascending) {
 			return SortDirection.descending;
 		} else if (direction === SortDirection.descending) {
@@ -23,8 +22,8 @@ module rl.ui.components.cardContainer.sorts {
 			return SortDirection.ascending;
 		}
 	}
-	
-	export function getFullName(direction: SortDirection): string {
+
+	public static getFullName(direction: SortDirection): string {
 		'use strict';
 		if (direction === SortDirection.ascending) {
 			return 'ascending';

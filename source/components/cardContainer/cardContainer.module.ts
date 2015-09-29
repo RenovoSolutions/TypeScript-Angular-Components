@@ -1,49 +1,63 @@
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
+'use strict';
 
-/// <reference path='dataSources/dataPager/dataPager.service.ts' />
+import * as angular from 'angular';
 
-/// <reference path='card/card.ts' />
-/// <reference path='cardSearch/cardSearch.ts' />
-/// <reference path='columnHeader/columnHeader.ts' />
-/// <reference path='itemCount/itemCount.ts' />
-/// <reference path='pager/pager.ts' />
-/// <reference path='pageSize/pageSize.ts' />
-/// <reference path='selectionControl/selectionControl.ts' />
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __array = services.array;
+import __parentChild = services.parentChildBehavior;
 
-/// <reference path='dataSources/dataSources.module.ts' />
-/// <reference path='filters/filters.module.ts' />
-/// <reference path='sorts/sorts.module.ts' />
+import * as card from './card/card';
+import * as cardSearch from './cardSearch/cardSearch';
+import * as columnHeader from './columnHeader/columnHeader';
+import * as dataSources from './dataSources/dataSources.module';
+import * as filters from './filters/filters.module';
+import * as itemCount from './itemCount/itemCount';
+import * as pager from './pager/pager';
+import * as pageSize from './pageSize/pageSize';
+import * as selectionControl from './selectionControl/selectionControl';
+import * as sorts from './sorts/sorts.module';
 
-/// <reference path='cardContainer.ts' />
+import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
 
-module rl.ui.components.cardContainer {
-	export var moduleName: string = 'rl.ui.components.cardContainer';
-	
-	import __object = rl.utilities.services.object;
-	import __array = rl.utilities.services.array;
-	import __parentChild = rl.utilities.services.parentChildBehavior;
-	
-	angular.module(moduleName, [
-		// dependencies
-		dataSources.dataPager.moduleName,
-		__object.moduleName,
-		__array.moduleName,
-		__parentChild.moduleName,
-		
-		// components
-		card.moduleName,
-		cardSearch.moduleName,
-		columnHeader.moduleName,
-		itemCount.moduleName,
-		pager.moduleName,
-		pageSize.moduleName,
-		selectionControl.moduleName,
-		
-		// submodules
-		dataSources.moduleName,
-		filters.moduleName,
-		sorts.moduleName,
-	])
-		.directive(directiveName, cardContainer)
-		.controller(controllerName, CardContainerController);
-}
+export {
+	card,
+	cardSearch,
+	columnHeader,
+	dataSources,
+	filters,
+	itemCount,
+	pager,
+	pageSize,
+	selectionControl,
+	sorts,
+};
+
+export * from './cardContainer';
+export * from './column';
+
+export var moduleName: string = 'rl.ui.components.cardContainer';
+
+angular.module(moduleName, [
+	// dependencies
+	dataSources.dataPager.moduleName,
+	__object.moduleName,
+	__array.moduleName,
+	__parentChild.moduleName,
+
+	// components
+	card.moduleName,
+	cardSearch.moduleName,
+	columnHeader.moduleName,
+	itemCount.moduleName,
+	pager.moduleName,
+	pageSize.moduleName,
+	selectionControl.moduleName,
+
+	// submodules
+	dataSources.moduleName,
+	filters.moduleName,
+	sorts.moduleName,
+])
+	.directive(directiveName, cardContainer)
+	.controller(controllerName, CardContainerController);

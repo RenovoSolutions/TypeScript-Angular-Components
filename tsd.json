@@ -6,7 +6,7 @@
   "bundle": "typings/tsd.d.ts",
   "installed": {
     "angularjs/angular.d.ts": {
-      "commit": "484544d14d400190b20f270341c97b16adc0f1ef"
+      "commit": "32029fcb4e1a3ef8968711b545d77b584435729d"
     },
     "chai/chai.d.ts": {
       "commit": "70737c2a2496f7a13c4da63eb00081cad94d19f1"
@@ -15,19 +15,16 @@
       "commit": "70737c2a2496f7a13c4da63eb00081cad94d19f1"
     },
     "sinon/sinon.d.ts": {
-      "commit": "70737c2a2496f7a13c4da63eb00081cad94d19f1"
+      "commit": "54f064352a3615443f7bff4198078db15e28247b"
     },
     "bootstrap/bootstrap.d.ts": {
       "commit": "c50b111ded0a3a18b87b5abffea3150d6aca94da"
     },
     "jquery/jquery.d.ts": {
-      "commit": "c50b111ded0a3a18b87b5abffea3150d6aca94da"
+      "commit": "32029fcb4e1a3ef8968711b545d77b584435729d"
     },
     "lodash/lodash.d.ts": {
       "commit": "c50b111ded0a3a18b87b5abffea3150d6aca94da"
-    },
-    "requirejs/require.d.ts": {
-      "commit": "52dc8fc39354569838b7bc09e24df690b852b4d9"
     },
     "moment/moment.d.ts": {
       "commit": "7f07bd88d1083e995a0dae317a333c9641320cc8"
@@ -45,6 +42,9 @@
       "commit": "68d9d43ce884e1ffb6ec0daf4ee7be9392c5b7bc"
     },
     "angular-ui-bootstrap/angular-ui-bootstrap.d.ts": {
+      "commit": "32029fcb4e1a3ef8968711b545d77b584435729d"
+    },
+    "angularjs/angular-mocks.d.ts": {
       "commit": "32029fcb4e1a3ef8968711b545d77b584435729d"
     }
   }

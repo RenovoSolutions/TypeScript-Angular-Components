@@ -1,14 +1,13 @@
 {
 	"compilerOptions": {
-		"emitDecoratorMetadata": true,
+		"module": "commonjs",
+		"moduleResolution": "node",
 		"declaration": true,
-		"target": "ES5",
-		"out": "components.js"
+		"sourceMap": true,
+		"target": "ES5"
 	},
 	"files": [
 		"./typings/tsd.d.ts",
-		"./libraries/rl-utilities/typings/utilities.d.ts",
-		"./source/components.ts"
-	],
-	"version": "1.5"
+		"./source/ui.module.ts"
+	]
 }

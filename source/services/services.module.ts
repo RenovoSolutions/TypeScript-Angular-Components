@@ -1,17 +1,30 @@
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
+'use strict';
 
-/// <reference path='autosaveDialog/autosaveDialog.module.ts' />
-/// <reference path='breakpoints/breakpoints.module.ts' />
-/// <reference path='dialog/dialog.service.ts' />
-/// <reference path='windowWrapper/windowWrapper.service.ts' />
+import * as angular from 'angular';
 
-module rl.ui.services {
-	export var moduleName: string = 'rl.ui.services';
+import * as autosaveDialog from './autosaveDialog/autosaveDialog.module';
+import * as breakpoints from './breakpoints/breakpoints.module';
+import * as contentProvider from './contentProvider/contentProvider.service';
+import * as dialog from './dialog/dialog.service';
+import * as jquery from './jquery/jquery.service';
+import * as windowWrapper from './windowWrapper/windowWrapper.service';
 
-	angular.module(moduleName, [
-		autosaveDialog.moduleName,
-		breakpoints.moduleName,
-		dialog.moduleName,
-		windowWrapper.moduleName,
-	]);
-}
+export {
+	autosaveDialog,
+	breakpoints,
+	contentProvider,
+	dialog,
+	jquery,
+	windowWrapper,
+};
+
+export var moduleName: string = 'rl.ui.services';
+
+angular.module(moduleName, [
+	autosaveDialog.moduleName,
+	breakpoints.moduleName,
+	contentProvider.moduleName,
+	dialog.moduleName,
+	jquery.moduleName,
+	windowWrapper.moduleName,
+]);

@@ -1,52 +1,58 @@
 /// <reference path='../../../typings/chai/chai.d.ts' />
 /// <reference path='../../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/angularMocks.d.ts' />
 /// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
 
-/// <reference path='stringWithWatermark.ts' />
+'use strict';
 
-module rl.ui.components.stringWithWatermark {
-	import test = rl.utilities.services.test;
+import { services } from 'typescript-angular-utilities';
+import test = services.test;
 
-	describe('StringWithWatermarkController', () => {
-		var scope: ng.IScope;
-		var controller: StringWithWatermarkController;
+import {
+	moduleName,
+	controllerName,
+	StringWithWatermarkController
+} from './stringWithWatermark';
 
-		beforeEach(() => {
-			angular.mock.module(moduleName);
-		});
+import * as angular from 'angular';
+import 'angular-mocks';
 
-		it('should update hasString to reflect whether string is null or empty', (): void => {
-			buildController();
-			scope.$digest();
+describe('StringWithWatermarkController', () => {
+	var scope: angular.IScope;
+	var controller: StringWithWatermarkController;
 
-			expect(controller.hasString).to.be.false;
-
-			controller.string = 'a string';
-			scope.$digest();
-
-			expect(controller.hasString).to.be.true;
-
-			controller.string = '';
-			scope.$digest();
-
-			expect(controller.hasString).to.be.false;
-
-			// whitespace clears the watermark
-			controller.string = ' ';
-			scope.$digest();
-
-			expect(controller.hasString).to.be.true;
-		});
-
-		function buildController(): void {
-			var controllerResult: test.IControllerResult<StringWithWatermarkController>
-				= test.angularFixture.controllerWithBindings<StringWithWatermarkController>(controllerName);
-
-			scope = controllerResult.scope;
-			controller = controllerResult.controller;
-		}
+	beforeEach(() => {
+		angular.mock.module(moduleName);
 	});
-}
+
+	it('should update hasString to reflect whether string is null or empty', (): void => {
+		buildController();
+		scope.$digest();
+
+		expect(controller.hasString).to.be.false;
+
+		controller.string = 'a string';
+		scope.$digest();
+
+		expect(controller.hasString).to.be.true;
+
+		controller.string = '';
+		scope.$digest();
+
+		expect(controller.hasString).to.be.false;
+
+		// whitespace clears the watermark
+		controller.string = ' ';
+		scope.$digest();
+
+		expect(controller.hasString).to.be.true;
+	});
+
+	function buildController(): void {
+		var controllerResult: test.IControllerResult<StringWithWatermarkController>
+			= test.angularFixture.controllerWithBindings<StringWithWatermarkController>(controllerName);
+
+		scope = controllerResult.scope;
+		controller = controllerResult.controller;
+	}
+});

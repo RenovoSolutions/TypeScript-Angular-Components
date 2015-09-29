@@ -1,19 +1,32 @@
 {
-  "name": "rl-components",
-  "version": "0.1.0",
+  "name": "typescript-angular-components",
+  "version": "1.0.0",
   "description": "Reusable responsive angular components",
-  "scripts": {
-    "test": "gulp test"
-  },
+  "author": "Renovo Development Team",
   "keywords": [
+    "typescript",
     "components",
     "angular",
     "responsive"
   ],
-  "author": "Josh Graber <jgraber@renovo1.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RenovoSolutions/TypeScript-Angular-Components"
+  },
+  "scripts": {
+    "update": "npm install & tsd update",
+    "test": "karma start",
+    "test.debug": "karma start karma.debug.conf.js",
+    "test.full": "karma start karma.full.conf.js",
+    "build": "gulp clean && tsc && echo Build complete",
+    "build.library": "webpack & webpack --config webpack.min.config.js",
+    "clean": "gulp clean"
+  },
   "devDependencies": {
-    "gulp": "^3.8.11",
-    "gulp-utilities": "https://github.com/RenovoSolutions/Gulp-Typescript-Utilities/archive/0.10.10.tar.gz",
+    "angular-mocks": "^1.4.6",
+    "gulp": "^3.9.0",
+    "gulp-utilities": "https://github.com/RenovoSolutions/Gulp-Typescript-Utilities/archive/1.0.1.tar.gz",
+    "karma": "^0.13.10",
     "karma-browserify": "^4.1.2",
     "karma-chai": "~0.1.0",
     "karma-chai-sinon": "^0.1.3",
@@ -26,6 +39,23 @@
     "karma-requirejs": "^0.2.1",
     "karma-sinon": "^1.0.3",
     "karma-teamcity-reporter": "^0.1.1",
-    "tsify": "^0.10.0"
-  }
+    "karma-webpack": "^1.7.0",
+    "raw-loader": "^0.5.1",
+    "sinon": "^1.17.0",
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.5.5",
+    "typescript": "^1.6.2",
+    "webpack": "^1.12.2"
+  },
+  "dependencies": {
+    "angular": "^1.4.6",
+    "angular-ui-bootstrap": "^0.13.4",
+    "jquery": "^2.1.4",
+    "lodash": "^3.10.1",
+    "moment": "^2.10.6",
+    "signature_pad": "~1.4.0",
+    "textangular": "~1.4.6",
+    "typescript-angular-utilities": "~2.1.0"
+  },
+  "license": "GPL-3.0"
 }

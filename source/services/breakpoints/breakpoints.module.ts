@@ -1,18 +1,23 @@
-// /// <reference path='../../typings/angularjs/angular.d.ts' />
-// /// <reference path='../../../libraries/typescript-angular-utilities/typings/utility.d.ts' />
+'use strict';
 
-/// <reference path='../windowWrapper/windowWrapper.service.ts' />
-/// <reference path='visibleBreakpoint.service.ts' />
-/// <reference path='breakpoints.service.ts' />
+import * as angular from 'angular';
 
-module rl.ui.services.breakpoints {
-	export var moduleName: string = 'rl.ui.services.breakpoints';
-	
-	angular.module(moduleName, [
-		rl.utilities.services.observable.moduleName,
-		windowWrapper.moduleName,
-	])
-		.constant('resizeDebounceMilliseconds', 500)
-		.service(visibleBreakpointServiceName, VisibleBreakpointService)
-		.service(breakpointServiceName, BreakpointService);
-}
+import { services } from 'typescript-angular-utilities';
+
+import { moduleName as windowWrapperModuleName } from '../windowWrapper/windowWrapper.service';
+import { visibleBreakpointServiceName, VisibleBreakpointService } from './visibleBreakpoint.service';
+import { breakpointServiceName, BreakpointService } from './breakpoints.service';
+
+export * from './breakpoint';
+export * from './visibleBreakpoint.service';
+export * from './breakpoints.service';
+
+export var moduleName: string = 'rl.ui.services.breakpoints';
+
+angular.module(moduleName, [
+	services.observable.moduleName,
+	windowWrapperModuleName,
+])
+	.constant('resizeDebounceMilliseconds', 500)
+	.service(visibleBreakpointServiceName, VisibleBreakpointService)
+	.service(breakpointServiceName, BreakpointService);
