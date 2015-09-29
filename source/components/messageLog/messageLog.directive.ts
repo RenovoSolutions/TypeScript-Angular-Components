@@ -11,14 +11,14 @@ export var controllerName: string = 'MessageLogController';
 
 export interface IMessageLogBindings {
 	pageSize: number;
-	dataService: IMessageLogDataService;
+	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 }
 
 export class MessageLogController {
 	// bindings
 	pageSize: number;
-	dataService: IMessageLogDataService;
+	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 
 	messages: IMessage[];
@@ -58,7 +58,7 @@ export class MessageLogController {
 		});
 
 		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
-		this.messageLog.dataService = this.dataService;
+		this.messageLog.dataService = this.service;
 	}
 
 	getOlder(): ng.IPromise<void> {
@@ -101,7 +101,7 @@ export function messageLog(): ng.IDirective {
 		controllerAs: 'log',
 		scope: {},
 		bindToController: {
-			dataService: '=',
+			service: '=',
 			pageSize: '=',
 			messageLogBinding: '=messageLog',
 		},

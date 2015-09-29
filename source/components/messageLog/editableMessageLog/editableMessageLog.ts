@@ -20,13 +20,13 @@ import __object = services.object;;
 
 export interface IEditableMessageLogBindings {
 	pageSize: number;
-	dataService: IMessageLogDataService;
+	service: IMessageLogDataService;
 }
 
 export class EditableMessageLogController {
 	// bindings
 	pageSize: number;
-	dataService: IMessageLogDataService;
+	service: IMessageLogDataService;
 
 	messageLogService: IMessageLog;
 	newMessage: string;
@@ -76,7 +76,7 @@ export function editableMessageLog(): angular.IDirective {
 					</span>
 				</div>
 				<div class="shallow well">
-					<rl-message-log data-service="log.dataService" page-size="log.pageSize" message-log="log.messageLogService"></rl-message-log>
+					<rl-message-log service="log.service" page-size="log.pageSize" message-log="log.messageLogService"></rl-message-log>
 				</div>
 			</form>
 		`,
@@ -84,7 +84,7 @@ export function editableMessageLog(): angular.IDirective {
 		controllerAs: 'log',
 		scope: {},
 		bindToController: {
-			dataService: '=',
+			service: '=',
 			pageSize: '=',
 		},
 	};
