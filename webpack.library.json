@@ -8,6 +8,6 @@
 		"jquery": "$",
 		"moment": "moment",
 		"lodash": "_",
-		"typescript-angular-utilities": "rl.utilities"
+		"typescript-angular-utilities": "rl_utilities"
 	}
 }
