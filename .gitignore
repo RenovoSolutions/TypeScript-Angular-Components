@@ -1,6 +1,9 @@
 # Definitively typed files (resolved via tsd)
 /typings/*/
 
+# Bundled files / output
+/output/
+
 # Node deps
 /node_modules/
 
