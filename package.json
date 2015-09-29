@@ -14,14 +14,18 @@
     "url": "https://github.com/RenovoSolutions/TypeScript-Angular-Components"
   },
   "scripts": {
-    "update": "npm install && tsd update",
+    "update": "npm install & tsd update",
     "test": "karma start",
     "test.debug": "karma start karma.debug.conf.js",
     "test.full": "karma start karma.full.conf.js",
-    "build": "tsc"
+    "build": "gulp clean && tsc && echo Build complete",
+    "build.library": "webpack & webpack --config webpack.min.config.js",
+    "clean": "gulp clean"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.6",
+    "gulp": "^3.9.0",
+    "gulp-utilities": "https://github.com/RenovoSolutions/Gulp-Typescript-Utilities/archive/1.0.1.tar.gz",
     "karma": "^0.13.10",
     "karma-browserify": "^4.1.2",
     "karma-chai": "~0.1.0",
@@ -38,6 +42,7 @@
     "karma-webpack": "^1.7.0",
     "raw-loader": "^0.5.1",
     "sinon": "^1.17.0",
+    "source-map-loader": "^0.1.5",
     "ts-loader": "^0.5.5",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"
@@ -50,7 +55,7 @@
     "moment": "^2.10.6",
     "signature_pad": "~1.4.0",
     "textangular": "~1.4.6",
-    "typescript-angular-utilities": "~2.0.6"
+    "typescript-angular-utilities": "~2.1.0"
   },
   "license": "GPL-3.0"
 }
