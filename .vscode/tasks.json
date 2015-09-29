@@ -1,0 +1,35 @@
+{
+    "version": "0.1.0",
+    "command": "npm",
+    "isShellCommand": true,
+    "args": [
+        "--no-color"
+    ],
+    "tasks": [
+        {
+            "taskName": "build",
+            "args": ["run"],
+            "isBuildCommand": true,
+            "isWatching": false,
+            "problemMatcher": [
+                "$lessCompile",
+                "$tsc",
+                "$jshint"
+            ]
+        },
+        {
+            "taskName": "test",
+            "args": [],
+            "isTestCommand": true
+        },
+        {
+            "taskName": "update",
+            "args": ["run"]
+        },
+        {
+            "taskName": "clean",
+            "args": ["run"]
+        }
+    ],
+	"problemMatcher": "$tsc"
+}

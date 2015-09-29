@@ -10,6 +10,7 @@ exports.defaultSearchDelay = 1000;
 var CardSearchController = (function () {
     function CardSearchController($scope, $timeout, $element) {
         var _this = this;
+        this.searchLengthError = false;
         this.hasSearchFilter = true;
         this.cardContainerController = $element.controller('rlCardContainer');
         this.searchFilter = this.cardContainerController.lookupFilter(__genericSearchFilter.filterName);
@@ -25,6 +26,8 @@ var CardSearchController = (function () {
             var timer;
             $scope.$watch(function () { return _this.searchText; }, function (search) {
                 _this.searchFilter.searchText = search;
+                _this.minSearchLength = _this.searchFilter.minSearchLength;
+                _this.validateSearchLength(search, _this.minSearchLength);
                 if (timer != null) {
                     $timeout.cancel(timer);
                 }
@@ -32,6 +35,12 @@ var CardSearchController = (function () {
             });
         }
     }
+    CardSearchController.prototype.validateSearchLength = function (search, minLength) {
+        // show error if search string exists but is below minimum size
+        this.searchLengthError = search != null
+            && search.length > 0
+            && search.length < minLength;
+    };
     CardSearchController.$inject = ['$scope', '$timeout', '$element'];
     return CardSearchController;
 })();
@@ -41,7 +50,7 @@ function cardSearch() {
     return {
         restrict: 'E',
         require: '^^rlCardContainer',
-        template: "\n<div class=\"input-group\" ng-show=\"cardSearch.hasSearchFilter\">\n\t<input class=\"form-control\" type=\"text\" placeholder=\"{{cardSearch.searchPlaceholder}}\" ng-model=\"cardSearch.searchText\" />\n\t<div class=\"input-group-btn\">\n\t\t<button type=\"button\" class=\"btn btn-default\" ng-disabled=\"cardSearch.searchText | isEmpty\" ng-click=\"cardSearch.searchText = null\">\n\t\t\t<i class=\"fa fa-times\"></i>\n\t\t</button>\n\t</div>\n</div>",
+        template: require('./cardSearch.html'),
         controller: exports.controllerName,
         controllerAs: 'cardSearch',
         scope: {},

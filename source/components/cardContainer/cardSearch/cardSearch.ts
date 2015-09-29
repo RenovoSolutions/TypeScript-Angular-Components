@@ -25,6 +25,8 @@ export class CardSearchController {
 
 	searchPlaceholder: string;
 	searchText: string;
+	searchLengthError: boolean = false;
+	minSearchLength: number;
 	hasSearchFilter: boolean = true;
 	private cardContainerController: CardContainerController;
 	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
@@ -51,6 +53,9 @@ export class CardSearchController {
 
 			$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
 				this.searchFilter.searchText = search;
+				this.minSearchLength = this.searchFilter.minSearchLength;
+
+				this.validateSearchLength(search, this.minSearchLength);
 
 				if (timer != null) {
 					$timeout.cancel(timer);
@@ -60,6 +65,13 @@ export class CardSearchController {
 			});
 		}
 	}
+
+	private validateSearchLength(search: string, minLength: number): void {
+		// show error if search string exists but is below minimum size
+		this.searchLengthError = search != null
+								&& search.length > 0
+								&& search.length < minLength;
+	}
 }
 
 export function cardSearch(): angular.IDirective {
@@ -67,15 +79,7 @@ export function cardSearch(): angular.IDirective {
 	return {
 		restrict: 'E',
 		require: '^^rlCardContainer',
-		template: `
-<div class="input-group" ng-show="cardSearch.hasSearchFilter">
-	<input class="form-control" type="text" placeholder="{{cardSearch.searchPlaceholder}}" ng-model="cardSearch.searchText" />
-	<div class="input-group-btn">
-		<button type="button" class="btn btn-default" ng-disabled="cardSearch.searchText | isEmpty" ng-click="cardSearch.searchText = null">
-			<i class="fa fa-times"></i>
-		</button>
-	</div>
-</div>`,
+		template: require('./cardSearch.html'),
 		controller: controllerName,
 		controllerAs: 'cardSearch',
 		scope: {},
