@@ -9,6 +9,8 @@ import { services } from 'typescript-angular-utilities';
 
 import { moduleName, responsiveCardGrid } from './responsiveCardGrid.module';
 
+import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
+
 import * as angular from 'angular';
 import 'angular-mocks';
 
@@ -42,7 +44,7 @@ describe('ResponsiveCardGridController', () => {
 		angular.mock.module(moduleName);
 
 		breakpoints = {
-			currentBreakpoint: services.breakpoints.md,
+			currentBreakpoint: md,
 			breakpointChangeAction: null,
 			register: sinon.spy((action: any): void => {
 				breakpoints.breakpointChangeAction = action;
@@ -153,8 +155,8 @@ describe('ResponsiveCardGridController', () => {
 			findPosition: findPosition,
 		};
 
-		var controllerResult: test.IControllerResult<ResponsiveCardGridController>
-			= test.angularFixture.controllerWithBindings<ResponsiveCardGridController>(controllerName, bindings);
+		var controllerResult: test.IControllerResult<responsiveCardGrid.ResponsiveCardGridController>
+			= test.angularFixture.controllerWithBindings<responsiveCardGrid.ResponsiveCardGridController>(responsiveCardGrid.controllerName, bindings);
 
 		scope = controllerResult.scope;
 		cardGrid = controllerResult.controller;

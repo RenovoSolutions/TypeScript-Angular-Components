@@ -124,8 +124,8 @@ describe('ResponsiveCardController', () => {
 			},
 		};
 
-		var controllerResult: test.IControllerResult<IResponsiveCardController>
-			= test.angularFixture.controllerWithBindings<IResponsiveCardController>(responsiveCard.controllerName, bindings, { $element: $element });
+		var controllerResult: test.IControllerResult<responsiveCard.IResponsiveCardController>
+			= test.angularFixture.controllerWithBindings<responsiveCard.IResponsiveCardController>(responsiveCard.controllerName, bindings, { $element: $element });
 
 		scope = controllerResult.scope;
 		card = controllerResult.controller;

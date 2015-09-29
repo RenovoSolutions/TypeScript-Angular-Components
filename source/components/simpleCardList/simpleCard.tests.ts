@@ -59,7 +59,7 @@ describe('SimpleCardController', () => {
 		var childLink: any = {};
 		buildController(false, childLink);
 
-		var behavior: simpleCard.ISimpleCardBehavior = parentChild.getChildBehavior<ISimpleCardBehavior>(childLink);
+		var behavior: simpleCard.ISimpleCardBehavior = parentChild.getChildBehavior<simpleCard.ISimpleCardBehavior>(childLink);
 		expect(_.isFunction(behavior.close)).to.be.true;
 	});
 
@@ -145,8 +145,8 @@ describe('SimpleCardController', () => {
 			},
 		};
 
-		var controllerResult: test.IControllerResult<SimpleCardController>
-			= test.angularFixture.controllerWithBindings<SimpleCardController>(controllerName, bindings, { $element: $element });
+		var controllerResult: test.IControllerResult<simpleCard.SimpleCardController>
+			= test.angularFixture.controllerWithBindings<simpleCard.SimpleCardController>(simpleCard.controllerName, bindings, { $element: $element });
 
 		scope = controllerResult.scope;
 		card = controllerResult.controller;

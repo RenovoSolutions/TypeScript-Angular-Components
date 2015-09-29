@@ -30,47 +30,51 @@ interface IDataServiceMock {
 }
 
 describe('dataServiceDataSource', () => {
-	var dataServiceDataSourceFactory: IDataServiceDataSourceFactory;
-	var dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
-	var dataService: IDataServiceMock;
-	var $rootScope: angular.IRootScopeService;
+	let dataServiceDataSourceFactory: IDataServiceDataSourceFactory;
+	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+	let dataService: IDataServiceMock;
+	let $rootScope: angular.IRootScopeService;
+	let mock: test.mock.IMock;
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
+		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
 
-		dataService = test.mock.service();
-
-		var services: any = test.angularFixture.inject(factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
+		let services: any = test.angularFixture.inject(
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName);
 		dataServiceDataSourceFactory = services[factoryName];
 		dataSourceProcessor = services[__dataSourceProcessor.processorServiceName];
 		$rootScope = services.$rootScope;
+		mock = services[test.mock.serviceName];
+
+		dataService = mock.service();
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 	});
 
 	describe('loading', (): void => {
 		it('should call data processor to process the data when refreshing', (): void => {
-			test.mock.promise(dataService, 'get', [1, 2, 3]);
+			mock.promise(dataService, 'get', [1, 2, 3]);
 
 			dataServiceDataSourceFactory.getInstance<number>(dataService.get);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			$rootScope.$digest();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		});
 
 		it('should make an initial request to the server for data', (): void => {
-			test.mock.promise(dataService, 'get', [1, 2]);
+			mock.promise(dataService, 'get', [1, 2]);
 
-			var source: IDataServiceDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
+			let source: IDataServiceDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
 
-			var reloadedSpy: Sinon.SinonSpy = sinon.spy();
+			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
 			source.watch(reloadedSpy, 'reloaded');
-			var changedSpy: Sinon.SinonSpy = sinon.spy();
+			let changedSpy: Sinon.SinonSpy = sinon.spy();
 			source.watch(changedSpy, 'changed');
 
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			$rootScope.$digest();
 
 			expect(source.dataSet).to.have.length(2);

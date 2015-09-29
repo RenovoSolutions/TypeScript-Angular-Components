@@ -66,7 +66,7 @@ describe('SimpleCardListController', () => {
 
 	function buildController(): void {
 		var controllerResult: test.IControllerResult<simpleCardList.ISimpleCardListController>
-			= test.angularFixture.controllerWithBindings<simpleCardList.ISimpleCardListController>(controllerName);
+			= test.angularFixture.controllerWithBindings<simpleCardList.ISimpleCardListController>(simpleCardList.controllerName);
 
 		scope = controllerResult.scope;
 		list = controllerResult.controller;

@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilties';
+import { services } from 'typescript-angular-utilities';
 
 import {
 	IMessageLogDataService,

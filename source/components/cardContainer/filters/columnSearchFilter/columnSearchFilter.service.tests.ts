@@ -15,7 +15,7 @@ import {
 	factoryName,
 } from './columnSearchFilter.service';
 
-import { ISort, SortDirection } from '../sorts/sorts.module';
+import { ISort, SortDirection } from '../../sorts/sorts.module';
 
 import * as angular from 'angular';
 import 'angular-mocks';

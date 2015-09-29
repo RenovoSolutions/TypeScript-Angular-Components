@@ -14,6 +14,7 @@ import {
 	factoryName,
 	IMessageLog,
 	IMessageLogFactory,
+	IGetMessagesResult,
 } from './messageLog.module';
 
 import * as angular from 'angular';
@@ -27,29 +28,34 @@ interface ITestDataService {
 }
 
 describe('messageLog', () => {
-	var messageLog: IMessageLog;
-	var dataService: ITestDataService;
-	var allMessages: string[];
+	let messageLog: IMessageLog;
+	let dataService: ITestDataService;
+	let allMessages: string[];
+	let mock: test.mock.IMock;
 
 	beforeEach(() => {
+		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
 
 		allMessages = defaultMessages();
 
-		dataService = test.mock.service();
-		test.mock.promiseWithCallback(dataService, 'saveMessage', (message: any): void => { allMessages.unshift(message); });
-		test.mock.promiseWithCallback(dataService, 'getMessages', (startFrom: number, quantity: number): IGetMessagesResult => {
-			var hasMoreMessages: boolean = startFrom + quantity < allMessages.length;
+		let services: any = test.angularFixture.inject(factoryName, test.mock.serviceName);
+		let messageLogFactory: IMessageLogFactory = services[factoryName];
+		messageLog = messageLogFactory.getInstance();
+		messageLog.pageSize = 5;
+
+		mock = services[test.mock.serviceName];
+		dataService = mock.service();
+
+		mock.promiseWithCallback(dataService, 'saveMessage', (message: any): void => { allMessages.unshift(message); });
+		mock.promiseWithCallback(dataService, 'getMessages', (startFrom: number, quantity: number): IGetMessagesResult => {
+			let hasMoreMessages: boolean = startFrom + quantity < allMessages.length;
 			return {
 				hasMoreMessages: hasMoreMessages,
 				messages: <any>_(allMessages).drop(startFrom).take(quantity).value(),
 			};
 		});
 
-		var services: any = test.angularFixture.inject(factoryName);
-		var messageLogFactory: IMessageLogFactory = services[factoryName];
-		messageLog = messageLogFactory.getInstance();
-		messageLog.pageSize = 5;
 	});
 
 	function defaultMessages(): string[] {
@@ -63,7 +69,7 @@ describe('messageLog', () => {
 		messageLog.dataService = dataService;
 
 		sinon.assert.calledOnce(dataService.getMessages);
-		test.mock.flush(dataService);
+		mock.flush(dataService);
 
 		expect(messageLog.visibleMessages).to.have.length(5);
 	});
@@ -71,14 +77,14 @@ describe('messageLog', () => {
 	describe('after initial request', (): void => {
 		beforeEach((): void => {
 			messageLog.dataService = dataService;
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			dataService.getMessages.reset();
 		});
 
 		it('should load the next page from the server if more messages are available', (): void => {
 			messageLog.getNextPage();
 			sinon.assert.calledOnce(dataService.getMessages);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages[0]).to.equal('6');
 			expect(messageLog.visibleMessages[1]).to.equal('7');
@@ -89,12 +95,12 @@ describe('messageLog', () => {
 
 		it('should not load a full page if not enough messages are available', (): void => {
 			messageLog.pageSize = 15;
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			expect(messageLog.visibleMessages).to.have.length(15);
 
 			messageLog.getNextPage();
 
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('16');
@@ -107,7 +113,7 @@ describe('messageLog', () => {
 		it('should refresh the current page when the page size changes', (): void => {
 			messageLog.pageSize = 10;
 			sinon.assert.calledOnce(dataService.getMessages);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(10);
 		});
@@ -115,7 +121,7 @@ describe('messageLog', () => {
 		it('should load a full page when paging back to the beginning even if less than a full page of messages were paged back'
 			, (): void => {
 				messageLog.getNextPage();
-				test.mock.flush(dataService);
+				mock.flush(dataService);
 
 				expect(messageLog.visibleMessages[0]).to.equal('6');
 				expect(messageLog.visibleMessages[1]).to.equal('7');
@@ -125,7 +131,7 @@ describe('messageLog', () => {
 
 				messageLog.pageSize = 10;
 				messageLog.getPreviousPage();
-				test.mock.flush(dataService);
+				mock.flush(dataService);
 
 				expect(messageLog.visibleMessages.length).to.equal(10);
 				expect(messageLog.visibleMessages[0]).to.equal('1');
@@ -142,7 +148,7 @@ describe('messageLog', () => {
 
 		it('should disable paging forward if no more messages are available', (): void => {
 			messageLog.pageSize = 20;
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			dataService.getMessages.reset();
 
 			expect(messageLog.hasForwardMessages).to.be.false;
@@ -164,7 +170,7 @@ describe('messageLog', () => {
 			messageLog.getNextPage();
 			messageLog.getNextPage();
 			sinon.assert.calledTwice(dataService.getMessages);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('11');
@@ -175,7 +181,7 @@ describe('messageLog', () => {
 
 			messageLog.getTopPage();
 			sinon.assert.calledThrice(dataService.getMessages);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('1');
@@ -188,20 +194,20 @@ describe('messageLog', () => {
 		it('should save a new message, add it to the beginning of the log, and display it if on the first page', (): void => {
 			messageLog.addMessage(<any>'new message');
 			sinon.assert.calledOnce(dataService.saveMessage);
-			test.mock.flush(dataService);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
+			mock.flush(dataService);
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
 		});
 
 		it('should take the user back to the first page if the user adds a new message', (): void => {
 			messageLog.getNextPage();
-			test.mock.flush(dataService);
+			mock.flush(dataService);
 			dataService.getMessages.reset();
 
 			messageLog.addMessage(<any>'new message');
 			sinon.assert.calledOnce(dataService.saveMessage);
-			test.mock.flush(dataService);
-			test.mock.flush(dataService);
+			mock.flush(dataService);
+			mock.flush(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
