@@ -13,6 +13,8 @@
     "type": "git",
     "url": "https://github.com/RenovoSolutions/TypeScript-Angular-Components"
   },
+  "main": "./source/ui.module.js",
+  "typings": "./source/ui.module.d.ts",
   "scripts": {
     "update": "npm install & tsd update",
     "test": "karma start",
