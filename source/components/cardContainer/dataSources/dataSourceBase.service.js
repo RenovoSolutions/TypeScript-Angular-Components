@@ -1,7 +1,6 @@
 'use strict';
 var DataSourceBase = (function () {
     function DataSourceBase(observableFactory, dataSourceProcessor, array) {
-        var _this = this;
         this.dataSourceProcessor = dataSourceProcessor;
         this.array = array;
         this.sorts = [];
@@ -9,12 +8,6 @@ var DataSourceBase = (function () {
         this.count = 0;
         this.countFilterGroups = false;
         this.loadingDataSet = false;
-        this.refresh = function () {
-            if (!_this.loadingDataSet) {
-                _this.processData();
-                _this.observable.fire('redrawing');
-            }
-        };
         this.observable = observableFactory.getInstance();
     }
     DataSourceBase.prototype.watch = function (action, event) {
@@ -31,6 +24,12 @@ var DataSourceBase = (function () {
         this.count = processedData.count;
         this.dataSet = processedData.dataSet;
         this.filteredDataSet = processedData.filteredDataSet;
+    };
+    DataSourceBase.prototype.refresh = function () {
+        if (!this.loadingDataSet) {
+            this.processData();
+            this.observable.fire('redrawing');
+        }
     };
     DataSourceBase.prototype.remove = function (data) {
         var item = this.array.remove(this.rawDataSet, data);

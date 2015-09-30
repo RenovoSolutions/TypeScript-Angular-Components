@@ -23,9 +23,7 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     constructor(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
     watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
     processData(): void;
-    refresh: {
-        (): void;
-    };
+    refresh(): void;
     remove(data: TDataType): void;
     push(data: TDataType): void;
     replace(oldData: TDataType, newData: TDataType): void;
