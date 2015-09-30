@@ -1,5 +1,5 @@
 {
-	"entry": "./source/ui.module",
+	"entry": "./source/ui.module.ts",
 	"path": "output",
 	"filename": "components.js",
 	"library": "rl_components",
