@@ -1,4 +1,4 @@
-/// <reference path='../../../../typings/jquery/jquery.d.ts' />
+// /// <reference path='../../../../typings/jquery/jquery.d.ts' />
 'use strict';
 var angular = require('angular');
 var sortDirection_1 = require('../sorts/sortDirection');

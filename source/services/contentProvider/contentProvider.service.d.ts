@@ -1,4 +1,3 @@
-/// <reference path="../../../typings/jquery/jquery.d.ts" />
 import * as ng from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __observable = services.observable;
