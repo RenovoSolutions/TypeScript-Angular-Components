@@ -21,6 +21,7 @@ export var moduleName: string = 'rl.ui';
 
 angular.module(moduleName, [
 	'ui.bootstrap',
+	'ui.bootstrap-slider',
 	'ngSanitize',
 	'textAngular',
 
