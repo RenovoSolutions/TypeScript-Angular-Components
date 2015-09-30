@@ -61,7 +61,7 @@ export class CardSearchController {
 					$timeout.cancel(timer);
 				}
 
-				timer = $timeout(dataSource.refresh, delay);
+				timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
 			});
 		}
 	}
