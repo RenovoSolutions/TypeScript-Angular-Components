@@ -12,8 +12,8 @@ import { IDataSource } from '../dataSources/dataSources.module';
 import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
-export var directiveName: string = 'rlCardContainer';
-export var controllerName: string = 'CardContainerController';
+export var directiveName: string = 'rlSelectionControl';
+export var controllerName: string = 'SelectionControlController';
 
 export class SelectionControlController {
 	selectedItems: number;
@@ -23,7 +23,7 @@ export class SelectionControlController {
 
 	static $inject: string[] = ['$scope', '$element', __boolean.serviceName];
 	constructor(private $scope: angular.IScope
-			, $element: angular.IAugmentedJQuery
+		, $element: angular.IAugmentedJQuery
 			, bool: __boolean.IBooleanUtility) {
 		this.cardContainerController = $element.controller('rlCardContainer');
 		this.selectedItems = this.cardContainerController.numberSelected;
