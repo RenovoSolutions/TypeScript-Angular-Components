@@ -18,7 +18,7 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-interface ICardContainerMock {
+interface IContainerServiceMock {
 	lookupFilter: Sinon.SinonSpy;
 	dataSource: any;
 }
@@ -26,7 +26,7 @@ interface ICardContainerMock {
 describe('CardSearchController', () => {
 	var scope: angular.IScope;
 	var cardSearch: CardSearchController;
-	var cardContainerController: ICardContainerMock;
+	var containerService: IContainerServiceMock;
 	var filter: any;
 	var $timeout: angular.ITimeoutService;
 	var refreshSpy: Sinon.SinonSpy;
@@ -38,7 +38,7 @@ describe('CardSearchController', () => {
 
 		filter = {};
 
-		cardContainerController = {
+		containerService = {
 			lookupFilter: sinon.spy((): any => { return filter; }),
 			dataSource: {
 				refresh: refreshSpy,
@@ -51,14 +51,14 @@ describe('CardSearchController', () => {
 
 	it('should lookup the search filter from the card container', (): void => {
 		buildController();
-		sinon.assert.calledOnce(cardContainerController.lookupFilter);
+		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.true;
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
-		cardContainerController.lookupFilter = sinon.spy((): any => { return null; });
+		containerService.lookupFilter = sinon.spy((): any => { return null; });
 		buildController();
-		sinon.assert.calledOnce(cardContainerController.lookupFilter);
+		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.false;
 	});
 
@@ -121,14 +121,12 @@ describe('CardSearchController', () => {
 			delay: delay,
 		};
 
-		var $element: any = {
-			controller(): any {
-				return cardContainerController;
-			},
+		var newScope: any = {
+			containerService: containerService,
 		};
 
 		var controllerResult: test.IControllerResult<CardSearchController>
-			= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings, { $element: $element });
+			= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings, null, newScope);
 
 		scope = controllerResult.scope;
 		cardSearch = controllerResult.controller;
