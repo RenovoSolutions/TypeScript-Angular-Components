@@ -51,7 +51,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		this.filteredDataSet = processedData.filteredDataSet;
 	}
 
-	refresh: {(): void} = (): void => {
+	refresh(): void {
 		if (!this.loadingDataSet) {
 			this.processData();
 			this.observable.fire('redrawing');
