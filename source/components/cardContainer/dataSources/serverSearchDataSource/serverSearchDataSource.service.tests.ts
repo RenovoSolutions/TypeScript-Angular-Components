@@ -112,5 +112,14 @@ describe('serverSearchDataSource', () => {
 
 			expect(source.dataSet).to.be.null;
 		});
+
+		it('should clear the data set without making a request if search is less than minimum length', (): void => {
+			searchFilter.searchText = 'se';
+			source.refresh();
+
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
+
+			expect(source.dataSet).to.be.null;
+		});
 	});
 });
