@@ -4,8 +4,6 @@ import * as angular from 'angular';
 
 import 'angular-ui-bootstrap';
 import 'angular-sanitize';
-import 'rangy';
-import 'textangular';
 
 import '../libraries/angular-bootstrap-slider/index';
 
@@ -23,7 +21,6 @@ angular.module(moduleName, [
 	'ui.bootstrap',
 	'ui.bootstrap-slider',
 	'ngSanitize',
-	'textAngular',
 
 	behaviors.moduleName,
 	components.moduleName,
