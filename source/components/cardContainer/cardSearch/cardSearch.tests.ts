@@ -119,14 +119,11 @@ describe('CardSearchController', () => {
 	function buildController(delay?: number): void {
 		var bindings: any = {
 			delay: delay,
-		};
-
-		var newScope: any = {
 			containerService: containerService,
 		};
 
 		var controllerResult: test.IControllerResult<CardSearchController>
-			= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings, null, newScope);
+			= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings);
 
 		scope = controllerResult.scope;
 		cardSearch = controllerResult.controller;
