@@ -24,6 +24,10 @@ export var controllerName: string = 'CardContainerController';
 export var defaultMaxColumnSorts: number = 2;
 export var defaultSelectionTitle: string = 'Select card';
 
+export interface ICardContainerScope extends angular.IScope {
+	containerService: ICardContainerService;
+}
+
 export interface ICardContainerBindings {
 	source: IDataSource<any>;
 	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
@@ -54,6 +58,22 @@ export interface ISelectionViewData {
 	disabledSelection?: boolean;
 }
 
+export interface ICardContainerService {
+	pager: dataPager.IDataPager;
+	dataSource: IDataSource<any>;
+	lookupFilter(type: string): filters.IFilter;
+}
+
+export class CardContainerService {
+	constructor(public pager: dataPager.IDataPager
+			, public dataSource: IDataSource<any>
+			, private filters: { [index: string]: filters.IFilter }) {}
+
+	lookupFilter(type: string): filters.IFilter {
+		return this.filters[type];
+	}
+}
+
 export class CardContainerController {
 	// bindings
 	source: IDataSource<any>;
@@ -81,7 +101,7 @@ export class CardContainerController {
 	makeCard: angular.ITranscludeFunction;
 
 	static $inject: string[] = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
-	constructor(private $scope: angular.IScope
+	constructor(private $scope: ICardContainerScope
 			, $attrs: ICardContainerAttrs
 			, private object: __object.IObjectUtility
 			, private array: __array.IArrayUtility
@@ -122,10 +142,8 @@ export class CardContainerController {
 		if (this.dataSource.sorts == null) {
 			this.dataSource.sorts = [];
 		}
-	}
 
-	lookupFilter(type: string): filters.IFilter {
-		return this.filters[type];
+		$scope.containerService = new CardContainerService(this.pager, this.dataSource, <{ [index: string]: filters.IFilter }>this.filters);
 	}
 
 	sortSelected(): void {
