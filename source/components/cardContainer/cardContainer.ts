@@ -61,16 +61,27 @@ export interface ISelectionViewData {
 export interface ICardContainerService {
 	pager: dataPager.IDataPager;
 	dataSource: IDataSource<any>;
+	numberSelected: number;
 	lookupFilter(type: string): filters.IFilter;
 }
 
 export class CardContainerService {
-	constructor(public pager: dataPager.IDataPager
-			, public dataSource: IDataSource<any>
-			, private filters: { [index: string]: filters.IFilter }) {}
+	pager: dataPager.IDataPager;
+	dataSource: IDataSource<any>;
+	private filters: { [index: string]: filters.IFilter };
+
+	constructor(private cardContainer: CardContainerController) {
+		this.pager = cardContainer.pager;
+		this.dataSource = cardContainer.dataSource;
+		this.filters = <{ [index: string]: filters.IFilter }>cardContainer.filters;
+	}
 
 	lookupFilter(type: string): filters.IFilter {
 		return this.filters[type];
+	}
+
+	get numberSelected(): number {
+		return this.cardContainer.numberSelected;
 	}
 }
 
@@ -143,7 +154,7 @@ export class CardContainerController {
 			this.dataSource.sorts = [];
 		}
 
-		$scope.containerService = new CardContainerService(this.pager, this.dataSource, <{ [index: string]: filters.IFilter }>this.filters);
+		$scope.containerService = new CardContainerService(this);
 	}
 
 	sortSelected(): void {
