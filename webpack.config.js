@@ -8,4 +8,6 @@ var webpackConfig = webpack.library(library);
 webpackRawLoader(webpackConfig);
 webpackCssLoader(webpackConfig);
 
+webpackConfig.devtool = "inline-source-map";
+
 module.exports = webpackConfig;
