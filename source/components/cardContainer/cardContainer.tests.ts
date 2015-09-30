@@ -11,6 +11,8 @@ import test = services.test;
 
 import {
 	CardContainerController,
+	ICardContainerService,
+	ICardContainerScope,
 	ICardContainerAttrs,
 	IBreakpointSize,
 	IColumn,
@@ -45,7 +47,7 @@ interface IFilterMock {
 }
 
 describe('CardContainerController', () => {
-	var scope: angular.IScope;
+	var scope: ICardContainerScope;
 	var cardContainer: CardContainerController;
 	var mockedDataSource: IDataSourceMock;
 	var $attrs: ICardContainerAttrs;
@@ -214,57 +216,85 @@ describe('CardContainerController', () => {
 		});
 	});
 
-	describe('filters', (): void => {
-		it('should init data source filters from card container filters', (): void => {
-			var filters: IFilterMock[] = [
-				{
-					type: 'type1',
-					filter: sinon.spy(),
-				},
-				{
-					type: 'type2',
-					filter: sinon.spy(),
-				},
-			];
+	describe('containerService', (): void => {
+		let containerService: ICardContainerService;
 
-			cardContainer.filters = filters;
+		it('should put the dataSource and pager on the container service', (): void => {
 			buildController();
+			containerService = scope.containerService;
 
-			expect(cardContainer.lookupFilter('type1')).to.equal(filters[0]);
-			expect(cardContainer.lookupFilter('type2')).to.equal(filters[1]);
-			expect(cardContainer.dataSource.filters['type1']).to.equal(filters[0]);
-			expect(cardContainer.dataSource.filters['type2']).to.equal(filters[1]);
+			expect(containerService.dataSource).to.equal(cardContainer.dataSource);
+			expect(containerService.pager).to.equal(cardContainer.pager);
 		});
 
-		it('should init filters from data source filters if no filters are specified', (): void => {
-			var filters: { [index: string]: IFilterMock } = {};
-			filters['type'] = {
-				type: 'type',
-				filter: sinon.spy(),
-			};
-
-			var dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.filters = filters;
-
-			cardContainer.source = <any>dataSource;
+		it('should specify a getter to get the numberSelected off the card container', (): void => {
 			buildController();
+			containerService = scope.containerService;
 
-			expect(cardContainer.lookupFilter('type')).to.equal(filters['type']);
-			expect(cardContainer.dataSource.filters).to.equal(filters);
+			cardContainer.numberSelected = 5;
+
+			expect(containerService.numberSelected).to.equal(cardContainer.numberSelected);
+
+			cardContainer.numberSelected = 10;
+
+			expect(containerService.numberSelected).to.equal(cardContainer.numberSelected);
 		});
 
-		it('should return undefined if the specified filter does not exist', (): void => {
-			var filters: { [index: string]: IFilterMock } = {};
-			filters['myFilter'] = {
-				type: 'myFilter',
-				filter: sinon.spy(),
-			};
+		describe('filters', (): void => {
+			it('should init data source filters from card container filters', (): void => {
+				let filters: IFilterMock[] = [
+					{
+						type: 'type1',
+						filter: sinon.spy(),
+					},
+					{
+						type: 'type2',
+						filter: sinon.spy(),
+					},
+				];
 
-			cardContainer.filters = <any>filters;
-			buildController();
+				cardContainer.filters = filters;
+				buildController();
+				containerService = scope.containerService;
 
-			expect(cardContainer.lookupFilter('myFilter')).to.equal(filters['myFilter']);
-			expect(cardContainer.lookupFilter('nonExistantFilter')).to.be.undefined;
+				expect(containerService.lookupFilter('type1')).to.equal(filters[0]);
+				expect(containerService.lookupFilter('type2')).to.equal(filters[1]);
+				expect(containerService.dataSource.filters['type1']).to.equal(filters[0]);
+				expect(containerService.dataSource.filters['type2']).to.equal(filters[1]);
+			});
+
+			it('should init filters from data source filters if no filters are specified', (): void => {
+				let filters: { [index: string]: IFilterMock } = {};
+				filters['type'] = {
+					type: 'type',
+					filter: sinon.spy(),
+				};
+
+				let dataSource: IDataSourceMock = buildMockedDataSource();
+				dataSource.filters = filters;
+
+				cardContainer.source = <any>dataSource;
+				buildController();
+				containerService = scope.containerService;
+
+				expect(containerService.lookupFilter('type')).to.equal(filters['type']);
+				expect(containerService.dataSource.filters).to.equal(filters);
+			});
+
+			it('should return undefined if the specified filter does not exist', (): void => {
+				let filters: { [index: string]: IFilterMock } = {};
+				filters['myFilter'] = {
+					type: 'myFilter',
+					filter: sinon.spy(),
+				};
+
+				cardContainer.filters = <any>filters;
+				buildController();
+				containerService = scope.containerService;
+
+				expect(containerService.lookupFilter('myFilter')).to.equal(filters['myFilter']);
+				expect(containerService.lookupFilter('nonExistantFilter')).to.be.undefined;
+			});
 		});
 	});
 
