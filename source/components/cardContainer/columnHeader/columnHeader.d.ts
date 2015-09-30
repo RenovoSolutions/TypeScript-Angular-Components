@@ -1,4 +1,3 @@
-/// <reference path="../../../../typings/jquery/jquery.d.ts" />
 import * as angular from 'angular';
 import { ISortDirections } from '../sorts/sortDirection';
 import { IColumn } from '../column';
