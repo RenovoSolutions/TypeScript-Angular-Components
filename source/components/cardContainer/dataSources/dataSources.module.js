@@ -11,6 +11,8 @@ var dataServiceDataSource = require('./dataServiceDataSource/dataServiceDataSour
 exports.dataServiceDataSource = dataServiceDataSource;
 var simpleDataSource = require('./simpleDataSource/simpleDataSource.service');
 exports.simpleDataSource = simpleDataSource;
+var serverSearchDataSource = require('./serverSearchDataSource/serverSearchDataSource.service');
+exports.serverSearchDataSource = serverSearchDataSource;
 var dataSourceProcessor = require('./dataSourceProcessor.service');
 exports.dataSourceProcessor = dataSourceProcessor;
 var dataSourceBase = require('./dataSourceBase.service');
@@ -23,6 +25,7 @@ angular.module(exports.moduleName, [
     dataPager.moduleName,
     dataServiceDataSource.moduleName,
     simpleDataSource.moduleName,
+    serverSearchDataSource.moduleName,
 ])
     .service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);
 //# sourceMappingURL=dataSources.module.js.map
