@@ -21,9 +21,8 @@ export class SelectionControlController {
 	dataSource: IDataSource<any>;
 	private containerService: ICardContainerService;
 
-	static $inject: string[] = ['$scope', '$element', __boolean.serviceName];
+	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor(private $scope: angular.IScope
-		, $element: angular.IAugmentedJQuery
 			, bool: __boolean.IBooleanUtility) {
 		this.selectedItems = this.containerService.numberSelected;
 		this.pagingEnabled = bool.toBool(this.containerService.pager);

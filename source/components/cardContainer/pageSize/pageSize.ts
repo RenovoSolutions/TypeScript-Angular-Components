@@ -20,9 +20,8 @@ export class PageSizeController {
 	hasPageFilter: boolean;
 	private containerService: ICardContainerService;
 
-	static $inject: string[] = ['$scope', '$element'];
-	constructor($scope: angular.IScope
-			, $element: angular.IAugmentedJQuery) {
+	static $inject: string[] = ['$scope'];
+	constructor($scope: angular.IScope) {
 		this.selectedPageSize = defaultPageSize;
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;

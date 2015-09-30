@@ -33,9 +33,8 @@ export class PagerController {
 	private lastPage: number;
 	private visiblePageCount: number;
 
-	static $inject: string[] = ['$scope', '$element'];
-	constructor($scope: angular.IScope
-			, $element: angular.IAugmentedJQuery) {
+	static $inject: string[] = ['$scope'];
+	constructor($scope: angular.IScope) {
 		this.pager = this.containerService.pager;
 
 		if (pager == null) {
