@@ -58,9 +58,7 @@
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
-    "rangy": "^1.3.0",
     "signature_pad": "~1.4.0",
-    "textangular": "~1.3.11",
     "typescript-angular-utilities": "~2.1.0"
   },
   "license": "GPL-3.0"
