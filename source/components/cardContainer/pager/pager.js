@@ -7,7 +7,7 @@ exports.directiveName = 'rlPager';
 exports.controllerName = 'PagerController';
 exports.defaultVisiblePageCount = 5;
 var PagerController = (function () {
-    function PagerController($scope, $element) {
+    function PagerController($scope) {
         var _this = this;
         this.canGoBack = false;
         this.canGoForward = false;
@@ -21,15 +21,14 @@ var PagerController = (function () {
             }
             _this.updatePaging();
         };
-        var cardContainerController = $element.controller('rlCardContainer');
-        this.pager = cardContainerController.pager;
+        this.pager = this.containerService.pager;
         if (pager == null) {
             this.hasPageFilter = false;
         }
         else {
             this.visiblePageCount = this.pageCount != null ? this.pageCount : exports.defaultVisiblePageCount;
             this.lastPage = 1;
-            this.dataSource = cardContainerController.dataSource;
+            this.dataSource = this.containerService.dataSource;
             $scope.$watch(function () { return _this.dataSource.count; }, this.updatePageCount);
             $scope.$watch(function () { return _this.pager.pageSize; }, this.updatePageCount);
             $scope.$watch(function () { return _this.currentPage; }, function (page) {
@@ -79,7 +78,7 @@ var PagerController = (function () {
     PagerController.prototype.last = function () {
         this.currentPage = this.lastPage;
     };
-    PagerController.$inject = ['$scope', '$element'];
+    PagerController.$inject = ['$scope'];
     return PagerController;
 })();
 exports.PagerController = PagerController;
@@ -87,11 +86,13 @@ function pager() {
     'use strict';
     return {
         restrict: 'E',
-        require: '^^rlCardContainer',
         template: require('./pager.html'),
+        controller: exports.controllerName,
+        controllerAs: 'pager',
         scope: {},
         bindToController: {
             pageCount: '=visiblePages',
+            containerService: '=',
         },
     };
 }

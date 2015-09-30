@@ -10,6 +10,9 @@ export declare var directiveName: string;
 export declare var controllerName: string;
 export declare var defaultMaxColumnSorts: number;
 export declare var defaultSelectionTitle: string;
+export interface ICardContainerScope extends angular.IScope {
+    containerService: ICardContainerService;
+}
 export interface ICardContainerBindings {
     source: IDataSource<any>;
     filters: filters.IFilter[] | {
@@ -37,6 +40,21 @@ export interface ISelectionViewData {
     selected: boolean;
     selectionTitle?: string;
     disabledSelection?: boolean;
+}
+export interface ICardContainerService {
+    pager: dataPager.IDataPager;
+    dataSource: IDataSource<any>;
+    numberSelected: number;
+    lookupFilter(type: string): filters.IFilter;
+}
+export declare class CardContainerService {
+    private cardContainer;
+    pager: dataPager.IDataPager;
+    dataSource: IDataSource<any>;
+    private filters;
+    constructor(cardContainer: CardContainerController);
+    lookupFilter(type: string): filters.IFilter;
+    numberSelected: number;
 }
 export declare class CardContainerController {
     private $scope;
@@ -70,8 +88,7 @@ export declare class CardContainerController {
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: ICardContainerAttrs, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
-    lookupFilter(type: string): filters.IFilter;
+    constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
     sortSelected(): void;
     openCard(): boolean;
     sort(column: IColumn): void;

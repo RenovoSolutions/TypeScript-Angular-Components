@@ -13,12 +13,13 @@ export declare class PagerController {
     currentPage: number;
     pages: number[];
     hasPageFilter: boolean;
+    private containerService;
     private pager;
     private dataSource;
     private lastPage;
     private visiblePageCount;
     static $inject: string[];
-    constructor($scope: angular.IScope, $element: angular.IAugmentedJQuery);
+    constructor($scope: angular.IScope);
     private updatePageCount;
     private updatePaging();
     first(): void;

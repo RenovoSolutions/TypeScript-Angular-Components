@@ -14,10 +14,10 @@ export declare class CardSearchController {
     searchLengthError: boolean;
     minSearchLength: number;
     hasSearchFilter: boolean;
-    private cardContainerController;
+    private containerService;
     private searchFilter;
     static $inject: string[];
-    constructor($scope: angular.IScope, $timeout: angular.ITimeoutService, $element: angular.IAugmentedJQuery);
+    constructor($scope: angular.IScope, $timeout: angular.ITimeoutService);
     private validateSearchLength(search, minLength);
 }
 export declare function cardSearch(): angular.IDirective;

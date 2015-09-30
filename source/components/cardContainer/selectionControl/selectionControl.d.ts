@@ -10,9 +10,9 @@ export declare class SelectionControlController {
     selectedItems: number;
     pagingEnabled: boolean;
     dataSource: IDataSource<any>;
-    private cardContainerController;
+    private containerService;
     static $inject: string[];
-    constructor($scope: angular.IScope, $element: angular.IAugmentedJQuery, bool: __boolean.IBooleanUtility);
+    constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility);
     selectPage(): void;
     selectAll(): void;
     clearPage(): void;

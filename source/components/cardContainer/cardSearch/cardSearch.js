@@ -8,18 +8,17 @@ exports.controllerName = 'CardSearchController';
 exports.defaultSearchPlaceholder = 'Search';
 exports.defaultSearchDelay = 1000;
 var CardSearchController = (function () {
-    function CardSearchController($scope, $timeout, $element) {
+    function CardSearchController($scope, $timeout) {
         var _this = this;
         this.searchLengthError = false;
         this.hasSearchFilter = true;
-        this.cardContainerController = $element.controller('rlCardContainer');
-        this.searchFilter = this.cardContainerController.lookupFilter(__genericSearchFilter.filterName);
+        this.searchFilter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
         if (this.searchFilter == null) {
             this.hasSearchFilter = false;
         }
         else {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.cardContainerController.dataSource;
+            var dataSource = this.containerService.dataSource;
             var delay = this.delay != null
                 ? this.delay
                 : exports.defaultSearchDelay;
@@ -31,7 +30,7 @@ var CardSearchController = (function () {
                 if (timer != null) {
                     $timeout.cancel(timer);
                 }
-                timer = $timeout(dataSource.refresh, delay);
+                timer = $timeout(dataSource.refresh.bind(dataSource), delay);
             });
         }
     }
@@ -41,7 +40,7 @@ var CardSearchController = (function () {
             && search.length > 0
             && search.length < minLength;
     };
-    CardSearchController.$inject = ['$scope', '$timeout', '$element'];
+    CardSearchController.$inject = ['$scope', '$timeout'];
     return CardSearchController;
 })();
 exports.CardSearchController = CardSearchController;
@@ -49,13 +48,13 @@ function cardSearch() {
     'use strict';
     return {
         restrict: 'E',
-        require: '^^rlCardContainer',
         template: require('./cardSearch.html'),
         controller: exports.controllerName,
         controllerAs: 'cardSearch',
         scope: {},
         bindToController: {
             delay: '=searchDelay',
+            containerService: '=',
         },
     };
 }
