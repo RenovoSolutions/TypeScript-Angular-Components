@@ -664,7 +664,7 @@ describe('CardContainerController', () => {
 		var controllerResult: test.IControllerResult<CardContainerController>
 			= test.angularFixture.controllerWithBindings<CardContainerController>(controllerName, cardContainer);
 
-		scope = controllerResult.scope;
+		scope = <ICardContainerScope>controllerResult.scope;
 		cardContainer = controllerResult.controller;
 	}
 
