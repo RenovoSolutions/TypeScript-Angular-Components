@@ -13,6 +13,7 @@ export declare var defaultMaxColumnSorts: number;
 export declare var defaultSelectionTitle: string;
 export interface ICardContainerScope extends angular.IScope {
     containerService: ICardContainerService;
+    containerData: any;
 }
 export interface ICardContainerBindings {
     source: IDataSource<any>;

@@ -9,6 +9,9 @@ exports.defaultPageSize = 10;
 var PageSizeController = (function () {
     function PageSizeController($scope) {
         var _this = this;
+        if (this.containerService == null) {
+            return;
+        }
         this.selectedPageSize = exports.defaultPageSize;
         this.pageSizes = exports.availablePageSizes;
         this.hasPageFilter = true;

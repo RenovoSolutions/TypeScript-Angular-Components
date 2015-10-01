@@ -24,6 +24,10 @@ export interface ICardBindings {
 }
 export interface ICardScope extends angular.IScope {
     collapse(): void;
+    setSelected(value: boolean): void;
+    refresh(): void;
+    remove(): void;
+    containerData: any;
     __rlCardContainer: CardContainerController;
     __initContents(hasBody: boolean, hasFooter: boolean): void;
 }
@@ -69,11 +73,11 @@ export declare class CardController {
     static $inject: string[];
     constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
     toggleContent(): void;
-    setSelected(value: boolean): void;
     validateCard(): boolean;
     saveCard(): angular.IPromise<void>;
     clickCard(): void;
     private autosave;
     private open();
+    private setSelected(value);
 }
 export declare function card(): angular.IDirective;

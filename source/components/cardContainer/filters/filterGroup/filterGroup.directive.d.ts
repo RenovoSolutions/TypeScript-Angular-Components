@@ -3,17 +3,20 @@ import { IDataSource } from '../../dataSources/dataSources.module';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
-export interface IFilterGroupScope extends angular.IScope {
+export interface IFilterGroupBindings {
     icon: string;
     filterGroup: IFilterGroup;
     source: IDataSource<any>;
 }
 export declare class FilterGroupController {
     private $scope;
+    icon: string;
+    filterGroup: IFilterGroup;
+    source: IDataSource<any>;
     hasIcon: boolean;
     showChildren: boolean;
     static $inject: string[];
-    constructor($scope: IFilterGroupScope);
+    constructor($scope: angular.IScope);
     toggleChildren(): void;
     selectOption(option: IFilterOption): void;
 }
