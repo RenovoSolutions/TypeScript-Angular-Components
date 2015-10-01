@@ -11,7 +11,6 @@ import test = services.test;
 
 import {
 	CardContainerController,
-	ICardContainerService,
 	ICardContainerScope,
 	ICardContainerAttrs,
 	IBreakpointSize,
