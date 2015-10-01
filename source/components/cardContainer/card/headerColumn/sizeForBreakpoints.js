@@ -11,7 +11,7 @@ function sizeForBreakpoints($parse, stringUtility) {
         link: linkDirective,
     };
     function linkDirective(scope, element, attributes) {
-        var sizes = $parse(attributes.sizeForBreakpoints)(scope);
+        var sizes = $parse(attributes.rlSizeForBreakpoints)(scope);
         var classes = [];
         classes.push(getColumnClass(sizes, breakpoint_1.xs));
         classes.push(getColumnClass(sizes, breakpoint_1.sm));
