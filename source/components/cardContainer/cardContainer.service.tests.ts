@@ -34,7 +34,7 @@ interface IFilterMock {
 }
 
 interface ICardContainerMock {
-	source: IDataSourceMock;
+	dataSource: IDataSourceMock;
 	pager: IDataPagerMock;
 	filters: IFilterMock[] | { [index: string]: IFilterMock };
 	numberSelected: number;
@@ -46,7 +46,7 @@ describe('CardContainerService', () => {
 
 	beforeEach((): void => {
 		cardContainer = {
-			source: { refresh: sinon.spy() },
+			dataSource: { refresh: sinon.spy() },
 			pager: { pageSize: 5 },
 			filters: [],
 			numberSelected: 0,
@@ -56,7 +56,7 @@ describe('CardContainerService', () => {
 	});
 
 	it('should put the dataSource and pager on the service', (): void => {
-		expect(containerService.dataSource).to.equal(cardContainer.source);
+		expect(containerService.dataSource).to.equal(cardContainer.dataSource);
 		expect(containerService.pager).to.equal(cardContainer.pager);
 	});
 
@@ -102,7 +102,7 @@ describe('CardContainerService', () => {
 			let dataSource: IDataSourceMock = { refresh: sinon.spy() };
 			dataSource.filters = filters;
 
-			cardContainer.source = <any>dataSource;
+			cardContainer.dataSource = <any>dataSource;
 			cardContainer.filters = filters;
 			containerService = new CardContainerService(<any>cardContainer);
 
