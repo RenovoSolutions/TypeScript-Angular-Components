@@ -7,11 +7,10 @@ function itemCount() {
     return {
         restrict: 'E',
         require: '^^rlCardContainer',
-        template: "\n<p ng-show=\"!source.loadingDataSet\">\n\tShowing <strong>{{source.dataSet.length}} of {{source.count}}</strong> total items\n</p>",
-        scope: true,
-        link: function (scope, element, attrs, cardContainerController) {
-            scope.source = cardContainerController.dataSource;
-        }
+        template: require('./itemCount.html'),
+        scope: {
+            containerService: '=',
+        },
     };
 }
 exports.itemCount = itemCount;

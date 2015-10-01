@@ -317,19 +317,14 @@ describe('PagerController', () => {
 
 		var bindings: any = {
 			pageCount: pageCount,
-		};
-
-		var $element: any = {
-			controller(): any {
-				return {
-					pager: dataPager,
-					dataSource: dataSource,
-				};
+			containerService: {
+				pager: dataPager,
+				dataSource: dataSource,
 			},
 		};
 
 		var controllerResult: test.IControllerResult<PagerController>
-			= test.angularFixture.controllerWithBindings<PagerController>(controllerName, bindings, { $element: $element });
+			= test.angularFixture.controllerWithBindings<PagerController>(controllerName, bindings);
 
 		scope = controllerResult.scope;
 		pager = controllerResult.controller;

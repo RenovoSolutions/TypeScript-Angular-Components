@@ -8,8 +8,8 @@ export declare class PageSizeController {
     selectedPageSize: number;
     pageSizes: number[];
     hasPageFilter: boolean;
-    private cardContainerController;
+    private containerService;
     static $inject: string[];
-    constructor($scope: angular.IScope, $element: angular.IAugmentedJQuery);
+    constructor($scope: angular.IScope);
 }
 export declare function pageSize(): angular.IDirective;

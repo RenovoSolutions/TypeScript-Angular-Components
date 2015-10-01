@@ -6,7 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IDataSource } from '../dataSources/dataSource';
-import { CardContainerController } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
 export var directiveName: string = 'rlCardSearch';
@@ -28,22 +28,20 @@ export class CardSearchController {
 	searchLengthError: boolean = false;
 	minSearchLength: number;
 	hasSearchFilter: boolean = true;
-	private cardContainerController: CardContainerController;
+	private containerService: ICardContainerService;
 	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
-	static $inject: string[] = ['$scope', '$timeout', '$element'];
+	static $inject: string[] = ['$scope', '$timeout'];
 	constructor($scope: angular.IScope
-			, $timeout: angular.ITimeoutService
-			, $element: angular.IAugmentedJQuery) {
-		this.cardContainerController = $element.controller('rlCardContainer');
-		this.searchFilter = <__genericSearchFilter.IGenericSearchFilter>this.cardContainerController.lookupFilter(__genericSearchFilter.filterName);
+			, $timeout: angular.ITimeoutService) {
+		this.searchFilter = <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
 
 		if (this.searchFilter == null) {
 			this.hasSearchFilter = false;
 		} else {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
-			var dataSource: IDataSource<any> = this.cardContainerController.dataSource;
+			var dataSource: IDataSource<any> = this.containerService.dataSource;
 
 			var delay: number = this.delay != null
 				? this.delay
@@ -61,7 +59,7 @@ export class CardSearchController {
 					$timeout.cancel(timer);
 				}
 
-				timer = $timeout(dataSource.refresh, delay);
+				timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
 			});
 		}
 	}
@@ -78,13 +76,13 @@ export function cardSearch(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: '^^rlCardContainer',
 		template: require('./cardSearch.html'),
 		controller: controllerName,
 		controllerAs: 'cardSearch',
 		scope: {},
 		bindToController: {
 			delay: '=searchDelay',
+			containerService: '=',
 		},
 	};
 }

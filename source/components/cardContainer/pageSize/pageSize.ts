@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 import { dataPager } from '../dataSources/dataSources.module';
-import { CardContainerController } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export var directiveName: string = 'rlPageSize';
@@ -18,17 +18,15 @@ export class PageSizeController {
 	selectedPageSize: number;
 	pageSizes: number[];
 	hasPageFilter: boolean;
-	private cardContainerController: CardContainerController;
+	private containerService: ICardContainerService;
 
-	static $inject: string[] = ['$scope', '$element'];
-	constructor($scope: angular.IScope
-			, $element: angular.IAugmentedJQuery) {
+	static $inject: string[] = ['$scope'];
+	constructor($scope: angular.IScope) {
 		this.selectedPageSize = defaultPageSize;
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
-		this.cardContainerController = $element.controller('rlCardContainer');
 
-		var pager: dataPager.IDataPager = this.cardContainerController.pager;
+		var pager: dataPager.IDataPager = this.containerService.pager;
 
 		if (pager == null) {
 			this.hasPageFilter = false;
@@ -36,7 +34,7 @@ export class PageSizeController {
 			$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
 				if (pager != null) {
 					pager.pageSize = newPageSize;
-					this.cardContainerController.dataSource.refresh();
+					this.containerService.dataSource.refresh();
 				}
 			});
 		}
@@ -47,10 +45,13 @@ export function pageSize(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: '^^rlCardContainer',
 		template: require('./pageSize.html'),
 		controller: controllerName,
 		controllerAs: 'controller',
+		scope: {},
+		bindToController: {
+			containerService: '=',
+		},
 	};
 }
 

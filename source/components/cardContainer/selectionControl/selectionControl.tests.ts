@@ -26,7 +26,7 @@ interface ISelectionViewData {
 	selected: boolean;
 }
 
-interface ICardContainerMock {
+interface IContainerServiceMock {
 	numberSelected: number;
 	dataSource: any;
 	pager: any;
@@ -35,7 +35,7 @@ interface ICardContainerMock {
 describe('selectionControl', () => {
 	var scope: angular.IScope;
 	var selection: SelectionControlController;
-	var cardContainerController: ICardContainerMock;
+	var containerService: IContainerServiceMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -44,13 +44,13 @@ describe('selectionControl', () => {
 	describe('pagingEnabled', (): void => {
 		it('should set pagingEnabled to true if a pager exists on the card container', (): void => {
 			buildController(null, true);
-			expect(cardContainerController.pager).to.exist;
+			expect(containerService.pager).to.exist;
 			expect(selection.pagingEnabled).to.be.true;
 		});
 
 		it('should set pagingEnabled to false if a pager does not exist on the card container', (): void => {
 			buildController(null, false);
-			expect(cardContainerController.pager).to.not.exist;
+			expect(containerService.pager).to.not.exist;
 			expect(selection.pagingEnabled).to.be.false;
 		});
 	});
@@ -58,12 +58,12 @@ describe('selectionControl', () => {
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
 		buildController();
 
-		cardContainerController.numberSelected = 2;
+		containerService.numberSelected = 2;
 		scope.$digest();
 
 		expect(selection.selectedItems).to.equal(2);
 
-		cardContainerController.numberSelected = 4;
+		containerService.numberSelected = 4;
 		scope.$digest();
 
 		expect(selection.selectedItems).to.equal(4);
@@ -141,7 +141,7 @@ describe('selectionControl', () => {
 	});
 
 	function buildController(items?: IItemMock[], hasPager?: boolean): void {
-		cardContainerController = {
+		containerService = {
 			numberSelected: 0,
 			dataSource: {
 				dataSet: _.take(items, 2),
@@ -150,14 +150,12 @@ describe('selectionControl', () => {
 			pager: hasPager ? {} : null,
 		};
 
-		var $element: any = {
-			controller(): any {
-				return cardContainerController;
-			},
+		var bindings: any = {
+			containerService: containerService,
 		};
 
 		var controllerResult: test.IControllerResult<SelectionControlController> =
-			test.angularFixture.controllerWithBindings<SelectionControlController>(controllerName, {}, { $element: $element });
+			test.angularFixture.controllerWithBindings<SelectionControlController>(controllerName, bindings);
 
 		scope = controllerResult.scope;
 		selection = controllerResult.controller;

@@ -8,14 +8,13 @@ exports.moduleName = 'rl.ui.components.cardContainer.selectionControl';
 exports.directiveName = 'rlSelectionControl';
 exports.controllerName = 'SelectionControlController';
 var SelectionControlController = (function () {
-    function SelectionControlController($scope, $element, bool) {
+    function SelectionControlController($scope, bool) {
         var _this = this;
         this.$scope = $scope;
-        this.cardContainerController = $element.controller('rlCardContainer');
-        this.selectedItems = this.cardContainerController.numberSelected;
-        this.pagingEnabled = bool.toBool(this.cardContainerController.pager);
-        this.dataSource = this.cardContainerController.dataSource;
-        $scope.$watch(function () { return _this.cardContainerController.numberSelected; }, function (value) {
+        this.selectedItems = this.containerService.numberSelected;
+        this.pagingEnabled = bool.toBool(this.containerService.pager);
+        this.dataSource = this.containerService.dataSource;
+        $scope.$watch(function () { return _this.containerService.numberSelected; }, function (value) {
             _this.selectedItems = value;
         });
     }
@@ -43,7 +42,7 @@ var SelectionControlController = (function () {
         });
         this.$scope.$emit('selectionChanged'); //*events?
     };
-    SelectionControlController.$inject = ['$scope', '$element', __boolean.serviceName];
+    SelectionControlController.$inject = ['$scope', __boolean.serviceName];
     return SelectionControlController;
 })();
 exports.SelectionControlController = SelectionControlController;
@@ -51,10 +50,13 @@ function selectionControl() {
     'use strict';
     return {
         restrict: 'E',
-        require: '^^rlCardContainer',
         template: require('./selectionControl.html'),
         controller: exports.controllerName,
         controllerAs: 'selection',
+        scope: {},
+        bindToController: {
+            containerService: '=',
+        },
     };
 }
 exports.selectionControl = selectionControl;
