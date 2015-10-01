@@ -110,7 +110,7 @@ function card() {
         template: require('./card.html'),
         require: '^^rlCardContainer',
         controller: exports.controllerName,
-        controllerAs: 'card',
+        controllerAs: '__card',
         scope: {},
         bindToController: {
             columns: '=',
