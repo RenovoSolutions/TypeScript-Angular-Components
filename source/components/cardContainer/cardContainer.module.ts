@@ -19,6 +19,7 @@ import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 
 import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
+import { ICardContainerService } from './cardContainer.service';
 
 export {
 	card,
