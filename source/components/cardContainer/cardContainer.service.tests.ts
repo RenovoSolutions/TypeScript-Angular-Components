@@ -36,7 +36,7 @@ interface IFilterMock {
 interface ICardContainerMock {
 	dataSource: IDataSourceMock;
 	pager: IDataPagerMock;
-	filters: IFilterMock[] | { [index: string]: IFilterMock };
+	filters: { [index: string]: IFilterMock };
 	numberSelected: number;
 }
 
@@ -48,7 +48,7 @@ describe('CardContainerService', () => {
 		cardContainer = {
 			dataSource: { refresh: sinon.spy() },
 			pager: { pageSize: 5 },
-			filters: [],
+			filters: {},
 			numberSelected: 0,
 		};
 
@@ -72,24 +72,21 @@ describe('CardContainerService', () => {
 
 	describe('filters', (): void => {
 		it('should init data source filters from card container filters', (): void => {
-			let filters: IFilterMock[] = [
-				{
-					type: 'type1',
-					filter: sinon.spy(),
-				},
-				{
-					type: 'type2',
-					filter: sinon.spy(),
-				},
-			];
+			let filters: { [index: string]: IFilterMock } = <any>{};
+			filters['type1'] = {
+				type: 'type1',
+				filter: sinon.spy(),
+			};
+			filters['type2'] = {
+				type: 'type2',
+				filter: sinon.spy(),
+			};
 
 			cardContainer.filters = filters;
 			containerService = new CardContainerService(<any>cardContainer);
 
-			expect(containerService.lookupFilter('type1')).to.equal(filters[0]);
-			expect(containerService.lookupFilter('type2')).to.equal(filters[1]);
-			expect(containerService.dataSource.filters['type1']).to.equal(filters[0]);
-			expect(containerService.dataSource.filters['type2']).to.equal(filters[1]);
+			expect(containerService.lookupFilter('type1')).to.equal(filters['type1']);
+			expect(containerService.lookupFilter('type2')).to.equal(filters['type2']);
 		});
 
 		it('should init filters from data source filters if no filters are specified', (): void => {
