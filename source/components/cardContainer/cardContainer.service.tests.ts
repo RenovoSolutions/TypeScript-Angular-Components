@@ -14,8 +14,6 @@ import {
 	CardContainerService,
 } from './cardContainer.service';
 
-import { ISort, SortDirection } from '../sorts/sorts.module';
-
 import * as angular from 'angular';
 import 'angular-mocks';
 
