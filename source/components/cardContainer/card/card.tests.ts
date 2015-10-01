@@ -57,22 +57,53 @@ describe('CardController', () => {
 		card = <any>{};
 	});
 
-	it('should set the selected property', (): void => {
-		var selectSpy: Sinon.SinonSpy = sinon.spy();
-		buildController();
-		card.selectionChanged = selectSpy;
+	describe('scope', (): void => {
+		it('should provide a function for collapsing the card', (): void => {
+			buildController();
 
-		expect(card.item.viewData.selected).to.not.be.true;
+			card.showContent = true;
 
-		card.setSelected(true);
+			scope.collapse();
 
-		expect(card.item.viewData.selected).to.be.true;
+			expect(card.showContent).to.be.false;
+		});
 
-		card.setSelected(false);
+		it('should provide a function for setting the selected property', (): void => {
+			var selectSpy: Sinon.SinonSpy = sinon.spy();
+			buildController();
+			card.selectionChanged = selectSpy;
 
-		expect(card.item.viewData.selected).to.be.false;
+			expect(card.item.viewData.selected).to.not.be.true;
 
-		sinon.assert.calledTwice(selectSpy);
+			scope.setSelected(true);
+
+			expect(card.item.viewData.selected).to.be.true;
+
+			scope.setSelected(false);
+
+			expect(card.item.viewData.selected).to.be.false;
+
+			sinon.assert.calledTwice(selectSpy);
+		});
+
+		it('should provide a function for refreshing the data source', (): void => {
+			buildController();
+
+			scope.refresh();
+
+			sinon.assert.calledOnce(<Sinon.SinonSpy>card.source.refresh);
+		});
+
+		it('should provide a function for removing the current item from the data source', (): void => {
+			let item: any = { prop: 1 };
+
+			buildController(item);
+
+			scope.remove();
+
+			sinon.assert.calledOnce(<Sinon.SinonSpy>card.source.remove);
+			sinon.assert.calledWith(<Sinon.SinonSpy>card.source.remove, item);
+		});
 	});
 
 	describe('toggle', (): void => {
@@ -238,12 +269,16 @@ describe('CardController', () => {
 			};
 		}
 		card.item = item;
+		card.source = <any>{
+			refresh: sinon.spy(),
+			remove: sinon.spy(),
+		};
 
 		var controllerResult: test.IControllerResult<CardController>
 			= test.angularFixture.controllerWithBindings<CardController>(controllerName, card);
 
 		scope = <ICardScope>controllerResult.scope;
-		scope.rlCardContainer = <any>cardContainer;
+		scope.__rlCardContainer = <any>cardContainer;
 		card = controllerResult.controller;
 
 		var autosaveBehavior: IAutosaveBehaviorMock = {
