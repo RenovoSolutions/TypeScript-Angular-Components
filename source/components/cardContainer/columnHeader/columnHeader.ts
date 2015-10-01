@@ -26,7 +26,7 @@ export function cardColumnHeader($compile: angular.ICompileService): angular.IDi
 		restrict: 'E',
 		require: '^^rlCardContainer',
 		template: `
-			<div size-for-breakpoints="column.size" ng-click="sort()" title="{{::column.description}}"
+			<div rl-size-for-breakpoints="column.size" ng-click="sort()" title="{{::column.description}}"
 					class="column-header">
 				<div class="template-container" style="display: inline-block"></div>
 				<i ng-show="sorting === sortDirection.ascending" class="fa fa-sort-asc"></i>

@@ -8,7 +8,7 @@ import __string = services.string;
 import { xs, sm, md, lg } from '../../../../services/breakpoints/breakpoint';
 import { IBreakpointSize } from '../../column';
 
-export var sizeForBreakpointsName: string = 'sizeForBreakpoints';
+export var sizeForBreakpointsName: string = 'rlSizeForBreakpoints';
 
 export interface ISizeForBreapointsAttrs extends angular.IAttributes {
 	sizeForBreakpoints: string;
