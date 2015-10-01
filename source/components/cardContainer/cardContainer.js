@@ -9,30 +9,11 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var dataSources_module_1 = require('./dataSources/dataSources.module');
 var sorts_module_1 = require('./sorts/sorts.module');
 var breakpoint_1 = require('../../services/breakpoints/breakpoint');
+var cardContainer_service_1 = require('./cardContainer.service');
 exports.directiveName = 'rlCardContainer';
 exports.controllerName = 'CardContainerController';
 exports.defaultMaxColumnSorts = 2;
 exports.defaultSelectionTitle = 'Select card';
-var CardContainerService = (function () {
-    function CardContainerService(cardContainer) {
-        this.cardContainer = cardContainer;
-        this.pager = cardContainer.pager;
-        this.dataSource = cardContainer.dataSource;
-        this.filters = cardContainer.filters;
-    }
-    CardContainerService.prototype.lookupFilter = function (type) {
-        return this.filters[type];
-    };
-    Object.defineProperty(CardContainerService.prototype, "numberSelected", {
-        get: function () {
-            return this.cardContainer.numberSelected;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return CardContainerService;
-})();
-exports.CardContainerService = CardContainerService;
 var CardContainerController = (function () {
     function CardContainerController($scope, $attrs, object, array, dataPagerFactory, parentChild) {
         var _this = this;
@@ -106,7 +87,7 @@ var CardContainerController = (function () {
         if (this.dataSource.sorts == null) {
             this.dataSource.sorts = [];
         }
-        $scope.containerService = new CardContainerService(this);
+        $scope.containerService = new cardContainer_service_1.CardContainerService(this);
     }
     CardContainerController.prototype.sortSelected = function () {
         this.sort(this.selectionColumn);

@@ -2,7 +2,7 @@
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __string = typescript_angular_utilities_1.services.string;
 var breakpoint_1 = require('../../../../services/breakpoints/breakpoint');
-exports.sizeForBreakpointsName = 'sizeForBreakpoints';
+exports.sizeForBreakpointsName = 'rlSizeForBreakpoints';
 sizeForBreakpoints.$inject = ['$parse', __string.serviceName];
 function sizeForBreakpoints($parse, stringUtility) {
     'use strict';
