@@ -23,8 +23,9 @@ export interface ICardBindings {
     selectionChanged(): void;
 }
 export interface ICardScope extends angular.IScope {
-    rlCardContainer: CardContainerController;
-    initContents(hasBody: boolean, hasFooter: boolean): void;
+    collapse(): void;
+    __rlCardContainer: CardContainerController;
+    __initContents(hasBody: boolean, hasFooter: boolean): void;
 }
 export interface ICardBehavior {
     close(): boolean;
