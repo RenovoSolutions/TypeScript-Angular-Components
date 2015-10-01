@@ -292,7 +292,7 @@ export class CardContainerController {
 
 	private updateSelected: {(): void} = (): void => {
 		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
-			return item.viewData.selected;
+			return item.viewData != null && item.viewData.selected;
 		}).length;
 	}
 
