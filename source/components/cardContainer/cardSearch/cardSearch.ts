@@ -34,6 +34,10 @@ export class CardSearchController {
 	static $inject: string[] = ['$scope', '$timeout'];
 	constructor($scope: angular.IScope
 			, $timeout: angular.ITimeoutService) {
+		if (this.containerService == null) {
+			return;
+		}
+
 		if (this.searchFilter == null) {
 			let filter: __genericSearchFilter.IGenericSearchFilter
 				= <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);

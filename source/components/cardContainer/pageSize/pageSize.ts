@@ -22,6 +22,10 @@ export class PageSizeController {
 
 	static $inject: string[] = ['$scope'];
 	constructor($scope: angular.IScope) {
+		if (this.containerService == null) {
+			return;
+		}
+
 		this.selectedPageSize = defaultPageSize;
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
