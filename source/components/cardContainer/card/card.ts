@@ -35,6 +35,9 @@ export interface ICardBindings {
 
 export interface ICardScope extends angular.IScope {
 	collapse(): void;
+	setSelected(value: boolean): void;
+	refresh(): void;
+	remove(): void;
 
 	__rlCardContainer: CardContainerController;
 	__initContents(hasBody: boolean, hasFooter: boolean): void;
@@ -99,6 +102,11 @@ export class CardController {
 		};
 
 		$scope.collapse = this.autosave;
+		$scope.setSelected = this.setSelected.bind(this);
+		$scope.refresh = this.source.refresh.bind(this.source);
+		$scope.remove = (): void => {
+			this.source.remove(this.item);
+		}
 	}
 
 	toggleContent(): void {
@@ -107,16 +115,6 @@ export class CardController {
 		} else {
 			this.autosave();
 		}
-	}
-
-	setSelected(value: boolean): void {
-		if (_.isUndefined(this.item.viewData)) {
-			this.item.viewData = {};
-		}
-
-		this.item.viewData.selected = value;
-
-		this.selectionChanged();
 	}
 
 	validateCard(): boolean {
@@ -170,6 +168,16 @@ export class CardController {
 		if (this.$scope.__rlCardContainer.openCard()) {
 			this.showContent = true;
 		}
+	}
+
+	private setSelected(value: boolean): void {
+		if (_.isUndefined(this.item.viewData)) {
+			this.item.viewData = {};
+		}
+
+		this.item.viewData.selected = value;
+
+		this.selectionChanged();
 	}
 }
 
