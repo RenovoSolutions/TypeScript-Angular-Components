@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { IDataSource, dataPager } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pager';
 export var directiveName: string = 'rlPager';

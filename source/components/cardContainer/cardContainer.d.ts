@@ -6,6 +6,7 @@ import __parentChild = services.parentChildBehavior;
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
+import { ICardContainerService } from './cardContainer.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
 export declare var defaultMaxColumnSorts: number;
@@ -40,21 +41,6 @@ export interface ISelectionViewData {
     selected: boolean;
     selectionTitle?: string;
     disabledSelection?: boolean;
-}
-export interface ICardContainerService {
-    pager: dataPager.IDataPager;
-    dataSource: IDataSource<any>;
-    numberSelected: number;
-    lookupFilter(type: string): filters.IFilter;
-}
-export declare class CardContainerService {
-    private cardContainer;
-    pager: dataPager.IDataPager;
-    dataSource: IDataSource<any>;
-    private filters;
-    constructor(cardContainer: CardContainerController);
-    lookupFilter(type: string): filters.IFilter;
-    numberSelected: number;
 }
 export declare class CardContainerController {
     private $scope;

@@ -18,6 +18,8 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
+import { ICardContainerService, CardContainerService } from './cardContainer.service';
+
 export var directiveName: string = 'rlCardContainer';
 export var controllerName: string = 'CardContainerController';
 
@@ -56,33 +58,6 @@ export interface ISelectionViewData {
 	selected: boolean;
 	selectionTitle?: string;
 	disabledSelection?: boolean;
-}
-
-export interface ICardContainerService {
-	pager: dataPager.IDataPager;
-	dataSource: IDataSource<any>;
-	numberSelected: number;
-	lookupFilter(type: string): filters.IFilter;
-}
-
-export class CardContainerService {
-	pager: dataPager.IDataPager;
-	dataSource: IDataSource<any>;
-	private filters: { [index: string]: filters.IFilter };
-
-	constructor(private cardContainer: CardContainerController) {
-		this.pager = cardContainer.pager;
-		this.dataSource = cardContainer.dataSource;
-		this.filters = <{ [index: string]: filters.IFilter }>cardContainer.filters;
-	}
-
-	lookupFilter(type: string): filters.IFilter {
-		return this.filters[type];
-	}
-
-	get numberSelected(): number {
-		return this.cardContainer.numberSelected;
-	}
 }
 
 export class CardContainerController {

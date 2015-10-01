@@ -6,7 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IDataSource } from '../dataSources/dataSource';
-import { ICardContainerService } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
 export var directiveName: string = 'rlCardSearch';

@@ -44,10 +44,11 @@ var CardController = (function () {
         parentChild.registerChildBehavior(this.item, {
             close: this.autosave,
         });
-        $scope.initContents = function (hasBody, hasFooter) {
+        $scope.__initContents = function (hasBody, hasFooter) {
             _this.hasBody = hasBody;
             _this.hasFooter = hasFooter;
         };
+        $scope.collapse = this.autosave;
     }
     CardController.prototype.toggleContent = function () {
         if (!this.showContent) {
@@ -95,7 +96,7 @@ var CardController = (function () {
                 behavior.initCard();
             }
         });
-        if (this.$scope.rlCardContainer.openCard()) {
+        if (this.$scope.__rlCardContainer.openCard()) {
             this.showContent = true;
         }
     };
@@ -110,7 +111,7 @@ function card() {
         template: require('./card.html'),
         require: '^^rlCardContainer',
         controller: exports.controllerName,
-        controllerAs: 'card',
+        controllerAs: '__card',
         scope: {},
         bindToController: {
             columns: '=',
@@ -130,7 +131,7 @@ function card() {
             var footer;
             return {
                 pre: function (scope, element, attrs, rlCardContainer) {
-                    scope.rlCardContainer = rlCardContainer;
+                    scope.__rlCardContainer = rlCardContainer;
                     rlCardContainer.makeCard(scope, function (clone) {
                         content = clone.filter('rl-card-content');
                         footer = clone.filter('rl-card-footer');
@@ -145,7 +146,7 @@ function card() {
                         var footerArea = element.find('.footer-template');
                         footerArea.append(footer);
                     }
-                    scope.initContents(hasBody, hasFooter);
+                    scope.__initContents(hasBody, hasFooter);
                 },
             };
         },

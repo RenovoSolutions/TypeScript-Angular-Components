@@ -8,10 +8,10 @@ import __string = services.string;
 import { xs, sm, md, lg } from '../../../../services/breakpoints/breakpoint';
 import { IBreakpointSize } from '../../column';
 
-export var sizeForBreakpointsName: string = 'sizeForBreakpoints';
+export var sizeForBreakpointsName: string = 'rlSizeForBreakpoints';
 
 export interface ISizeForBreapointsAttrs extends angular.IAttributes {
-	sizeForBreakpoints: string;
+	rlSizeForBreakpoints: string;
 }
 
 sizeForBreakpoints.$inject = ['$parse', __string.serviceName];
@@ -25,7 +25,7 @@ export function sizeForBreakpoints($parse: angular.IParseService, stringUtility:
 	function linkDirective(scope: angular.IScope
 						, element: angular.IAugmentedJQuery
 						, attributes: ISizeForBreapointsAttrs): void {
-		var sizes: IBreakpointSize = $parse(attributes.sizeForBreakpoints)(scope);
+		var sizes: IBreakpointSize = $parse(attributes.rlSizeForBreakpoints)(scope);
 
 		var classes: any[] = [];
 		classes.push(getColumnClass(sizes, xs));
