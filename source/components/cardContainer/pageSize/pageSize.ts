@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 import { dataPager } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export var directiveName: string = 'rlPageSize';

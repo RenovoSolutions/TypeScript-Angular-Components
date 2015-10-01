@@ -9,7 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer';
+import { ICardContainerService } from '../cardContainer.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
 export var directiveName: string = 'rlSelectionControl';
