@@ -16,7 +16,6 @@ import * as messageLog from './messageLog/messageLog.module';
 import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
-import * as richTextEditor from './richTextEditor/richTextEditor';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
@@ -39,7 +38,6 @@ export {
 	multiStepIndicator,
 	ratingBar,
 	responsiveCardGrid,
-	richTextEditor,
 	signaturePad,
 	simpleCardList,
 	spinner,
@@ -65,7 +63,6 @@ angular.module(moduleName, [
 	multiStepIndicator.moduleName,
 	ratingBar.moduleName,
 	responsiveCardGrid.moduleName,
-	richTextEditor.moduleName,
 	signaturePad.moduleName,
 	simpleCardList.moduleName,
 	spinner.moduleName,

@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "angular-mocks": "^1.4.6",
+    "css-loader": "^0.19.0",
     "gulp": "^3.9.0",
     "gulp-utilities": "https://github.com/RenovoSolutions/Gulp-Typescript-Utilities/archive/1.0.2.tar.gz",
     "karma": "^0.13.10",
@@ -45,18 +46,19 @@
     "raw-loader": "^0.5.1",
     "sinon": "^1.17.0",
     "source-map-loader": "^0.1.5",
+    "style-loader": "^0.12.4",
     "ts-loader": "^0.5.5",
     "typescript": "^1.6.2",
     "webpack": "^1.12.2"
   },
   "dependencies": {
     "angular": "^1.4.6",
+    "angular-sanitize": "^1.4.7",
     "angular-ui-bootstrap": "^0.13.4",
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "signature_pad": "~1.4.0",
-    "textangular": "~1.4.6",
     "typescript-angular-utilities": "~2.1.0"
   },
   "license": "GPL-3.0"
