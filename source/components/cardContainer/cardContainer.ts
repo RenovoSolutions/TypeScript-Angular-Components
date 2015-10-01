@@ -28,6 +28,7 @@ export var defaultSelectionTitle: string = 'Select card';
 
 export interface ICardContainerScope extends angular.IScope {
 	containerService: ICardContainerService;
+	containerData: any;
 }
 
 export interface ICardContainerBindings {
@@ -130,6 +131,7 @@ export class CardContainerController {
 		}
 
 		$scope.containerService = new CardContainerService(this);
+		$scope.containerData = this.containerData;
 	}
 
 	sortSelected(): void {

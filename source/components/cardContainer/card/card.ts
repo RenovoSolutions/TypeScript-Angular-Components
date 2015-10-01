@@ -38,6 +38,7 @@ export interface ICardScope extends angular.IScope {
 	setSelected(value: boolean): void;
 	refresh(): void;
 	remove(): void;
+	containerData: any;
 
 	__rlCardContainer: CardContainerController;
 	__initContents(hasBody: boolean, hasFooter: boolean): void;
@@ -107,6 +108,7 @@ export class CardController {
 		$scope.remove = (): void => {
 			this.source.remove(this.item);
 		}
+		$scope.containerData = this.containerData;
 	}
 
 	toggleContent(): void {
