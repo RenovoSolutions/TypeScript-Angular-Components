@@ -34,8 +34,10 @@ export interface ICardBindings {
 }
 
 export interface ICardScope extends angular.IScope {
-	rlCardContainer: CardContainerController;
-	initContents(hasBody: boolean, hasFooter: boolean): void;
+	collapse(): void;
+
+	__rlCardContainer: CardContainerController;
+	__initContents(hasBody: boolean, hasFooter: boolean): void;
 }
 
 export interface ICardBehavior {
@@ -91,10 +93,12 @@ export class CardController {
 			close: this.autosave,
 		});
 
-		$scope.initContents = (hasBody: boolean, hasFooter: boolean): void => {
+		$scope.__initContents = (hasBody: boolean, hasFooter: boolean): void => {
 			this.hasBody = hasBody;
 			this.hasFooter = hasFooter;
 		};
+
+		$scope.collapse = this.autosave;
 	}
 
 	toggleContent(): void {
@@ -163,7 +167,7 @@ export class CardController {
 			}
 		});
 
-		if (this.$scope.rlCardContainer.openCard()) {
+		if (this.$scope.__rlCardContainer.openCard()) {
 			this.showContent = true;
 		}
 	}
@@ -200,7 +204,7 @@ export function card(): angular.IDirective {
 					, element: angular.IAugmentedJQuery
 					, attrs: angular.IAttributes
 					, rlCardContainer: CardContainerController): void {
-					scope.rlCardContainer = rlCardContainer;
+					scope.__rlCardContainer = rlCardContainer;
 					rlCardContainer.makeCard(scope, (clone: JQuery): void => {
 						content = clone.filter('rl-card-content');
 						footer = clone.filter('rl-card-footer');
@@ -217,7 +221,7 @@ export function card(): angular.IDirective {
 						var footerArea: JQuery = element.find('.footer-template');
 						footerArea.append(footer);
 					}
-					scope.initContents(hasBody, hasFooter);
+					scope.__initContents(hasBody, hasFooter);
 				},
 			};
 		},
