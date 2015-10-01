@@ -459,7 +459,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			controller.makeCard = transclude;
 
 			transclude(scope, (clone: JQuery): void => {
-				var header: JQuery = clone.filter('container-header');
+				var header: JQuery = clone.filter('rl-container-header');
 
 				if (header.length === 0) {
 					var defaultHeader = require('./defaultCardContainerHeader.html');
@@ -468,7 +468,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 				headerArea.append(header);
 
-				var footer: JQuery = clone.filter('container-footer');
+				var footer: JQuery = clone.filter('rl-container-footer');
 
 				if (footer.length === 0) {
 					var defaultFooter = require('./defaultCardContainerFooter.html');
