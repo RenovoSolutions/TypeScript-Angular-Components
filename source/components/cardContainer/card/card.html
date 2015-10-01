@@ -1,23 +1,23 @@
-<rl-generic-container selector="card.selectable">
+<rl-generic-container selector="__card.selectable">
 	<template when-selector="false" default>
-		<div class="card" ng-class="{ 'selected': card.item.viewData.selected }">
-			<div class="header" ng-click="card.toggleContent()" ng-class="{ 'active': card.hasBody || !card.permanentFooter }">
+		<div class="card" ng-class="{ 'selected': __card.item.viewData.selected }">
+			<div class="header" ng-click="__card.toggleContent()" ng-class="{ 'active': __card.hasBody || !__card.permanentFooter }">
 				<div class="row">
-					<div ng-repeat="column in card.columns">
-						<rl-card-header-column column="column" item="card.item"></rl-card-header-column>
+					<div ng-repeat="column in __card.columns">
+						<rl-card-header-column column="column" item="__card.item"></rl-card-header-column>
 					</div>
 				</div>
 			</div>
 
-			<div ng-show="card.showContent">
-				<ng-form rl-autosave="card.autosaveLink" save="card.saveCard()" validate="card.validateCard()">
-					<div class="body" ng-class="{ 'active': card.clickable }" ng-click="card.clickCard()">
+			<div ng-show="__card.showContent">
+				<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" validate="__card.validateCard()">
+					<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
 						<div class="content-template"></div>
 						<div class="clearfix"></div>
 					</div>
 				</ng-form>
 			</div>
-			<div ng-show="card.hasFooter && (card.showContent || card.permanentFooter)">
+			<div ng-show="__card.hasFooter && (__card.showContent || __card.permanentFooter)">
 				<div class="footer">
 					<div class="footer-template"></div>
 					<div class="clearfix"></div>
@@ -28,29 +28,29 @@
 	<template when-selector="true">
 		<div class="select-group">
 			<div class="select-column">
-				<input type="checkbox" class="stand-alone-checkbox" ng-model="card.item.viewData.selected" ng-change="card.selectionChanged()"
-					   ng-disabled="card.item.viewData.disabledSelection" title="{{card.item.viewData.selectionTitle}}" />
+				<input type="checkbox" class="stand-alone-checkbox" ng-model="__card.item.viewData.selected" ng-change="__card.selectionChanged()"
+					   ng-disabled="__card.item.viewData.disabledSelection" title="{{__card.item.viewData.selectionTitle}}" />
 			</div>
 			<div class="select-content">
 
-				<div class="card selectable" ng-class="{ 'selected': card.item.viewData.selected }">
-					<div class="header active" ng-click="card.toggleContent()">
+				<div class="__card selectable" ng-class="{ 'selected': __card.item.viewData.selected }">
+					<div class="header active" ng-click="__card.toggleContent()">
 						<div class="row">
-							<div ng-repeat="column in card.columns">
-								<rl-card-header-column column="column" item="card.item"></rl-card-header-column>
+							<div ng-repeat="column in __card.columns">
+								<rl-card-header-column column="column" item="__card.item"></rl-card-header-column>
 							</div>
 						</div>
 					</div>
 
-					<div ng-show="card.showContent">
-						<ng-form rl-autosave="card.autosaveLink" save="card.saveCard()" validate="card.validateCard()">
-							<div class="body" ng-class="{ 'active': card.clickable }" ng-click="card.clickCard()">
+					<div ng-show="__card.showContent">
+						<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" validate="__card.validateCard()">
+							<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
 								<div class="content-template"></div>
 								<div class="clearfix"></div>
 							</div>
 						</ng-form>
 					</div>
-					<div ng-show="card.hasFooter && (card.showContent || card.permanentFooter)">
+					<div ng-show="__card.hasFooter && (__card.showContent || __card.permanentFooter)">
 						<div class="footer">
 							<div class="footer-template"></div>
 							<div class="clearfix"></div>

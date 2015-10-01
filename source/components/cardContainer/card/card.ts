@@ -176,7 +176,7 @@ export function card(): angular.IDirective {
 		template: require('./card.html'),
 		require: '^^rlCardContainer',
 		controller: controllerName,
-		controllerAs: 'card',
+		controllerAs: '__card',
 		scope: {},
 		bindToController: {
 			columns: '=',
