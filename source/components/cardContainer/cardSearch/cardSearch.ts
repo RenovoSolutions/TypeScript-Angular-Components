@@ -34,10 +34,14 @@ export class CardSearchController {
 	static $inject: string[] = ['$scope', '$timeout'];
 	constructor($scope: angular.IScope
 			, $timeout: angular.ITimeoutService) {
-		this.searchFilter = <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
-
 		if (this.searchFilter == null) {
-			this.hasSearchFilter = false;
+			let filter: __genericSearchFilter.IGenericSearchFilter
+				= <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
+			this.searchFilter = filter;
+
+			if (filter == null) {
+				this.hasSearchFilter = false;
+			}
 		} else {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
@@ -83,6 +87,7 @@ export function cardSearch(): angular.IDirective {
 		bindToController: {
 			delay: '=searchDelay',
 			containerService: '=',
+			searchFilter: '=',
 		},
 	};
 }
