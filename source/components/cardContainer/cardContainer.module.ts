@@ -18,8 +18,7 @@ import * as pageSize from './pageSize/pageSize';
 import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 
-import { directiveName, cardContainer, controllerName, CardContainerController, ICardContainerBindings } from './cardContainer';
-import { ICardContainerService } from './cardContainer.service';
+import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
 
 export {
 	card,
@@ -35,6 +34,7 @@ export {
 };
 
 export * from './cardContainer';
+export * from './cardContainer.service';
 export * from './column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer';
