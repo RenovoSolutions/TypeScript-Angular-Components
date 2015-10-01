@@ -46,29 +46,30 @@ export class CardSearchController {
 			if (filter == null) {
 				this.hasSearchFilter = false;
 			}
-		} else {
-			this.searchPlaceholder = defaultSearchPlaceholder;
+			else {
+				this.searchPlaceholder = defaultSearchPlaceholder;
 
-			var dataSource: IDataSource<any> = this.containerService.dataSource;
+				var dataSource: IDataSource<any> = this.containerService.dataSource;
 
-			var delay: number = this.delay != null
-				? this.delay
-				: defaultSearchDelay;
+				var delay: number = this.delay != null
+					? this.delay
+					: defaultSearchDelay;
 
-			var timer: angular.IPromise<void>;
+				var timer: angular.IPromise<void>;
 
-			$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
-				this.searchFilter.searchText = search;
-				this.minSearchLength = this.searchFilter.minSearchLength;
+				$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
+					this.searchFilter.searchText = search;
+					this.minSearchLength = this.searchFilter.minSearchLength;
 
-				this.validateSearchLength(search, this.minSearchLength);
+					this.validateSearchLength(search, this.minSearchLength);
 
-				if (timer != null) {
-					$timeout.cancel(timer);
-				}
+					if (timer != null) {
+						$timeout.cancel(timer);
+					}
 
-				timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
-			});
+					timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
+				});
+			}
 		}
 	}
 
