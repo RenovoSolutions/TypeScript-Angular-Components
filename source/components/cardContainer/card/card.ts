@@ -38,6 +38,7 @@ export interface ICardScope extends angular.IScope {
 	setSelected(value: boolean): void;
 	refresh(): void;
 	remove(): void;
+	containerData: any;
 
 	__rlCardContainer: CardContainerController;
 	__initContents(hasBody: boolean, hasFooter: boolean): void;
@@ -84,6 +85,14 @@ export class CardController {
 			$scope[this.cardAs] = this.item;
 		}
 
+		$scope.collapse = this.autosave;
+		$scope.setSelected = this.setSelected.bind(this);
+		$scope.refresh = this.source.refresh.bind(this.source);
+		$scope.remove = (): void => {
+			this.source.remove(this.item);
+		}
+		$scope.containerData = this.containerData;
+
 		if (object.isNullOrWhitespace(this.cardController) === false) {
 			var controller: any = $controller(this.cardController, { $scope: $scope });
 
@@ -100,13 +109,6 @@ export class CardController {
 			this.hasBody = hasBody;
 			this.hasFooter = hasFooter;
 		};
-
-		$scope.collapse = this.autosave;
-		$scope.setSelected = this.setSelected.bind(this);
-		$scope.refresh = this.source.refresh.bind(this.source);
-		$scope.remove = (): void => {
-			this.source.remove(this.item);
-		}
 	}
 
 	toggleContent(): void {

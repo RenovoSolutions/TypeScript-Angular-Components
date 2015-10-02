@@ -48,7 +48,7 @@ var CardContainerController = (function () {
         };
         this.updateSelected = function () {
             _this.numberSelected = _.filter(_this.dataSource.filteredDataSet, function (item) {
-                return item.viewData.selected;
+                return item.viewData != null && item.viewData.selected;
             }).length;
         };
         this.updateDisabledSelections = function () {
@@ -88,6 +88,7 @@ var CardContainerController = (function () {
             this.dataSource.sorts = [];
         }
         $scope.containerService = new cardContainer_service_1.CardContainerService(this);
+        $scope.containerData = this.containerData;
     }
     CardContainerController.prototype.sortSelected = function () {
         this.sort(this.selectionColumn);
@@ -344,13 +345,13 @@ function cardContainer($compile) {
             var footerArea = element.find('.container-footer-template');
             controller.makeCard = transclude;
             transclude(scope, function (clone) {
-                var header = clone.filter('container-header');
+                var header = clone.filter('rl-container-header');
                 if (header.length === 0) {
                     var defaultHeader = require('./defaultCardContainerHeader.html');
                     header = $compile(defaultHeader)(scope);
                 }
                 headerArea.append(header);
-                var footer = clone.filter('container-footer');
+                var footer = clone.filter('rl-container-footer');
                 if (footer.length === 0) {
                     var defaultFooter = require('./defaultCardContainerFooter.html');
                     footer = $compile(defaultFooter)(scope);

@@ -24,6 +24,10 @@ export class SelectionControlController {
 	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor(private $scope: angular.IScope
 			, bool: __boolean.IBooleanUtility) {
+		if (this.containerService == null) {
+			return;
+		}
+
 		this.selectedItems = this.containerService.numberSelected;
 		this.pagingEnabled = bool.toBool(this.containerService.pager);
 		this.dataSource = this.containerService.dataSource;

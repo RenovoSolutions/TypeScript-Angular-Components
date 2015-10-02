@@ -11,6 +11,9 @@ var SelectionControlController = (function () {
     function SelectionControlController($scope, bool) {
         var _this = this;
         this.$scope = $scope;
+        if (this.containerService == null) {
+            return;
+        }
         this.selectedItems = this.containerService.numberSelected;
         this.pagingEnabled = bool.toBool(this.containerService.pager);
         this.dataSource = this.containerService.dataSource;

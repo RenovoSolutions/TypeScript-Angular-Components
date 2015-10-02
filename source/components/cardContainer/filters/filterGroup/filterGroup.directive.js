@@ -5,17 +5,17 @@ exports.controllerName = 'FilterGroupController';
 var FilterGroupController = (function () {
     function FilterGroupController($scope) {
         this.$scope = $scope;
-        this.hasIcon = $scope.icon != null && $scope.icon !== '';
+        this.hasIcon = this.icon != null && this.icon !== '';
         this.showChildren = true;
     }
     FilterGroupController.prototype.toggleChildren = function () {
         this.showChildren = !this.showChildren;
     };
     FilterGroupController.prototype.selectOption = function (option) {
-        this.$scope.filterGroup.activeOption = option;
+        this.filterGroup.activeOption = option;
         this.showChildren = false;
-        if (this.$scope.source != null) {
-            this.$scope.source.refresh();
+        if (this.source != null) {
+            this.source.refresh();
         }
         else {
             this.$scope.$emit('dataSource.requestRefresh'); //*event?

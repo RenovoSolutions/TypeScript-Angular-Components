@@ -49,6 +49,12 @@ var CardController = (function () {
             _this.hasFooter = hasFooter;
         };
         $scope.collapse = this.autosave;
+        $scope.setSelected = this.setSelected.bind(this);
+        $scope.refresh = this.source.refresh.bind(this.source);
+        $scope.remove = function () {
+            _this.source.remove(_this.item);
+        };
+        $scope.containerData = this.containerData;
     }
     CardController.prototype.toggleContent = function () {
         if (!this.showContent) {
@@ -57,13 +63,6 @@ var CardController = (function () {
         else {
             this.autosave();
         }
-    };
-    CardController.prototype.setSelected = function (value) {
-        if (_.isUndefined(this.item.viewData)) {
-            this.item.viewData = {};
-        }
-        this.item.viewData.selected = value;
-        this.selectionChanged();
     };
     CardController.prototype.validateCard = function () {
         var behavior = this.parentChild.getChildBehavior(this.item);
@@ -99,6 +98,13 @@ var CardController = (function () {
         if (this.$scope.__rlCardContainer.openCard()) {
             this.showContent = true;
         }
+    };
+    CardController.prototype.setSelected = function (value) {
+        if (_.isUndefined(this.item.viewData)) {
+            this.item.viewData = {};
+        }
+        this.item.viewData.selected = value;
+        this.selectionChanged();
     };
     CardController.$inject = ['$scope', '$controller', '$q', __parentChild.serviceName, __object.serviceName];
     return CardController;

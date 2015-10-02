@@ -34,33 +34,42 @@ export class CardSearchController {
 	static $inject: string[] = ['$scope', '$timeout'];
 	constructor($scope: angular.IScope
 			, $timeout: angular.ITimeoutService) {
-		this.searchFilter = <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
+		if (this.containerService == null) {
+			return;
+		}
 
 		if (this.searchFilter == null) {
-			this.hasSearchFilter = false;
-		} else {
-			this.searchPlaceholder = defaultSearchPlaceholder;
+			let filter: __genericSearchFilter.IGenericSearchFilter
+				= <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
+			this.searchFilter = filter;
 
-			var dataSource: IDataSource<any> = this.containerService.dataSource;
+			if (filter == null) {
+				this.hasSearchFilter = false;
+			}
+			else {
+				this.searchPlaceholder = defaultSearchPlaceholder;
 
-			var delay: number = this.delay != null
-				? this.delay
-				: defaultSearchDelay;
+				var dataSource: IDataSource<any> = this.containerService.dataSource;
 
-			var timer: angular.IPromise<void>;
+				var delay: number = this.delay != null
+					? this.delay
+					: defaultSearchDelay;
 
-			$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
-				this.searchFilter.searchText = search;
-				this.minSearchLength = this.searchFilter.minSearchLength;
+				var timer: angular.IPromise<void>;
 
-				this.validateSearchLength(search, this.minSearchLength);
+				$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
+					this.searchFilter.searchText = search;
+					this.minSearchLength = this.searchFilter.minSearchLength;
 
-				if (timer != null) {
-					$timeout.cancel(timer);
-				}
+					this.validateSearchLength(search, this.minSearchLength);
 
-				timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
-			});
+					if (timer != null) {
+						$timeout.cancel(timer);
+					}
+
+					timer = $timeout<void>(dataSource.refresh.bind(dataSource), delay);
+				});
+			}
 		}
 	}
 
@@ -83,6 +92,7 @@ export function cardSearch(): angular.IDirective {
 		bindToController: {
 			delay: '=searchDelay',
 			containerService: '=',
+			searchFilter: '=',
 		},
 	};
 }

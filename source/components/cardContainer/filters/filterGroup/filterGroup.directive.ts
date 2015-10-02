@@ -13,19 +13,24 @@ import { IFilterGroup, IFilterOption } from './filterGroup.service';
 export var directiveName: string = 'rlFilterGroup';
 export var controllerName: string = 'FilterGroupController';
 
-export interface IFilterGroupScope extends angular.IScope {
+export interface IFilterGroupBindings {
 	icon: string;
 	filterGroup: IFilterGroup;
 	source: IDataSource<any>;
 }
 
 export class FilterGroupController {
+	// bindings
+	icon: string;
+	filterGroup: IFilterGroup;
+	source: IDataSource<any>;
+
 	hasIcon: boolean;
 	showChildren: boolean;
 
 	static $inject: string[] = ['$scope'];
-	constructor(private $scope: IFilterGroupScope) {
-		this.hasIcon = $scope.icon != null && $scope.icon !== '';
+	constructor(private $scope: angular.IScope) {
+		this.hasIcon = this.icon != null && this.icon !== '';
 		this.showChildren = true;
 	}
 
@@ -34,11 +39,11 @@ export class FilterGroupController {
 	}
 
 	selectOption(option: IFilterOption): void {
-		this.$scope.filterGroup.activeOption = option;
+		this.filterGroup.activeOption = option;
 		this.showChildren = false;
 
-		if (this.$scope.source != null) {
-			this.$scope.source.refresh();
+		if (this.source != null) {
+			this.source.refresh();
 		} else {
 			this.$scope.$emit('dataSource.requestRefresh'); //*event?
 		}

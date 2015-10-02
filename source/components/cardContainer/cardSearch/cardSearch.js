@@ -12,9 +12,15 @@ var CardSearchController = (function () {
         var _this = this;
         this.searchLengthError = false;
         this.hasSearchFilter = true;
-        this.searchFilter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
+        if (this.containerService == null) {
+            return;
+        }
         if (this.searchFilter == null) {
-            this.hasSearchFilter = false;
+            var filter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
+            this.searchFilter = filter;
+            if (filter == null) {
+                this.hasSearchFilter = false;
+            }
         }
         else {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
@@ -55,6 +61,7 @@ function cardSearch() {
         bindToController: {
             delay: '=searchDelay',
             containerService: '=',
+            searchFilter: '=',
         },
     };
 }
