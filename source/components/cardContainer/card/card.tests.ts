@@ -88,10 +88,13 @@ describe('CardController', () => {
 
 		it('should provide a function for refreshing the data source', (): void => {
 			buildController();
+			var refreshSpy: Sinon.SinonSpy = sinon.spy();
+			scope.$on('card.refresh', refreshSpy);
 
 			scope.refresh();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>card.source.refresh);
+			sinon.assert.calledOnce(refreshSpy);
 		});
 
 		it('should provide a function for removing the current item from the data source', (): void => {
