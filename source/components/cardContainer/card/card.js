@@ -35,6 +35,16 @@ var CardController = (function () {
         if (this.cardAs) {
             $scope[this.cardAs] = this.item;
         }
+        $scope.collapse = this.autosave;
+        $scope.setSelected = this.setSelected.bind(this);
+        $scope.refresh = function () {
+            _this.source.refresh();
+            $scope.$broadcast('card.refresh');
+        };
+        $scope.remove = function () {
+            _this.source.remove(_this.item);
+        };
+        $scope.containerData = this.containerData;
         if (object.isNullOrWhitespace(this.cardController) === false) {
             var controller = $controller(this.cardController, { $scope: $scope });
             if (object.isNullOrWhitespace(this.cardControllerAs) === false) {
@@ -48,13 +58,6 @@ var CardController = (function () {
             _this.hasBody = hasBody;
             _this.hasFooter = hasFooter;
         };
-        $scope.collapse = this.autosave;
-        $scope.setSelected = this.setSelected.bind(this);
-        $scope.refresh = this.source.refresh.bind(this.source);
-        $scope.remove = function () {
-            _this.source.remove(_this.item);
-        };
-        $scope.containerData = this.containerData;
     }
     CardController.prototype.toggleContent = function () {
         if (!this.showContent) {

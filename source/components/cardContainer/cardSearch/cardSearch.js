@@ -21,23 +21,23 @@ var CardSearchController = (function () {
             if (filter == null) {
                 this.hasSearchFilter = false;
             }
-        }
-        else {
-            this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.containerService.dataSource;
-            var delay = this.delay != null
-                ? this.delay
-                : exports.defaultSearchDelay;
-            var timer;
-            $scope.$watch(function () { return _this.searchText; }, function (search) {
-                _this.searchFilter.searchText = search;
-                _this.minSearchLength = _this.searchFilter.minSearchLength;
-                _this.validateSearchLength(search, _this.minSearchLength);
-                if (timer != null) {
-                    $timeout.cancel(timer);
-                }
-                timer = $timeout(dataSource.refresh.bind(dataSource), delay);
-            });
+            else {
+                this.searchPlaceholder = exports.defaultSearchPlaceholder;
+                var dataSource = this.containerService.dataSource;
+                var delay = this.delay != null
+                    ? this.delay
+                    : exports.defaultSearchDelay;
+                var timer;
+                $scope.$watch(function () { return _this.searchText; }, function (search) {
+                    _this.searchFilter.searchText = search;
+                    _this.minSearchLength = _this.searchFilter.minSearchLength;
+                    _this.validateSearchLength(search, _this.minSearchLength);
+                    if (timer != null) {
+                        $timeout.cancel(timer);
+                    }
+                    timer = $timeout(dataSource.refresh.bind(dataSource), delay);
+                });
+            }
         }
     }
     CardSearchController.prototype.validateSearchLength = function (search, minLength) {

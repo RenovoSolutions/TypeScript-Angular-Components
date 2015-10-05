@@ -29,6 +29,7 @@ var sorts = require('./sorts/sorts.module');
 exports.sorts = sorts;
 var cardContainer_1 = require('./cardContainer');
 __export(require('./cardContainer'));
+__export(require('./cardContainer.service'));
 __export(require('./column'));
 exports.moduleName = 'rl.ui.components.cardContainer';
 angular.module(exports.moduleName, [

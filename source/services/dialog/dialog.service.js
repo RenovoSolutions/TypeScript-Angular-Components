@@ -1,6 +1,7 @@
 'use strict';
 var ng = require('angular');
-var baseDialog_module_1 = require('./baseDialog/baseDialog.module');
+var baseDialog = require('./baseDialog/baseDialog.module');
+exports.baseDialog = baseDialog;
 exports.moduleName = 'rl.ui.services.dialog';
 exports.serviceName = 'dialog';
 var DialogService = (function () {
@@ -27,10 +28,10 @@ function dialogServiceProvider() {
             return new DialogService(dialogImplementation);
         },
     };
-    provider.$get.$inject = [baseDialog_module_1.serviceName];
+    provider.$get.$inject = [baseDialog.serviceName];
     return provider;
 }
 exports.dialogServiceProvider = dialogServiceProvider;
-ng.module(exports.moduleName, [baseDialog_module_1.moduleName])
+ng.module(exports.moduleName, [baseDialog.moduleName])
     .provider(exports.serviceName, dialogServiceProvider);
 //# sourceMappingURL=dialog.service.js.map

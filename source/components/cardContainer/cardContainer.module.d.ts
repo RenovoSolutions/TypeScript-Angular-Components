@@ -10,5 +10,6 @@ import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 export { card, cardSearch, columnHeader, dataSources, filters, itemCount, pager, pageSize, selectionControl, sorts };
 export * from './cardContainer';
+export * from './cardContainer.service';
 export * from './column';
 export declare var moduleName: string;
