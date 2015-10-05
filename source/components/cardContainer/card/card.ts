@@ -87,10 +87,13 @@ export class CardController {
 
 		$scope.collapse = this.autosave;
 		$scope.setSelected = this.setSelected.bind(this);
-		$scope.refresh = this.source.refresh.bind(this.source);
+		$scope.refresh = (): void => {
+			this.source.refresh();
+			$scope.$broadcast('card.refresh');
+		};
 		$scope.remove = (): void => {
 			this.source.remove(this.item);
-		}
+		};
 		$scope.containerData = this.containerData;
 
 		if (object.isNullOrWhitespace(this.cardController) === false) {
