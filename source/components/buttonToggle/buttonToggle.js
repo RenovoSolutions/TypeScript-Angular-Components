@@ -30,7 +30,7 @@ function buttonToggle() {
         restrict: 'E',
         require: '^ngModel',
         transclude: true,
-        templateUrl: require('./buttonToggle.html'),
+        template: require('./buttonToggle.html'),
         controller: exports.controllerName,
         controllerAs: 'buttonToggle',
         scope: {
