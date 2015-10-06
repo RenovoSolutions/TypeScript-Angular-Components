@@ -24,6 +24,8 @@ var messageLog = require('./messageLog/messageLog.module');
 exports.messageLog = messageLog;
 var multiStepIndicator = require('./multiStepIndicator/multiStepIndicator');
 exports.multiStepIndicator = multiStepIndicator;
+var radio = require('./radio/radio.module');
+exports.radio = radio;
 var ratingBar = require('./ratingBar/ratingBar');
 exports.ratingBar = ratingBar;
 var responsiveCardGrid = require('./responsiveCardGrid/responsiveCardGrid.module');
@@ -54,6 +56,7 @@ angular.module(exports.moduleName, [
     longClickButton.moduleName,
     messageLog.moduleName,
     multiStepIndicator.moduleName,
+    radio.moduleName,
     ratingBar.moduleName,
     responsiveCardGrid.moduleName,
     signaturePad.moduleName,
