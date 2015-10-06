@@ -13,6 +13,7 @@ import {
 	CardSearchController,
 	moduleName,
 	controllerName,
+	defaultSearchPlaceholder,
 } from './cardSearch';
 
 import * as angular from 'angular';
@@ -53,6 +54,7 @@ describe('CardSearchController', () => {
 		buildController();
 		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.true;
+		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
@@ -60,6 +62,13 @@ describe('CardSearchController', () => {
 		buildController();
 		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.false;
+		expect(cardSearch.searchPlaceholder).to.not.exist;
+	});
+
+	it('should still init the search filter if it was specified with an attribute binding', (): void => {
+		let filter: any = {};
+		buildController();
+		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	describe('search', (): void => {
@@ -116,10 +125,11 @@ describe('CardSearchController', () => {
 		});
 	});
 
-	function buildController(delay?: number): void {
+	function buildController(delay?: number, filter?: any): void {
 		var bindings: any = {
 			delay: delay,
 			containerService: containerService,
+			searchFilter: filter,
 		};
 
 		var controllerResult: test.IControllerResult<CardSearchController>
