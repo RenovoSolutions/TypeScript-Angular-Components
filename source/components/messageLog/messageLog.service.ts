@@ -10,6 +10,9 @@ export var defaultPageSize: number = 10;
 
 export interface IMessage {
 	message: string;
+	createdBy: string,
+	createdDate: string,
+	createdTime: string,
 }
 
 export interface IGetMessagesResult {
