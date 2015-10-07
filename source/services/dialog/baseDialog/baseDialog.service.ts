@@ -20,7 +20,11 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 			, private $injector: ng.auto.IInjectorService) { }
 
 	open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
-		this.resolvePromises(options).then((results: any): void => {
+		if (options == null) {
+			options = <any>{};
+		}
+
+		this.resolvePromises(options.resolve).then((results: any): void => {
 			this.closeHandler = closeHandler;
 			options = this.configureModalSettings(options, results);
 			this.$modal.open(options);
@@ -41,10 +45,6 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 	}
 
 	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings, resolveData: any): ng.ui.bootstrap.IModalSettings {
-		if (options == null) {
-			options = <any>{};
-		}
-
 		let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
 
 		if (modalScope == null) {
@@ -59,9 +59,9 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		return options;
 	}
 
-	private resolvePromises(options: ng.ui.bootstrap.IModalSettings): ng.IPromise<any> {
+	private resolvePromises(resolves: any): ng.IPromise<any> {
 		let promises: any = {};
-		_.each(options.resolve, (value: any, key: any): void => {
+		_.each(resolves, (value: any, key: any): void => {
 			if (_.isFunction(value) || _.isArray(value)) {
 				promises[key] = (this.$q.when(this.$injector.invoke(value)));
 			} else if (_.isString(value)) {
