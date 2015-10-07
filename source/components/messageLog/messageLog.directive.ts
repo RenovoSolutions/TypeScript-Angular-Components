@@ -1,3 +1,5 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
 'use strict';
 
 import * as ng from 'angular';
@@ -33,8 +35,6 @@ export class MessageLogController {
 	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
-		this.loadingInitial = true;
-
 		$scope.$watch((): IMessage[]=> { return this.messageLog.visibleMessages; }
 			, (value: IMessage[]): void => {
 				this.messages = value;
@@ -57,8 +57,12 @@ export class MessageLogController {
 			}
 		});
 
+		$scope.$watch((): IMessageLogDataService => { return this.service; }, (service: IMessageLogDataService): void => {
+			this.messageLog.dataService = service;
+			this.loadingInitial = true;
+		});
+
 		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
-		this.messageLog.dataService = this.service;
 	}
 
 	getOlder(): ng.IPromise<void> {
