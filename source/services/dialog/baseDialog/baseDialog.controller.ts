@@ -7,6 +7,7 @@ export var controllerName: string = 'BaseDialogController';
 
 export interface IBaseDialogScope extends ng.IScope {
 	modalController: string | Function;
+	resolveData: any;
 }
 
 export class BaseDialogController {
@@ -17,7 +18,11 @@ export class BaseDialogController {
 		let controller: any;
 
 		if ($scope.modalController != null) {
-			controller = $controller(<any>$scope.modalController, { $scope: $scope });
+			let locals: any = $scope.resolveData != null ? $scope.resolveData : {};
+			$scope.resolveData = null;
+			locals.$scope = $scope;
+
+			controller = $controller(<any>$scope.modalController, locals);
 		}
 
 		$scope.$on('modal.closing', baseDialog.modalClosing);

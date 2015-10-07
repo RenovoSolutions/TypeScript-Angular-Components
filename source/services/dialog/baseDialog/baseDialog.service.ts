@@ -13,14 +13,18 @@ export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModa
 export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
 	closeHandler: IDialogCloseHandler;
 
-	static $inject: string[] = ['$modal', '$rootScope'];
+	static $inject: string[] = ['$modal', '$rootScope', '$q', '$injector'];
 	constructor(private $modal: ng.ui.bootstrap.IModalService
-			, private $rootScope: ng.IRootScopeService) { }
+			, private $rootScope: ng.IRootScopeService
+			, private $q: ng.IQService
+			, private $injector: ng.auto.IInjectorService) { }
 
 	open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
-		this.closeHandler = closeHandler;
-		options = this.configureModalSettings(options);
-		this.$modal.open(options);
+		this.resolvePromises(options).then((results: any): void => {
+			this.closeHandler = closeHandler;
+			options = this.configureModalSettings(options, results);
+			this.$modal.open(options);
+		});
 	}
 
 	modalClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }
@@ -36,7 +40,7 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		}
 	}
 
-	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings): ng.ui.bootstrap.IModalSettings {
+	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings, resolveData: any): ng.ui.bootstrap.IModalSettings {
 		if (options == null) {
 			options = <any>{};
 		}
@@ -48,8 +52,25 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		}
 
 		modalScope.modalController = options.controller;
+		modalScope.resolveData = resolveData;
+		options.resolve = null;
 		options.controller = controllerName;
 		options.scope = modalScope;
 		return options;
+	}
+
+	private resolvePromises(options: ng.ui.bootstrap.IModalSettings): ng.IPromise<any> {
+		let promises: any = {};
+		_.each(options.resolve, (value: any, key: any): void => {
+			if (_.isFunction(value) || _.isArray(value)) {
+				promises[key] = (this.$q.when(this.$injector.invoke(value)));
+			} else if (_.isString(value)) {
+				promises[key] = (this.$q.when(this.$injector.get(value)));
+			} else {
+				promises[key] = (this.$q.when(value));
+			}
+		});
+
+		return this.$q.all(promises);
 	}
 }
