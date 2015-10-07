@@ -76,6 +76,10 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 				options.scope = scope;
 			}
 
+			if (options.data == null) {
+				options.data = {};
+			}
+
 			this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
 
 			scope.form = options.form;
