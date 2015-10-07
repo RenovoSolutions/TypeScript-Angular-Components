@@ -2,6 +2,9 @@
 
 import * as angular from 'angular';
 
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+
 import { factoryName, messageLogFactory } from './messageLog.service';
 import { controllerName, directiveName, messageLog, MessageLogController } from './messageLog.directive';
 import {
@@ -16,7 +19,7 @@ export * from './messageLog.directive';
 
 export var moduleName: string = 'rl.ui.components.messageLog';
 
-angular.module(moduleName, [])
+angular.module(moduleName, [__object.moduleName])
 	.factory(factoryName, messageLogFactory)
 	.directive(directiveName, messageLog)
 	.controller(controllerName, MessageLogController)
