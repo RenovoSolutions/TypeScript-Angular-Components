@@ -91,12 +91,32 @@ describe('baseDialog', () => {
 
 		baseDialog.open(options);
 
+		sinon.assert.notCalled($modal.open);
 		expect(dataResult).to.not.exist;
 
 		mock.flush(dataService);
 
+		sinon.assert.calledOnce($modal.open);
+
 		$controller(dialogController, options.scope.resolveData);
 
 		expect(dataResult).to.equal(data);
+	});
+
+	it('should not open the dialog if resolve fails', (): void => {
+		let dataService: any = mock.service();
+		mock.promise(dataService, 'get', {}, false);
+
+		let options: any = {
+			resolve: {
+				data: dataService.get,
+			},
+		};
+
+		baseDialog.open(options);
+
+		mock.flush(dataService);
+
+		sinon.assert.notCalled($modal.open);
 	});
 });

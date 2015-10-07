@@ -154,11 +154,30 @@ describe('autosaveDialog', () => {
 
 			autosaveDialog.open(options);
 
+			sinon.assert.notCalled(dialog.open);
 			expect(scope.dialog).to.not.exist;
 
 			mock.flush(dataService);
 
+			sinon.assert.calledOnce(dialog.open);
 			expect(scope.dialog.data).to.equal(data);
+		});
+
+		it('should not open the dialog if resolve fails', (): void => {
+			let dataService: any = mock.service();
+			mock.promise(dataService, 'get', {}, false);
+
+			let options: any = {
+				resolve: {
+					data: dataService.get,
+				},
+			};
+
+			autosaveDialog.open(options);
+
+			mock.flush(dataService);
+
+			sinon.assert.notCalled(dialog.open);
 		});
 	});
 });
