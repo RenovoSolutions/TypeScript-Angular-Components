@@ -16,6 +16,7 @@ import { controllerName } from './autosaveDialog.controller';
 export var serviceName: string = 'autosaveDialog';
 
 import __autosave = services.autosave;
+import __promise = services.promise;
 
 export interface IAutosaveDialogService {
 	open(options: IAutosaveDialogSettings): void;
@@ -60,15 +61,14 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 	private autosave: __autosave.IAutosaveService;
 	private data: any;
 
-	static $inject: string[] = ['$rootScope', '$q', '$injector', dialogServiceName, __autosave.factoryName];
+	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName, __promise.serviceName];
 	constructor(private $rootScope: ng.IRootScopeService
-			, private $q: ng.IQService
-			, private $injector: ng.auto.IInjectorService
 			, private dialog: IDialogService<IAutosaveDialogSettings>
-			, private autosaveFactory: __autosave.IAutosaveServiceFactory) { }
+			, private autosaveFactory: __autosave.IAutosaveServiceFactory
+			, private promise: __promise.IPromiseUtility) { }
 
 	open(options: IAutosaveDialogSettings): void {
-		this.resolvePromises(options.resolve).then((resolveData: any): void => {
+		this.promise.resolvePromises(options.resolve).then((resolveData: any): void => {
 			var scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
 
 			if (scope == null) {
@@ -94,21 +94,6 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 
 			this.dialog.open(options, this.autosaveCloseHandler);
 		});
-	}
-
-	private resolvePromises(resolves: any): ng.IPromise<any> {
-		let promises: any = {};
-		_.each(resolves, (value: any, key: any): void => {
-			if (_.isFunction(value) || _.isArray(value)) {
-				promises[key] = (this.$q.when(this.$injector.invoke(value)));
-			} else if (_.isString(value)) {
-				promises[key] = (this.$q.when(this.$injector.get(value)));
-			} else {
-				promises[key] = (this.$q.when(value));
-			}
-		});
-
-		return this.$q.all(promises);
 	}
 
 	private autosaveCloseHandler: IDialogCloseHandler = (explicit: boolean): boolean => {
