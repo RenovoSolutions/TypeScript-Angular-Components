@@ -38,7 +38,7 @@ class ButtonToggleController {
 
 	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor(private $scope: IButtonToggleScope, bool: __boolean.IBooleanUtility) {
-		this.buttonClass = $scope.type != null ? $scope.type : 'default';
+		this.buttonClass = $scope.type || 'default';
 		this.buttonSize = $scope.size != null ? 'btn-' + $scope.size : null;
 
 		$scope.$watch('ngModel.$modelValue', (value: boolean): void => {

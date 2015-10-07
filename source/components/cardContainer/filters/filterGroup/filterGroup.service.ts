@@ -36,7 +36,7 @@ export class FilterGroup implements IFilterGroup {
 
 	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
 		this.label = settings.label;
-		this.type = settings.type != null ? settings.type : settings.label;
+		this.type = settings.type || settings.label;
 		this.options = settings.options;
 		this.activeOption = this.options[0];
 

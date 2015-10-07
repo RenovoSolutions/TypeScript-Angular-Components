@@ -31,7 +31,7 @@ export class MessageLogController {
 
 	static $inject: string[] = ['$scope', factoryName];
 	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
-		this.messageLog = this.messageLogBinding != null ? this.messageLogBinding : messageLogFactory.getInstance();
+		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
 		this.loadingInitial = true;
 
@@ -57,7 +57,7 @@ export class MessageLogController {
 			}
 		});
 
-		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
+		this.messageLog.pageSize = this.pageSize || 8;
 		this.messageLog.dataService = this.service;
 	}
 

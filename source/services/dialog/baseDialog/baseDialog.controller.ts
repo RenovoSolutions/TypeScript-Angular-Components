@@ -18,7 +18,7 @@ export class BaseDialogController {
 		let controller: any;
 
 		if ($scope.modalController != null) {
-			let locals: any = $scope.resolveData != null ? $scope.resolveData : {};
+			let locals: any = $scope.resolveData || {};
 			$scope.resolveData = null;
 			locals.$scope = $scope;
 

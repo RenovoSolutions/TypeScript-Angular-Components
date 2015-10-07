@@ -35,8 +35,8 @@ export function signaturePad(): angular.IDirective {
 
 			scope.signature = new SignaturePad(canvas, options);
 
-			canvas.height = scope.height != null ? scope.height : 100;
-			canvas.width = scope.width != null ? scope.width : 200;
+			canvas.height = scope.height || 100;
+			canvas.width = scope.width || 200;
 
 			if (scope.initial != null) {
 				scope.signature.fromDataURL(scope.initial);

@@ -96,7 +96,7 @@ export class CardContainerController {
 			, private parentChild: __parentChild.IParentChildBehaviorService) {
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
-		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
+		this.maxColSorts = this.maxColumnSorts || defaultMaxColumnSorts;
 		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
 		this.sortDirection = SortDirection;
 

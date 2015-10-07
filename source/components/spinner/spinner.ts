@@ -92,8 +92,8 @@ function spinner($timeout: angular.ITimeoutService
 					// Initialize the spinner after $timeout to give angular a chance initialize ngModel
 					$timeout((): void => {
 						let touchspin: JQuery = element.find('input.spinner').TouchSpin({
-							min: (scope.min != null ? scope.min : Number.MIN_VALUE),
-							max: (scope.max != null ? scope.max : Number.MAX_VALUE),
+							min: (scope.min || Number.MIN_VALUE),
+							max: (scope.max || Number.MAX_VALUE),
 							step: scope.step,
 							prefix: scope.prefix,
 							postfix: scope.postfix,

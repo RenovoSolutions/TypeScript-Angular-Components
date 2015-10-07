@@ -59,14 +59,14 @@ function dateTime(moment: moment.MomentStatic
 			, attrs: angular.IAttributes
 			, ngModel: angular.INgModelController): void => {
 			// defaults to true
-			var hasDate: boolean = scope.useDate != null ? scope.useDate : true;
-			var hasTime: boolean = scope.useTime != null ? scope.useTime : true;
+			var hasDate: boolean = scope.useDate || true;
+			var hasTime: boolean = scope.useTime || true;
 
 			var defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
 			var min: string | Date | moment.Moment
-				= scope.min != null ? scope.min : defaults.minDate;
+				= scope.min || defaults.minDate;
 			var max: string | Date | moment.Moment
-				= scope.max != null ? scope.max : defaults.maxDate;
+				= scope.max || defaults.maxDate;
 
 			scope.$watch('ngModel', (newValue: any): void => {
 				if (newValue !== '') {
