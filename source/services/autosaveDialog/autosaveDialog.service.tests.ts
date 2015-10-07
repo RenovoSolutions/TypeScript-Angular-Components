@@ -42,6 +42,7 @@ describe('autosaveDialog', () => {
 	var dialog: IDialogMock;
 	var autosaveFactory: IAutosaveFactoryMock;
 	var autosave: IAutosaveMock;
+	var $rootScope: angular.IRootScopeService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -63,8 +64,9 @@ describe('autosaveDialog', () => {
 			autosaveFactory: autosaveFactory,
 		});
 
-		var services: any = test.angularFixture.inject(serviceName);
+		var services: any = test.angularFixture.inject(serviceName, '$rootScope');
 		autosaveDialog = services[serviceName];
+		$rootScope = services.$rootScope;
 	});
 
 	it('should open a modal dialog with the specified settings', (): void => {
@@ -86,6 +88,7 @@ describe('autosaveDialog', () => {
 		};
 
 		autosaveDialog.open(options);
+		$rootScope.$digest();
 
 		sinon.assert.calledOnce(autosaveFactory.getInstance);
 		sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
@@ -114,6 +117,7 @@ describe('autosaveDialog', () => {
 
 		it('should return true if explicitly closed', (): void => {
 			autosaveDialog.open(options);
+			$rootScope.$digest();
 
 			let canClose: boolean = closeHandler(true);
 
@@ -122,6 +126,7 @@ describe('autosaveDialog', () => {
 
 		it('should autosave if the dialog wasnt closed explicitly', (): void => {
 			autosaveDialog.open(options);
+			$rootScope.$digest();
 
 			closeHandler(false);
 
