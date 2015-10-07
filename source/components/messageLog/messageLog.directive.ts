@@ -74,29 +74,7 @@ export function messageLog(): ng.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div>
-				<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
-				<div class="content-group" ng-repeat="entry in log.messages">
-					<div ng-bind-html="entry.message"></div>
-					<div class="byline">{{entry.createdBy}}</div>
-					<div class="byline">{{entry.createdDate}} {{entry.createdTime}} UTC</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="text-center">
-							<rl-button type="default" action="log.getTopPage()" ng-disabled="log.loading" button-right-aligned="true">
-								<span ng-show="log.hasPreviousPage">Top</span>
-								<span ng-hide="log.hasPreviousPage">Refresh</span>
-							</rl-button>
-							<rl-button type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getNextPage()">
-								Older <i class="fa fa-chevron-right"></i>
-							</rl-button>
-						</div>
-					</div>
-				</div>
-			</div>
-		`,
+		template: require('./messageLog.html'),
 		controller: controllerName,
 		controllerAs: 'log',
 		scope: {},
