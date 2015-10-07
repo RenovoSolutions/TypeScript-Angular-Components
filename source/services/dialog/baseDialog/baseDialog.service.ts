@@ -3,6 +3,9 @@
 import * as ng from 'angular';
 import * as _ from 'lodash';
 
+import { services } from 'typescript-angular-utilities';
+import __promise = services.promise;
+
 import { IDialogCloseHandler, IDialogService, IDialogImplementation } from '../dialog.service';
 import { controllerName, IBaseDialogScope } from './baseDialog.controller';
 
@@ -13,14 +16,21 @@ export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModa
 export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
 	closeHandler: IDialogCloseHandler;
 
-	static $inject: string[] = ['$modal', '$rootScope'];
+	static $inject: string[] = ['$modal', '$rootScope', __promise.serviceName];
 	constructor(private $modal: ng.ui.bootstrap.IModalService
-			, private $rootScope: ng.IRootScopeService) { }
+			, private $rootScope: ng.IRootScopeService
+			, private promise: __promise.IPromiseUtility) { }
 
 	open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
-		this.closeHandler = closeHandler;
-		options = this.configureModalSettings(options);
-		this.$modal.open(options);
+		if (options == null) {
+			options = <any>{};
+		}
+
+		this.promise.resolvePromises(options.resolve).then((results: any): void => {
+			this.closeHandler = closeHandler;
+			options = this.configureModalSettings(options, results);
+			this.$modal.open(options);
+		});
 	}
 
 	modalClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }
@@ -36,11 +46,7 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		}
 	}
 
-	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings): ng.ui.bootstrap.IModalSettings {
-		if (options == null) {
-			options = <any>{};
-		}
-
+	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings, resolveData: any): ng.ui.bootstrap.IModalSettings {
 		let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
 
 		if (modalScope == null) {
@@ -48,6 +54,8 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		}
 
 		modalScope.modalController = options.controller;
+		modalScope.resolveData = resolveData;
+		options.resolve = null;
 		options.controller = controllerName;
 		options.scope = modalScope;
 		return options;

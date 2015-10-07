@@ -5,6 +5,7 @@
 import * as angular from 'angular';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 
@@ -59,8 +60,8 @@ function dateTime(moment: moment.MomentStatic
 			, attrs: angular.IAttributes
 			, ngModel: angular.INgModelController): void => {
 			// defaults to true
-			var hasDate: boolean = scope.useDate != null ? scope.useDate : true;
-			var hasTime: boolean = scope.useTime != null ? scope.useTime : true;
+			var hasDate: boolean = _.isUndefined(scope.useDate) ? true : scope.useDate;
+			var hasTime: boolean = _.isUndefined(scope.useTime) ? true : scope.useTime;
 
 			var defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
 			var min: string | Date | moment.Moment

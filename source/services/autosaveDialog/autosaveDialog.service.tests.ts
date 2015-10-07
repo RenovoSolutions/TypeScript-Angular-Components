@@ -38,13 +38,16 @@ interface IAutosaveMock {
 }
 
 describe('autosaveDialog', () => {
-	var autosaveDialog: IAutosaveDialogService;
-	var dialog: IDialogMock;
-	var autosaveFactory: IAutosaveFactoryMock;
-	var autosave: IAutosaveMock;
+	let autosaveDialog: IAutosaveDialogService;
+	let dialog: IDialogMock;
+	let autosaveFactory: IAutosaveFactoryMock;
+	let autosave: IAutosaveMock;
+	let $rootScope: angular.IRootScopeService;
+	let mock: test.mock.IMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
+		angular.mock.module(test.mock.moduleName);
 
 		dialog = {
 			open: sinon.spy(),
@@ -63,18 +66,20 @@ describe('autosaveDialog', () => {
 			autosaveFactory: autosaveFactory,
 		});
 
-		var services: any = test.angularFixture.inject(serviceName);
+		let services: any = test.angularFixture.inject(serviceName, '$rootScope', test.mock.serviceName);
 		autosaveDialog = services[serviceName];
+		$rootScope = services.$rootScope;
+		mock = services[test.mock.serviceName];
 	});
 
 	it('should open a modal dialog with the specified settings', (): void => {
-		var scope: IAutosaveDialogScope = <any>{ prop: 1 };
-		var data: any = { prop: 4 };
-		var formGetter: Sinon.SinonSpy = sinon.spy();
-		var save: Sinon.SinonSpy = sinon.spy();
-		var validate: Sinon.SinonSpy = sinon.spy();
+		let scope: IAutosaveDialogScope = <any>{ prop: 1 };
+		let data: any = { prop: 4 };
+		let formGetter: Sinon.SinonSpy = sinon.spy();
+		let save: Sinon.SinonSpy = sinon.spy();
+		let validate: Sinon.SinonSpy = sinon.spy();
 
-		var options: IAutosaveDialogSettings = {
+		let options: IAutosaveDialogSettings = {
 			scope: scope,
 			size: 'sm',
 			template: '<div></div>',
@@ -86,6 +91,7 @@ describe('autosaveDialog', () => {
 		};
 
 		autosaveDialog.open(options);
+		$rootScope.$digest();
 
 		sinon.assert.calledOnce(autosaveFactory.getInstance);
 		sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
@@ -94,7 +100,7 @@ describe('autosaveDialog', () => {
 		expect(scope.dialog).to.equal(data);
 
 		sinon.assert.calledOnce(<Sinon.SinonSpy>dialog.open);
-		var dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
+		let dialogOptions: IAutosaveDialogSettings = dialog.open.firstCall.args[0];
 		expect(dialogOptions.scope).to.equal(scope);
 		expect(dialogOptions.size).to.equal('sm');
 		expect(dialogOptions.template).to.equal('<div></div>');
@@ -114,6 +120,7 @@ describe('autosaveDialog', () => {
 
 		it('should return true if explicitly closed', (): void => {
 			autosaveDialog.open(options);
+			$rootScope.$digest();
 
 			let canClose: boolean = closeHandler(true);
 
@@ -122,10 +129,55 @@ describe('autosaveDialog', () => {
 
 		it('should autosave if the dialog wasnt closed explicitly', (): void => {
 			autosaveDialog.open(options);
+			$rootScope.$digest();
 
 			closeHandler(false);
 
 			sinon.assert.calledOnce(autosave.autosave);
+		});
+	});
+
+	describe('resolve', (): void => {
+		it('should resolve promises and apply the result to the dialog data object', (): void => {
+			let dataService: any = mock.service();
+			let data: any = { prop: 5 };
+			mock.promise(dataService, 'get', data);
+
+			let scope: any = {};
+
+			let options: any = {
+				resolve: {
+					data: dataService.get,
+				},
+				scope: scope,
+			};
+
+			autosaveDialog.open(options);
+
+			sinon.assert.notCalled(dialog.open);
+			expect(scope.dialog).to.not.exist;
+
+			mock.flush(dataService);
+
+			sinon.assert.calledOnce(dialog.open);
+			expect(scope.dialog.data).to.equal(data);
+		});
+
+		it('should not open the dialog if resolve fails', (): void => {
+			let dataService: any = mock.service();
+			mock.promise(dataService, 'get', {}, false);
+
+			let options: any = {
+				resolve: {
+					data: dataService.get,
+				},
+			};
+
+			autosaveDialog.open(options);
+
+			mock.flush(dataService);
+
+			sinon.assert.notCalled(dialog.open);
 		});
 	});
 });

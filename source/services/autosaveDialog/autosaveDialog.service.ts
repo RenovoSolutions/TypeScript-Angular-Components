@@ -1,6 +1,7 @@
 'use strict';
 
 import * as ng from 'angular';
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 
@@ -15,6 +16,7 @@ import { controllerName } from './autosaveDialog.controller';
 export var serviceName: string = 'autosaveDialog';
 
 import __autosave = services.autosave;
+import __promise = services.promise;
 
 export interface IAutosaveDialogService {
 	open(options: IAutosaveDialogSettings): void;
@@ -26,6 +28,7 @@ export interface IAutosaveDialogSettings {
 	templateUrl?: string;
 	size?: string;
 	data?: any;
+	resolve?: any;
 
 	save: { (...data: any[]): ng.IPromise<void> };
 	validate?: { (): boolean };
@@ -58,32 +61,39 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 	private autosave: __autosave.IAutosaveService;
 	private data: any;
 
-	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName];
+	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName, __promise.serviceName];
 	constructor(private $rootScope: ng.IRootScopeService
-		, private dialog: IDialogService<IAutosaveDialogSettings>
-		, private autosaveFactory: __autosave.IAutosaveServiceFactory) { }
+			, private dialog: IDialogService<IAutosaveDialogSettings>
+			, private autosaveFactory: __autosave.IAutosaveServiceFactory
+			, private promise: __promise.IPromiseUtility) { }
 
 	open(options: IAutosaveDialogSettings): void {
-		var scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
+		this.promise.resolvePromises(options.resolve).then((resolveData: any): void => {
+			var scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
 
-		if (scope == null) {
-			scope = <IAutosaveDialogScope>this.$rootScope.$new();
-			options.scope = scope;
-		}
+			if (scope == null) {
+				scope = <IAutosaveDialogScope>this.$rootScope.$new();
+				options.scope = scope;
+			}
 
-		this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+			if (options.data == null) {
+				options.data = {};
+			}
 
-		scope.form = options.form;
-		scope.formGetter = options.formGetter;
-		scope.setForm = this.setForm;
-		this.data = options.data;
-		scope.dialog = options.data;
+			this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
 
-		var dialogOptions: IDialogSettings = <IDialogSettings>options;
-		dialogOptions.controller = controllerName;
-		dialogOptions.controllerAs = 'controller';
+			scope.form = options.form;
+			scope.formGetter = options.formGetter;
+			scope.setForm = this.setForm;
+			this.data = _.extend(options.data, resolveData);
+			scope.dialog = this.data;
 
-		return this.dialog.open(options, this.autosaveCloseHandler);
+			var dialogOptions: IDialogSettings = <IDialogSettings>options;
+			dialogOptions.controller = controllerName;
+			dialogOptions.controllerAs = 'controller';
+
+			this.dialog.open(options, this.autosaveCloseHandler);
+		});
 	}
 
 	private autosaveCloseHandler: IDialogCloseHandler = (explicit: boolean): boolean => {

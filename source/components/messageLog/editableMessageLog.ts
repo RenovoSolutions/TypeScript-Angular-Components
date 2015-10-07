@@ -9,10 +9,8 @@ import {
 	IMessageLog,
 	factoryName as messageLogFactoryName,
 	IMessageLogFactory,
-	moduleName as messageLogModuleName,
-} from '../messageLog.module';
+} from './messageLog.service';
 
-export var moduleName: string = 'rl.ui.components.messageLog.editableMessageLog';
 export var directiveName: string = 'rlEditableMessageLog';
 export var controllerName: string = 'EditableMessageLogController'
 
@@ -89,7 +87,3 @@ export function editableMessageLog(): angular.IDirective {
 		},
 	};
 }
-
-angular.module(moduleName, [__object.moduleName, messageLogModuleName])
-	.directive(directiveName, editableMessageLog)
-	.controller(controllerName, EditableMessageLogController);

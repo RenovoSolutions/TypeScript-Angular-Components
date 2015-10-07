@@ -1,6 +1,7 @@
 'use strict';
 
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 
@@ -74,9 +75,9 @@ export class ResponsiveCardController implements IResponsiveCardController {
 			updateEndOfRowStatus: this.updateEndOfRowStatus,
 		};
 
-		this.summary = this.header.summary != null ? this.header.summary : (): string => { return ''; };
-		this.summaryLength = this.header.summaryLength != null ? this.header.summaryLength : 25;
-		this.showIcon = this.header.showIcon != null ? this.header.showIcon : (): boolean => { return false; };
+		this.summary = this.header.summary || function(): string { return ''; };
+		this.summaryLength = _.isUndefined(this.header.summaryLength) ? 25 : this.header.summaryLength;
+		this.showIcon = this.header.showIcon || function(): boolean { return false; };
 
 		this.cardGridController = $element.controller('rlResponsiveCardGrid');
 

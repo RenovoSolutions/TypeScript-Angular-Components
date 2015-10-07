@@ -31,7 +31,7 @@ export class MessageLogController {
 
 	static $inject: string[] = ['$scope', factoryName];
 	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
-		this.messageLog = this.messageLogBinding != null ? this.messageLogBinding : messageLogFactory.getInstance();
+		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
 		this.loadingInitial = true;
 
