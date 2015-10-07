@@ -3,6 +3,9 @@ export declare var factoryName: string;
 export declare var defaultPageSize: number;
 export interface IMessage {
     message: string;
+    createdBy: string;
+    createdDate: string;
+    createdTime: string;
 }
 export interface IGetMessagesResult {
     messages: IMessage[];

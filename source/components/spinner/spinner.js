@@ -1,6 +1,7 @@
 // /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
 // /// <reference path='../../../typings/jquery/jquery.d.ts' />
 'use strict';
+require('../../../libraries/bootstrap-touchspin/index');
 var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __string = typescript_angular_utilities_1.services.string;

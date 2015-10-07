@@ -14,6 +14,7 @@ import * as lazyLoad from './lazyLoad/lazyLoad';
 import * as longClickButton from './longClickButton/longClickButton';
 import * as messageLog from './messageLog/messageLog.module';
 import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
+import * as radio from './radio/radio.module';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
 import * as signaturePad from './signaturePad/signaturePad';
@@ -36,6 +37,7 @@ export {
 	longClickButton,
 	messageLog,
 	multiStepIndicator,
+	radio,
 	ratingBar,
 	responsiveCardGrid,
 	signaturePad,
@@ -61,6 +63,7 @@ angular.module(moduleName, [
 	longClickButton.moduleName,
 	messageLog.moduleName,
 	multiStepIndicator.moduleName,
+	radio.moduleName,
 	ratingBar.moduleName,
 	responsiveCardGrid.moduleName,
 	signaturePad.moduleName,

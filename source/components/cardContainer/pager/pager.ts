@@ -30,8 +30,8 @@ export class PagerController {
 	private containerService: ICardContainerService;
 	private pager: dataPager.IDataPager;
 	private dataSource: IDataSource<any>;
-private lastPage: number;
-private visiblePageCount: number;
+	private lastPage: number;
+	private visiblePageCount: number;
 
 	static $inject: string[] = ['$scope'];
 	constructor($scope: angular.IScope) {
@@ -41,7 +41,7 @@ private visiblePageCount: number;
 
 		this.pager = this.containerService.pager;
 
-		if (pager == null) {
+		if (this.pager == null) {
 			this.hasPageFilter = false;
 		} else {
 			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;

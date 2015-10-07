@@ -25,7 +25,7 @@ var PagerController = (function () {
             return;
         }
         this.pager = this.containerService.pager;
-        if (pager == null) {
+        if (this.pager == null) {
             this.hasPageFilter = false;
         }
         else {
