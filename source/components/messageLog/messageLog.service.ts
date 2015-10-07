@@ -79,6 +79,7 @@ export class MessageLog {
 		this._dataService = value;
 
 		if (value != null) {
+			this.visibleMessages = null;
 			this.updateCurrentPage();
 		}
 	}
