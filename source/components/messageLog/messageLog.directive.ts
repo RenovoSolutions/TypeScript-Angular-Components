@@ -57,7 +57,7 @@ export class MessageLogController {
 			}
 		});
 
-		this.messageLog.pageSize = this.pageSize || 8;
+		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
 		this.messageLog.dataService = this.service;
 	}
 

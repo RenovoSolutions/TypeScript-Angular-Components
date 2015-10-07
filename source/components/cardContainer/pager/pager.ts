@@ -44,7 +44,7 @@ export class PagerController {
 		if (this.pager == null) {
 			this.hasPageFilter = false;
 		} else {
-			this.visiblePageCount = this.pageCount || defaultVisiblePageCount;
+			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;
 			this.lastPage = 1;
 			this.dataSource = this.containerService.dataSource;
 

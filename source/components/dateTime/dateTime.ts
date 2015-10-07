@@ -65,9 +65,9 @@ function dateTime(moment: moment.MomentStatic
 
 			var defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
 			var min: string | Date | moment.Moment
-				= scope.min || defaults.minDate;
+				= scope.min != null ? scope.min : defaults.minDate;
 			var max: string | Date | moment.Moment
-				= scope.max || defaults.maxDate;
+				= scope.max != null ? scope.max : defaults.maxDate;
 
 			scope.$watch('ngModel', (newValue: any): void => {
 				if (newValue !== '') {

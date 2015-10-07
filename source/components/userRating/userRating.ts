@@ -29,7 +29,7 @@ export class UserRatingController implements IUserRatingController {
 	static $inject: string[] = ['$scope'];
 	constructor(private $scope: IUserRatingScope) {
 		this.stars = [];
-		var rangeSize: number = this.$scope.range || 5;
+		var rangeSize: number = this.$scope.range != null ? this.$scope.range : 5;
 		// css style requires the stars to show right to left. Reverse the list so the highest value is first
 		var range: number[] = _.range(1, rangeSize + 1).reverse();
 		_.each(range, (rating: number): void => {
