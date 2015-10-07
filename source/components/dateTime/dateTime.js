@@ -2,6 +2,7 @@
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 var angular = require('angular');
 var $ = require('jquery');
+var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 exports.moduleName = 'rl.ui.components.dateTime';
 exports.directiveName = 'rlDateTime';
@@ -23,8 +24,8 @@ function dateTime(moment, dateTimeFormatStrings) {
         },
         link: function (scope, element, attrs, ngModel) {
             // defaults to true
-            var hasDate = scope.useDate != null ? scope.useDate : true;
-            var hasTime = scope.useTime != null ? scope.useTime : true;
+            var hasDate = _.isUndefined(scope.useDate) ? true : scope.useDate;
+            var hasTime = _.isUndefined(scope.useTime) ? true : scope.useTime;
             var defaults = element.datetimepicker.defaults;
             var min = scope.min != null ? scope.min : defaults.minDate;
             var max = scope.max != null ? scope.max : defaults.maxDate;

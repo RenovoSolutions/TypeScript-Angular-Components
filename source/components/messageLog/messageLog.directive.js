@@ -5,7 +5,7 @@ exports.controllerName = 'MessageLogController';
 var MessageLogController = (function () {
     function MessageLogController($scope, messageLogFactory) {
         var _this = this;
-        this.messageLog = this.messageLogBinding != null ? this.messageLogBinding : messageLogFactory.getInstance();
+        this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
         this.loadingInitial = true;
         $scope.$watch(function () { return _this.messageLog.visibleMessages; }, function (value) {
             _this.messages = value;

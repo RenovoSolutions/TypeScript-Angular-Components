@@ -1,4 +1,5 @@
 'use strict';
+var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var jquery_service_1 = require('../../services/jquery/jquery.service');
 exports.directiveName = 'rlResponsiveCard';
@@ -45,9 +46,9 @@ var ResponsiveCardController = (function () {
             hoverOut: this.hoverOut,
             updateEndOfRowStatus: this.updateEndOfRowStatus,
         };
-        this.summary = this.header.summary != null ? this.header.summary : function () { return ''; };
-        this.summaryLength = this.header.summaryLength != null ? this.header.summaryLength : 25;
-        this.showIcon = this.header.showIcon != null ? this.header.showIcon : function () { return false; };
+        this.summary = this.header.summary || function () { return ''; };
+        this.summaryLength = _.isUndefined(this.header.summaryLength) ? 25 : this.header.summaryLength;
+        this.showIcon = this.header.showIcon || function () { return false; };
         this.cardGridController = $element.controller('rlResponsiveCardGrid');
         this.unregister = this.cardGridController.registerCard(this.behavior, $element);
         this.isEndOfRow = this.cardGridController.cardIsEndOfRow(this.behavior);

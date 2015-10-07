@@ -5,7 +5,10 @@ var BaseDialogController = (function () {
     function BaseDialogController($scope, $controller, baseDialog) {
         var controller;
         if ($scope.modalController != null) {
-            controller = $controller($scope.modalController, { $scope: $scope });
+            var locals = $scope.resolveData || {};
+            $scope.resolveData = null;
+            locals.$scope = $scope;
+            controller = $controller($scope.modalController, locals);
         }
         $scope.$on('modal.closing', baseDialog.modalClosing);
         return controller;
