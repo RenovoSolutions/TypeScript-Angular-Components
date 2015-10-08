@@ -17,6 +17,7 @@ export var controllerName: string = 'SimpleCardController';
 export interface ISimpleCardBindings {
 	onOpen(): void;
 	canOpen: boolean;
+	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
 	validate(): boolean;
 	save(): angular.IPromise<void>;
@@ -34,6 +35,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	// bindings
 	onOpen: { (): void };
 	canOpen: boolean;
+	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
 	validate: { (): boolean };
 	save: { (): angular.IPromise<void> };
@@ -46,10 +48,12 @@ export class SimpleCardController implements ISimpleCardBindings {
 	constructor(private $scope: angular.IScope
 		, $element: angular.IAugmentedJQuery
 		, private parentChild: __parentChild.IParentChildBehaviorService) {
-		if (this.canOpen == null) {
+		if (this.alwaysOpen) {
+			this.canOpen = false;
+		}
+		else if (this.canOpen == null) {
 			this.canOpen = true;
 		}
-
 		this.listController = $element.controller('rlSimpleCardList');
 
 		if (this.listController == null) {
@@ -81,7 +85,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	}
 
 	close: { (): boolean } = (): boolean => {
-		if (this.showContent === false) {
+		if (this.showContent === false || this.alwaysOpen) {
 			return true;
 		}
 
@@ -122,7 +126,7 @@ export function simpleCard(): angular.IDirective {
 				</div>
 
 				<ng-form rl-autosave="card.autosaveLink" validate="card.validate()" save="card.save()">
-					<div ng-show="card.showContent">
+					<div ng-show="card.showContent || card.alwaysOpen">
 						<div class="body row">
 							<div class="content-template"></div>
 							<div class="clearfix"></div>
@@ -143,6 +147,7 @@ export function simpleCard(): angular.IDirective {
 		bindToController: {
 			onOpen: '&',
 			canOpen: '=',
+			alwaysOpen: '=',
 			childLink: '=',
 			validate: '&',
 			save: '&',
