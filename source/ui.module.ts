@@ -5,7 +5,7 @@ import * as angular from 'angular';
 import 'angular-ui-bootstrap';
 import 'angular-sanitize';
 
-import '../libraries/angular-bootstrap-slider/index';
+import '../libraries/angular-bootstrap-slider/slider';
 
 import 'signature_pad';
 
