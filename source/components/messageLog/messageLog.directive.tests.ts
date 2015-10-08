@@ -95,6 +95,7 @@ describe('MessageLogController', () => {
 
 	it('should set the base loading flag when busy is set to true and clear all loading flags if busy is set to false on the service', (): void => {
 		buildController();
+		scope.$digest();
 
 		expect(log.loadingInitial).to.be.true;
 

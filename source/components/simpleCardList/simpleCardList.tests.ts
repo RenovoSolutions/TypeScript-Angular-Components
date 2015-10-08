@@ -20,12 +20,14 @@ interface IObservableMock {
 
 interface ICardBehaviorMock {
 	close: Sinon.SinonSpy;
+	setAlwaysOpen: Sinon.SinonSpy;
 }
 
 describe('SimpleCardListController', () => {
-	var scope: angular.IScope;
-	var list: simpleCardList.ISimpleCardListController;
-	var observable: IObservableMock;
+	let scope: angular.IScope;
+	let list: simpleCardList.ISimpleCardListController;
+	let observable: IObservableMock;
+	let alwaysOpen: boolean;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -35,7 +37,7 @@ describe('SimpleCardListController', () => {
 			fire: sinon.spy((): boolean => { return true; }),
 		};
 
-		var observableFactory: any = {
+		let observableFactory: any = {
 			getInstance(): IObservableMock {
 				return observable;
 			},
@@ -49,24 +51,43 @@ describe('SimpleCardListController', () => {
 	it('should register close behavior with the observable', (): void => {
 		buildController();
 
-		var behavior: ICardBehaviorMock = { close: sinon.spy() };
+		let behavior: ICardBehaviorMock = {
+			close: sinon.spy(),
+			setAlwaysOpen: sinon.spy(),
+		};
 		list.registerCard(behavior);
 
-		sinon.assert.calledOnce(observable.register);
+		sinon.assert.calledTwice(observable.register);
 		sinon.assert.calledWith(observable.register, behavior.close, 'close');
+		sinon.assert.calledWith(observable.register, behavior.setAlwaysOpen, 'alwaysOpen');
 	});
 
 	it('should trigger all cards to close on openCard and return the result', (): void => {
 		buildController();
-		var canOpen: boolean = list.openCard();
+		let canOpen: boolean = list.openCard();
 		sinon.assert.calledOnce(observable.fire);
 		sinon.assert.calledWith(observable.fire, 'close');
 		expect(canOpen).to.be.true;
 	});
 
+	it('should trigger all cards to toggle alwaysOpen when the flag changes on the list', (): void => {
+		buildController();
+		alwaysOpen = true;
+		scope.$digest();
+		sinon.assert.calledOnce(observable.fire);
+		sinon.assert.calledWith(observable.fire, 'alwaysOpen', true);
+	});
+
 	function buildController(): void {
-		var controllerResult: test.IControllerResult<simpleCardList.ISimpleCardListController>
-			= test.angularFixture.controllerWithBindings<simpleCardList.ISimpleCardListController>(simpleCardList.controllerName);
+		let $parse: any = (): Function => {
+			return (): boolean => {
+				return alwaysOpen;
+			};
+		};
+
+		let controllerResult: test.IControllerResult<simpleCardList.ISimpleCardListController>
+			= test.angularFixture.controllerWithBindings<simpleCardList.ISimpleCardListController>(simpleCardList.controllerName, null
+				, { $parse: $parse, $attrs: {} });
 
 		scope = controllerResult.scope;
 		list = controllerResult.controller;

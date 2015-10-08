@@ -17,6 +17,7 @@ export var controllerName: string = 'SimpleCardController';
 export interface ISimpleCardBindings {
 	onOpen(): void;
 	canOpen: boolean;
+	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
 	validate(): boolean;
 	save(): angular.IPromise<void>;
@@ -28,12 +29,14 @@ export interface ISimpleCardScope extends angular.IScope {
 
 export interface ISimpleCardBehavior {
 	close(): boolean;
+	setAlwaysOpen(value: boolean): void;
 }
 
 export class SimpleCardController implements ISimpleCardBindings {
 	// bindings
 	onOpen: { (): void };
 	canOpen: boolean;
+	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
 	validate: { (): boolean };
 	save: { (): angular.IPromise<void> };
@@ -49,7 +52,6 @@ export class SimpleCardController implements ISimpleCardBindings {
 		if (this.canOpen == null) {
 			this.canOpen = true;
 		}
-
 		this.listController = $element.controller('rlSimpleCardList');
 
 		if (this.listController == null) {
@@ -58,11 +60,22 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 		var behavior: ISimpleCardBehavior = {
 			close: this.close,
+			setAlwaysOpen: (value: boolean): void => {
+				this.alwaysOpen = value;
+			},
 		};
 
 		this.listController.registerCard(behavior);
 
 		parentChild.registerChildBehavior(this.childLink, behavior);
+
+		$scope.$watch((): boolean => { return this.alwaysOpen; }, (value: boolean) => {
+			if (value) {
+				this.showContent = true;
+			} else {
+				this.close();
+			}
+		});
 	}
 
 	toggleContent(): void {
@@ -81,7 +94,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	}
 
 	close: { (): boolean } = (): boolean => {
-		if (this.showContent === false) {
+		if (this.showContent === false || this.alwaysOpen) {
 			return true;
 		}
 
@@ -116,13 +129,13 @@ export function simpleCard(): angular.IDirective {
 		require: '?^^rlSimpleCardList',
 		template: `
 			<div class="card col-xs-12">
-				<div class="header row" ng-class="{ 'active': card.canOpen }" ng-click="card.toggleContent()">
+				<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen }" ng-click="card.toggleContent()">
 					<div class="header-template"></div>
 					<div class="clearfix"></div>
 				</div>
 
 				<ng-form rl-autosave="card.autosaveLink" validate="card.validate()" save="card.save()">
-					<div ng-show="card.showContent">
+					<div ng-show="card.showContent || card.alwaysOpen">
 						<div class="body row">
 							<div class="content-template"></div>
 							<div class="clearfix"></div>
@@ -143,6 +156,7 @@ export function simpleCard(): angular.IDirective {
 		bindToController: {
 			onOpen: '&',
 			canOpen: '=',
+			alwaysOpen: '=',
 			childLink: '=',
 			validate: '&',
 			save: '&',
