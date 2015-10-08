@@ -64,6 +64,14 @@ export class SimpleCardController implements ISimpleCardBindings {
 		this.listController.registerCard(behavior);
 
 		parentChild.registerChildBehavior(this.childLink, behavior);
+
+		$scope.$watch((): boolean => { return this.alwaysOpen; }, (value: boolean) => {
+			if (value) {
+				this.showContent = true;
+			} else {
+				this.close();
+			}
+		});
 	}
 
 	toggleContent(): void {
