@@ -1,3 +1,6 @@
+require('./bootstrap-slider.min.css');
+var Slider = require('./bootstrap-slider.min');
+
 angular.module('ui.bootstrap-slider', [])
     .directive('slider', ['$parse', '$timeout', '$rootScope', function ($parse, $timeout, $rootScope) {
         return {
