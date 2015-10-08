@@ -129,6 +129,17 @@ describe('SimpleCardController', () => {
 		});
 	});
 
+	describe('close', (): void => {
+		it('should return true to indicate that another card can be opened without closing or autosaving if always open is true', (): void => {
+			buildController();
+			scope.$digest();
+			card.alwaysOpen = true;
+
+			expect(card.close()).to.be.true;
+			expect(card.showContent).to.be.true;
+		});
+	});
+
 	function buildController(useList?: boolean, childLink?: any): void {
 		var bindings: any = {
 			onOpen: sinon.spy(),
