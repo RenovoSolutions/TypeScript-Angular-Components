@@ -48,10 +48,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	constructor(private $scope: angular.IScope
 		, $element: angular.IAugmentedJQuery
 		, private parentChild: __parentChild.IParentChildBehaviorService) {
-		if (this.alwaysOpen) {
-			this.canOpen = false;
-		}
-		else if (this.canOpen == null) {
+		if (this.canOpen == null) {
 			this.canOpen = true;
 		}
 		this.listController = $element.controller('rlSimpleCardList');
@@ -120,7 +117,7 @@ export function simpleCard(): angular.IDirective {
 		require: '?^^rlSimpleCardList',
 		template: `
 			<div class="card col-xs-12">
-				<div class="header row" ng-class="{ 'active': card.canOpen }" ng-click="card.toggleContent()">
+				<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen }" ng-click="card.toggleContent()">
 					<div class="header-template"></div>
 					<div class="clearfix"></div>
 				</div>
