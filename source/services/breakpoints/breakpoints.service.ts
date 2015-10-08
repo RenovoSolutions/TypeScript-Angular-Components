@@ -1,5 +1,6 @@
 'use strict';
 
+import * as ng from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -20,8 +21,9 @@ export interface IBreakpointService {
 }
 
 export class BreakpointService implements IBreakpointService {
-	static $inject: string[] = [visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName, __observable.factoryName]
-	constructor(private visibleBreakpoints: IVisibleBreakpointService
+	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName, __observable.factoryName]
+	constructor(private $rootScope: ng.IRootScopeService
+			, private visibleBreakpoints: IVisibleBreakpointService
 			, resizeDebounceMilliseconds: number
 			, windowService: IWindowService
 			, observableFactory: __observable.IObservableServiceFactory) {
@@ -64,8 +66,10 @@ export class BreakpointService implements IBreakpointService {
 		var newBreakPoint: string = this.getBreakpoint();
 
 		if (newBreakPoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = newBreakPoint;
-			this.observable.fire('window.breakpointChanged', this.currentBreakpoint);
+			this.$rootScope.$apply((): void => {
+				this.currentBreakpoint = newBreakPoint;
+				this.observable.fire('window.breakpointChanged', this.currentBreakpoint);
+			});
 		}
 	}
 }
