@@ -29,6 +29,7 @@ export interface ISimpleCardScope extends angular.IScope {
 
 export interface ISimpleCardBehavior {
 	close(): boolean;
+	setAlwaysOpen(value: boolean): void;
 }
 
 export class SimpleCardController implements ISimpleCardBindings {
@@ -59,6 +60,9 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 		var behavior: ISimpleCardBehavior = {
 			close: this.close,
+			setAlwaysOpen: (value: boolean): void => {
+				this.alwaysOpen = value;
+			},
 		};
 
 		this.listController.registerCard(behavior);

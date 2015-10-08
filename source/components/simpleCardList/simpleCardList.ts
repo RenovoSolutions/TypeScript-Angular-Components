@@ -16,16 +16,40 @@ export interface ISimpleCardListController {
 	openCard(): boolean;
 }
 
+export interface ISimpleCardListAttributes extends angular.IAttributes {
+	alwaysOpen: string;
+}
+
 export class SimpleCardListController implements ISimpleCardListController {
 	private observable: __observable.IObservableService;
+	private alwaysOpen: boolean;
 
-	static $inject: string[] = [__observable.factoryName];
-	constructor(observableFactory: __observable.IObservableServiceFactory) {
+	static $inject: string[] = ['$scope', '$attrs', '$parse', __observable.factoryName];
+	constructor($scope: angular.IScope
+		, $attrs: ISimpleCardListAttributes
+		, $parse: angular.IParseService
+		, observableFactory: __observable.IObservableServiceFactory) {
 		this.observable = observableFactory.getInstance();
+
+		$scope.$watch((): boolean => { return $parse($attrs.alwaysOpen)($scope); }, (value: boolean) => {
+			this.alwaysOpen = value;
+			this.observable.fire('alwaysOpen', value);
+		});
 	}
 
 	registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction {
-		return this.observable.register(behavior.close, 'close');
+		behavior.setAlwaysOpen(this.alwaysOpen);
+
+		var unregisterFunctions: __observable.IUnregisterFunction[] = [];
+
+		unregisterFunctions.push(this.observable.register(behavior.close, 'close'));
+		unregisterFunctions.push(this.observable.register(behavior.setAlwaysOpen, 'alwaysOpen'));
+
+		return (): void => {
+			_.each(unregisterFunctions, (unregister: __observable.IUnregisterFunction): void => {
+				unregister();
+			});
+		};
 	}
 
 	openCard(): boolean {
