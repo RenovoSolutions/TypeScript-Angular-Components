@@ -66,8 +66,8 @@ export class BreakpointService implements IBreakpointService {
 		var newBreakPoint: string = this.getBreakpoint();
 
 		if (newBreakPoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = newBreakPoint;
 			this.$rootScope.$apply((): void => {
+				this.currentBreakpoint = newBreakPoint;
 				this.observable.fire('window.breakpointChanged', this.currentBreakpoint);
 			});
 		}
