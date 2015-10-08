@@ -1,3 +1,5 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
 'use strict';
 
 import * as ng from 'angular';
@@ -33,8 +35,6 @@ export class MessageLogController {
 	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
-		this.loadingInitial = true;
-
 		$scope.$watch((): IMessage[]=> { return this.messageLog.visibleMessages; }
 			, (value: IMessage[]): void => {
 				this.messages = value;
@@ -57,8 +57,12 @@ export class MessageLogController {
 			}
 		});
 
+		$scope.$watch((): IMessageLogDataService => { return this.service; }, (service: IMessageLogDataService): void => {
+			this.messageLog.dataService = service;
+			this.loadingInitial = true;
+		});
+
 		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
-		this.messageLog.dataService = this.service;
 	}
 
 	getOlder(): ng.IPromise<void> {
@@ -74,29 +78,7 @@ export function messageLog(): ng.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div>
-				<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
-				<div class="content-group" ng-repeat="entry in log.messages">
-					<div ng-bind-html="entry.message"></div>
-					<div class="byline">{{entry.createdBy}}</div>
-					<div class="byline">{{entry.createdDate}} {{entry.createdTime}} UTC</div>
-				</div>
-				<div class="row">
-					<div class="col-xs-12">
-						<div class="text-center">
-							<rl-button type="default" action="log.getTopPage()" ng-disabled="log.loading" button-right-aligned="true">
-								<span ng-show="log.hasPreviousPage">Top</span>
-								<span ng-hide="log.hasPreviousPage">Refresh</span>
-							</rl-button>
-							<rl-button type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getNextPage()">
-								Older <i class="fa fa-chevron-right"></i>
-							</rl-button>
-						</div>
-					</div>
-				</div>
-			</div>
-		`,
+		template: require('./messageLog.html'),
 		controller: controllerName,
 		controllerAs: 'log',
 		scope: {},
