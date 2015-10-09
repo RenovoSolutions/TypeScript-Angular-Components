@@ -61,7 +61,7 @@
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
     "signature_pad": "~1.4.0",
-    "typescript-angular-utilities": "^2.1.4"
+    "typescript-angular-utilities": "^2.1.5"
   },
   "license": "GPL-3.0"
 }
