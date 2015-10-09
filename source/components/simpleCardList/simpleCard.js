@@ -12,7 +12,7 @@ var SimpleCardController = (function () {
         this.showContent = false;
         this.autosaveLink = {};
         this.close = function () {
-            if (_this.showContent === false) {
+            if (_this.showContent === false || _this.alwaysOpen) {
                 return true;
             }
             return _this.parentChild.triggerChildBehavior(_this.autosaveLink, function (behavior) {
@@ -32,9 +32,20 @@ var SimpleCardController = (function () {
         }
         var behavior = {
             close: this.close,
+            setAlwaysOpen: function (value) {
+                _this.alwaysOpen = value;
+            },
         };
         this.listController.registerCard(behavior);
         parentChild.registerChildBehavior(this.childLink, behavior);
+        $scope.$watch(function () { return _this.alwaysOpen; }, function (value) {
+            if (value) {
+                _this.showContent = true;
+            }
+            else {
+                _this.close();
+            }
+        });
     }
     SimpleCardController.prototype.toggleContent = function () {
         if (this.showContent) {
@@ -70,13 +81,14 @@ function simpleCard() {
         restrict: 'E',
         transclude: true,
         require: '?^^rlSimpleCardList',
-        template: "\n\t\t\t<div class=\"card col-xs-12\">\n\t\t\t\t<div class=\"header row\" ng-class=\"{ 'active': card.canOpen }\" ng-click=\"card.toggleContent()\">\n\t\t\t\t\t<div class=\"header-template\"></div>\n\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t</div>\n\n\t\t\t\t<ng-form rl-autosave=\"card.autosaveLink\" validate=\"card.validate()\" save=\"card.save()\">\n\t\t\t\t\t<div ng-show=\"card.showContent\">\n\t\t\t\t\t\t<div class=\"body row\">\n\t\t\t\t\t\t\t<div class=\"content-template\"></div>\n\t\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</ng-form>\n\t\t\t\t<div ng-show=\"hasFooter && card.showContent\">\n\t\t\t\t\t<div class=\"footer row\">\n\t\t\t\t\t\t<div class=\"footer-template\"></div>\n\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
+        template: "\n\t\t\t<div class=\"card col-xs-12\">\n\t\t\t\t<div class=\"header row\" ng-class=\"{ 'active': card.canOpen && !card.alwaysOpen }\" ng-click=\"card.toggleContent()\">\n\t\t\t\t\t<div class=\"header-template\"></div>\n\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t</div>\n\n\t\t\t\t<ng-form rl-autosave=\"card.autosaveLink\" validate=\"card.validate()\" save=\"card.save()\">\n\t\t\t\t\t<div ng-show=\"card.showContent || card.alwaysOpen\">\n\t\t\t\t\t\t<div class=\"body row\">\n\t\t\t\t\t\t\t<div class=\"content-template\"></div>\n\t\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</ng-form>\n\t\t\t\t<div ng-show=\"hasFooter && card.showContent\">\n\t\t\t\t\t<div class=\"footer row\">\n\t\t\t\t\t\t<div class=\"footer-template\"></div>\n\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
         controller: exports.controllerName,
         controllerAs: 'card',
         scope: {},
         bindToController: {
             onOpen: '&',
             canOpen: '=',
+            alwaysOpen: '=',
             childLink: '=',
             validate: '&',
             save: '&',

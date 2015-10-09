@@ -8,10 +8,14 @@ export interface ISimpleCardListController {
     registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction;
     openCard(): boolean;
 }
+export interface ISimpleCardListAttributes extends angular.IAttributes {
+    alwaysOpen: string;
+}
 export declare class SimpleCardListController implements ISimpleCardListController {
     private observable;
+    private alwaysOpen;
     static $inject: string[];
-    constructor(observableFactory: __observable.IObservableServiceFactory);
+    constructor($scope: angular.IScope, $attrs: ISimpleCardListAttributes, $parse: angular.IParseService, observableFactory: __observable.IObservableServiceFactory);
     registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction;
     openCard(): boolean;
 }

@@ -7,6 +7,7 @@ export declare var controllerName: string;
 export interface ISimpleCardBindings {
     onOpen(): void;
     canOpen: boolean;
+    alwaysOpen: boolean;
     childLink: __parentChild.IChild<ISimpleCardBehavior>;
     validate(): boolean;
     save(): angular.IPromise<void>;
@@ -16,6 +17,7 @@ export interface ISimpleCardScope extends angular.IScope {
 }
 export interface ISimpleCardBehavior {
     close(): boolean;
+    setAlwaysOpen(value: boolean): void;
 }
 export declare class SimpleCardController implements ISimpleCardBindings {
     private $scope;
@@ -24,6 +26,7 @@ export declare class SimpleCardController implements ISimpleCardBindings {
         (): void;
     };
     canOpen: boolean;
+    alwaysOpen: boolean;
     childLink: __parentChild.IChild<ISimpleCardBehavior>;
     validate: {
         (): boolean;

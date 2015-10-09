@@ -43,6 +43,7 @@ var MessageLog = (function () {
         set: function (value) {
             this._dataService = value;
             if (value != null) {
+                this.visibleMessages = null;
                 this.updateCurrentPage();
             }
         },

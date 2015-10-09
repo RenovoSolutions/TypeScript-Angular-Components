@@ -2,7 +2,7 @@
 var angular = require('angular');
 require('angular-ui-bootstrap');
 require('angular-sanitize');
-require('../libraries/angular-bootstrap-slider/index');
+require('../libraries/angular-bootstrap-slider/slider');
 require('signature_pad');
 var behaviors = require('./behaviors/behaviors.module');
 exports.behaviors = behaviors;

@@ -7,14 +7,17 @@ var breakpoint_1 = require('./breakpoint');
 exports.breakpointServiceName = 'breakpoints';
 var __observable = typescript_angular_utilities_1.services.observable;
 var BreakpointService = (function () {
-    function BreakpointService(visibleBreakpoints, resizeDebounceMilliseconds, windowService, observableFactory) {
+    function BreakpointService($rootScope, visibleBreakpoints, resizeDebounceMilliseconds, windowService, observableFactory) {
         var _this = this;
+        this.$rootScope = $rootScope;
         this.visibleBreakpoints = visibleBreakpoints;
         this.updateBreakpoint = function () {
             var newBreakPoint = _this.getBreakpoint();
             if (newBreakPoint !== _this.currentBreakpoint) {
-                _this.currentBreakpoint = newBreakPoint;
-                _this.observable.fire('window.breakpointChanged', _this.currentBreakpoint);
+                _this.$rootScope.$apply(function () {
+                    _this.currentBreakpoint = newBreakPoint;
+                    _this.observable.fire('window.breakpointChanged', _this.currentBreakpoint);
+                });
             }
         };
         this.currentBreakpoint = this.getBreakpoint();
@@ -46,7 +49,7 @@ var BreakpointService = (function () {
     BreakpointService.prototype.register = function (action) {
         return this.observable.register(action, 'window.breakpointChanged');
     };
-    BreakpointService.$inject = [visibleBreakpoint_service_1.visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapper_service_1.serviceName, __observable.factoryName];
+    BreakpointService.$inject = ['$rootScope', visibleBreakpoint_service_1.visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapper_service_1.serviceName, __observable.factoryName];
     return BreakpointService;
 })();
 exports.BreakpointService = BreakpointService;
