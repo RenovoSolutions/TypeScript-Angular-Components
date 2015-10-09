@@ -1,3 +1,5 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
 'use strict';
 
 import * as angular from 'angular';
@@ -16,7 +18,7 @@ export class LongClickButtonController {
 	onTriggered: {(): void};
 	text: string;
 	onShortClickText: string;
-	buttonType: string;
+	type: string;
 
 	private interval: number = 25;
 	duration: number = 1500;
@@ -33,8 +35,8 @@ export class LongClickButtonController {
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility) {
 		this.buttonText = this.text;
-		if (this.buttonType != null) {
-			this.buttonClass = this.buttonType;
+		if (this.type != null) {
+			this.buttonClass = this.type;
 		} else {
 			this.buttonClass = 'default';
 		}
@@ -91,17 +93,7 @@ function longClickButton(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div class="long-click-button">
-				<button id="actionButton" class="btn btn-{{button.buttonClass}}" ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()">
-					<rl-busy loading="button.spinner" ng-if="button.rightAligned"></rl-busy>
-					<i ng-show="button.buttonIcon != null" class="fa fa-{{button.buttonIcon}}"></i> {{button.buttonText}}
-					<rl-busy loading="button.spinner" ng-if="!button.rightAligned"></rl-busy>
-				</button>
-				<rl-rating-bar ng-if="button.active" width="button.width" height="5" min="0" max="button.duration"
-							value="button.actionProgress" background="transparent"></rl-rating-bar>
-			</div>
-		`,
+		template: require('./longClickButton.html'),
 		controller: controllerName,
 		controllerAs: 'button',
 		scope: {},
