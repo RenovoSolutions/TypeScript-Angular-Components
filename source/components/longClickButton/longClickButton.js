@@ -1,3 +1,4 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 var angular = require('angular');
 var $ = require('jquery');
@@ -15,8 +16,8 @@ var LongClickButtonController = (function () {
         this.interval = 25;
         this.duration = 1500;
         this.buttonText = this.text;
-        if (this.buttonType != null) {
-            this.buttonClass = this.buttonType;
+        if (this.type != null) {
+            this.buttonClass = this.type;
         }
         else {
             this.buttonClass = 'default';
@@ -69,7 +70,7 @@ function longClickButton() {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<div class=\"long-click-button\">\n\t\t\t\t<button id=\"actionButton\" class=\"btn btn-{{button.buttonClass}}\" ng-mousedown=\"button.startAction()\" ng-mouseleave=\"button.stopAction()\">\n\t\t\t\t\t<rl-busy loading=\"button.spinner\" ng-if=\"button.rightAligned\"></rl-busy>\n\t\t\t\t\t<i ng-show=\"button.buttonIcon != null\" class=\"fa fa-{{button.buttonIcon}}\"></i> {{button.buttonText}}\n\t\t\t\t\t<rl-busy loading=\"button.spinner\" ng-if=\"!button.rightAligned\"></rl-busy>\n\t\t\t\t</button>\n\t\t\t\t<rl-rating-bar ng-if=\"button.active\" width=\"button.width\" height=\"5\" min=\"0\" max=\"button.duration\"\n\t\t\t\t\t\t\tvalue=\"button.actionProgress\" background=\"transparent\"></rl-rating-bar>\n\t\t\t</div>\n\t\t",
+        template: require('./longClickButton.html'),
         controller: exports.controllerName,
         controllerAs: 'button',
         scope: {},

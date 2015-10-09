@@ -13,7 +13,7 @@ export declare class LongClickButtonController {
     };
     text: string;
     onShortClickText: string;
-    buttonType: string;
+    type: string;
     private interval;
     duration: number;
     buttonText: string;
