@@ -16,7 +16,7 @@ export class LongClickButtonController {
 	onTriggered: {(): void};
 	text: string;
 	onShortClickText: string;
-	buttonType: string;
+	type: string;
 
 	private interval: number = 25;
 	duration: number = 1500;
@@ -33,8 +33,8 @@ export class LongClickButtonController {
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility) {
 		this.buttonText = this.text;
-		if (this.buttonType != null) {
-			this.buttonClass = this.buttonType;
+		if (this.type != null) {
+			this.buttonClass = this.type;
 		} else {
 			this.buttonClass = 'default';
 		}
