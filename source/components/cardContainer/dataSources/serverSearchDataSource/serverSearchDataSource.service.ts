@@ -7,6 +7,7 @@ import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
+import __synchronizedRequests = services.synchronizedRequests;
 
 import { IDataSource } from '../dataSource';
 import { DataSourceBase } from '../dataSourceBase.service';
@@ -27,18 +28,24 @@ export interface IDataServiceSearchFunction<TDataType> {
 export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType> {
 	private minSearchLength: number = 4;
 	private search: string;
+	private synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
 
-	constructor(private getDataSet: IDataServiceSearchFunction<TDataType>
+	constructor(getDataSet: IDataServiceSearchFunction<TDataType>
 			, private searchFilter: __genericSearchFilter.IGenericSearchFilter
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility
-			, private $q: angular.IQService) {
+			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
 		super(observableFactory, dataSourceProcessor, array);
 		this.countFilterGroups = true;
 		this.search = searchFilter.searchText;
 		searchFilter.minSearchLength = this.minSearchLength;
+		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
+	}
+
+	set getDataSet(value: IDataServiceSearchFunction<TDataType>) {
+		this.synchronizedRequests.dataProvider = value;
 	}
 
 	refresh(): void {
@@ -62,7 +69,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.rawDataSet = null;
 		this.loadingDataSet = true;
 
-		this.$q.when(this.getDataSet(this.search)).then(this.resolveReload);
+		this.synchronizedRequests.getData(this.search);
 	}
 
 	private resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
@@ -80,20 +87,20 @@ export interface IServerSearchDataSourceFactory {
 						, searchFilter: __genericSearchFilter.IGenericSearchFilter): IDataSource<TDataType>;
 }
 
-serverSearchDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, '$q'];
+serverSearchDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
 export function serverSearchDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
 												, dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
-												, $q: angular.IQService): IServerSearchDataSourceFactory {
+												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSearchDataSourceFactory {
 	'use strict';
 	return {
 		getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
 							, searchFilter: __genericSearchFilter.IGenericSearchFilter): IDataSource<TDataType> {
-			return new ServerSearchDataSource<TDataType>(getDataSet, searchFilter, observableFactory, dataSourceProcessor, array, object, $q);
+			return new ServerSearchDataSource<TDataType>(getDataSet, searchFilter, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
 }
 
-angular.module(moduleName, [__observable.moduleName, __array.moduleName, __object.moduleName])
+angular.module(moduleName, [__observable.moduleName, __array.moduleName, __object.moduleName, __synchronizedRequests.moduleName])
 	.factory(factoryName, serverSearchDataSourceFactory);

@@ -39,6 +39,7 @@ describe('serverSearchDataSource', () => {
 	let source: IServerSearchDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
+	let $q: angular.IQService;
 
 	beforeEach(() => {
 		angular.mock.module(genericSearchFilter.moduleName);
@@ -46,11 +47,12 @@ describe('serverSearchDataSource', () => {
 		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName, genericSearchFilter.factoryName);
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName, genericSearchFilter.factoryName, '$q');
 		serverSearchDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		$rootScope = dependencies.$rootScope;
 		mock = dependencies[test.mock.serviceName];
+		$q = dependencies.$q;
 		searchFilter = dependencies[genericSearchFilter.factoryName].getInstance();
 
 		dataService = mock.service();
@@ -120,6 +122,38 @@ describe('serverSearchDataSource', () => {
 			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
 
 			expect(source.dataSet).to.be.null;
+		});
+
+		it('should accept the results from only the most recent request', (): void => {
+			let firstRequestData: number[] = [1, 2];
+			let secondRequestData: number[] = [3, 4];
+			let firstRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
+			let secondRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
+
+			let get: Sinon.SinonSpy = sinon.spy((): angular.IPromise<number[]> => { return firstRequest.promise; });
+
+			source = <any>serverSearchDataSourceFactory.getInstance(get, searchFilter);
+			searchFilter.searchText = 'search';
+			source.reload();
+
+			sinon.assert.calledOnce(get);
+
+			get = sinon.spy((): angular.IPromise<number[]> => { return secondRequest.promise; });
+
+			source.getDataSet = get;
+			source.reload();
+
+			sinon.assert.calledOnce(get);
+
+			firstRequest.resolve(firstRequestData);
+			$rootScope.$digest();
+
+			expect(source.rawDataSet).to.not.exist;
+
+			secondRequest.resolve(secondRequestData);
+			$rootScope.$digest();
+
+			expect(source.rawDataSet).to.equal(secondRequestData);
 		});
 	});
 });
