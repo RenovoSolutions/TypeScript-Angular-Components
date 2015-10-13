@@ -11,9 +11,14 @@ import { controllerName, IBaseDialogScope } from './baseDialog.controller';
 
 export var serviceName: string = 'baseDialog';
 
-export interface IBaseDialogService extends IDialogService<ng.ui.bootstrap.IModalSettings> { }
+export interface IBaseDialogService extends IDialogService<IBaseDialogSettings> { }
 
-export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.IModalSettings> {
+export interface IBaseDialogSettings extends ng.ui.bootstrap.IModalSettings {
+	resolveToDialog?: boolean;
+	dialogAs?: string;
+}
+
+export class BaseDialogService implements IDialogImplementation<IBaseDialogSettings> {
 	closeHandler: IDialogCloseHandler;
 
 	static $inject: string[] = ['$modal', '$rootScope', __promise.serviceName];
@@ -21,7 +26,7 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 			, private $rootScope: ng.IRootScopeService
 			, private promise: __promise.IPromiseUtility) { }
 
-	open(options: ng.ui.bootstrap.IModalSettings, closeHandler?: IDialogCloseHandler): void {
+	open(options: IBaseDialogSettings, closeHandler?: IDialogCloseHandler): void {
 		if (options == null) {
 			options = <any>{};
 		}
@@ -46,15 +51,25 @@ export class BaseDialogService implements IDialogImplementation<ng.ui.bootstrap.
 		}
 	}
 
-	private configureModalSettings(options: ng.ui.bootstrap.IModalSettings, resolveData: any): ng.ui.bootstrap.IModalSettings {
+	private configureModalSettings(options: IBaseDialogSettings, resolveData: any): IBaseDialogSettings {
 		let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
 
 		if (modalScope == null) {
 			modalScope = <IBaseDialogScope>this.$rootScope.$new();
 		}
 
+		if (options.resolveToDialog) {
+			if (options.dialogAs != null) {
+				modalScope[options.dialogAs] = resolveData;
+			}
+			else {
+				modalScope = <IBaseDialogScope>_.extend(modalScope, resolveData);
+			}
+		} else {
+			modalScope.resolveData = resolveData;
+		}
+
 		modalScope.modalController = options.controller;
-		modalScope.resolveData = resolveData;
 		options.resolve = null;
 		options.controller = controllerName;
 		options.scope = modalScope;
