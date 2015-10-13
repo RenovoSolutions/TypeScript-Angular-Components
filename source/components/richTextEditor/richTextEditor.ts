@@ -11,8 +11,10 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { configureNgWig } from './ngWig.config';
+import { richTextEditorProvider, providerName } from './richTextEditor.config';
 import { headerButton, HeaderButtonController, headerButtonDirectiveName, headerButtonControllerName } from './headerButton';
+
+export { providerName, IRichTextEditorProvider } from './richTextEditor.config';
 
 export var moduleName: string = 'rl.ui.components.richTextEditor';
 export var directiveName: string = 'rlRichTextEditor';
@@ -30,8 +32,8 @@ export class RichTextEditorController {
 
 	toolbar: string;
 
-	static $inject: string[] = [__object.serviceName];
-	constructor(object: __object.IObjectUtility) {
+	static $inject: string[] = [__object.serviceName, providerName];
+	constructor(object: __object.IObjectUtility, provider: void) {
 		this.toolbar = 'h1, bold, italic, underline, list1, list2, indent, outdent';
 
 		if (!object.isNullOrEmpty(this.customButtons)) {
@@ -60,4 +62,4 @@ angular.module(moduleName, ['ngWig', __object.moduleName])
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)
 	.controller(headerButtonControllerName, HeaderButtonController)
-	.config(configureNgWig);
+	.provider(providerName, richTextEditorProvider);
