@@ -12,7 +12,8 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
 import { richTextEditorProvider, providerName, IRichTextEditorProvider } from './richTextEditor.config';
-import { headerButton, HeaderButtonController, headerButtonDirectiveName, headerButtonControllerName } from './headerButton';
+import { headerButton, headerButtonDirectiveName, } from './headerButton';
+import { paragraphButton, paragraphButtonDirectiveName, } from './paragraphButton';
 
 let externalProviderName: string = providerName + 'Provider';
 export { externalProviderName as providerName, IRichTextEditorProvider };
@@ -35,7 +36,7 @@ export class RichTextEditorController {
 
 	static $inject: string[] = [__object.serviceName, providerName];
 	constructor(object: __object.IObjectUtility, provider: void) {
-		this.toolbar = 'h1, bold, italic, underline, list1, list2, indent, outdent';
+		this.toolbar = 'paragraph, h1, bold, italic, underline, list1, list2, indent, outdent';
 
 		if (!object.isNullOrEmpty(this.customButtons)) {
 			this.toolbar += ', ' + this.customButtons;
@@ -62,5 +63,5 @@ angular.module(moduleName, ['ngWig', __object.moduleName])
 	.directive(directiveName, richTextEditor)
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)
-	.controller(headerButtonControllerName, HeaderButtonController)
+	.directive(paragraphButtonDirectiveName, paragraphButton)
 	.provider(providerName, richTextEditorProvider);

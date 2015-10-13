@@ -20,6 +20,7 @@ export function richTextEditorProvider(ngWigToolbarProvider: any): IRichTextEdit
 			ngWigToolbarProvider.addStandartButton(name, toolbar, command, 'fa-' + icon);
 		},
 		$get(): void {
+			ngWigToolbarProvider.addCustomButton('paragraph', 'rl-paragraph-button');
 			ngWigToolbarProvider.addCustomButton('h1', 'rl-header-button');
 			ngWigToolbarProvider.addStandartButton('underline', 'Underline', 'underline', 'fa-underline');
 			ngWigToolbarProvider.addStandartButton('indent', 'Indent', 'indent', 'fa-indent');
