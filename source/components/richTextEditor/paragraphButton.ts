@@ -16,7 +16,7 @@ export function paragraphButton(): ng.IDirective {
 	return {
 		restrict: 'E',
 		template: `
-			<button type="button" class="nw-button" ng-click="header.trigger()" ng-disabled="editMode" title="paragraph">
+			<button type="button" class="nw-button" ng-click="trigger()" ng-disabled="editMode" title="paragraph">
 				<i class="fa fa-paragraph"></i>
 			</button>
 		`,
