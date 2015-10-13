@@ -11,10 +11,11 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { richTextEditorProvider, providerName } from './richTextEditor.config';
+import { richTextEditorProvider, providerName, IRichTextEditorProvider } from './richTextEditor.config';
 import { headerButton, HeaderButtonController, headerButtonDirectiveName, headerButtonControllerName } from './headerButton';
 
-export { providerName, IRichTextEditorProvider } from './richTextEditor.config';
+let externalProviderName: string = providerName + 'Provider';
+export { externalProviderName as providerName, IRichTextEditorProvider };
 
 export var moduleName: string = 'rl.ui.components.richTextEditor';
 export var directiveName: string = 'rlRichTextEditor';
