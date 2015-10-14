@@ -2,8 +2,8 @@
 
 'use strict';
 
-import '../../../libraries/ngWig/css/ng-wig.css';
-import '../../../libraries/ngWig/ng-wig';
+import 'ng-wig/dist/css/ng-wig.css';
+import 'ng-wig/dist/ng-wig';
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
