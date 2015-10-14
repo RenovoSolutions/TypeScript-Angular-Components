@@ -30,6 +30,8 @@ var ratingBar = require('./ratingBar/ratingBar');
 exports.ratingBar = ratingBar;
 var responsiveCardGrid = require('./responsiveCardGrid/responsiveCardGrid.module');
 exports.responsiveCardGrid = responsiveCardGrid;
+var richTextEditor = require('./richTextEditor/richTextEditor');
+exports.richTextEditor = richTextEditor;
 var signaturePad = require('./signaturePad/signaturePad');
 exports.signaturePad = signaturePad;
 var simpleCardList = require('./simpleCardList/simpleCardList.module');
@@ -59,6 +61,7 @@ angular.module(exports.moduleName, [
     radio.moduleName,
     ratingBar.moduleName,
     responsiveCardGrid.moduleName,
+    richTextEditor.moduleName,
     signaturePad.moduleName,
     simpleCardList.moduleName,
     spinner.moduleName,

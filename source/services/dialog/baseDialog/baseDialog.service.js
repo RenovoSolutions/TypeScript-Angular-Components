@@ -36,8 +36,18 @@ var BaseDialogService = (function () {
         if (modalScope == null) {
             modalScope = this.$rootScope.$new();
         }
+        if (options.resolveToDialog) {
+            if (options.dialogAs != null) {
+                modalScope[options.dialogAs] = resolveData;
+            }
+            else {
+                modalScope = _.extend(modalScope, resolveData);
+            }
+        }
+        else {
+            modalScope.resolveData = resolveData;
+        }
         modalScope.modalController = options.controller;
-        modalScope.resolveData = resolveData;
         options.resolve = null;
         options.controller = baseDialog_controller_1.controllerName;
         options.scope = modalScope;
