@@ -36,7 +36,7 @@ export class RichTextEditorController {
 
 	static $inject: string[] = [__object.serviceName, providerName];
 	constructor(object: __object.IObjectUtility, provider: void) {
-		this.toolbar = 'paragraph, h1, bold, italic, underline, list1, list2, indent, outdent';
+		this.toolbar = 'h1, paragraph, bold, italic, underline, list1, list2, indent, outdent';
 
 		if (!object.isNullOrEmpty(this.customButtons)) {
 			this.toolbar += ', ' + this.customButtons;
