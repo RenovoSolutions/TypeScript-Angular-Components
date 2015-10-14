@@ -60,9 +60,9 @@
     "jquery": "^2.1.4",
     "lodash": "^3.10.1",
     "moment": "^2.10.6",
+    "ng-wig": "^2.2.0",
     "signature_pad": "~1.4.0",
-    "typescript-angular-utilities": "^2.1.5",
-    "ng-wig": "git+ssh://git@github.com:stevermeister/ngWig.git#5555385142ea5158560ef96ebd191c7811dcf81e"
+    "typescript-angular-utilities": "^2.1.5"
   },
   "license": "GPL-3.0"
 }
