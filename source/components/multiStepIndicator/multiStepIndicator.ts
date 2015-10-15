@@ -16,7 +16,7 @@ import __object = services.object;
 export interface IStep {
 	title: string;
 	subtitle?: string;
-	onClick?: {(): void};
+	onClick?: {(): angular.IPromise<void> | void};
 	stateName?: string;
 	isCompleted?: boolean;
 	isCurrent?: boolean;
@@ -30,15 +30,19 @@ export interface IConfiguredStep extends IStep {
 export class MultiStepIndicatorController {
 	steps: IConfiguredStep[];
 
-	static $inject: string[] = ['$state', __object.serviceName];
+	static $inject: string[] = ['$state', '$q', __object.serviceName];
 	constructor(private $state: angular.ui.IStateService
+			, private $q: angular.IQService
 			, private object: __object.IObjectUtility) {
 		this.configureSteps();
 	}
 
 	onClick(step: IConfiguredStep): void {
 		if (!this.anyLoading()) {
-			step.onClick();
+			step.loading = true;
+			this.$q.when(step.onClick()).then((): void => {
+				step.loading = false;
+			});
 		}
 	}
 
@@ -64,12 +68,10 @@ export class MultiStepIndicatorController {
 		});
 	}
 
-	private redirectToState: { (step: IConfiguredStep): void } = (step: IConfiguredStep): void => {
-		step.loading = true;
-		this.$state.go(step.stateName).then((): void => {
+	private redirectToState: { (step: IConfiguredStep): void } = (step: IConfiguredStep): angular.IPromise<void> => {
+		return this.$state.go(step.stateName).then((): void => {
 			this.clearCurrentState();
 			step.isCurrent = true;
-			step.loading = false;
 		});
 	}
 
