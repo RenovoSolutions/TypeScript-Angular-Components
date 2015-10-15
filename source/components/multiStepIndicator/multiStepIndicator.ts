@@ -58,7 +58,7 @@ export class MultiStepIndicatorController {
 				if (this.object.isNullOrWhitespace(step.stateName)) {
 					step.inactive = true;
 				} else {
-					step.onClick = (): void => { this.redirectToState(step); };
+					step.onClick = (): angular.IPromise<void> => { return this.redirectToState(step); };
 
 					if (this.$state.includes(step.stateName)) {
 						step.isCurrent = true;
@@ -68,7 +68,7 @@ export class MultiStepIndicatorController {
 		});
 	}
 
-	private redirectToState: { (step: IConfiguredStep): void } = (step: IConfiguredStep): angular.IPromise<void> => {
+	private redirectToState(step: IConfiguredStep): angular.IPromise<void> {
 		return this.$state.go(step.stateName).then((): void => {
 			this.clearCurrentState();
 			step.isCurrent = true;
