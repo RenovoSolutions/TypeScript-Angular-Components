@@ -25,43 +25,46 @@ interface IStateServiceMock {
 }
 
 describe('MultiStepIndicatorController', () => {
-	var scope: angular.IScope;
-	var multiStepIndicator: MultiStepIndicatorController;
-	var stateMock: IStateServiceMock;
+	let scope: angular.IScope;
+	let multiStepIndicator: MultiStepIndicatorController;
+	let stateMock: IStateServiceMock;
+	let $q: angular.IQService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
+		let services: any = test.angularFixture.inject('$q');
+		$q = services.$q;
+
 		stateMock = {
-			go: sinon.spy(),
+			go: sinon.spy((): angular.IPromise<any> => { return $q.when(); }),
 			includes: sinon.spy((): boolean => { return false; }),
 		};
-
-		test.angularFixture.mock({
-			$state: stateMock,
-		});
 	});
 
 	it('should set inactive to true if no click handler or state name is provided', (): void => {
-		var step: IStep = <any>{};
+		let step: IStep = <any>{};
 		buildController([step]);
 		expect((<any>step).inactive).to.be.true;
 	});
 
 	it('should provide a default click handler that redirects to the specified state and sets the step to current if a state name is provided', (): void => {
-		var step: IStep = <any>{ stateName: 'state' };
+		let step: IStep = <any>{ stateName: 'state' };
 		buildController([step]);
 
 		step.onClick();
 
 		sinon.assert.calledOnce(stateMock.go);
 		sinon.assert.calledWith(stateMock.go, 'state');
+
+		scope.$digest();
+
 		expect(step.isCurrent).to.be.true;
 	});
 
 	it('should set the step to current if the specified state is already active', (): void => {
-		var step1: IStep = <any>{ stateName: 'state2', isCurrent: false };
-		var step2: IStep = <any>{ stateName: 'state1', isCurrent: false };
+		let step1: IStep = <any>{ stateName: 'state2', isCurrent: false };
+		let step2: IStep = <any>{ stateName: 'state1', isCurrent: false };
 		stateMock.includes = sinon.spy((name: string): boolean => { return name === step1.stateName; });
 		buildController([step1, step2]);
 
@@ -70,8 +73,8 @@ describe('MultiStepIndicatorController', () => {
 	});
 
 	function buildController(steps: IStep[]): void {
-		var controllerResult: test.IControllerResult<MultiStepIndicatorController>
-			= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps });
+		let controllerResult: test.IControllerResult<MultiStepIndicatorController>
+			= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps }, { $state: stateMock });
 
 		scope = <angular.IScope>controllerResult.scope;
 		multiStepIndicator = controllerResult.controller;
