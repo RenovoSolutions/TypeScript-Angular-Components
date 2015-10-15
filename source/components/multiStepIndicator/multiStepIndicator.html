@@ -3,7 +3,7 @@
 		<li ng-repeat="step in breadcrumb.steps" ng-click="step.onClick()"
 			ng-class="{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive }">
 			<div class="wrap">
-				<p class="title">{{step.title}}</p>
+				<p class="title">{{step.title}} <rl-busy loading="step.loading"></rl-busy></p>
 				<p class="subtitle">{{step.subtitle}}</p>
 			</div>
 		</li>

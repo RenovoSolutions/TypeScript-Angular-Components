@@ -24,6 +24,7 @@ export interface IStep {
 
 interface IConfiguredStep extends IStep {
 	inactive: boolean;
+	loading: boolean;
 }
 
 export class MultiStepIndicatorController {
