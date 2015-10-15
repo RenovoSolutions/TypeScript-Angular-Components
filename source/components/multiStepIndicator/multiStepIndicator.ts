@@ -22,13 +22,13 @@ export interface IStep {
 	isCurrent?: boolean;
 }
 
-interface IConfiguredStep extends IStep {
+export interface IConfiguredStep extends IStep {
 	inactive: boolean;
 	loading: boolean;
 }
 
 export class MultiStepIndicatorController {
-	steps: IStep[];
+	steps: IConfiguredStep[];
 
 	static $inject: string[] = ['$state', __object.serviceName];
 	constructor(private $state: angular.ui.IStateService
@@ -36,11 +36,23 @@ export class MultiStepIndicatorController {
 		this.configureSteps();
 	}
 
+	onClick(step: IConfiguredStep): void {
+		if (!this.anyLoading()) {
+			step.onClick();
+		}
+	}
+
+	anyLoading(): boolean {
+		return _.any(this.steps, (step: IConfiguredStep): boolean => {
+			return step.loading;
+		});
+	}
+
 	private configureSteps(): void {
-		_.each(this.steps, (step: IStep): void => {
+		_.each(this.steps, (step: IConfiguredStep): void => {
 			if (!_.isFunction(step.onClick)) {
 				if (this.object.isNullOrWhitespace(step.stateName)) {
-					(<IConfiguredStep>step).inactive = true;
+					step.inactive = true;
 				} else {
 					step.onClick = (): void => { this.redirectToState(step); };
 
