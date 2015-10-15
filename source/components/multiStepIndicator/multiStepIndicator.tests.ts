@@ -12,6 +12,7 @@ import {
 	controllerName,
 	MultiStepIndicatorController,
 	IStep,
+	IConfiguredStep,
 } from './multiStepIndicator';
 
 import * as angular from 'angular';
@@ -70,6 +71,21 @@ describe('MultiStepIndicatorController', () => {
 
 		expect(step1.isCurrent).to.be.true;
 		expect(step2.isCurrent).to.be.false;
+	});
+
+	it('should show a spinner on the step and disable all clicks when the step is loading', (): void => {
+		let step1: IConfiguredStep = <any>{ onClick: sinon.spy(), };
+		let step2: IConfiguredStep = <any>{ onClick: sinon.spy(), };
+		buildController([step1, step2]);
+
+		multiStepIndicator.onClick(step1);
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
+		expect(step1.loading).to.be.true;
+
+		multiStepIndicator.onClick(step2);
+
+		sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
 	});
 
 	function buildController(steps: IStep[]): void {
