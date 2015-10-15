@@ -52,10 +52,13 @@ export class MultiStepIndicatorController {
 		});
 	}
 
-	private redirectToState: { (step: IStep): void } = (step: IStep): void => {
-		this.clearCurrentState();
-		this.$state.go(step.stateName);
-		step.isCurrent = true;
+	private redirectToState: { (step: IConfiguredStep): void } = (step: IConfiguredStep): void => {
+		step.loading = true;
+		this.$state.go(step.stateName).then((): void => {
+			this.clearCurrentState();
+			step.isCurrent = true;
+			step.loading = false;
+		});
 	}
 
 	private clearCurrentState(): void {
