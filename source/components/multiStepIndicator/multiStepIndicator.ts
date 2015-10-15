@@ -1,3 +1,5 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
 'use strict';
 
 import * as angular from 'angular';
@@ -66,19 +68,7 @@ function multiStepIndicator(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div class="multi-step" ng-class="{ 'numbered': breadcrumb.numbered }">
-				<ol>
-					<li ng-repeat="step in breadcrumb.steps" ng-click="step.onClick()"
-						ng-class="{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive }">
-						<div class="wrap">
-							<p class="title">{{step.title}}</p>
-							<p class="subtitle">{{step.subtitle}}</p>
-						</div>
-					</li>
-				</ol>
-			</div>
-		`,
+		template: require('./multiStepIndicator.html'),
 		controller: controllerName,
 		controllerAs: 'breadcrumb',
 		scope: {},
