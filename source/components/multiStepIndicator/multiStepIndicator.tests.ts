@@ -88,6 +88,20 @@ describe('MultiStepIndicatorController', () => {
 		sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
 	});
 
+	it('should clear the spinner when the promise resolves', (): void => {
+		let step1: IConfiguredStep = <any>{ onClick: sinon.spy(), };
+		buildController([step1]);
+
+		multiStepIndicator.onClick(step1);
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
+		expect(step1.loading).to.be.true;
+
+		scope.$digest();
+
+		expect(step1.loading).to.be.false;
+	});
+
 	function buildController(steps: IStep[]): void {
 		let controllerResult: test.IControllerResult<MultiStepIndicatorController>
 			= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps }, { $state: stateMock });
