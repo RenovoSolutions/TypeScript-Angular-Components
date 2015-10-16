@@ -1,3 +1,5 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
 'use strict';
 
 import * as angular from 'angular';
@@ -14,32 +16,49 @@ import __object = services.object;
 export interface IStep {
 	title: string;
 	subtitle?: string;
-	onClick?: {(): void};
+	onClick?: {(): angular.IPromise<void> | void};
 	stateName?: string;
 	isCompleted?: boolean;
 	isCurrent?: boolean;
 }
 
-interface IConfiguredStep extends IStep {
+export interface IConfiguredStep extends IStep {
 	inactive: boolean;
+	loading: boolean;
 }
 
 export class MultiStepIndicatorController {
-	steps: IStep[];
+	steps: IConfiguredStep[];
 
-	static $inject: string[] = ['$state', __object.serviceName];
+	static $inject: string[] = ['$state', '$q', __object.serviceName];
 	constructor(private $state: angular.ui.IStateService
+			, private $q: angular.IQService
 			, private object: __object.IObjectUtility) {
 		this.configureSteps();
 	}
 
+	onClick(step: IConfiguredStep): void {
+		if (!this.anyLoading()) {
+			step.loading = true;
+			this.$q.when(step.onClick()).then((): void => {
+				step.loading = false;
+			});
+		}
+	}
+
+	anyLoading(): boolean {
+		return _.any(this.steps, (step: IConfiguredStep): boolean => {
+			return step.loading;
+		});
+	}
+
 	private configureSteps(): void {
-		_.each(this.steps, (step: IStep): void => {
+		_.each(this.steps, (step: IConfiguredStep): void => {
 			if (!_.isFunction(step.onClick)) {
 				if (this.object.isNullOrWhitespace(step.stateName)) {
-					(<IConfiguredStep>step).inactive = true;
+					step.inactive = true;
 				} else {
-					step.onClick = (): void => { this.redirectToState(step); };
+					step.onClick = (): angular.IPromise<void> => { return this.redirectToState(step); };
 
 					if (this.$state.includes(step.stateName)) {
 						step.isCurrent = true;
@@ -49,10 +68,11 @@ export class MultiStepIndicatorController {
 		});
 	}
 
-	private redirectToState: { (step: IStep): void } = (step: IStep): void => {
-		this.clearCurrentState();
-		this.$state.go(step.stateName);
-		step.isCurrent = true;
+	private redirectToState(step: IConfiguredStep): angular.IPromise<void> {
+		return this.$state.go(step.stateName).then((): void => {
+			this.clearCurrentState();
+			step.isCurrent = true;
+		});
 	}
 
 	private clearCurrentState(): void {
@@ -66,19 +86,7 @@ function multiStepIndicator(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div class="multi-step" ng-class="{ 'numbered': breadcrumb.numbered }">
-				<ol>
-					<li ng-repeat="step in breadcrumb.steps" ng-click="step.onClick()"
-						ng-class="{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive }">
-						<div class="wrap">
-							<p class="title">{{step.title}}</p>
-							<p class="subtitle">{{step.subtitle}}</p>
-						</div>
-					</li>
-				</ol>
-			</div>
-		`,
+		template: require('./multiStepIndicator.html'),
 		controller: controllerName,
 		controllerAs: 'breadcrumb',
 		scope: {},

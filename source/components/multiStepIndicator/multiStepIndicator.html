@@ -1,0 +1,11 @@
+<div class="multi-step" ng-class="{ 'numbered': breadcrumb.numbered }">
+	<ol>
+		<li ng-repeat="step in breadcrumb.steps" ng-click="breadcrumb.onClick(step)"
+			ng-class="{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive && !breadcrumb.anyLoading() }">
+			<div class="wrap">
+				<p class="title">{{step.title}} <rl-busy loading="step.loading"></rl-busy></p>
+				<p class="subtitle">{{step.subtitle}}</p>
+			</div>
+		</li>
+	</ol>
+</div>
