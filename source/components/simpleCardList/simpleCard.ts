@@ -28,6 +28,7 @@ export interface ISimpleCardScope extends angular.IScope {
 }
 
 export interface ISimpleCardBehavior {
+	autosave(): boolean;
 	close(): boolean;
 	setAlwaysOpen(value: boolean): void;
 }
@@ -59,6 +60,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 		}
 
 		var behavior: ISimpleCardBehavior = {
+			autosave: this.autosave.bind(this),
 			close: this.close,
 			setAlwaysOpen: (value: boolean): void => {
 				this.alwaysOpen = value;
@@ -98,6 +100,10 @@ export class SimpleCardController implements ISimpleCardBindings {
 			return true;
 		}
 
+		return this.autosave();
+	}
+
+	private autosave(): boolean {
 		return this.parentChild.triggerChildBehavior(this.autosaveLink, (behavior: IAutosaveBehavior): boolean => {
 			var canClose: boolean = behavior.autosave();
 
