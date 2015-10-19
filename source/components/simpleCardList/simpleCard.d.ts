@@ -16,6 +16,7 @@ export interface ISimpleCardScope extends angular.IScope {
     hasFooter: boolean;
 }
 export interface ISimpleCardBehavior {
+    autosave(): boolean;
     close(): boolean;
     setAlwaysOpen(value: boolean): void;
 }
@@ -44,6 +45,7 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     close: {
         (): boolean;
     };
+    private autosave();
     private noList();
 }
 export declare function simpleCard(): angular.IDirective;

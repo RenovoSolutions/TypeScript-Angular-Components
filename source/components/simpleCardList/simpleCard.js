@@ -15,13 +15,7 @@ var SimpleCardController = (function () {
             if (_this.showContent === false || _this.alwaysOpen) {
                 return true;
             }
-            return _this.parentChild.triggerChildBehavior(_this.autosaveLink, function (behavior) {
-                var canClose = behavior.autosave();
-                if (canClose) {
-                    _this.showContent = false;
-                }
-                return canClose;
-            });
+            return _this.autosave();
         };
         if (this.canOpen == null) {
             this.canOpen = true;
@@ -31,6 +25,7 @@ var SimpleCardController = (function () {
             this.listController = this.noList();
         }
         var behavior = {
+            autosave: this.autosave.bind(this),
             close: this.close,
             setAlwaysOpen: function (value) {
                 _this.alwaysOpen = value;
@@ -60,6 +55,16 @@ var SimpleCardController = (function () {
             this.showContent = true;
             this.onOpen();
         }
+    };
+    SimpleCardController.prototype.autosave = function () {
+        var _this = this;
+        return this.parentChild.triggerChildBehavior(this.autosaveLink, function (behavior) {
+            var canClose = behavior.autosave();
+            if (canClose) {
+                _this.showContent = false;
+            }
+            return canClose;
+        });
     };
     SimpleCardController.prototype.noList = function () {
         return {

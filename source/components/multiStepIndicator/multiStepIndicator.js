@@ -1,3 +1,4 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 var angular = require('angular');
 var _ = require('lodash');
@@ -7,17 +8,25 @@ exports.directiveName = 'rlMultiStepIndicator';
 exports.controllerName = 'MultiStepIndicatorController';
 var __object = typescript_angular_utilities_1.services.object;
 var MultiStepIndicatorController = (function () {
-    function MultiStepIndicatorController($state, object) {
-        var _this = this;
+    function MultiStepIndicatorController($state, $q, object) {
         this.$state = $state;
+        this.$q = $q;
         this.object = object;
-        this.redirectToState = function (step) {
-            _this.clearCurrentState();
-            _this.$state.go(step.stateName);
-            step.isCurrent = true;
-        };
         this.configureSteps();
     }
+    MultiStepIndicatorController.prototype.onClick = function (step) {
+        if (!this.anyLoading()) {
+            step.loading = true;
+            this.$q.when(step.onClick()).then(function () {
+                step.loading = false;
+            });
+        }
+    };
+    MultiStepIndicatorController.prototype.anyLoading = function () {
+        return _.any(this.steps, function (step) {
+            return step.loading;
+        });
+    };
     MultiStepIndicatorController.prototype.configureSteps = function () {
         var _this = this;
         _.each(this.steps, function (step) {
@@ -26,7 +35,7 @@ var MultiStepIndicatorController = (function () {
                     step.inactive = true;
                 }
                 else {
-                    step.onClick = function () { _this.redirectToState(step); };
+                    step.onClick = function () { return _this.redirectToState(step); };
                     if (_this.$state.includes(step.stateName)) {
                         step.isCurrent = true;
                     }
@@ -34,12 +43,19 @@ var MultiStepIndicatorController = (function () {
             }
         });
     };
+    MultiStepIndicatorController.prototype.redirectToState = function (step) {
+        var _this = this;
+        return this.$state.go(step.stateName).then(function () {
+            _this.clearCurrentState();
+            step.isCurrent = true;
+        });
+    };
     MultiStepIndicatorController.prototype.clearCurrentState = function () {
         _.each(this.steps, function (step) {
             step.isCurrent = false;
         });
     };
-    MultiStepIndicatorController.$inject = ['$state', __object.serviceName];
+    MultiStepIndicatorController.$inject = ['$state', '$q', __object.serviceName];
     return MultiStepIndicatorController;
 })();
 exports.MultiStepIndicatorController = MultiStepIndicatorController;
@@ -47,7 +63,7 @@ function multiStepIndicator() {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<div class=\"multi-step\" ng-class=\"{ 'numbered': breadcrumb.numbered }\">\n\t\t\t\t<ol>\n\t\t\t\t\t<li ng-repeat=\"step in breadcrumb.steps\" ng-click=\"step.onClick()\"\n\t\t\t\t\t\tng-class=\"{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive }\">\n\t\t\t\t\t\t<div class=\"wrap\">\n\t\t\t\t\t\t\t<p class=\"title\">{{step.title}}</p>\n\t\t\t\t\t\t\t<p class=\"subtitle\">{{step.subtitle}}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</li>\n\t\t\t\t</ol>\n\t\t\t</div>\n\t\t",
+        template: require('./multiStepIndicator.html'),
         controller: exports.controllerName,
         controllerAs: 'breadcrumb',
         scope: {},

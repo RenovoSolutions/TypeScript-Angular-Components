@@ -8,14 +8,14 @@ function richTextEditorProvider(ngWigToolbarProvider) {
             ngWigToolbarProvider.addCustomButton(name, component);
         },
         addStandardButton: function (name, tooltip, command, icon) {
-            ngWigToolbarProvider.addStandartButton(name, toolbar, command, 'fa-' + icon);
+            ngWigToolbarProvider.addStandardButton(name, toolbar, command, 'fa-' + icon);
         },
         $get: function () {
             ngWigToolbarProvider.addCustomButton('paragraph', 'rl-paragraph-button');
             ngWigToolbarProvider.addCustomButton('h1', 'rl-header-button');
-            ngWigToolbarProvider.addStandartButton('underline', 'Underline', 'underline', 'fa-underline');
-            ngWigToolbarProvider.addStandartButton('indent', 'Indent', 'indent', 'fa-indent');
-            ngWigToolbarProvider.addStandartButton('outdent', 'Outdent', 'outdent', 'fa-outdent');
+            ngWigToolbarProvider.addStandardButton('underline', 'Underline', 'underline', 'fa-underline');
+            ngWigToolbarProvider.addStandardButton('indent', 'Indent', 'indent', 'fa-indent');
+            ngWigToolbarProvider.addStandardButton('outdent', 'Outdent', 'outdent', 'fa-outdent');
         },
     };
 }

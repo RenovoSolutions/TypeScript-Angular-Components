@@ -8,19 +8,26 @@ export interface IStep {
     title: string;
     subtitle?: string;
     onClick?: {
-        (): void;
+        (): angular.IPromise<void> | void;
     };
     stateName?: string;
     isCompleted?: boolean;
     isCurrent?: boolean;
 }
+export interface IConfiguredStep extends IStep {
+    inactive: boolean;
+    loading: boolean;
+}
 export declare class MultiStepIndicatorController {
     private $state;
+    private $q;
     private object;
-    steps: IStep[];
+    steps: IConfiguredStep[];
     static $inject: string[];
-    constructor($state: angular.ui.IStateService, object: __object.IObjectUtility);
+    constructor($state: angular.ui.IStateService, $q: angular.IQService, object: __object.IObjectUtility);
+    onClick(step: IConfiguredStep): void;
+    anyLoading(): boolean;
     private configureSteps();
-    private redirectToState;
+    private redirectToState(step);
     private clearCurrentState();
 }
