@@ -4,14 +4,14 @@ import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
-export var moduleName: string = 'rl.ui.behaviors.autosave';
-export var directiveName: string = 'rlAutosave';
-export var controllerName: string = 'AutosaveController';
-
 import __autosave = services.autosave;
 import __parentChild = services.parentChildBehavior;
 import __objectUtility = services.object;
 import __autosaveAction = services.autosaveAction;
+
+export var moduleName: string = 'rl.ui.behaviors.autosave';
+export var directiveName: string = 'rlAutosave';
+export var controllerName: string = 'AutosaveController';
 
 export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
@@ -89,11 +89,11 @@ export function autosave(): angular.IDirective {
 		controller: controllerName,
 		link(scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
 			let autosaveController: AutosaveController = controllers[0];
-			autosaveController.autosave.setChangeListener = (callback: { (): void }): void => {
+			autosaveController.autosave.setChangeListener = (callback: __autosave.IChangeListener): __autosave.IClearChangeListener => {
 				element.on('keyup', scope.$apply(callback));
-			};
-			autosaveController.autosave.clearChangeListener = (): void => {
-				element.off('keyup');
+				return (): void => {
+					element.off('keyup');
+				};
 			};
 		},
 	};
