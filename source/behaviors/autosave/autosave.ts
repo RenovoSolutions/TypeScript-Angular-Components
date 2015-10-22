@@ -76,6 +76,9 @@ export class AutosaveController {
 		var childLink: any = $parse($attrs.rlAutosave)($scope);
 		parentChildBehavior.registerChildBehavior(childLink, behavior);
 
+		let debounce: number = $parse($attrs.debounceDuration)($scope);
+		this.debounceDuration = debounce != null ? debounce : this.debounceDuration;
+
 		this.defaultListenerFunctions();
 
 		$scope.$watch((): boolean => { return contentForm.$dirty; }, (value: boolean) => {
