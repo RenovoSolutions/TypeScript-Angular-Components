@@ -25,11 +25,7 @@ export interface IAutosaveBehavior {
 }
 
 export class AutosaveController {
-	private debounceDuration: number = 1000;
-	private timer: angular.IPromise<void>;
-	private autosave: __autosave.IAutosaveService;
-	setKeyUpListener: { (callback: {(): void}): void };
-	clearKeyUpListener: { (): void };
+	autosave: __autosave.IAutosaveService;
 
 	static $inject: string[] = ['$scope'
 							, '$attrs'
@@ -66,7 +62,14 @@ export class AutosaveController {
 			return saveExpression($scope);
 		};
 
-		this.autosave = autosaveFactory.getInstance(save, contentForm, validate);
+		let debounce: number = $parse($attrs.debounceDuration)($scope);
+
+		this.autosave = autosaveFactory.getInstance({
+			save: save,
+			validate: validate,
+			contentForm: contentForm,
+			debounceDuration: debounce,
+		});
 
 		var behavior: IAutosaveBehavior = {
 			autosave: this.autosave.autosave,
@@ -75,38 +78,6 @@ export class AutosaveController {
 		// register autosave behavior and assign the value back to the parent
 		var childLink: any = $parse($attrs.rlAutosave)($scope);
 		parentChildBehavior.registerChildBehavior(childLink, behavior);
-
-		let debounce: number = $parse($attrs.debounceDuration)($scope);
-		this.debounceDuration = debounce != null ? debounce : this.debounceDuration;
-
-		this.defaultListenerFunctions();
-
-		$scope.$watch((): boolean => { return contentForm.$dirty; }, (value: boolean) => {
-			if (value) {
-				this.setTimer();
-
-				this.setKeyUpListener((): void => {
-					$timeout.cancel(this.timer);
-					this.setTimer();
-				});
-			}
-		});
-	}
-
-	private setTimer(): void {
-		this.timer = this.$timeout((): void => {
-			this.clearKeyUpListener();
-			this.autosave.autosave();
-		}, this.debounceDuration);
-	}
-
-	private defaultListenerFunctions(): void {
-		if (this.setKeyUpListener == null) {
-			this.setKeyUpListener = (): void => { console.log('JQuery not initialized'); };
-		}
-		if (this.clearKeyUpListener == null) {
-			this.clearKeyUpListener = (): void => { console.log('No lisener registered'); };
-		}
 	}
 }
 
@@ -116,12 +87,12 @@ export function autosave(): angular.IDirective {
 		restrict: 'A',
 		require: ['rlAutosave', '?ngForm'],
 		controller: controllerName,
-		link(scope: any, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
+		link(scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
 			let autosaveController: AutosaveController = controllers[0];
-			autosaveController.setKeyUpListener = (callback: { (): void }): void => {
-				element.on('keyup', callback);
+			autosaveController.autosave.setChangeListener = (callback: { (): void }): void => {
+				element.on('keyup', scope.$apply(callback));
 			};
-			autosaveController.clearKeyUpListener = (): void => {
+			autosaveController.autosave.clearChangeListener = (): void => {
 				element.off('keyup');
 			};
 		},
