@@ -25,7 +25,7 @@ export interface IAutosaveBehavior {
 }
 
 export class AutosaveController {
-	private debounceDuration: number = 500;
+	private debounceDuration: number = 1000;
 	private timer: angular.IPromise<void>;
 	private autosave: __autosave.IAutosaveService;
 	setKeyUpListener: { (callback: {(): void}): void };
