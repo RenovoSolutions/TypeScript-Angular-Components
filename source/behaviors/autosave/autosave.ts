@@ -17,6 +17,7 @@ export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
 	validate: string;
 	save: string;
+	debounceDuration: string;
 }
 
 export interface IAutosaveBehavior {
@@ -24,10 +25,15 @@ export interface IAutosaveBehavior {
 }
 
 export class AutosaveController {
+	private debounceDuration: number = 500;
+	private timer: angular.IPromise<void>;
+	private autosave: __autosave.IAutosaveService;
+
 	static $inject: string[] = ['$scope'
 							, '$attrs'
 							, '$parse'
 							, '$element'
+							, '$timeout'
 							, __autosave.factoryName
 							, __parentChild.serviceName
 							, __objectUtility.serviceName
@@ -35,7 +41,8 @@ export class AutosaveController {
 	constructor(private $scope: angular.IScope
 		, $attrs: IAutosaveAttributes
 		, $parse: angular.IParseService
-		, $element: angular.IAugmentedJQuery
+		, private $element: angular.IAugmentedJQuery
+		, private $timeout: angular.ITimeoutService
 		, autosaveFactory: __autosave.IAutosaveServiceFactory
 		, parentChildBehavior: __parentChild.IParentChildBehaviorService
 		, objectUtility: __objectUtility.IObjectUtility) {
@@ -57,15 +64,33 @@ export class AutosaveController {
 			return saveExpression($scope);
 		};
 
-		var autosave: __autosave.IAutosaveService = autosaveFactory.getInstance(save, contentForm, validate);
+		this.autosave = autosaveFactory.getInstance(save, contentForm, validate);
 
 		var behavior: IAutosaveBehavior = {
-			autosave: autosave.autosave,
+			autosave: this.autosave.autosave,
 		};
 
 		// register autosave behavior and assign the value back to the parent
 		var childLink: any = $parse($attrs.rlAutosave)($scope);
 		parentChildBehavior.registerChildBehavior(childLink, behavior);
+
+		$scope.$watch((): boolean => { return contentForm.$dirty; }, (value: boolean) => {
+			if (value) {
+				this.setTimer();
+
+				$element.on('keyup', (): void => {
+					$timeout.cancel(this.timer);
+					this.setTimer();
+				});
+			}
+		});
+	}
+
+	private setTimer(): void {
+		this.timer = this.$timeout((): void => {
+			this.$element.off('keyup');
+			this.autosave.autosave();
+		}, this.debounceDuration);
 	}
 }
 
