@@ -1,8 +1,8 @@
-// /// <reference path='../../../typings/signature_pad/signature_pad.d.ts' />
-
 'use strict';
 
 import * as angular from 'angular';
+
+import * as SignaturePad from 'signature_pad';
 
 export var moduleName: string = 'rl.ui.components.signaturePad';
 export var directiveName: string = 'rlSignaturePad';
