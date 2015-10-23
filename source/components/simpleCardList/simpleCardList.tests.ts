@@ -55,7 +55,7 @@ describe('SimpleCardListController', () => {
 			close: sinon.spy(),
 			setAlwaysOpen: sinon.spy(),
 		};
-		list.registerCard(behavior);
+		list.registerCard(<any>behavior);
 
 		sinon.assert.calledTwice(observable.register);
 		sinon.assert.calledWith(observable.register, behavior.close, 'close');
