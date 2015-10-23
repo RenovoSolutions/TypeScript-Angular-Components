@@ -8,32 +8,36 @@ export var moduleName: string = 'rl.ui.components.signaturePad';
 export var directiveName: string = 'rlSignaturePad';
 
 export interface ISignaturePadScope extends angular.IScope {
-	signature: string;
 	pad: SignaturePad;
 	height: number;
 	width: number;
 	ngDisabled: boolean;
 
 	style: any;
+	ngModel: angular.INgModelController;
 }
 
 export function signaturePad(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
+		require: 'ngModel',
 		template: `
 			<canvas class="signature-pad" ng-if="!ngDisabled"></canvas>
-			<img ng-src="{{signature}}" ng-style="style" ng-if="ngDisabled" />
+			<img ng-src="{{ngModel.$viewValue}}" ng-style="style" ng-if="ngDisabled" />
 		`,
 		scope: {
-			signature: '=',
 			pad: '=',
 			height: '=',
 			width: '=',
 			ngDisabled: '=',
 		},
-		link(scope: ISignaturePadScope, element: angular.IAugmentedJQuery): void {
+		link(scope: ISignaturePadScope
+			, element: angular.IAugmentedJQuery
+			, attrs: any
+			, ngModel: angular.INgModelController): void {
 			scope.$watch('ngDisabled', (disabled: boolean): void => {
+				scope.ngModel = ngModel;
 				if (disabled) {
 					scope.style = {
 						height: scope.height != null ? scope.height : 100,
@@ -50,9 +54,15 @@ export function signaturePad(): angular.IDirective {
 					canvas.height = scope.height != null ? scope.height : 100;
 					canvas.width = scope.width != null ? scope.width : 200;
 
-					scope.$watch('signature', (value: string): void => {
+					scope.$watch((): string => { return ngModel.$viewValue; }, (value: string): void => {
 						if (value != null) {
 							scope.pad.fromDataURL(value);
+						}
+					});
+
+					scope.$watch((): string => { return scope.pad.toDataURL(); }, (value: string): void => {
+						if (value != null) {
+							ngModel.$setViewValue(value);
 						}
 					});
 				}
