@@ -4,19 +4,20 @@ import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
-export var moduleName: string = 'rl.ui.behaviors.autosave';
-export var directiveName: string = 'rlAutosave';
-export var controllerName: string = 'AutosaveController';
-
 import __autosave = services.autosave;
 import __parentChild = services.parentChildBehavior;
 import __objectUtility = services.object;
 import __autosaveAction = services.autosaveAction;
 
+export var moduleName: string = 'rl.ui.behaviors.autosave';
+export var directiveName: string = 'rlAutosave';
+export var controllerName: string = 'AutosaveController';
+
 export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
 	validate: string;
 	save: string;
+	debounceDuration: string;
 }
 
 export interface IAutosaveBehavior {
@@ -24,10 +25,13 @@ export interface IAutosaveBehavior {
 }
 
 export class AutosaveController {
+	autosave: __autosave.IAutosaveService;
+
 	static $inject: string[] = ['$scope'
 							, '$attrs'
 							, '$parse'
 							, '$element'
+							, '$timeout'
 							, __autosave.factoryName
 							, __parentChild.serviceName
 							, __objectUtility.serviceName
@@ -35,7 +39,8 @@ export class AutosaveController {
 	constructor(private $scope: angular.IScope
 		, $attrs: IAutosaveAttributes
 		, $parse: angular.IParseService
-		, $element: angular.IAugmentedJQuery
+		, private $element: angular.IAugmentedJQuery
+		, private $timeout: angular.ITimeoutService
 		, autosaveFactory: __autosave.IAutosaveServiceFactory
 		, parentChildBehavior: __parentChild.IParentChildBehaviorService
 		, objectUtility: __objectUtility.IObjectUtility) {
@@ -57,10 +62,17 @@ export class AutosaveController {
 			return saveExpression($scope);
 		};
 
-		var autosave: __autosave.IAutosaveService = autosaveFactory.getInstance(save, contentForm, validate);
+		let debounce: number = $parse($attrs.debounceDuration)($scope);
+
+		this.autosave = autosaveFactory.getInstance({
+			save: save,
+			validate: validate,
+			contentForm: contentForm,
+			debounceDuration: debounce,
+		});
 
 		var behavior: IAutosaveBehavior = {
-			autosave: autosave.autosave,
+			autosave: this.autosave.autosave,
 		};
 
 		// register autosave behavior and assign the value back to the parent
@@ -73,8 +85,17 @@ export function autosave(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',
-		require: '?ngForm',
+		require: ['rlAutosave', '?ngForm'],
 		controller: controllerName,
+		link(scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
+			let autosaveController: AutosaveController = controllers[0];
+			autosaveController.autosave.setChangeListener = (callback: __autosave.IChangeListener): __autosave.IClearChangeListener => {
+				element.on('keyup', scope.$apply(callback));
+				return (): void => {
+					element.off('keyup');
+				};
+			};
+		},
 	};
 }
 

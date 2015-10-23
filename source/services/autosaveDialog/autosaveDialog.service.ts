@@ -80,7 +80,10 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 				options.data = {};
 			}
 
-			this.autosave = this.autosaveFactory.getInstance(options.save, null, options.validate);
+			this.autosave = this.autosaveFactory.getInstance({
+				save: options.save,
+				validate: options.validate,
+			});
 
 			scope.form = options.form;
 			scope.formGetter = options.formGetter;
