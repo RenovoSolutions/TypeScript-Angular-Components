@@ -94,7 +94,6 @@ describe('autosaveDialog', () => {
 		$rootScope.$digest();
 
 		sinon.assert.calledOnce(autosaveFactory.getInstance);
-		sinon.assert.calledWith(autosaveFactory.getInstance, save, null, validate);
 
 		expect(scope.formGetter).to.equal(formGetter);
 		expect(scope.dialog).to.equal(data);
