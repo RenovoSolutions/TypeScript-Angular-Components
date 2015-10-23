@@ -8,8 +8,8 @@ export var moduleName: string = 'rl.ui.components.signaturePad';
 export var directiveName: string = 'rlSignaturePad';
 
 export interface ISignaturePadScope extends angular.IScope {
-	signature: SignaturePad;
-	initial: string;
+	signature: string;
+	pad: SignaturePad;
 	height: number;
 	width: number;
 }
@@ -23,7 +23,7 @@ export function signaturePad(): angular.IDirective {
 		`,
 		scope: {
 			signature: '=',
-			initial: '=',
+			pad: '=',
 			height: '=',
 			width: '=',
 		},
@@ -33,14 +33,16 @@ export function signaturePad(): angular.IDirective {
 				backgroundColor: 'rgb(255, 255, 255)',
 			};
 
-			scope.signature = new SignaturePad(canvas, options);
+			scope.pad = new SignaturePad(canvas, options);
 
 			canvas.height = scope.height != null ? scope.height : 100;
 			canvas.width = scope.width != null ? scope.width : 200;
 
-			if (scope.initial != null) {
-				scope.signature.fromDataURL(scope.initial);
-			}
+			scope.$watch('signature', (value: string): void => {
+				if (value != null) {
+					scope.pad.fromDataURL(value);
+				}
+			});
 		},
 	};
 }
