@@ -23,23 +23,40 @@ export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataTyp
 
 export interface IDataServiceSearchFunction<TDataType> {
 	(search: string): angular.IPromise<TDataType[]>;
+	(search: string, filterModel: any): angular.IPromise<TDataType[]>;
+}
+
+export interface IGetFilterModel<TFilterModelType> {
+	(): TFilterModelType;
+}
+
+export interface IValidateFilterModel<TFilterModelType> {
+	(filterModel: TFilterModelType): boolean;
 }
 
 export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType> {
 	private minSearchLength: number = 4;
 	private search: string;
+	private filterModel: any;
 	private synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
 
 	constructor(getDataSet: IDataServiceSearchFunction<TDataType>
 			, private searchFilter: __genericSearchFilter.IGenericSearchFilter
+			, private getFilterModel: IGetFilterModel<any>
+			, private validateModel: IValidateFilterModel<any>
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
 		super(observableFactory, dataSourceProcessor, array);
+
+		this.getFilterModel = this.getFilterModel || function(): void { return null; };
+		this.validateModel = this.validateModel || function(): boolean { return true; };
+
 		this.countFilterGroups = true;
 		this.search = searchFilter.searchText;
+		this.filterModel = this.getFilterModel();
 		searchFilter.minSearchLength = this.minSearchLength;
 		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
 	}
@@ -49,7 +66,8 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 	}
 
 	refresh(): void {
-		if (this.searchFilter.searchText !== this.search) {
+		if (this.searchFilter.searchText !== this.search
+			|| this.filterModelChanged()) {
 			this.reload();
 		} else {
 			super.refresh();
@@ -58,9 +76,11 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 
 	reload(): void {
 		this.search = this.searchFilter.searchText;
+		this.filterModel = this.getFilterModel();
 
-		if (this.object.isNullOrEmpty(this.searchFilter.searchText)
-			|| this.searchFilter.searchText.length < this.minSearchLength) {
+		if ((this.object.isNullOrEmpty(this.searchFilter.searchText)
+				|| this.searchFilter.searchText.length < this.minSearchLength)
+			&& (this.filterModel == null || !this.validateModel(this.filterModel))) {
 			this.resolveReload(null);
 			return;
 		}
@@ -69,7 +89,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.rawDataSet = null;
 		this.loadingDataSet = true;
 
-		this.synchronizedRequests.getData(this.search);
+		this.synchronizedRequests.getData(this.search, this.getFilterModel());
 	}
 
 	private resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
@@ -80,11 +100,17 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.observable.fire('reloaded');
 		this.observable.fire('changed');
 	}
+
+	private filterModelChanged(): boolean {
+		return this.object.areEqual(this.getFilterModel(), this.filterModel);
+	}
 }
 
 export interface IServerSearchDataSourceFactory {
 	getInstance<TDataType>(getDataSet: {(search: string): angular.IPromise<TDataType>}
-						, searchFilter: __genericSearchFilter.IGenericSearchFilter): IDataSource<TDataType>;
+						, searchFilter: __genericSearchFilter.IGenericSearchFilter
+						, getFilterModel?: IGetFilterModel<any>
+						, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType>;
 }
 
 serverSearchDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
@@ -96,8 +122,10 @@ export function serverSearchDataSourceFactory(observableFactory: __observable.IO
 	'use strict';
 	return {
 		getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
-							, searchFilter: __genericSearchFilter.IGenericSearchFilter): IDataSource<TDataType> {
-			return new ServerSearchDataSource<TDataType>(getDataSet, searchFilter, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
+							, searchFilter: __genericSearchFilter.IGenericSearchFilter
+							, getFilterModel?: IGetFilterModel<any>
+							, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType> {
+			return new ServerSearchDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
 }
