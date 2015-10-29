@@ -102,7 +102,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 	}
 
 	private filterModelChanged(): boolean {
-		return this.object.areEqual(this.getFilterModel(), this.filterModel);
+		return !this.object.areEqual(this.getFilterModel(), this.filterModel);
 	}
 }
 
