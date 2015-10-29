@@ -34,7 +34,10 @@ var AutosaveDialogService = (function () {
             if (options.data == null) {
                 options.data = {};
             }
-            _this.autosave = _this.autosaveFactory.getInstance(options.save, null, options.validate);
+            _this.autosave = _this.autosaveFactory.getInstance({
+                save: options.save,
+                validate: options.validate,
+            });
             scope.form = options.form;
             scope.formGetter = options.formGetter;
             scope.setForm = _this.setForm;
