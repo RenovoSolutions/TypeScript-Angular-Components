@@ -56,7 +56,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 
 		this.countFilterGroups = true;
 		this.search = searchFilter.searchText;
-		this.filterModel = this.getFilterModel();
+		this.filterModel = _.clone(this.getFilterModel());
 		searchFilter.minSearchLength = this.minSearchLength;
 		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
 	}
@@ -76,7 +76,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 
 	reload(): void {
 		this.search = this.searchFilter.searchText;
-		this.filterModel = this.getFilterModel();
+		this.filterModel = _.clone(this.getFilterModel());
 
 		if ((this.object.isNullOrEmpty(this.searchFilter.searchText)
 				|| this.searchFilter.searchText.length < this.minSearchLength)
