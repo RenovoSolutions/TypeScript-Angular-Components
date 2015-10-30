@@ -19,6 +19,8 @@ export var factoryName: string = 'serverSearchDataSource';
 export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataType> {
 	reload(): void;
 	getDataSet: IDataServiceSearchFunction<TDataType>;
+	getFilterModel: IGetFilterModel<any>;
+	validateModel: IValidateFilterModel<any>;
 }
 
 export interface IDataServiceSearchFunction<TDataType> {
@@ -42,8 +44,8 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 
 	constructor(getDataSet: IDataServiceSearchFunction<TDataType>
 			, private searchFilter: __genericSearchFilter.IGenericSearchFilter
-			, private getFilterModel: IGetFilterModel<any>
-			, private validateModel: IValidateFilterModel<any>
+			, public getFilterModel: IGetFilterModel<any>
+			, public validateModel: IValidateFilterModel<any>
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
