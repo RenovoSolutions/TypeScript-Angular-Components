@@ -78,9 +78,10 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.search = this.searchFilter.searchText;
 		this.filterModel = _.clone(this.getFilterModel());
 
-		if ((this.object.isNullOrEmpty(this.searchFilter.searchText)
-				|| this.searchFilter.searchText.length < this.minSearchLength)
-			&& (this.filterModel == null || !this.validateModel(this.filterModel))) {
+		let hasValidSearch = !this.object.isNullOrEmpty(this.search) && this.search.length >= this.minSearchLength;
+		let hasValidFilterModel = this.filterModel != null && this.validateModel(this.filterModel);
+
+		if (!hasValidSearch && !hasValidFilterModel) {
 			this.resolveReload(null);
 			return;
 		}
