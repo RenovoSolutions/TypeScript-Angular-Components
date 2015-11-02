@@ -16,10 +16,12 @@ exports.moduleName = 'rl.ui.components.cardContainer.dataSources.serverSearchDat
 exports.factoryName = 'serverSearchDataSource';
 var ServerSearchDataSource = (function (_super) {
     __extends(ServerSearchDataSource, _super);
-    function ServerSearchDataSource(getDataSet, searchFilter, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
+    function ServerSearchDataSource(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
         var _this = this;
         _super.call(this, observableFactory, dataSourceProcessor, array);
         this.searchFilter = searchFilter;
+        this.getFilterModel = getFilterModel;
+        this.validateModel = validateModel;
         this.object = object;
         this.minSearchLength = 4;
         this.resolveReload = function (data) {
@@ -29,8 +31,11 @@ var ServerSearchDataSource = (function (_super) {
             _this.observable.fire('reloaded');
             _this.observable.fire('changed');
         };
+        this.getFilterModel = this.getFilterModel || function () { return null; };
+        this.validateModel = this.validateModel || function () { return true; };
         this.countFilterGroups = true;
         this.search = searchFilter.searchText;
+        this.filterModel = _.clone(this.getFilterModel());
         searchFilter.minSearchLength = this.minSearchLength;
         this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
     }
@@ -42,7 +47,8 @@ var ServerSearchDataSource = (function (_super) {
         configurable: true
     });
     ServerSearchDataSource.prototype.refresh = function () {
-        if (this.searchFilter.searchText !== this.search) {
+        if (this.searchFilter.searchText !== this.search
+            || this.filterModelChanged()) {
             this.reload();
         }
         else {
@@ -51,15 +57,30 @@ var ServerSearchDataSource = (function (_super) {
     };
     ServerSearchDataSource.prototype.reload = function () {
         this.search = this.searchFilter.searchText;
-        if (this.object.isNullOrEmpty(this.searchFilter.searchText)
-            || this.searchFilter.searchText.length < this.minSearchLength) {
+        this.filterModel = _.clone(this.getFilterModel());
+        var hasValidSearch = !this.object.isNullOrEmpty(this.search) && this.search.length >= this.minSearchLength;
+        var hasValidFilterModel = this.filterModel != null && this.validateModel(this.filterModel);
+        if (!hasValidSearch && !hasValidFilterModel) {
             this.resolveReload(null);
             return;
         }
         this.dataSet = null;
         this.rawDataSet = null;
         this.loadingDataSet = true;
-        this.synchronizedRequests.getData(this.search);
+        this.synchronizedRequests.getData(this.buildSearchParams());
+    };
+    ServerSearchDataSource.prototype.filterModelChanged = function () {
+        return !this.object.areEqual(this.getFilterModel(), this.filterModel);
+    };
+    ServerSearchDataSource.prototype.buildSearchParams = function () {
+        var searchModel = this.getFilterModel();
+        if (searchModel != null) {
+            searchModel.search = this.search;
+        }
+        else {
+            searchModel = this.search;
+        }
+        return searchModel;
     };
     return ServerSearchDataSource;
 })(dataSourceBase_service_1.DataSourceBase);
@@ -68,8 +89,8 @@ serverSearchDataSourceFactory.$inject = [__observable.factoryName, dataSourcePro
 function serverSearchDataSourceFactory(observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
     'use strict';
     return {
-        getInstance: function (getDataSet, searchFilter) {
-            return new ServerSearchDataSource(getDataSet, searchFilter, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
+        getInstance: function (getDataSet, searchFilter, getFilterModel, validateModel) {
+            return new ServerSearchDataSource(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
         },
     };
 }
