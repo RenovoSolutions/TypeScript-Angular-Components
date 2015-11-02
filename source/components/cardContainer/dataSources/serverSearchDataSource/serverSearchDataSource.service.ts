@@ -24,8 +24,7 @@ export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataTyp
 }
 
 export interface IDataServiceSearchFunction<TDataType> {
-	(search: string): angular.IPromise<TDataType[]>;
-	(filterModel: any): angular.IPromise<TDataType[]>;
+	(search: string | any): angular.IPromise<TDataType[]>;
 }
 
 export interface IGetFilterModel<TFilterModelType> {
