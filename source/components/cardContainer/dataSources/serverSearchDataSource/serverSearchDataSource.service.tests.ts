@@ -29,6 +29,10 @@ interface IDataServiceMock {
 	get(search: string): angular.IPromise<number[]>;
 }
 
+interface ITestFilterModel {
+	prop: string;
+}
+
 describe('serverSearchDataSource', () => {
 	let serverSearchDataSourceFactory: IServerSearchDataSourceFactory;
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
@@ -61,15 +65,17 @@ describe('serverSearchDataSource', () => {
 
 		mock.promise(dataService, 'get', [1, 2]);
 
-		source = <any>serverSearchDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
-
 		reloadedSpy = sinon.spy();
-		source.watch(reloadedSpy, 'reloaded');
 		changedSpy = sinon.spy();
-		source.watch(changedSpy, 'changed');
 	});
 
 	describe('server search', (): void => {
+		beforeEach((): void => {
+			source = <any>serverSearchDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
+			source.watch(reloadedSpy, 'reloaded');
+			source.watch(changedSpy, 'changed');
+		});
+
 		it('should call data processor to process the data when refreshing', (): void => {
 			searchFilter.searchText = 'search';
 			source.reload();
@@ -154,6 +160,59 @@ describe('serverSearchDataSource', () => {
 			$rootScope.$digest();
 
 			expect(source.rawDataSet).to.equal(secondRequestData);
+		});
+	});
+
+	describe('filter model', (): void => {
+		let filterModel: ITestFilterModel;
+		let validateSpy: Sinon.SinonSpy;
+
+		beforeEach((): void => {
+			validateSpy = sinon.spy((model: ITestFilterModel): boolean => {
+				return model.prop != null;
+			});
+
+			let getFilterModel: any = (): ITestFilterModel => { return filterModel; };
+
+			source = <any>serverSearchDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter, getFilterModel, validateSpy);
+			source.watch(reloadedSpy, 'reloaded');
+			source.watch(changedSpy, 'changed');
+		});
+
+		it('should make a request to reload the data when the filter model changes', (): void => {
+			filterModel = { prop: '123' };
+			source.refresh();
+
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
+
+			mock.flush(dataService);
+
+			expect(source.dataSet).to.have.length(2);
+			expect(source.dataSet[0]).to.equal(1);
+			expect(source.dataSet[1]).to.equal(2);
+			expect(source.count).to.equal(2);
+
+			sinon.assert.calledOnce(reloadedSpy);
+			sinon.assert.calledOnce(changedSpy);
+
+			filterModel.prop = '456';
+			source.refresh();
+
+			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+
+			mock.flush(dataService);
+
+			sinon.assert.calledTwice(reloadedSpy);
+			sinon.assert.calledTwice(changedSpy);
+		});
+
+		it('should clear the data set without making a request if filter model is invalid', (): void => {
+			filterModel = { prop: null };
+			source.refresh();
+
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
+
+			expect(source.dataSet).to.be.null;
 		});
 	});
 });

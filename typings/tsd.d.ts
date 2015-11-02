@@ -1,8 +1,10 @@
-// Local type definitions
+// Custom typings
 /// <reference path="commonjs.d.ts" />
 /// <reference path="bootstrapDateTimePicker.d.ts" />
 /// <reference path="signaturePadExternalModule.d.ts" />
+/// <reference path="uuid.d.ts" />
 
+// TSD managed typings
 /// <reference path="angularjs/angular.d.ts" />
 /// <reference path="bootstrap/bootstrap.d.ts" />
 /// <reference path="jquery/jquery.d.ts" />
