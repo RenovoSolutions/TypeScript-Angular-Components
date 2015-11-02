@@ -25,7 +25,7 @@ export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataTyp
 
 export interface IDataServiceSearchFunction<TDataType> {
 	(search: string): angular.IPromise<TDataType[]>;
-	(search: string, filterModel: any): angular.IPromise<TDataType[]>;
+	(filterModel: any): angular.IPromise<TDataType[]>;
 }
 
 export interface IGetFilterModel<TFilterModelType> {
@@ -92,7 +92,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.rawDataSet = null;
 		this.loadingDataSet = true;
 
-		this.synchronizedRequests.getData(this.search, this.getFilterModel());
+		this.synchronizedRequests.getData(this.buildSearchParams());
 	}
 
 	private resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
@@ -106,6 +106,18 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 
 	private filterModelChanged(): boolean {
 		return !this.object.areEqual(this.getFilterModel(), this.filterModel);
+	}
+
+	private buildSearchParams(): any {
+		let searchModel: any = this.getFilterModel();
+
+		if (searchModel != null) {
+			searchModel.search = this.search;
+		} else {
+			searchModel = this.search;
+		}
+
+		return searchModel;
 	}
 }
 
