@@ -12,19 +12,24 @@ export interface IDialogCloseHandler {
 	(explicit: boolean): boolean;
 }
 
+export interface IDialogInstance {
+	close(): void;
+	dismiss(): void;
+}
+
 export interface IDialogImplementation<TDialogSettings> {
-	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void;
+	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
 }
 
 export interface IDialogService<TDialogSettings> {
-	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void;
+	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
 	constructor(private dialog: IDialogImplementation<TDialogSettings>) { }
 
-	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): void {
-		this.dialog.open(options, closeHandler);
+	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
+		return this.dialog.open(options, closeHandler);
 	}
 }
 

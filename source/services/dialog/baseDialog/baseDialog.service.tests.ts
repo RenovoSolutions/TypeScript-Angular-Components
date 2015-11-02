@@ -8,6 +8,7 @@
 import { services } from 'typescript-angular-utilities';
 
 import { moduleName, serviceName, BaseDialogService } from './baseDialog.module';
+import { IDialogInstance } from '../dialog.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -24,13 +25,23 @@ describe('baseDialog', () => {
 	let mock: test.mock.IMock;
 	let $rootScope: angular.IRootScopeService;
 	let $controller: angular.IControllerService;
+	let dismissSpy: Sinon.SinonSpy;
+	let closeSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 		angular.mock.module(test.mock.moduleName);
 
+		closeSpy = sinon.spy();
+		dismissSpy = sinon.spy();
+
 		$modal = {
-			open: sinon.spy(),
+			open: sinon.spy((): any => {
+				return {
+					close: closeSpy,
+					dismiss: dismissSpy,
+				};
+			}),
 		};
 
 		test.angularFixture.mock({
@@ -118,5 +129,23 @@ describe('baseDialog', () => {
 		mock.flush(dataService);
 
 		sinon.assert.notCalled($modal.open);
+	});
+
+	it('should return an object with functions to dismiss and close the dialog once its open', (): void => {
+		let dialogInstance: IDialogInstance = baseDialog.open(null, null);
+
+		dialogInstance.close();
+		dialogInstance.dismiss();
+
+		sinon.assert.notCalled(closeSpy);
+		sinon.assert.notCalled(dismissSpy);
+
+		$rootScope.$digest();
+
+		dialogInstance.close();
+		dialogInstance.dismiss();
+
+		sinon.assert.calledOnce(closeSpy);
+		sinon.assert.calledOnce(dismissSpy);
 	});
 });
