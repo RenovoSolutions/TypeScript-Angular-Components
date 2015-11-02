@@ -122,7 +122,7 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 }
 
 export interface IServerSearchDataSourceFactory {
-	getInstance<TDataType>(getDataSet: {(search: string): angular.IPromise<TDataType>}
+	getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
 						, searchFilter: __genericSearchFilter.IGenericSearchFilter
 						, getFilterModel?: IGetFilterModel<any>
 						, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType>;
