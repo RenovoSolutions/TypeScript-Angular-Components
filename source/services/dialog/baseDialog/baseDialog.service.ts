@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
-import { IDialogCloseHandler, IDialogService, IDialogImplementation } from '../dialog.service';
+import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance } from '../dialog.service';
 import { controllerName, IBaseDialogScope } from './baseDialog.controller';
 
 export var serviceName: string = 'baseDialog';
@@ -26,16 +26,25 @@ export class BaseDialogService implements IDialogImplementation<IBaseDialogSetti
 			, private $rootScope: ng.IRootScopeService
 			, private promise: __promise.IPromiseUtility) { }
 
-	open(options: IBaseDialogSettings, closeHandler?: IDialogCloseHandler): void {
+	open(options: IBaseDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
 		if (options == null) {
 			options = <any>{};
 		}
 
+		let dialogInstance: IDialogInstance = {
+			close(): void {},
+			dismiss(): void {},
+		};
+
 		this.promise.resolvePromises(options.resolve).then((results: any): void => {
 			this.closeHandler = closeHandler;
 			options = this.configureModalSettings(options, results);
-			this.$modal.open(options);
+			let modalInstance: ng.ui.bootstrap.IModalServiceInstance = this.$modal.open(options);
+			dialogInstance.close = modalInstance.close;
+			dialogInstance.dismiss = modalInstance.dismiss;
 		});
+
+		return dialogInstance;
 	}
 
 	modalClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }
