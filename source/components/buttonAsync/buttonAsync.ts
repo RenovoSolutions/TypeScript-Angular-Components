@@ -17,6 +17,9 @@ export interface IButtonScope extends angular.IScope {
 	action(...params: any[]): angular.IPromise<any>;
 	action(...params: any[]): void;
 	size: string;
+	type: string;
+	ngDisabled: boolean;
+	rightAligned: boolean;
 }
 
 export interface IButtonAsyncController {
