@@ -1,5 +1,5 @@
-﻿<button type="button" class="btn btn-{{type}} {{button.sizeClass}}" ng-click="button.trigger()" ng-disabled="button.busy || ngDisabled">
-	<rl-busy ng-show="rightAligned" loading="button.busy"></rl-busy>
+﻿<button type="button" class="btn btn-{{button.type}} {{button.sizeClass}}" ng-click="button.trigger()" ng-disabled="button.busy || button.ngDisabled">
+	<rl-busy ng-show="button.rightAligned" loading="button.busy"></rl-busy>
 	<span ng-transclude></span>
-	<rl-busy ng-hide="rightAligned" loading="button.busy"></rl-busy>
+	<rl-busy ng-hide="button.rightAligned" loading="button.busy"></rl-busy>
 </button>

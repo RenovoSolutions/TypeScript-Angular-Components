@@ -8,8 +8,7 @@
 import { services } from 'typescript-angular-utilities';
 
 import {
-	IButtonScope,
-	IButtonAsyncController,
+	ButtonAsyncController,
 	moduleName,
 	controllerName,
 } from './buttonAsync';
@@ -20,32 +19,14 @@ import 'angular-mocks';
 import test = services.test;
 
 describe('ButtonAsyncController', () => {
-	var scope: IButtonScope;
-	var button: IButtonAsyncController;
+	var scope: angular.IScope;
+	var button: ButtonAsyncController;
 	var actionSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
 		actionSpy = sinon.spy();
-	});
-
-	it('should update internal busy state if external busy property is set or clear', (): void => {
-		button = buildController();
-		scope.$digest();
-
-		expect(button.busy).to.be.false;
-
-		scope.busy = true;
-		scope.$digest();
-
-		expect(button.busy).to.be.true;
-
-		scope.busy = false;
-		scope.$digest();
-
-		expect(button.busy).to.be.false;
-		sinon.assert.notCalled(actionSpy);
 	});
 
 	it('should be busy after triggering the action if no promise is returned', (): void => {
@@ -55,7 +36,6 @@ describe('ButtonAsyncController', () => {
 		button.trigger();
 		scope.$digest();
 
-		expect(scope.busy).to.be.true;
 		expect(button.busy).to.be.true;
 		sinon.assert.calledOnce(actionSpy);
 	});
@@ -102,11 +82,11 @@ describe('ButtonAsyncController', () => {
 		sinon.assert.notCalled(actionSpy);
 	});
 
-	function buildController(busy: boolean = false): IButtonAsyncController {
-		var controllerResult: test.IControllerResult<IButtonAsyncController>
-			= test.angularFixture.controllerWithBindings<IButtonAsyncController>(controllerName, null, null, { busy: busy, action: actionSpy });
+	function buildController(busy: boolean = false): ButtonAsyncController {
+		var controllerResult: test.IControllerResult<ButtonAsyncController>
+			= test.angularFixture.controllerWithBindings<ButtonAsyncController>(controllerName, { busy: busy, action: actionSpy });
 
-		scope = <IButtonScope>controllerResult.scope;
+		scope = controllerResult.scope;
 		return controllerResult.controller;
 	}
 });
