@@ -15,7 +15,7 @@ import __object = services.object;
 
 export class LongClickButtonController {
 	// bindings
-	onTriggered: {(): void};
+	action: {(): void};
 	text: string;
 	onShortClickText: string;
 	type: string;
@@ -64,7 +64,7 @@ export class LongClickButtonController {
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
 				this.buttonText = this.text;
-				this.onTriggered();
+				this.action();
 			}
 		}, this.interval);
 	}
@@ -101,7 +101,7 @@ function longClickButton(): angular.IDirective {
 		controllerAs: 'button',
 		scope: {},
 		bindToController: {
-			onTriggered: '&',
+			action: '&',
 			text: '@',
 			onShortClickText: '@',
 			icon: '@',
