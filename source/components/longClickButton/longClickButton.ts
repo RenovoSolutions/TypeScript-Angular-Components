@@ -6,6 +6,7 @@ import * as angular from 'angular';
 import * as $ from 'jquery';
 
 import { services } from 'typescript-angular-utilities';
+import __promise = services.promise;
 
 export var moduleName: string = 'rl.ui.components.longClickButton';
 export var directiveName: string = 'rlLongClickButton';
@@ -15,7 +16,7 @@ import __object = services.object;
 
 export class LongClickButtonController {
 	// bindings
-	action: {(): void};
+	action: {(): angular.IPromise<any> | void};
 	text: string;
 	onShortClickText: string;
 	type: string;
@@ -32,11 +33,12 @@ export class LongClickButtonController {
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
 
-	static $inject: string[] = ['$scope', '$interval', '$timeout', __object.serviceName];
+	static $inject: string[] = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
 	constructor($scope: angular.IScope
 			, private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
-			, private objectUtility: __object.IObjectUtility) {
+			, private objectUtility: __object.IObjectUtility
+			, private promise: __promise.IPromiseUtility) {
 		this.buttonText = this.text;
 		if (this.type != null) {
 			this.buttonClass = this.type;
@@ -52,7 +54,7 @@ export class LongClickButtonController {
 	}
 
 	startAction(): void {
-		if (this.active) {
+		if (this.active || this.spinner) {
 			return;
 		}
 
@@ -64,7 +66,7 @@ export class LongClickButtonController {
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
 				this.buttonText = this.text;
-				this.action();
+				this.trigger();
 			}
 		}, this.interval);
 	}
@@ -88,6 +90,19 @@ export class LongClickButtonController {
 	private warn(): void {
 		if (this.objectUtility.isNullOrEmpty(this.onShortClickText) === false) {
 			this.buttonText = this.onShortClickText;
+		}
+	}
+
+	private trigger(): void {
+		if (!this.spinner) {
+			this.spinner = true;
+
+			var result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
+			if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
+				result.finally((): void => {
+					this.spinner = false;
+				});
+			}
 		}
 	}
 }
