@@ -101,7 +101,7 @@ function longClickButton(): angular.IDirective {
 			onTriggered: '&',
 			text: '@',
 			onShortClickText: '@',
-			buttonIcon: '@',
+			icon: '@',
 			spinner: '=',
 			rightAligned: '=',
 			type: '@',
