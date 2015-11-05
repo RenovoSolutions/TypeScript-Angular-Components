@@ -6,6 +6,7 @@ import * as angular from 'angular';
 import * as $ from 'jquery';
 
 import { services } from 'typescript-angular-utilities';
+import __promise = services.promise;
 
 export var moduleName: string = 'rl.ui.components.longClickButton';
 export var directiveName: string = 'rlLongClickButton';
@@ -15,31 +16,33 @@ import __object = services.object;
 
 export class LongClickButtonController {
 	// bindings
-	onTriggered: {(): void};
+	action: {(): angular.IPromise<any> | void};
 	text: string;
 	onShortClickText: string;
 	type: string;
+	size: string;
+	icon: string;
+	busy: boolean;
+	rightAligned: boolean;
+	ngDisabled: boolean;
 
 	private interval: number = 25;
 	duration: number = 1500;
 	buttonText: string;
-	buttonClass: string;
 	width: number;
 	active: boolean;
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
 
-	static $inject: string[] = ['$scope', '$interval', '$timeout', __object.serviceName];
+	static $inject: string[] = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
 	constructor($scope: angular.IScope
 			, private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
-			, private objectUtility: __object.IObjectUtility) {
+			, private objectUtility: __object.IObjectUtility
+			, private promise: __promise.IPromiseUtility) {
 		this.buttonText = this.text;
-		if (this.type != null) {
-			this.buttonClass = this.type;
-		} else {
-			this.buttonClass = 'default';
-		}
+		this.type = this.type != null ? this.type : 'default';
+		this.size = this.size != null ? 'btn-' + this.size : null;
 
 		$scope.$watch((): string => { return this.buttonText; }, (): void => {
 			$timeout((): void => {
@@ -49,7 +52,7 @@ export class LongClickButtonController {
 	}
 
 	startAction(): void {
-		if (this.active) {
+		if (this.active || this.busy) {
 			return;
 		}
 
@@ -61,7 +64,7 @@ export class LongClickButtonController {
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
 				this.buttonText = this.text;
-				this.onTriggered();
+				this.trigger();
 			}
 		}, this.interval);
 	}
@@ -87,6 +90,19 @@ export class LongClickButtonController {
 			this.buttonText = this.onShortClickText;
 		}
 	}
+
+	private trigger(): void {
+		if (!this.busy) {
+			this.busy = true;
+
+			var result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
+			if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
+				result.finally((): void => {
+					this.busy = false;
+				});
+			}
+		}
+	}
 }
 
 function longClickButton(): angular.IDirective {
@@ -98,13 +114,14 @@ function longClickButton(): angular.IDirective {
 		controllerAs: 'button',
 		scope: {},
 		bindToController: {
-			onTriggered: '&',
+			action: '&',
 			text: '@',
 			onShortClickText: '@',
-			buttonIcon: '@',
-			spinner: '=',
+			icon: '@',
+			busy: '=',
 			rightAligned: '=',
 			type: '@',
+			ngDisabled: '=',
 		},
 	};
 }
