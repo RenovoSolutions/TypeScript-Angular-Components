@@ -19,6 +19,9 @@ export class LongClickButtonController {
 	text: string;
 	onShortClickText: string;
 	type: string;
+	icon: string;
+	spinner: boolean;
+	rightAligned: boolean;
 
 	private interval: number = 25;
 	duration: number = 1500;
