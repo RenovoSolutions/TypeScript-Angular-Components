@@ -1,5 +1,5 @@
 <div class="long-click-button">
-	<button id="actionButton" class="btn btn-{{button.buttonClass}}" ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()" ng-disabled="button.busy">
+	<button id="actionButton" class="btn btn-{{button.buttonClass}}" ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()" ng-disabled="button.busy || button.ngDisabled">
 		<rl-busy loading="button.busy" ng-if="button.rightAligned"></rl-busy>
 		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.buttonText}}
 		<rl-busy loading="button.busy" ng-if="!button.rightAligned"></rl-busy>

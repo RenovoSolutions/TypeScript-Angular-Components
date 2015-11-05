@@ -23,6 +23,7 @@ export class LongClickButtonController {
 	icon: string;
 	busy: boolean;
 	rightAligned: boolean;
+	ngDisabled: boolean;
 
 	private interval: number = 25;
 	duration: number = 1500;
@@ -123,6 +124,7 @@ function longClickButton(): angular.IDirective {
 			busy: '=',
 			rightAligned: '=',
 			type: '@',
+			ngDisabled: '=',
 		},
 	};
 }
