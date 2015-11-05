@@ -73,7 +73,7 @@ function buttonAsync(): angular.IDirective {
 			action: '&',
 			type: '@',
 			ngDisabled: '=',
-			buttonRightAligned: '=',
+			rightAligned: '=',
 			size: '@',
 		},
 		controller: controllerName,
