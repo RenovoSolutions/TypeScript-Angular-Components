@@ -254,9 +254,9 @@ export function typeahead(): angular.IDirective {
 					</span>
 				</div>
 				<div class="input-group-btn" ng-if="typeahead.useApply">
-					<rl-button type="default" action="typeahead.applyItem()" button-right-aligned="true" ng-disabled="!typeahead.hasSelection">
+					<rl-button-async type="default" action="typeahead.applyItem()" button-right-aligned="true" ng-disabled="!typeahead.hasSelection">
 						<i class="fa fa-plus new"></i>
-					</rl-button>
+					</rl-button-async>
 				</div>
 			</div>
 		`,

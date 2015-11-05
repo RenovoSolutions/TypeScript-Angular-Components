@@ -9,19 +9,19 @@ import { services } from 'typescript-angular-utilities';
 
 import {
 	IButtonScope,
-	IButtonController,
+	IButtonAsyncController,
 	moduleName,
 	controllerName,
-} from './button';
+} from './buttonAsync';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
 import test = services.test;
 
-describe('ButtonController', () => {
+describe('ButtonAsyncController', () => {
 	var scope: IButtonScope;
-	var button: IButtonController;
+	var button: IButtonAsyncController;
 	var actionSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
@@ -102,9 +102,9 @@ describe('ButtonController', () => {
 		sinon.assert.notCalled(actionSpy);
 	});
 
-	function buildController(busy: boolean = false): IButtonController {
-		var controllerResult: test.IControllerResult<IButtonController>
-			= test.angularFixture.controllerWithBindings<IButtonController>(controllerName, null, null, { busy: busy, action: actionSpy });
+	function buildController(busy: boolean = false): IButtonAsyncController {
+		var controllerResult: test.IControllerResult<IButtonAsyncController>
+			= test.angularFixture.controllerWithBindings<IButtonAsyncController>(controllerName, null, null, { busy: busy, action: actionSpy });
 
 		scope = <IButtonScope>controllerResult.scope;
 		return controllerResult.controller;

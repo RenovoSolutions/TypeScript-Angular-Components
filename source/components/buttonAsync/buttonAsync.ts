@@ -9,8 +9,8 @@ import __promiseUtility = services.promise;
 
 export var moduleName: string = 'rl.ui.components.button';
 
-export var directiveName: string = 'rlButton';
-export var controllerName: string = 'ButtonController';
+export var directiveName: string = 'rlButtonAsync';
+export var controllerName: string = 'ButtonAsyncController';
 
 export interface IButtonScope extends angular.IScope {
 	busy: boolean;
@@ -19,12 +19,12 @@ export interface IButtonScope extends angular.IScope {
 	size: string;
 }
 
-export interface IButtonController {
+export interface IButtonAsyncController {
 	busy: boolean;
 	trigger(): void;
 }
 
-class ButtonController {
+class ButtonAsyncController {
 	static $inject: string[] = ['$scope', __promiseUtility.serviceName];
 	constructor(private $scope: IButtonScope, private promiseUtility: __promiseUtility.IPromiseUtility) {
 		this.busy = $scope.busy;
@@ -62,12 +62,12 @@ class ButtonController {
 	sizeClass: string;
 }
 
-function button(): angular.IDirective {
+function buttonAsync(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
 		transclude: true,
-		template: require('./button.html'),
+		template: require('./buttonAsync.html'),
 		scope: {
 			busy: '=',
 			action: '&',
@@ -82,5 +82,5 @@ function button(): angular.IDirective {
 }
 
 angular.module(moduleName, [__promiseUtility.moduleName])
-	.directive(directiveName, button)
-	.controller(controllerName, ButtonController);
+	.directive(directiveName, buttonAsync)
+	.controller(controllerName, ButtonAsyncController);
