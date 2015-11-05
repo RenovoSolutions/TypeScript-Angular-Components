@@ -32,6 +32,7 @@ export class ButtonAsyncController {
 
 	static $inject: string[] = [__promiseUtility.serviceName];
 	constructor(private promiseUtility: __promiseUtility.IPromiseUtility) {
+		this.type = this.type != null ? this.type : 'default';
 		this.sizeClass = this.size != null ? 'btn-' + this.size : null;
 	}
 
