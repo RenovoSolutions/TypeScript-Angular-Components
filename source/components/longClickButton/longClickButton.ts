@@ -21,7 +21,7 @@ export class LongClickButtonController {
 	onShortClickText: string;
 	type: string;
 	icon: string;
-	spinner: boolean;
+	busy: boolean;
 	rightAligned: boolean;
 
 	private interval: number = 25;
@@ -54,7 +54,7 @@ export class LongClickButtonController {
 	}
 
 	startAction(): void {
-		if (this.active || this.spinner) {
+		if (this.active || this.busy) {
 			return;
 		}
 
@@ -94,13 +94,13 @@ export class LongClickButtonController {
 	}
 
 	private trigger(): void {
-		if (!this.spinner) {
-			this.spinner = true;
+		if (!this.busy) {
+			this.busy = true;
 
 			var result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
 			if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
 				result.finally((): void => {
-					this.spinner = false;
+					this.busy = false;
 				});
 			}
 		}
@@ -120,7 +120,7 @@ function longClickButton(): angular.IDirective {
 			text: '@',
 			onShortClickText: '@',
 			icon: '@',
-			spinner: '=',
+			busy: '=',
 			rightAligned: '=',
 			type: '@',
 		},
