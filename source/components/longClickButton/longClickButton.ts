@@ -20,6 +20,7 @@ export class LongClickButtonController {
 	text: string;
 	onShortClickText: string;
 	type: string;
+	size: string;
 	icon: string;
 	busy: boolean;
 	rightAligned: boolean;
@@ -28,7 +29,6 @@ export class LongClickButtonController {
 	private interval: number = 25;
 	duration: number = 1500;
 	buttonText: string;
-	buttonClass: string;
 	width: number;
 	active: boolean;
 	actionProgress: number;
@@ -41,11 +41,8 @@ export class LongClickButtonController {
 			, private objectUtility: __object.IObjectUtility
 			, private promise: __promise.IPromiseUtility) {
 		this.buttonText = this.text;
-		if (this.type != null) {
-			this.buttonClass = this.type;
-		} else {
-			this.buttonClass = 'default';
-		}
+		this.type = this.type != null ? this.type : 'default';
+		this.size = this.size != null ? 'btn-' + this.size : null;
 
 		$scope.$watch((): string => { return this.buttonText; }, (): void => {
 			$timeout((): void => {
