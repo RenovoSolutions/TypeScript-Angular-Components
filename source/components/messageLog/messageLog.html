@@ -1,19 +1,23 @@
 <div>
 	<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
 	<div class="content-group" ng-repeat="entry in log.messages">
-		<div ng-bind-html="entry.message"></div>
-		<div class="byline">{{entry.createdBy}}</div>
-		<div class="byline">{{entry.createdDate}} {{entry.createdTime}} UTC</div>
+		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
+			<template default>
+				<div ng-bind-html="entry.message"></div>
+				<div class="byline">{{entry.createdBy}}</div>
+				<div class="byline">{{entry.createdDate}} {{entry.createdTime}} UTC</div>
+			</template>
+		</rl-generic-container>
 	</div>
 	<div class="content-group" ng-if="(log.messages | isEmpty) && !log.loadingInitial">No existing messages</div>
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="text-center">
-				<rl-button-async type="default" action="log.getTopPage()" ng-disabled="log.loading" right-aligned="true">
+				<rl-button-async type="default" action="log.getTop()" ng-disabled="log.loading" button-right-aligned="true">
 					<span ng-show="log.hasPreviousPage">Top</span>
 					<span ng-hide="log.hasPreviousPage">Refresh</span>
 				</rl-button-async>
-				<rl-button-async type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getNextPage()">
+				<rl-button-async type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getOlder()">
 					Older <i class="fa fa-chevron-right"></i>
 				</rl-button-async>
 			</div>
