@@ -3,6 +3,7 @@
 		<li ng-repeat="step in breadcrumb.steps" ng-click="breadcrumb.onClick(step)"
 			ng-class="{ 'completed': step.isCompleted, 'current': step.isCurrent, 'active': !step.inactive && !breadcrumb.anyLoading() }">
 			<div class="wrap">
+				<p class="badge" ng-show="step.hasCount">{{step.count()}}</p>
 				<p class="title">{{step.title}} <rl-busy loading="step.loading"></rl-busy></p>
 				<p class="subtitle">{{step.subtitle}}</p>
 			</div>
