@@ -10,6 +10,7 @@ export interface IWindowService {
 	resize(callback: { (event: JQueryEventObject): any }): void;
 	scrollTop(): number;
 	scroll(handler: IScrollHandler): void;
+	height(): number;
 }
 
 export interface IScrollHandler {
@@ -29,6 +30,10 @@ class WindowService {
 
 	scroll(handler: IScrollHandler): void {
 		this.windowControl.scroll(handler);
+	}
+
+	height(): number {
+		return this.windowControl.height();
 	}
 }
 
