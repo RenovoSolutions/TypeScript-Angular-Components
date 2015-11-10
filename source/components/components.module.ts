@@ -9,6 +9,7 @@ import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonLink from './buttonLink/buttonLink';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
+import * as checkbox from './checkbox/checkbox';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as genericContainer from './genericContainer/genericContainer';
@@ -35,6 +36,7 @@ export {
 	buttonLink,
 	buttonToggle,
 	cardContainer,
+	checkbox,
 	commaList,
 	dateTime,
 	genericContainer,
@@ -64,6 +66,7 @@ angular.module(moduleName, [
 	buttonLink.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
+	checkbox.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
 	genericContainer.moduleName,
