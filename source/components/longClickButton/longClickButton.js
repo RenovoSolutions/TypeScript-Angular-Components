@@ -3,25 +3,23 @@
 var angular = require('angular');
 var $ = require('jquery');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __promise = typescript_angular_utilities_1.services.promise;
 exports.moduleName = 'rl.ui.components.longClickButton';
 exports.directiveName = 'rlLongClickButton';
 exports.controllerName = 'LongClickButtonController';
 var __object = typescript_angular_utilities_1.services.object;
 var LongClickButtonController = (function () {
-    function LongClickButtonController($scope, $interval, $timeout, objectUtility) {
+    function LongClickButtonController($scope, $interval, $timeout, objectUtility, promise) {
         var _this = this;
         this.$interval = $interval;
         this.$timeout = $timeout;
         this.objectUtility = objectUtility;
+        this.promise = promise;
         this.interval = 25;
         this.duration = 1500;
         this.buttonText = this.text;
-        if (this.type != null) {
-            this.buttonClass = this.type;
-        }
-        else {
-            this.buttonClass = 'default';
-        }
+        this.type = this.type != null ? this.type : 'default';
+        this.size = this.size != null ? 'btn-' + this.size : null;
         $scope.$watch(function () { return _this.buttonText; }, function () {
             $timeout(function () {
                 _this.width = $('#actionButton').outerWidth();
@@ -30,7 +28,7 @@ var LongClickButtonController = (function () {
     }
     LongClickButtonController.prototype.startAction = function () {
         var _this = this;
-        if (this.active) {
+        if (this.active || this.busy) {
             return;
         }
         this.actionProgress = 0;
@@ -40,7 +38,7 @@ var LongClickButtonController = (function () {
             if (_this.actionProgress >= _this.duration) {
                 _this.cleanup();
                 _this.buttonText = _this.text;
-                _this.onTriggered();
+                _this.trigger();
             }
         }, this.interval);
     };
@@ -62,7 +60,19 @@ var LongClickButtonController = (function () {
             this.buttonText = this.onShortClickText;
         }
     };
-    LongClickButtonController.$inject = ['$scope', '$interval', '$timeout', __object.serviceName];
+    LongClickButtonController.prototype.trigger = function () {
+        var _this = this;
+        if (!this.busy) {
+            this.busy = true;
+            var result = this.action();
+            if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
+                result.finally(function () {
+                    _this.busy = false;
+                });
+            }
+        }
+    };
+    LongClickButtonController.$inject = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
     return LongClickButtonController;
 })();
 exports.LongClickButtonController = LongClickButtonController;
@@ -75,13 +85,14 @@ function longClickButton() {
         controllerAs: 'button',
         scope: {},
         bindToController: {
-            onTriggered: '&',
+            action: '&',
             text: '@',
             onShortClickText: '@',
-            buttonIcon: '@',
-            spinner: '=',
+            icon: '@',
+            busy: '=',
             rightAligned: '=',
             type: '@',
+            ngDisabled: '=',
         },
     };
 }

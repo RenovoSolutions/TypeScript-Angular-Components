@@ -11,12 +11,16 @@ export interface IStep {
         (): angular.IPromise<void> | void;
     };
     stateName?: string;
+    count?: {
+        (): number;
+    };
     isCompleted?: boolean;
     isCurrent?: boolean;
 }
 export interface IConfiguredStep extends IStep {
     inactive: boolean;
     loading: boolean;
+    hasCount: boolean;
 }
 export declare class MultiStepIndicatorController {
     private $state;

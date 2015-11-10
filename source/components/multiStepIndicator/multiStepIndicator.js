@@ -30,6 +30,7 @@ var MultiStepIndicatorController = (function () {
     MultiStepIndicatorController.prototype.configureSteps = function () {
         var _this = this;
         _.each(this.steps, function (step) {
+            step.hasCount = _.isFunction(step.count);
             if (!_.isFunction(step.onClick)) {
                 if (_this.object.isNullOrWhitespace(step.stateName)) {
                     step.inactive = true;

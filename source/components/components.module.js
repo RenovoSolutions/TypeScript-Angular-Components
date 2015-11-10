@@ -4,8 +4,8 @@ var autosaveDialogFooter = require('./autosaveDialogFooter/autosaveDialogFooter'
 exports.autosaveDialogFooter = autosaveDialogFooter;
 var busy = require('./busy/busy');
 exports.busy = busy;
-var button = require('./button/button');
-exports.button = button;
+var buttonAsync = require('./buttonAsync/buttonAsync');
+exports.buttonAsync = buttonAsync;
 var buttonToggle = require('./buttonToggle/buttonToggle');
 exports.buttonToggle = buttonToggle;
 var cardContainer = require('./cardContainer/cardContainer.module');
@@ -48,7 +48,7 @@ exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
     autosaveDialogFooter.moduleName,
     busy.moduleName,
-    button.moduleName,
+    buttonAsync.moduleName,
     buttonToggle.moduleName,
     cardContainer.moduleName,
     commaList.moduleName,

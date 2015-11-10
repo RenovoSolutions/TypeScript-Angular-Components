@@ -133,7 +133,7 @@ function typeahead() {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<div class=\"input-group\" ng-class=\"{ 'has-error': typeahead.hasError }\">\n\t\t\t\t<input type=\"text\" ng-model=\"typeahead.selection\" class=\"form-control\"\n\t\t\t\t\tplaceholder=\"{{typeahead.placeholder}}\" typeahead=\"object as typeahead.transform(object) for object in typeahead.getItems($viewValue)\"\n\t\t\t\t\ttypeahead-loading=\"typeahead.loading\" typeahead-wait-ms=\"typeahead.loadDelay\" />\n\t\t\t\t<div class=\"input-group-addon\" ng-if=\"typeahead.showSearch\">\n\t\t\t\t\t<rl-busy loading=\"typeahead.loading\"></rl-busy>\n\t\t\t\t\t<span ng-hide=\"typeahead.loading\">\n\t\t\t\t\t\t<i class=\"fa fa-search\" ng-hide=\"typeahead.hasSelection\"></i>\n\t\t\t\t\t\t<i class=\"fa fa-check\" ng-show=\"typeahead.hasSelection\"></i>\n\t\t\t\t\t</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"input-group-btn\" ng-if=\"typeahead.useApply\">\n\t\t\t\t\t<rl-button type=\"default\" action=\"typeahead.applyItem()\" button-right-aligned=\"true\" ng-disabled=\"!typeahead.hasSelection\">\n\t\t\t\t\t\t<i class=\"fa fa-plus new\"></i>\n\t\t\t\t\t</rl-button>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
+        template: require('./typeahead.html'),
         controller: exports.controllerName,
         controllerAs: 'typeahead',
         scope: {},

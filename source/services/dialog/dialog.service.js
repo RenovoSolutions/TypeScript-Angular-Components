@@ -9,7 +9,7 @@ var DialogService = (function () {
         this.dialog = dialog;
     }
     DialogService.prototype.open = function (options, closeHandler) {
-        this.dialog.open(options, closeHandler);
+        return this.dialog.open(options, closeHandler);
     };
     return DialogService;
 })();

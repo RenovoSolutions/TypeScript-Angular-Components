@@ -25,11 +25,18 @@ var BaseDialogService = (function () {
         if (options == null) {
             options = {};
         }
+        var dialogInstance = {
+            close: function () { },
+            dismiss: function () { },
+        };
         this.promise.resolvePromises(options.resolve).then(function (results) {
             _this.closeHandler = closeHandler;
             options = _this.configureModalSettings(options, results);
-            _this.$modal.open(options);
+            var modalInstance = _this.$modal.open(options);
+            dialogInstance.close = modalInstance.close;
+            dialogInstance.dismiss = modalInstance.dismiss;
         });
+        return dialogInstance;
     };
     BaseDialogService.prototype.configureModalSettings = function (options, resolveData) {
         var modalScope = options.scope;

@@ -1,6 +1,6 @@
 import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
-import * as button from './button/button';
+import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as commaList from './commaList/commaList';
@@ -20,5 +20,5 @@ import * as spinner from './spinner/spinner';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
-export { autosaveDialogFooter, busy, button, buttonToggle, cardContainer, commaList, dateTime, genericContainer, lazyLoad, longClickButton, messageLog, multiStepIndicator, radio, ratingBar, responsiveCardGrid, richTextEditor, signaturePad, simpleCardList, spinner, stringWithWatermark, typeahead, userRating };
+export { autosaveDialogFooter, busy, buttonAsync, buttonToggle, cardContainer, commaList, dateTime, genericContainer, lazyLoad, longClickButton, messageLog, multiStepIndicator, radio, ratingBar, responsiveCardGrid, richTextEditor, signaturePad, simpleCardList, spinner, stringWithWatermark, typeahead, userRating };
 export declare var moduleName: string;
