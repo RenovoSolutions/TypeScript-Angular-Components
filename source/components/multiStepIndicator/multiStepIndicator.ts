@@ -18,6 +18,7 @@ export interface IStep {
 	subtitle?: string;
 	onClick?: {(): angular.IPromise<void> | void};
 	stateName?: string;
+	count?: {(): number};
 	isCompleted?: boolean;
 	isCurrent?: boolean;
 }
@@ -25,6 +26,7 @@ export interface IStep {
 export interface IConfiguredStep extends IStep {
 	inactive: boolean;
 	loading: boolean;
+	hasCount: boolean;
 }
 
 export class MultiStepIndicatorController {
@@ -54,6 +56,8 @@ export class MultiStepIndicatorController {
 
 	private configureSteps(): void {
 		_.each(this.steps, (step: IConfiguredStep): void => {
+			step.hasCount = _.isFunction(step.count);
+
 			if (!_.isFunction(step.onClick)) {
 				if (this.object.isNullOrWhitespace(step.stateName)) {
 					step.inactive = true;
