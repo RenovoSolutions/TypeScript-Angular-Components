@@ -10,7 +10,7 @@ export var moduleName: string = 'rl.ui.services.componentValidator';
 export var factoryName: string = 'componentValidator';
 
 export interface IComponentValidatorOptions {
-	ngModel: angular.INgModelService;
+	ngModel: angular.INgModelController;
 	$scope: angular.IScope;
 	validators: __validation.IValidationHandler[];
 }
