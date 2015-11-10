@@ -13,7 +13,7 @@ import {
 	IComponentValidatorFactory,
 	factoryName as componentValidatorFactoryName,
 	moduleName as componentValidatorModuleName,
-} from '../services/componentValidator/componentValidator.service';
+} from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.textbox';
 export var directiveName: string = 'rlTextbox';
