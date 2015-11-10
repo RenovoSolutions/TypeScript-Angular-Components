@@ -41,7 +41,7 @@ function spinner($timeout: angular.ITimeoutService
 		template: `
 			<rl-generic-container selector="ngDisabled">
 				<template default>
-					<input name="{{name}}" class="spinner" ng-hide="ngDisabled" id="{{spinnerId}}" type="text" />
+					<input name="{{name}}" class="spinner" id="{{spinnerId}}" type="text" />
 				</template>
 				<template when-selector="true">
 					<div class="input-group" ng-show="prefix != null && postfix != null">
