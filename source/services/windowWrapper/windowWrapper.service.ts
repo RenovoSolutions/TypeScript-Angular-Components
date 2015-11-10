@@ -7,7 +7,8 @@ export var moduleName: string = 'rl.ui.services.windowWrapper';
 export var serviceName: string = 'windowWrapper';
 
 export interface IWindowService {
-	resize(callback: {(event: JQueryEventObject): any }): void;
+	resize(callback: { (event: JQueryEventObject): any }): void;
+	scrollTop(): number;
 }
 
 class WindowService {
@@ -15,6 +16,10 @@ class WindowService {
 
 	resize(callback: { (event: JQueryEventObject): any }): void {
 		this.windowControl.resize(callback);
+	}
+
+	scrollTop(): number {
+		return this.windowControl.scrollTop();
 	}
 }
 
