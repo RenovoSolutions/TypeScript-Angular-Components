@@ -6,6 +6,7 @@ import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFoot
 import * as busy from './busy/busy';
 import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
+import * as buttonLink from './buttonLink/buttonLink';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as commaList from './commaList/commaList';
@@ -31,6 +32,7 @@ export {
 	busy,
 	button,
 	buttonAsync,
+	buttonLink,
 	buttonToggle,
 	cardContainer,
 	commaList,
@@ -59,6 +61,7 @@ angular.module(moduleName, [
 	busy.moduleName,
 	button.moduleName,
 	buttonAsync.moduleName,
+	buttonLink.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
 	commaList.moduleName,
