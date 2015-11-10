@@ -4,6 +4,7 @@ import * as angular from 'angular';
 
 import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
+import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
@@ -28,6 +29,7 @@ import * as userRating from './userRating/userRating';
 export {
 	autosaveDialogFooter,
 	busy,
+	button,
 	buttonAsync,
 	buttonToggle,
 	cardContainer,
@@ -55,6 +57,7 @@ export var moduleName: string = 'rl.ui.components';
 angular.module(moduleName, [
 	autosaveDialogFooter.moduleName,
 	busy.moduleName,
+	button.moduleName,
 	buttonAsync.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
