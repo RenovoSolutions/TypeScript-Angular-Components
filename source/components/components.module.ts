@@ -25,6 +25,7 @@ import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
+import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
 
@@ -52,6 +53,7 @@ export {
 	simpleCardList,
 	spinner,
 	stringWithWatermark,
+	textbox,
 	typeahead,
 	userRating,
 };
@@ -82,6 +84,7 @@ angular.module(moduleName, [
 	simpleCardList.moduleName,
 	spinner.moduleName,
 	stringWithWatermark.moduleName,
+	textbox.moduleName,
 	typeahead.moduleName,
 	userRating.moduleName,
 ]);

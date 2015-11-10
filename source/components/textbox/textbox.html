@@ -1,0 +1,9 @@
+<div class="validation-input-group">
+	<div class="field validation-input" ng-class="{ 'has-error': textbox.ngModel.$invalid }">
+		<label ng-show="textbox.text" class="show-hide angular-animate">
+			{{textbox.label}} <span class="pull-right error-string">{{textbox.textboxValidator.error}}</span>
+		</label>
+		<input  type="text" class="form-control angular-animate" ng-model="textbox.text" placeholder="{{textbox.label}}"/>
+	</div>
+	<i class="fa fa-exclamation-triangle text-danger" ng-show="textbox.ngModel.$error.required"></i>
+</div>
