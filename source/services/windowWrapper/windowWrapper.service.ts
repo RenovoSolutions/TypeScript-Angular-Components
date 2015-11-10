@@ -9,6 +9,11 @@ export var serviceName: string = 'windowWrapper';
 export interface IWindowService {
 	resize(callback: { (event: JQueryEventObject): any }): void;
 	scrollTop(): number;
+	scroll(handler: IScrollHandler): void;
+}
+
+export interface IScrollHandler {
+	(event: JQueryEventObject): any;
 }
 
 class WindowService {
@@ -20,6 +25,10 @@ class WindowService {
 
 	scrollTop(): number {
 		return this.windowControl.scrollTop();
+	}
+
+	scroll(handler: IScrollHandler): void {
+		this.windowControl.scroll(handler);
 	}
 }
 
