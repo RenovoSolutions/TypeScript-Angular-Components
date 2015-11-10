@@ -4,9 +4,12 @@ import * as angular from 'angular';
 
 import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
+import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
+import * as buttonLink from './buttonLink/buttonLink';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
+import * as checkbox from './checkbox/checkbox';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as genericContainer from './genericContainer/genericContainer';
@@ -22,15 +25,20 @@ import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
+import * as textarea from './textarea/textarea';
+import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
 
 export {
 	autosaveDialogFooter,
 	busy,
+	button,
 	buttonAsync,
+	buttonLink,
 	buttonToggle,
 	cardContainer,
+	checkbox,
 	commaList,
 	dateTime,
 	genericContainer,
@@ -46,6 +54,8 @@ export {
 	simpleCardList,
 	spinner,
 	stringWithWatermark,
+	textarea,
+	textbox,
 	typeahead,
 	userRating,
 };
@@ -55,9 +65,12 @@ export var moduleName: string = 'rl.ui.components';
 angular.module(moduleName, [
 	autosaveDialogFooter.moduleName,
 	busy.moduleName,
+	button.moduleName,
 	buttonAsync.moduleName,
+	buttonLink.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
+	checkbox.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
 	genericContainer.moduleName,
@@ -73,6 +86,8 @@ angular.module(moduleName, [
 	simpleCardList.moduleName,
 	spinner.moduleName,
 	stringWithWatermark.moduleName,
+	textarea.moduleName,
+	textbox.moduleName,
 	typeahead.moduleName,
 	userRating.moduleName,
 ]);
