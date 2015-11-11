@@ -39,12 +39,7 @@ function dateTime(moment: moment.MomentStatic
 	return {
 		restrict: 'E',
 		template: `
-			<div class="input-group" ng-class="{ 'has-warning': !validFormat}" id="{{inputId}}">
-				<input type="text" class="form-control" ng-model="ngModel" />
-				<span class="input-group-btn">
-					<button class="btn btn-default show-date-picker" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
-				</span>
-			</div>
+			
 		`,
 		require: '?^ngModel',
 		scope: {
