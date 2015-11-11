@@ -11,8 +11,16 @@ import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
+import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
+
+import {
+	IComponentValidator,
+	IComponentValidatorFactory,
+	factoryName as componentValidatorFactoryName,
+	moduleName as componentValidatorModuleName,
+} from '../../services/componentValidator/componentValidator.service';
 
 export let moduleName: string = 'rl.ui.components.spinner';
 export let directiveName: string = 'rlSpinner';
@@ -48,8 +56,25 @@ export class SpinnerController {
 	ngDisabled: boolean;
 	spinnerId: string;
 	name: string;
+	validator: __validation.IValidationHandler;
 
 	ngModel: angular.INgModelController;
+	spinnerValidator: IComponentValidator;
+
+	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+			if (!_.isUndefined(this.validator)) {
+				this.spinnerValidator = componentValidatorFactory.getInstance({
+					ngModel: this.ngModel,
+					$scope: $scope,
+					validators: [this.validator],
+				});
+			}
+			unregister();
+		});
+	}
 }
 
 spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
@@ -142,6 +167,6 @@ function spinner($timeout: angular.ITimeoutService
 	};
 }
 
-angular.module(moduleName, [__string.moduleName])
+angular.module(moduleName, [__string.moduleName, componentValidatorModuleName])
 	.directive(directiveName, spinner)
 	.controller(controllerName, SpinnerController);
