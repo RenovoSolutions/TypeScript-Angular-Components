@@ -1,10 +1,10 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
 		<div class="validation-input-group">
-			<div class="validation-input">
+			<div class="validation-input" ng-class="{ 'has-error': spinner.ngModel.$invalid }">
 				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
 			</div>
-			<i class="fa fa-exclamation-triangle text-danger"></i>
+			<i class="fa fa-exclamation-triangle text-danger" ng-show="spinner.ngModel.$error.required"></i>
 		</div>
 	</template>
 	<template when-selector="true">
