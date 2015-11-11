@@ -1,5 +1,6 @@
 // /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
 // /// <reference path='../../../typings/jquery/jquery.d.ts' />
+// /// <reference path='../../../typings/commonjs.d.ts' />
 
 'use strict';
 
@@ -38,31 +39,7 @@ function spinner($timeout: angular.ITimeoutService
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<rl-generic-container selector="ngDisabled">
-				<template default>
-					<input name="{{name}}" class="spinner" id="{{spinnerId}}" type="text" />
-				</template>
-				<template when-selector="true">
-					<div class="input-group" ng-show="prefix != null && postfix != null">
-						<span class="input-group-addon">{{prefix}}</span>
-						<input ng-disabled="ngDisabled" type="text" ng-model="ngModel" class="form-control" />
-						<span class="input-group-addon">{{postfix}}</span>
-					</div>
-					<div class="input-group" ng-show="prefix != null && postfix == null">
-						<span class="input-group-addon">{{prefix}}</span>
-						<input ng-disabled="ngDisabled" type="text" ng-model="ngModel" class="form-control" />
-					</div>
-					<div class="input-group" ng-show="prefix == null && postfix != null">
-						<input ng-disabled="ngDisabled" type="text" ng-model="ngModel" class="form-control" />
-						<span class="input-group-addon">{{postfix}}</span>
-					</div>
-					<div ng-show="prefix == null && postfix == null">
-						<input ng-disabled="ngDisabled" type="text" ng-model="ngModel" class="form-control" />
-					</div>
-				</template>
-			</rl-generic-container>
-		`,
+		template: require('./spinner.html'),
 		require: '?^ngModel',
 		scope: {
 			min: '=',
