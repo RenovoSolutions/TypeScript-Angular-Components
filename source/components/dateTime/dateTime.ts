@@ -11,11 +11,19 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 
+import __dateTimeFormatStrings = services.date;
+import __validation = services.validation;
+
+import {
+	IComponentValidator,
+	IComponentValidatorFactory,
+	factoryName as componentValidatorFactoryName,
+	moduleName as componentValidatorModuleName,
+} from '../../services/componentValidator/componentValidator.service';
+
 export let moduleName: string = 'rl.ui.components.dateTime';
 export let directiveName: string = 'rlDateTime';
 export let controllerName: string = 'DateTimeController';
-
-import __dateTimeFormatStrings = services.date;
 
 export interface IDateTimeBindings {
 	minuteStepping: number;
@@ -30,6 +38,8 @@ export interface IDateTimeBindings {
 	validFormat: boolean;
 
 	format: string;
+
+	validator: __validation.IValidationHandler;
 }
 
 export interface IDateTimeScope extends angular.IScope {
@@ -50,7 +60,25 @@ export class DateTimeController {
 
 	format: string;
 
+	validator: __validation.IValidationHandler;
+
 	ngModel: angular.INgModelController;
+	dateTimeValidator: IComponentValidator;
+
+	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+			if (!_.isUndefined(this.validator)) {
+				this.dateTimeValidator = componentValidatorFactory.getInstance({
+					ngModel: this.ngModel,
+					$scope: $scope,
+					validators: [this.validator],
+				});
+			}
+			unregister();
+		});
+	}
 }
 
 dateTime.$inject = [services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName];
@@ -125,6 +153,6 @@ function dateTime(moment: moment.MomentStatic
 	};
 }
 
-angular.module(moduleName, [services.moment.moduleName, services.date.moduleName])
+angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, componentValidatorModuleName])
 	.directive(directiveName, dateTime)
 	.controller(controllerName, DateTimeController);
