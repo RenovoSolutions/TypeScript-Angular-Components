@@ -29,7 +29,6 @@ export interface ISpinnerBindings {
 	postfix: string;
 	roundToStep: boolean;
 	ngDisabled: boolean;
-	ngModel: number;
 	spinnerId: string;
 	name: string;
 }
@@ -47,9 +46,10 @@ export class SpinnerController {
 	postfix: string;
 	roundToStep: boolean;
 	ngDisabled: boolean;
-	ngModel: number;
 	spinnerId: string;
 	name: string;
+
+	ngModel: angular.INgModelController;
 }
 
 spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
@@ -73,7 +73,6 @@ function spinner($timeout: angular.ITimeoutService
 			postfix: '@',
 			roundToStep: '=',
 			ngDisabled: '=',
-			ngModel: '=',
 			spinnerId: '@',
 			name: '@',
 		},
@@ -83,6 +82,7 @@ function spinner($timeout: angular.ITimeoutService
 			, ngModel: angular.INgModelController): void {
 
 			let spinner: SpinnerController = scope.spinner;
+			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
 			scope.$watch('ngDisabled', (disabled: boolean): void => {
 				if (disabled) {
@@ -119,7 +119,7 @@ function spinner($timeout: angular.ITimeoutService
 						let unbindModelWatch = scope.$watch((): void => {
 							return ngModel.$modelValue;
 						}, (newModel: any): void => {
-							spinner.ngModel = round(newModel);
+							ngModel.$modelValue = round(newModel);
 						});
 
 						unbindWatches = (): void => {
