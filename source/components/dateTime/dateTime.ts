@@ -38,9 +38,7 @@ function dateTime(moment: moment.MomentStatic
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			
-		`,
+		template: require('./dateTime.html'),
 		require: '?^ngModel',
 		scope: {
 			minuteStepping: '=',
