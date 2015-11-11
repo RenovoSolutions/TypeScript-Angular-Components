@@ -1,6 +1,11 @@
 <rl-generic-container selector="ngDisabled">
 	<template default>
-		<input name="{{name}}" class="spinner" id="{{spinnerId}}" type="text" />
+		<div class="validation-input-group">
+			<div class="validation-input">
+				<input name="{{name}}" class="spinner" id="{{spinnerId}}" type="text" />
+			</div>
+			<i class="fa fa-exclamation-triangle text-danger"></i>
+		</div>
 	</template>
 	<template when-selector="true">
 		<div class="input-group" ng-show="prefix != null && postfix != null">
