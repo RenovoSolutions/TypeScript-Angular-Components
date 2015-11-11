@@ -8,21 +8,24 @@
 		</div>
 	</template>
 	<template when-selector="true">
-		<div class="input-group" ng-show="spinner.prefix != null && spinner.postfix != null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
-			<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
-		</div>
-		<div class="input-group" ng-show="spinner.prefix != null && spinner.postfix == null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
-			<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
-		</div>
-		<div class="input-group" ng-show="spinner.prefix == null && spinner.postfix != null">
-			<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
-		</div>
-		<div ng-show="spinner.prefix == null && spinner.postfix == null">
-			<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
+		<div class="validation-input-group" ng-class="{ 'has-error': spinner.ngModel.$invalid }">
+			<div class="input-group validation-input" ng-show="spinner.prefix != null && spinner.postfix != null">
+				<span class="input-group-addon">{{spinner.prefix}}</span>
+				<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
+				<span class="input-group-addon">{{spinner.postfix}}</span>
+			</div>
+			<div class="input-group validation-input" ng-show="spinner.prefix != null && spinner.postfix == null">
+				<span class="input-group-addon">{{spinner.prefix}}</span>
+				<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
+			</div>
+			<div class="input-group validation-input" ng-show="spinner.prefix == null && spinner.postfix != null">
+				<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
+				<span class="input-group-addon">{{spinner.postfix}}</span>
+			</div>
+			<div class="input-group validation-input" ng-show="spinner.prefix == null && spinner.postfix == null">
+				<input ng-disabled="spinner.ngDisabled" type="text" ng-model="spinner.ngModel" class="form-control" />
+			</div>
+			<i class="fa fa-exclamation-triangle text-danger" ng-show="spinner.ngModel.$error.required"></i>
 		</div>
 	</template>
 </rl-generic-container>
