@@ -2,6 +2,8 @@
 
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 
+import '../../../libraries/bootstrap-datetimepicker/index';
+
 import * as angular from 'angular';
 import * as moment from 'moment';
 import * as $ from 'jquery';
