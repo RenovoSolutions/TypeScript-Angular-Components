@@ -18,6 +18,8 @@ export let moduleName: string = 'rl.ui.components.spinner';
 export let directiveName: string = 'rlSpinner';
 export let controllerName: string = 'SpinnerController';
 
+export let defaultMaxValue: number = 100000000000000000000;
+
 export interface ISpinnerBindings {
 	min: number;
 	max: number;
@@ -91,8 +93,8 @@ function spinner($timeout: angular.ITimeoutService
 					// Initialize the spinner after $timeout to give angular a chance initialize ngModel
 					$timeout((): void => {
 						let touchspin: JQuery = element.find('input.spinner').TouchSpin({
-							min: (spinner.min != null ? spinner.min : Number.MIN_VALUE),
-							max: (spinner.max != null ? spinner.max : Number.MAX_VALUE),
+							min: (spinner.min != null ? spinner.min : 0),
+							max: (spinner.max != null ? spinner.max : defaultMaxValue),
 							step: spinner.step,
 							prefix: spinner.prefix,
 							postfix: spinner.postfix,
