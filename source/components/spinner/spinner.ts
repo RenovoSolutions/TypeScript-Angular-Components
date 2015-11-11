@@ -14,11 +14,29 @@ import { services } from 'typescript-angular-utilities';
 import __string = services.string;
 import __number = services.number;
 
-export var moduleName: string = 'rl.ui.components.spinner';
-export var directiveName: string = 'rlSpinner';
-export var controllerName: string = 'SpinnerController';
+export let moduleName: string = 'rl.ui.components.spinner';
+export let directiveName: string = 'rlSpinner';
+export let controllerName: string = 'SpinnerController';
 
-export interface ISpinnerScope extends angular.IScope {
+export interface ISpinnerBindings {
+	min: number;
+	max: number;
+	step: number;
+	decimals: number;
+	prefix: string;
+	postfix: string;
+	roundToStep: boolean;
+	ngDisabled: boolean;
+	ngModel: number;
+	spinnerId: string;
+	name: string;
+}
+
+interface ISpinnerScope extends angular.IScope {
+	spinner: SpinnerController;
+}
+
+export class SpinnerController {
 	min: number;
 	max: number;
 	step: number;
@@ -41,7 +59,10 @@ function spinner($timeout: angular.ITimeoutService
 		restrict: 'E',
 		template: require('./spinner.html'),
 		require: '?^ngModel',
-		scope: {
+		controller: controllerName,
+		controllerAs: 'spinner',
+		scope: {},
+		bindToController: {
 			min: '=',
 			max: '=',
 			step: '=',
@@ -59,7 +80,8 @@ function spinner($timeout: angular.ITimeoutService
 			, attrs: angular.IAttributes
 			, ngModel: angular.INgModelController): void {
 
-			var unbindWatches: Function;
+			let spinner: SpinnerController = scope.spinner;
+			let unbindWatches: Function;
 			scope.$watch('ngDisabled', (disabled: boolean): void => {
 				if (disabled) {
 					if (_.isFunction(unbindWatches)) {
@@ -69,14 +91,14 @@ function spinner($timeout: angular.ITimeoutService
 					// Initialize the spinner after $timeout to give angular a chance initialize ngModel
 					$timeout((): void => {
 						let touchspin: JQuery = element.find('input.spinner').TouchSpin({
-							min: (scope.min != null ? scope.min : Number.MIN_VALUE),
-							max: (scope.max != null ? scope.max : Number.MAX_VALUE),
-							step: scope.step,
-							prefix: scope.prefix,
-							postfix: scope.postfix,
-							decimals: scope.decimals,
+							min: (spinner.min != null ? spinner.min : Number.MIN_VALUE),
+							max: (spinner.max != null ? spinner.max : Number.MAX_VALUE),
+							step: spinner.step,
+							prefix: spinner.prefix,
+							postfix: spinner.postfix,
+							decimals: spinner.decimals,
 							initval: ngModel.$viewValue,
-							forcestepdivisibility: scope.roundToStep ? 'round' : 'none',
+							forcestepdivisibility: spinner.roundToStep ? 'round' : 'none',
 						});
 
 						touchspin.on('change', (): void => {
@@ -95,7 +117,7 @@ function spinner($timeout: angular.ITimeoutService
 						let unbindModelWatch = scope.$watch((): void => {
 							return ngModel.$modelValue;
 						}, (newModel: any): void => {
-							scope.ngModel = round(newModel);
+							spinner.ngModel = round(newModel);
 						});
 
 						unbindWatches = (): void => {
@@ -107,9 +129,9 @@ function spinner($timeout: angular.ITimeoutService
 			});
 
 			function round(num: number): number {
-				if (num != null && scope.roundToStep) {
-					num = numberUtility.roundToStep(num, scope.step);
-					num = numberUtility.preciseRound(num, scope.decimals);
+				if (num != null && spinner.roundToStep) {
+					num = numberUtility.roundToStep(num, spinner.step);
+					num = numberUtility.preciseRound(num, spinner.decimals);
 				}
 
 				return num;
@@ -119,4 +141,5 @@ function spinner($timeout: angular.ITimeoutService
 }
 
 angular.module(moduleName, [__string.moduleName])
-	.directive(directiveName, spinner);
+	.directive(directiveName, spinner)
+	.controller(controllerName, SpinnerController);
