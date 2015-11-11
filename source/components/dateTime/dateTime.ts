@@ -125,6 +125,6 @@ function dateTime(moment: moment.MomentStatic
 	};
 }
 
-angular.module(moduleName, [])
+angular.module(moduleName, [services.moment.moduleName, services.date.moduleName])
 	.directive(directiveName, dateTime)
 	.controller(controllerName, DateTimeController);
