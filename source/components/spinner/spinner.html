@@ -1,6 +1,7 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
 		<div class="validation-input-group">
+			<label class="pull-right error-string">{{spinner.spinnerValidator.error}}</label>
 			<div class="validation-input" ng-class="{ 'has-error': spinner.ngModel.$invalid }">
 				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
 			</div>
