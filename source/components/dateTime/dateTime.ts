@@ -18,9 +18,6 @@ import __dateTimeFormatStrings = services.date;
 export interface IDateTimeBindings {
 	minuteStepping: number;
 
-	// The property that be bound
-	ngModel: any;
-
 	useDate: boolean;
 	useTime: boolean;
 
@@ -67,7 +64,6 @@ function dateTime(moment: moment.MomentStatic
 		scope: {},
 		bindToController: {
 			minuteStepping: '=',
-			ngModel: '=',
 			useDate: '=',
 			useTime: '=',
 			min: '=',
@@ -78,6 +74,7 @@ function dateTime(moment: moment.MomentStatic
 			, attrs: angular.IAttributes
 			, ngModel: angular.INgModelController): void => {
 			let dateTime: DateTimeController = scope.dateTime;
+			dateTime.ngModel = ngModel;
 			// defaults to true
 			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
 			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;
