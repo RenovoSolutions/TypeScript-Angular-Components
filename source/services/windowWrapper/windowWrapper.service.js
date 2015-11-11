@@ -10,6 +10,15 @@ var WindowService = (function () {
     WindowService.prototype.resize = function (callback) {
         this.windowControl.resize(callback);
     };
+    WindowService.prototype.scrollTop = function () {
+        return this.windowControl.scrollTop();
+    };
+    WindowService.prototype.scroll = function (handler) {
+        this.windowControl.scroll(handler);
+    };
+    WindowService.prototype.height = function () {
+        return this.windowControl.height();
+    };
     return WindowService;
 })();
 angular.module(exports.moduleName, [])

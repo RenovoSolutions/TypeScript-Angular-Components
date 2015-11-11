@@ -4,12 +4,18 @@ var autosaveDialogFooter = require('./autosaveDialogFooter/autosaveDialogFooter'
 exports.autosaveDialogFooter = autosaveDialogFooter;
 var busy = require('./busy/busy');
 exports.busy = busy;
+var button = require('./button/button');
+exports.button = button;
 var buttonAsync = require('./buttonAsync/buttonAsync');
 exports.buttonAsync = buttonAsync;
+var buttonLink = require('./buttonLink/buttonLink');
+exports.buttonLink = buttonLink;
 var buttonToggle = require('./buttonToggle/buttonToggle');
 exports.buttonToggle = buttonToggle;
 var cardContainer = require('./cardContainer/cardContainer.module');
 exports.cardContainer = cardContainer;
+var checkbox = require('./checkbox/checkbox');
+exports.checkbox = checkbox;
 var commaList = require('./commaList/commaList');
 exports.commaList = commaList;
 var dateTime = require('./dateTime/dateTime');
@@ -40,6 +46,10 @@ var spinner = require('./spinner/spinner');
 exports.spinner = spinner;
 var stringWithWatermark = require('./stringWithWatermark/stringWithWatermark');
 exports.stringWithWatermark = stringWithWatermark;
+var textarea = require('./textarea/textarea');
+exports.textarea = textarea;
+var textbox = require('./textbox/textbox');
+exports.textbox = textbox;
 var typeahead = require('./typeahead/typeahead');
 exports.typeahead = typeahead;
 var userRating = require('./userRating/userRating');
@@ -48,9 +58,12 @@ exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
     autosaveDialogFooter.moduleName,
     busy.moduleName,
+    button.moduleName,
     buttonAsync.moduleName,
+    buttonLink.moduleName,
     buttonToggle.moduleName,
     cardContainer.moduleName,
+    checkbox.moduleName,
     commaList.moduleName,
     dateTime.moduleName,
     genericContainer.moduleName,
@@ -66,6 +79,8 @@ angular.module(exports.moduleName, [
     simpleCardList.moduleName,
     spinner.moduleName,
     stringWithWatermark.moduleName,
+    textarea.moduleName,
+    textbox.moduleName,
     typeahead.moduleName,
     userRating.moduleName,
 ]);

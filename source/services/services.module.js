@@ -4,10 +4,14 @@ var autosaveDialog = require('./autosaveDialog/autosaveDialog.module');
 exports.autosaveDialog = autosaveDialog;
 var breakpoints = require('./breakpoints/breakpoints.module');
 exports.breakpoints = breakpoints;
+var componentValidator = require('./componentValidator/componentValidator.service');
+exports.componentValidator = componentValidator;
 var contentProvider = require('./contentProvider/contentProvider.service');
 exports.contentProvider = contentProvider;
 var dialog = require('./dialog/dialog.service');
 exports.dialog = dialog;
+var documentWrapper = require('./documentWrapper/documentWrapper.service');
+exports.documentWrapper = documentWrapper;
 var jquery = require('./jquery/jquery.service');
 exports.jquery = jquery;
 var windowWrapper = require('./windowWrapper/windowWrapper.service');
@@ -16,8 +20,10 @@ exports.moduleName = 'rl.ui.services';
 angular.module(exports.moduleName, [
     autosaveDialog.moduleName,
     breakpoints.moduleName,
+    componentValidator.moduleName,
     contentProvider.moduleName,
     dialog.moduleName,
+    documentWrapper.moduleName,
     jquery.moduleName,
     windowWrapper.moduleName,
 ]);
