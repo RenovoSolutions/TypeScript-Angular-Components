@@ -2,6 +2,8 @@
 
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 
+import '../../../libraries/bootstrap-datetimepicker/index';
+
 import * as angular from 'angular';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -9,16 +11,22 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 
-export var moduleName: string = 'rl.ui.components.dateTime';
-export var directiveName: string = 'rlDateTime';
-
 import __dateTimeFormatStrings = services.date;
+import __validation = services.validation;
 
-export interface IDateTimeScope extends angular.IScope {
+import {
+	IComponentValidator,
+	IComponentValidatorFactory,
+	factoryName as componentValidatorFactoryName,
+	moduleName as componentValidatorModuleName,
+} from '../../services/componentValidator/componentValidator.service';
+
+export let moduleName: string = 'rl.ui.components.dateTime';
+export let directiveName: string = 'rlDateTime';
+export let controllerName: string = 'DateTimeController';
+
+export interface IDateTimeBindings {
 	minuteStepping: number;
-
-	// The property that be bound
-	ngModel: any;
 
 	useDate: boolean;
 	useTime: boolean;
@@ -30,6 +38,47 @@ export interface IDateTimeScope extends angular.IScope {
 	validFormat: boolean;
 
 	format: string;
+
+	validator: __validation.IValidationHandler;
+}
+
+export interface IDateTimeScope extends angular.IScope {
+	dateTime: DateTimeController;
+}
+
+export class DateTimeController {
+	minuteStepping: number;
+
+	useDate: boolean;
+	useTime: boolean;
+
+	min: string | Date | moment.Moment;
+	max: string | Date | moment.Moment;
+
+	dateTimePickerOpen: boolean;
+	validFormat: boolean;
+
+	format: string;
+
+	validator: __validation.IValidationHandler;
+
+	ngModel: angular.INgModelController;
+	dateTimeValidator: IComponentValidator;
+
+	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+			if (!_.isUndefined(this.validator)) {
+				this.dateTimeValidator = componentValidatorFactory.getInstance({
+					ngModel: this.ngModel,
+					$scope: $scope,
+					validators: [this.validator],
+				});
+			}
+			unregister();
+		});
+	}
 }
 
 dateTime.$inject = [services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName];
@@ -38,18 +87,13 @@ function dateTime(moment: moment.MomentStatic
 	'use strict';
 	return {
 		restrict: 'E',
-		template: `
-			<div class="input-group" ng-class="{ 'has-warning': !validFormat}" id="{{inputId}}">
-				<input type="text" class="form-control" ng-model="ngModel" />
-				<span class="input-group-btn">
-					<button class="btn btn-default show-date-picker" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
-				</span>
-			</div>
-		`,
+		template: require('./dateTime.html'),
 		require: '?^ngModel',
-		scope: {
+		controller: controllerName,
+		controllerAs: 'dateTime',
+		scope: {},
+		bindToController: {
 			minuteStepping: '=',
-			ngModel: '=',
 			useDate: '=',
 			useTime: '=',
 			min: '=',
@@ -59,26 +103,28 @@ function dateTime(moment: moment.MomentStatic
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
 			, ngModel: angular.INgModelController): void => {
+			let dateTime: DateTimeController = scope.dateTime;
+			dateTime.ngModel = ngModel;
 			// defaults to true
-			var hasDate: boolean = _.isUndefined(scope.useDate) ? true : scope.useDate;
-			var hasTime: boolean = _.isUndefined(scope.useTime) ? true : scope.useTime;
+			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
+			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;
 
-			var defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
-			var min: string | Date | moment.Moment
-				= scope.min != null ? scope.min : defaults.minDate;
-			var max: string | Date | moment.Moment
-				= scope.max != null ? scope.max : defaults.maxDate;
+			let defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
+			let min: string | Date | moment.Moment
+				= dateTime.min != null ? dateTime.min : defaults.minDate;
+			let max: string | Date | moment.Moment
+				= dateTime.max != null ? dateTime.max : defaults.maxDate;
 
-			scope.$watch('ngModel', (newValue: any): void => {
+			scope.$watch((): any => { return ngModel.$viewValue; }, (newValue: any): void => {
 				if (newValue !== '') {
-					scope.validFormat = moment(newValue).isValid();
+					dateTime.validFormat = moment(newValue).isValid();
 				}
 			});
 
 			// --- Implementation ---
 			element.datetimepicker({
-				stepping: scope.minuteStepping || 1,
-				format: scope.format || defaultFormat(hasDate, hasTime),
+				stepping: dateTime.minuteStepping || 1,
+				format: dateTime.format || defaultFormat(hasDate, hasTime),
 				direction: 'bottom',
 				elementHeight: 32,
 				pickDate: hasDate,
@@ -86,7 +132,7 @@ function dateTime(moment: moment.MomentStatic
 				minDate: min,
 				maxDate: max,
 			}).on('change.dp', function (): void {
-				var newValue: any = $(this).find('input').val();
+				let newValue: any = $(this).find('input').val();
 				ngModel.$setViewValue(newValue);
 				scope.$apply();
 			});
@@ -107,5 +153,6 @@ function dateTime(moment: moment.MomentStatic
 	};
 }
 
-angular.module(moduleName, [])
-	.directive(directiveName, dateTime);
+angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, componentValidatorModuleName])
+	.directive(directiveName, dateTime)
+	.controller(controllerName, DateTimeController);
