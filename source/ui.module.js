@@ -10,6 +10,8 @@ var components = require('./components/components.module');
 exports.components = components;
 var services = require('./services/services.module');
 exports.services = services;
+var types = require('./types/types.module');
+exports.types = types;
 exports.moduleName = 'rl.ui';
 angular.module(exports.moduleName, [
     'ui.bootstrap',

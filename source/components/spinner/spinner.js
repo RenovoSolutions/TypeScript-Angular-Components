@@ -1,22 +1,46 @@
 // /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
 // /// <reference path='../../../typings/jquery/jquery.d.ts' />
+// /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 require('../../../libraries/bootstrap-touchspin/index');
 var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __string = typescript_angular_utilities_1.services.string;
 var __number = typescript_angular_utilities_1.services.number;
+var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.spinner';
 exports.directiveName = 'rlSpinner';
 exports.controllerName = 'SpinnerController';
+exports.defaultMaxValue = 100000000000000000000;
+var SpinnerController = (function () {
+    function SpinnerController($scope, componentValidatorFactory) {
+        var _this = this;
+        var unregister = $scope.$watch(function () { return _this.ngModel; }, function (value) {
+            if (!_.isUndefined(_this.validator)) {
+                _this.spinnerValidator = componentValidatorFactory.getInstance({
+                    ngModel: _this.ngModel,
+                    $scope: $scope,
+                    validators: [_this.validator],
+                });
+            }
+            unregister();
+        });
+    }
+    SpinnerController.$inject = ['$scope', componentValidator_service_1.factoryName];
+    return SpinnerController;
+})();
+exports.SpinnerController = SpinnerController;
 spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
 function spinner($timeout, stringUtility, numberUtility) {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<rl-generic-container selector=\"ngDisabled\">\n\t\t\t\t<template default>\n\t\t\t\t\t<input name=\"{{name}}\" class=\"spinner\" id=\"{{spinnerId}}\" type=\"text\" />\n\t\t\t\t</template>\n\t\t\t\t<template when-selector=\"true\">\n\t\t\t\t\t<div class=\"input-group\" ng-show=\"prefix != null && postfix != null\">\n\t\t\t\t\t\t<span class=\"input-group-addon\">{{prefix}}</span>\n\t\t\t\t\t\t<input ng-disabled=\"ngDisabled\" type=\"text\" ng-model=\"ngModel\" class=\"form-control\" />\n\t\t\t\t\t\t<span class=\"input-group-addon\">{{postfix}}</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"input-group\" ng-show=\"prefix != null && postfix == null\">\n\t\t\t\t\t\t<span class=\"input-group-addon\">{{prefix}}</span>\n\t\t\t\t\t\t<input ng-disabled=\"ngDisabled\" type=\"text\" ng-model=\"ngModel\" class=\"form-control\" />\n\t\t\t\t\t</div>\n\t\t\t\t\t<div class=\"input-group\" ng-show=\"prefix == null && postfix != null\">\n\t\t\t\t\t\t<input ng-disabled=\"ngDisabled\" type=\"text\" ng-model=\"ngModel\" class=\"form-control\" />\n\t\t\t\t\t\t<span class=\"input-group-addon\">{{postfix}}</span>\n\t\t\t\t\t</div>\n\t\t\t\t\t<div ng-show=\"prefix == null && postfix == null\">\n\t\t\t\t\t\t<input ng-disabled=\"ngDisabled\" type=\"text\" ng-model=\"ngModel\" class=\"form-control\" />\n\t\t\t\t\t</div>\n\t\t\t\t</template>\n\t\t\t</rl-generic-container>\n\t\t",
+        template: require('./spinner.html'),
         require: '?^ngModel',
-        scope: {
+        controller: exports.controllerName,
+        controllerAs: 'spinner',
+        scope: {},
+        bindToController: {
             min: '=',
             max: '=',
             step: '=',
@@ -25,11 +49,12 @@ function spinner($timeout, stringUtility, numberUtility) {
             postfix: '@',
             roundToStep: '=',
             ngDisabled: '=',
-            ngModel: '=',
             spinnerId: '@',
             name: '@',
         },
         link: function (scope, element, attrs, ngModel) {
+            var spinner = scope.spinner;
+            spinner.ngModel = ngModel;
             var unbindWatches;
             scope.$watch('ngDisabled', function (disabled) {
                 if (disabled) {
@@ -41,14 +66,14 @@ function spinner($timeout, stringUtility, numberUtility) {
                     // Initialize the spinner after $timeout to give angular a chance initialize ngModel
                     $timeout(function () {
                         var touchspin = element.find('input.spinner').TouchSpin({
-                            min: (scope.min != null ? scope.min : Number.MIN_VALUE),
-                            max: (scope.max != null ? scope.max : Number.MAX_VALUE),
-                            step: scope.step,
-                            prefix: scope.prefix,
-                            postfix: scope.postfix,
-                            decimals: scope.decimals,
+                            min: (spinner.min != null ? spinner.min : 0),
+                            max: (spinner.max != null ? spinner.max : exports.defaultMaxValue),
+                            step: spinner.step,
+                            prefix: spinner.prefix,
+                            postfix: spinner.postfix,
+                            decimals: spinner.decimals,
                             initval: ngModel.$viewValue,
-                            forcestepdivisibility: scope.roundToStep ? 'round' : 'none',
+                            forcestepdivisibility: spinner.roundToStep ? 'round' : 'none',
                         });
                         touchspin.on('change', function () {
                             scope.$apply(function () {
@@ -64,7 +89,7 @@ function spinner($timeout, stringUtility, numberUtility) {
                         var unbindModelWatch = scope.$watch(function () {
                             return ngModel.$modelValue;
                         }, function (newModel) {
-                            scope.ngModel = round(newModel);
+                            ngModel.$modelValue = round(newModel);
                         });
                         unbindWatches = function () {
                             unbindViewWatch();
@@ -74,15 +99,16 @@ function spinner($timeout, stringUtility, numberUtility) {
                 }
             });
             function round(num) {
-                if (num != null && scope.roundToStep) {
-                    num = numberUtility.roundToStep(num, scope.step);
-                    num = numberUtility.preciseRound(num, scope.decimals);
+                if (num != null && spinner.roundToStep) {
+                    num = numberUtility.roundToStep(num, spinner.step);
+                    num = numberUtility.preciseRound(num, spinner.decimals);
                 }
                 return num;
             }
         }
     };
 }
-angular.module(exports.moduleName, [__string.moduleName])
-    .directive(exports.directiveName, spinner);
+angular.module(exports.moduleName, [__string.moduleName, componentValidator_service_1.moduleName])
+    .directive(exports.directiveName, spinner)
+    .controller(exports.controllerName, SpinnerController);
 //# sourceMappingURL=spinner.js.map
