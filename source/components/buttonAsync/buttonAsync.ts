@@ -7,7 +7,7 @@ import { services } from 'typescript-angular-utilities';
 
 import __promiseUtility = services.promise;
 
-export var moduleName: string = 'rl.ui.components.button';
+export var moduleName: string = 'rl.ui.components.buttonAsync';
 
 export var directiveName: string = 'rlButtonAsync';
 export var controllerName: string = 'ButtonAsyncController';
