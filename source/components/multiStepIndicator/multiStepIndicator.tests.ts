@@ -102,6 +102,17 @@ describe('MultiStepIndicatorController', () => {
 		expect(step1.loading).to.be.false;
 	});
 
+	it('should allow for specifying isCompleted as a bool or a function', (): void => {
+		let step1: IConfiguredStep = <any>{ isCompleted: true, };
+		let step2: IConfiguredStep = <any>{ isCompleted: sinon.spy((): boolean => { return true; }), };
+		buildController([step1, step2]);
+
+		expect(step1.getCompleted()).to.be.true;
+		expect(step2.getCompleted()).to.be.true;
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isCompleted);
+	});
+
 	function buildController(steps: IStep[]): void {
 		let controllerResult: test.IControllerResult<MultiStepIndicatorController>
 			= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps }, { $state: stateMock });
