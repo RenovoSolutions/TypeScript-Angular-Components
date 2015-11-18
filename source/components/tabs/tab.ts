@@ -4,7 +4,7 @@
 
 import * as ng from 'angular';
 
-import { TabsetController } from './tabset';
+import { TabsetController, ITabHeader } from './tabset';
 
 export let directiveName: string = 'rlTab';
 export let controllerName: string = 'TabController';
@@ -14,18 +14,14 @@ export interface ITabScope extends ng.IScope {
 }
 
 export class TabController {
-	static $inject: string[] = ['$element'];
-	constructor($element: ng.IAugmentedJQuery) {
-		let tabset: TabsetController = $element.controller('rlTabset');
-		// tabset.registerTab($element);
-	}
+	header: ITabHeader;
 }
 
 export function tab(): ng.IDirective {
 	return {
 		restrict: 'E',
 		transclude: true,
-		require: '^^rlTabset',
+		require: ['^^rlTabset', 'rlTab'],
 		template: require('./tab.html'),
 		controller: controllerName,
 		controllerAs: 'tab',
@@ -53,10 +49,13 @@ export function tab(): ng.IDirective {
 				post(scope: ITabScope
 					, element: ng.IAugmentedJQuery
 					, attrs: ng.IAttributes
-					, tabset: TabsetController): void {
-					tabset.registerTab(element, {
+					, controllers: any[]): void {
+					let tabset: TabsetController = controllers[0];
+					let tab: TabController = controllers[1];
+					tab.header = {
 						template: header.html(),
-					});
+					};
+					tabset.registerTab(element, tab.header);
 
 					let contentArea: JQuery = element.find('.tab-body');
 					contentArea.append(content);
