@@ -17,6 +17,8 @@ import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLog
 
 import { IGenericTemplate } from '../genericContainer/genericContainer';
 
+import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
+
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';
 
@@ -101,9 +103,15 @@ interface IMessageLogScope {
 
 }
 
-messageLog.$inject = ['$interpolate', jqueryServiceName, __object.serviceName];
+messageLog.$inject = [
+	'$interpolate',
+	jqueryServiceName,
+	templateLoaderService,
+	__object.serviceName,
+];
 export function messageLog($interpolate: angular.IInterpolateService,
 							jquery: IJQueryUtility,
+							templateLoader: ITemplateLoader,
 							object: __object.IObjectUtility): angular.IDirective {
 	'use strict';
 	return {
@@ -124,25 +132,7 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			   attributes: angular.IAttributes,
 			   controller: MessageLogController,
 			   transclude: angular.ITranscludeFunction): void => {
-			controller.templates = {};
-
-			// Load templates from the DOM
-			transclude((clone: angular.IAugmentedJQuery,
-						transclusionScope: angular.IScope): void => {
-				var templates: JQuery = clone.filter('template');
-
-				templates.each((index: number,
-								template: Element): void => {
-					var templateElement: angular.IAugmentedJQuery = angular.element(template);
-					var templateHtml: string = templateElement.html();
-
-					var triggerAttribute: string = templateElement.attr('when-selector');
-					if (!object.isNullOrWhitespace(triggerAttribute)) {
-						var trigger: string = $interpolate(triggerAttribute)(transclusionScope);
-						controller.templates[trigger] = templateHtml;
-					}
-				});
-			});
+			controller.templates = templateLoader.loadTemplates(transclude).templates;
 		}
 	};
 }

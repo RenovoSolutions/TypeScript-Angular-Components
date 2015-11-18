@@ -11,6 +11,12 @@ import {
 	IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
+import {
+	ITemplateLoader,
+	serviceName as templateLoaderService,
+	moduleName as templateLoaderModule,
+} from '../../services/templateLoader/templateLoader.service';
+
 export var moduleName: string = 'rl.ui.components.genericContainer';
 export var directiveName: string = 'rlGenericContainer';
 export var controllerName: string = 'GenericContainerController';
@@ -72,11 +78,17 @@ export class GenericContainerController {
 	}
 }
 
-genericContainer.$inject = ['$compile', '$interpolate', jqueryServiceName, __object.serviceName];
-
+genericContainer.$inject = [
+	'$compile',
+	'$interpolate',
+	jqueryServiceName,
+	templateLoaderService,
+	__object.serviceName,
+];
 function genericContainer($compile: angular.ICompileService,
 						$interpolate: angular.IInterpolateService,
 						jquery: IJQueryUtility,
+						templateLoader: ITemplateLoader,
 						object: __object.IObjectUtility): angular.IDirective {
 	'use strict';
 	return {
@@ -99,33 +111,12 @@ function genericContainer($compile: angular.ICompileService,
 
 			initDefaults(controller);
 
-			var container: angular.IAugmentedJQuery = element.find('#container');
-			var templateScope: angular.IScope;
+			let container: angular.IAugmentedJQuery = element.find('#container');
+			let templateResult = templateLoader.loadTemplates(transclude);
 
-			// Load templates from the DOM
-			transclude((clone: angular.IAugmentedJQuery,
-						transclusionScope: angular.IScope): void => {
-				var templates: JQuery = clone.filter('template');
-
-				templates.each((index: number,
-								template: Element): void => {
-					var templateElement: angular.IAugmentedJQuery = angular.element(template);
-					var templateHtml: string = templateElement.html();
-
-					var triggerAttribute: string = templateElement.attr('when-selector');
-					if (!object.isNullOrWhitespace(triggerAttribute)) {
-						var trigger: string = $interpolate(triggerAttribute)(transclusionScope);
-						controller.templates[trigger] = templateHtml;
-					}
-
-					var isDefault: string = templateElement.attr('default');
-					if (!_.isUndefined(isDefault) && isDefault.toLowerCase() !== 'false') {
-						controller.default = templateHtml;
-					}
-				});
-
-				templateScope = transclusionScope;
-			});
+			controller.templates = templateResult.templates;
+			controller.default = templateResult.default;
+			let templateScope = templateResult.transclusionScope;
 
 			if (!controller.default) {
 				controller.default = {
@@ -142,13 +133,13 @@ function genericContainer($compile: angular.ICompileService,
 			}
 
 			function swapTemplates(template: string): void {
-				var content: angular.IAugmentedJQuery = $compile(template)(templateScope);
+				let content: angular.IAugmentedJQuery = $compile(template)(templateScope);
 				jquery.replaceContent(container, content);
 			}
 		}
 	};
 }
 
-angular.module(moduleName, [jqueryModuleName, __object.moduleName])
+angular.module(moduleName, [jqueryModuleName, __object.moduleName, templateLoaderModule])
 	.directive(directiveName, genericContainer)
 	.controller(controllerName, GenericContainerController);

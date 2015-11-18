@@ -16,12 +16,14 @@ import {
 	controllerName as editableMessageLogControllerName
 } from './editableMessageLog';
 
+import { moduleName as templateLoaderModule } from '../../services/templateLoader/templateLoader.service';
+
 export * from './messageLog.service';
 export * from './messageLog.directive';
 
 export var moduleName: string = 'rl.ui.components.messageLog';
 
-angular.module(moduleName, [__object.moduleName, jqueryModuleName])
+angular.module(moduleName, [__object.moduleName, jqueryModuleName, templateLoaderModule])
 	.factory(factoryName, messageLogFactory)
 	.directive(directiveName, messageLog)
 	.controller(controllerName, MessageLogController)
