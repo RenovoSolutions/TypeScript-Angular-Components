@@ -25,7 +25,7 @@ export var controllerName: string = 'SelectController';
 export class SelectController {
 	// bindings
 	options: any[];
-	getOptions: { (search: string): angular.IPromise<any[]> };
+	getOptions: { (): angular.IPromise<any[]> };
 	selector: { (item: any): string } | string;
 	validator: __validation.IValidationHandler;
 	label: string;
@@ -33,6 +33,7 @@ export class SelectController {
 
 	ngModel: angular.INgModelController;
 	selectValidator: IComponentValidator;
+	loading: boolean;
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
@@ -42,9 +43,20 @@ export class SelectController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$element', '$scope', componentValidatorFactoryName];
-	constructor($element: angular.IAugmentedJQuery, $scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
+	static $inject: string[] = ['$element', '$scope', '$q', componentValidatorFactoryName];
+	constructor($element: angular.IAugmentedJQuery
+			, $scope: angular.IScope
+			, private $q: angular.IQService
+			, componentValidatorFactory: IComponentValidatorFactory) {
 		this.ngModel = $element.controller('ngModel');
+
+		if (_.isUndefined(this.options)) {
+			this.loading = true;
+			this.loadItems().then((options: any[]): void => {
+				this.options = options;
+				this.loading = false;
+			});
+		}
 
 		if (!_.isUndefined(this.validator)) {
 			this.selectValidator = componentValidatorFactory.getInstance({
@@ -56,9 +68,21 @@ export class SelectController {
 	}
 
 	getDisplayName(item: any): string {
+		if (item == null) {
+			return null;
+		}
+
 		return _.isFunction(this.selector)
 			? (<{ (item: any): string }>this.selector)(item)
 			: item[<string>this.selector];
+	}
+
+	loadItems(): angular.IPromise<any[]> {
+		if (_.isFunction(this.getOptions)) {
+			return this.getOptions();
+		} else {
+			return this.$q.when(this.options);
+		}
 	}
 }
 
