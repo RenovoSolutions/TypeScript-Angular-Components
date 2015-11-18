@@ -18,7 +18,6 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-
 describe('GenericContainerController', () => {
 	var controller: GenericContainerController;
 	var scope: angular.IScope;
