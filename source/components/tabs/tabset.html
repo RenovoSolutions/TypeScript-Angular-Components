@@ -1,6 +1,7 @@
 <div class="nav-tabs-dropshadow">
 	<ul class="nav nav-tabs">
-		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)">
+		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
+			ng-class="{ 'active': tabHeader.isVisible }">
 			<span ng-bind-html="tabHeader.template"></span>
 		</li>
 	</ul>

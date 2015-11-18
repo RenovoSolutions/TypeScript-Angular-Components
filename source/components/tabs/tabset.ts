@@ -10,26 +10,24 @@ export let controllerName: string = 'TabsetController';
 
 export interface ITabHeader {
 	template: string;
-	setVisibility(isVisible: boolean): void;
+	isVisible?: boolean;
 }
 
 export class TabsetController {
 	tabHeaders: ITabHeader[] = [];
 	findPosition: { (tabElement: ng.IAugmentedJQuery): number };
 
-	registerTab(element: ng.IAugmentedJQuery, header: string, setVisibility: {(isVisible: boolean): void}): void {
+	registerTab(element: ng.IAugmentedJQuery, header: ITabHeader): void {
 		let index: number = this.findPosition(element);
-		this.tabHeaders[index] = {
-			template: header,
-			setVisibility: setVisibility,
-		};
+		this.tabHeaders[index] = header;
+		header.isVisible = (index === 0);
 	}
 
 	select(tab: ITabHeader): void {
 		_.each(this.tabHeaders, (otherTab: ITabHeader): void => {
-			otherTab.setVisibility(false);
+			otherTab.isVisible = false;
 		});
-		tab.setVisibility(true);
+		tab.isVisible = true;
 	}
 }
 
