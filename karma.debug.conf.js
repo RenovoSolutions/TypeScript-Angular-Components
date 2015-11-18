@@ -1,11 +1,8 @@
 // Karma debug configuration
 
 var karmaSettings = require('gulp-utilities').karma.debug;
-var webpackRawLoader = require('./webpack.raw-loader');
+var config = require('./karma.shared.conf');
 
 module.exports = function (karma) {
-	var karmaConfig = karmaSettings(karma, ['test-bootstrapper.js']);
-	webpackRawLoader(karmaConfig.webpack);
-
-	karma.set(karmaConfig);
+	config(karma, karmaSettings);
 };
