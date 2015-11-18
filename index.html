@@ -19,7 +19,9 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
-				<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
+				Selection: {{test.selection}}
+				<rl-select ng-model="test.selection" options="test.options" option-as="item"
+						   selector="'name'" label="Test selector"></rl-select>
 				<rl-spinner ng-model="test.number"></rl-spinner>
 				<rl-date-time ng-model="test.date"></rl-date-time>
 			</div>
