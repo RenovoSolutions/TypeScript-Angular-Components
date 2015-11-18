@@ -21,6 +21,7 @@ import * as radio from './radio/radio.module';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
 import * as richTextEditor from './richTextEditor/richTextEditor';
+import * as select from './select/select';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
@@ -50,6 +51,7 @@ export {
 	ratingBar,
 	responsiveCardGrid,
 	richTextEditor,
+	select,
 	signaturePad,
 	simpleCardList,
 	spinner,
@@ -82,6 +84,7 @@ angular.module(moduleName, [
 	ratingBar.moduleName,
 	responsiveCardGrid.moduleName,
 	richTextEditor.moduleName,
+	select.moduleName,
 	signaturePad.moduleName,
 	simpleCardList.moduleName,
 	spinner.moduleName,
