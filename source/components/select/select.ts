@@ -1,0 +1,73 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
+
+'use strict';
+
+import * as angular from 'angular';
+import * as _ from 'lodash';
+
+import { services } from 'typescript-angular-utilities';
+import __validation = services.validation;
+
+import {
+	IComponentValidator,
+	IComponentValidatorFactory,
+	factoryName as componentValidatorFactoryName,
+	moduleName as componentValidatorModuleName,
+} from '../../services/componentValidator/componentValidator.service';
+
+export var moduleName: string = 'rl.ui.components.select';
+export var directiveName: string = 'rlSelect';
+export var controllerName: string = 'SelectController';
+
+export class SelectController {
+	// bindings
+	validator: __validation.IValidationHandler;
+	label: string;
+
+	ngModel: angular.INgModelController;
+	selectValidator: IComponentValidator;
+
+	get selection(): any {
+		return this.ngModel.$viewValue;
+	}
+
+	set selection(value: any) {
+		this.ngModel.$setViewValue(value);
+	}
+
+	static $inject: string[] = ['$element', '$scope', componentValidatorFactoryName];
+	constructor($element: angular.IAugmentedJQuery, $scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
+		this.ngModel = $element.controller('ngModel');
+
+		if (!_.isUndefined(this.validator)) {
+			this.selectValidator = componentValidatorFactory.getInstance({
+				ngModel: this.ngModel,
+				$scope: $scope,
+				validators: [this.validator],
+			});
+		}
+	}
+}
+
+export function select(): angular.IDirective {
+	return {
+		restrict: 'E',
+		require: 'ngModel',
+		template: require('./select.html'),
+		controller: controllerName,
+		controllerAs: 'select',
+		scope: {},
+		bindToController: {
+			options: '=',
+			getOptions: '&',
+			optionAs: '@',
+			selector: '=',
+			validator: '=',
+			label: '@',
+		},
+	};
+}
+
+angular.module(moduleName, [componentValidatorModuleName])
+	.directive(directiveName, select)
+	.controller(controllerName, SelectController);
