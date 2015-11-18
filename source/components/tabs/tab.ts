@@ -57,12 +57,12 @@ export function tab(): ng.IDirective {
 					};
 					tabset.registerTab(element, tab.header);
 
-					let contentArea: JQuery = element.find('.tab-body');
+					let contentArea: JQuery = element.find('.content-template');
 					contentArea.append(content);
 
 					scope.hasFooter = (footer.length > 0);
 					if (scope.hasFooter) {
-						let footerArea: JQuery = element.find('.tab-footer');
+						let footerArea: JQuery = element.find('.footer-template');
 						footerArea.append(footer);
 					}
 				},
