@@ -13,6 +13,7 @@ import {
 	tabset,
 	controllerName as tabsetControllerName,
 	TabsetController,
+	ITabHeader,
 } from './tabset';
 
 export {
@@ -24,6 +25,7 @@ export {
 	tabset,
 	tabsetControllerName,
 	TabsetController,
+	ITabHeader,
 }
 
 export let moduleName: string = 'rl.ui.components.tabs';
