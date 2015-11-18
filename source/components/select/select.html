@@ -1,0 +1,4 @@
+<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled" style="width: 300px;">
+	<ui-select-match placeholder="{{select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
+	<ui-select-choices repeat="option in select.options">{{select.getDisplayName(option)}}</ui-select-choices>
+</ui-select>

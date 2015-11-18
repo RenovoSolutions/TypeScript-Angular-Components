@@ -2,6 +2,9 @@
 
 'use strict';
 
+import 'ui-select';
+import 'ui-select/dist/select.css';
+
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
@@ -21,8 +24,12 @@ export var controllerName: string = 'SelectController';
 
 export class SelectController {
 	// bindings
+	options: any[];
+	getOptions: { (search: string): angular.IPromise<any[]> };
+	selector: { (item: any): string } | string;
 	validator: __validation.IValidationHandler;
 	label: string;
+	ngDisabled: boolean;
 
 	ngModel: angular.INgModelController;
 	selectValidator: IComponentValidator;
@@ -47,6 +54,12 @@ export class SelectController {
 			});
 		}
 	}
+
+	getDisplayName(item: any): string {
+		return _.isFunction(this.selector)
+			? (<{ (item: any): string }>this.selector)(item)
+			: item[<string>this.selector];
+	}
 }
 
 export function select(): angular.IDirective {
@@ -64,10 +77,11 @@ export function select(): angular.IDirective {
 			selector: '=',
 			validator: '=',
 			label: '@',
+			ngDisabled: '=',
 		},
 	};
 }
 
-angular.module(moduleName, [componentValidatorModuleName])
+angular.module(moduleName, ['ui.select', componentValidatorModuleName])
 	.directive(directiveName, select)
 	.controller(controllerName, SelectController);
