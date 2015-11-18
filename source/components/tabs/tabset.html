@@ -1,7 +1,7 @@
 <div class="nav-tabs-dropshadow">
 	<ul class="nav nav-tabs">
-		<li ng-repeat="header in tabset.tabHeaders">
-			<span ng-bind-html="header"></span>
+		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)">
+			<span ng-bind-html="tabHeader.template"></span>
 		</li>
 	</ul>
 	<div class="tab-content">

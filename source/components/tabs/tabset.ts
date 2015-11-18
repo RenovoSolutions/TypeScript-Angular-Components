@@ -8,13 +8,28 @@ import * as _ from 'lodash';
 export let directiveName: string = 'rlTabset';
 export let controllerName: string = 'TabsetController';
 
+export interface ITabHeader {
+	template: string;
+	setVisibility(isVisible: boolean): void;
+}
+
 export class TabsetController {
-	tabHeaders: string[] = [];
+	tabHeaders: ITabHeader[] = [];
 	findPosition: { (tabElement: ng.IAugmentedJQuery): number };
 
-	registerTab(element: ng.IAugmentedJQuery, header: string): void {
+	registerTab(element: ng.IAugmentedJQuery, header: string, setVisibility: {(isVisible: boolean): void}): void {
 		let index: number = this.findPosition(element);
-		this.tabHeaders[index] = header;
+		this.tabHeaders[index] = {
+			template: header,
+			setVisibility: setVisibility,
+		};
+	}
+
+	select(tab: ITabHeader): void {
+		_.each(this.tabHeaders, (otherTab: ITabHeader): void => {
+			otherTab.setVisibility(false);
+		});
+		tab.setVisibility(true);
 	}
 }
 

@@ -54,7 +54,7 @@ export function tab(): ng.IDirective {
 					, element: ng.IAugmentedJQuery
 					, attrs: ng.IAttributes
 					, tabset: TabsetController): void {
-					tabset.registerTab(element, header.html());
+					tabset.registerTab(element, header.html(), null);
 
 					let contentArea: JQuery = element.find('.tab-body');
 					contentArea.append(content);
