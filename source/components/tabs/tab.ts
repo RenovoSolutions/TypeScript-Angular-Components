@@ -4,22 +4,28 @@
 
 import * as ng from 'angular';
 
+import { TabsetController } from './tabset';
+
 export let directiveName: string = 'rlTab';
 export let controllerName: string = 'TabController';
 
 export interface ITabScope extends ng.IScope {
-
+	hasFooter: boolean;
 }
 
 export class TabController {
-
+	static $inject: string[] = ['$element'];
+	constructor($element: ng.IAugmentedJQuery) {
+		let tabset: TabsetController = $element.controller('rlTabset');
+		// tabset.registerTab($element);
+	}
 }
 
 export function tab(): ng.IDirective {
 	return {
 		restrict: 'E',
 		transclude: true,
-		require: '^^rlTabs',
+		require: '^^rlTabset',
 		template: require('./tab.html'),
 		controller: controllerName,
 		controllerAs: 'tab',
@@ -28,9 +34,9 @@ export function tab(): ng.IDirective {
 
 		},
 		compile(): ng.IDirectivePrePost {
-			var header: JQuery;
-			var content: JQuery;
-			var footer: JQuery;
+			let header: JQuery;
+			let content: JQuery;
+			let footer: JQuery;
 
 			return {
 				pre(scope: ITabScope
@@ -45,13 +51,17 @@ export function tab(): ng.IDirective {
 					});
 				},
 				post(scope: ITabScope
-					, element: ng.IAugmentedJQuery): void {
-					var contentArea: JQuery = element.find('.tab-body');
+					, element: ng.IAugmentedJQuery
+					, attrs: ng.IAttributes
+					, tabset: TabsetController): void {
+					tabset.registerTab(element, header.html());
+
+					let contentArea: JQuery = element.find('.tab-body');
 					contentArea.append(content);
 
 					scope.hasFooter = (footer.length > 0);
 					if (scope.hasFooter) {
-						var footerArea: JQuery = element.find('.tab-footer');
+						let footerArea: JQuery = element.find('.tab-footer');
 						footerArea.append(footer);
 					}
 				},

@@ -1,0 +1,10 @@
+<div class="nav-tabs-dropshadow">
+	<ul class="nav nav-tabs">
+		<li ng-repeat="header in tabset.tabHeaders">
+			<span ng-bind-html="header"></span>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div ng-transclude></div>
+	</div>
+</div>
