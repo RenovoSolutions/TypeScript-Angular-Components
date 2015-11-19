@@ -31,6 +31,7 @@ import * as textarea from './textarea/textarea';
 import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
+import * as validationGroup from './validationGroup/validationGroup';
 
 export {
 	autosaveDialogFooter,
@@ -62,6 +63,7 @@ export {
 	textbox,
 	typeahead,
 	userRating,
+	validationGroup,
 };
 
 export var moduleName: string = 'rl.ui.components';
@@ -96,4 +98,5 @@ angular.module(moduleName, [
 	textbox.moduleName,
 	typeahead.moduleName,
 	userRating.moduleName,
+	validationGroup.moduleName,
 ]);
