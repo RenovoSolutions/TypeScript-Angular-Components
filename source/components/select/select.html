@@ -3,13 +3,13 @@
 		<label ng-show="select.selection" class="show-hide angular-animate">
 			{{select.label}} <span class="pull-right error-string">{{select.selectValidator.error}}</span>
 		</label>
-		<rl-busy loading="select.loading"></rl-busy>
 		<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
 			<ui-select-match placeholder="{{select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
 			<ui-select-choices repeat="option in select.options">
 				{{select.getDisplayName(option)}}
 			</ui-select-choices>
 		</ui-select>
+		<rl-busy loading="select.loading"></rl-busy>
 	</div>
 	<i class="fa fa-exclamation-triangle text-danger" ng-show="select.ngModel.$error.required"></i>
 </div>
