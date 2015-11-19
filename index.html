@@ -19,6 +19,9 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
+				Selection: {{test.selection}}
+				<rl-select ng-model="test.selection" options="test.options" option-as="item"
+						   selector="'name'" label="Test selector"></rl-select>
 				<rl-tabset>
 					<rl-tab>
 						<rl-tab-header>Header</rl-tab-header>
