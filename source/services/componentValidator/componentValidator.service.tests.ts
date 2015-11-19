@@ -58,7 +58,7 @@ describe('componentValidator', () => {
 		sinon.assert.calledWith(ngModel.$setValidity, 'customValidation', false);
 	});
 
-	it('should always watch for validation errors if ngModel is not specified', (): void => {
+	it('should always watch for validation errors if alwaysValidate is specified', (): void => {
 		let validator: __validation.IValidationHandler = {
 			validate: sinon.spy((): boolean => { return false; }),
 			errorMessage: 'error',
@@ -67,6 +67,7 @@ describe('componentValidator', () => {
 		componentValidator = componentValidatorFactory.getInstance({
 			$scope: $rootScope.$new(),
 			validators: [validator],
+			alwaysValidate: true,
 		});
 
 		$rootScope.$digest();
