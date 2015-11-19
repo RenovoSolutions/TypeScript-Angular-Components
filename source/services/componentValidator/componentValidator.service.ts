@@ -10,9 +10,10 @@ export var moduleName: string = 'rl.ui.services.componentValidator';
 export var factoryName: string = 'componentValidator';
 
 export interface IComponentValidatorOptions {
-	ngModel: angular.INgModelController;
+	ngModel?: angular.INgModelController;
 	$scope: angular.IScope;
 	validators: __validation.IValidationHandler[];
+	setValidity?: { (isValid: boolean): void };
 }
 
 export interface IComponentValidator {
@@ -25,6 +26,7 @@ export class ComponentValidator implements IComponentValidator {
 
 	private $scope: angular.IScope;
 	private ngModel: angular.INgModelController;
+	private setValidity: { (isValid: boolean): void };
 
 	constructor(validationService: __validation.IValidationService
 			, options: IComponentValidatorOptions) {
@@ -40,7 +42,7 @@ export class ComponentValidator implements IComponentValidator {
 
 		let unregisterValidator: Function;
 
-		this.$scope.$watch((): boolean => { return this.ngModel.$dirty; }, (value: boolean): void => {
+		this.$scope.$watch((): boolean => { return _.isUndefined(this.ngModel) || this.ngModel.$dirty; }, (value: boolean): void => {
 			if (value) {
 				unregisterValidator = this.setValidator();
 			} else {
@@ -53,7 +55,11 @@ export class ComponentValidator implements IComponentValidator {
 
 	private setValidator(): Function {
 		return this.$scope.$watch(this.validator.validate.bind(this.validator), (value: boolean): void => {
-			this.ngModel.$setValidity('customValidation', value);
+			if (!_.isUndefined(this.ngModel)) {
+				this.ngModel.$setValidity('customValidation', value);
+			} else if (_.isFunction()) {
+				this.setValidity(value);
+			}
 
 			if (value) {
 				this.error = null;
