@@ -5,5 +5,5 @@
 		</label>
 		<textarea class="form-control" ng-model="textarea.text" name="{{textarea.name}}" rows="{{textarea.rows}}" ng-disabled="textarea.ngDisabled" placeholder="{{textarea.label}}"></textarea>
 	</div>
-	<i class="fa fa-exclamation-triangle text-danger" ng-show="textarea.ngModel.$error.required"></i>
+	<i class="fa fa-exclamation-triangle text-danger validation-icon" ng-show="textarea.ngModel.$error.required"></i>
 </div>
