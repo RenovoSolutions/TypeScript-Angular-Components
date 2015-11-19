@@ -5,7 +5,7 @@
 			<div class="validation-input" ng-class="{ 'has-error': spinner.ngModel.$invalid }">
 				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
 			</div>
-			<i class="fa fa-exclamation-triangle text-danger" ng-show="spinner.ngModel.$error.required"></i>
+			<i class="fa fa-exclamation-triangle text-danger validation-icon" ng-show="spinner.ngModel.$error.required"></i>
 		</div>
 	</template>
 	<template when-selector="true">
