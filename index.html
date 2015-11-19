@@ -13,13 +13,24 @@
 		<script src="/node_modules/angular/angular.js"></script>
 		<script src="/node_modules/lodash/index.js"></script>
 		<script src="/node_modules/moment/moment.js"></script>
-		<script src="/bower_components/typescript-angular-utilities/utilities.js"></script>
+		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
 		<script src="/output/components.js"></script>
 		<script src="/bootstrapper.js"></script>
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
-				<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
+				<rl-tabset>
+					<rl-tab>
+						<rl-tab-header>Header</rl-tab-header>
+						<rl-tab-content>Content</rl-tab-content>
+						<rl-tab-footer>Footer</rl-tab-footer>
+					</rl-tab>
+					<rl-tab>
+						<rl-tab-header>Header 2</rl-tab-header>
+						<rl-tab-content>Content 2</rl-tab-content>
+						<rl-tab-footer>Footer 2</rl-tab-footer>
+					</rl-tab>
+				</rl-tabset>
 				<rl-spinner ng-model="test.number"></rl-spinner>
 				<rl-date-time ng-model="test.date"></rl-date-time>
 			</div>
