@@ -31,13 +31,17 @@ export class ValidationGroupController {
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
 	constructor($scope: IValidationGroupScope, componentValidatorFactory: IComponentValidatorFactory) {
-		if (!_.isUndefined(this.validator)) {
-			this.groupValidator = componentValidatorFactory.getInstance({
-				form: $scope.validationGroupForm,
-				$scope: $scope,
-				validators: [this.validator],
-			});
-		}
+		let unbind = $scope.$watch('validationGroupForm', (form: angular.IFormController): void => {
+			if (!_.isUndefined(this.validator)) {
+				this.groupValidator = componentValidatorFactory.getInstance({
+					form: $scope.validationGroupForm,
+					$scope: $scope,
+					validators: [this.validator],
+					alwaysValidate: true,
+				});
+			}
+			unbind();
+		});
 	}
 }
 
