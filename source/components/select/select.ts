@@ -97,7 +97,6 @@ export function select(): angular.IDirective {
 		bindToController: {
 			options: '=',
 			getOptions: '&',
-			optionAs: '@',
 			selector: '=',
 			validator: '=',
 			label: '@',
