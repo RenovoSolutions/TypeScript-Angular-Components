@@ -208,35 +208,25 @@ export function card(): angular.IDirective {
 			selectable: '=',
 			selectionChanged: '&',
 		},
-		compile(): angular.IDirectivePrePost {
-			var content: JQuery;
-			var footer: JQuery;
+		link(scope: ICardScope
+			, element: angular.IAugmentedJQuery
+			, attrs: angular.IAttributes
+			, rlCardContainer: CardContainerController): void {
+			rlCardContainer.makeCard(scope, (clone: JQuery): void => {
+				let content: JQuery = clone.filter('rl-card-content');
+				let footer: JQuery = clone.filter('rl-card-footer');
 
-			return {
-				pre(scope: ICardScope
-					, element: angular.IAugmentedJQuery
-					, attrs: angular.IAttributes
-					, rlCardContainer: CardContainerController): void {
-					scope.__rlCardContainer = rlCardContainer;
-					rlCardContainer.makeCard(scope, (clone: JQuery): void => {
-						content = clone.filter('rl-card-content');
-						footer = clone.filter('rl-card-footer');
-					});
-				},
-				post(scope: ICardScope
-					, element: angular.IAugmentedJQuery): void {
-					var contentArea: JQuery = element.find('.content-template');
-					contentArea.append(content);
+				let contentArea: JQuery = element.find('.content-template');
+				contentArea.append(content);
 
-					var hasBody: boolean = content.length > 0;
-					var hasFooter: boolean = (footer.length > 0);
-					if (hasFooter) {
-						var footerArea: JQuery = element.find('.footer-template');
-						footerArea.append(footer);
-					}
-					scope.__initContents(hasBody, hasFooter);
-				},
-			};
+				let hasBody: boolean = content.length > 0;
+				let hasFooter: boolean = (footer.length > 0);
+				if (hasFooter) {
+					let footerArea: JQuery = element.find('.footer-template');
+					footerArea.append(footer);
+				}
+				scope.__initContents(hasBody, hasFooter);
+			});
 		},
 	};
 }
