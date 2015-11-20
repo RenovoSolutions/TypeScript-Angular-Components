@@ -1,5 +1,7 @@
 <div ng-form="validationGroupForm">
-	<i class="fa fa-exclamation-triangle text-danger validation-icon" ng-show="validationGroupForm.$error.customValidation"></i>
-	<label class="error-string">{{group.groupValidator.error}}</label>
+	<div ng-show="validationGroupForm.$error.customValidation">
+		<i class="fa fa-exclamation-triangle text-danger validation-icon"></i>
+		<label class="error-string">{{group.groupValidator.error}}</label>
+	</div>
 	<div ng-transclude></div>
 </div>
