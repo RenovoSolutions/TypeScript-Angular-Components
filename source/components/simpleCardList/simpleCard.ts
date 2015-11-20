@@ -59,7 +59,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 			this.listController = this.noList();
 		}
 
-		var behavior: ISimpleCardBehavior = {
+		let behavior: ISimpleCardBehavior = {
 			autosave: this.autosave.bind(this),
 			close: this.close,
 			setAlwaysOpen: (value: boolean): void => {
@@ -105,7 +105,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 	private autosave(): boolean {
 		return this.parentChild.triggerChildBehavior(this.autosaveLink, (behavior: IAutosaveBehavior): boolean => {
-			var canClose: boolean = behavior.autosave();
+			let canClose: boolean = behavior.autosave();
 
 			if (canClose) {
 				this.showContent = false;
@@ -167,38 +167,28 @@ export function simpleCard(): angular.IDirective {
 			validate: '&',
 			save: '&',
 		},
-		compile(): angular.IDirectivePrePost {
-			var header: JQuery;
-			var content: JQuery;
-			var footer: JQuery;
+		link(scope: ISimpleCardScope
+			, element: angular.IAugmentedJQuery
+			, attrs: angular.IAttributes
+			, controller: any
+			, transclude: angular.ITranscludeFunction): void {
+			transclude((clone: JQuery): void => {
+				let header: JQuery = clone.filter('rl-card-header');
+				let content: JQuery = clone.filter('rl-card-content');
+				let footer: JQuery = clone.filter('rl-card-footer');
 
-			return {
-				pre(scope: ISimpleCardScope
-					, element: angular.IAugmentedJQuery
-					, attrs: angular.IAttributes
-					, controller: any
-					, transclude: angular.ITranscludeFunction): void {
-					transclude((clone: JQuery): void => {
-						header = clone.filter('rl-card-header');
-						content = clone.filter('rl-card-content');
-						footer = clone.filter('rl-card-footer');
-					});
-				},
-				post(scope: ISimpleCardScope
-					, element: angular.IAugmentedJQuery): void {
-					var headerArea: JQuery = element.find('.header-template');
-					headerArea.append(header);
+				let headerArea: JQuery = element.find('.header-template');
+				headerArea.append(header);
 
-					var contentArea: JQuery = element.find('.content-template');
-					contentArea.append(content);
+				let contentArea: JQuery = element.find('.content-template');
+				contentArea.append(content);
 
-					scope.hasFooter = (footer.length > 0);
-					if (scope.hasFooter) {
-						var footerArea: JQuery = element.find('.footer-template');
-						footerArea.append(footer);
-					}
-				},
-			};
+				scope.hasFooter = (footer.length > 0);
+				if (scope.hasFooter) {
+					let footerArea: JQuery = element.find('.footer-template');
+					footerArea.append(footer);
+				}
+			});
 		},
 	};
 }
