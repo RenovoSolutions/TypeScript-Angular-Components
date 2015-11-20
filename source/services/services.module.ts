@@ -9,6 +9,7 @@ import * as contentProvider from './contentProvider/contentProvider.service';
 import * as dialog from './dialog/dialog.service';
 import * as documentWrapper from './documentWrapper/documentWrapper.service';
 import * as jquery from './jquery/jquery.service';
+import * as templateLoader from './templateLoader/templateLoader.service';
 import * as windowWrapper from './windowWrapper/windowWrapper.service';
 
 export {
@@ -19,6 +20,7 @@ export {
 	dialog,
 	documentWrapper,
 	jquery,
+	templateLoader,
 	windowWrapper,
 };
 
@@ -32,5 +34,6 @@ angular.module(moduleName, [
 	dialog.moduleName,
 	documentWrapper.moduleName,
 	jquery.moduleName,
+	templateLoader.moduleName,
 	windowWrapper.moduleName,
 ]);
