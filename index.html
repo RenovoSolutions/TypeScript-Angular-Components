@@ -25,7 +25,11 @@
 				<rl-tabset>
 					<rl-tab>
 						<rl-tab-header>Header</rl-tab-header>
-						<rl-tab-content>Content</rl-tab-content>
+						<rl-tab-content>
+							<rl-validation-group validator="test.validator">
+								<rl-textbox ng-model="test.text"></rl-textbox>
+							</rl-validation-group>
+						</rl-tab-content>
 						<rl-tab-footer>Footer</rl-tab-footer>
 					</rl-tab>
 					<rl-tab>

@@ -12,5 +12,11 @@
 			{ name: 'item4' },
 			{ name: 'item5' },
 		];
+		self.validator = {
+			validate: function () {
+				return self.text === 'valid';
+			},
+			errorMessage: 'String must be valid',
+		};
 	}
 }());

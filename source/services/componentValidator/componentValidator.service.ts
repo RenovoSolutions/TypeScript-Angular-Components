@@ -74,7 +74,7 @@ export class ComponentValidator implements IComponentValidator {
 			if (!_.isUndefined(this.ngModel)) {
 				this.ngModel.$setValidity('customValidation', value);
 			} else if (!_.isUndefined(this.form)) {
-				this.form.$setValidity('customValidation', value, this.ngModel);
+				this.form.$setValidity('customValidation', value, <any>'group');
 			} else if (_.isFunction(this.setValidity)) {
 				this.setValidity(value);
 			}
