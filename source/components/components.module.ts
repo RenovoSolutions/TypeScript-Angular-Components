@@ -19,7 +19,6 @@ import * as messageLog from './messageLog/messageLog.module';
 import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as radio from './radio/radio.module';
 import * as ratingBar from './ratingBar/ratingBar';
-import * as responsiveCardGrid from './responsiveCardGrid/responsiveCardGrid.module';
 import * as richTextEditor from './richTextEditor/richTextEditor';
 import * as select from './select/select';
 import * as signaturePad from './signaturePad/signaturePad';
@@ -51,7 +50,6 @@ export {
 	multiStepIndicator,
 	radio,
 	ratingBar,
-	responsiveCardGrid,
 	richTextEditor,
 	select,
 	signaturePad,
@@ -86,7 +84,6 @@ angular.module(moduleName, [
 	multiStepIndicator.moduleName,
 	radio.moduleName,
 	ratingBar.moduleName,
-	responsiveCardGrid.moduleName,
 	richTextEditor.moduleName,
 	select.moduleName,
 	signaturePad.moduleName,

@@ -35,45 +35,33 @@ export function tab(): ng.IDirective {
 		controllerAs: 'tab',
 		scope: {},
 		bindToController: {},
-		compile(): ng.IDirectivePrePost {
-			let header: JQuery;
-			let content: JQuery;
-			let footer: JQuery;
+		link(scope: ITabScope
+			, element: ng.IAugmentedJQuery
+			, attrs: ng.IAttributes
+			, controllers: any[]
+			, transclude: ng.ITranscludeFunction): void {
+			transclude((clone: JQuery): void => {
+				let header: JQuery = clone.filter('rl-tab-header');
+				let content: JQuery = clone.filter('rl-tab-content');
+				let footer: JQuery = clone.filter('rl-tab-footer');
 
-			return {
-				pre(scope: ITabScope
-					, element: ng.IAugmentedJQuery
-					, attrs: ng.IAttributes
-					, controller: any
-					, transclude: ng.ITranscludeFunction): void {
-					transclude((clone: JQuery): void => {
-						header = clone.filter('rl-tab-header');
-						content = clone.filter('rl-tab-content');
-						footer = clone.filter('rl-tab-footer');
-					});
-				},
-				post(scope: ITabScope
-					, element: ng.IAugmentedJQuery
-					, attrs: ng.IAttributes
-					, controllers: any[]): void {
-					let tabset: TabsetController = controllers[0];
-					let tab: TabController = controllers[1];
-					tab.header = {
-						template: header.html(),
-						isValid: true,
-					};
-					tabset.registerTab(element, tab.header);
+				let tabset: TabsetController = controllers[0];
+				let tab: TabController = controllers[1];
+				tab.header = {
+					template: header.html(),
+					isValid: true,
+				};
+				tabset.registerTab(element, tab.header);
 
-					let contentArea: JQuery = element.find('.content-template');
-					contentArea.append(content);
+				let contentArea: JQuery = element.find('.content-template');
+				contentArea.append(content);
 
-					scope.hasFooter = (footer.length > 0);
-					if (scope.hasFooter) {
-						let footerArea: JQuery = element.find('.footer-template');
-						footerArea.append(footer);
-					}
-				},
-			};
+				scope.hasFooter = (footer.length > 0);
+				if (scope.hasFooter) {
+					let footerArea: JQuery = element.find('.footer-template');
+					footerArea.append(footer);
+				}
+			});
 		},
 	};
 }
