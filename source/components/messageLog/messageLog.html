@@ -1,6 +1,6 @@
 <div>
 	<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
-	<div class="content-group" ng-repeat="entry in log.messages">
+	<div class="content-group" ng-repeat="entry in log.messages" rl-alias="entry as {{log.messageAs}}">
 		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
 			<template default>
 				<div ng-bind-html="entry.message"></div>

@@ -26,6 +26,7 @@ export interface IMessageLogBindings {
 	pageSize: number;
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
+	messageAs: string;
 
 	selector: { (IMessage): any } | string;
 }
@@ -35,6 +36,7 @@ export class MessageLogController implements IMessageLogBindings {
 	pageSize: number;
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
+	messageAs: string;
 	selector: { (IMessage): any } | string;
 
 	messages: IMessage[];
@@ -126,6 +128,7 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			selector: '=',
 			pageSize: '=',
 			messageLogBinding: '=messageLog',
+			messageAs: "@",
 		},
 		link: (scope: angular.IScope,
 			   element: angular.IAugmentedJQuery,
