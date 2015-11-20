@@ -10,11 +10,19 @@ export let directiveName: string = 'rlTab';
 export let controllerName: string = 'TabController';
 
 export interface ITabScope extends ng.IScope {
+	tabForm: ng.IFormController;
 	hasFooter: boolean;
 }
 
 export class TabController {
 	header: ITabHeader;
+
+	static $inject: string[] = ['$scope'];
+	constructor($scope: ng.IScope) {
+		$scope.$watch('tabForm.$valid', (isValid: boolean): void => {
+			this.header.isValid = isValid != null ? isValid : true;
+		});
+	}
 }
 
 export function tab(): ng.IDirective {
@@ -26,9 +34,7 @@ export function tab(): ng.IDirective {
 		controller: controllerName,
 		controllerAs: 'tab',
 		scope: {},
-		bindToController: {
-
-		},
+		bindToController: {},
 		compile(): ng.IDirectivePrePost {
 			let header: JQuery;
 			let content: JQuery;
@@ -54,6 +60,7 @@ export function tab(): ng.IDirective {
 					let tab: TabController = controllers[1];
 					tab.header = {
 						template: header.html(),
+						isValid: true,
 					};
 					tabset.registerTab(element, tab.header);
 
