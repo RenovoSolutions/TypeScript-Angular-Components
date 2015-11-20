@@ -5,6 +5,7 @@ import * as contentProvider from './contentProvider/contentProvider.service';
 import * as dialog from './dialog/dialog.service';
 import * as documentWrapper from './documentWrapper/documentWrapper.service';
 import * as jquery from './jquery/jquery.service';
+import * as templateLoader from './templateLoader/templateLoader.service';
 import * as windowWrapper from './windowWrapper/windowWrapper.service';
-export { autosaveDialog, breakpoints, componentValidator, contentProvider, dialog, documentWrapper, jquery, windowWrapper };
+export { autosaveDialog, breakpoints, componentValidator, contentProvider, dialog, documentWrapper, jquery, templateLoader, windowWrapper };
 export declare var moduleName: string;

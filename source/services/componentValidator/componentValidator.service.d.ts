@@ -4,9 +4,14 @@ import __validation = services.validation;
 export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IComponentValidatorOptions {
-    ngModel: angular.INgModelController;
+    ngModel?: angular.INgModelController;
+    form?: angular.IFormController;
     $scope: angular.IScope;
     validators: __validation.IValidationHandler[];
+    setValidity?: {
+        (isValid: boolean): void;
+    };
+    alwaysValidate?: boolean;
 }
 export interface IComponentValidator {
     error: string;
@@ -16,7 +21,10 @@ export declare class ComponentValidator implements IComponentValidator {
     error: string;
     private $scope;
     private ngModel;
+    private form;
+    private setValidity;
     constructor(validationService: __validation.IValidationService, options: IComponentValidatorOptions);
+    private isDirty();
     private setValidator();
 }
 export interface IComponentValidatorFactory {

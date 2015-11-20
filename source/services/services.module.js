@@ -14,6 +14,8 @@ var documentWrapper = require('./documentWrapper/documentWrapper.service');
 exports.documentWrapper = documentWrapper;
 var jquery = require('./jquery/jquery.service');
 exports.jquery = jquery;
+var templateLoader = require('./templateLoader/templateLoader.service');
+exports.templateLoader = templateLoader;
 var windowWrapper = require('./windowWrapper/windowWrapper.service');
 exports.windowWrapper = windowWrapper;
 exports.moduleName = 'rl.ui.services';
@@ -25,6 +27,7 @@ angular.module(exports.moduleName, [
     dialog.moduleName,
     documentWrapper.moduleName,
     jquery.moduleName,
+    templateLoader.moduleName,
     windowWrapper.moduleName,
 ]);
 //# sourceMappingURL=services.module.js.map

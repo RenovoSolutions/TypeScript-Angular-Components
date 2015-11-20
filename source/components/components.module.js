@@ -38,6 +38,8 @@ var responsiveCardGrid = require('./responsiveCardGrid/responsiveCardGrid.module
 exports.responsiveCardGrid = responsiveCardGrid;
 var richTextEditor = require('./richTextEditor/richTextEditor');
 exports.richTextEditor = richTextEditor;
+var select = require('./select/select');
+exports.select = select;
 var signaturePad = require('./signaturePad/signaturePad');
 exports.signaturePad = signaturePad;
 var simpleCardList = require('./simpleCardList/simpleCardList.module');
@@ -46,6 +48,8 @@ var spinner = require('./spinner/spinner');
 exports.spinner = spinner;
 var stringWithWatermark = require('./stringWithWatermark/stringWithWatermark');
 exports.stringWithWatermark = stringWithWatermark;
+var tabs = require('./tabs/tabs.module');
+exports.tabs = tabs;
 var textarea = require('./textarea/textarea');
 exports.textarea = textarea;
 var textbox = require('./textbox/textbox');
@@ -54,6 +58,8 @@ var typeahead = require('./typeahead/typeahead');
 exports.typeahead = typeahead;
 var userRating = require('./userRating/userRating');
 exports.userRating = userRating;
+var validationGroup = require('./validationGroup/validationGroup');
+exports.validationGroup = validationGroup;
 exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
     autosaveDialogFooter.moduleName,
@@ -75,13 +81,16 @@ angular.module(exports.moduleName, [
     ratingBar.moduleName,
     responsiveCardGrid.moduleName,
     richTextEditor.moduleName,
+    select.moduleName,
     signaturePad.moduleName,
     simpleCardList.moduleName,
     spinner.moduleName,
     stringWithWatermark.moduleName,
+    tabs.moduleName,
     textarea.moduleName,
     textbox.moduleName,
     typeahead.moduleName,
     userRating.moduleName,
+    validationGroup.moduleName,
 ]);
 //# sourceMappingURL=components.module.js.map

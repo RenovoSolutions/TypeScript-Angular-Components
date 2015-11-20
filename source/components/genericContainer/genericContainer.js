@@ -3,6 +3,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var jquery_service_1 = require('../../services/jquery/jquery.service');
+var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
 exports.moduleName = 'rl.ui.components.genericContainer';
 exports.directiveName = 'rlGenericContainer';
 exports.controllerName = 'GenericContainerController';
@@ -46,8 +47,14 @@ var GenericContainerController = (function () {
     return GenericContainerController;
 })();
 exports.GenericContainerController = GenericContainerController;
-genericContainer.$inject = ['$compile', '$interpolate', jquery_service_1.serviceName, __object.serviceName];
-function genericContainer($compile, $interpolate, jquery, object) {
+genericContainer.$inject = [
+    '$compile',
+    '$interpolate',
+    jquery_service_1.serviceName,
+    templateLoader_service_1.serviceName,
+    __object.serviceName,
+];
+function genericContainer($compile, $interpolate, jquery, templateLoader, object) {
     'use strict';
     return {
         restrict: 'E',
@@ -64,25 +71,10 @@ function genericContainer($compile, $interpolate, jquery, object) {
         link: function (scope, element, attributes, controller, transclude) {
             initDefaults(controller);
             var container = element.find('#container');
-            var templateScope;
-            // Load templates from the DOM
-            transclude(function (clone, transclusionScope) {
-                var templates = clone.filter('template');
-                templates.each(function (index, template) {
-                    var templateElement = angular.element(template);
-                    var templateHtml = templateElement.html();
-                    var triggerAttribute = templateElement.attr('when-selector');
-                    if (!object.isNullOrWhitespace(triggerAttribute)) {
-                        var trigger = $interpolate(triggerAttribute)(transclusionScope);
-                        controller.templates[trigger] = templateHtml;
-                    }
-                    var isDefault = templateElement.attr('default');
-                    if (!_.isUndefined(isDefault) && isDefault.toLowerCase() !== 'false') {
-                        controller.default = templateHtml;
-                    }
-                });
-                templateScope = transclusionScope;
-            });
+            var templateResult = templateLoader.loadTemplates(transclude);
+            controller.templates = templateResult.templates;
+            controller.default = templateResult.default;
+            var templateScope = templateResult.transclusionScope;
             if (!controller.default) {
                 controller.default = {
                     template: '<div></div>',
@@ -101,7 +93,7 @@ function genericContainer($compile, $interpolate, jquery, object) {
         }
     };
 }
-angular.module(exports.moduleName, [jquery_service_1.moduleName, __object.moduleName])
+angular.module(exports.moduleName, [jquery_service_1.moduleName, __object.moduleName, templateLoader_service_1.moduleName])
     .directive(exports.directiveName, genericContainer)
     .controller(exports.controllerName, GenericContainerController);
 //# sourceMappingURL=genericContainer.js.map

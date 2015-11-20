@@ -1,6 +1,10 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __object = typescript_angular_utilities_1.services.object;
+var jquery_service_1 = require('../../services/jquery/jquery.service');
 var messageLog_service_1 = require('./messageLog.service');
+var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
 exports.directiveName = 'rlMessageLog';
 exports.controllerName = 'MessageLogController';
 var MessageLogController = (function () {
@@ -31,6 +35,14 @@ var MessageLogController = (function () {
         });
         this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
     }
+    MessageLogController.prototype.getEntrySelector = function (entry) {
+        if (_.isString(this.selector)) {
+            return entry[this.selector];
+        }
+        else if (_.isFunction(this.selector)) {
+            return this.selector(entry);
+        }
+    };
     MessageLogController.prototype.getOlder = function () {
         return this.messageLog.getNextPage();
     };
@@ -41,19 +53,31 @@ var MessageLogController = (function () {
     return MessageLogController;
 })();
 exports.MessageLogController = MessageLogController;
-function messageLog() {
+messageLog.$inject = [
+    '$interpolate',
+    jquery_service_1.serviceName,
+    templateLoader_service_1.serviceName,
+    __object.serviceName,
+];
+function messageLog($interpolate, jquery, templateLoader, object) {
     'use strict';
     return {
         restrict: 'E',
         template: require('./messageLog.html'),
+        transclude: true,
         controller: exports.controllerName,
         controllerAs: 'log',
         scope: {},
         bindToController: {
             service: '=',
+            selector: '=',
             pageSize: '=',
             messageLogBinding: '=messageLog',
+            messageAs: "@",
         },
+        link: function (scope, element, attributes, controller, transclude) {
+            controller.templates = templateLoader.loadTemplates(transclude).templates;
+        }
     };
 }
 exports.messageLog = messageLog;

@@ -14,13 +14,16 @@ export interface IStep {
     count?: {
         (): number;
     };
-    isCompleted?: boolean;
+    isCompleted?: boolean | {
+        (): boolean;
+    };
     isCurrent?: boolean;
 }
 export interface IConfiguredStep extends IStep {
     inactive: boolean;
     loading: boolean;
     hasCount: boolean;
+    getCompleted(): boolean;
 }
 export declare class MultiStepIndicatorController {
     private $state;
@@ -34,4 +37,6 @@ export declare class MultiStepIndicatorController {
     private configureSteps();
     private redirectToState(step);
     private clearCurrentState();
+    private getIsCompleted(step);
+    private setIsCompleted(step, isCompleted);
 }
