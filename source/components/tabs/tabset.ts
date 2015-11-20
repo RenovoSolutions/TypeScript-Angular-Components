@@ -11,6 +11,7 @@ export let controllerName: string = 'TabsetController';
 export interface ITabHeader {
 	template: string;
 	isVisible?: boolean;
+	isValid?: boolean;
 }
 
 export class TabsetController {
