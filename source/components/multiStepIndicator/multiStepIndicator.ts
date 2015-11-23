@@ -20,6 +20,7 @@ export interface IStep {
 	stateName?: string;
 	count?: {(): number};
 	isCompleted?: boolean | {(): boolean};
+	isValid?: boolean | {(): boolean};
 	isCurrent?: boolean;
 }
 
@@ -28,6 +29,7 @@ export interface IConfiguredStep extends IStep {
 	loading: boolean;
 	hasCount: boolean;
 	getCompleted(): boolean;
+	getValid(): boolean;
 }
 
 export class MultiStepIndicatorController {
@@ -59,6 +61,7 @@ export class MultiStepIndicatorController {
 		_.each(this.steps, (step: IConfiguredStep): void => {
 			step.hasCount = _.isFunction(step.count);
 			step.getCompleted = (): boolean => { return this.getIsCompleted(step); };
+			step.getValid = (): boolean => { return this.getIsValid(step); };
 
 			if (!_.isFunction(step.onClick)) {
 				if (this.object.isNullOrWhitespace(step.stateName)) {
@@ -96,6 +99,16 @@ export class MultiStepIndicatorController {
 	private setIsCompleted(step: IConfiguredStep, isCompleted: boolean): void {
 		if (!_.isFunction(step.isCompleted)) {
 			step.isCompleted = isCompleted;
+		}
+	}
+
+	private getIsValid(step: IConfiguredStep): boolean {
+		if (_.isFunction(step.isValid)) {
+			return (<{(): boolean}>step.isValid)();
+		} else if (!_.isUndefined(step.isValid != null)) {
+			return <boolean>step.isValid;
+		} else {
+			return true;
 		}
 	}
 }
