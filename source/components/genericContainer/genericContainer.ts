@@ -114,7 +114,7 @@ function genericContainer($compile: angular.ICompileService,
 			let container: angular.IAugmentedJQuery = element.find('#container');
 			let templateResult = templateLoader.loadTemplates(transclude);
 
-			controller.templates = templateResult.templates;
+			controller.templates = _.extend(controller.templates, templateResult.templates);
 			controller.default = templateResult.default;
 			let templateScope = templateResult.transclusionScope;
 
