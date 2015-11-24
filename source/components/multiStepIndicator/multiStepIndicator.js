@@ -32,6 +32,7 @@ var MultiStepIndicatorController = (function () {
         _.each(this.steps, function (step) {
             step.hasCount = _.isFunction(step.count);
             step.getCompleted = function () { return _this.getIsCompleted(step); };
+            step.getValid = function () { return _this.getIsValid(step); };
             if (!_.isFunction(step.onClick)) {
                 if (_this.object.isNullOrWhitespace(step.stateName)) {
                     step.inactive = true;
@@ -65,6 +66,17 @@ var MultiStepIndicatorController = (function () {
     MultiStepIndicatorController.prototype.setIsCompleted = function (step, isCompleted) {
         if (!_.isFunction(step.isCompleted)) {
             step.isCompleted = isCompleted;
+        }
+    };
+    MultiStepIndicatorController.prototype.getIsValid = function (step) {
+        if (_.isFunction(step.isValid)) {
+            return step.isValid();
+        }
+        else if (!_.isUndefined(step.isValid != null)) {
+            return step.isValid;
+        }
+        else {
+            return true;
         }
     };
     MultiStepIndicatorController.$inject = ['$state', '$q', __object.serviceName];

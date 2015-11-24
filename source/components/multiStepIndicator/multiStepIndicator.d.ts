@@ -17,6 +17,9 @@ export interface IStep {
     isCompleted?: boolean | {
         (): boolean;
     };
+    isValid?: boolean | {
+        (): boolean;
+    };
     isCurrent?: boolean;
 }
 export interface IConfiguredStep extends IStep {
@@ -24,6 +27,7 @@ export interface IConfiguredStep extends IStep {
     loading: boolean;
     hasCount: boolean;
     getCompleted(): boolean;
+    getValid(): boolean;
 }
 export declare class MultiStepIndicatorController {
     private $state;
@@ -39,4 +43,5 @@ export declare class MultiStepIndicatorController {
     private clearCurrentState();
     private getIsCompleted(step);
     private setIsCompleted(step, isCompleted);
+    private getIsValid(step);
 }

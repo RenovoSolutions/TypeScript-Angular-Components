@@ -98,30 +98,21 @@ function simpleCard() {
             validate: '&',
             save: '&',
         },
-        compile: function () {
-            var header;
-            var content;
-            var footer;
-            return {
-                pre: function (scope, element, attrs, controller, transclude) {
-                    transclude(function (clone) {
-                        header = clone.filter('rl-card-header');
-                        content = clone.filter('rl-card-content');
-                        footer = clone.filter('rl-card-footer');
-                    });
-                },
-                post: function (scope, element) {
-                    var headerArea = element.find('.header-template');
-                    headerArea.append(header);
-                    var contentArea = element.find('.content-template');
-                    contentArea.append(content);
-                    scope.hasFooter = (footer.length > 0);
-                    if (scope.hasFooter) {
-                        var footerArea = element.find('.footer-template');
-                        footerArea.append(footer);
-                    }
-                },
-            };
+        link: function (scope, element, attrs, controller, transclude) {
+            transclude(function (clone) {
+                var header = clone.filter('rl-card-header');
+                var content = clone.filter('rl-card-content');
+                var footer = clone.filter('rl-card-footer');
+                var headerArea = element.find('.header-template');
+                headerArea.append(header);
+                var contentArea = element.find('.content-template');
+                contentArea.append(content);
+                scope.hasFooter = (footer.length > 0);
+                if (scope.hasFooter) {
+                    var footerArea = element.find('.footer-template');
+                    footerArea.append(footer);
+                }
+            });
         },
     };
 }

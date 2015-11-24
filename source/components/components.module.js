@@ -34,8 +34,6 @@ var radio = require('./radio/radio.module');
 exports.radio = radio;
 var ratingBar = require('./ratingBar/ratingBar');
 exports.ratingBar = ratingBar;
-var responsiveCardGrid = require('./responsiveCardGrid/responsiveCardGrid.module');
-exports.responsiveCardGrid = responsiveCardGrid;
 var richTextEditor = require('./richTextEditor/richTextEditor');
 exports.richTextEditor = richTextEditor;
 var select = require('./select/select');
@@ -79,7 +77,6 @@ angular.module(exports.moduleName, [
     multiStepIndicator.moduleName,
     radio.moduleName,
     ratingBar.moduleName,
-    responsiveCardGrid.moduleName,
     richTextEditor.moduleName,
     select.moduleName,
     signaturePad.moduleName,

@@ -135,29 +135,20 @@ function card() {
             selectable: '=',
             selectionChanged: '&',
         },
-        compile: function () {
-            var content;
-            var footer;
-            return {
-                pre: function (scope, element, attrs, rlCardContainer) {
-                    scope.__rlCardContainer = rlCardContainer;
-                    rlCardContainer.makeCard(scope, function (clone) {
-                        content = clone.filter('rl-card-content');
-                        footer = clone.filter('rl-card-footer');
-                    });
-                },
-                post: function (scope, element) {
-                    var contentArea = element.find('.content-template');
-                    contentArea.append(content);
-                    var hasBody = content.length > 0;
-                    var hasFooter = (footer.length > 0);
-                    if (hasFooter) {
-                        var footerArea = element.find('.footer-template');
-                        footerArea.append(footer);
-                    }
-                    scope.__initContents(hasBody, hasFooter);
-                },
-            };
+        link: function (scope, element, attrs, rlCardContainer) {
+            rlCardContainer.makeCard(scope, function (clone) {
+                var content = clone.filter('rl-card-content');
+                var footer = clone.filter('rl-card-footer');
+                var contentArea = element.find('.content-template');
+                contentArea.append(content);
+                var hasBody = content.length > 0;
+                var hasFooter = (footer.length > 0);
+                if (hasFooter) {
+                    var footerArea = element.find('.footer-template');
+                    footerArea.append(footer);
+                }
+                scope.__initContents(hasBody, hasFooter);
+            });
         },
     };
 }
