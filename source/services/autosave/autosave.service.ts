@@ -8,6 +8,9 @@ import {
 	serviceName as autosaveActionServiceName,
 	IAutosaveActionService,
 } from '../autosaveAction/autosaveAction.service';
+import * as triggers from './triggers/triggers';
+
+export { triggers };
 
 export var moduleName: string = 'rl.utilities.services.autosave';
 export var factoryName: string = 'autosaveFactory';
@@ -15,7 +18,6 @@ export var factoryName: string = 'autosaveFactory';
 export interface IAutosaveService {
 	autosave(...data: any[]): boolean;
 	contentForm: angular.IFormController;
-	setChangeListener?: { (callback: {(): void}): IClearChangeListener };
 }
 
 export interface IAutosaveServiceOptions {
@@ -37,15 +39,11 @@ export interface IClearChangeListener {
 
 class AutosaveService implements IAutosaveService {
 	private hasValidator: boolean;
-	private debounceDuration: number = 1000;
-	private timer: angular.IPromise<void>;
-	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
-	clearChangeListener: IClearChangeListener;
 	contentForm: angular.IFormController;
 	save: { (...data: any[]): angular.IPromise<void> };
 	validate: { (): boolean };
 
-	constructor($rootScope: angular.IRootScopeService
+	constructor(private $rootScope: angular.IRootScopeService
 			, private $timeout: angular.ITimeoutService
 			, private autosaveService: IAutosaveActionService
 			, options: IAutosaveServiceOptions) {
@@ -55,18 +53,8 @@ class AutosaveService implements IAutosaveService {
 		this.save = options.save;
 		this.validate = options.validate;
 
-		this.initChangeListeners(options);
-
-		$rootScope.$watch((): boolean => { return this.contentForm.$dirty; }, (value: boolean) => {
-			if (value) {
-				this.setTimer();
-
-				this.clearChangeListener = this.setChangeListener((): void => {
-					$timeout.cancel(this.timer);
-					this.setTimer();
-				});
-			}
-		});
+		this.configureTriggers(options);
+		triggers.setTriggers(options.triggers, this.autosave);
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
@@ -99,15 +87,14 @@ class AutosaveService implements IAutosaveService {
 		}
 	}
 
-	private initTriggers(triggers: string): void {
-		let triggerList: string[] = triggers.split(' ');
-	}
-
-	private setTimer(): void {
-		this.timer = this.$timeout((): void => {
-			this.clearChangeListener();
-			this.autosave();
-		}, this.debounceDuration);
+	private configureTriggers(options: IAutosaveServiceOptions): void {
+		triggers.triggers.onChange.configure({
+			$rootScope: this.$rootScope,
+			$timeout: this.$timeout,
+			form: options.contentForm,
+			setChangeListener: options.setChangeListener,
+			debounceDuration: options.debounceDuration,
+		});
 	}
 
 	private nullForm(): angular.IFormController {
@@ -118,20 +105,6 @@ class AutosaveService implements IAutosaveService {
 				return;
 			},
 		};
-	}
-
-	private initChangeListeners(options: IAutosaveServiceOptions): void {
-		this.setChangeListener = options.setChangeListener || this.nullSetListener;
-		this.clearChangeListener = this.nullClearListener;
-	}
-
-	private nullSetListener(): IClearChangeListener {
-		console.log('No change listener available');
-		return this.nullClearListener;
-	}
-
-	private nullClearListener(): void {
-		console.log('No change listener register');
 	}
 }
 

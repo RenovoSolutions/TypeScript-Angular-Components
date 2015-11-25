@@ -31,7 +31,6 @@ describe('autosave', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
-	let $timeout: ng.ITimeoutService;
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -55,7 +54,6 @@ describe('autosave', () => {
 		autosaveFactory = services[factoryName];
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
-		$timeout = services.$timeout;
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 	});
@@ -134,53 +132,6 @@ describe('autosave', () => {
 		let close: boolean = autosave.autosave();
 
 		expect(close).to.be.true;
-
-		sinon.assert.calledOnce(saveSpy);
-	});
-
-	it('should autosave when the form becomes dirty after the debounce duration', (): void => {
-		autosave = autosaveFactory.getInstance({
-			save: saveSpy,
-			contentForm: <any>baseContentForm,
-			debounceDuration: 1000,
-		});
-
-		expect(baseContentForm.$dirty).to.be.true;
-
-		$rootScope.$digest();
-
-		$timeout.flush(1000);
-
-		sinon.assert.calledOnce(saveSpy);
-	});
-
-	it('should reset the debounce timer on form changes', (): void => {
-		let triggerChange: { (): void };
-		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {
-			triggerChange = callback;
-			return sinon.spy();
-		};
-
-		autosave = autosaveFactory.getInstance({
-			save: saveSpy,
-			contentForm: <any>baseContentForm,
-			debounceDuration: 1000,
-			setChangeListener: changeListener,
-		});
-
-		expect(baseContentForm.$dirty).to.be.true;
-
-		$rootScope.$digest();
-
-		$timeout.flush(500);
-
-		triggerChange();
-
-		$timeout.flush(500);
-
-		sinon.assert.notCalled(saveSpy);
-
-		$timeout.flush(500);
 
 		sinon.assert.calledOnce(saveSpy);
 	});
