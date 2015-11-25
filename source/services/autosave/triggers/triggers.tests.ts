@@ -7,11 +7,6 @@
 
 import { Trigger, ITrigger } from './triggers';
 
-import { angularFixture } from '../../test/angularFixture';
-
-import * as ng from 'angular';
-import 'angular-mocks';
-
 describe('autosave triggers', () => {
 	let trigger: ITrigger<void>;
 
