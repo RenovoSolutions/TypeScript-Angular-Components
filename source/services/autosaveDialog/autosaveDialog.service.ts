@@ -36,6 +36,7 @@ export interface IAutosaveDialogSettings {
 	save: { (...data: any[]): ng.IPromise<void> };
 	validate?: { (): boolean };
 	form?: string;
+	triggers?: string;
 
 	// optional - instead of specifying a form name
 	formGetter?: { (scope: ng.IScope): ng.IFormController };
@@ -83,10 +84,14 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 				options.data = {};
 			}
 
+			if (options.triggers == null) {
+				options.triggers = 'none',
+			}
+
 			this.autosave = this.autosaveFactory.getInstance({
 				save: options.save,
 				validate: options.validate,
-				triggers: 'none',
+				triggers: options.triggers,
 			});
 
 			scope.form = options.form;
