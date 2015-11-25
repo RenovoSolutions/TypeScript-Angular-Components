@@ -10,7 +10,7 @@ import test = services.test;
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger } from './trigger';
-import { moduleName } from './triggers';
+import { moduleName } from './triggers.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -55,21 +55,11 @@ describe('onChangeTrigger', () => {
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 
-		trigger = new OnChangeTrigger();
-
-		trigger.configure({
-			$rootScope: $rootScope,
-			$timeout: $timeout,
-			form: <any>baseContentForm,
-			debounceDuration: 1000,
-			setChangeListener: null,
-		});
+		trigger = new OnChangeTrigger($rootScope, $timeout);
 	});
 
 	it('should trigger autosave when the form becomes dirty after the debounce duration', (): void => {
 		trigger.configure({
-			$rootScope: $rootScope,
-			$timeout: $timeout,
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
 			setChangeListener: null,
@@ -93,8 +83,6 @@ describe('onChangeTrigger', () => {
 		};
 
 		trigger.configure({
-			$rootScope: $rootScope,
-			$timeout: $timeout,
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
 			setChangeListener: changeListener,
