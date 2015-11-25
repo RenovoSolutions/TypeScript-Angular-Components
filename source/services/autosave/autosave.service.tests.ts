@@ -25,11 +25,6 @@ interface IMockFormController {
 	$setPristine: Sinon.SinonSpy;
 }
 
-interface ITestTriggerService extends ITriggerService {
-	test1: ITrigger<void>;
-	test2: ITrigger<void>;
-}
-
 describe('autosave', () => {
 	let autosave: IAutosaveService;
 	let autosaveFactory: IAutosaveServiceFactory;
@@ -38,7 +33,7 @@ describe('autosave', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
-	let triggerService: ITestTriggerService;
+	let triggerService: ITriggerService;
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -143,19 +138,5 @@ describe('autosave', () => {
 		expect(close).to.be.true;
 
 		sinon.assert.calledOnce(saveSpy);
-	});
-
-	it('should set the specified triggers', (): void => {
-		triggerService.test1 = new Trigger<void>('test');
-		triggerService.test2 = new Trigger<void>('test2');
-		sinon.spy(triggerService.test1, 'setTrigger');
-		sinon.spy(triggerService.test2, 'setTrigger');
-		autosave = autosaveFactory.getInstance({
-			save: saveSpy,
-			triggers: 'test',
-		});
-
-		sinon.assert.calledOnce(<Sinon.SinonSpy>triggerService.test1.setTrigger);
-		sinon.assert.notCalled(<Sinon.SinonSpy>triggerService.test2.setTrigger);
 	});
 });
