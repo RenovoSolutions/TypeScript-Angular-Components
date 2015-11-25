@@ -23,7 +23,7 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 	protected settings: TSettings;
 	aliases: string[];
 
-	constructor(aliases: string, private triggerAction: {(settings: TSettings): void}) {
+	constructor(aliases: string, private triggerAction?: {(settings: TSettings): void}) {
 		this.aliases = aliases.split(' ');
 	}
 
