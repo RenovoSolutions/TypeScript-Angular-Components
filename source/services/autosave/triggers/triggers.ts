@@ -2,8 +2,12 @@
 
 import * as _ from 'lodash';
 
+import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
+
+export * from './onChangeTrigger';
+
 export interface ITriggers {
-	onChange: ITrigger<void>;
+	onChange: ITrigger<OnChangeSettings>;
 	none: ITrigger<void>;
 }
 
@@ -43,8 +47,8 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 }
 
 export let triggers: ITriggers = {
-	onChange: new Trigger<void>('onChange', null),
-	none: new Trigger<void>('none', null),
+	onChange: new OnChangeTrigger(),
+	none: new Trigger<void>('none'),
 };
 
 export function setTriggers(triggerString: string, autosave: {(): void}): void {
