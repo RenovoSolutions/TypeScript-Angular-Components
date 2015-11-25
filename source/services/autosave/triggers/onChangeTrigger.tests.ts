@@ -9,8 +9,8 @@ import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
-import { ITrigger } from './triggers';
-import { moduleName } from '../autosave.service';
+import { ITrigger } from './trigger';
+import { moduleName } from './triggers';
 
 import * as ng from 'angular';
 import 'angular-mocks';

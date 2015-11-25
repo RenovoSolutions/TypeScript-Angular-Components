@@ -1,60 +1,51 @@
 'use strict';
 
+import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
+import { ITrigger, Trigger } from './trigger';
 
 export * from './onChangeTrigger';
+
+export let defaultTriggers: string = 'onChange';
+
+export let moduleName: string = 'rl.ui.services.autosave.triggers';
+export let serviceName: string = 'autosaveTriggers';
 
 export interface ITriggers {
 	onChange: ITrigger<OnChangeSettings>;
 	none: ITrigger<void>;
 }
 
-export interface ITrigger<TSettings> {
-	setTrigger(autosave: { (): void }): void;
-	hasMatch(triggers: string): boolean;
-	configure(settings: TSettings): void;
-	aliases: string[];
+export interface ITriggerService {
+	triggers: ITriggers;
+	setTriggers(triggerString: string, autosave: { (): void }): void;
 }
 
-export class Trigger<TSettings> implements ITrigger<TSettings> {
-	protected settings: TSettings;
-	aliases: string[];
+export class TriggerService implements ITriggerService {
+	triggers: ITriggers;
 
-	constructor(aliases: string, private triggerAction?: {(settings: TSettings): void}) {
-		this.aliases = aliases.split(' ');
+	static $inject: string[] = ['$rootScope', '$timeout'];
+	constructor($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService) {
+		this.triggers = {
+			onChange: new OnChangeTrigger($rootScope, $timeout),
+			none: new Trigger<void>('none'),
+		};
 	}
 
-	setTrigger(autosave: { (): void }): void {
-		if (_.isFunction(this.triggerAction)) {
-			this.triggerAction(this.settings);
+	setTriggers(triggerString: string, autosave: {(): void}): void {
+		if (triggerString == null) {
+			triggerString = defaultTriggers;
 		}
-	}
 
-	hasMatch(triggers: string): boolean {
-		let triggerList: string[] = triggers.split(' ');
-		return _.any(triggerList, (trigger: string): boolean => {
-			return _.any(this.aliases, (alias: string): boolean => {
-				return trigger === alias;
-			});
+		_.each(<any>this.triggers, (trigger: ITrigger<any>): void => {
+			if (trigger.hasMatch(triggerString)) {
+				trigger.setTrigger(autosave);
+			}
 		});
 	}
-
-	configure(settings: TSettings): void {
-		this.settings = settings;
-	}
 }
 
-export let triggers: ITriggers = {
-	onChange: new OnChangeTrigger(),
-	none: new Trigger<void>('none'),
-};
-
-export function setTriggers(triggerString: string, autosave: {(): void}): void {
-	_.each(<any>triggers, (trigger: ITrigger<any>): void => {
-		if (trigger.hasMatch(triggerString)) {
-			trigger.setTrigger(autosave);
-		}
-	});
-}
+angular.module(moduleName, [])
+	.service(serviceName, TriggerService);

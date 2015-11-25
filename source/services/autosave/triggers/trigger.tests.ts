@@ -5,9 +5,9 @@
 
 'use strict';
 
-import { Trigger, ITrigger } from './triggers';
+import { Trigger, ITrigger } from './trigger';
 
-describe('autosave triggers', () => {
+describe('autosave trigger', () => {
 	let trigger: ITrigger<void>;
 
 	beforeEach(() => {

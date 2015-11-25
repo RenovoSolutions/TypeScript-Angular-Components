@@ -3,11 +3,9 @@
 import * as ng from 'angular';
 import * as _ from 'lodash';
 
-import { ITrigger, Trigger } from './triggers';
+import { ITrigger, Trigger } from './trigger';
 
 export interface OnChangeSettings {
-	$rootScope: ng.IRootScopeService;
-	$timeout: ng.ITimeoutService;
 	form: ng.IFormController;
 	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
 	debounceDuration?: number;
@@ -27,7 +25,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
 	clearChangeListener: IClearChangeListener;
 
-	constructor() {
+	constructor(private $rootScope: ng.IRootScopeService, private $timeout: ng.ITimeoutService) {
 		super('onChange');
 	}
 
@@ -38,12 +36,12 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 
 		this.initChangeListeners();
 
-		this.settings.$rootScope.$watch((): boolean => { return this.settings.form.$dirty; }, (value: boolean) => {
+		this.$rootScope.$watch((): boolean => { return this.settings.form.$dirty; }, (value: boolean) => {
 			if (value) {
 				this.setTimer(autosave);
 
 				this.clearChangeListener = this.setChangeListener((): void => {
-					this.settings.$timeout.cancel(this.timer);
+					this.$timeout.cancel(this.timer);
 					this.setTimer(autosave);
 				});
 			}
@@ -51,7 +49,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 	}
 
 	private setTimer(autosave: { (): void }): void {
-		this.timer = this.settings.$timeout((): void => {
+		this.timer = this.$timeout((): void => {
 			this.clearChangeListener();
 			autosave();
 		}, this.debounceDuration);

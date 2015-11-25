@@ -46,7 +46,8 @@ class AutosaveService implements IAutosaveService {
 	constructor(private $rootScope: angular.IRootScopeService
 			, private $timeout: angular.ITimeoutService
 			, private autosaveService: IAutosaveActionService
-			, options: IAutosaveServiceOptions) {
+			, options: IAutosaveServiceOptions
+			, private triggerService: triggers.ITriggerService) {
 		this.hasValidator = options.validate != null;
 
 		this.contentForm = options.contentForm || this.nullForm();
@@ -54,7 +55,7 @@ class AutosaveService implements IAutosaveService {
 		this.validate = options.validate;
 
 		this.configureTriggers(options);
-		triggers.setTriggers(options.triggers, this.autosave);
+		triggerService.setTriggers(options.triggers, this.autosave);
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
@@ -88,9 +89,7 @@ class AutosaveService implements IAutosaveService {
 	}
 
 	private configureTriggers(options: IAutosaveServiceOptions): void {
-		triggers.triggers.onChange.configure({
-			$rootScope: this.$rootScope,
-			$timeout: this.$timeout,
+		this.triggerService.triggers.onChange.configure({
 			form: options.contentForm,
 			setChangeListener: options.setChangeListener,
 			debounceDuration: options.debounceDuration,
@@ -112,17 +111,18 @@ export interface IAutosaveServiceFactory {
 	getInstance(options: IAutosaveServiceOptions): IAutosaveService;
 }
 
-autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveActionServiceName];
+autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveActionServiceName, triggers.serviceName];
 function autosaveServiceFactory($rootScope: angular.IRootScopeService
 							, $timeout: angular.ITimeoutService
-							, autosaveService: IAutosaveActionService): IAutosaveServiceFactory {
+							, autosaveService: IAutosaveActionService
+							, triggerService: triggers.ITriggerService): IAutosaveServiceFactory {
 	'use strict';
 	return {
 		getInstance(options: IAutosaveServiceOptions): IAutosaveService {
-			return new AutosaveService($rootScope, $timeout, autosaveService, options);
+			return new AutosaveService($rootScope, $timeout, autosaveService, options, triggerService);
 		}
 	};
 }
 
-angular.module(moduleName, [autosaveActionModuleName])
+angular.module(moduleName, [autosaveActionModuleName, triggers.moduleName])
 	.factory(factoryName, autosaveServiceFactory);
