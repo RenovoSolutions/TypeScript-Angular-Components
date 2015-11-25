@@ -4,19 +4,22 @@ import * as ng from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
+import __promise = services.promise;
 
 import {
 	IDialogService,
 	IDialogCloseHandler,
 	serviceName as dialogServiceName
 } from '../dialog/dialog.service';
+import {
+	factoryName as autosaveFactoryName,
+	IAutosaveService,
+	IAutosaveServiceFactory,
+} from '../autosave/autosave.service';
 
 import { controllerName } from './autosaveDialog.controller';
 
 export var serviceName: string = 'autosaveDialog';
-
-import __autosave = services.autosave;
-import __promise = services.promise;
 
 export interface IAutosaveDialogService {
 	open(options: IAutosaveDialogSettings): void;
@@ -58,13 +61,13 @@ export interface IAutosaveDialogScope extends ng.IScope {
 }
 
 export class AutosaveDialogService implements IAutosaveDialogService {
-	private autosave: __autosave.IAutosaveService;
+	private autosave: IAutosaveService;
 	private data: any;
 
-	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName, __promise.serviceName];
+	static $inject: string[] = ['$rootScope', dialogServiceName, autosaveFactoryName, __promise.serviceName];
 	constructor(private $rootScope: ng.IRootScopeService
 			, private dialog: IDialogService<IAutosaveDialogSettings>
-			, private autosaveFactory: __autosave.IAutosaveServiceFactory
+			, private autosaveFactory: IAutosaveServiceFactory
 			, private promise: __promise.IPromiseUtility) { }
 
 	open(options: IAutosaveDialogSettings): void {
@@ -83,6 +86,7 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 			this.autosave = this.autosaveFactory.getInstance({
 				save: options.save,
 				validate: options.validate,
+				triggers: 'none',
 			});
 
 			scope.form = options.form;
