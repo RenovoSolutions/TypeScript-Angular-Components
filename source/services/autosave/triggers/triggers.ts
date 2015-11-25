@@ -3,20 +3,29 @@
 import * as _ from 'lodash';
 
 export interface ITriggers {
-	onChange: ITrigger;
-	none: ITrigger;
+	onChange: ITrigger<void>;
+	none: ITrigger<void>;
 }
 
-export interface ITrigger {
+export interface ITrigger<TSettings> {
+	setTrigger(triggers: string): void;
 	hasMatch(triggers: string): boolean;
+	configure(settings: TSettings): void;
 	aliases: string[];
 }
 
-export class Trigger implements ITrigger {
+export class Trigger<TSettings> implements ITrigger<TSettings> {
+	private settings: TSettings;
 	aliases: string[];
 
-	constructor(aliases: string) {
+	constructor(aliases: string, private triggerAction: {(settings: TSettings): void}) {
 		this.aliases = aliases.split(' ');
+	}
+
+	setTrigger(triggers: string): void {
+		if (this.hasMatch(triggers)) {
+			this.triggerAction(this.settings);
+		}
 	}
 
 	hasMatch(triggers: string): boolean {
@@ -27,9 +36,13 @@ export class Trigger implements ITrigger {
 			});
 		});
 	}
+
+	configure(settings: TSettings): void {
+		this.settings = settings;
+	}
 }
 
 export let triggers: ITriggers = {
-	onChange: new Trigger('onChange'),
-	none: new Trigger('none'),
+	onChange: new Trigger<void>('onChange', null),
+	none: new Trigger<void>('none', null),
 };

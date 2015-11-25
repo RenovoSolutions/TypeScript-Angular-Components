@@ -13,11 +13,11 @@ import * as ng from 'angular';
 import 'angular-mocks';
 
 describe('autosave triggers', () => {
-	let trigger: ITrigger;
+	let trigger: ITrigger<void>;
 
 	beforeEach(() => {
 		// aliases test and trigger
-		trigger = new Trigger('test trigger');
+		trigger = new Trigger('test trigger', sinon.spy());
 	});
 
 	it('should be true if any alias of the trigger is specified', (): void => {
