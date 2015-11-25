@@ -5,9 +5,10 @@
 
 'use strict';
 
-import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
+import { services } from 'typescript-angular-utilities';
+import test = services.test;
 
-import { angularFixture } from '../test/angularFixture';
+import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -38,7 +39,7 @@ describe('autosave', () => {
 		triggerSpy = sinon.spy((promise: ng.IPromise<void>): ng.IPromise<void> => { return promise; });
 		let autosaveActionService: IAutosaveActionMock = { trigger: triggerSpy };
 
-		angularFixture.mock({
+		test.angularFixture.mock({
 			autosaveAction: autosaveActionService,
 		});
 
@@ -50,7 +51,7 @@ describe('autosave', () => {
 			$setPristine: setPristineSpy,
 		};
 
-		let services: any = angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout');
+		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout');
 		autosaveFactory = services[factoryName];
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
