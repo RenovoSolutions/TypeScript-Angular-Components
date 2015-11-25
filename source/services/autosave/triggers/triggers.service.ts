@@ -7,6 +7,7 @@ import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger, Trigger } from './trigger';
 
 export * from './onChangeTrigger';
+export * from './trigger';
 
 export let defaultTriggers: string = 'onChange';
 

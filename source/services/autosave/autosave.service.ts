@@ -8,7 +8,7 @@ import {
 	serviceName as autosaveActionServiceName,
 	IAutosaveActionService,
 } from '../autosaveAction/autosaveAction.service';
-import * as triggers from './triggers/triggers';
+import * as triggers from './triggers/triggers.service';
 
 export { triggers };
 
