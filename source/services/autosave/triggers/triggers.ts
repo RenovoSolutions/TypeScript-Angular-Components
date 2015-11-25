@@ -47,9 +47,9 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 	}
 }
 
-export function setTriggers(triggers: string): void {
+export function setTriggers(triggerString: string): void {
 	_.each(triggers, (trigger: ITrigger<any>, autosave: {(): void}): void => {
-		if (trigger.hasMatch(triggers)) {
+		if (trigger.hasMatch(triggerString)) {
 			trigger.setTrigger(autosave);
 		}
 	});
