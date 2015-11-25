@@ -7,11 +7,6 @@ export interface ITriggers {
 	none: ITrigger<void>;
 }
 
-export let triggers: ITriggers = {
-	onChange: new Trigger<void>('onChange', null),
-	none: new Trigger<void>('none', null),
-};
-
 export interface ITrigger<TSettings> {
 	setTrigger(autosave: { (): void }): void;
 	hasMatch(triggers: string): boolean;
@@ -47,8 +42,13 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 	}
 }
 
-export function setTriggers(triggerString: string): void {
-	_.each(triggers, (trigger: ITrigger<any>, autosave: {(): void}): void => {
+export let triggers: ITriggers = {
+	onChange: new Trigger<void>('onChange', null),
+	none: new Trigger<void>('none', null),
+};
+
+export function setTriggers(triggerString: string, autosave: {(): void}): void {
+	_.each(<any>triggers, (trigger: ITrigger<any>): void => {
 		if (trigger.hasMatch(triggerString)) {
 			trigger.setTrigger(autosave);
 		}
