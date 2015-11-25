@@ -20,7 +20,7 @@ export interface ITrigger<TSettings> {
 }
 
 export class Trigger<TSettings> implements ITrigger<TSettings> {
-	private settings: TSettings;
+	protected settings: TSettings;
 	aliases: string[];
 
 	constructor(aliases: string, private triggerAction: {(settings: TSettings): void}) {
