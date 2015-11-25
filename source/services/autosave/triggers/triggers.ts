@@ -8,7 +8,7 @@ export interface ITriggers {
 }
 
 export interface ITrigger<TSettings> {
-	setTrigger(triggers: string): void;
+	setTrigger(autosave: { (): void }): void;
 	hasMatch(triggers: string): boolean;
 	configure(settings: TSettings): void;
 	aliases: string[];
@@ -22,8 +22,8 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 		this.aliases = aliases.split(' ');
 	}
 
-	setTrigger(triggers: string): void {
-		if (this.hasMatch(triggers)) {
+	setTrigger(autosave: { (): void }): void {
+		if (_.isFunction(this.triggerAction)) {
 			this.triggerAction(this.settings);
 		}
 	}
