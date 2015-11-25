@@ -67,6 +67,7 @@ describe('AutosaveController', () => {
 
 	it('should trigger an autosave when the autosave behavior is called', (): void => {
 		buildController();
+		scope.$digest();
 
 		var behavior: IAutosaveBehavior = parentChildBehavior.getChildBehavior(scope.childLink);
 
@@ -100,7 +101,7 @@ describe('AutosaveController', () => {
 
 		var controllerResult: test.IControllerResult<AutosaveController>
 			= test.angularFixture.controllerWithBindings<AutosaveController>(controllerName
-				, null, { $element: $element, $parse: $parse }, { childLink: childLink, });
+				, { keyupListener: sinon.spy() }, { $element: $element, $parse: $parse }, { childLink: childLink, });
 
 		scope = <IParentScope>controllerResult.scope;
 		autosave = controllerResult.controller;
