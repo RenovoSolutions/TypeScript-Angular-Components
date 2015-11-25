@@ -9,6 +9,8 @@ import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
 import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
+import { Trigger, ITrigger } from './triggers/trigger';
+import { ITriggerService, serviceName as triggerServiceName } from './triggers/triggers.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -23,6 +25,11 @@ interface IMockFormController {
 	$setPristine: Sinon.SinonSpy;
 }
 
+interface ITestTriggerService extends ITriggerService {
+	test1: ITrigger<void>;
+	test2: ITrigger<void>;
+}
+
 describe('autosave', () => {
 	let autosave: IAutosaveService;
 	let autosaveFactory: IAutosaveServiceFactory;
@@ -31,6 +38,7 @@ describe('autosave', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
+	let triggerService: ITestTriggerService;
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -50,10 +58,11 @@ describe('autosave', () => {
 			$setPristine: setPristineSpy,
 		};
 
-		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout');
+		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout', triggerServiceName);
 		autosaveFactory = services[factoryName];
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
+		triggerService = services[triggerServiceName];
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 	});
@@ -134,5 +143,19 @@ describe('autosave', () => {
 		expect(close).to.be.true;
 
 		sinon.assert.calledOnce(saveSpy);
+	});
+
+	it('should set the specified triggers', (): void => {
+		triggerService.test1 = new Trigger<void>('test');
+		triggerService.test2 = new Trigger<void>('test2');
+		sinon.spy(triggerService.test1, 'setTrigger');
+		sinon.spy(triggerService.test2, 'setTrigger');
+		autosave = autosaveFactory.getInstance({
+			save: saveSpy,
+			triggers: 'test',
+		});
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>triggerService.test1.setTrigger);
+		sinon.assert.notCalled(<Sinon.SinonSpy>triggerService.test2.setTrigger);
 	});
 });
