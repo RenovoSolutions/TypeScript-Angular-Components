@@ -85,7 +85,7 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 			}
 
 			if (options.triggers == null) {
-				options.triggers = 'none',
+				options.triggers = 'none';
 			}
 
 			this.autosave = this.autosaveFactory.getInstance({
