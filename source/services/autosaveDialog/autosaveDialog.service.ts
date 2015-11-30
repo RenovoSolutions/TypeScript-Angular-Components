@@ -4,19 +4,22 @@ import * as ng from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
+import __promise = services.promise;
 
 import {
 	IDialogService,
 	IDialogCloseHandler,
 	serviceName as dialogServiceName
 } from '../dialog/dialog.service';
+import {
+	factoryName as autosaveFactoryName,
+	IAutosaveService,
+	IAutosaveServiceFactory,
+} from '../autosave/autosave.service';
 
 import { controllerName } from './autosaveDialog.controller';
 
 export var serviceName: string = 'autosaveDialog';
-
-import __autosave = services.autosave;
-import __promise = services.promise;
 
 export interface IAutosaveDialogService {
 	open(options: IAutosaveDialogSettings): void;
@@ -33,6 +36,7 @@ export interface IAutosaveDialogSettings {
 	save: { (...data: any[]): ng.IPromise<void> };
 	validate?: { (): boolean };
 	form?: string;
+	triggers?: string;
 
 	// optional - instead of specifying a form name
 	formGetter?: { (scope: ng.IScope): ng.IFormController };
@@ -58,13 +62,13 @@ export interface IAutosaveDialogScope extends ng.IScope {
 }
 
 export class AutosaveDialogService implements IAutosaveDialogService {
-	private autosave: __autosave.IAutosaveService;
+	private autosave: IAutosaveService;
 	private data: any;
 
-	static $inject: string[] = ['$rootScope', dialogServiceName, __autosave.factoryName, __promise.serviceName];
+	static $inject: string[] = ['$rootScope', dialogServiceName, autosaveFactoryName, __promise.serviceName];
 	constructor(private $rootScope: ng.IRootScopeService
 			, private dialog: IDialogService<IAutosaveDialogSettings>
-			, private autosaveFactory: __autosave.IAutosaveServiceFactory
+			, private autosaveFactory: IAutosaveServiceFactory
 			, private promise: __promise.IPromiseUtility) { }
 
 	open(options: IAutosaveDialogSettings): void {
@@ -80,9 +84,14 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 				options.data = {};
 			}
 
+			if (options.triggers == null) {
+				options.triggers = 'none',
+			}
+
 			this.autosave = this.autosaveFactory.getInstance({
 				save: options.save,
 				validate: options.validate,
+				triggers: options.triggers,
 			});
 
 			scope.form = options.form;
