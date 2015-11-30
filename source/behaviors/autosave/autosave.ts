@@ -6,7 +6,6 @@ import { services } from 'typescript-angular-utilities';
 
 import __parentChild = services.parentChildBehavior;
 import __objectUtility = services.object;
-import __autosaveAction = services.autosaveAction;
 
 import {
 	factoryName as autosaveFactoryName,
@@ -43,8 +42,7 @@ export class AutosaveController {
 							, '$timeout'
 							, autosaveFactoryName
 							, __parentChild.serviceName
-							, __objectUtility.serviceName
-							, __autosaveAction.serviceName];
+							, __objectUtility.serviceName];
 	constructor(private $scope: angular.IScope
 		, $attrs: IAutosaveAttributes
 		, $parse: angular.IParseService
@@ -117,7 +115,6 @@ export function autosave(): angular.IDirective {
 
 angular.module(moduleName, [
 	autosaveModuleName,
-	__autosaveAction.moduleName,
 	__objectUtility.moduleName,
 	__parentChild.moduleName,
 ])
