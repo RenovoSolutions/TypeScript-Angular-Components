@@ -9,10 +9,10 @@ export var factoryName: string = 'messageLog';
 export var defaultPageSize: number = 10;
 
 export interface IMessage {
+	id?: number;
 	message: string;
 	createdBy?: string,
-	createdDate?: string,
-	createdTime?: string,
+	createdDate?: Date,
 }
 
 export interface IGetMessagesResult {
