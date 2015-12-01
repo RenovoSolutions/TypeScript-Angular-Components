@@ -1,11 +1,8 @@
 <div class="nav-tabs-dropshadow">
 	<ul class="nav nav-tabs">
 		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
-			ng-class="{ 'active': tabHeader.isVisible }">
-			<a>
-				<span ng-bind-html="tabHeader.template"></span>
-				<i class="fa fa-exclamation-triangle text-danger validation-icon" ng-hide="tabHeader.isValid"></i>
-			</a>
+			ng-class="{ 'active': tabHeader.isVisible, 'error': !tabHeader.isValid }">
+			<a><span ng-bind-html="tabHeader.template"></span></a>
 		</li>
 	</ul>
 	<div class="tab-content">
