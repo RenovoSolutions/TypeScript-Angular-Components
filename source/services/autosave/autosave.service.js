@@ -2,14 +2,17 @@
 var angular = require('angular');
 var _ = require('lodash');
 var autosaveAction_service_1 = require('../autosaveAction/autosaveAction.service');
+var triggers = require('./triggers/triggers.service');
+exports.triggers = triggers;
 exports.moduleName = 'rl.utilities.services.autosave';
 exports.factoryName = 'autosaveFactory';
 var AutosaveService = (function () {
-    function AutosaveService($rootScope, $timeout, autosaveService, options) {
+    function AutosaveService($rootScope, $timeout, autosaveService, options, triggerService) {
         var _this = this;
+        this.$rootScope = $rootScope;
         this.$timeout = $timeout;
         this.autosaveService = autosaveService;
-        this.debounceDuration = 1000;
+        this.triggerService = triggerService;
         this.autosave = function () {
             var data = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -44,26 +47,15 @@ var AutosaveService = (function () {
         this.contentForm = options.contentForm || this.nullForm();
         this.save = options.save;
         this.validate = options.validate;
-        this.initChangeListeners(options);
-        $rootScope.$watch(function () { return _this.contentForm.$dirty; }, function (value) {
-            if (value) {
-                _this.setTimer();
-                _this.clearChangeListener = _this.setChangeListener(function () {
-                    $timeout.cancel(_this.timer);
-                    _this.setTimer();
-                });
-            }
-        });
+        this.configureTriggers(options);
+        triggerService.setTriggers(options.triggers, this.autosave);
     }
-    AutosaveService.prototype.initTriggers = function (triggers) {
-        var triggerList = triggers.split(' ');
-    };
-    AutosaveService.prototype.setTimer = function () {
-        var _this = this;
-        this.timer = this.$timeout(function () {
-            _this.clearChangeListener();
-            _this.autosave();
-        }, this.debounceDuration);
+    AutosaveService.prototype.configureTriggers = function (options) {
+        this.triggerService.triggers.onChange.configure({
+            form: options.contentForm,
+            setChangeListener: options.setChangeListener,
+            debounceDuration: options.debounceDuration,
+        });
     };
     AutosaveService.prototype.nullForm = function () {
         return {
@@ -74,28 +66,17 @@ var AutosaveService = (function () {
             },
         };
     };
-    AutosaveService.prototype.initChangeListeners = function (options) {
-        this.setChangeListener = options.setChangeListener || this.nullSetListener;
-        this.clearChangeListener = this.nullClearListener;
-    };
-    AutosaveService.prototype.nullSetListener = function () {
-        console.log('No change listener available');
-        return this.nullClearListener;
-    };
-    AutosaveService.prototype.nullClearListener = function () {
-        console.log('No change listener register');
-    };
     return AutosaveService;
 })();
-autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveAction_service_1.serviceName];
-function autosaveServiceFactory($rootScope, $timeout, autosaveService) {
+autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveAction_service_1.serviceName, triggers.serviceName];
+function autosaveServiceFactory($rootScope, $timeout, autosaveService, triggerService) {
     'use strict';
     return {
         getInstance: function (options) {
-            return new AutosaveService($rootScope, $timeout, autosaveService, options);
+            return new AutosaveService($rootScope, $timeout, autosaveService, options, triggerService);
         }
     };
 }
-angular.module(exports.moduleName, [autosaveAction_service_1.moduleName])
+angular.module(exports.moduleName, [autosaveAction_service_1.moduleName, triggers.moduleName])
     .factory(exports.factoryName, autosaveServiceFactory);
 //# sourceMappingURL=autosave.service.js.map

@@ -72,7 +72,7 @@ function genericContainer($compile, $interpolate, jquery, templateLoader, object
             initDefaults(controller);
             var container = element.find('#container');
             var templateResult = templateLoader.loadTemplates(transclude);
-            controller.templates = templateResult.templates;
+            controller.templates = _.extend(controller.templates, templateResult.templates);
             controller.default = templateResult.default;
             var templateScope = templateResult.transclusionScope;
             if (!controller.default) {

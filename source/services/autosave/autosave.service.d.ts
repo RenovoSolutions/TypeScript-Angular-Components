@@ -1,14 +1,11 @@
 import * as angular from 'angular';
+import * as triggers from './triggers/triggers.service';
+export { triggers };
 export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IAutosaveService {
     autosave(...data: any[]): boolean;
     contentForm: angular.IFormController;
-    setChangeListener?: {
-        (callback: {
-            (): void;
-        }): IClearChangeListener;
-    };
 }
 export interface IAutosaveServiceOptions {
     save: {
@@ -22,7 +19,7 @@ export interface IAutosaveServiceOptions {
     setChangeListener?: {
         (callback: IChangeListener): IClearChangeListener;
     };
-    triggers: string;
+    triggers?: string;
 }
 export interface IChangeListener {
     (): void;

@@ -1,9 +1,9 @@
 import * as ng from 'angular';
 import { services } from 'typescript-angular-utilities';
-import { IDialogService } from '../dialog/dialog.service';
-export declare var serviceName: string;
-import __autosave = services.autosave;
 import __promise = services.promise;
+import { IDialogService } from '../dialog/dialog.service';
+import { IAutosaveServiceFactory } from '../autosave/autosave.service';
+export declare var serviceName: string;
 export interface IAutosaveDialogService {
     open(options: IAutosaveDialogSettings): void;
 }
@@ -21,6 +21,7 @@ export interface IAutosaveDialogSettings {
         (): boolean;
     };
     form?: string;
+    triggers?: string;
     formGetter?: {
         (scope: ng.IScope): ng.IFormController;
     };
@@ -41,7 +42,7 @@ export declare class AutosaveDialogService implements IAutosaveDialogService {
     private autosave;
     private data;
     static $inject: string[];
-    constructor($rootScope: ng.IRootScopeService, dialog: IDialogService<IAutosaveDialogSettings>, autosaveFactory: __autosave.IAutosaveServiceFactory, promise: __promise.IPromiseUtility);
+    constructor($rootScope: ng.IRootScopeService, dialog: IDialogService<IAutosaveDialogSettings>, autosaveFactory: IAutosaveServiceFactory, promise: __promise.IPromiseUtility);
     open(options: IAutosaveDialogSettings): void;
     private autosaveCloseHandler;
     private setForm;

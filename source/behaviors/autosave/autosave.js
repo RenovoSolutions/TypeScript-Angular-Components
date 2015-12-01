@@ -1,15 +1,15 @@
 'use strict';
 var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
-var __autosave = typescript_angular_utilities_1.services.autosave;
 var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var __objectUtility = typescript_angular_utilities_1.services.object;
-var __autosaveAction = typescript_angular_utilities_1.services.autosaveAction;
+var autosave_service_1 = require('../../services/autosave/autosave.service');
 exports.moduleName = 'rl.ui.behaviors.autosave';
 exports.directiveName = 'rlAutosave';
 exports.controllerName = 'AutosaveController';
 var AutosaveController = (function () {
     function AutosaveController($scope, $attrs, $parse, $element, $timeout, autosaveFactory, parentChildBehavior, objectUtility) {
+        var _this = this;
         this.$scope = $scope;
         this.$element = $element;
         this.$timeout = $timeout;
@@ -27,28 +27,33 @@ var AutosaveController = (function () {
             return saveExpression($scope);
         };
         var debounce = $parse($attrs.debounceDuration)($scope);
-        this.autosave = autosaveFactory.getInstance({
-            save: save,
-            validate: validate,
-            contentForm: contentForm,
-            debounceDuration: debounce,
+        var unbind = $scope.$watch(function () { return _this.keyupListener; }, function (keyupListener) {
+            if (keyupListener) {
+                _this.autosave = autosaveFactory.getInstance({
+                    save: save,
+                    validate: validate,
+                    contentForm: contentForm,
+                    debounceDuration: debounce,
+                    triggers: $attrs.triggers,
+                });
+                var behavior = {
+                    autosave: _this.autosave.autosave,
+                };
+                // register autosave behavior and assign the value back to the parent
+                var childLink = $parse($attrs.rlAutosave)($scope);
+                parentChildBehavior.registerChildBehavior(childLink, behavior);
+                unbind();
+            }
         });
-        var behavior = {
-            autosave: this.autosave.autosave,
-        };
-        // register autosave behavior and assign the value back to the parent
-        var childLink = $parse($attrs.rlAutosave)($scope);
-        parentChildBehavior.registerChildBehavior(childLink, behavior);
     }
     AutosaveController.$inject = ['$scope',
         '$attrs',
         '$parse',
         '$element',
         '$timeout',
-        __autosave.factoryName,
+        autosave_service_1.factoryName,
         __parentChild.serviceName,
-        __objectUtility.serviceName,
-        __autosaveAction.serviceName];
+        __objectUtility.serviceName];
     return AutosaveController;
 })();
 exports.AutosaveController = AutosaveController;
@@ -60,7 +65,7 @@ function autosave() {
         controller: exports.controllerName,
         link: function (scope, element, attrs, controllers) {
             var autosaveController = controllers[0];
-            autosaveController.autosave.setChangeListener = function (callback) {
+            autosaveController.keyupListener = function (callback) {
                 element.on('keyup', scope.$apply(callback));
                 return function () {
                     element.off('keyup');
@@ -71,8 +76,7 @@ function autosave() {
 }
 exports.autosave = autosave;
 angular.module(exports.moduleName, [
-    __autosave.moduleName,
-    __autosaveAction.moduleName,
+    autosave_service_1.moduleName,
     __objectUtility.moduleName,
     __parentChild.moduleName,
 ])

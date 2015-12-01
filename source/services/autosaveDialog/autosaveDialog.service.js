@@ -1,11 +1,11 @@
 'use strict';
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __promise = typescript_angular_utilities_1.services.promise;
 var dialog_service_1 = require('../dialog/dialog.service');
+var autosave_service_1 = require('../autosave/autosave.service');
 var autosaveDialog_controller_1 = require('./autosaveDialog.controller');
 exports.serviceName = 'autosaveDialog';
-var __autosave = typescript_angular_utilities_1.services.autosave;
-var __promise = typescript_angular_utilities_1.services.promise;
 var AutosaveDialogService = (function () {
     function AutosaveDialogService($rootScope, dialog, autosaveFactory, promise) {
         var _this = this;
@@ -34,9 +34,13 @@ var AutosaveDialogService = (function () {
             if (options.data == null) {
                 options.data = {};
             }
+            if (options.triggers == null) {
+                options.triggers = 'none';
+            }
             _this.autosave = _this.autosaveFactory.getInstance({
                 save: options.save,
                 validate: options.validate,
+                triggers: options.triggers,
             });
             scope.form = options.form;
             scope.formGetter = options.formGetter;
@@ -49,7 +53,7 @@ var AutosaveDialogService = (function () {
             _this.dialog.open(options, _this.autosaveCloseHandler);
         });
     };
-    AutosaveDialogService.$inject = ['$rootScope', dialog_service_1.serviceName, __autosave.factoryName, __promise.serviceName];
+    AutosaveDialogService.$inject = ['$rootScope', dialog_service_1.serviceName, autosave_service_1.factoryName, __promise.serviceName];
     return AutosaveDialogService;
 })();
 exports.AutosaveDialogService = AutosaveDialogService;
