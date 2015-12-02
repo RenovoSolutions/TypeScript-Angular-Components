@@ -135,12 +135,12 @@ export function simpleCard(): angular.IDirective {
 		require: '?^^rlSimpleCardList',
 		template: `
 			<div class="card col-xs-12">
-				<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen }" ng-click="card.toggleContent()">
+				<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen, 'error': cardForm.$invalid }" ng-click="card.toggleContent()">
 					<div class="header-template"></div>
 					<div class="clearfix"></div>
 				</div>
 
-				<ng-form rl-autosave="card.autosaveLink" validate="card.validate()" save="card.save()">
+				<ng-form name="cardForm" rl-autosave="card.autosaveLink" validate="card.validate()" save="card.save()">
 					<div ng-show="card.showContent || card.alwaysOpen">
 						<div class="body row">
 							<div class="content-template"></div>
