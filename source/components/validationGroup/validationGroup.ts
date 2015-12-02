@@ -37,7 +37,6 @@ export class ValidationGroupController {
 					form: $scope.validationGroupForm,
 					$scope: $scope,
 					validators: [this.validator],
-					alwaysValidate: true,
 				});
 			}
 			unbind();
