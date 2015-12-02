@@ -15,7 +15,6 @@ export interface IComponentValidatorOptions {
 	$scope: angular.IScope;
 	validators: __validation.IValidationHandler[];
 	setValidity?: { (isValid: boolean): void };
-	alwaysValidate?: boolean;
 }
 
 export interface IComponentValidator {
@@ -44,29 +43,7 @@ export class ComponentValidator implements IComponentValidator {
 			this.validator.registerValidationHandler(customValidator);
 		});
 
-		if (options.alwaysValidate) {
-			this.setValidator();
-		} else {
-			let unregisterValidator: Function;
-
-			this.$scope.$watch((): boolean => {
-				return this.isDirty();
-			}, (value: boolean): void => {
-				if (value) {
-					unregisterValidator = this.setValidator();
-				} else {
-					if (_.isFunction(unregisterValidator)) {
-						unregisterValidator();
-					}
-				}
-			});
-		}
-	}
-
-	private isDirty(): boolean {
-		return (_.isUndefined(this.ngModel) && _.isUndefined(this.form))
-				|| (this.ngModel != null && this.ngModel.$dirty)
-				|| (this.form != null && this.form.$dirty);
+		this.setValidator();
 	}
 
 	private setValidator(): Function {
