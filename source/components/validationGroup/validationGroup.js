@@ -15,7 +15,6 @@ var ValidationGroupController = (function () {
                     form: $scope.validationGroupForm,
                     $scope: $scope,
                     validators: [_this.validator],
-                    alwaysValidate: true,
                 });
             }
             unbind();

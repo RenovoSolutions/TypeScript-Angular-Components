@@ -1,3 +1,4 @@
+// /// <reference path='../../../typings/commonjs.d.ts' />
 // /// <reference path='../../../typings/jquery/jquery.d.ts' />
 'use strict';
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
@@ -86,7 +87,7 @@ function simpleCard() {
         restrict: 'E',
         transclude: true,
         require: '?^^rlSimpleCardList',
-        template: "\n\t\t\t<div class=\"card col-xs-12\">\n\t\t\t\t<div class=\"header row\" ng-class=\"{ 'active': card.canOpen && !card.alwaysOpen }\" ng-click=\"card.toggleContent()\">\n\t\t\t\t\t<div class=\"header-template\"></div>\n\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t</div>\n\n\t\t\t\t<ng-form rl-autosave=\"card.autosaveLink\" validate=\"card.validate()\" save=\"card.save()\">\n\t\t\t\t\t<div ng-show=\"card.showContent || card.alwaysOpen\">\n\t\t\t\t\t\t<div class=\"body row\">\n\t\t\t\t\t\t\t<div class=\"content-template\"></div>\n\t\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</ng-form>\n\t\t\t\t<div ng-show=\"hasFooter && card.showContent\">\n\t\t\t\t\t<div class=\"footer row\">\n\t\t\t\t\t\t<div class=\"footer-template\"></div>\n\t\t\t\t\t\t<div class=\"clearfix\"></div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
+        template: require('./simpleCard.html'),
         controller: exports.controllerName,
         controllerAs: 'card',
         scope: {},

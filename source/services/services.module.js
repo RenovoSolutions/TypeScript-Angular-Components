@@ -1,5 +1,9 @@
 'use strict';
 var angular = require('angular');
+var autosave = require('./autosave/autosave.service');
+exports.autosave = autosave;
+var autosaveAction = require('./autosaveAction/autosaveAction.service');
+exports.autosaveAction = autosaveAction;
 var autosaveDialog = require('./autosaveDialog/autosaveDialog.module');
 exports.autosaveDialog = autosaveDialog;
 var breakpoints = require('./breakpoints/breakpoints.module');
@@ -20,6 +24,8 @@ var windowWrapper = require('./windowWrapper/windowWrapper.service');
 exports.windowWrapper = windowWrapper;
 exports.moduleName = 'rl.ui.services';
 angular.module(exports.moduleName, [
+    autosave.moduleName,
+    autosaveAction.moduleName,
     autosaveDialog.moduleName,
     breakpoints.moduleName,
     componentValidator.moduleName,

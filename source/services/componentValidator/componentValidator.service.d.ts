@@ -11,7 +11,6 @@ export interface IComponentValidatorOptions {
     setValidity?: {
         (isValid: boolean): void;
     };
-    alwaysValidate?: boolean;
 }
 export interface IComponentValidator {
     error: string;
@@ -24,7 +23,6 @@ export declare class ComponentValidator implements IComponentValidator {
     private form;
     private setValidity;
     constructor(validationService: __validation.IValidationService, options: IComponentValidatorOptions);
-    private isDirty();
     private setValidator();
 }
 export interface IComponentValidatorFactory {

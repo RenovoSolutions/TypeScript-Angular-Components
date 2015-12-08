@@ -28,14 +28,13 @@ describe('componentValidator', () => {
 		$rootScope = services.$rootScope;
 	});
 
-	it('should watch for validation errors while ngModel is dirty', (): void => {
+	it('should watch for validation errors', (): void => {
 		let validator: __validation.IValidationHandler = {
 			validate: sinon.spy((): boolean => { return false; }),
 			errorMessage: 'error',
 		};
 
 		let ngModel: any = {
-			$dirty: false,
 			$setValidity: sinon.spy(),
 		};
 
@@ -47,31 +46,8 @@ describe('componentValidator', () => {
 
 		$rootScope.$digest();
 
-		expect(componentValidator.error).to.not.exist;
-		sinon.assert.notCalled(ngModel.$setValidity);
-
-		ngModel.$dirty = true;
-		$rootScope.$digest();
-
 		expect(componentValidator.error).to.equal('error');
 		sinon.assert.calledOnce(ngModel.$setValidity);
 		sinon.assert.calledWith(ngModel.$setValidity, 'customValidation', false);
-	});
-
-	it('should always watch for validation errors if alwaysValidate is specified', (): void => {
-		let validator: __validation.IValidationHandler = {
-			validate: sinon.spy((): boolean => { return false; }),
-			errorMessage: 'error',
-		};
-
-		componentValidator = componentValidatorFactory.getInstance({
-			$scope: $rootScope.$new(),
-			validators: [validator],
-			alwaysValidate: true,
-		});
-
-		$rootScope.$digest();
-
-		expect(componentValidator.error).to.equal('error');
 	});
 });

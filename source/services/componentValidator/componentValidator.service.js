@@ -17,30 +17,8 @@ var ComponentValidator = (function () {
         _.each(options.validators, function (customValidator) {
             _this.validator.registerValidationHandler(customValidator);
         });
-        if (options.alwaysValidate) {
-            this.setValidator();
-        }
-        else {
-            var unregisterValidator;
-            this.$scope.$watch(function () {
-                return _this.isDirty();
-            }, function (value) {
-                if (value) {
-                    unregisterValidator = _this.setValidator();
-                }
-                else {
-                    if (_.isFunction(unregisterValidator)) {
-                        unregisterValidator();
-                    }
-                }
-            });
-        }
+        this.setValidator();
     }
-    ComponentValidator.prototype.isDirty = function () {
-        return (_.isUndefined(this.ngModel) && _.isUndefined(this.form))
-            || (this.ngModel != null && this.ngModel.$dirty)
-            || (this.form != null && this.form.$dirty);
-    };
     ComponentValidator.prototype.setValidator = function () {
         var _this = this;
         return this.$scope.$watch(this.validator.validate.bind(this.validator), function (value) {
