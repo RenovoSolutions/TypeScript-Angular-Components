@@ -136,6 +136,7 @@ function card() {
             selectionChanged: '&',
         },
         link: function (scope, element, attrs, rlCardContainer) {
+            scope.__rlCardContainer = rlCardContainer;
             rlCardContainer.makeCard(scope, function (clone) {
                 var content = clone.filter('rl-card-content');
                 var footer = clone.filter('rl-card-footer');
