@@ -212,6 +212,7 @@ export function card(): angular.IDirective {
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
 			, rlCardContainer: CardContainerController): void {
+			scope.__rlCardContainer = rlCardContainer;
 			rlCardContainer.makeCard(scope, (clone: JQuery): void => {
 				let content: JQuery = clone.filter('rl-card-content');
 				let footer: JQuery = clone.filter('rl-card-footer');
