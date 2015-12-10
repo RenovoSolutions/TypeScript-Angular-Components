@@ -39,23 +39,23 @@ export interface IClearChangeListener {
 
 class AutosaveService implements IAutosaveService {
 	private hasValidator: boolean;
+	private triggerService: triggers.ITriggerService;
 	contentForm: angular.IFormController;
 	save: { (...data: any[]): angular.IPromise<void> };
 	validate: { (): boolean };
 
-	constructor(private $rootScope: angular.IRootScopeService
-			, private $timeout: angular.ITimeoutService
-			, private autosaveService: IAutosaveActionService
+	constructor(private autosaveService: IAutosaveActionService
 			, options: IAutosaveServiceOptions
-			, private triggerService: triggers.ITriggerService) {
+			, triggerServiceFactory: triggers.ITriggerServiceFactory) {
 		this.hasValidator = options.validate != null;
 
 		this.contentForm = options.contentForm || this.nullForm();
 		this.save = options.save;
 		this.validate = options.validate;
 
+		this.triggerService = triggerServiceFactory.getInstance();
 		this.configureTriggers(options);
-		triggerService.setTriggers(options.triggers, this.autosave);
+		this.triggerService.setTriggers(options.triggers, this.autosave);
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
@@ -111,15 +111,13 @@ export interface IAutosaveServiceFactory {
 	getInstance(options: IAutosaveServiceOptions): IAutosaveService;
 }
 
-autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveActionServiceName, triggers.serviceName];
-function autosaveServiceFactory($rootScope: angular.IRootScopeService
-							, $timeout: angular.ITimeoutService
-							, autosaveService: IAutosaveActionService
-							, triggerService: triggers.ITriggerService): IAutosaveServiceFactory {
+autosaveServiceFactory.$inject = [autosaveActionServiceName, triggers.factoryName];
+function autosaveServiceFactory(autosaveService: IAutosaveActionService
+							, triggerServiceFactory: triggers.ITriggerServiceFactory): IAutosaveServiceFactory {
 	'use strict';
 	return {
 		getInstance(options: IAutosaveServiceOptions): IAutosaveService {
-			return new AutosaveService($rootScope, $timeout, autosaveService, options, triggerService);
+			return new AutosaveService(autosaveService, options, triggerServiceFactory);
 		}
 	};
 }

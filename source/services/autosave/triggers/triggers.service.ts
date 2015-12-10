@@ -12,7 +12,7 @@ export * from './trigger';
 export let defaultTriggers: string = 'onChange';
 
 export let moduleName: string = 'rl.ui.services.autosave.triggers';
-export let serviceName: string = 'autosaveTriggers';
+export let factoryName: string = 'autosaveTriggers';
 
 export interface ITriggers {
 	onChange: ITrigger<OnChangeSettings>;
@@ -24,10 +24,9 @@ export interface ITriggerService {
 	setTriggers(triggerString: string, autosave: { (): void }): void;
 }
 
-export class TriggerService implements ITriggerService {
+class TriggerService implements ITriggerService {
 	triggers: ITriggers;
 
-	static $inject: string[] = ['$rootScope', '$timeout'];
 	constructor($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService) {
 		this.triggers = {
 			onChange: new OnChangeTrigger($rootScope, $timeout),
@@ -48,5 +47,18 @@ export class TriggerService implements ITriggerService {
 	}
 }
 
+export interface ITriggerServiceFactory {
+	getInstance(): ITriggerService;
+}
+
+triggerServiceFactory.$inject = ['$rootScope', '$timeout'];
+function triggerServiceFactory($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService): ITriggerServiceFactory {
+	return {
+		getInstance(): ITriggerService {
+			return new TriggerService($rootScope, $timeout);
+		},
+	};
+}
+
 angular.module(moduleName, [])
-	.service(serviceName, TriggerService);
+	.factory(factoryName, triggerServiceFactory);
