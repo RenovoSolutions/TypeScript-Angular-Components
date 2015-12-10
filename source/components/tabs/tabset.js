@@ -2,7 +2,7 @@
 'use strict';
 var _ = require('lodash');
 exports.directiveName = 'rlTabset';
-exports.controllerName = 'TabsetController';
+exports.controllerName = 'rlTabsetController';
 var TabsetController = (function () {
     function TabsetController() {
         this.tabHeaders = [];

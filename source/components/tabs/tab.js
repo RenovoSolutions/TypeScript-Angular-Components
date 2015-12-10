@@ -1,7 +1,7 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 exports.directiveName = 'rlTab';
-exports.controllerName = 'TabController';
+exports.controllerName = 'rlTabController';
 var TabController = (function () {
     function TabController($scope) {
         var _this = this;
