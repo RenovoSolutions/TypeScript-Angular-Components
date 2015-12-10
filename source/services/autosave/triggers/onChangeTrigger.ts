@@ -36,7 +36,11 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 
 		this.initChangeListeners();
 
-		this.$rootScope.$watch((): boolean => { return this.settings.form.$dirty; }, (value: boolean) => {
+		this.$rootScope.$watch((): boolean => {
+			return this.settings.form != null
+				? this.settings.form.$dirty
+				: false;
+		}, (value: boolean) => {
 			if (value) {
 				this.setTimer(autosave);
 
