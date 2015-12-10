@@ -7,7 +7,7 @@ import * as ng from 'angular';
 import { TabsetController, ITabHeader } from './tabset';
 
 export let directiveName: string = 'rlTab';
-export let controllerName: string = 'TabController';
+export let controllerName: string = 'rlTabController';
 
 export interface ITabScope extends ng.IScope {
 	tabForm: ng.IFormController;
