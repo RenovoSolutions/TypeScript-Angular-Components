@@ -6,7 +6,7 @@ import * as ng from 'angular';
 import * as _ from 'lodash';
 
 export let directiveName: string = 'rlTabset';
-export let controllerName: string = 'TabsetController';
+export let controllerName: string = 'rlTabsetController';
 
 export interface ITabHeader {
 	template: string;
