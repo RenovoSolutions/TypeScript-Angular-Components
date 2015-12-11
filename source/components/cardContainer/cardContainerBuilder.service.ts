@@ -42,6 +42,7 @@ export interface IFilterBuilder {
 	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup;
 	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
 	buildColumnSearchFilter(): IColumnSearchFilter;
+	addCustomFilter(filter: filters.IFilter): void;
 }
 
 export class CardContainerBuilder implements ICardContainerBuilder {
@@ -169,6 +170,10 @@ export class FilterBuilder implements IFilterBuilder {
 		let filter: IColumnSearchFilter = factory.getInstance();
 		this.parent._filters.push(filter);
 		return filter;
+	}
+
+	addCustomFilter(filter: filters.IFilter): void {
+		this.parent._filters.push(filter);
 	}
 }
 
