@@ -13,6 +13,7 @@ export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter;
+	usePaging(): void;
 }
 
 export interface IDataSourceBuilder {
@@ -46,6 +47,10 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get(__genericSearchFilter.factoryName);
 		this._searchFilter = factory.getInstance();
 		return this._searchFilter;
+	}
+
+	usePaging(): void {
+		this._paging = true;
 	}
 }
 
