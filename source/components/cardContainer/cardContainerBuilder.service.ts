@@ -8,9 +8,12 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
+import * as filterGroup from './filters/filterGroup/filterGroup.module';
+import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 
 export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
+	filters: IFilterBuilder;
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter;
 	usePaging(): void;
@@ -19,6 +22,13 @@ export interface ICardContainerBuilder {
 export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.dataServiceDataSource.IDataServiceFunction<TDataType>): dataSources.IDataSource<TDataType>;
+}
+
+export interface IFilterBuilder {
+	buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup;
+	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup;
+	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
+	buildColumnSearchFilter(): IColumnSearchFilter;
 }
 
 export class CardContainerBuilder implements ICardContainerBuilder {
@@ -38,9 +48,11 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_searchFilter: filters.IFilter[];
 
 	dataSource: IDataSourceBuilder;
+	filters: IFilterBuilder;
 
 	constructor(private $injector: angular.auto.IInjectorService) {
 		this.dataSource = new DataSourceBuilder($injector, this);
+		this.filters = new FilterBuilder($injector, this);
 	}
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter {
@@ -83,6 +95,41 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
 		return this.parent._dataSource;
+	}
+}
+
+export class FilterBuilder implements IFilterBuilder {
+	constructor(private $injector: angular.auto.IInjectorService
+			, private parent: CardContainerBuilder) {
+		this.parent._filters = [];
+	}
+
+	buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup {
+		let factory: filterGroup.IFilterGroupFactory = this.$injector.get(filterGroup.factoryName);
+		let filter: filterGroup.IFilterGroup = factory.getInstance(settings);
+		this.parent._filters.push(filter);
+		return filter;
+	}
+
+	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup {
+		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get(filterGroup.modeFilterGroup.factoryName);
+		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
+		this.parent._filters.push(filter);
+		return filter;
+	}
+
+	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup {
+		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get(filterGroup.rangeFilterGroup.factoryName);
+		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
+		this.parent._filters.push(filter);
+		return filter;
+	}
+
+	buildColumnSearchFilter(): IColumnSearchFilter {
+		let factory: IColumnSearchFilterFactory = this.$injector.get(columnSearchFactoryName);
+		let filter: IColumnSearchFilter = factory.getInstance();
+		this.parent._filters.push(filter);
+		return filter;
 	}
 }
 
