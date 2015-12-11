@@ -71,7 +71,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	}
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactothis.$injector.getry = <any>(__genericSearchFilter.factoryName);
+		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
 		this._searchFilter = factory.getInstance();
 		return this._searchFilter;
 	}
