@@ -10,7 +10,7 @@ __export(require('./onChangeTrigger'));
 __export(require('./trigger'));
 exports.defaultTriggers = 'onChange';
 exports.moduleName = 'rl.ui.services.autosave.triggers';
-exports.serviceName = 'autosaveTriggers';
+exports.factoryName = 'autosaveTriggers';
 var TriggerService = (function () {
     function TriggerService($rootScope, $timeout) {
         this.triggers = {
@@ -28,10 +28,16 @@ var TriggerService = (function () {
             }
         });
     };
-    TriggerService.$inject = ['$rootScope', '$timeout'];
     return TriggerService;
 })();
-exports.TriggerService = TriggerService;
+triggerServiceFactory.$inject = ['$rootScope', '$timeout'];
+function triggerServiceFactory($rootScope, $timeout) {
+    return {
+        getInstance: function () {
+            return new TriggerService($rootScope, $timeout);
+        },
+    };
+}
 angular.module(exports.moduleName, [])
-    .service(exports.serviceName, TriggerService);
+    .factory(exports.factoryName, triggerServiceFactory);
 //# sourceMappingURL=triggers.service.js.map

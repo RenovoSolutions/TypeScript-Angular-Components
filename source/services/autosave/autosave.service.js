@@ -7,12 +7,9 @@ exports.triggers = triggers;
 exports.moduleName = 'rl.utilities.services.autosave';
 exports.factoryName = 'autosaveFactory';
 var AutosaveService = (function () {
-    function AutosaveService($rootScope, $timeout, autosaveService, options, triggerService) {
+    function AutosaveService(autosaveService, options, triggerServiceFactory) {
         var _this = this;
-        this.$rootScope = $rootScope;
-        this.$timeout = $timeout;
         this.autosaveService = autosaveService;
-        this.triggerService = triggerService;
         this.autosave = function () {
             var data = [];
             for (var _i = 0; _i < arguments.length; _i++) {
@@ -47,8 +44,9 @@ var AutosaveService = (function () {
         this.contentForm = options.contentForm || this.nullForm();
         this.save = options.save;
         this.validate = options.validate;
+        this.triggerService = triggerServiceFactory.getInstance();
         this.configureTriggers(options);
-        triggerService.setTriggers(options.triggers, this.autosave);
+        this.triggerService.setTriggers(options.triggers, this.autosave);
     }
     AutosaveService.prototype.configureTriggers = function (options) {
         this.triggerService.triggers.onChange.configure({
@@ -68,12 +66,12 @@ var AutosaveService = (function () {
     };
     return AutosaveService;
 })();
-autosaveServiceFactory.$inject = ['$rootScope', '$timeout', autosaveAction_service_1.serviceName, triggers.serviceName];
-function autosaveServiceFactory($rootScope, $timeout, autosaveService, triggerService) {
+autosaveServiceFactory.$inject = [autosaveAction_service_1.serviceName, triggers.factoryName];
+function autosaveServiceFactory(autosaveService, triggerServiceFactory) {
     'use strict';
     return {
         getInstance: function (options) {
-            return new AutosaveService($rootScope, $timeout, autosaveService, options, triggerService);
+            return new AutosaveService(autosaveService, options, triggerServiceFactory);
         }
     };
 }

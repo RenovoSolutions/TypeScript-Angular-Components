@@ -20,7 +20,11 @@ var OnChangeTrigger = (function (_super) {
             return;
         }
         this.initChangeListeners();
-        this.$rootScope.$watch(function () { return _this.settings.form.$dirty; }, function (value) {
+        this.$rootScope.$watch(function () {
+            return _this.settings.form != null
+                ? _this.settings.form.$dirty
+                : false;
+        }, function (value) {
             if (value) {
                 _this.setTimer(autosave);
                 _this.clearChangeListener = _this.setChangeListener(function () {
