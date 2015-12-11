@@ -71,7 +71,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	}
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get(__genericSearchFilter.factoryName);
+		let factory: __genericSearchFilter.IGenericSearchFilterFactothis.$injector.getry = <any>(__genericSearchFilter.factoryName);
 		this._searchFilter = factory.getInstance();
 		return this._searchFilter;
 	}
@@ -108,18 +108,18 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 export class DataSourceBuilder implements IDataSourceBuilder {
 	constructor(private $injector: angular.auto.IInjectorService
 			, private parent: CardContainerBuilder) {
-		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get(dataSources.simpleDataSource.factoryName);
+		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get<any>(dataSources.simpleDataSource.factoryName);
 		parent._dataSource = factory.getInstance([]);
 	}
 
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType> {
-		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get(dataSources.simpleDataSource.factoryName);
+		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get<any>(dataSources.simpleDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(data);
 		return this.parent._dataSource;
 	}
 
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.dataServiceDataSource.IDataServiceFunction<TDataType>): dataSources.IDataSource<TDataType> {
-		let factory: dataSources.dataServiceDataSource.IDataServiceDataSourceFactory = this.$injector.get(dataSources.dataServiceDataSource.factoryName);
+		let factory: dataSources.dataServiceDataSource.IDataServiceDataSourceFactory = this.$injector.get<any>(dataSources.dataServiceDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet);
 		return this.parent._dataSource;
 	}
@@ -131,7 +131,7 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 			this.parent.useSearch();
 		}
 
-		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
+		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get<any>(dataSources.serverSearchDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
 		return this.parent._dataSource;
 	}
@@ -144,28 +144,28 @@ export class FilterBuilder implements IFilterBuilder {
 	}
 
 	buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup {
-		let factory: filterGroup.IFilterGroupFactory = this.$injector.get(filterGroup.factoryName);
+		let factory: filterGroup.IFilterGroupFactory = this.$injector.get<any>(filterGroup.factoryName);
 		let filter: filterGroup.IFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup {
-		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get(filterGroup.modeFilterGroup.factoryName);
+		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get<any>(filterGroup.modeFilterGroup.factoryName);
 		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup {
-		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get(filterGroup.rangeFilterGroup.factoryName);
+		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
 		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildColumnSearchFilter(): IColumnSearchFilter {
-		let factory: IColumnSearchFilterFactory = this.$injector.get(columnSearchFactoryName);
+		let factory: IColumnSearchFilterFactory = this.$injector.get<any>(columnSearchFactoryName);
 		let filter: IColumnSearchFilter = factory.getInstance();
 		this.parent._filters.push(filter);
 		return filter;
