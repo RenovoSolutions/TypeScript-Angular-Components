@@ -1,13 +1,18 @@
 'use strict';
 
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
-import { filters } from 'typescript-angular-utilities';
+import { filters, services } from 'typescript-angular-utilities';
+import __genericSearchFilter = services.genericSearchFilter;
 
 import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
 
 export interface ICardContainerBuilder {
+	dataSource: IDataSourceBuilder;
+
+	useSearch(): __genericSearchFilter.IGenericSearchFilter;
 }
 
 export interface IDataSourceBuilder {
@@ -33,8 +38,14 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 
 	dataSource: IDataSourceBuilder;
 
-	constructor($injector: angular.auto.IInjectorService) {
+	constructor(private $injector: angular.auto.IInjectorService) {
 		this.dataSource = new DataSourceBuilder($injector, this);
+	}
+
+	useSearch(): __genericSearchFilter.IGenericSearchFilter {
+		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get(__genericSearchFilter.factoryName);
+		this._searchFilter = factory.getInstance();
+		return this._searchFilter;
 	}
 }
 
@@ -60,6 +71,10 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	buildServerSearchDataSource<TDataType>(getDataSet: dataSources.serverSearchDataSource.IDataServiceSearchFunction<TDataType>
 										, getFilterModel?: dataSources.serverSearchDataSource.IGetFilterModel<TDataType>
 										, validateModel?: dataSources.serverSearchDataSource.IValidateFilterModel<TDataType>): dataSources.IDataSource<TDataType> {
+		if (_.isUndefined(this.parent._searchFilter)) {
+			this.parent.useSearch();
+		}
+
 		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
 		return this.parent._dataSource;
