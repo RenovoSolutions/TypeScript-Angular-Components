@@ -35,6 +35,9 @@ export interface ICardContainerBuilder {
 export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.dataServiceDataSource.IDataServiceFunction<TDataType>): dataSources.IDataSource<TDataType>;
+	buildServerSearchDataSource<TDataType>(getDataSet: dataSources.serverSearchDataSource.IDataServiceSearchFunction<TDataType>
+										, getFilterModel?: dataSources.serverSearchDataSource.IGetFilterModel<TDataType>
+										, validateModel?: dataSources.serverSearchDataSource.IValidateFilterModel<TDataType>): dataSources.IDataSource<TDataType>
 }
 
 export interface IFilterBuilder {
