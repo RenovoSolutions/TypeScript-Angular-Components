@@ -19,6 +19,7 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerService, CardContainerService } from './cardContainer.service';
+import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
 export var directiveName: string = 'rlCardContainer';
 export var controllerName: string = 'CardContainerController';
@@ -32,6 +33,9 @@ export interface ICardContainerScope extends angular.IScope {
 }
 
 export interface ICardContainerBindings {
+	builder: ICardContainerBuilder;
+
+	// deprecated - specify card container options using the builder
 	source: IDataSource<any>;
 	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
 	paging: boolean;
@@ -63,6 +67,8 @@ export interface ISelectionViewData {
 
 export class CardContainerController {
 	// bindings
+	builder: CardContainerBuilder;
+
 	source: IDataSource<any>;
 	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
 	paging: boolean;
@@ -94,6 +100,8 @@ export class CardContainerController {
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
 			, private parentChild: __parentChild.IParentChildBehaviorService) {
+		this.resolveBuilder();
+
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
@@ -334,6 +342,26 @@ export class CardContainerController {
 	private clearVisualSortIndicator(sort: ISort): void {
 		sort.column.sortDirection = null;
 	}
+
+	private resolveBuilder(): void {
+		if (this.builder._searchFilter != null) {
+			this.builder._filters.push(this.builder._searchFilter);
+		}
+
+		this.source = this.builder._dataSource;
+		this.filters = this.builder._filters;
+		this.paging = this.builder._paging;
+		this.columns = this.builder._columns;
+		this.containerData = this.builder.containerData;
+		this.cardController = this.builder.cardController;
+		this.cardControllerAs = this.builder.cardControllerAs;
+		this.cardAs = this.builder.cardAs;
+		this.clickableCards = this.builder._clickableCards;
+		this.maxColumnSorts = this.builder.maxColumnSorts;
+		this.permanentFooters = this.builder._permanentFooters;
+		this.selectableCards = this.builder._selectableCards;
+		this.disableSelection = this.builder._disableSelection;
+	}
 }
 
 cardContainer.$inject = ['$compile'];
@@ -347,6 +375,9 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 		controllerAs: 'cardContainer',
 		scope: {},
 		bindToController: {
+			// summary: a builder for the card container
+			builder: '=',
+
 			// summary: The data source for the card container
 			// remarks: Can be an array of objects, or an implementation of the data source contract: {
 			//     sorts: A list of sorts to apply to the data. Sorts should be in this format: {
