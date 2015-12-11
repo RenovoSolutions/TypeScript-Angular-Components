@@ -91,7 +91,7 @@ export interface ICardContainerBuilderFactory {
 }
 
 cardContainerBuilderFactory.$inject = ['$injector'];
-function cardContainerBuilderFactory($injector: angular.auto.IInjectorService): ICardContainerBuilderFactory {
+export function cardContainerBuilderFactory($injector: angular.auto.IInjectorService): ICardContainerBuilderFactory {
 	return {
 		getInstance(): ICardContainerBuilder {
 			return new CardContainerBuilder($injector);
