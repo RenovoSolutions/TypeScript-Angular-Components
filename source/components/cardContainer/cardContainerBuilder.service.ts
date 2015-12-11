@@ -53,7 +53,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_permanentFooters: boolean;
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
-	_searchFilter: filters.IFilter;
+	_searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
