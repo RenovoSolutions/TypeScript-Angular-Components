@@ -11,12 +11,25 @@ import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 
+export let factoryName: string = 'cardContainerBuilder';
+
 export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
 
+	containerData: any;
+	cardController: string;
+	cardControllerAs: string;
+	cardAs: string;
+	maxColumnSorts: number;
+	disableSelection: { (item: any): string };
+
 	useSearch(): __genericSearchFilter.IGenericSearchFilter;
 	usePaging(): void;
+	addColumn(column: IColumn): void;
+	useClickableCards(): void;
+	usePermanentFooters(): void;
+	useSelection(): void;
 }
 
 export interface IDataSourceBuilder {
@@ -36,12 +49,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_filters: filters.IFilter[];
 	_paging: boolean;
 	_columns: IColumn[];
-	_containerData: any;
-	_cardController: string;
-	_cardControllerAs: string;
-	_cardAs: string;
 	_clickableCards: boolean;
-	_maxColumnSorts: number;
 	_permanentFooters: boolean;
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
@@ -50,9 +58,16 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
 
+	containerData: any;
+	cardController: string;
+	cardControllerAs: string;
+	cardAs: string;
+	maxColumnSorts: number;
+
 	constructor(private $injector: angular.auto.IInjectorService) {
 		this.dataSource = new DataSourceBuilder($injector, this);
 		this.filters = new FilterBuilder($injector, this);
+		this._columns = [];
 	}
 
 	useSearch(): __genericSearchFilter.IGenericSearchFilter {
@@ -63,6 +78,30 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 
 	usePaging(): void {
 		this._paging = true;
+	}
+
+	addColumn(column: IColumn): void {
+		this._columns.push(column);
+	}
+
+	useClickableCards(): void {
+		this._clickableCards = true;
+	}
+
+	usePermanentFooters(): void {
+		this._permanentFooters = true;
+	}
+
+	useSelection(): void {
+		this._selectableCards = true;
+	}
+
+	set disableSelection(value: { (item: any): string }) {
+		if (!this._selectableCards) {
+			this.useSelection();
+		}
+
+		this._disableSelection = value;
 	}
 }
 
