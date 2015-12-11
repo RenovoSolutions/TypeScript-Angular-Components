@@ -344,6 +344,10 @@ export class CardContainerController {
 	}
 
 	private resolveBuilder(): void {
+		if (this.builder == null) {
+			return;
+		}
+
 		if (this.builder._searchFilter != null) {
 			this.builder._filters.push(this.builder._searchFilter);
 		}
