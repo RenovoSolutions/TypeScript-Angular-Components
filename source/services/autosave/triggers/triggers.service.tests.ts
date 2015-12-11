@@ -9,7 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
 import { Trigger, ITrigger } from './trigger';
-import { ITriggerService, serviceName, moduleName } from './triggers.service';
+import { ITriggerService, factoryName, moduleName } from './triggers.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -20,8 +20,8 @@ describe('autosaveTriggers', () => {
 	beforeEach(() => {
 		ng.mock.module(moduleName);
 
-		let services: any = test.angularFixture.inject(serviceName);
-		triggerService = services[serviceName];
+		let services: any = test.angularFixture.inject(factoryName);
+		triggerService = services[factoryName].getInstance();
 	});
 
 	it('should set the specified triggers', (): void => {

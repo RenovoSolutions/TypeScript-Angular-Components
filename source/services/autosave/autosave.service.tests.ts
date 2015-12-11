@@ -10,7 +10,6 @@ import test = services.test;
 
 import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
 import { Trigger, ITrigger } from './triggers/trigger';
-import { ITriggerService, serviceName as triggerServiceName } from './triggers/triggers.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -33,7 +32,6 @@ describe('autosave', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
-	let triggerService: ITriggerService;
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -53,11 +51,10 @@ describe('autosave', () => {
 			$setPristine: setPristineSpy,
 		};
 
-		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout', triggerServiceName);
+		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout');
 		autosaveFactory = services[factoryName];
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
-		triggerService = services[triggerServiceName];
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 	});
