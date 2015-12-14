@@ -20,9 +20,10 @@ import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 
 import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
-import { factoryName, cardContainerBuilderFactory } from './cardContainerBuilder.service';
+import * as builder from './cardContainerBuilder.service';
 
 export {
+	builder,
 	card,
 	cardSearch,
 	columnHeader,
@@ -37,7 +38,6 @@ export {
 
 export * from './cardContainer';
 export * from './cardContainer.service';
-export * from './cardContainerBuilder.service';
 export * from './column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer';
@@ -66,4 +66,4 @@ angular.module(moduleName, [
 ])
 	.directive(directiveName, cardContainer)
 	.controller(controllerName, CardContainerController)
-	.factory(factoryName, cardContainerBuilderFactory);
+	.factory(builder.factoryName, builder.cardContainerBuilderFactory);
