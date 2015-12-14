@@ -98,6 +98,7 @@ function dateTime(moment: moment.MomentStatic
 			useTime: '=',
 			min: '=',
 			max: '=',
+			validator: '=',
 		},
 		link: (scope: IDateTimeScope
 			, element: angular.IAugmentedJQuery
