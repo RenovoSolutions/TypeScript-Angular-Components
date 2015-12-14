@@ -100,7 +100,9 @@ export class CardContainerController {
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
 			, private parentChild: __parentChild.IParentChildBehaviorService) {
-		this.resolveBuilder();
+		if (this.builder != null) {
+			this.builder.setCardContainerProperties(this);
+		}
 
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
@@ -341,30 +343,6 @@ export class CardContainerController {
 
 	private clearVisualSortIndicator(sort: ISort): void {
 		sort.column.sortDirection = null;
-	}
-
-	private resolveBuilder(): void {
-		if (this.builder == null) {
-			return;
-		}
-
-		if (this.builder._searchFilter != null) {
-			this.builder._filters.push(this.builder._searchFilter);
-		}
-
-		this.source = this.builder._dataSource;
-		this.filters = this.builder._filters;
-		this.paging = this.builder._paging;
-		this.columns = this.builder._columns;
-		this.containerData = this.builder.containerData;
-		this.cardController = this.builder.cardController;
-		this.cardControllerAs = this.builder.cardControllerAs;
-		this.cardAs = this.builder.cardAs;
-		this.clickableCards = this.builder._clickableCards;
-		this.maxColumnSorts = this.builder.maxColumnSorts;
-		this.permanentFooters = this.builder._permanentFooters;
-		this.selectableCards = this.builder._selectableCards;
-		this.disableSelection = this.builder._disableSelection;
 	}
 }
 

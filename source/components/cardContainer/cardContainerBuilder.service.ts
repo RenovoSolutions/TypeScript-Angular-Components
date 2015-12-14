@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import { filters, services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
+import { CardContainerController } from './cardContainer';
 import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
@@ -138,6 +139,26 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		}
 
 		this._disableSelection = value;
+	}
+
+	setCardContainerProperties(cardContainer: CardContainerController): void {
+		if (this._searchFilter != null) {
+			this._filters.push(this._searchFilter);
+		}
+
+		cardContainer.source = this._dataSource;
+		cardContainer.filters = this._filters;
+		cardContainer.paging = this._paging;
+		cardContainer.columns = this._columns;
+		cardContainer.containerData = this.containerData;
+		cardContainer.cardController = this.cardController;
+		cardContainer.cardControllerAs = this.cardControllerAs;
+		cardContainer.cardAs = this.cardAs;
+		cardContainer.clickableCards = this._clickableCards;
+		cardContainer.maxColumnSorts = this.maxColumnSorts;
+		cardContainer.permanentFooters = this._permanentFooters;
+		cardContainer.selectableCards = this._selectableCards;
+		cardContainer.disableSelection = this._disableSelection;
 	}
 }
 
