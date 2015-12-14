@@ -6,6 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __parentChild = services.parentChildBehavior;
+import __genericSearchFilter = services.genericSearchFilter;
 
 import * as card from './card/card';
 import * as cardSearch from './cardSearch/cardSearch';
@@ -19,6 +20,7 @@ import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 
 import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
+import { factoryName, cardContainerBuilderFactory } from './cardContainerBuilder.service';
 
 export {
 	card,
@@ -35,6 +37,7 @@ export {
 
 export * from './cardContainer';
 export * from './cardContainer.service';
+export * from './cardContainerBuilder.service';
 export * from './column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer';
@@ -45,6 +48,7 @@ angular.module(moduleName, [
 	__object.moduleName,
 	__array.moduleName,
 	__parentChild.moduleName,
+	__genericSearchFilter.moduleName,
 
 	// components
 	card.moduleName,
@@ -61,4 +65,5 @@ angular.module(moduleName, [
 	sorts.moduleName,
 ])
 	.directive(directiveName, cardContainer)
-	.controller(controllerName, CardContainerController);
+	.controller(controllerName, CardContainerController)
+	.factory(factoryName, cardContainerBuilderFactory);

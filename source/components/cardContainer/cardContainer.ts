@@ -19,6 +19,7 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerService, CardContainerService } from './cardContainer.service';
+import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
 export var directiveName: string = 'rlCardContainer';
 export var controllerName: string = 'CardContainerController';
@@ -32,6 +33,9 @@ export interface ICardContainerScope extends angular.IScope {
 }
 
 export interface ICardContainerBindings {
+	builder: ICardContainerBuilder;
+
+	// deprecated - specify card container options using the builder
 	source: IDataSource<any>;
 	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
 	paging: boolean;
@@ -63,6 +67,8 @@ export interface ISelectionViewData {
 
 export class CardContainerController {
 	// bindings
+	builder: CardContainerBuilder;
+
 	source: IDataSource<any>;
 	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
 	paging: boolean;
@@ -94,6 +100,10 @@ export class CardContainerController {
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
 			, private parentChild: __parentChild.IParentChildBehaviorService) {
+		if (this.builder != null) {
+			this.builder.setCardContainerProperties(this);
+		}
+
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
@@ -347,6 +357,9 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 		controllerAs: 'cardContainer',
 		scope: {},
 		bindToController: {
+			// summary: a builder for the card container
+			builder: '=',
+
 			// summary: The data source for the card container
 			// remarks: Can be an array of objects, or an implementation of the data source contract: {
 			//     sorts: A list of sorts to apply to the data. Sorts should be in this format: {
