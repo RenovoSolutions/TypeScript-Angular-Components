@@ -7,6 +7,7 @@ var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 var __array = typescript_angular_utilities_1.services.array;
 var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
+var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearchFilter;
 var card = require('./card/card');
 exports.card = card;
 var cardSearch = require('./cardSearch/cardSearch');
@@ -28,6 +29,8 @@ exports.selectionControl = selectionControl;
 var sorts = require('./sorts/sorts.module');
 exports.sorts = sorts;
 var cardContainer_1 = require('./cardContainer');
+var builder = require('./cardContainerBuilder.service');
+exports.builder = builder;
 __export(require('./cardContainer'));
 __export(require('./cardContainer.service'));
 __export(require('./column'));
@@ -38,6 +41,7 @@ angular.module(exports.moduleName, [
     __object.moduleName,
     __array.moduleName,
     __parentChild.moduleName,
+    __genericSearchFilter.moduleName,
     // components
     card.moduleName,
     cardSearch.moduleName,
@@ -52,5 +56,6 @@ angular.module(exports.moduleName, [
     sorts.moduleName,
 ])
     .directive(cardContainer_1.directiveName, cardContainer_1.cardContainer)
-    .controller(cardContainer_1.controllerName, cardContainer_1.CardContainerController);
+    .controller(cardContainer_1.controllerName, cardContainer_1.CardContainerController)
+    .factory(builder.factoryName, builder.cardContainerBuilderFactory);
 //# sourceMappingURL=cardContainer.module.js.map

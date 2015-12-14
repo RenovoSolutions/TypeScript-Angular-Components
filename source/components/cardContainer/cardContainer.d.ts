@@ -7,6 +7,7 @@ import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
 import { ICardContainerService } from './cardContainer.service';
+import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
 export declare var defaultMaxColumnSorts: number;
@@ -16,6 +17,7 @@ export interface ICardContainerScope extends angular.IScope {
     containerData: any;
 }
 export interface ICardContainerBindings {
+    builder: ICardContainerBuilder;
     source: IDataSource<any>;
     filters: filters.IFilter[] | {
         [index: string]: filters.IFilter;
@@ -49,6 +51,7 @@ export declare class CardContainerController {
     private array;
     private dataPagerFactory;
     private parentChild;
+    builder: CardContainerBuilder;
     source: IDataSource<any>;
     filters: filters.IFilter[] | {
         [index: string]: filters.IFilter;

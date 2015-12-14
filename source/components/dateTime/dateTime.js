@@ -44,6 +44,7 @@ function dateTime(moment, dateTimeFormatStrings) {
             useTime: '=',
             min: '=',
             max: '=',
+            validator: '=',
         },
         link: function (scope, element, attrs, ngModel) {
             var dateTime = scope.dateTime;

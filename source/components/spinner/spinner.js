@@ -51,6 +51,7 @@ function spinner($timeout, stringUtility, numberUtility) {
             ngDisabled: '=',
             spinnerId: '@',
             name: '@',
+            validator: '=',
         },
         link: function (scope, element, attrs, ngModel) {
             var spinner = scope.spinner;

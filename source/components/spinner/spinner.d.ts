@@ -17,6 +17,7 @@ export interface ISpinnerBindings {
     ngDisabled: boolean;
     spinnerId: string;
     name: string;
+    validator: __validation.IValidationHandler;
 }
 export declare class SpinnerController {
     min: number;

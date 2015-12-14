@@ -60,6 +60,9 @@ var CardContainerController = (function () {
                 });
             }
         };
+        if (this.builder != null) {
+            this.builder.setCardContainerProperties(this);
+        }
         this.dataSource = this.source;
         this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
         this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : exports.defaultMaxColumnSorts;
@@ -248,6 +251,8 @@ function cardContainer($compile) {
         controllerAs: 'cardContainer',
         scope: {},
         bindToController: {
+            // summary: a builder for the card container
+            builder: '=',
             // summary: The data source for the card container
             // remarks: Can be an array of objects, or an implementation of the data source contract: {
             //     sorts: A list of sorts to apply to the data. Sorts should be in this format: {
