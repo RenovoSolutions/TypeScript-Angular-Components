@@ -39,6 +39,7 @@ export interface ISpinnerBindings {
 	ngDisabled: boolean;
 	spinnerId: string;
 	name: string;
+	validator: __validation.IValidationHandler;
 }
 
 interface ISpinnerScope extends angular.IScope {
@@ -100,6 +101,7 @@ function spinner($timeout: angular.ITimeoutService
 			ngDisabled: '=',
 			spinnerId: '@',
 			name: '@',
+			validator: '=',
 		},
 		link(scope: ISpinnerScope
 			, element: angular.IAugmentedJQuery
