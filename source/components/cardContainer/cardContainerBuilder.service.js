@@ -1,5 +1,7 @@
 'use strict';
 var _ = require('lodash');
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearchFilter;
 var dataSources = require('./dataSources/dataSources.module');
 var filterGroup = require('./filters/filterGroup/filterGroup.module');
 var columnSearchFilter_service_1 = require('./filters/columnSearchFilter/columnSearchFilter.service');
@@ -12,7 +14,7 @@ var CardContainerBuilder = (function () {
         this._columns = [];
     }
     CardContainerBuilder.prototype.useSearch = function () {
-        var factory = this.$injector.get(exports.factoryName);
+        var factory = this.$injector.get(__genericSearchFilter.factoryName);
         this._searchFilter = factory.getInstance();
         return this._searchFilter;
     };
