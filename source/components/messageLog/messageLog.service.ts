@@ -9,10 +9,10 @@ export var factoryName: string = 'messageLog';
 export var defaultPageSize: number = 10;
 
 export interface IMessage {
+	id?: number;
 	message: string;
-	createdBy: string,
-	createdDate: string,
-	createdTime: string,
+	createdBy?: string,
+	createdDate?: Date,
 }
 
 export interface IGetMessagesResult {
@@ -21,12 +21,12 @@ export interface IGetMessagesResult {
 }
 
 export interface IMessageLogDataService {
-	saveMessage(message: string): ng.IPromise<void>;
+	saveMessage(message: IMessage): ng.IPromise<void>;
 	getMessages(startFrom: number, quantity: number): ng.IPromise<IGetMessagesResult>;
 }
 
 export interface IMessageLog {
-	addMessage(message: string): ng.IPromise<void>;
+	addMessage(message: IMessage): ng.IPromise<void>;
 	visibleMessages: IMessage[];
 
 	getNextPage(): ng.IPromise<void>;
@@ -85,7 +85,7 @@ export class MessageLog {
 	}
 	/* tslint:enable */
 
-	addMessage(message: string): ng.IPromise<void> {
+	addMessage(message: IMessage): ng.IPromise<void> {
 		return this.dataService.saveMessage(message).then((): void => {
 			this.getTopPage();
 		});

@@ -55,7 +55,7 @@ export class EditableMessageLogController {
 		this.savingMessage = true;
 		var message: string = this.newMessage;
 		this.newMessage = '';
-		return this.messageLogService.addMessage(message);
+		return this.messageLogService.addMessage({ message: message });
 	}
 }
 
