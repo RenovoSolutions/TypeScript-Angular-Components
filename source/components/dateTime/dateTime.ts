@@ -13,6 +13,7 @@ import { services } from 'typescript-angular-utilities';
 
 import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
+import __object = services.object;
 
 import {
 	IComponentValidator,
@@ -81,9 +82,10 @@ export class DateTimeController {
 	}
 }
 
-dateTime.$inject = [services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName];
+dateTime.$inject = [services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName, __object.serviceName];
 function dateTime(moment: moment.MomentStatic
-				, dateTimeFormatStrings: __dateTimeFormatStrings.IDateFormatStrings): angular.IDirective {
+				, dateTimeFormatStrings: __dateTimeFormatStrings.IDateFormatStrings
+				, object: __object.IObjectUtility): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -117,9 +119,9 @@ function dateTime(moment: moment.MomentStatic
 				= dateTime.max != null ? dateTime.max : defaults.maxDate;
 
 			scope.$watch((): any => { return ngModel.$viewValue; }, (newValue: any): void => {
-				if (newValue !== '') {
-					dateTime.validFormat = moment(newValue).isValid();
-				}
+				dateTime.validFormat = object.isNullOrEmpty(newValue)
+									? true
+									: moment(newValue).isValid();
 			});
 
 			// --- Implementation ---
@@ -154,6 +156,6 @@ function dateTime(moment: moment.MomentStatic
 	};
 }
 
-angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, componentValidatorModuleName])
+angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, componentValidatorModuleName, __object.moduleName])
 	.directive(directiveName, dateTime)
 	.controller(controllerName, DateTimeController);
