@@ -169,6 +169,6 @@ function spinner($timeout: angular.ITimeoutService
 	};
 }
 
-angular.module(moduleName, [__string.moduleName, componentValidatorModuleName])
+angular.module(moduleName, [__string.moduleName, componentValidatorModuleName, __number.moduleName])
 	.directive(directiveName, spinner)
 	.controller(controllerName, SpinnerController);
