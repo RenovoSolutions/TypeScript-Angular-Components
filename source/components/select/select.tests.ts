@@ -31,6 +31,10 @@ describe('SelectController', () => {
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
+		ngModel = {
+			$setViewValue: sinon.spy(),
+		};
+
 		options = [
 			{ value: 1 },
 			{ value: 2 },
