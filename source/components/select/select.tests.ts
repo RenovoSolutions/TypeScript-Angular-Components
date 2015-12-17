@@ -98,7 +98,7 @@ describe('SelectController', () => {
 		});
 
 		it('should load the options asynchronously if no options are specified and a loader is provided', (): void => {
-			buildController(null, null, getOptions);
+			buildController(undefined, null, getOptions);
 
 			expect(dropdown.options).to.not.exist;
 			sinon.assert.calledOnce(getOptions);
@@ -114,7 +114,7 @@ describe('SelectController', () => {
 		});
 
 		it('should still add a null option to the options when loading options asynchronously', (): void => {
-			buildController(null, 'None', getOptions);
+			buildController(undefined, 'None', getOptions);
 			scope.$digest();
 
 			expect(dropdown.options[0].__isNullOption).to.be.true;
