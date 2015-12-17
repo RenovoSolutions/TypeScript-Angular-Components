@@ -16,6 +16,10 @@ class SelectFilter<T> implements ISelectFilter<T> {
 	constructor(private valueSelector: string | { (item:T):any }) {}
 
 	filter(item: T): boolean {
+		if (this.selectedValue == null) {
+			return true;
+		}
+		
 		return this.getValue(item) === this.selectedValue;
 	}
 
