@@ -17,6 +17,7 @@ export interface ISelectFilterBindings {
 	source: IDataSource<any>;
 	label: string;
 	selector: string | { (item: any): string };
+	nullOption: string;
 
 }
 
@@ -31,6 +32,7 @@ export class SelectFilterController implements ISelectFilterController {
 	source: IDataSource<any>;
 	label: string;
 	selector: string | { (item: any): string };
+	nullOption: string;
 
 	static $inject = ['$scope'];
 	constructor(private $scope: angular.IScope) { }
@@ -62,7 +64,8 @@ export function selectFilter(): angular.IDirective {
 			getOptions: '&',
 			source: '=',
 			label: '@',
-			selector:'='
+			selector: '=',
+			nullOption: '@'
 		},
 	};
 }
