@@ -130,7 +130,7 @@ describe('SelectController', () => {
 		});
 
 		it('should add a special null option to the beginning of the options list', (): void => {
-			expect(dropdown.options[0].__isNullValue).to.be.true;
+			expect(dropdown.options[0].__isNullOption).to.be.true;
 		});
 
 		it('should set the model view value to null if the null option is selected', (): void => {
