@@ -74,7 +74,10 @@ describe('EditableMessageLogController', () => {
 		expect(log.savingMessage).to.be.true;
 		expect(log.newMessage).to.be.empty;
 		sinon.assert.calledOnce(messageLogService.addMessage);
-		sinon.assert.calledWith(messageLogService.addMessage, 'a message');
+
+		var args = messageLogService.addMessage.firstCall.args;
+		expect(args).to.have.length(1);
+		expect(args[0].message).to.equal('a message');
 	});
 
 	it('should do nothing if the message is empty or whitespace', (): void => {

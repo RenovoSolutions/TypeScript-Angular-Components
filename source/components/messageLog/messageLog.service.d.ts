@@ -2,21 +2,21 @@ import * as ng from 'angular';
 export declare var factoryName: string;
 export declare var defaultPageSize: number;
 export interface IMessage {
+    id?: number;
     message: string;
-    createdBy: string;
-    createdDate: string;
-    createdTime: string;
+    createdBy?: string;
+    createdDate?: Date;
 }
 export interface IGetMessagesResult {
     messages: IMessage[];
     hasMoreMessages: boolean;
 }
 export interface IMessageLogDataService {
-    saveMessage(message: string): ng.IPromise<void>;
+    saveMessage(message: IMessage): ng.IPromise<void>;
     getMessages(startFrom: number, quantity: number): ng.IPromise<IGetMessagesResult>;
 }
 export interface IMessageLog {
-    addMessage(message: string): ng.IPromise<void>;
+    addMessage(message: IMessage): ng.IPromise<void>;
     visibleMessages: IMessage[];
     getNextPage(): ng.IPromise<void>;
     getPreviousPage(): ng.IPromise<void>;
@@ -40,7 +40,7 @@ export declare class MessageLog {
     hasForwardMessages: boolean;
     hasBackwardMessages: boolean;
     dataService: IMessageLogDataService;
-    addMessage(message: string): ng.IPromise<void>;
+    addMessage(message: IMessage): ng.IPromise<void>;
     getNextPage(): ng.IPromise<void>;
     getPreviousPage(): ng.IPromise<void>;
     getTopPage(): ng.IPromise<void>;

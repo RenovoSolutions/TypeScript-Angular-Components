@@ -6,6 +6,7 @@ var $ = require('jquery');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __dateTimeFormatStrings = typescript_angular_utilities_1.services.date;
+var __object = typescript_angular_utilities_1.services.object;
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.dateTime';
 exports.directiveName = 'rlDateTime';
@@ -28,8 +29,8 @@ var DateTimeController = (function () {
     return DateTimeController;
 })();
 exports.DateTimeController = DateTimeController;
-dateTime.$inject = [typescript_angular_utilities_1.services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName];
-function dateTime(moment, dateTimeFormatStrings) {
+dateTime.$inject = [typescript_angular_utilities_1.services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName, __object.serviceName];
+function dateTime(moment, dateTimeFormatStrings, object) {
     'use strict';
     return {
         restrict: 'E',
@@ -56,9 +57,9 @@ function dateTime(moment, dateTimeFormatStrings) {
             var min = dateTime.min != null ? dateTime.min : defaults.minDate;
             var max = dateTime.max != null ? dateTime.max : defaults.maxDate;
             scope.$watch(function () { return ngModel.$viewValue; }, function (newValue) {
-                if (newValue !== '') {
-                    dateTime.validFormat = moment(newValue).isValid();
-                }
+                dateTime.validFormat = object.isNullOrEmpty(newValue)
+                    ? true
+                    : moment(newValue).isValid();
             });
             // --- Implementation ---
             element.datetimepicker({
@@ -93,7 +94,7 @@ function dateTime(moment, dateTimeFormatStrings) {
         },
     };
 }
-angular.module(exports.moduleName, [typescript_angular_utilities_1.services.moment.moduleName, typescript_angular_utilities_1.services.date.moduleName, componentValidator_service_1.moduleName])
+angular.module(exports.moduleName, [typescript_angular_utilities_1.services.moment.moduleName, typescript_angular_utilities_1.services.date.moduleName, componentValidator_service_1.moduleName, __object.moduleName])
     .directive(exports.directiveName, dateTime)
     .controller(exports.controllerName, DateTimeController);
 //# sourceMappingURL=dateTime.js.map

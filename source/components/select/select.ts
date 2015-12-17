@@ -10,6 +10,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
+import __object = services.object;
 
 import {
 	IComponentValidator,
@@ -30,24 +31,34 @@ export class SelectController {
 	validator: __validation.IValidationHandler;
 	label: string;
 	ngDisabled: boolean;
+	nullOption: string;
 
 	ngModel: angular.INgModelController;
 	selectValidator: IComponentValidator;
 	loading: boolean;
+
+	private _nullOption: any = {
+		__isNullOption: true,
+	};
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
 	}
 
 	set selection(value: any) {
-		this.ngModel.$setViewValue(value);
+		if (value.__isNullOption) {
+			this.ngModel.$setViewValue(null);
+		} else {
+			this.ngModel.$setViewValue(value);
+		}
 	}
 
-	static $inject: string[] = ['$element', '$scope', '$q', componentValidatorFactoryName];
+	static $inject: string[] = ['$element', '$scope', '$q', componentValidatorFactoryName, __object.serviceName];
 	constructor($element: angular.IAugmentedJQuery
 			, $scope: angular.IScope
 			, private $q: angular.IQService
-			, componentValidatorFactory: IComponentValidatorFactory) {
+			, componentValidatorFactory: IComponentValidatorFactory
+			, private object: __object.IObjectUtility) {
 		this.ngModel = $element.controller('ngModel');
 
 		if (_.isUndefined(this.options)) {
@@ -56,6 +67,8 @@ export class SelectController {
 				this.options = options;
 				this.loading = false;
 			});
+		} else {
+			this.options = this.configureOptions(this.options);
 		}
 
 		if (!_.isUndefined(this.validator)) {
@@ -72,17 +85,31 @@ export class SelectController {
 			return null;
 		}
 
+		if (item.__isNullOption) {
+			return this.nullOption;
+		}
+
 		return _.isFunction(this.selector)
 			? (<{ (item: any): string }>this.selector)(item)
 			: item[<string>this.selector];
 	}
 
 	loadItems(): angular.IPromise<any[]> {
+		let promise: angular.IPromise<any[]>;
 		if (_.isFunction(this.getOptions)) {
-			return this.getOptions();
+			promise = this.getOptions();
 		} else {
-			return this.$q.when(this.options);
+			promise = this.$q.when(this.options);
 		}
+		return promise.then((options: any[]): any[] => { return this.configureOptions(options); });
+	}
+
+	configureOptions(options: any[]): any[] {
+		if (!this.object.isNullOrWhitespace(this.nullOption)) {
+			options.unshift(this._nullOption);
+		}
+
+		return options;
 	}
 }
 
@@ -101,6 +128,7 @@ export function select(): angular.IDirective {
 			validator: '=',
 			label: '@',
 			ngDisabled: '=',
+			nullOption: '@',
 		},
 	};
 }

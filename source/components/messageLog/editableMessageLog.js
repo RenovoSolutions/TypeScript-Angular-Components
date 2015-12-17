@@ -27,7 +27,7 @@ var EditableMessageLogController = (function () {
         this.savingMessage = true;
         var message = this.newMessage;
         this.newMessage = '';
-        return this.messageLogService.addMessage(message);
+        return this.messageLogService.addMessage({ message: message });
     };
     EditableMessageLogController.$inject = ['$scope', messageLog_service_1.factoryName, __object.serviceName];
     return EditableMessageLogController;
@@ -37,7 +37,7 @@ function editableMessageLog() {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<form ng-submit=\"log.add()\">\n\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" ng-model=\"log.newMessage\" placeholder=\"Enter log message\" />\n\t\t\t\t\t<span class=\"input-group-btn\">\n\t\t\t\t\t\t<button class=\"btn btn-default\" type=\"submit\" ng-disabled=\"log.busy\">\n\t\t\t\t\t\t\t<rl-busy loading=\"log.savingMessage\"></rl-busy> Add\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"shallow well\">\n\t\t\t\t\t<rl-message-log service=\"log.service\" page-size=\"log.pageSize\" message-log=\"log.messageLogService\"></rl-message-log>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t",
+        template: "\n\t\t\t<form ng-submit=\"log.add()\">\n\t\t\t\t<div class=\"input-group\">\n\t\t\t\t\t<input type=\"text\" class=\"form-control\" ng-model=\"log.newMessage\" placeholder=\"Enter log message\" />\n\t\t\t\t\t<span class=\"input-group-btn\">\n\t\t\t\t\t\t<button class=\"btn btn-default\" type=\"submit\" ng-disabled=\"log.busy\">\n\t\t\t\t\t\t\t<rl-busy loading=\"log.savingMessage\"></rl-busy> Add\n\t\t\t\t\t\t</button>\n\t\t\t\t\t</span>\n\t\t\t\t</div>\n\t\t\t\t<div class=\"message-box\">\n\t\t\t\t\t<rl-message-log service=\"log.service\" page-size=\"log.pageSize\" message-log=\"log.messageLogService\"></rl-message-log>\n\t\t\t\t</div>\n\t\t\t</form>\n\t\t",
         controller: exports.controllerName,
         controllerAs: 'log',
         scope: {},

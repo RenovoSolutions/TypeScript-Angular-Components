@@ -109,7 +109,7 @@ function spinner($timeout, stringUtility, numberUtility) {
         }
     };
 }
-angular.module(exports.moduleName, [__string.moduleName, componentValidator_service_1.moduleName])
+angular.module(exports.moduleName, [__string.moduleName, componentValidator_service_1.moduleName, __number.moduleName])
     .directive(exports.directiveName, spinner)
     .controller(exports.controllerName, SpinnerController);
 //# sourceMappingURL=spinner.js.map
