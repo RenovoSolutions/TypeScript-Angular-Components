@@ -41,12 +41,12 @@ export class SelectFilterController implements ISelectFilterController {
 		return this.filter.selectedValue;
 	}
 	public set selectedValue(v: any) {
+		this.filter.selectedValue = v;
 		if (this.source != null) {
 			this.source.refresh();
 		}else {
             this.$scope.$emit('dataSource.requestRefresh'); //*event?
         }
-		this.filter.selectedValue = v;
 	}
 }
 
