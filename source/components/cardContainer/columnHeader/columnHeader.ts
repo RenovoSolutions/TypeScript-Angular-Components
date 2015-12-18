@@ -51,10 +51,15 @@ export function cardColumnHeader($compile: angular.ICompileService): angular.IDi
 					}
 				},
 				post(scope: ICardColumnHeaderScope, element: angular.IAugmentedJQuery): void {
+					if (scope.column.displayColumn != null && scope.column.displayColumn === false) {
+						element.remove();
+						return;
+					}
 					var container: JQuery = element.find('.template-container');
 					container.append(scope.renderedTemplate);
 
 					scope.sortDirection = SortDirection;
+
 				},
 			};
 		}
