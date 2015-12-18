@@ -19,14 +19,18 @@ class SelectFilter<T> implements ISelectFilter<T> {
 		if (this.selectedValue == null) {
 			return true;
 		}
-		
+
 		return this.getValue(item) === this.selectedValue;
 	}
 
-	private getValue(item: T):any {
-		return (_.isFunction(this.valueSelector)
-			? (<{ (item: T): any }>this.valueSelector)(item)
-			: item[<string>this.valueSelector]);
+	private getValue(item: T): any {
+		if (_.isFunction(this.valueSelector)) {
+			let func = (<{ (item: T): any }>this.valueSelector);
+			return(func(item))
+		} else {
+			let property = <string>this.valueSelector;
+			return item[property];
+		}
 	}
 
 }
