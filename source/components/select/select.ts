@@ -133,6 +133,6 @@ export function select(): angular.IDirective {
 	};
 }
 
-angular.module(moduleName, ['ui.select', componentValidatorModuleName])
+angular.module(moduleName, ['ui.select', componentValidatorModuleName, __object.moduleName])
 	.directive(directiveName, select)
 	.controller(controllerName, SelectController);

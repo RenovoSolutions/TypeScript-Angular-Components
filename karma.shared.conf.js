@@ -1,6 +1,7 @@
 // Karma default configuration
 
 var webpackRawLoader = require('./webpack.raw-loader');
+var webpackCssLoader = require('./webpack.css-loader');
 
 module.exports = function (karma, karmaSettings) {
 	var karmaConfig = karmaSettings(karma, [
@@ -9,6 +10,7 @@ module.exports = function (karma, karmaSettings) {
 		'test-bootstrapper.js',
 	]);
 	webpackRawLoader(karmaConfig.webpack);
+	webpackCssLoader(karmaConfig.webpack);
 	karmaConfig.webpack.externals = {
 		'jquery': '$',
 		'angular': 'angular',
