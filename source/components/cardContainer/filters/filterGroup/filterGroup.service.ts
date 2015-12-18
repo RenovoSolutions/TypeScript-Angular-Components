@@ -16,7 +16,7 @@ export interface IFilterGroupSettings {
 
 export interface IFilterOption extends filters.IFilter {
 	label: string;
-	count: number;
+	count?: number;
 }
 
 export interface IFilterGroup extends filters.IFilterWithCounts {
