@@ -10,6 +10,7 @@ import { CardContainerController } from './cardContainer';
 import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
+import * as selectFilter from './filters/selectFilter/selectFilter.module';
 import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 
 import IDataSource = dataSources.IDataSource;
@@ -25,6 +26,7 @@ import IModeFilterGroup = filterGroup.modeFilterGroup.IModeFilterGroup;
 import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSettings;
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
+import ISelectFilter = selectFilter.ISelectFilter;
 
 export let factoryName: string = 'cardContainerBuilder';
 
@@ -44,6 +46,7 @@ export {
 	IModeFilterGroupSettings,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
+	ISelectFilter,
 }
 
 export interface ICardContainerBuilder {
@@ -77,6 +80,7 @@ export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
+	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T>;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
 }
@@ -217,6 +221,13 @@ export class FilterBuilder implements IFilterBuilder {
 	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup {
 		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
 		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
+		this.parent._filters.push(filter);
+		return filter;
+	}
+
+	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T> {
+		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
+		let filter: ISelectFilter<T> = factory.getInstance(valueSelector);
 		this.parent._filters.push(filter);
 		return filter;
 	}

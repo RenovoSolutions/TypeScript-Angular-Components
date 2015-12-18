@@ -2,7 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	function TestController() {
+	TestController.$inject = ['selectFilter'];
+	function TestController(selectFilterFactory) {
 		var self = this;
 		self.text = null;
 		self.options = [
@@ -18,5 +19,14 @@
 			},
 			errorMessage: 'String must be valid',
 		};
+		self.filter = selectFilterFactory.getInstance('value');
+		self.filterOptions = [
+			{  display: 1},
+			{  display: 2},
+			{ display: 3},
+			{ display: 4},
+			{ display: 5}
+
+		];
 	}
 }());
