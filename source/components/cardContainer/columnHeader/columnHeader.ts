@@ -51,7 +51,7 @@ export function cardColumnHeader($compile: angular.ICompileService): angular.IDi
 					}
 				},
 				post(scope: ICardColumnHeaderScope, element: angular.IAugmentedJQuery): void {
-					if (scope.column.displayColumn != null && scope.column.displayColumn === false) {
+					if (scope.column.displayColumnHeader != null && scope.column.displayColumnHeader === false) {
 						element.remove();
 						return;
 					}

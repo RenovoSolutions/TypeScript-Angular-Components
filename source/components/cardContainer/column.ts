@@ -18,7 +18,7 @@ export interface ISecondarySorts {
 export interface IColumn {
 	label: string;
 	description?: string;
-	displayColumn?: boolean;
+	displayColumnHeader?: boolean;
 	size: IBreakpointSize | number;
 	getValue<TItemType>(item: TItemType): number | string | boolean;
 	headerTemplateUrl?: string;
