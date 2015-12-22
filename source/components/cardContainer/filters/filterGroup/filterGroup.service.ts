@@ -14,9 +14,14 @@ export interface IFilterGroupSettings {
 	options: IFilterOption[];
 }
 
-export interface IFilterOption extends filters.IFilter {
+export interface IFilterOption {
 	label: string;
-	count: number;
+	type?: string;
+	filter<TItemType>(item: TItemType): boolean;
+}
+
+interface IConfiguredFilterOption extends IFilterOption {
+	count?: number;
 }
 
 export interface IFilterGroup extends filters.IFilterWithCounts {
@@ -60,7 +65,7 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	setOptionCounts(counts: number[]): void {
-		_.each(this.options, (option: IFilterOption): void => {
+		_.each(this.options, (option: IConfiguredFilterOption): void => {
 			if (_.has(counts, option.type)) {
 				option.count = counts[option.type];
 			}
@@ -68,7 +73,7 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	updateOptionCounts<TDataType>(filteredDataSet: TDataType[]): void {
-		_.each(this.options, (option: IFilterOption): void => {
+		_.each(this.options, (option: IConfiguredFilterOption): void => {
 			option.count = _.filter(filteredDataSet, option.filter, option).length;
 		});
 	}
