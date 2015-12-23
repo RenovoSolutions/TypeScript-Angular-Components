@@ -3,7 +3,7 @@
 		<div class="validation-input-group">
 			<div class="validation-input" ng-class="{ 'error': spinner.ngModel.$invalid }">
 				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
-                <span class="error">{{spinner.spinnerValidator.error}}</span>
+                <span class="error" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
                 <i class="fa fa-asterisk text-danger" ng-show="spinner.ngModel.$error.required"></i>
 			</div>
 		</div>
