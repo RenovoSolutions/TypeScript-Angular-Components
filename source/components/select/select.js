@@ -104,7 +104,7 @@ function select() {
     };
 }
 exports.select = select;
-angular.module(exports.moduleName, ['ui.select', componentValidator_service_1.moduleName])
+angular.module(exports.moduleName, ['ui.select', componentValidator_service_1.moduleName, __object.moduleName])
     .directive(exports.directiveName, select)
     .controller(exports.controllerName, SelectController);
 //# sourceMappingURL=select.js.map

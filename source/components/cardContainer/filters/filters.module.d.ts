@@ -1,4 +1,5 @@
 import * as columnSearchFilter from './columnSearchFilter/columnSearchFilter.service';
 import * as filterGroup from './filterGroup/filterGroup.module';
-export { columnSearchFilter, filterGroup };
+import * as selectFilter from './selectFilter/selectFilter.module';
+export { columnSearchFilter, filterGroup, selectFilter };
 export declare var moduleName: string;

@@ -6,9 +6,10 @@ export interface IFilterGroupSettings {
     type: string;
     options: IFilterOption[];
 }
-export interface IFilterOption extends filters.IFilter {
+export interface IFilterOption {
     label: string;
-    count: number;
+    type?: string;
+    filter<TItemType>(item: TItemType): boolean;
 }
 export interface IFilterGroup extends filters.IFilterWithCounts {
     label: string;

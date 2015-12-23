@@ -31,6 +31,10 @@ function cardColumnHeader($compile) {
                     }
                 },
                 post: function (scope, element) {
+                    if (scope.column.displayColumnHeader != null && scope.column.displayColumnHeader === false) {
+                        element.remove();
+                        return;
+                    }
                     var container = element.find('.template-container');
                     container.append(scope.renderedTemplate);
                     scope.sortDirection = sortDirection_1.SortDirection;
