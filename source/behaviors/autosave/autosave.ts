@@ -105,7 +105,7 @@ export function autosave(): angular.IDirective {
 		link(scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
 			let autosaveController: AutosaveController = controllers[0];
 			autosaveController.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
-				element.on('keyup', scope.$apply(callback));
+				element.on('keyup', (): void => { scope.$apply(callback); });
 				return (): void => {
 					element.off('keyup');
 				};
