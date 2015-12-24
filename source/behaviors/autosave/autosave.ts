@@ -79,6 +79,7 @@ export class AutosaveController {
 					contentForm: contentForm,
 					debounceDuration: debounce,
 					triggers: $attrs.triggers,
+					setChangeListener: keyupListener,
 				});
 
 				var behavior: IAutosaveBehavior = {
