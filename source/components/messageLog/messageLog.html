@@ -5,7 +5,7 @@
 			<template default>
 				<div ng-bind-html="entry.message"></div>
 				<div class="byline">{{entry.createdBy}}</div>
-				<div class="byline">{{entry.createdDate}} {{entry.createdTime}} UTC</div>
+				<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
 			</template>
 		</rl-generic-container>
 	</div>
