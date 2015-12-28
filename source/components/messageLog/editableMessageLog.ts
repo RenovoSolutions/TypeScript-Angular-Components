@@ -73,7 +73,7 @@ export function editableMessageLog(): angular.IDirective {
 						</button>
 					</span>
 				</div>
-				<div class="message-box">
+				<div class="message-log">
 					<rl-message-log service="log.service" page-size="log.pageSize" message-log="log.messageLogService"></rl-message-log>
 				</div>
 			</form>
