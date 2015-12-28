@@ -1,6 +1,5 @@
 <div class="validation-input-group">
-	<div class="input-group validation-input" id="{{dateTime.inputId}}"
-		 ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'required-error': dateTime.ngModel.$error.required }">
+	<div class="input-group validation-input" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'required-error': dateTime.ngModel.$error.required }">
 		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" />
 		<span class="input-group-btn">
 			<button class="btn btn-default show-date-picker" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
