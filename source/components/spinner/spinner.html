@@ -1,11 +1,10 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
 		<div class="validation-input-group">
-			<label class="pull-right error-string">{{spinner.spinnerValidator.error}}</label>
-			<div class="validation-input" ng-class="{ 'has-error': spinner.ngModel.$invalid }">
+			<div class="validation-input" ng-class="{ 'error': spinner.ngModel.$invalid, 'required-error': spinner.ngModel.$error.required }">
 				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
+                <span class="error-string" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
 			</div>
-			<i class="fa fa-exclamation-triangle text-danger validation-icon" ng-show="spinner.ngModel.$error.required"></i>
 		</div>
 	</template>
 	<template when-selector="true">
