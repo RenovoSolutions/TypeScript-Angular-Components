@@ -5,6 +5,8 @@ import * as angular from 'angular';
 import 'angular-ui-bootstrap';
 import 'angular-sanitize';
 
+import { name as utilitiesModule } from 'typescript-angular-utilities';
+
 import '../libraries/angular-bootstrap-slider/slider';
 
 import 'signature_pad';
@@ -22,6 +24,7 @@ angular.module(moduleName, [
 	'ui.bootstrap',
 	'ui.bootstrap-slider',
 	'ngSanitize',
+	utilitiesModule,
 
 	behaviors.moduleName,
 	components.moduleName,
