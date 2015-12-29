@@ -11,6 +11,7 @@ import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import * as selectFilter from './filters/selectFilter/selectFilter.module';
+import * as dateFilter from './filters/dateFilter/dateFilter.module';
 import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 
 import IDataSource = dataSources.IDataSource;
@@ -27,6 +28,7 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
+import IDateFilter = dateFilter.IDateFilter;
 
 export let factoryName: string = 'cardContainerBuilder';
 
@@ -47,6 +49,7 @@ export {
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
 	ISelectFilter,
+	IDateFilter
 }
 
 export interface ICardContainerBuilder {
@@ -81,6 +84,7 @@ export interface IFilterBuilder {
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
 	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T>;
+	buildDateFilter(valueSelector:string):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
 }
@@ -228,6 +232,13 @@ export class FilterBuilder implements IFilterBuilder {
 	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
 		let filter: ISelectFilter<T> = factory.getInstance(valueSelector);
+		this.parent._filters.push(filter);
+		return filter;
+	}
+
+	buildDateFilter(valueSelector: string): IDateFilter {
+		let factory: dateFilter.IDateFilterFactory = this.$injector.get<any>(dateFilter.factoryName);
+		let filter: IDateFilter = factory.getInstance(valueSelector);
 		this.parent._filters.push(filter);
 		return filter;
 	}
