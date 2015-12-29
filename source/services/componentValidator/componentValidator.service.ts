@@ -22,7 +22,7 @@ export interface IComponentValidator {
 }
 
 export class ComponentValidator implements IComponentValidator {
-	validator: __validation.IValidator;
+	validator: __validation.ISimpleValidator;
 	error: string;
 
 	private $scope: angular.IScope;

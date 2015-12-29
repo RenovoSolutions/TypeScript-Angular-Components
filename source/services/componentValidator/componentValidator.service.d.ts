@@ -16,7 +16,7 @@ export interface IComponentValidator {
     error: string;
 }
 export declare class ComponentValidator implements IComponentValidator {
-    validator: __validation.IValidator;
+    validator: __validation.ISimpleValidator;
     error: string;
     private $scope;
     private ngModel;

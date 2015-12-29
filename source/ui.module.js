@@ -2,6 +2,7 @@
 var angular = require('angular');
 require('angular-ui-bootstrap');
 require('angular-sanitize');
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 require('../libraries/angular-bootstrap-slider/slider');
 require('signature_pad');
 var behaviors = require('./behaviors/behaviors.module');
@@ -17,6 +18,7 @@ angular.module(exports.moduleName, [
     'ui.bootstrap',
     'ui.bootstrap-slider',
     'ngSanitize',
+    typescript_angular_utilities_1.name,
     behaviors.moduleName,
     components.moduleName,
     services.moduleName,

@@ -35,6 +35,7 @@ var AutosaveController = (function () {
                     contentForm: contentForm,
                     debounceDuration: debounce,
                     triggers: $attrs.triggers,
+                    setChangeListener: keyupListener,
                 });
                 var behavior = {
                     autosave: _this.autosave.autosave,
@@ -66,7 +67,7 @@ function autosave() {
         link: function (scope, element, attrs, controllers) {
             var autosaveController = controllers[0];
             autosaveController.keyupListener = function (callback) {
-                element.on('keyup', scope.$apply(callback));
+                element.on('keyup', function () { scope.$apply(callback); });
                 return function () {
                     element.off('keyup');
                 };

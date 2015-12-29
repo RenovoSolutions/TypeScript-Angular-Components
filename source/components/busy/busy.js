@@ -1,4 +1,5 @@
 'use strict';
+require('./busy.css');
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.busy';
 exports.directiveName = 'rlBusy';
@@ -6,7 +7,7 @@ function busy() {
     'use strict';
     return {
         restrict: 'E',
-        template: '<i class="fa fa-spin fa-spinner fa-{{size}}" ng-show="loading"></i>',
+        template: '<i class="busy rl-{{size}}" ng-show="loading"></i>',
         scope: {
             loading: '=',
             // Valid values are:
