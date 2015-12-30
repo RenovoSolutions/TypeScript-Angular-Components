@@ -8,7 +8,7 @@ import {IDateFilter} from './dateFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
 
 export let directiveName: string = 'rlDateFilter';
-export let controllerName: string = 'DateFilterController';
+export let controllerName: string = 'rlDateFilterController';
 
 // Optional interface for bound attributes
 export interface IDateFilterBindings {
@@ -17,7 +17,7 @@ export interface IDateFilterBindings {
     source: IDataSource<any>;
     label: string;
     selector: string;
-	inludeTime:boolean;
+	inludeTime: boolean;
 }
 
 export class DateFilterController implements IDateFilterBindings {
@@ -25,7 +25,7 @@ export class DateFilterController implements IDateFilterBindings {
     filter: IDateFilter;
     selector: string;
     source: IDataSource<any>;
-	inludeTime:boolean;
+	inludeTime: boolean = false;
 
     static $inject = ['$scope'];
     constructor(private $scope: angular.IScope) { }
@@ -56,7 +56,7 @@ export function dateFilter(): angular.IDirective {
             source: '=',
             label: '@',
             selector: '=',
-			inludeTime:'='
+			inludeTime: '='
         },
     };
 }

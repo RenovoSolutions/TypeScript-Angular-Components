@@ -1,4 +1,10 @@
- <div class="filter-group">
-       <span>{{::filter.label}}</span>
-        <rl-date-time ng-model="filter.selectedDate" use-time="filter.useTime"></rl-date-time>
- </div>
+<div class="filter-group">
+	<span>{{::filter.label}}</span>
+	<div class="input-group-btn">
+		<rl-date-time ng-model="filter.selectedValue" use-time="filter.includeTime" class="pull-left"></rl-date-time>
+		<button type="button" class="btn btn-default pull-left" ng-disabled="filter.selectedValue | isEmpty" ng-click="filter.selectedValue = null"
+		disabled="disabled">
+			<i class="fa fa-times"></i>
+		</button>
+	</div>
+</div>

@@ -3,7 +3,7 @@
 import * as _ from 'lodash';
 import {filters} from 'typescript-angular-utilities';
 
-export let factoryName: string = 'selectFilter';
+export let factoryName: string = 'rlSelectFilterFactory';
 
 export interface ISelectFilter<T> extends filters.IFilter {
 	selectedValue: any;
