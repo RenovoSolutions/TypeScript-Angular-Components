@@ -17,7 +17,8 @@ export interface IDateFilterBindings {
     source: IDataSource<any>;
     label: string;
     selector: string;
-	inludeTime: boolean;
+	includeTime: boolean;
+	includeDateRange: boolean;
 }
 
 export class DateFilterController implements IDateFilterBindings {
@@ -25,10 +26,13 @@ export class DateFilterController implements IDateFilterBindings {
     filter: IDateFilter;
     selector: string;
     source: IDataSource<any>;
-	inludeTime: boolean = false;
+	includeTime: boolean = false;
+	includeDateRange: boolean = false;
 
     static $inject = ['$scope'];
-    constructor(private $scope: angular.IScope) { }
+    constructor(private $scope: angular.IScope) {
+		this.filter.includeTime = this.includeTime
+	 }
 
     public get selectedValue(): Date {
         return this.filter.selectedValue;
@@ -56,7 +60,8 @@ export function dateFilter(): angular.IDirective {
             source: '=',
             label: '@',
             selector: '=',
-			inludeTime: '='
+			includeTime: '=',
+			includeDateRange: '='
         },
     };
 }

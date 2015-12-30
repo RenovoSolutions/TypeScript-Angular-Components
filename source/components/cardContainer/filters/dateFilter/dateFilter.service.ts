@@ -8,10 +8,12 @@ export let factoryName: string = 'rlDateFilterFactory';
 
 export interface IDateFilter extends filters.IFilter {
 	selectedValue: any;
+	includeTime: boolean;
 }
 
 class DateFilter implements IDateFilter {
 	selectedValue: any;
+	includeTime: boolean = false;
 	type: string = 'DateFilter';
 
 	static $inject = ['valueSelector', __date.serviceName]
@@ -21,7 +23,11 @@ class DateFilter implements IDateFilter {
 		if (this.selectedValue == null || this.selectedValue === '') {
 			return true;
 		}
-		return this.dateUtility.sameDate(this.getValue(item), this.selectedValue);
+		if (this.includeTime) {
+			return this.dateUtility.sameDateTime(this.getValue(item), this.selectedValue);
+		} else {
+			return this.dateUtility.sameDate(this.getValue(item), this.selectedValue);
+		}
 	}
 
 	private getValue(item: any): any {
