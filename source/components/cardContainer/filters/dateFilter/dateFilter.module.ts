@@ -13,7 +13,6 @@ export * from  './dateFilter.service';
 export * from './dateFilter.component'
 
 angular.module(moduleName, [__dateService.moduleName])
-
 	.factory(factoryName, dateFilterFactory)
 	.directive(directiveName, dateFilter)
 	.controller(controllerName, DateFilterController);
