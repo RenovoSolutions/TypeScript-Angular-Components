@@ -100,11 +100,6 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 }
 
-interface IMessageLogScope {
-	defaultTemplate: IGenericTemplate | string;
-
-}
-
 messageLog.$inject = [
 	'$interpolate',
 	jqueryServiceName,
@@ -122,7 +117,9 @@ export function messageLog($interpolate: angular.IInterpolateService,
 		transclude: true,
 		controller: controllerName,
 		controllerAs: 'log',
-		scope: {},
+		scope: {
+			messageData: "=",
+		},
 		bindToController: {
 			service: '=',
 			selector: '=',
