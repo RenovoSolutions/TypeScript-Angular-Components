@@ -163,10 +163,6 @@ export class TypeaheadController {
 	}
 
 	private setSelection(object: any): void {
-		if (this.hasSelection != null) {
-			this.hasSelection = this.hasSelection;
-		}
-
 		if (this.useScopeSelection) {
 			this.selection = object;
 		}
