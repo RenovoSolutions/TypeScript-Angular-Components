@@ -111,9 +111,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._columns = [];
 	}
 
-	useSearch(): IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
-		this._searchFilter = factory.getInstance();
+	useSearch(filter?: IGenericSearchFilter): IGenericSearchFilter {
+		if (filter == null) {
+			let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
+			filter = factory.getInstance();
+		}
+
+		this._searchFilter = filter;
 		return this._searchFilter;
 	}
 
