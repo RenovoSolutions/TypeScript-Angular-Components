@@ -1,18 +1,30 @@
 <div class="filter-group">
-	<span>{{::filter.label}}</span>
+	<label for="">{{::filter.label}}</label>
 	<div class="input-group-btn">
-		<rl-date-time ng-model="filter.selectedValue" use-time="filter.includeTime" class="pull-left"></rl-date-time>
-		<button type="button" class="btn btn-default pull-left" ng-disabled="filter.selectedValue | isEmpty" ng-click="filter.selectedValue = null"
+		<rl-date-time ng-model="filter.selectedDate1" ng-attr-datetime="{{ !filter.includeTime | MM/dd/yyyy}}" use-time="filter.includeTime"
+		class="pull-left"></rl-date-time>
+		<button type="button" class="btn btn-default pull-left" ng-disabled="filter.selectedDate1 | isEmpty" ng-click="filter.selectedDate1 = null"
 		disabled="disabled">
 			<i class="fa fa-times"></i>
 		</button>
 	</div>
-</div>
-<div class="filter-group">
-	<div class="input-group-btn">
-		<button>
-		</button>
-		<input type="number" />
-		<button></button>
+	<label for="">Add Previous</label>
+	<div class="input-group">
+		<span class="input-group-btn">
+			<button class="btn btn-default" ng-click="filter.increaseCount();">
+				<i class="fa fa-plus"></i>
+			</button>
+		</span>
+		<input type="number" class="form-control" ng-model="filter.count" ng-change="filter.countChange();" />
+		<span class="input-group-btn">
+			<button disabled="" class="btn btn-default">
+				days
+			</button>
+		</span>
+		<span class="input-group-btn">
+			<button  class="btn btn-default" ng-click="filter.decreaseCount();">
+				<i class="fa fa-minus"></i>
+			</button>
+		</span>
 	</div>
 </div>
