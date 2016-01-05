@@ -1,6 +1,7 @@
 'use strict';
 
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import {filters, services} from 'typescript-angular-utilities';
 import __date = services.date;
@@ -13,6 +14,8 @@ export interface IDateFilter extends filters.IFilter {
 	includeTime: boolean;
 	type: string;
 	dateRange: boolean;
+
+	filter(item: any): boolean
 }
 
 class DateFilter implements IDateFilter {
@@ -40,11 +43,8 @@ class DateFilter implements IDateFilter {
 				//increase it by 1 days. to inlcude the selectec date in the range.
 				selectedDate1 = moment(this.selectedDate1).add('days', 1).toDate();
 			}
-			//validate that the date is in that range.
-			//return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
-			if (itemDate <= selectedDate1 && itemDate >= this.selectedDate2) {
-				return true;
-			}
+			return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
+
 		} else {
 			if (this.includeTime) {
 				return this.dateUtility.sameDateTime(this.getValue(item), this.selectedDate1);

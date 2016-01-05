@@ -5,6 +5,10 @@
 import * as angular from 'angular';
 import * as moment from 'moment';
 
+import {services} from 'typescript-angular-utilities';
+import __date = services.date;
+
+
 import {IDateFilter} from './dateFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
 
@@ -14,7 +18,7 @@ export let controllerName: string = 'rlDateFilterController';
 // Optional interface for bound attributes
 enum DateOptions { Day, Week, Month };
 export interface IDateFilterBindings {
-    selectedDate1: Date;
+    selectedDate1: string;
 	selectedDate2: Date;
     filter: IDateFilter;
     source: IDataSource<any>;
@@ -30,22 +34,30 @@ export class DateFilterController implements IDateFilterBindings {
     filter: IDateFilter;
     selector: string;
     source: IDataSource<any>;
-	includeTime: boolean = false;
-	includeDateRange: boolean = false;
-	moment = moment;
+	includeTime: boolean;
+	includeDateRange: boolean;
 	count: number = 0;
+	type: string = "days"
 
-    static $inject = ['$scope'];
-    constructor(private $scope: angular.IScope) {
+    static $inject = ['$scope', __date.serviceName];
+    constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility) {
 		this.filter.includeTime = this.includeTime
 	}
 
-    public get selectedDate1(): Date {
-        return this.filter.selectedDate1;
+    public get selectedDate1(): string {
+		if (this.filter.selectedDate1 != null) {
+			return moment(this.filter.selectedDate1).format('M/D/YYYY');
+		} else {
+			return null
+		}
     }
 
-    public set selectedDate1(v: Date) {
-        this.filter.selectedDate1 = v;
+    public set selectedDate1(v: string) {
+		if (this.dateUtility.isDate(v)) {
+			this.filter.selectedDate1 = moment(v).toDate();
+		} else {
+			this.filter.selectedDate1 = null;
+		}
         if (this.source != null) {
             this.source.refresh();
         } else {
@@ -65,16 +77,6 @@ export class DateFilterController implements IDateFilterBindings {
             this.$scope.$emit('dataSource.requestRefresh'); //*event?
         }
     }
-	setDateToNow(): void {
-		if (this.selectedDate1 == null) {
-			this.selectedDate1 = moment(Date.now()).toDate();//.format("M/D/YYY");
-		}
-	}
-	increaseCount(): void {
-		this.count += 1;
-		this.setDateToNow();
-		this.countChange();
-	}
 
 	decreaseCount(): void {
 		this.count -= 1;
@@ -93,7 +95,7 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.count > 0) {
 			this.filter.dateRange = true;
 			// add days has to be a negative number to go backwords.
-			this.selectedDate2 = moment(this.selectedDate1).add('days', (this.count * -1)).toDate();
+			this.selectedDate2 = moment(this.selectedDate1).add(this.type, (this.count * -1)).toDate();
 		} else if (this.count == 0) {
 			//only change this values the first time.
 			if (this.filter.dateRange) {
@@ -102,6 +104,28 @@ export class DateFilterController implements IDateFilterBindings {
 			}
 		}
 	}
+
+	increaseCount(): void {
+		this.count += 1;
+		this.setDateToNow();
+		this.countChange();
+	}
+
+	setDateToNow(): void {
+		if (this.selectedDate1 == null) {
+			this.selectedDate1 = moment(Date.now()).format('M/D/YYYY');
+		}
+	}
+
+	toggle(): void{
+		if (this.type === 'days') {
+			this.type = 'weeks';
+		} else {
+			this.type = 'days';
+		}
+		this.countChange();
+	}
+
 }
 
 export function dateFilter(): angular.IDirective {
