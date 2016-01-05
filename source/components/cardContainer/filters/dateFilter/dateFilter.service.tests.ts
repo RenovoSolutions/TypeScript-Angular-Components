@@ -14,10 +14,10 @@ import __test = services.test;
 import {moduleName, factoryName, IDateFilter, IDateFilterFactory } from './dateFilter.module';
 
 interface ITestObj {
-	value:Date;
+	value: Date;
 }
 
-describe('dateFilter', ():void => {
+describe('dateFilter', (): void => {
     let dateFilter: IDateFilter;
 
 	beforeEach(() => {
@@ -28,12 +28,25 @@ describe('dateFilter', ():void => {
 	});
 
     it('dateFilter should return true', (): void => {
-        let item: ITestObj = { value: new Date(2000,1,1,5,16,0) };
-        let item2: ITestObj = { value: new Date(2000,1,2) };
+        let item: ITestObj = { value: new Date(2000, 1, 1, 5, 16, 0) };
+        let item2: ITestObj = { value: new Date(2000, 3, 1,0,0,0) };
+        let item3: ITestObj = { value: new Date(1999, 11, 25, 8, 0, 0) };
 
-        dateFilter.selectedValue = new Date(2000,1,1,5,16,0);
+        dateFilter.selectedDate1 = new Date(2000, 1, 1, 5, 16, 0);
 
         expect(dateFilter.filter(item)).to.be.true;
         expect(dateFilter.filter(item2)).to.be.false;
+
+        dateFilter.selectedDate2 = new Date(1999, 11, 15, 5, 16, 0);
+		dateFilter.dateRange = true;
+
+        expect(dateFilter.filter(item)).to.be.true;
+        expect(dateFilter.filter(item2)).to.be.false;
+        expect(dateFilter.filter(item3)).to.be.true;
+
+		//checking selectedDate1 null;
+		dateFilter.selectedDate1 = null;
+        expect(dateFilter.filter(item)).to.be.true;
+
 	});
 });
