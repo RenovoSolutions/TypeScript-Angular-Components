@@ -23,11 +23,6 @@ export var controllerName: string = 'GenericContainerController';
 
 import __object = services.object;
 
-export interface IGenericTemplate {
-	templateUrl?: string;
-	template?: string;
-}
-
 export class GenericContainerController {
 	// Attribute bindings:
 	selector: any;
