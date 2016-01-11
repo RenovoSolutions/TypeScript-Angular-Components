@@ -11,6 +11,7 @@
 
 		<script src="/node_modules/jquery/dist/jquery.js"></script>
 		<script src="/node_modules/angular/angular.js"></script>
+		<script src="/node_modules/angular-animate/angular-animate.js"></script>
 		<script src="/node_modules/lodash/index.js"></script>
 		<script src="/node_modules/moment/moment.js"></script>
 		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
@@ -19,6 +20,17 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
+				<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
+				<ng-form name="myTestForm">
+					<i class="fa fa-flash" ng-show="myTestForm.$dirty"></i>
+					<input type="text" ng-model="test.string" />
+					Container 1
+					<rl-generic-container selector="test.toggle">
+						<template default><input type="text" ng-model="test.string" /></template>
+						<template when-selector="true"><div>{{test.string}}</div></template>
+					</rl-generic-container>
+				</ng-form>
+
 				Selection: {{test.selection}}
 				<rl-select ng-model="test.selection" options="test.options" option-as="item"
 						   selector="'name'" label="Test selector" null-option="None"></rl-select>
