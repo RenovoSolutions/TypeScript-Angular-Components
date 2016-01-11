@@ -31,11 +31,11 @@ export interface IGenericTemplate {
 export class GenericContainerController {
 	// Attribute bindings:
 	selector: any;
-	configuredTemplates: any;
+	configuredTemplates: { [index: string]: string };
 	defaultTemplate: JQuery;
 
 	// Link / controller coupling
-	templates: any;
+	templates: { [index: string]: JQuery };
 	default: JQuery;
 	swapTemplates: {(template: JQuery): void};
 
@@ -102,7 +102,7 @@ function genericContainer($compile: angular.ICompileService,
 			let container: angular.IAugmentedJQuery = element.find('#container');
 			let templateResult = templateLoader.loadTemplates(transclude);
 
-			controller.templates = _.extend(controller.templates, templateResult.templates);
+			controller.templates = <any>_.extend(controller.templates, templateResult.templates);
 			controller.default = templateResult.default;
 			let templateScope = templateResult.transclusionScope;
 
@@ -115,7 +115,7 @@ function genericContainer($compile: angular.ICompileService,
 			function initDefaults(controller: GenericContainerController): void {
 				controller.default = controller.defaultTemplate;
 				controller.templates = controller.configuredTemplates
-					? _.map(controller.configuredTemplates, (template: string): JQuery => { return angular.element(template); })
+					? <any>_.map(controller.configuredTemplates, (template: string): JQuery => { return angular.element(template); })
 					: {};
 				controller.swapTemplates = swapTemplates;
 			}
