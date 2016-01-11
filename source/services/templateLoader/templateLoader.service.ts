@@ -13,7 +13,7 @@ export var serviceName: string = 'templateLoader';
 
 export interface TemplateResult {
 	templates: any;
-	default: string;
+	default: JQuery;
 	transclusionScope: angular.IScope;
 }
 
@@ -43,16 +43,17 @@ class TemplateLoader implements ITemplateLoader {
 							template: Element): void => {
 				let templateElement: angular.IAugmentedJQuery = angular.element(template);
 				let templateHtml: string = templateElement.html();
+				let childElement: angular.IAugmentedJQuery = angular.element(templateHtml);
 
 				let triggerAttribute: string = templateElement.attr('when-selector');
 				if (!this.objectUtility.isNullOrWhitespace(triggerAttribute)) {
 					let trigger: string = this.$interpolate(triggerAttribute)(transclusionScope);
-					result.templates[trigger] = templateHtml;
+					result.templates[trigger] = childElement;
 				}
 
 				let isDefault: string = templateElement.attr('default');
 				if (!_.isUndefined(isDefault) && isDefault.toLowerCase() !== 'false') {
-					result.default = templateHtml;
+					result.default = childElement;
 				}
 			});
 
