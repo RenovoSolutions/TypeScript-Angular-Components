@@ -12,7 +12,7 @@ export var moduleName: string = 'rl.utilities.services.templateLoader';
 export var serviceName: string = 'templateLoader';
 
 export interface TemplateResult {
-	templates: any;
+	templates: { [index: string]: JQuery };
 	default: JQuery;
 	transclusionScope: angular.IScope;
 }
