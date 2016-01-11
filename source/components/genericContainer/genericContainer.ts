@@ -114,7 +114,9 @@ function genericContainer($compile: angular.ICompileService,
 
 			function initDefaults(controller: GenericContainerController): void {
 				controller.default = controller.defaultTemplate;
-				controller.templates = controller.configuredTemplates ? controller.configuredTemplates : {};
+				controller.templates = controller.configuredTemplates
+					? _.map(controller.configuredTemplates, (template: string): JQuery => { return angular.element(template); })
+					: {};
 				controller.swapTemplates = swapTemplates;
 			}
 
