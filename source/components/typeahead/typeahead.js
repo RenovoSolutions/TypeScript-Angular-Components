@@ -59,9 +59,6 @@ var TypeaheadController = (function () {
         });
     }
     TypeaheadController.prototype.setSelection = function (object) {
-        if (this.hasSelection != null) {
-            this.hasSelection = this.hasSelection;
-        }
         if (this.useScopeSelection) {
             this.selection = object;
         }

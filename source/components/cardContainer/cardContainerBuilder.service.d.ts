@@ -77,7 +77,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     cardAs: string;
     maxColumnSorts: number;
     constructor($injector: angular.auto.IInjectorService);
-    useSearch(): IGenericSearchFilter;
+    useSearch(filter?: IGenericSearchFilter): IGenericSearchFilter;
     usePaging(): void;
     addColumn(column: IColumn): void;
     useClickableCards(): void;

@@ -67,7 +67,9 @@ function messageLog($interpolate, jquery, templateLoader, object) {
         transclude: true,
         controller: exports.controllerName,
         controllerAs: 'log',
-        scope: {},
+        scope: {
+            messageData: "=",
+        },
         bindToController: {
             service: '=',
             selector: '=',
