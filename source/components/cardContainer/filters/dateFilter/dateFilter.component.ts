@@ -18,30 +18,35 @@ export let controllerName: string = 'rlDateFilterController';
 // Optional interface for bound attributes
 enum DateOptions { Day, Week, Month };
 export interface IDateFilterBindings {
-    selectedDate1: string;
-	selectedDate2: Date;
+	clearButton: boolean;
+	count: number;
     filter: IDateFilter;
-    source: IDataSource<any>;
-    label: string;
-    selector: string;
 	includeTime: boolean;
 	includeDateRange: boolean;
-	count: number;
+    label: string;
+	selectedDate1: string;
+	selectedDate2: Date;
+    selector: string;
+    source: IDataSource<any>;
+	type: string;
 }
 
 export class DateFilterController implements IDateFilterBindings {
-    label: string;
+	clearButton: boolean;
+	count: number = 0;
     filter: IDateFilter;
+	includeDateRange: boolean;
+	includeTime: boolean;
+    label: string;
     selector: string;
     source: IDataSource<any>;
-	includeTime: boolean;
-	includeDateRange: boolean;
-	count: number = 0;
 	type: string = "days"
 
     static $inject = ['$scope', __date.serviceName];
     constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility) {
 		this.filter.includeTime = this.includeTime
+		if (this.clearButton == null)
+			this.clearButton = true;
 	}
 
     public get selectedDate1(): string {
@@ -77,6 +82,9 @@ export class DateFilterController implements IDateFilterBindings {
             this.$scope.$emit('dataSource.requestRefresh'); //*event?
         }
     }
+	clearCount(): void{
+		this.count = 0;
+	}
 
 	decreaseCount(): void {
 		this.count -= 1;
@@ -117,7 +125,7 @@ export class DateFilterController implements IDateFilterBindings {
 		}
 	}
 
-	toggle(): void{
+	toggle(): void {
 		if (this.type === 'days') {
 			this.type = 'weeks';
 		} else {
@@ -142,7 +150,8 @@ export function dateFilter(): angular.IDirective {
             label: '@',
             selector: '=',
 			includeTime: '=',
-			includeDateRange: '='
+			includeDateRange: '=',
+			clearButton: '='
         },
     };
 }

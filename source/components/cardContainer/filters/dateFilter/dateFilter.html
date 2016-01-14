@@ -1,15 +1,11 @@
 <div class="filter-group">
-	<div class="field">
+	<div class="content-group">
 		<label>{{::filter.label}}</label>
 		<div class="input-group-btn">
-			<rl-date-time ng-model="filter.selectedDate1" use-time="filter.includeTime" class="pull-left"></rl-date-time>
-			<button type="button" class="btn btn-default pull-left" ng-disabled="filter.selectedDate1 | isEmpty" ng-click="filter.selectedDate1 = null; filter.count=0;"
-			disabled="disabled">
-				<i class="fa fa-times"></i>
-			</button>
+			<rl-date-time ng-model="filter.selectedDate1" use-time="filter.includeTime" clear-button="filter.clearButton" on-clear-event="filter.clearCount()" class="pull-left"></rl-date-time>
 		</div>
 	</div>
-	<div ng-if="filter.includeDateRange" class="field">
+	<div ng-if="filter.includeDateRange" class="content-group">
 		<label>Add previous</label>
 		<div class="input-group">
 			<span class="input-group-btn">
