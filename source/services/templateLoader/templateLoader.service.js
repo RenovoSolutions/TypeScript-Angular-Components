@@ -25,15 +25,14 @@ var TemplateLoader = (function () {
             templates.each(function (index, template) {
                 var templateElement = angular.element(template);
                 var templateHtml = templateElement.html();
-                var childElement = angular.element(templateHtml);
                 var triggerAttribute = templateElement.attr('when-selector');
                 if (!_this.objectUtility.isNullOrWhitespace(triggerAttribute)) {
                     var trigger = _this.$interpolate(triggerAttribute)(transclusionScope);
-                    result.templates[trigger] = childElement;
+                    result.templates[trigger] = templateHtml;
                 }
                 var isDefault = templateElement.attr('default');
                 if (!_.isUndefined(isDefault) && isDefault.toLowerCase() !== 'false') {
-                    result.default = childElement;
+                    result.default = templateHtml;
                 }
             });
             result.transclusionScope = transclusionScope;

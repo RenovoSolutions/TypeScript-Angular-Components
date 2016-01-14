@@ -10,16 +10,16 @@ export declare class GenericContainerController {
     configuredTemplates: {
         [index: string]: string;
     };
-    defaultTemplate: JQuery;
+    defaultTemplate: string;
     templates: {
-        [index: string]: JQuery;
+        [index: string]: string;
     };
-    default: JQuery;
+    default: string;
     swapTemplates: {
-        (template: JQuery): void;
+        (template: string): void;
     };
     static $inject: string[];
     constructor($scope: angular.IScope, object: __object.IObjectUtility);
     refresh(): void;
-    resolveTemplate(type: string): JQuery;
+    resolveTemplate(type: string): string;
 }

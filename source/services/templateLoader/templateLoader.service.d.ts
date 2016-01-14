@@ -3,9 +3,9 @@ export declare var moduleName: string;
 export declare var serviceName: string;
 export interface TemplateResult {
     templates: {
-        [index: string]: JQuery;
+        [index: string]: string;
     };
-    default: JQuery;
+    default: string;
     transclusionScope: angular.IScope;
 }
 export interface ITemplateLoader {

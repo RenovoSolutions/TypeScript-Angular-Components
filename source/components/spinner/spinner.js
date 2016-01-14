@@ -57,7 +57,7 @@ function spinner($timeout, stringUtility, numberUtility) {
             var spinner = scope.spinner;
             spinner.ngModel = ngModel;
             var unbindWatches;
-            scope.$watch('ngDisabled', function (disabled) {
+            scope.$watch('spinner.ngDisabled', function (disabled) {
                 if (disabled) {
                     if (_.isFunction(unbindWatches)) {
                         unbindWatches();

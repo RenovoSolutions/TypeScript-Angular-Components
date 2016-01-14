@@ -58,6 +58,7 @@ var userRating = require('./userRating/userRating');
 exports.userRating = userRating;
 var validationGroup = require('./validationGroup/validationGroup');
 exports.validationGroup = validationGroup;
+var componentsDefaultTheme_1 = require('./componentsDefaultTheme');
 exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
     autosaveDialogFooter.moduleName,
@@ -89,5 +90,6 @@ angular.module(exports.moduleName, [
     typeahead.moduleName,
     userRating.moduleName,
     validationGroup.moduleName,
-]);
+])
+    .value(componentsDefaultTheme_1.defaultThemeValueName, componentsDefaultTheme_1.defaultThemeValue);
 //# sourceMappingURL=components.module.js.map

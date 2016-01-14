@@ -65,19 +65,17 @@ function genericContainer($compile, $interpolate, jquery, templateLoader, object
             controller.default = templateResult.default;
             var templateScope = templateResult.transclusionScope;
             if (!controller.default) {
-                controller.default = angular.element('<div></div>');
+                controller.default = '<div></div>';
             }
             controller.refresh();
             function initDefaults(controller) {
                 controller.default = controller.defaultTemplate;
-                controller.templates = controller.configuredTemplates
-                    ? _.map(controller.configuredTemplates, function (template) { return angular.element(template); })
-                    : {};
+                controller.templates = controller.configuredTemplates ? controller.configuredTemplates : {};
                 controller.swapTemplates = swapTemplates;
             }
             function swapTemplates(template) {
-                jquery.replaceContent(container, template);
                 var content = $compile(template)(templateScope);
+                jquery.replaceContent(container, content);
             }
         }
     };
