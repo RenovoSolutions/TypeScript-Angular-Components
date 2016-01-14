@@ -1,4 +1,4 @@
-.busy {
+.default-theme.busy {
 	-webkit-animation: fa-spin 2s infinite linear;
 	animation: fa-spin 2s infinite linear;
 	display: inline-block;
@@ -7,6 +7,6 @@
 	font-family: FontAwesome;
 }
 
-.busy:before {
+.default-theme.busy:before {
 	content: "\f110"; /* fa-spinner */
 }
