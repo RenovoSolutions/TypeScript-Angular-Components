@@ -35,6 +35,8 @@ import * as validationGroup from './validationGroup/validationGroup';
 import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultTheme';
 
 export {
+	defaultThemeValueName,
+
 	autosaveDialogFooter,
 	busy,
 	button,
