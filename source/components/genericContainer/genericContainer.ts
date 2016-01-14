@@ -53,22 +53,10 @@ export class GenericContainerController {
 	}
 
 	resolveTemplate(type: string): string {
-		var templateObject: IGenericTemplate | string;
-
 		if (_.has(this.templates, type)) {
-			templateObject = this.templates[type];
+			return this.templates[type];
 		} else {
-			templateObject = this.default;
-		}
-
-		var template: IGenericTemplate = templateObject;
-
-		if (!_.isUndefined(template.templateUrl)) {
-			return '<ng-include src="\'' + template.templateUrl + '\'"></ng-include>';
-		} else if (!_.isUndefined(template.template)) {
-			return template.template;
-		} else {
-			return <string> templateObject;
+			return this.default;
 		}
 	}
 }
@@ -114,9 +102,7 @@ function genericContainer($compile: angular.ICompileService,
 			let templateScope = templateResult.transclusionScope;
 
 			if (!controller.default) {
-				controller.default = {
-					template: '<div></div>',
-				};
+				controller.default = '<div></div>';
 			}
 
 			controller.refresh();
