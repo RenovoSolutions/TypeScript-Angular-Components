@@ -10,7 +10,6 @@ import test = services.test;
 
 import {
 	GenericContainerController,
-	IGenericTemplate,
 	moduleName,
 	controllerName,
 } from './genericContainer';
