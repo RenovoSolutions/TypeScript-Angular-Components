@@ -32,6 +32,8 @@ import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
 import * as validationGroup from './validationGroup/validationGroup';
 
+import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultTheme';
+
 export {
 	autosaveDialogFooter,
 	busy,
@@ -64,7 +66,7 @@ export {
 	validationGroup,
 };
 
-export var moduleName: string = 'rl.ui.components';
+export let moduleName: string = 'rl.ui.components';
 
 angular.module(moduleName, [
 	autosaveDialogFooter.moduleName,
@@ -96,4 +98,5 @@ angular.module(moduleName, [
 	typeahead.moduleName,
 	userRating.moduleName,
 	validationGroup.moduleName,
-]);
+])
+	.value(defaultThemeValueName, defaultThemeValue);
