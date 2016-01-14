@@ -53,7 +53,7 @@ describe('GenericContainerController', () => {
 		sinon.assert.calledOnce(swapSpy);
 		var result: Sinon.SinonSpyCall = swapSpy.firstCall;
 
-		var defaultTemplate: IGenericTemplate = controller.default;
+		var defaultTemplate: string = controller.default;
 		expect(result.args[0]).to.equal(defaultTemplate);
 	});
 
