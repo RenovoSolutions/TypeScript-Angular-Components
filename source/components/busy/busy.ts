@@ -1,5 +1,7 @@
 'use strict';
 
+import './busy.css';
+
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.busy';

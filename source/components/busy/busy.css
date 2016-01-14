@@ -1,0 +1,12 @@
+.busy {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+	display: inline-block;
+	font-size: inherit;
+	font-style: normal;
+	font-family: FontAwesome;
+}
+
+.busy:before {
+	content: "\f110"; /* fa-spinner */
+}
