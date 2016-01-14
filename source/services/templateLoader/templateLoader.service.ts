@@ -12,8 +12,8 @@ export var moduleName: string = 'rl.utilities.services.templateLoader';
 export var serviceName: string = 'templateLoader';
 
 export interface TemplateResult {
-	templates: { [index: string]: JQuery };
-	default: JQuery;
+	templates: { [index: string]: string };
+	default: string;
 	transclusionScope: angular.IScope;
 }
 
@@ -43,17 +43,16 @@ class TemplateLoader implements ITemplateLoader {
 							template: Element): void => {
 				let templateElement: angular.IAugmentedJQuery = angular.element(template);
 				let templateHtml: string = templateElement.html();
-				let childElement: angular.IAugmentedJQuery = angular.element(templateHtml);
 
 				let triggerAttribute: string = templateElement.attr('when-selector');
 				if (!this.objectUtility.isNullOrWhitespace(triggerAttribute)) {
 					let trigger: string = this.$interpolate(triggerAttribute)(transclusionScope);
-					result.templates[trigger] = childElement;
+					result.templates[trigger] = templateHtml;
 				}
 
 				let isDefault: string = templateElement.attr('default');
 				if (!_.isUndefined(isDefault) && isDefault.toLowerCase() !== 'false') {
-					result.default = childElement;
+					result.default = templateHtml;
 				}
 			});
 

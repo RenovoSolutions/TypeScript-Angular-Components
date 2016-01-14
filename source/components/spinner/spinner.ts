@@ -111,7 +111,7 @@ function spinner($timeout: angular.ITimeoutService
 			let spinner: SpinnerController = scope.spinner;
 			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
-			scope.$watch('ngDisabled', (disabled: boolean): void => {
+			scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {
 				if (disabled) {
 					if (_.isFunction(unbindWatches)) {
 						unbindWatches();

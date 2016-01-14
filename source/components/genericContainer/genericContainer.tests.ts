@@ -2,7 +2,6 @@
 /// <reference path='../../../typings/mocha/mocha.d.ts' />
 /// <reference path='../../../typings/sinon/sinon.d.ts' />
 /// <reference path='../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../typings/jquery/jquery.d.ts' />
 
 'use strict';
 
@@ -11,6 +10,7 @@ import test = services.test;
 
 import {
 	GenericContainerController,
+	IGenericTemplate,
 	moduleName,
 	controllerName,
 } from './genericContainer';
@@ -33,7 +33,7 @@ describe('GenericContainerController', () => {
 			= test.angularFixture.controllerWithBindings<GenericContainerController>(controllerName, {
 			selector: selector,
 			templates: templates,
-			default: { template: 'default' },
+			default: 'default',
 			swapTemplates: swapSpy,
 		});
 
@@ -54,7 +54,7 @@ describe('GenericContainerController', () => {
 		sinon.assert.calledOnce(swapSpy);
 		var result: Sinon.SinonSpyCall = swapSpy.firstCall;
 
-		var defaultTemplate: JQuery = controller.default;
+		var defaultTemplate: IGenericTemplate = controller.default;
 		expect(result.args[0]).to.equal(defaultTemplate);
 	});
 
