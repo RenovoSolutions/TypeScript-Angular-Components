@@ -9,7 +9,7 @@
 				{{select.getDisplayName(option)}}
 			</ui-select-choices>
 		</ui-select>
-        <span class="error-string">{{select.selectValidator.error}}</span>
+        <span class="error-string" ng-show="select.selectValidator.error">{{select.selectValidator.error}}</span>
 		<rl-busy loading="select.loading"></rl-busy>
 	</div>
 </div>
