@@ -27,12 +27,12 @@ export class GenericContainerController {
 	// Attribute bindings:
 	selector: any;
 	configuredTemplates: { [index: string]: string };
-	defaultTemplate: JQuery;
+	defaultTemplate: IGenericTemplate | string;
 
 	// Link / controller coupling
 	templates: { [index: string]: JQuery };
-	default: JQuery;
-	swapTemplates: {(template: JQuery): void};
+	default: IGenericTemplate | string;
+	swapTemplates: {(template: string): void};
 
 	static $inject: string[] = ['$scope', __object.serviceName];
 	constructor($scope: angular.IScope,
@@ -42,21 +42,33 @@ export class GenericContainerController {
 				return;
 			}
 
-			var template: JQuery = this.resolveTemplate(newType);
+			var template: string = this.resolveTemplate(newType);
 			this.swapTemplates(template);
 		});
 	}
 
 	refresh(): void {
-		var template: JQuery = this.resolveTemplate(this.selector);
+		var template: string = this.resolveTemplate(this.selector);
 		this.swapTemplates(template);
 	}
 
-	resolveTemplate(type: string): JQuery {
+	resolveTemplate(type: string): string {
+		var templateObject: IGenericTemplate | string;
+
 		if (_.has(this.templates, type)) {
-			return this.templates[type];
+			templateObject = this.templates[type];
 		} else {
-			return this.default;
+			templateObject = this.default;
+		}
+
+		var template: IGenericTemplate = templateObject;
+
+		if (!_.isUndefined(template.templateUrl)) {
+			return '<ng-include src="\'' + template.templateUrl + '\'"></ng-include>';
+		} else if (!_.isUndefined(template.template)) {
+			return template.template;
+		} else {
+			return <string> templateObject;
 		}
 	}
 }
@@ -102,7 +114,9 @@ function genericContainer($compile: angular.ICompileService,
 			let templateScope = templateResult.transclusionScope;
 
 			if (!controller.default) {
-				controller.default = angular.element('<div></div>');
+				controller.default = {
+					template: '<div></div>',
+				};
 			}
 
 			controller.refresh();
@@ -113,9 +127,9 @@ function genericContainer($compile: angular.ICompileService,
 				controller.swapTemplates = swapTemplates;
 			}
 
-			function swapTemplates(template: JQuery): void {
-				jquery.replaceContent(container, template);
+			function swapTemplates(template: string): void {
 				let content: angular.IAugmentedJQuery = $compile(template)(templateScope);
+				jquery.replaceContent(container, content);
 			}
 		}
 	};
