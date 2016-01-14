@@ -83,7 +83,7 @@ export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
-	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T>;
+	buildSelectFilter<T>(valueSelector: string | { (item: T): any }): ISelectFilter<T>;
 	buildDateFilter(valueSelector:string):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
@@ -229,7 +229,7 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildSelectFilter<T>(valueSelector: string | { (item: T): string }): ISelectFilter<T> {
+	buildSelectFilter<T>(valueSelector: string | { (item: T): any }): ISelectFilter<T> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
 		let filter: ISelectFilter<T> = factory.getInstance(valueSelector);
 		this.parent._filters.push(filter);
