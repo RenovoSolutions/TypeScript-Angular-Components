@@ -25,22 +25,11 @@ var GenericContainerController = (function () {
         this.swapTemplates(template);
     };
     GenericContainerController.prototype.resolveTemplate = function (type) {
-        var templateObject;
         if (_.has(this.templates, type)) {
-            templateObject = this.templates[type];
+            return this.templates[type];
         }
         else {
-            templateObject = this.default;
-        }
-        var template = templateObject;
-        if (!_.isUndefined(template.templateUrl)) {
-            return '<ng-include src="\'' + template.templateUrl + '\'"></ng-include>';
-        }
-        else if (!_.isUndefined(template.template)) {
-            return template.template;
-        }
-        else {
-            return templateObject;
+            return this.default;
         }
     };
     GenericContainerController.$inject = ['$scope', __object.serviceName];
@@ -76,19 +65,19 @@ function genericContainer($compile, $interpolate, jquery, templateLoader, object
             controller.default = templateResult.default;
             var templateScope = templateResult.transclusionScope;
             if (!controller.default) {
-                controller.default = {
-                    template: '<div></div>',
-                };
+                controller.default = angular.element('<div></div>');
             }
             controller.refresh();
             function initDefaults(controller) {
                 controller.default = controller.defaultTemplate;
-                controller.templates = controller.configuredTemplates ? controller.configuredTemplates : {};
+                controller.templates = controller.configuredTemplates
+                    ? _.map(controller.configuredTemplates, function (template) { return angular.element(template); })
+                    : {};
                 controller.swapTemplates = swapTemplates;
             }
             function swapTemplates(template) {
+                jquery.replaceContent(container, template);
                 var content = $compile(template)(templateScope);
-                jquery.replaceContent(container, content);
             }
         }
     };
