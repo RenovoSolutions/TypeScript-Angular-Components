@@ -27,11 +27,11 @@ export class GenericContainerController {
 	// Attribute bindings:
 	selector: any;
 	configuredTemplates: { [index: string]: string };
-	defaultTemplate: IGenericTemplate | string;
+	defaultTemplate: string;
 
 	// Link / controller coupling
-	templates: { [index: string]: JQuery };
-	default: IGenericTemplate | string;
+	templates: { [index: string]: string };
+	default: string;
 	swapTemplates: {(template: string): void};
 
 	static $inject: string[] = ['$scope', __object.serviceName];
