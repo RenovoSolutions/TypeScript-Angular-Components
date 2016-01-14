@@ -27,5 +27,6 @@ import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
 import * as userRating from './userRating/userRating';
 import * as validationGroup from './validationGroup/validationGroup';
-export { autosaveDialogFooter, busy, button, buttonAsync, buttonLink, buttonToggle, cardContainer, checkbox, commaList, dateTime, genericContainer, lazyLoad, longClickButton, messageLog, multiStepIndicator, radio, ratingBar, richTextEditor, select, signaturePad, simpleCardList, spinner, stringWithWatermark, tabs, textarea, textbox, typeahead, userRating, validationGroup };
+import { defaultThemeValueName } from './componentsDefaultTheme';
+export { defaultThemeValueName, autosaveDialogFooter, busy, button, buttonAsync, buttonLink, buttonToggle, cardContainer, checkbox, commaList, dateTime, genericContainer, lazyLoad, longClickButton, messageLog, multiStepIndicator, radio, ratingBar, richTextEditor, select, signaturePad, simpleCardList, spinner, stringWithWatermark, tabs, textarea, textbox, typeahead, userRating, validationGroup };
 export declare let moduleName: string;

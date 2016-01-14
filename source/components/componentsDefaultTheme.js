@@ -1,3 +1,3 @@
 exports.defaultThemeValueName = 'useDefaultTheme';
-exports.defaultThemeValue = false;
+exports.defaultThemeValue = true;
 //# sourceMappingURL=componentsDefaultTheme.js.map

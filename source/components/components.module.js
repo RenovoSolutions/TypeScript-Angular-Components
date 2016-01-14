@@ -59,6 +59,7 @@ exports.userRating = userRating;
 var validationGroup = require('./validationGroup/validationGroup');
 exports.validationGroup = validationGroup;
 var componentsDefaultTheme_1 = require('./componentsDefaultTheme');
+exports.defaultThemeValueName = componentsDefaultTheme_1.defaultThemeValueName;
 exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
     autosaveDialogFooter.moduleName,
