@@ -167,7 +167,7 @@ describe('messageLog', () => {
 			expect(directiveResult.controller.getEntrySelector(<any> 4)).to.be.true;
 			expect(directiveResult.controller.getEntrySelector(<any> 3)).to.be.false;
 
-			expect(directiveResult.controller.templates['true']).to.contain('<p>Message is greater than 3</p>');
+			expect(directiveResult.controller.templates['true'].html()).to.contain('Message is greater than 3');
 		});
 
 		it('should have neither a selector or templates', (): void => {

@@ -15,8 +15,6 @@ import {
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory } from './messageLog.service';
 
-import { IGenericTemplate } from '../genericContainer/genericContainer';
-
 import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
 
 export var directiveName: string = 'rlMessageLog';
