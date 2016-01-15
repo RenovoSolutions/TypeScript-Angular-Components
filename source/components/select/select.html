@@ -1,7 +1,7 @@
 <div class="validation-input-group">
-	<div class="field validation-input" ng-class="{ 'has-error': select.ngModel.$invalid }">
+	<div class="field validation-input" ng-class="{ 'has-error': select.ngModel.$invalid, 'required-error': select.ngModel.$error.required }">
 		<label ng-show="select.selection" class="show-hide angular-animate">
-			{{select.label}} <span class="pull-right error-string">{{select.selectValidator.error}}</span>
+			{{select.label}}
 		</label>
 		<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
 			<ui-select-match placeholder="{{select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
@@ -9,7 +9,7 @@
 				{{select.getDisplayName(option)}}
 			</ui-select-choices>
 		</ui-select>
+        <span class="error-string" ng-show="select.selectValidator.error">{{select.selectValidator.error}}</span>
 		<rl-busy loading="select.loading"></rl-busy>
 	</div>
-	<i class="fa fa-exclamation-triangle text-danger" ng-show="select.ngModel.$error.required"></i>
 </div>
