@@ -45,6 +45,8 @@ export class ButtonAsyncController {
 				result.finally((): void => {
 					this.busy = false;
 				});
+			} else if (<any>result !== true) {
+				this.busy = false;
 			}
 		}
 	}
