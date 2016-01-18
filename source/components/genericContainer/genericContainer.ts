@@ -114,8 +114,9 @@ function genericContainer($compile: angular.ICompileService,
 			}
 
 			function swapTemplates(template: string): void {
-				let content: angular.IAugmentedJQuery = $compile(template)(templateScope);
+				let content: angular.IAugmentedJQuery = angular.element(template);
 				jquery.replaceContent(container, content);
+				$compile(content)(templateScope)
 			}
 		}
 	};
