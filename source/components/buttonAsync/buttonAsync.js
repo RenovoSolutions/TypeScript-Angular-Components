@@ -22,6 +22,9 @@ var ButtonAsyncController = (function () {
                     _this.busy = false;
                 });
             }
+            else if (result !== true) {
+                this.busy = false;
+            }
         }
     };
     ButtonAsyncController.$inject = [__promiseUtility.serviceName];

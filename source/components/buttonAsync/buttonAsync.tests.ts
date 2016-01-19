@@ -26,7 +26,7 @@ describe('ButtonAsyncController', () => {
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		actionSpy = sinon.spy();
+		actionSpy = sinon.spy(() => true);
 	});
 
 	it('should be busy after triggering the action if no promise is returned', (): void => {

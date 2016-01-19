@@ -74,8 +74,9 @@ function genericContainer($compile, $interpolate, jquery, templateLoader, object
                 controller.swapTemplates = swapTemplates;
             }
             function swapTemplates(template) {
-                var content = $compile(template)(templateScope);
+                var content = angular.element(template);
                 jquery.replaceContent(container, content);
+                $compile(content)(templateScope);
             }
         }
     };
