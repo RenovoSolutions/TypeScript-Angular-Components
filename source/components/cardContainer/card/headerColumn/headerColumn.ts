@@ -40,7 +40,7 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 		restrict: 'E',
 		template: `
 			<div rl-size-for-breakpoints="header.column.size" title="{{::header.column.description}}">
-				<div class="template-container" style="display: inline-block"></div>
+				<div class="template-container"></div>
 			</div>
 		`,
 		controller: controllerName,
