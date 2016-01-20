@@ -20,75 +20,77 @@ enum DateOptions { Day, Week, Month };
 export interface IDateFilterBindings {
 	clearButton: boolean;
 	count: number;
-    filter: IDateFilter;
+	filter: IDateFilter;
 	includeTime: boolean;
 	includeDateRange: boolean;
-    label: string;
+	label: string;
 	selectedDate1: string;
 	selectedDate2: Date;
-    selector: string;
-    source: IDataSource<any>;
+	selector: string;
+	source: IDataSource<any>;
 	type: string;
 }
 
 export class DateFilterController implements IDateFilterBindings {
 	clearButton: boolean;
 	count: number = 0;
-    filter: IDateFilter;
+	filter: IDateFilter;
 	includeDateRange: boolean;
 	includeTime: boolean;
-    label: string;
-    selector: string;
-    source: IDataSource<any>;
+	label: string;
+	selector: string;
+	source: IDataSource<any>;
 	type: string = "days"
 
-    static $inject = ['$scope', __date.serviceName];
-    constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility) {
+	static $inject = ['$scope', __date.serviceName];
+	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility) {
 		this.filter.includeTime = this.includeTime
+		this.filter.dateRange = false;
 		if (this.clearButton == null)
 			this.clearButton = true;
 	}
 
-    public get selectedDate1(): string {
+	public get selectedDate1(): string {
 		if (this.filter.selectedDate1 != null) {
 			return moment(this.filter.selectedDate1).format('M/D/YYYY');
 		} else {
 			return null
 		}
-    }
+	}
 
-    public set selectedDate1(v: string) {
+	public set selectedDate1(v: string) {
 		if (this.dateUtility.isDate(v)) {
 			this.filter.selectedDate1 = moment(v).toDate();
 		} else {
 			this.filter.selectedDate1 = null;
 		}
-        if (this.source != null) {
-            this.source.refresh();
-        } else {
-            this.$scope.$emit('dataSource.requestRefresh'); //*event?
-        }
-    }
+		this.refreshDataSource();
+	}
 
 	public get selectedDate2(): Date {
-        return this.filter.selectedDate2;
-    }
+		return this.filter.selectedDate2;
+	}
 
-    public set selectedDate2(v: Date) {
-        this.filter.selectedDate2 = v;
-        if (this.source != null) {
-            this.source.refresh();
-        } else {
-            this.$scope.$emit('dataSource.requestRefresh'); //*event?
-        }
-    }
-	clearCount(): void{
+	public set selectedDate2(v: Date) {
+		this.filter.selectedDate2 = v;
+		this.refreshDataSource();
+	}
+
+	refreshDataSource(): void {
+		if (this.source != null) {
+			this.source.refresh();
+		} else {
+			this.$scope.$emit('dataSource.requestRefresh'); //*event?
+		}
+	}
+	clearCount(): void {
 		this.count = 0;
+		this.countChange();
 	}
 
 	decreaseCount(): void {
 		this.count -= 1;
-		this.setDateToNow();
+		this.setDateTimeNowIfNull();
 		//do not allow count below 0
 		if (this.count < 0 || this.count === 0) {
 			this.count = 0;
@@ -115,11 +117,11 @@ export class DateFilterController implements IDateFilterBindings {
 
 	increaseCount(): void {
 		this.count += 1;
-		this.setDateToNow();
+		this.setDateTimeNowIfNull();
 		this.countChange();
 	}
 
-	setDateToNow(): void {
+	setDateTimeNowIfNull(): void {
 		if (this.selectedDate1 == null) {
 			this.selectedDate1 = moment(Date.now()).format('M/D/YYYY');
 		}
@@ -137,22 +139,22 @@ export class DateFilterController implements IDateFilterBindings {
 }
 
 export function dateFilter(): angular.IDirective {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./dateFilter.html'),
-        controller: controllerName,
-        controllerAs: 'filter',
-        scope: {},
-        bindToController: {
-            filter: '=',
-            source: '=',
-            label: '@',
-            selector: '=',
+	'use strict';
+	return {
+		restrict: 'E',
+		template: require('./dateFilter.html'),
+		controller: controllerName,
+		controllerAs: 'filter',
+		scope: {},
+		bindToController: {
+			filter: '=',
+			source: '=',
+			label: '@',
+			selector: '=',
 			includeTime: '=',
 			includeDateRange: '=',
 			clearButton: '='
-        },
-    };
+		},
+	};
 }
 

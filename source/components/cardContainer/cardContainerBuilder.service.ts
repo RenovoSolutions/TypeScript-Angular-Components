@@ -29,6 +29,7 @@ import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
 import IDateFilter = dateFilter.IDateFilter;
+import IDateFilterSettings = dateFilter.IDateFilterSettings;
 
 export let factoryName: string = 'cardContainerBuilder';
 
@@ -36,6 +37,8 @@ export {
 	IColumn,
 	IDataSource,
 	IDataSourceDataServiceFunction,
+	IDateFilter,
+	IDateFilterSettings,
 	IServerSearchDataServiceFunction,
 	IGetFilterModel,
 	IValidateFilterModel,
@@ -48,8 +51,8 @@ export {
 	IModeFilterGroupSettings,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
-	ISelectFilter,
-	IDateFilter
+	ISelectFilter
+
 }
 
 export interface ICardContainerBuilder {
@@ -84,7 +87,7 @@ export interface IFilterBuilder {
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
 	buildSelectFilter<T>(valueSelector: string | { (item: T): any }): ISelectFilter<T>;
-	buildDateFilter(valueSelector:string):IDateFilter;
+	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
 }
@@ -236,9 +239,9 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildDateFilter(valueSelector: string): IDateFilter {
+	buildDateFilter(settings:dateFilter.IDateFilterSettings): IDateFilter {
 		let factory: dateFilter.IDateFilterFactory = this.$injector.get<any>(dateFilter.factoryName);
-		let filter: IDateFilter = factory.getInstance(valueSelector);
+		let filter: IDateFilter = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}

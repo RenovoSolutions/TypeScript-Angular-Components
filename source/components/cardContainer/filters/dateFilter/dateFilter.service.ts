@@ -8,6 +8,11 @@ import __date = services.date;
 
 export let factoryName: string = 'rlDateFilterFactory';
 
+export interface IDateFilterSettings{
+	type:string;
+	valueSelector: string,
+}
+
 export interface IDateFilter extends filters.IFilter {
 	selectedDate1: Date;
 	selectedDate2: Date;
@@ -22,11 +27,11 @@ class DateFilter implements IDateFilter {
 	selectedDate1: Date;
 	selectedDate2: Date;
 	includeTime: boolean = false;
-	type: string = 'DateFilter';
-	dateRange: boolean = false;
+	dateRange: boolean;
 
-	static $inject = ['valueSelector', __date.serviceName]
-	constructor(private valueSelector: string, private dateUtility: __date.IDateUtility) { }
+	constructor(private valueSelector: string, private dateUtility: __date.IDateUtility, public type: string) {
+
+	}
 
 	filter(item: any): boolean {
 		if (!this.dateUtility.isDate(this.selectedDate1)) {
@@ -36,6 +41,7 @@ class DateFilter implements IDateFilter {
 		if (this.dateRange) {
 			let itemDate: Date = this.getValue(item)
 			let selectedDate1: Date;
+
 			//have to set the selectedDate1 to a valid Date object for comparisons.
 			if (this.includeTime) {
 				selectedDate1 = moment(this.selectedDate1).toDate();
@@ -62,14 +68,14 @@ class DateFilter implements IDateFilter {
 }
 
 export interface IDateFilterFactory {
-	getInstance(valueSelector: string): IDateFilter;
+	getInstance(settings:IDateFilterSettings): IDateFilter;
 }
 
 dateFilterFactory.$inject = [__date.serviceName];
 export function dateFilterFactory(dateUtility: __date.IDateUtility): IDateFilterFactory {
 	return {
-		getInstance(valueSelector: string): IDateFilter {
-			return new DateFilter(valueSelector, dateUtility);
+		getInstance(settings:IDateFilterSettings): IDateFilter {
+			return new DateFilter(settings.valueSelector, dateUtility, settings.type);
 		},
 	};
 }

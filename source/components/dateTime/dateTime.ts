@@ -86,7 +86,7 @@ export class DateTimeController {
 	}
 
 	onClearClick(): void {
-		this.ngModel.$viewValue = null;
+		this.ngModel.$setViewValue('');
 		this.onClearEvent();
 	}
 
@@ -137,7 +137,7 @@ function dateTime(moment: moment.MomentStatic
 					? true
 					: moment(newValue).isValid();
 			});
-			angular.element('.show-date-picker').datetimepicker({
+			element.find('.show-date-picker').datetimepicker({
 				stepping: dateTime.minuteStepping || 1,
 				format: dateTime.format || defaultFormat(hasDate, hasTime),
 				direction: 'bottom',
