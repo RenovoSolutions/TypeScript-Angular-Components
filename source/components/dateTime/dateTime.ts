@@ -57,6 +57,7 @@ export class DateTimeController {
 	useTime: boolean;
 
 	clearButton: boolean;
+	onClearEvent: { (): void } ;
 
 	min: string | Date | moment.Moment;
 	max: string | Date | moment.Moment;
@@ -89,9 +90,6 @@ export class DateTimeController {
 		this.ngModel.$setViewValue('');
 		this.onClearEvent();
 	}
-
-	onClearEvent(): void { };
-
 }
 
 dateTime.$inject = [services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName, __object.serviceName];
