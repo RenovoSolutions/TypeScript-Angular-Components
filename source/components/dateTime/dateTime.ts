@@ -16,10 +16,10 @@ import __validation = services.validation;
 import __object = services.object;
 
 import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
+IComponentValidator,
+IComponentValidatorFactory,
+factoryName as componentValidatorFactoryName,
+moduleName as componentValidatorModuleName,
 } from '../../services/componentValidator/componentValidator.service';
 
 export let moduleName: string = 'rl.ui.components.dateTime';
@@ -41,6 +41,9 @@ export interface IDateTimeBindings {
 	format: string;
 
 	validator: __validation.IValidationHandler;
+
+	onClearEvent(): void;
+
 }
 
 export interface IDateTimeScope extends angular.IScope {
@@ -52,6 +55,9 @@ export class DateTimeController {
 
 	useDate: boolean;
 	useTime: boolean;
+
+	clearButton: boolean;
+	onClearEvent: { (): void } ;
 
 	min: string | Date | moment.Moment;
 	max: string | Date | moment.Moment;
@@ -67,8 +73,7 @@ export class DateTimeController {
 	dateTimeValidator: IComponentValidator;
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
-	constructor($scope: angular.IScope
-			, componentValidatorFactory: IComponentValidatorFactory) {
+	constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
 		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
 			if (!_.isUndefined(this.validator)) {
 				this.dateTimeValidator = componentValidatorFactory.getInstance({
@@ -79,6 +84,11 @@ export class DateTimeController {
 			}
 			unregister();
 		});
+	}
+
+	onClearClick(): void {
+		this.ngModel.$setViewValue('');
+		this.onClearEvent();
 	}
 }
 
@@ -101,6 +111,8 @@ function dateTime(moment: moment.MomentStatic
 			min: '=',
 			max: '=',
 			validator: '=',
+			clearButton: '=',
+			onClearEvent: '&'
 		},
 		link: (scope: IDateTimeScope
 			, element: angular.IAugmentedJQuery
@@ -120,21 +132,19 @@ function dateTime(moment: moment.MomentStatic
 
 			scope.$watch((): any => { return ngModel.$viewValue; }, (newValue: any): void => {
 				dateTime.validFormat = object.isNullOrEmpty(newValue)
-									? true
-									: moment(newValue).isValid();
+					? true
+					: moment(newValue).isValid();
 			});
-
-			// --- Implementation ---
-			element.datetimepicker({
+			element.find('.show-date-picker').datetimepicker({
 				stepping: dateTime.minuteStepping || 1,
 				format: dateTime.format || defaultFormat(hasDate, hasTime),
 				direction: 'bottom',
-				elementHeight: 32,
+				elementHeight: 2,
 				pickDate: hasDate,
 				pickTime: hasTime,
 				minDate: min,
 				maxDate: max,
-			}).on('change.dp', function (): void {
+			}).on('change.dp', function(): void {
 				let newValue: any = $(this).find('input').val();
 				ngModel.$setViewValue(newValue);
 				scope.$apply();
