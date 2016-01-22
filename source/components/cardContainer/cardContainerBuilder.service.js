@@ -5,6 +5,7 @@ var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearc
 var dataSources = require('./dataSources/dataSources.module');
 var filterGroup = require('./filters/filterGroup/filterGroup.module');
 var selectFilter = require('./filters/selectFilter/selectFilter.module');
+var dateFilter = require('./filters/dateFilter/dateFilter.module');
 var columnSearchFilter_service_1 = require('./filters/columnSearchFilter/columnSearchFilter.service');
 exports.factoryName = 'cardContainerBuilder';
 var CardContainerBuilder = (function () {
@@ -123,6 +124,12 @@ var FilterBuilder = (function () {
     FilterBuilder.prototype.buildSelectFilter = function (valueSelector) {
         var factory = this.$injector.get(selectFilter.factoryName);
         var filter = factory.getInstance(valueSelector);
+        this.parent._filters.push(filter);
+        return filter;
+    };
+    FilterBuilder.prototype.buildDateFilter = function (settings) {
+        var factory = this.$injector.get(dateFilter.factoryName);
+        var filter = factory.getInstance(settings);
         this.parent._filters.push(filter);
         return filter;
     };

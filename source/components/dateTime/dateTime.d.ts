@@ -15,6 +15,7 @@ export interface IDateTimeBindings {
     validFormat: boolean;
     format: string;
     validator: __validation.IValidationHandler;
+    onClearEvent(): void;
 }
 export interface IDateTimeScope extends angular.IScope {
     dateTime: DateTimeController;
@@ -23,6 +24,10 @@ export declare class DateTimeController {
     minuteStepping: number;
     useDate: boolean;
     useTime: boolean;
+    clearButton: boolean;
+    onClearEvent: {
+        (): void;
+    };
     min: string | Date | moment.Moment;
     max: string | Date | moment.Moment;
     dateTimePickerOpen: boolean;
@@ -33,4 +38,5 @@ export declare class DateTimeController {
     dateTimeValidator: IComponentValidator;
     static $inject: string[];
     constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory);
+    onClearClick(): void;
 }

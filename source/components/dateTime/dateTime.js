@@ -25,6 +25,10 @@ var DateTimeController = (function () {
             unregister();
         });
     }
+    DateTimeController.prototype.onClearClick = function () {
+        this.ngModel.$setViewValue('');
+        this.onClearEvent();
+    };
     DateTimeController.$inject = ['$scope', componentValidator_service_1.factoryName];
     return DateTimeController;
 })();
@@ -46,6 +50,8 @@ function dateTime(moment, dateTimeFormatStrings, object) {
             min: '=',
             max: '=',
             validator: '=',
+            clearButton: '=',
+            onClearEvent: '&'
         },
         link: function (scope, element, attrs, ngModel) {
             var dateTime = scope.dateTime;
@@ -61,12 +67,11 @@ function dateTime(moment, dateTimeFormatStrings, object) {
                     ? true
                     : moment(newValue).isValid();
             });
-            // --- Implementation ---
-            element.datetimepicker({
+            element.find('.show-date-picker').datetimepicker({
                 stepping: dateTime.minuteStepping || 1,
                 format: dateTime.format || defaultFormat(hasDate, hasTime),
                 direction: 'bottom',
-                elementHeight: 32,
+                elementHeight: 2,
                 pickDate: hasDate,
                 pickTime: hasTime,
                 minDate: min,
