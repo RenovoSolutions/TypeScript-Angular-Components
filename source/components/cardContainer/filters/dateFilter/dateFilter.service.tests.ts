@@ -24,7 +24,10 @@ describe('dateFilter', (): void => {
         angular.mock.module(moduleName);
         let services: any = __test.angularFixture.inject(factoryName);
 		let dateFilterFactory: IDateFilterFactory = services[factoryName]
-		dateFilter = dateFilterFactory.getInstance('value');
+		dateFilter = dateFilterFactory.getInstance({
+			type: 'dateFilter',
+			valueSelector: 'value',
+		});
 	});
 
     it('dateFilter should return true', (): void => {

@@ -9,7 +9,7 @@ import __date = services.date;
 export let factoryName: string = 'rlDateFilterFactory';
 
 export interface IDateFilterSettings{
-	type:string;
+	type: string;
 	valueSelector: string,
 }
 
