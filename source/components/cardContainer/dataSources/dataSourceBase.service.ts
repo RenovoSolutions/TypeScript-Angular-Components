@@ -8,6 +8,7 @@ import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
+import * as events from './dataSourceEvents';
 
 export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	dataSet: TDataType[];
@@ -54,7 +55,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	refresh(): void {
 		if (!this.loadingDataSet) {
 			this.processData();
-			this.observable.fire('redrawing');
+			this.observable.fire(events.redrawing);
 		}
 	}
 
@@ -62,8 +63,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		var item: TDataType = this.array.remove(this.rawDataSet, data);
 
 		if (item != null) {
-			this.observable.fire('removed');
-			this.observable.fire('changed');
+			this.observable.fire(events.removed);
+			this.observable.fire(events.changed);
 
 			if (this.pager) {
 				this.refresh();
@@ -73,8 +74,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	push(data: TDataType): void {
 		this.rawDataSet.push(data);
-		this.observable.fire('added');
-		this.observable.fire('changed');
+		this.observable.fire(events.added);
+		this.observable.fire(events.changed);
 		this.refresh();
 	}
 
@@ -83,8 +84,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 		if (locationOfOldData >= 0) {
 			this.array.replace(this.rawDataSet, oldData, newData);
-			this.observable.fire('replaced');
-			this.observable.fire('changed');
+			this.observable.fire(events.replaced);
+			this.observable.fire(events.changed);
 			this.refresh();
 		}
 	}
