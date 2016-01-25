@@ -21,7 +21,7 @@ export {
 };
 
 export * from './dataSource';
-export * from './dataSourceEvents';
+export * as events from './dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
 
