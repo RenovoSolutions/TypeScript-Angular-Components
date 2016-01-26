@@ -98,7 +98,7 @@ var CardContainerController = (function () {
     };
     CardContainerController.prototype.openCard = function () {
         var behaviors = this.parentChild.getAllChildBehaviors(this.dataSource.dataSet);
-        return _.all(_.map(behaviors, function (behavior) { return behavior.close(); }));
+        return _.every(_.map(behaviors, function (behavior) { return behavior.close(); }));
     };
     CardContainerController.prototype.sort = function (column) {
         var sortList = this.dataSource.sorts;

@@ -11,6 +11,7 @@ var __observable = typescript_angular_utilities_1.services.observable;
 var __array = typescript_angular_utilities_1.services.array;
 var dataSourceBase_service_1 = require('../dataSourceBase.service');
 var dataSourceProcessor_service_1 = require('../dataSourceProcessor.service');
+var events = require('../dataSourceEvents');
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources.dataServiceDataSource';
 exports.factoryName = 'dataServiceDataSource';
 var DataServiceDataSource = (function (_super) {
@@ -33,8 +34,8 @@ var DataServiceDataSource = (function (_super) {
             _this.loadingDataSet = false;
             _this.rawDataSet = data;
             _this.refresh();
-            _this.observable.fire('reloaded');
-            _this.observable.fire('changed');
+            _this.observable.fire(events.async.reloaded);
+            _this.observable.fire(events.changed);
         });
     };
     return DataServiceDataSource;

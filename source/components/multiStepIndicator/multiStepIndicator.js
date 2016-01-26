@@ -23,7 +23,7 @@ var MultiStepIndicatorController = (function () {
         }
     };
     MultiStepIndicatorController.prototype.anyLoading = function () {
-        return _.any(this.steps, function (step) {
+        return _.some(this.steps, function (step) {
             return step.loading;
         });
     };
