@@ -15,7 +15,7 @@ var RangeFilterGroup = (function (_super) {
     __extends(RangeFilterGroup, _super);
     function RangeFilterGroup(settings, object) {
         this.getValue = settings.getValue;
-        settings.options = _.map(settings.options, this.buildRangeOption, this);
+        settings.options = _.map(settings.options, this.buildRangeOption.bind(this));
         _super.call(this, settings, object);
     }
     RangeFilterGroup.prototype.buildRangeOption = function (option) {
