@@ -151,7 +151,7 @@ export class CardContainerController {
 	openCard(): boolean {
 		var behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
 
-		return _.all(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
+		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 	}
 
 	sort(column: IColumn): void {

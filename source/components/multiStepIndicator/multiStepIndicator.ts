@@ -52,7 +52,7 @@ export class MultiStepIndicatorController {
 	}
 
 	anyLoading(): boolean {
-		return _.any(this.steps, (step: IConfiguredStep): boolean => {
+		return _.some(this.steps, (step: IConfiguredStep): boolean => {
 			return step.loading;
 		});
 	}
