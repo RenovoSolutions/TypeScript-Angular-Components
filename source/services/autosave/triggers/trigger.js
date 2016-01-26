@@ -13,8 +13,8 @@ var Trigger = (function () {
     Trigger.prototype.hasMatch = function (triggers) {
         var _this = this;
         var triggerList = triggers.split(' ');
-        return _.any(triggerList, function (trigger) {
-            return _.any(_this.aliases, function (alias) {
+        return _.some(triggerList, function (trigger) {
+            return _.some(_this.aliases, function (alias) {
                 return trigger === alias;
             });
         });

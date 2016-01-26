@@ -38,7 +38,7 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 
 	constructor(settings: IModeFilterGroupSettings, object: __object.IObjectUtility) {
 		this.getValue = settings.getValue;
-		settings.options = _.map(settings.options, this.buildModeOption, this);
+		settings.options = _.map<IModeFilterOptionSettings, IModeFilterOption>(settings.options, this.buildModeOption.bind(this));
 		super(<any>settings, object);
 	}
 

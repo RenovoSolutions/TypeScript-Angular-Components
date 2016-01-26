@@ -42,7 +42,7 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 
 	constructor(settings: IRangeFilterGroupSettings, object: __object.IObjectUtility) {
 		this.getValue = settings.getValue;
-		settings.options = _.map(settings.options, this.buildRangeOption, this);
+		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
 		super(<any>settings, object);
 	}
 
