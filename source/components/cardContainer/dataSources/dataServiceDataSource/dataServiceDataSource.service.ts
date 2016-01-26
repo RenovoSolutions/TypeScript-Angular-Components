@@ -10,6 +10,7 @@ import __array = services.array;
 import { IDataSource } from '../dataSource';
 import { DataSourceBase } from '../dataSourceBase.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import * as events from '../dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.dataServiceDataSource';
 export var factoryName: string = 'dataServiceDataSource';
@@ -47,8 +48,8 @@ export class DataServiceDataSource<TDataType> extends DataSourceBase<TDataType> 
 			this.rawDataSet = data;
 
 			this.refresh();
-			this.observable.fire('reloaded');
-			this.observable.fire('changed');
+			this.observable.fire(events.async.reloaded);
+			this.observable.fire(events.changed);
 		});
 	}
 }
