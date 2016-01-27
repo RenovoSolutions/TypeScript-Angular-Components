@@ -24,7 +24,6 @@ export function cardColumnHeader($compile: angular.ICompileService): angular.IDi
 	'use strict';
 	return {
 		restrict: 'E',
-		require: '^^rlCardContainer',
 		template: `
 			<div rl-size-for-breakpoints="column.size" ng-click="sort()" title="{{::column.description}}"
 					class="column-header">
