@@ -25,12 +25,14 @@ export var controllerName: string = 'RichTextEditorController';
 export interface IRichTextEditorBindings {
 	ngModel: string;
 	customButtons: string[];
+	ngDisabled: boolean;
 }
 
 export class RichTextEditorController {
 	// bindings
 	ngModel: string;
 	customButtons: string;
+	ngDisabled: boolean;
 
 	toolbar: string;
 
@@ -55,6 +57,7 @@ export function richTextEditor(): angular.IDirective {
 		bindToController: {
 			ngModel: '=',
 			customButtons: '=',
+			ngDisabled: '=',
 		},
 	};
 }
