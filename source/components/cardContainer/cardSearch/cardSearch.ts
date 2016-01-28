@@ -93,7 +93,7 @@ export function cardSearch(): angular.IDirective {
 		bindToController: {
 			delay: '=searchDelay',
 			containerService: '=',
-			searchFilter: '=',
+			searchFilter: '=?',
 		},
 	};
 }
