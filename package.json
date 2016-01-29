@@ -64,7 +64,7 @@
     "moment": "^2.10.6",
     "ng-wig": "^2.2.0",
     "signature_pad": "~1.4.0",
-    "typescript-angular-utilities": "~2.6.3",
+    "typescript-angular-utilities": "~2.7.2",
     "ui-select": "^0.13.2"
   },
   "license": "GPL-3.0"
