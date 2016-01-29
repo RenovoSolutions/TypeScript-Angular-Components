@@ -59,6 +59,9 @@ var SelectController = (function () {
         if (item.__isNullOption) {
             return this.nullOption;
         }
+        if (this.selector == null) {
+            return item;
+        }
         return _.isFunction(this.selector)
             ? this.selector(item)
             : item[this.selector];
