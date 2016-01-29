@@ -61,7 +61,7 @@ function cardSearch() {
         bindToController: {
             delay: '=searchDelay',
             containerService: '=',
-            searchFilter: '=',
+            searchFilter: '=?',
         },
     };
 }

@@ -10,10 +10,12 @@ export declare var controllerName: string;
 export interface IRichTextEditorBindings {
     ngModel: string;
     customButtons: string[];
+    ngDisabled: boolean;
 }
 export declare class RichTextEditorController {
     ngModel: string;
     customButtons: string;
+    ngDisabled: boolean;
     toolbar: string;
     static $inject: string[];
     constructor(object: __object.IObjectUtility, provider: void);

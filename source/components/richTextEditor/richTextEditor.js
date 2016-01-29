@@ -35,6 +35,7 @@ function richTextEditor() {
         bindToController: {
             ngModel: '=',
             customButtons: '=',
+            ngDisabled: '=',
         },
     };
 }
