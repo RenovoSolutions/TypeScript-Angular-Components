@@ -56,13 +56,13 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	private setDefaultOption(): IFilterOption {
-		let defaultOptoin: IFilterOption = this.options[0];
+		let defaultOption: IFilterOption = this.options[0];
 		_.each(this.options, (item: IFilterOption): void => {
 			if (item.active != null && item.active === true) {
-				defaultOptoin = item;
+				defaultOption = item;
 			}
 		});
-		return defaultOptoin;
+		return defaultOption;
 	}
 
 	filter<TItemType>(item: TItemType): boolean {
