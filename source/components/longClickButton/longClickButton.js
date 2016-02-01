@@ -89,10 +89,10 @@ function longClickButton() {
             text: '@',
             onShortClickText: '@',
             icon: '@',
-            busy: '=',
-            rightAligned: '=',
+            busy: '=?',
+            rightAligned: '=?',
             type: '@',
-            ngDisabled: '=',
+            ngDisabled: '=?',
         },
     };
 }
