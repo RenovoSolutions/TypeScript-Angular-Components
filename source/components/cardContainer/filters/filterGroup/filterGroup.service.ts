@@ -44,7 +44,6 @@ export class FilterGroup implements IFilterGroup {
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.options = settings.options;
-
 		this.activeOption = this.setDefaultOption();
 
 		_.each(this.options, (option: IFilterOption): void => {
@@ -57,15 +56,14 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	private setDefaultOption(): IFilterOption {
-		let defaultOptoin:IFilterOption = this.options[0];
-		_.each(this.options, (item: IFilterOption):void => {
+		let defaultOptoin: IFilterOption = this.options[0];
+		_.each(this.options, (item: IFilterOption): void => {
 			if (item.active != null && item.active === true) {
-				defaultOptoin =  item;
+				defaultOptoin = item;
 			}
 		});
 		return defaultOptoin;
 	}
-
 
 	filter<TItemType>(item: TItemType): boolean {
 		return this.activeOption.filter(item);
