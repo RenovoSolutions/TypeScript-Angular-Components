@@ -15,6 +15,7 @@ export interface IFilterGroupSettings {
 }
 
 export interface IFilterOption {
+	active?: boolean;
 	label: string;
 	type?: string;
 	filter<TItemType>(item: TItemType): boolean;
@@ -43,7 +44,8 @@ export class FilterGroup implements IFilterGroup {
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.options = settings.options;
-		this.activeOption = this.options[0];
+
+		this.activeOption = this.setDefaultOption();
 
 		_.each(this.options, (option: IFilterOption): void => {
 			if (_.isUndefined(option.type)) {
@@ -53,6 +55,16 @@ export class FilterGroup implements IFilterGroup {
 			option.type = object.toString(option.type).toLowerCase();
 		});
 	}
+
+	private setDefaultOption(): IFilterOption {
+		_.each(this.options, (item: IFilterOption): IFilterOption => {
+			if (item.active === true) {
+				return item;
+			}
+		});
+		return this.options[0];
+	}
+
 
 	filter<TItemType>(item: TItemType): boolean {
 		return this.activeOption.filter(item);
