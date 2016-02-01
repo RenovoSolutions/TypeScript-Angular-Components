@@ -1,6 +1,6 @@
 <div class="validation-input-group">
 	<div class="field validation-input" ng-class="{ 'error': textarea.ngModel.$invalid, 'required-error': textarea.ngModel.$error.required }">
-		<label ng-show="textarea.text" class="show-hide angular-animate">{{textarea.label}}</label>
+		<label ng-show="textarea.text && textarea.label" class="show-hide angular-animate">{{textarea.label}}</label>
 		<textarea class="form-control" ng-model="textarea.text" name="{{textarea.name}}" rows="{{textarea.rows}}" maxlength="{{textarea.maxlength}}" ng-disabled="textarea.ngDisabled" placeholder="{{textarea.label}}"></textarea>
         <span class="error-string" ng-hide="textarea.textareaValidator.error | isEmpty">{{textarea.textareaValidator.error}}</span>
 	</div>
