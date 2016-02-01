@@ -57,12 +57,13 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	private setDefaultOption(): IFilterOption {
-		_.each(this.options, (item: IFilterOption): IFilterOption => {
-			if (item.active === true) {
-				return item;
+		let defaultOptoin:IFilterOption = this.options[0];
+		_.each(this.options, (item: IFilterOption):void => {
+			if (item.active != null && item.active === true) {
+				defaultOptoin =  item;
 			}
 		});
-		return this.options[0];
+		return defaultOptoin;
 	}
 
 
