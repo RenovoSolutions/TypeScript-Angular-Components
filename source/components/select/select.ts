@@ -89,6 +89,10 @@ export class SelectController {
 			return this.nullOption;
 		}
 
+		if (this.selector == null) {
+			return item;
+		}
+
 		return _.isFunction(this.selector)
 			? (<{ (item: any): string }>this.selector)(item)
 			: item[<string>this.selector];

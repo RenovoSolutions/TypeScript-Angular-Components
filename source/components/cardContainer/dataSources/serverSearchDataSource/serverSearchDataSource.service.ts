@@ -12,6 +12,7 @@ import __synchronizedRequests = services.synchronizedRequests;
 import { IDataSource } from '../dataSource';
 import { DataSourceBase } from '../dataSourceBase.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import * as events from '../dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSearchDataSource';
 export var factoryName: string = 'serverSearchDataSource';
@@ -99,8 +100,8 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 		this.rawDataSet = data;
 
 		this.refresh();
-		this.observable.fire('reloaded');
-		this.observable.fire('changed');
+		this.observable.fire(events.async.reloaded);
+		this.observable.fire(events.changed);
 	}
 
 	private filterModelChanged(): boolean {

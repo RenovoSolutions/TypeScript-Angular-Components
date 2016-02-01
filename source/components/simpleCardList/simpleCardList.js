@@ -25,7 +25,7 @@ var SimpleCardListController = (function () {
         };
     };
     SimpleCardListController.prototype.openCard = function () {
-        return _.all(this.observable.fire('close'));
+        return _.every(this.observable.fire('close'));
     };
     SimpleCardListController.$inject = ['$scope', '$attrs', '$parse', __observable.factoryName];
     return SimpleCardListController;

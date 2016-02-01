@@ -29,7 +29,7 @@ interface ITestObject {
 	value?: number;
 }
 
-describe('modeFilterGroup', () => {
+describe('rangeFilterGroup', () => {
 	var rangeFilterGroupFactory: IRangeFilterGroupFactory;
 	var rangeFilterGroup: IRangeFilterGroup;
 

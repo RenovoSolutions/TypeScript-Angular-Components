@@ -53,7 +53,7 @@ export class SimpleCardListController implements ISimpleCardListController {
 	}
 
 	openCard(): boolean {
-		return _.all(<boolean[]>this.observable.fire('close'));
+		return _.every(<boolean[]>this.observable.fire('close'));
 	}
 }
 

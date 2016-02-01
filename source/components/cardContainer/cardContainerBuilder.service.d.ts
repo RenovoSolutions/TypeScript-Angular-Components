@@ -6,6 +6,7 @@ import { IColumn } from './column';
 import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import * as selectFilter from './filters/selectFilter/selectFilter.module';
+import * as dateFilter from './filters/dateFilter/dateFilter.module';
 import { IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 import IDataSource = dataSources.IDataSource;
 import IDataSourceDataServiceFunction = dataSources.dataServiceDataSource.IDataServiceFunction;
@@ -21,8 +22,10 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
+import IDateFilter = dateFilter.IDateFilter;
+import IDateFilterSettings = dateFilter.IDateFilterSettings;
 export declare let factoryName: string;
-export { IColumn, IDataSource, IDataSourceDataServiceFunction, IServerSearchDataServiceFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
+export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IServerSearchDataServiceFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
 export interface ICardContainerBuilder {
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
@@ -51,8 +54,9 @@ export interface IFilterBuilder {
     buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
     buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
     buildSelectFilter<T>(valueSelector: string | {
-        (item: T): string;
+        (item: T): any;
     }): ISelectFilter<T>;
+    buildDateFilter(valueSelector: IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: IFilter): void;
 }
@@ -104,8 +108,9 @@ export declare class FilterBuilder implements IFilterBuilder {
     buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup;
     buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
     buildSelectFilter<T>(valueSelector: string | {
-        (item: T): string;
+        (item: T): any;
     }): ISelectFilter<T>;
+    buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: filters.IFilter): void;
 }

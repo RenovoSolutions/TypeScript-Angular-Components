@@ -15,7 +15,7 @@ var ModeFilterGroup = (function (_super) {
     __extends(ModeFilterGroup, _super);
     function ModeFilterGroup(settings, object) {
         this.getValue = settings.getValue;
-        settings.options = _.map(settings.options, this.buildModeOption, this);
+        settings.options = _.map(settings.options, this.buildModeOption.bind(this));
         _super.call(this, settings, object);
     }
     ModeFilterGroup.prototype.buildModeOption = function (option) {

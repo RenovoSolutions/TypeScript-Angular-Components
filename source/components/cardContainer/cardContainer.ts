@@ -151,7 +151,7 @@ export class CardContainerController {
 	openCard(): boolean {
 		var behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
 
-		return _.all(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
+		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 	}
 
 	sort(column: IColumn): void {
@@ -358,7 +358,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 		scope: {},
 		bindToController: {
 			// summary: a builder for the card container
-			builder: '=',
+			builder: '=?',
 
 			// summary: The data source for the card container
 			// remarks: Can be an array of objects, or an implementation of the data source contract: {
@@ -377,17 +377,17 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			//     count: The number of items available in the data set (used for paging).
 			//     loadingDataSet: A boolean indicating if the dataSet is being refreshed / loaded,
 			// }
-			source: '=',
+			source: '=?',
 
 			// summary: A list of filters to be applied to the data source
 			// remarks: Each filter should implement the data filter contract: {
 			//     type: A name that can be used to look up the filter,
 			//     filter: function(item) { takes an item and returns false if it should be removed from the data set },
 			// }
-			filters: '=',
+			filters: '=?',
 
 			// summary: Turn paging on or off (true / false)
-			paging: '=',
+			paging: '=?',
 
 			// summary: A list of the columns for building the column header and card headers.
 			// remarks: Each column object should be in the following format: {
@@ -421,10 +421,10 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			//        ],
 			//     }
 			// }
-			columns: '=',
+			columns: '=?',
 
 			// summary: container-wide data available in cards
-			containerData: '=',
+			containerData: '=?',
 
 			// summary: controller shared by all components on a card
 			// remarks: this controller cannot override any of the following variable names:
@@ -450,15 +450,15 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			cardAs: '@',
 
 			// summary: Indicates if cards should show active state on mouse over
-			clickableCards: '=',
+			clickableCards: '=?',
 
 			// summary: The number of sorts that can be applied at a time.
-			maxColumnSorts: '=',
+			maxColumnSorts: '=?',
 
-			permanentFooters: '=',
+			permanentFooters: '=?',
 
 			// summary: If true, turns on selection for cards via the cardData.viewData.selected property
-			selectableCards: '=',
+			selectableCards: '=?',
 			// summary: Function called with each item. If true is returned selection is disabled for this item.
 			//          If function is not defined, selection is enabled for all by default.
 			disableSelection: '&',

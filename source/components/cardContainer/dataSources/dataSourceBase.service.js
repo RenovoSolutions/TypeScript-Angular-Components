@@ -1,4 +1,5 @@
 'use strict';
+var events = require('./dataSourceEvents');
 var DataSourceBase = (function () {
     function DataSourceBase(observableFactory, dataSourceProcessor, array) {
         this.dataSourceProcessor = dataSourceProcessor;
@@ -28,14 +29,14 @@ var DataSourceBase = (function () {
     DataSourceBase.prototype.refresh = function () {
         if (!this.loadingDataSet) {
             this.processData();
-            this.observable.fire('redrawing');
+            this.observable.fire(events.redrawing);
         }
     };
     DataSourceBase.prototype.remove = function (data) {
         var item = this.array.remove(this.rawDataSet, data);
         if (item != null) {
-            this.observable.fire('removed');
-            this.observable.fire('changed');
+            this.observable.fire(events.removed);
+            this.observable.fire(events.changed);
             if (this.pager) {
                 this.refresh();
             }
@@ -43,16 +44,16 @@ var DataSourceBase = (function () {
     };
     DataSourceBase.prototype.push = function (data) {
         this.rawDataSet.push(data);
-        this.observable.fire('added');
-        this.observable.fire('changed');
+        this.observable.fire(events.added);
+        this.observable.fire(events.changed);
         this.refresh();
     };
     DataSourceBase.prototype.replace = function (oldData, newData) {
         var locationOfOldData = this.rawDataSet.indexOf(oldData);
         if (locationOfOldData >= 0) {
             this.array.replace(this.rawDataSet, oldData, newData);
-            this.observable.fire('replaced');
-            this.observable.fire('changed');
+            this.observable.fire(events.replaced);
+            this.observable.fire(events.changed);
             this.refresh();
         }
     };

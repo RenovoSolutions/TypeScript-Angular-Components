@@ -1,6 +1,6 @@
 'use strict';
 var _ = require('lodash');
-exports.factoryName = 'selectFilter';
+exports.factoryName = 'rlSelectFilterFactory';
 var SelectFilter = (function () {
     function SelectFilter(valueSelector) {
         this.valueSelector = valueSelector;

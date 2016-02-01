@@ -65,6 +65,7 @@ export function textarea(): angular.IDirective {
 			ngDisabled: '=',
 			label: '@',
 			validator: '=',
+			maxLength: '=',
 		},
 	};
 }

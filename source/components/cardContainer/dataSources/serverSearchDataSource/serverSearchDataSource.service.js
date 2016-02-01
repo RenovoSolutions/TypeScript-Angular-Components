@@ -12,6 +12,7 @@ var __object = typescript_angular_utilities_1.services.object;
 var __synchronizedRequests = typescript_angular_utilities_1.services.synchronizedRequests;
 var dataSourceBase_service_1 = require('../dataSourceBase.service');
 var dataSourceProcessor_service_1 = require('../dataSourceProcessor.service');
+var events = require('../dataSourceEvents');
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources.serverSearchDataSource';
 exports.factoryName = 'serverSearchDataSource';
 var ServerSearchDataSource = (function (_super) {
@@ -28,8 +29,8 @@ var ServerSearchDataSource = (function (_super) {
             _this.loadingDataSet = false;
             _this.rawDataSet = data;
             _this.refresh();
-            _this.observable.fire('reloaded');
-            _this.observable.fire('changed');
+            _this.observable.fire(events.async.reloaded);
+            _this.observable.fire(events.changed);
         };
         this.getFilterModel = this.getFilterModel || function () { return null; };
         this.validateModel = this.validateModel || function () { return true; };

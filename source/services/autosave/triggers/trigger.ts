@@ -25,8 +25,8 @@ export class Trigger<TSettings> implements ITrigger<TSettings> {
 
 	hasMatch(triggers: string): boolean {
 		let triggerList: string[] = triggers.split(' ');
-		return _.any(triggerList, (trigger: string): boolean => {
-			return _.any(this.aliases, (alias: string): boolean => {
+		return _.some(triggerList, (trigger: string): boolean => {
+			return _.some(this.aliases, (alias: string): boolean => {
 				return trigger === alias;
 			});
 		});

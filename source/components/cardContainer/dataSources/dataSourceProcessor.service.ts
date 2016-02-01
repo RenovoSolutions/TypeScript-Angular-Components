@@ -77,7 +77,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 							, data: TDataType[]): IProcessResult<TDataType> {
 		// If there are no filters that need to updated option counts, use the normal processor
 		if (this.object.isNullOrEmpty(filters)
-			|| _.any(filters, (filter: filters.IFilterWithCounts): boolean => { return _.isFunction(filter.updateOptionCounts); }) === false) {
+			|| _.some(filters, (filter: filters.IFilterWithCounts): boolean => { return _.isFunction(filter.updateOptionCounts); }) === false) {
 			return this.process(sorts, filters, pager, data);
 		}
 
@@ -103,7 +103,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 					// Omit the true or false of the current filter an
 					//  only filter out items removed by other filters
 					var filterData: any = _.omit(item.filterData, filter.type); //*filterData
-					return _.all(_.values(filterData));
+					return _.every(_.values(filterData));
 				});
 
 				filter.updateOptionCounts(this.unwrapData(otherFiltersApplied));
@@ -112,7 +112,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 		// Filter down to final data set by removing items that don't match all filters
 		wrappedData = _.filter(wrappedData, (item: IWrappedItem<TDataType>): boolean => {
-			return _.all(_.values(item.filterData));
+			return _.every(_.values(item.filterData));
 		});
 
 		processedData = this.unwrapData(wrappedData);
