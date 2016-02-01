@@ -140,9 +140,9 @@ export function simpleCard(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			onOpen: '&',
-			canOpen: '=',
-			alwaysOpen: '=',
-			childLink: '=',
+			canOpen: '=?',
+			alwaysOpen: '=?',
+			childLink: '=?',
 			validate: '&',
 			save: '&',
 		},
