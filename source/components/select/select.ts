@@ -100,9 +100,8 @@ export class SelectController {
 
 	loadItems(): angular.IPromise<any[]> {
 		let promise: angular.IPromise<any[]>;
-		if (_.isFunction(this.getOptions)) {
-			promise = this.getOptions();
-		} else {
+		promise = this.getOptions();
+		if (promise == null) {
 			promise = this.$q.when(this.options);
 		}
 		return promise.then((options: any[]): any[] => { return this.configureOptions(options); });
