@@ -26,8 +26,9 @@ import * as _ from 'lodash';
 interface IFilterOptionMock {
 	label?: string;
 	type?: string;
-	filter: Sinon.SinonSpy;
+	filter?: Sinon.SinonSpy;
 	count?: number;
+	active?: boolean;
 }
 
 describe('filterGroup', () => {
@@ -86,24 +87,41 @@ describe('filterGroup', () => {
 
 	it('should calculate the option counts on the options by applying their filters and then calculating the length of the resulting data set'
 		, (): void => {
+			var option1: IFilterOptionMock = {
+				filter: sinon.spy((item: number): boolean => {
+					return item > 5;
+				}),
+			};
+			var option2: IFilterOptionMock = {
+				filter: sinon.spy((item: number): boolean => {
+					return item <= 5;
+				}),
+			};
+
+			filterGroup = filterGroupFactory.getInstance(<any>{
+				options: [option1, option2],
+			});
+
+			filterGroup.updateOptionCounts(_.range(1, 11));
+
+			expect(option1.count).to.equal(5);
+			expect(option2.count).to.equal(5);
+		});
+
+	it('should expect the option with active set to true to be the active option', (): void => {
 		var option1: IFilterOptionMock = {
-			filter: sinon.spy((item: number): boolean => {
-				return item > 5;
-			}),
+			active: false
 		};
 		var option2: IFilterOptionMock = {
-			filter: sinon.spy((item: number): boolean => {
-				return item <= 5;
-			}),
+			active: true
 		};
 
 		filterGroup = filterGroupFactory.getInstance(<any>{
 			options: [option1, option2],
 		});
 
-		filterGroup.updateOptionCounts(_.range(1, 11));
+		expect(filterGroup.activeOption).to.equal(option2);
+		expect(filterGroup.activeOption).to.not.equal(option1);
 
-		expect(option1.count).to.equal(5);
-		expect(option2.count).to.equal(5);
 	});
 });
