@@ -7,6 +7,7 @@ export interface IFilterGroupSettings {
     options: IFilterOption[];
 }
 export interface IFilterOption {
+    active?: boolean;
     label: string;
     type?: string;
     filter<TItemType>(item: TItemType): boolean;
@@ -25,6 +26,7 @@ export declare class FilterGroup implements IFilterGroup {
     options: IFilterOption[];
     activeOption: IFilterOption;
     constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility);
+    private setDefaultOption();
     filter<TItemType>(item: TItemType): boolean;
     setActiveOption(index: number): void;
     setOptionCounts(counts: number[]): void;

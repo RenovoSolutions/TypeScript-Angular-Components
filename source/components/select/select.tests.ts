@@ -150,7 +150,7 @@ describe('SelectController', () => {
 		let bindings: any = {
 			options: options,
 			nullOption: nullOption,
-			getOptions: getOptions,
+			getOptions: getOptions ? getOptions : sinon.spy(),
 		};
 
 		let $element: any = {
