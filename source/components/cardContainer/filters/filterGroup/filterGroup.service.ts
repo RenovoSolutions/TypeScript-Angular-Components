@@ -85,7 +85,7 @@ export class FilterGroup implements IFilterGroup {
 
 	updateOptionCounts<TDataType>(filteredDataSet: TDataType[]): void {
 		_.each(this.options, (option: IConfiguredFilterOption): void => {
-			option.count = _.filter(filteredDataSet, option.filter, option).length;
+			option.count = _.filter(filteredDataSet, option.filter.bind(option)).length;
 		});
 	}
 }

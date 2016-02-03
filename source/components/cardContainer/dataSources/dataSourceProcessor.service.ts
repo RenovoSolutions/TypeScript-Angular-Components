@@ -54,7 +54,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 		if (this.object.isNullOrEmpty(filters) === false) {
 			processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
 				// Filter the data set using the filter function on the filter
-				return _.filter(filteredData, filter.filter, filter);
+				return _.filter(filteredData, filter.filter.bind(filter));
 			}, processedData);
 		}
 
