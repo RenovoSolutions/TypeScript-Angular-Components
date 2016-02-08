@@ -78,8 +78,9 @@ export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
 	buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>
-										, getFilterModel?: IGetFilterModel<TDataType>
-										, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>
+											, getFilterModel?: IGetFilterModel<TDataType>
+											, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>
+	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 
 export interface IFilterBuilder {
@@ -90,6 +91,7 @@ export interface IFilterBuilder {
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
+
 }
 
 export class CardContainerBuilder implements ICardContainerBuilder {
@@ -205,6 +207,11 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 
 		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get<any>(dataSources.serverSearchDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
+		return this.parent._dataSource;
+	}
+
+	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>{
+		this.parent._dataSource = dataSource;
 		return this.parent._dataSource;
 	}
 }
