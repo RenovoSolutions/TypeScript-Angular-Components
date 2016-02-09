@@ -60,6 +60,7 @@ export function textbox(): angular.IDirective {
 		bindToController: {
 			validator: '=',
 			label: '@',
+			maxlength: '=',
 		},
 	};
 }
