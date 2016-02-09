@@ -25,8 +25,8 @@ export interface IMessageLogBindings {
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
-	currentUser: IUser;
-	canDelete: boolean;
+	currentUser?: IUser;
+	canDelete?: boolean;
 
 	selector: { (IMessage): any } | string;
 }
