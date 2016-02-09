@@ -1,10 +1,14 @@
 import * as ng from 'angular';
 export declare var factoryName: string;
 export declare var defaultPageSize: number;
+export interface IUser {
+    id: number;
+    name: string;
+}
 export interface IMessage {
     id?: number;
     message: string;
-    createdBy?: string;
+    createdBy?: IUser;
     createdDate?: Date;
 }
 export interface IGetMessagesResult {
