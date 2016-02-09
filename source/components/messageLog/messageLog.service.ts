@@ -23,10 +23,12 @@ export interface IGetMessagesResult {
 export interface IMessageLogDataService {
 	saveMessage(message: IMessage): ng.IPromise<void>;
 	getMessages(startFrom: number, quantity: number): ng.IPromise<IGetMessagesResult>;
+	deleteMessage(message: IMessage): ng.IPromise<void>;
 }
 
 export interface IMessageLog {
 	addMessage(message: IMessage): ng.IPromise<void>;
+	deleteMessage(message: IMessage): ng.IPromise<void>;
 	visibleMessages: IMessage[];
 
 	getNextPage(): ng.IPromise<void>;
@@ -88,6 +90,12 @@ export class MessageLog {
 	addMessage(message: IMessage): ng.IPromise<void> {
 		return this.dataService.saveMessage(message).then((): void => {
 			this.getTopPage();
+		});
+	}
+
+	deleteMessage(message: IMessage): ng.IPromise<void> {
+		return this.dataService.deleteMessage(message).then((): void => {
+			this.refresh();
 		});
 	}
 
