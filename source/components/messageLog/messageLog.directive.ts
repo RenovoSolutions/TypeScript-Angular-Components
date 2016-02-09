@@ -13,7 +13,7 @@ import {
 	IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
-import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory } from './messageLog.service';
+import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
 
 import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
 
@@ -25,6 +25,8 @@ export interface IMessageLogBindings {
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
+	currentUser: IUser;
+	canDelete: boolean;
 
 	selector: { (IMessage): any } | string;
 }
@@ -36,6 +38,8 @@ export class MessageLogController implements IMessageLogBindings {
 	messageLogBinding: IMessageLog;
 	messageAs: string;
 	selector: { (IMessage): any } | string;
+	currentUser: IUser;
+	canDelete: boolean;
 
 	messages: IMessage[];
 	hasNextPage: boolean;
@@ -96,6 +100,10 @@ export class MessageLogController implements IMessageLogBindings {
 	getTop(): ng.IPromise<void> {
 		return this.messageLog.getTopPage();
 	}
+
+	canDeleteEntry(entry: IMessage): boolean {
+		return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.id);
+	}
 }
 
 messageLog.$inject = [
@@ -124,6 +132,8 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			pageSize: '=',
 			messageLogBinding: '=messageLog',
 			messageAs: "@",
+			currentUser: '=?',
+			canDelete: '=?',
 		},
 		link: (scope: angular.IScope,
 			   element: angular.IAugmentedJQuery,

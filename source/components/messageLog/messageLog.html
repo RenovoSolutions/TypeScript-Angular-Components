@@ -4,6 +4,10 @@
 		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
 			<template default>
 				<div ng-bind-html="entry.message"></div>
+				<span ng-if="log.canDeleteEntry(entry)">
+					<rl-button-async class="pull-right" action="log.messageLog.deleteMessage(entry)" size="sm"><i class="fa fa-remove"></i></rl-button-async>
+					<div class="clearfix"></div>
+				</span>
 				<div class="byline">{{entry.createdBy.name}}</div>
 				<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
 			</template>
