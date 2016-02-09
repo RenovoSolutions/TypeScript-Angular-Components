@@ -8,10 +8,15 @@ export var factoryName: string = 'messageLog';
 
 export var defaultPageSize: number = 10;
 
+export interface IUser {
+	id: number;
+	name: string;
+}
+
 export interface IMessage {
 	id?: number;
 	message: string;
-	createdBy?: string,
+	createdBy?: IUser,
 	createdDate?: Date,
 }
 
