@@ -14,9 +14,11 @@ export interface IGetMessagesResult {
 export interface IMessageLogDataService {
     saveMessage(message: IMessage): ng.IPromise<void>;
     getMessages(startFrom: number, quantity: number): ng.IPromise<IGetMessagesResult>;
+    deleteMessage(message: IMessage): ng.IPromise<void>;
 }
 export interface IMessageLog {
     addMessage(message: IMessage): ng.IPromise<void>;
+    deleteMessage(message: IMessage): ng.IPromise<void>;
     visibleMessages: IMessage[];
     getNextPage(): ng.IPromise<void>;
     getPreviousPage(): ng.IPromise<void>;
@@ -41,6 +43,7 @@ export declare class MessageLog {
     hasBackwardMessages: boolean;
     dataService: IMessageLogDataService;
     addMessage(message: IMessage): ng.IPromise<void>;
+    deleteMessage(message: IMessage): ng.IPromise<void>;
     getNextPage(): ng.IPromise<void>;
     getPreviousPage(): ng.IPromise<void>;
     getTopPage(): ng.IPromise<void>;

@@ -42,6 +42,7 @@ function textbox() {
         bindToController: {
             validator: '=',
             label: '@',
+            maxlength: '=',
         },
     };
 }
