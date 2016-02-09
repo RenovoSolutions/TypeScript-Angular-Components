@@ -102,7 +102,7 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
-		return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.id);
+		return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.createdBy.id);
 	}
 }
 
