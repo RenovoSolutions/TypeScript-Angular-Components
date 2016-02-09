@@ -25,6 +25,7 @@ export class TextareaController {
 	ngDisabled: boolean;
 	label: string;
 	validator: __validation.IValidationHandler;
+	maxlength: number;
 
 	ngModel: angular.INgModelController;
 	textareaValidator: IComponentValidator;
