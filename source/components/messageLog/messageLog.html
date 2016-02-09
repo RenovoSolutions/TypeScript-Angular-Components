@@ -4,7 +4,7 @@
 		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
 			<template default>
 				<div ng-bind-html="entry.message"></div>
-				<div class="byline">{{entry.createdBy}}</div>
+				<div class="byline">{{entry.createdBy.name}}</div>
 				<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
 			</template>
 		</rl-generic-container>
