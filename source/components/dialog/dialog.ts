@@ -18,8 +18,6 @@ export class DialogController implements IDialogBindings {
 	hasFooter: boolean;
 }
 
-let defaultAutosaveFooter: string = '<rl-autosave-dialog-footer></rl-autosave-dialog-footer>';
-
 dialog.$inject = ['$compile'];
 function dialog($compile: angular.ICompileService): angular.IDirective {
 	'use strict';
@@ -51,7 +49,7 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 
 				controller.hasFooter = (footer.length > 0);
 				if (!controller.hasFooter && controller.autosave) {
-					footer = $compile(defaultAutosaveFooter)(dialogScope);
+					footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
 					controller.hasFooter = true;
 				}
 
