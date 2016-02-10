@@ -1,0 +1,7 @@
+.nw-button.header:before {
+  content: '\f1dc'; /* fa-header */
+}
+
+.nw-button.paragraph:before {
+  content: '\f1dd'; /* fa-paragraph */
+}
