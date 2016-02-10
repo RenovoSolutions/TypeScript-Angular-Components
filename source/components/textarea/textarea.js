@@ -44,7 +44,7 @@ function textarea() {
             ngDisabled: '=',
             label: '@',
             validator: '=',
-            maxLength: '=',
+            maxlength: '=',
         },
     };
 }

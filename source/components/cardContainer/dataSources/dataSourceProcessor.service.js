@@ -17,7 +17,7 @@ var DataSourceProcessor = (function () {
         if (this.object.isNullOrEmpty(filters) === false) {
             processedData = _.reduce(filters, function (filteredData, filter) {
                 // Filter the data set using the filter function on the filter
-                return _.filter(filteredData, filter.filter, filter);
+                return _.filter(filteredData, filter.filter.bind(filter));
             }, processedData);
         }
         var result = {
