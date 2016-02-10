@@ -16,7 +16,7 @@ export function headerButton(): ng.IDirective {
 	return {
 		restrict: 'E',
 		template: `
-			<button type="button" class="nw-button" ng-click="trigger()" ng-disabled="editMode" title="Header 1">
+			<button type="button" class="nw-button" ng-click="trigger()" ng-disabled="editMode || isDisabled" title="Header 1">
 				<i class="fa fa-header"></i>
 			</button>
 		`,
