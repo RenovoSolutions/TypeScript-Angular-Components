@@ -11,7 +11,6 @@ var DialogController = (function () {
     return DialogController;
 })();
 exports.DialogController = DialogController;
-var defaultAutosaveFooter = '<rl-autosave-dialog-footer></rl-autosave-dialog-footer>';
 dialog.$inject = ['$compile'];
 function dialog($compile) {
     'use strict';
@@ -36,7 +35,7 @@ function dialog($compile) {
                 contentArea.append(content);
                 controller.hasFooter = (footer.length > 0);
                 if (!controller.hasFooter && controller.autosave) {
-                    footer = $compile(defaultAutosaveFooter)(dialogScope);
+                    footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
                     controller.hasFooter = true;
                 }
                 if (controller.hasFooter) {
