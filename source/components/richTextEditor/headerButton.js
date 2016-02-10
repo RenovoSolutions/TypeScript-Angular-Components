@@ -5,7 +5,7 @@ function headerButton() {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<button type=\"button\" class=\"nw-button\" ng-click=\"trigger()\" ng-disabled=\"editMode || isDisabled\" title=\"Header 1\">\n\t\t\t\t<i class=\"fa fa-header\"></i> H\n\t\t\t</button>\n\t\t",
+        template: "\n\t\t\t<button type=\"button\" class=\"nw-button\" ng-click=\"trigger()\" ng-disabled=\"editMode || isDisabled\" title=\"Header 1\">\n\t\t\t\t<i class=\"fa fa-header\"></i>\n\t\t\t</button>\n\t\t",
         link: function (scope) {
             scope.trigger = function () {
                 scope.execCommand('formatblock', 'h1');
