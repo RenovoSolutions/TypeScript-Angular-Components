@@ -49,6 +49,9 @@ var MessageLogController = (function () {
     MessageLogController.prototype.getTop = function () {
         return this.messageLog.getTopPage();
     };
+    MessageLogController.prototype.canDeleteEntry = function (entry) {
+        return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.createdBy.id);
+    };
     MessageLogController.$inject = ['$scope', messageLog_service_1.factoryName];
     return MessageLogController;
 })();
@@ -76,6 +79,8 @@ function messageLog($interpolate, jquery, templateLoader, object) {
             pageSize: '=',
             messageLogBinding: '=messageLog',
             messageAs: "@",
+            currentUser: '=?',
+            canDelete: '=?',
         },
         link: function (scope, element, attributes, controller, transclude) {
             controller.templates = templateLoader.loadTemplates(transclude).templates;

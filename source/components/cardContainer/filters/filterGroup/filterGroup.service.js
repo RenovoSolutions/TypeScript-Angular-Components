@@ -42,7 +42,7 @@ var FilterGroup = (function () {
     };
     FilterGroup.prototype.updateOptionCounts = function (filteredDataSet) {
         _.each(this.options, function (option) {
-            option.count = _.filter(filteredDataSet, option.filter, option).length;
+            option.count = _.filter(filteredDataSet, option.filter.bind(option)).length;
         });
     };
     return FilterGroup;
