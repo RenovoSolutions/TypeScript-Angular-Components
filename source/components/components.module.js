@@ -20,6 +20,8 @@ var commaList = require('./commaList/commaList');
 exports.commaList = commaList;
 var dateTime = require('./dateTime/dateTime');
 exports.dateTime = dateTime;
+var dialog = require('./dialog/dialog');
+exports.dialog = dialog;
 var genericContainer = require('./genericContainer/genericContainer');
 exports.genericContainer = genericContainer;
 var lazyLoad = require('./lazyLoad/lazyLoad');
@@ -72,6 +74,7 @@ angular.module(exports.moduleName, [
     checkbox.moduleName,
     commaList.moduleName,
     dateTime.moduleName,
+    dialog.moduleName,
     genericContainer.moduleName,
     lazyLoad.moduleName,
     longClickButton.moduleName,

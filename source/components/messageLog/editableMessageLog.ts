@@ -9,6 +9,7 @@ import {
 	IMessageLog,
 	factoryName as messageLogFactoryName,
 	IMessageLogFactory,
+	IUser,
 } from './messageLog.service';
 
 export var directiveName: string = 'rlEditableMessageLog';
@@ -19,12 +20,16 @@ import __object = services.object;;
 export interface IEditableMessageLogBindings {
 	pageSize: number;
 	service: IMessageLogDataService;
+	currentUser?: IUser;
+	canDelete?: boolean;
 }
 
 export class EditableMessageLogController {
 	// bindings
 	pageSize: number;
 	service: IMessageLogDataService;
+	currentUser: IUser;
+	canDelete: boolean;
 
 	messageLogService: IMessageLog;
 	newMessage: string;
@@ -74,7 +79,8 @@ export function editableMessageLog(): angular.IDirective {
 					</span>
 				</div>
 				<div class="message-log">
-					<rl-message-log service="log.service" page-size="log.pageSize" message-log="log.messageLogService"></rl-message-log>
+					<rl-message-log service="log.service" page-size="log.pageSize" message-log="log.messageLogService"
+									current-user="log.currentUser" can-delete="log.canDelete"></rl-message-log>
 				</div>
 			</form>
 		`,
@@ -84,6 +90,8 @@ export function editableMessageLog(): angular.IDirective {
 		bindToController: {
 			service: '=',
 			pageSize: '=',
+			currentUser: '=?',
+			canDelete: '=?',
 		},
 	};
 }

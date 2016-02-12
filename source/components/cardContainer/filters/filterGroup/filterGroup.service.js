@@ -8,7 +8,7 @@ var FilterGroup = (function () {
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
         this.options = settings.options;
-        this.activeOption = this.options[0];
+        this.activeOption = this.setDefaultOption();
         _.each(this.options, function (option) {
             if (_.isUndefined(option.type)) {
                 option.type = option.label;
@@ -16,6 +16,15 @@ var FilterGroup = (function () {
             option.type = object.toString(option.type).toLowerCase();
         });
     }
+    FilterGroup.prototype.setDefaultOption = function () {
+        var defaultOption = this.options[0];
+        _.each(this.options, function (item) {
+            if (item.active != null && item.active === true) {
+                defaultOption = item;
+            }
+        });
+        return defaultOption;
+    };
     FilterGroup.prototype.filter = function (item) {
         return this.activeOption.filter(item);
     };
@@ -33,7 +42,7 @@ var FilterGroup = (function () {
     };
     FilterGroup.prototype.updateOptionCounts = function (filteredDataSet) {
         _.each(this.options, function (option) {
-            option.count = _.filter(filteredDataSet, option.filter, option).length;
+            option.count = _.filter(filteredDataSet, option.filter.bind(option)).length;
         });
     };
     return FilterGroup;

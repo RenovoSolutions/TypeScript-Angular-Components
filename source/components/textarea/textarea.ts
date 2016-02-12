@@ -25,6 +25,7 @@ export class TextareaController {
 	ngDisabled: boolean;
 	label: string;
 	validator: __validation.IValidationHandler;
+	maxlength: number;
 
 	ngModel: angular.INgModelController;
 	textareaValidator: IComponentValidator;
@@ -65,7 +66,7 @@ export function textarea(): angular.IDirective {
 			ngDisabled: '=',
 			label: '@',
 			validator: '=',
-			maxLength: '=',
+			maxlength: '=',
 		},
 	};
 }

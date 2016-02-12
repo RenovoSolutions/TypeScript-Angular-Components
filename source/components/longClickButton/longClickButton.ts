@@ -118,10 +118,10 @@ function longClickButton(): angular.IDirective {
 			text: '@',
 			onShortClickText: '@',
 			icon: '@',
-			busy: '=',
-			rightAligned: '=',
+			busy: '=?',
+			rightAligned: '=?',
 			type: '@',
-			ngDisabled: '=',
+			ngDisabled: '=?',
 		},
 	};
 }

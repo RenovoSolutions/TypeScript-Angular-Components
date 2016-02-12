@@ -93,9 +93,9 @@ function simpleCard() {
         scope: {},
         bindToController: {
             onOpen: '&',
-            canOpen: '=',
-            alwaysOpen: '=',
-            childLink: '=',
+            canOpen: '=?',
+            alwaysOpen: '=?',
+            childLink: '=?',
             validate: '&',
             save: '&',
         },

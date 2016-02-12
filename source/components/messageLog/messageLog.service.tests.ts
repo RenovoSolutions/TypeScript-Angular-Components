@@ -8,6 +8,7 @@
 'use strict';
 
 import { services } from 'typescript-angular-utilities';
+import __array = services.array;
 
 import {
 	moduleName,
@@ -25,6 +26,7 @@ import test = services.test;
 interface ITestDataService {
 	saveMessage: Sinon.SinonSpy;
 	getMessages: Sinon.SinonSpy;
+	deleteMessage: Sinon.SinonSpy;
 }
 
 describe('messageLog', () => {
@@ -39,7 +41,7 @@ describe('messageLog', () => {
 
 		allMessages = defaultMessages();
 
-		let services: any = test.angularFixture.inject(factoryName, test.mock.serviceName);
+		let services: any = test.angularFixture.inject(factoryName, test.mock.serviceName, __array.serviceName);
 		let messageLogFactory: IMessageLogFactory = services[factoryName];
 		messageLog = messageLogFactory.getInstance();
 		messageLog.pageSize = 5;
@@ -47,7 +49,10 @@ describe('messageLog', () => {
 		mock = services[test.mock.serviceName];
 		dataService = mock.service();
 
+		let array: __array.IArrayUtility = services[__array.serviceName];
+
 		mock.promiseWithCallback(dataService, 'saveMessage', (message: any): void => { allMessages.unshift(message); });
+		mock.promiseWithCallback(dataService, 'deleteMessage', (message: any): void => { array.remove(allMessages, message); });
 		mock.promiseWithCallback(dataService, 'getMessages', (startFrom: number, quantity: number): IGetMessagesResult => {
 			let hasMoreMessages: boolean = startFrom + quantity < allMessages.length;
 			return {
@@ -197,6 +202,26 @@ describe('messageLog', () => {
 			mock.flush(dataService);
 			mock.flush(dataService);
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
+		});
+
+		it('should delete the message and refresh the current page', (): void => {
+			messageLog.getNextPage();
+			mock.flush(dataService);
+
+			expect(messageLog.visibleMessages[0]).to.equal('6');
+
+			messageLog.deleteMessage(messageLog.visibleMessages[0]);
+
+			sinon.assert.calledOnce(dataService.deleteMessage);
+			mock.flush(dataService);
+			mock.flush(dataService);
+
+			expect(messageLog.visibleMessages).to.have.length(5);
+			expect(messageLog.visibleMessages[0]).to.equal('7');
+			expect(messageLog.visibleMessages[1]).to.equal('8');
+			expect(messageLog.visibleMessages[2]).to.equal('9');
+			expect(messageLog.visibleMessages[3]).to.equal('10');
+			expect(messageLog.visibleMessages[4]).to.equal('11');
 		});
 
 		it('should take the user back to the first page if the user adds a new message', (): void => {
