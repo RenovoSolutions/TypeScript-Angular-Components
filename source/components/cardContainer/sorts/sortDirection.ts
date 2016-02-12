@@ -11,7 +11,7 @@ export class SortDirection {
 	public static ascending: SortDirection = new SortDirection(1);
 	public static descending: SortDirection = new SortDirection(2);
 
-	constructor(public value: number) { }
+	constructor(private value: number) { }
 
 	public static toggle(direction: SortDirection): SortDirection {
 		if (direction === SortDirection.ascending) {
