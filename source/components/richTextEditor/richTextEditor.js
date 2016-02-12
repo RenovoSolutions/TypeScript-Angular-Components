@@ -2,6 +2,7 @@
 'use strict';
 require('ng-wig/dist/css/ng-wig.css');
 require('ng-wig/dist/ng-wig');
+require('./editorButtons.css');
 var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
