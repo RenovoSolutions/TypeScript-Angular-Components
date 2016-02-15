@@ -271,13 +271,17 @@ export class FilterBuilder implements IFilterBuilder {
 
 export interface ICardContainerBuilderFactory {
 	getInstance(): ICardContainerBuilder;
+	useMock: boolean;
+	mockBuilder: ICardContainerBuilder;
 }
 
 cardContainerBuilderFactory.$inject = ['$injector'];
 export function cardContainerBuilderFactory($injector: angular.auto.IInjectorService): ICardContainerBuilderFactory {
 	return {
+		useMock: false,
 		getInstance(): ICardContainerBuilder {
-			return new CardContainerBuilder($injector);
+			return this.useMock ? this.mockBuilder : new CardContainerBuilder($injector);
 		},
+		mockBuilder: new CardContainerBuilder($injector),
 	};
 }
