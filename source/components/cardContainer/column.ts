@@ -28,4 +28,5 @@ export interface IColumn {
 	secondarySorts?: ISecondarySorts;
 	flipSort?: boolean;
 	sortDirection?: SortDirection;
+	fieldName?: string;
 }

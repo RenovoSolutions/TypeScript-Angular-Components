@@ -46,7 +46,24 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		} else {
 			processedData = this.dataSourceProcessor.process<TDataType>(this.sorts, this.filters, this.pager, this.rawDataSet);
 		}
+		this.setProcessedData(processedData);
+	}
+	//used when we need to process data but without client filters.
+	processDataNoClientFilters(): void {
+		var processedData: IProcessResult<TDataType>;
 
+		if (this.countFilterGroups) {
+			processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
+																			, null
+																			, this.pager
+																			, this.rawDataSet);
+		} else {
+			processedData = this.dataSourceProcessor.process<TDataType>(this.sorts, null, this.pager, this.rawDataSet);
+		}
+		this.setProcessedData(processedData);
+	}
+
+	setProcessedData( processedData: IProcessResult<TDataType>):void {
 		this.count = processedData.count;
 		this.dataSet = processedData.dataSet;
 		this.filteredDataSet = processedData.filteredDataSet;
