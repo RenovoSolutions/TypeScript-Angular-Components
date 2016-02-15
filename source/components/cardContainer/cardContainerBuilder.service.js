@@ -148,9 +148,11 @@ exports.FilterBuilder = FilterBuilder;
 cardContainerBuilderFactory.$inject = ['$injector'];
 function cardContainerBuilderFactory($injector) {
     return {
+        useMock: false,
         getInstance: function () {
-            return new CardContainerBuilder($injector);
+            return this.useMock ? this.mockBuilder : new CardContainerBuilder($injector);
         },
+        mockBuilder: new CardContainerBuilder($injector),
     };
 }
 exports.cardContainerBuilderFactory = cardContainerBuilderFactory;
