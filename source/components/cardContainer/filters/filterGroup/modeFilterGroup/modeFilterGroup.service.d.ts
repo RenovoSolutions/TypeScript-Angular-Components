@@ -20,10 +20,16 @@ export interface IModeFilterOption extends IFilterOption {
 }
 export interface IModeFilterGroup extends IFilterGroup {
     options: IModeFilterOption[];
+    serialize(): IModeFilterValue;
+}
+export interface IModeFilterValue {
+    displayAll?: boolean;
+    value?: number | string | boolean;
 }
 export declare class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
     private getValue;
     constructor(settings: IModeFilterGroupSettings, object: __object.IObjectUtility);
+    serialize(): IModeFilterValue;
     private buildModeOption(option);
 }
 export interface IModeFilterGroupFactory {

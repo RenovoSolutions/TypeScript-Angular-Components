@@ -24,6 +24,13 @@ export interface IRangeFilterOption extends IFilterOption {
 }
 export interface IRangeFilterGroup extends IFilterGroup {
     options: IRangeFilterOption[];
+    serialize(): IRangeFilterValue;
+}
+export interface IRangeFilterValue {
+    highInclusive?: number;
+    highExclusive?: number;
+    lowInclusive?: number;
+    lowExclusive?: number;
 }
 export interface IRangeFilterGroupFactory {
     getInstance(settings: IRangeFilterGroupSettings): IRangeFilterGroup;

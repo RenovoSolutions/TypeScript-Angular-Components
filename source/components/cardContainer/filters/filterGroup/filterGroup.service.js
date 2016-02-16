@@ -5,6 +5,7 @@ var __object = typescript_angular_utilities_1.services.object;
 exports.factoryName = 'filterGroup';
 var FilterGroup = (function () {
     function FilterGroup(settings, object) {
+        this.settings = settings;
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
         this.options = settings.options;
@@ -27,6 +28,15 @@ var FilterGroup = (function () {
     };
     FilterGroup.prototype.filter = function (item) {
         return this.activeOption.filter(item);
+    };
+    FilterGroup.prototype.serialize = function () {
+        if (_.isFunction(this.settings.serialize)) {
+            return this.settings.serialize();
+        }
+        if (_.isFunction(this.activeOption.serialize)) {
+            return this.activeOption.serialize();
+        }
+        return null;
     };
     FilterGroup.prototype.setActiveOption = function (index) {
         if (index >= 0 && index < this.options.length) {

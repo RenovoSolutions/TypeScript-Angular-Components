@@ -18,6 +18,15 @@ var RangeFilterGroup = (function (_super) {
         settings.options = _.map(settings.options, this.buildRangeOption.bind(this));
         _super.call(this, settings, object);
     }
+    RangeFilterGroup.prototype.serialize = function () {
+        var activeOption = this.activeOption;
+        return {
+            highInclusive: activeOption.highInclusive,
+            highExclusive: activeOption.highExclusive,
+            lowInclusive: activeOption.lowInclusive,
+            lowExclusive: activeOption.lowExclusive,
+        };
+    };
     RangeFilterGroup.prototype.buildRangeOption = function (option) {
         var _this = this;
         var modeOption = option;
