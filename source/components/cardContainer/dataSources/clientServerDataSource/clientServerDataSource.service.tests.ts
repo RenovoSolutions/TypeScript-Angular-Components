@@ -11,11 +11,11 @@ import test = services.test;
 import genericSearchFilter = services.genericSearchFilter;
 
 import {
-	IServerSearchDataSourceFactory,
-	IServerSearchDataSource,
+	IClientServerDataSourceFactory,
+	IClientServerDataSource,
 	moduleName,
 	factoryName,
-} from './serverSearchDataSource.service';
+} from './clientServerDataSource.service';
 
 import {
 	moduleName as dataSourcesModuleName,
@@ -33,14 +33,14 @@ interface ITestFilterModel {
 	prop: string;
 }
 
-describe('serverSearchDataSource', () => {
-	let serverSearchDataSourceFactory: IServerSearchDataSourceFactory;
+describe('clientServerDataSource', () => {
+	let clientServerDataSourceFactory: IClientServerDataSourceFactory;
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
 	let mock: test.mock.IMock;
 	let searchFilter: genericSearchFilter.IGenericSearchFilter;
-	let source: IServerSearchDataSource<number>;
+	let source: IClientServerDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
 	let $q: angular.IQService;
@@ -52,7 +52,7 @@ describe('serverSearchDataSource', () => {
 		angular.mock.module(moduleName);
 		let dependencies: any = test.angularFixture.inject(
 			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName, genericSearchFilter.factoryName, '$q');
-		serverSearchDataSourceFactory = dependencies[factoryName];
+		clientServerDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		$rootScope = dependencies.$rootScope;
 		mock = dependencies[test.mock.serviceName];
@@ -71,7 +71,7 @@ describe('serverSearchDataSource', () => {
 
 	describe('server search', (): void => {
 		beforeEach((): void => {
-			source = <any>serverSearchDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
+			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
 			source.watch(reloadedSpy, 'reloaded');
 			source.watch(changedSpy, 'changed');
 		});
@@ -138,7 +138,7 @@ describe('serverSearchDataSource', () => {
 
 			let get: Sinon.SinonSpy = sinon.spy((): angular.IPromise<number[]> => { return firstRequest.promise; });
 
-			source = <any>serverSearchDataSourceFactory.getInstance(get, searchFilter);
+			source = <any>clientServerDataSourceFactory.getInstance(get, searchFilter);
 			searchFilter.searchText = 'search';
 			source.reload();
 
@@ -174,7 +174,7 @@ describe('serverSearchDataSource', () => {
 
 			let getFilterModel: any = (): ITestFilterModel => { return filterModel; };
 
-			source = <any>serverSearchDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter, getFilterModel, validateSpy);
+			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter, getFilterModel, validateSpy);
 			source.watch(reloadedSpy, 'reloaded');
 			source.watch(changedSpy, 'changed');
 		});

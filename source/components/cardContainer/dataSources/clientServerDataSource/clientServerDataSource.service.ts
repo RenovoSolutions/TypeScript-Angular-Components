@@ -14,10 +14,10 @@ import { DataSourceBase } from '../dataSourceBase.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import * as events from '../dataSourceEvents';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSearchDataSource';
-export var factoryName: string = 'serverSearchDataSource';
+export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.clientServerDataSource';
+export var factoryName: string = 'clientServerDataSource';
 
-export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataType> {
+export interface IClientServerDataSource<TDataType> extends IDataSource<TDataType> {
 	reload(): void;
 	getDataSet: IDataServiceSearchFunction<TDataType>;
 	getFilterModel: IGetFilterModel<any>;
@@ -36,7 +36,7 @@ export interface IValidateFilterModel<TFilterModelType> {
 	(filterModel: TFilterModelType): boolean;
 }
 
-export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType> {
+export class ClientServerDataSource<TDataType> extends DataSourceBase<TDataType> {
 	private minSearchLength: number = 4;
 	private search: string;
 	private filterModel: any;
@@ -121,29 +121,29 @@ export class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType>
 	}
 }
 
-export interface IServerSearchDataSourceFactory {
+export interface IClientServerDataSourceFactory {
 	getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
 						, searchFilter: __genericSearchFilter.IGenericSearchFilter
 						, getFilterModel?: IGetFilterModel<any>
 						, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType>;
 }
 
-serverSearchDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
-export function serverSearchDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
+clientServerDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
+export function clientServerDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
 												, dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
-												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSearchDataSourceFactory {
+												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory {
 	'use strict';
 	return {
 		getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
 							, searchFilter: __genericSearchFilter.IGenericSearchFilter
 							, getFilterModel?: IGetFilterModel<any>
 							, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType> {
-			return new ServerSearchDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			return new ClientServerDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
 }
 
 angular.module(moduleName, [__observable.moduleName, __array.moduleName, __object.moduleName, __synchronizedRequests.moduleName])
-	.factory(factoryName, serverSearchDataSourceFactory);
+	.factory(factoryName, clientServerDataSourceFactory);

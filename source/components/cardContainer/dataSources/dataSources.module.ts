@@ -4,19 +4,19 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 
 import { moduleName as sortsModuleName } from '../sorts/sorts.module';
+import * as clientServerDataSource from './clientServerDataSource/clientServerDataSource.service';
 import * as dataPager from './dataPager/dataPager.service';
 import * as dataServiceDataSource from './dataServiceDataSource/dataServiceDataSource.service';
 import * as simpleDataSource from './simpleDataSource/simpleDataSource.service';
-import * as serverSearchDataSource from './serverSearchDataSource/serverSearchDataSource.service';
 import * as events from './dataSourceEvents';
 import * as dataSourceProcessor from './dataSourceProcessor.service';
 import * as dataSourceBase from './dataSourceBase.service';
 
 export {
+	clientServerDataSource,
 	dataPager,
 	dataServiceDataSource,
 	simpleDataSource,
-	serverSearchDataSource,
 	events,
 	dataSourceProcessor,
 	dataSourceBase,
@@ -30,9 +30,9 @@ angular.module(moduleName, [
 	services.object.moduleName,
 	sortsModuleName,
 
+	clientServerDataSource.moduleName,
 	dataPager.moduleName,
 	dataServiceDataSource.moduleName,
 	simpleDataSource.moduleName,
-	serverSearchDataSource.moduleName,
 ])
 	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);
