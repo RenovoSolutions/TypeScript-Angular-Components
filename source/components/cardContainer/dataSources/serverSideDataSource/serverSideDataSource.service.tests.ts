@@ -59,7 +59,7 @@ describe('serverSideDataSource', () => {
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 
-		mock.promise(dataService, 'get', [1, 2]);
+		mock.promise(dataService, 'get', { dataSet: [1, 2], count: 2 });
 
 		source = <any>serverSideDataSourceFactory.getInstance<number>(<any>dataService.get);
 		source.filters = { 'myFilter': filter };
@@ -102,5 +102,14 @@ describe('serverSideDataSource', () => {
 
 		let filterValues: any = dataService.get.firstCall.args[0].filters;
 		expect(filters['clientSideFilter']).to.be.null;
+	});
+
+	it('should set the data set and count with the response from the server', (): void => {
+		source.refresh();
+		mock.flush(dataService);
+
+		expect(source.dataSet[0]).to.equal(1);
+		expect(source.dataSet[1]).to.equal(2);
+		expect(source.count).to.equal(2);
 	});
 });
