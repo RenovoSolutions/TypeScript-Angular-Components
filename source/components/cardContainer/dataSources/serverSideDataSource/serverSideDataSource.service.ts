@@ -34,12 +34,7 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 	}
 
 	refresh(): void {
-		// if filters changed, reload
-		// if () {
-			// this.reload();
-		// } else {
-			super.refresh();
-		// }
+		this.reload();
 	}
 }
 
