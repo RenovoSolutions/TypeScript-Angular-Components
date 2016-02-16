@@ -1,10 +1,11 @@
+import * as clientServerDataSource from './clientServerDataSource/clientServerDataSource.service';
 import * as dataPager from './dataPager/dataPager.service';
 import * as dataServiceDataSource from './dataServiceDataSource/dataServiceDataSource.service';
+import * as serverSideDataSource from './serverSideDataSource/serverSideDataSource.service';
 import * as simpleDataSource from './simpleDataSource/simpleDataSource.service';
-import * as serverSearchDataSource from './serverSearchDataSource/serverSearchDataSource.service';
 import * as events from './dataSourceEvents';
 import * as dataSourceProcessor from './dataSourceProcessor.service';
 import * as dataSourceBase from './dataSourceBase.service';
-export { dataPager, dataServiceDataSource, simpleDataSource, serverSearchDataSource, events, dataSourceProcessor, dataSourceBase };
+export { clientServerDataSource, dataPager, dataServiceDataSource, serverSideDataSource, simpleDataSource, events, dataSourceProcessor, dataSourceBase };
 export * from './dataSource';
 export declare var moduleName: string;

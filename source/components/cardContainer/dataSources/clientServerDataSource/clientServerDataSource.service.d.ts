@@ -10,7 +10,7 @@ import { DataSourceBase } from '../dataSourceBase.service';
 import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
-export interface IServerSearchDataSource<TDataType> extends IDataSource<TDataType> {
+export interface IClientServerDataSource<TDataType> extends IDataSource<TDataType> {
     reload(): void;
     getDataSet: IDataServiceSearchFunction<TDataType>;
     getFilterModel: IGetFilterModel<any>;
@@ -25,7 +25,7 @@ export interface IGetFilterModel<TFilterModelType> {
 export interface IValidateFilterModel<TFilterModelType> {
     (filterModel: TFilterModelType): boolean;
 }
-export declare class ServerSearchDataSource<TDataType> extends DataSourceBase<TDataType> {
+export declare class ClientServerDataSource<TDataType> extends DataSourceBase<TDataType> {
     private searchFilter;
     getFilterModel: IGetFilterModel<any>;
     validateModel: IValidateFilterModel<any>;
@@ -42,7 +42,7 @@ export declare class ServerSearchDataSource<TDataType> extends DataSourceBase<TD
     private filterModelChanged();
     private buildSearchParams();
 }
-export interface IServerSearchDataSourceFactory {
+export interface IClientServerDataSourceFactory {
     getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel?: IGetFilterModel<any>, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType>;
 }
-export declare function serverSearchDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSearchDataSourceFactory;
+export declare function clientServerDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory;
