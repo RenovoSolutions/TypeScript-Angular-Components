@@ -9,44 +9,29 @@ var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __observable = typescript_angular_utilities_1.services.observable;
 var __array = typescript_angular_utilities_1.services.array;
-var dataSourceBase_service_1 = require('../dataSourceBase.service');
+var __synchronizedRequests = typescript_angular_utilities_1.services.synchronizedRequests;
+var asyncDataSource_service_1 = require('../asyncDataSource.service');
 var dataSourceProcessor_service_1 = require('../dataSourceProcessor.service');
-var events = require('../dataSourceEvents');
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources.dataServiceDataSource';
 exports.factoryName = 'dataServiceDataSource';
 var DataServiceDataSource = (function (_super) {
     __extends(DataServiceDataSource, _super);
-    function DataServiceDataSource(getDataSet, $q, observableFactory, dataSourceProcessor, array) {
-        _super.call(this, observableFactory, dataSourceProcessor, array);
-        this.getDataSet = getDataSet;
-        this.$q = $q;
+    function DataServiceDataSource(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory) {
+        _super.call(this, getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
         this.countFilterGroups = true;
-        if (_.isFunction(this.getDataSet)) {
+        if (_.isFunction(getDataSet)) {
             this.reload();
         }
     }
-    DataServiceDataSource.prototype.reload = function () {
-        var _this = this;
-        this.dataSet = null;
-        this.rawDataSet = null;
-        this.loadingDataSet = true;
-        this.$q.when(this.getDataSet()).then(function (data) {
-            _this.loadingDataSet = false;
-            _this.rawDataSet = data;
-            _this.refresh();
-            _this.observable.fire(events.async.reloaded);
-            _this.observable.fire(events.changed);
-        });
-    };
     return DataServiceDataSource;
-})(dataSourceBase_service_1.DataSourceBase);
+})(asyncDataSource_service_1.AsyncDataSource);
 exports.DataServiceDataSource = DataServiceDataSource;
-dataServiceDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, '$q'];
-function dataServiceDataSourceFactory(observableFactory, dataSourceProcessor, array, $q) {
+dataServiceDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __synchronizedRequests.factoryName];
+function dataServiceDataSourceFactory(observableFactory, dataSourceProcessor, array, synchronizedRequests) {
     'use strict';
     return {
         getInstance: function (getDataSet) {
-            return new DataServiceDataSource(getDataSet, $q, observableFactory, dataSourceProcessor, array);
+            return new DataServiceDataSource(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequests);
         },
     };
 }

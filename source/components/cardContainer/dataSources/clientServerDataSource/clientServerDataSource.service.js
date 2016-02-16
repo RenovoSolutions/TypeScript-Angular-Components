@@ -10,43 +10,26 @@ var __observable = typescript_angular_utilities_1.services.observable;
 var __array = typescript_angular_utilities_1.services.array;
 var __object = typescript_angular_utilities_1.services.object;
 var __synchronizedRequests = typescript_angular_utilities_1.services.synchronizedRequests;
-var dataSourceBase_service_1 = require('../dataSourceBase.service');
+var asyncDataSource_service_1 = require('../asyncDataSource.service');
 var dataSourceProcessor_service_1 = require('../dataSourceProcessor.service');
-var events = require('../dataSourceEvents');
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources.clientServerDataSource';
 exports.factoryName = 'clientServerDataSource';
 var ClientServerDataSource = (function (_super) {
     __extends(ClientServerDataSource, _super);
     function ClientServerDataSource(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
-        var _this = this;
-        _super.call(this, observableFactory, dataSourceProcessor, array);
+        _super.call(this, getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
         this.searchFilter = searchFilter;
         this.getFilterModel = getFilterModel;
         this.validateModel = validateModel;
         this.object = object;
         this.minSearchLength = 4;
-        this.resolveReload = function (data) {
-            _this.loadingDataSet = false;
-            _this.rawDataSet = data;
-            _this.refresh();
-            _this.observable.fire(events.async.reloaded);
-            _this.observable.fire(events.changed);
-        };
         this.getFilterModel = this.getFilterModel || function () { return null; };
         this.validateModel = this.validateModel || function () { return true; };
         this.countFilterGroups = true;
         this.search = searchFilter.searchText;
         this.filterModel = _.clone(this.getFilterModel());
         searchFilter.minSearchLength = this.minSearchLength;
-        this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
     }
-    Object.defineProperty(ClientServerDataSource.prototype, "getDataSet", {
-        set: function (value) {
-            this.synchronizedRequests.dataProvider = value;
-        },
-        enumerable: true,
-        configurable: true
-    });
     ClientServerDataSource.prototype.refresh = function () {
         if (this.searchFilter.searchText !== this.search
             || this.filterModelChanged()) {
@@ -65,15 +48,12 @@ var ClientServerDataSource = (function (_super) {
             this.resolveReload(null);
             return;
         }
-        this.dataSet = null;
-        this.rawDataSet = null;
-        this.loadingDataSet = true;
-        this.synchronizedRequests.getData(this.buildSearchParams());
+        _super.prototype.reload.call(this);
     };
     ClientServerDataSource.prototype.filterModelChanged = function () {
         return !this.object.areEqual(this.getFilterModel(), this.filterModel);
     };
-    ClientServerDataSource.prototype.buildSearchParams = function () {
+    ClientServerDataSource.prototype.getParams = function () {
         var searchModel = this.getFilterModel();
         if (searchModel != null) {
             searchModel.search = this.search;
@@ -84,7 +64,7 @@ var ClientServerDataSource = (function (_super) {
         return searchModel;
     };
     return ClientServerDataSource;
-})(dataSourceBase_service_1.DataSourceBase);
+})(asyncDataSource_service_1.AsyncDataSource);
 exports.ClientServerDataSource = ClientServerDataSource;
 clientServerDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
 function clientServerDataSourceFactory(observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {

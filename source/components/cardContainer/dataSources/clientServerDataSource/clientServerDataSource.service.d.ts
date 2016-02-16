@@ -5,14 +5,11 @@ import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
 import __synchronizedRequests = services.synchronizedRequests;
-import { IDataSource } from '../dataSource';
-import { DataSourceBase } from '../dataSourceBase.service';
+import { IAsyncDataSource, AsyncDataSource } from '../asyncDataSource.service';
 import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
-export interface IClientServerDataSource<TDataType> extends IDataSource<TDataType> {
-    reload(): void;
-    getDataSet: IDataServiceSearchFunction<TDataType>;
+export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDataType> {
     getFilterModel: IGetFilterModel<any>;
     validateModel: IValidateFilterModel<any>;
 }
@@ -25,7 +22,7 @@ export interface IGetFilterModel<TFilterModelType> {
 export interface IValidateFilterModel<TFilterModelType> {
     (filterModel: TFilterModelType): boolean;
 }
-export declare class ClientServerDataSource<TDataType> extends DataSourceBase<TDataType> {
+export declare class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType> {
     private searchFilter;
     getFilterModel: IGetFilterModel<any>;
     validateModel: IValidateFilterModel<any>;
@@ -33,16 +30,13 @@ export declare class ClientServerDataSource<TDataType> extends DataSourceBase<TD
     private minSearchLength;
     private search;
     private filterModel;
-    private synchronizedRequests;
     constructor(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel: IGetFilterModel<any>, validateModel: IValidateFilterModel<any>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
-    getDataSet: IDataServiceSearchFunction<TDataType>;
     refresh(): void;
     reload(): void;
-    private resolveReload;
     private filterModelChanged();
-    private buildSearchParams();
+    protected getParams(): any;
 }
 export interface IClientServerDataSourceFactory {
-    getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel?: IGetFilterModel<any>, validateModel?: IValidateFilterModel<any>): IDataSource<TDataType>;
+    getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel?: IGetFilterModel<any>, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType>;
 }
 export declare function clientServerDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory;

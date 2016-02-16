@@ -10,9 +10,9 @@ import * as dateFilter from './filters/dateFilter/dateFilter.module';
 import { IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 import IDataSource = dataSources.IDataSource;
 import IDataSourceDataServiceFunction = dataSources.dataServiceDataSource.IDataServiceFunction;
-import IServerSearchDataServiceFunction = dataSources.serverSearchDataSource.IDataServiceSearchFunction;
-import IGetFilterModel = dataSources.serverSearchDataSource.IGetFilterModel;
-import IValidateFilterModel = dataSources.serverSearchDataSource.IValidateFilterModel;
+import IClientServerDataServiceFunction = dataSources.clientServerDataSource.IDataServiceSearchFunction;
+import IGetFilterModel = dataSources.clientServerDataSource.IGetFilterModel;
+import IValidateFilterModel = dataSources.clientServerDataSource.IValidateFilterModel;
 import IFilter = filters.IFilter;
 import IGenericSearchFilter = __genericSearchFilter.IGenericSearchFilter;
 import IFilterGroup = filterGroup.IFilterGroup;
@@ -25,7 +25,7 @@ import ISelectFilter = selectFilter.ISelectFilter;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
 export declare let factoryName: string;
-export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IServerSearchDataServiceFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
+export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IClientServerDataServiceFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
 export interface ICardContainerBuilder {
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
@@ -47,7 +47,7 @@ export interface ICardContainerBuilder {
 export interface IDataSourceBuilder {
     buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
-    buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
+    buildServerSearchDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
     buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export interface IFilterBuilder {
@@ -99,7 +99,7 @@ export declare class DataSourceBuilder implements IDataSourceBuilder {
     constructor($injector: angular.auto.IInjectorService, parent: CardContainerBuilder);
     buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
-    buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
+    buildServerSearchDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
     buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export declare class FilterBuilder implements IFilterBuilder {

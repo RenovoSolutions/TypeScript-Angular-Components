@@ -90,7 +90,7 @@ var DataSourceBuilder = (function () {
         if (_.isUndefined(this.parent._searchFilter)) {
             this.parent.useSearch();
         }
-        var factory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
+        var factory = this.$injector.get(dataSources.clientServerDataSource.factoryName);
         this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
         return this.parent._dataSource;
     };
