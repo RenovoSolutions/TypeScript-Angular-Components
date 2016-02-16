@@ -45,7 +45,7 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 		this.synchronizedRequests.getData(this.getParams());
 	}
 
-	private resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
+	protected resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
 		this.loadingDataSet = false;
 		this.rawDataSet = data;
 
