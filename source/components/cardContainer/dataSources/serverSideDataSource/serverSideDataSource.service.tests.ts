@@ -31,13 +31,17 @@ interface IDataServiceMock {
 	get: Sinon.SinonSpy;
 }
 
+interface ITestFilter extends filters.ISerializableFilter {
+	value: number;
+}
+
 describe('serverSideDataSource', () => {
 	let serverSideDataSourceFactory: IServerSideDataSourceFactory;
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
 	let mock: test.mock.IMock;
-	let filter: filters.ISerializableFilter;
+	let filter: ITestFilter;
 	let source: IServerSideDataSource<number>;
 
 	beforeEach(() => {
