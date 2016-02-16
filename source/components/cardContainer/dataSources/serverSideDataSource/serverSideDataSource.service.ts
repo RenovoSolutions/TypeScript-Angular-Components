@@ -9,17 +9,13 @@ import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
 import __synchronizedRequests = services.synchronizedRequests;
 
-import { IDataSource } from '../dataSource';
-import { DataSourceBase } from '../dataSourceBase.service';
+import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
-import * as events from '../dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSideDataSource';
 export var factoryName: string = 'serverSideDataSource';
 
-export interface IServerSideDataSource<TDataType> extends IDataSource<TDataType> {
-	reload(): void;
-	getDataSet: IServerSearchFunction<TDataType>;
+export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: { [index: string]: filters.ISerializableFilter };
 }
 
@@ -27,22 +23,14 @@ export interface IServerSearchFunction<TDataType> {
 	(searchParams: any): angular.IPromise<TDataType[]>;
 }
 
-export class ServerSideDataSource<TDataType> extends DataSourceBase<TDataType> {
-	private synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
-
+export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(observableFactory, dataSourceProcessor, array);
-
-		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
-	}
-
-	set getDataSet(value: IServerSearchFunction<TDataType>) {
-		this.synchronizedRequests.dataProvider = value;
+		super(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
 	}
 
 	refresh(): void {
@@ -53,27 +41,10 @@ export class ServerSideDataSource<TDataType> extends DataSourceBase<TDataType> {
 			super.refresh();
 		// }
 	}
-
-	reload(): void {
-		this.dataSet = null;
-		this.rawDataSet = null;
-		this.loadingDataSet = true;
-
-		this.synchronizedRequests.getData();
-	}
-
-	private resolveReload: { (data: TDataType[]): void } = (data: TDataType[]): void => {
-		this.loadingDataSet = false;
-		this.rawDataSet = data;
-
-		this.refresh();
-		this.observable.fire(events.async.reloaded);
-		this.observable.fire(events.changed);
-	}
 }
 
 export interface IServerSideDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IDataSource<TDataType>;
+	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
 
 serverSideDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName,  __synchronizedRequests.factoryName];
@@ -84,7 +55,7 @@ export function serverSideDataSourceFactory(observableFactory: __observable.IObs
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory {
 	'use strict';
 	return {
-		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IDataSource<TDataType> {
+		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
 			return new ServerSideDataSource<TDataType>(getDataSet, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
