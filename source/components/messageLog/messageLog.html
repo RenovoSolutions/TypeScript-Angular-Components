@@ -17,12 +17,12 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="text-center">
-				<rl-button-async type="default" action="log.getTop()" ng-disabled="log.loading" button-right-aligned="true">
-					<span ng-show="log.hasPreviousPage">Top</span>
-					<span ng-hide="log.hasPreviousPage">Refresh</span>
+				<rl-button-async type="primary-invert" action="log.getTop()" ng-disabled="log.loading" button-right-aligned="true">
+					<span ng-show="log.hasPreviousPage">Top <i class="fa fa-caret-up"></i></span>
+					<span ng-hide="log.hasPreviousPage"><i class="fa fa-refresh"></i> Refresh</span>
 				</rl-button-async>
-				<rl-button-async type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getOlder()">
-					Older <i class="fa fa-chevron-right"></i>
+				<rl-button-async type="primary-invert" ng-disabled="log.hasNextPage == false || log.loading" action="log.getOlder()">
+					Older <i class="fa fa-caret-right"></i>
 				</rl-button-async>
 			</div>
 		</div>
