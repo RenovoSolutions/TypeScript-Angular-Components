@@ -94,6 +94,10 @@ var DataSourceBuilder = (function () {
         this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
         return this.parent._dataSource;
     };
+    DataSourceBuilder.prototype.buildCustomDataSource = function (dataSource) {
+        this.parent._dataSource = dataSource;
+        return this.parent._dataSource;
+    };
     return DataSourceBuilder;
 })();
 exports.DataSourceBuilder = DataSourceBuilder;
