@@ -12,6 +12,7 @@ export interface IFilterGroupSettings {
 	label: string;
 	type: string;
 	options: IFilterOption[];
+	serialize?: {(): any};
 }
 
 export interface IFilterOption {
@@ -42,7 +43,7 @@ export class FilterGroup implements IFilterGroup {
 	options: IFilterOption[];
 	activeOption: IFilterOption;
 
-	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(private settings: IFilterGroupSettings, object: __object.IObjectUtility) {
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.options = settings.options;
@@ -72,6 +73,10 @@ export class FilterGroup implements IFilterGroup {
 	}
 
 	serialize(): any {
+		if (_.isFunction(this.settings.serialize)) {
+			return this.settings.serialize();
+		}
+
 		if (_.isFunction(this.activeOption.serialize)) {
 			return this.activeOption.serialize();
 		}

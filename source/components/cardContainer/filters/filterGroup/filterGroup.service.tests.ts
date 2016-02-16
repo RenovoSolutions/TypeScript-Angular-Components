@@ -141,4 +141,12 @@ describe('filterGroup', () => {
 
 		expect(filterGroup.serialize()).to.equal(4);
 	});
+
+	it('should use the custom serializer provided by the consumer', (): void => {
+		filterGroup = filterGroupFactory.getInstance(<any>{
+			serialize: (): number => { return 4; },
+		});
+
+		expect(filterGroup.serialize()).to.equal(4);
+	});
 });
