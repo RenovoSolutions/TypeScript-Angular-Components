@@ -89,6 +89,8 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 		let data: IDataResult<TDataType> = <IDataResult<TDataType>>result;
 		this.count = data.count;
 		super.resolveReload(data.dataSet);
+		this.dataSet = this.rawDataSet;
+		this.filteredDataSet = this.rawDataSet;
 		this.reloading = false;
 	}
 }
