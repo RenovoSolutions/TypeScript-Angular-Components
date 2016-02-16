@@ -25,6 +25,7 @@ export {
 };
 
 export * from './dataSource';
+export { IAsyncDataSource, IDataSetFunction } from './asyncDataSource.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
 
