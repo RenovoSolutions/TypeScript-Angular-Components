@@ -29,22 +29,23 @@ interface IFilterOptionMock {
 	filter?: Sinon.SinonSpy;
 	count?: number;
 	active?: boolean;
+	serialize?: {(): number};
 }
 
 describe('filterGroup', () => {
-	var filterGroupFactory: IFilterGroupFactory;
-	var filterGroup: IFilterGroup;
+	let filterGroupFactory: IFilterGroupFactory;
+	let filterGroup: IFilterGroup;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		var services: any = test.angularFixture.inject(factoryName);
+		let services: any = test.angularFixture.inject(factoryName);
 		filterGroupFactory = services[factoryName];
 	});
 
 	it('should filter on the active option', (): void => {
-		var option1: IFilterOptionMock = { filter: sinon.spy() };
-		var option2: IFilterOptionMock = { filter: sinon.spy() };
+		let option1: IFilterOptionMock = { filter: sinon.spy() };
+		let option2: IFilterOptionMock = { filter: sinon.spy() };
 		filterGroup = filterGroupFactory.getInstance(<any>{
 			options: [option1, option2],
 		});
@@ -63,11 +64,11 @@ describe('filterGroup', () => {
 	});
 
 	it('should set the option counts on the matching options', (): void => {
-		var optionWithExplicitType: IFilterOptionMock = {
+		let optionWithExplicitType: IFilterOptionMock = {
 			type: 'option1',
 			filter: sinon.spy(),
 		};
-		var optionWithImplicitType: IFilterOptionMock = {
+		let optionWithImplicitType: IFilterOptionMock = {
 			label: 'option2',
 			filter: sinon.spy(),
 		};
@@ -87,12 +88,12 @@ describe('filterGroup', () => {
 
 	it('should calculate the option counts on the options by applying their filters and then calculating the length of the resulting data set'
 		, (): void => {
-			var option1: IFilterOptionMock = {
+			let option1: IFilterOptionMock = {
 				filter: sinon.spy((item: number): boolean => {
 					return item > 5;
 				}),
 			};
-			var option2: IFilterOptionMock = {
+			let option2: IFilterOptionMock = {
 				filter: sinon.spy((item: number): boolean => {
 					return item <= 5;
 				}),
@@ -109,10 +110,10 @@ describe('filterGroup', () => {
 		});
 
 	it('should expect the option with active set to true to be the active option', (): void => {
-		var option1: IFilterOptionMock = {
+		let option1: IFilterOptionMock = {
 			active: false
 		};
-		var option2: IFilterOptionMock = {
+		let option2: IFilterOptionMock = {
 			active: true
 		};
 
@@ -123,5 +124,21 @@ describe('filterGroup', () => {
 		expect(filterGroup.activeOption).to.equal(option2);
 		expect(filterGroup.activeOption).to.not.equal(option1);
 
+	});
+
+	it('should serialize the active option', (): void => {
+		let inactiveOption: IFilterOptionMock = {
+			active: false
+		};
+		let activeOption: IFilterOptionMock = {
+			active: true,
+			serialize: (): number => { return 4; },
+		};
+
+		filterGroup = filterGroupFactory.getInstance(<any>{
+			options: [inactiveOption, activeOption],
+		});
+
+		expect(filterGroup.serialize()).to.equal(4);
 	});
 });

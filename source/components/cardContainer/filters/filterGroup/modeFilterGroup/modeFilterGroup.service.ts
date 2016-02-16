@@ -31,6 +31,12 @@ export interface IModeFilterOption extends IFilterOption {
 
 export interface IModeFilterGroup extends IFilterGroup {
 	options: IModeFilterOption[];
+	serialize(): IModeFilterValue;
+}
+
+export interface IModeFilterValue {
+	displayAll?: boolean;
+	value?: number | string | boolean;
 }
 
 export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
@@ -40,6 +46,14 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 		this.getValue = settings.getValue;
 		settings.options = _.map<IModeFilterOptionSettings, IModeFilterOption>(settings.options, this.buildModeOption.bind(this));
 		super(<any>settings, object);
+	}
+
+	serialize(): IModeFilterValue {
+		let activeOption: IModeFilterOption = <any>this.activeOption;
+		return {
+			displayAll: activeOption.displayAll,
+			value: activeOption.value,
+		};
 	}
 
 	private buildModeOption(option: IModeFilterOptionSettings): IModeFilterOption {

@@ -19,19 +19,21 @@ export interface IFilterOption {
 	label: string;
 	type?: string;
 	filter<TItemType>(item: TItemType): boolean;
+	serialize?: {(): any};
 }
 
 interface IConfiguredFilterOption extends IFilterOption {
 	count?: number;
 }
 
-export interface IFilterGroup extends filters.IFilterWithCounts {
+export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter {
 	label: string;
 	type: string;
 	options: IFilterOption[];
 	activeOption: IFilterOption;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
+	serialize(): any;
 }
 
 export class FilterGroup implements IFilterGroup {
@@ -67,6 +69,13 @@ export class FilterGroup implements IFilterGroup {
 
 	filter<TItemType>(item: TItemType): boolean {
 		return this.activeOption.filter(item);
+	}
+
+	serialize(): any {
+		if (_.isFunction(this.activeOption.serialize)) {
+			return this.activeOption.serialize();
+		}
+		return null;
 	}
 
 	setActiveOption(index: number): void {
