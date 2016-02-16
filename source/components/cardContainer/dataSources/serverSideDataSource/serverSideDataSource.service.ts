@@ -66,7 +66,7 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 
 	protected getParams(): IServerSearchParams {
 		return {
-			filters: _.map(this.filters, (filter: filters.ISerializableFilter): any => {
+			filters: _.mapValues(this.filters, (filter: filters.ISerializableFilter): any => {
 				if (_.isFunction(filter.serialize)) {
 					return filter.serialize();
 				}
