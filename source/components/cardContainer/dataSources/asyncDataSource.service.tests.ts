@@ -40,6 +40,7 @@ describe('asyncDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
+		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(__observable.moduleName);
 		angular.mock.module(__array.moduleName);
 		angular.mock.module(__synchronizedRequests.moduleName);
@@ -65,6 +66,8 @@ describe('asyncDataSource', () => {
 											, services[__array.serviceName]
 											, services[__synchronizedRequests.factoryName]);
 
+		reloadedSpy = sinon.spy();
+		changedSpy = sinon.spy();
 		source.watch(reloadedSpy, events.async.reloaded);
 		source.watch(changedSpy, events.changed);
 		source.refresh = sinon.spy();
@@ -77,7 +80,7 @@ describe('asyncDataSource', () => {
 
 		mock.flush(dataService);
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
+		sinon.assert.calledOnce(<Sinon.SinonSpy>source.refresh);
 	});
 
 	it('should fire changed and reloaded events when the reload completeds', (): void => {

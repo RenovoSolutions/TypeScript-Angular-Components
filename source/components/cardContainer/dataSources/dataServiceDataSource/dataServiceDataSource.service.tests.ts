@@ -10,7 +10,7 @@ import test = services.test;
 
 import {
 	IDataServiceDataSourceFactory,
-	IDataServiceDataSource,
+	IAsyncDataSource,
 	moduleName,
 	factoryName,
 } from './dataServiceDataSource.service';
@@ -67,7 +67,7 @@ describe('dataServiceDataSource', () => {
 		it('should make an initial request to the server for data', (): void => {
 			mock.promise(dataService, 'get', [1, 2]);
 
-			let source: IDataServiceDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
+			let source: IAsyncDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
 
 			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
 			source.watch(reloadedSpy, 'reloaded');

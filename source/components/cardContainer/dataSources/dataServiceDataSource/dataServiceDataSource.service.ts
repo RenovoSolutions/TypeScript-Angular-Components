@@ -29,7 +29,7 @@ export class DataServiceDataSource<TDataType> extends AsyncDataSource<TDataType>
 		super(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
 		this.countFilterGroups = true;
 
-		if (_.isFunction(this.getDataSet)) {
+		if (_.isFunction(getDataSet)) {
 			this.reload();
 		}
 	}
