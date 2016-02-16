@@ -48,7 +48,7 @@ describe('serverSideDataSource', () => {
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		mock = dependencies[test.mock.serviceName];
 
-		filter = {
+		filter = <any>{
 			type: 'myFilter',
 			filter: (item: number): boolean => { return item === this.value; },
 			serialize: (): number => { return this.value; },
@@ -67,7 +67,7 @@ describe('serverSideDataSource', () => {
 			column: { label: 'col1' },
 			direction: 1,
 		}];
-		source.pager = {
+		source.pager = <any>{
 			pageNumber: 5,
 			pageSize: 10,
 		};
@@ -97,7 +97,7 @@ describe('serverSideDataSource', () => {
 	});
 
 	it('should specify no value for unserializable filters', (): void => {
-		let clientSideFilter = { filter: (item: number): boolean => { return item === 1; }};
+		let clientSideFilter: any = { filter: (item: number): boolean => { return item === 1; }};
 		source.filters = { 'clientSideFilter': clientSideFilter };
 
 		let filterValues: any = dataService.get.firstCall.args[0].filters;
