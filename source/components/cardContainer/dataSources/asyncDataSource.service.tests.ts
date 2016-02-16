@@ -37,6 +37,7 @@ describe('asyncDataSource', () => {
 	let source: AsyncDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
+	let $q: angular.IQService;
 
 	beforeEach(() => {
 		angular.mock.module(test.mock.moduleName);
@@ -46,12 +47,14 @@ describe('asyncDataSource', () => {
 		angular.mock.module(moduleName);
 
 		var services: any = test.angularFixture.inject('$rootScope'
+													, '$q'
 													, test.mock.serviceName
 													, __observable.factoryName
 													, __array.serviceName
 													, __synchronizedRequests.factoryName);
 		$rootScope = services.$rootScope;
 		mock = services[test.mock.serviceName];
+		$q = services.$q;
 
 		dataService = mock.service();
 
