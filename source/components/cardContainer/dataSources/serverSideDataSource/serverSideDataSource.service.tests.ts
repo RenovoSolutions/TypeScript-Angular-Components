@@ -95,4 +95,12 @@ describe('serverSideDataSource', () => {
 		expect(paging.pageNumber).to.equal(5);
 		expect(paging.pageSize).to.equal(10);
 	});
+
+	it('should specify no value for unserializable filters', (): void => {
+		let clientSideFilter = { filter: (item: number): boolean => { return item === 1; }};
+		source.filters = { 'clientSideFilter': clientSideFilter };
+
+		let filterValues: any = dataService.get.firstCall.args[0].filters;
+		expect(filters['clientSideFilter']).to.be.null;
+	});
 });
