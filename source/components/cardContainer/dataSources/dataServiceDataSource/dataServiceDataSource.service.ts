@@ -6,67 +6,49 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
+import __synchronizedRequests = services.synchronizedRequests;
 
-import { IDataSource } from '../dataSource';
-import { DataSourceBase } from '../dataSourceBase.service';
+import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import * as events from '../dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.dataServiceDataSource';
 export var factoryName: string = 'dataServiceDataSource';
 
-export interface IDataServiceDataSource<TDataType> extends IDataSource<TDataType> {
-	reload(): void;
-	getDataSet: IDataServiceFunction<TDataType>;
-}
+export { IAsyncDataSource };
 
 export interface IDataServiceFunction<TDataType> {
 	(): angular.IPromise<TDataType[]>;
 }
 
-export class DataServiceDataSource<TDataType> extends DataSourceBase<TDataType> implements IDataServiceDataSource<TDataType> {
-	constructor(public getDataSet: IDataServiceFunction<TDataType>
-			, private $q: angular.IQService
+export class DataServiceDataSource<TDataType> extends AsyncDataSource<TDataType> implements IAsyncDataSource<TDataType> {
+	constructor(getDataSet: IDataServiceFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
-			, array: __array.IArrayUtility) {
-		super(observableFactory, dataSourceProcessor, array);
+			, array: __array.IArrayUtility
+			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
+		super(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
 		this.countFilterGroups = true;
 
 		if (_.isFunction(this.getDataSet)) {
 			this.reload();
 		}
 	}
-
-	reload(): void {
-		this.dataSet = null;
-		this.rawDataSet = null;
-		this.loadingDataSet = true;
-
-		this.$q.when(this.getDataSet()).then((data: TDataType[]): void => {
-			this.loadingDataSet = false;
-			this.rawDataSet = data;
-
-			this.refresh();
-			this.observable.fire(events.async.reloaded);
-			this.observable.fire(events.changed);
-		});
-	}
 }
 
 export interface IDataServiceDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IDataServiceFunction<TDataType>): IDataServiceDataSource<TDataType>;
+	getInstance<TDataType>(getDataSet: IDataServiceFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
 
-dataServiceDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, '$q'];
+dataServiceDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __synchronizedRequests.factoryName];
 export function dataServiceDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
 										, dataSourceProcessor: IDataSourceProcessor
 										, array: __array.IArrayUtility
-										, $q: angular.IQService): IDataServiceDataSourceFactory {
+										, synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsFactory): IDataServiceDataSourceFactory {
 	'use strict';
 	return {
-		getInstance<TDataType>(getDataSet: IDataServiceFunction<TDataType>): IDataServiceDataSource<TDataType> {
-			return new DataServiceDataSource<TDataType>(getDataSet, $q, observableFactory, dataSourceProcessor, array);
+		getInstance<TDataType>(getDataSet: IDataServiceFunction<TDataType>): IAsyncDataSource<TDataType> {
+			return new DataServiceDataSource<TDataType>(<any>getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequests);
 		},
 	};
 }
