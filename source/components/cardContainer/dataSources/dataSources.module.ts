@@ -7,6 +7,7 @@ import { moduleName as sortsModuleName } from '../sorts/sorts.module';
 import * as clientServerDataSource from './clientServerDataSource/clientServerDataSource.service';
 import * as dataPager from './dataPager/dataPager.service';
 import * as dataServiceDataSource from './dataServiceDataSource/dataServiceDataSource.service';
+import * as serverSideDataSource from './serverSideDataSource/serverSideDataSource.service';
 import * as simpleDataSource from './simpleDataSource/simpleDataSource.service';
 import * as events from './dataSourceEvents';
 import * as dataSourceProcessor from './dataSourceProcessor.service';
@@ -16,6 +17,7 @@ export {
 	clientServerDataSource,
 	dataPager,
 	dataServiceDataSource,
+	serverSideDataSource,
 	simpleDataSource,
 	events,
 	dataSourceProcessor,
@@ -33,6 +35,7 @@ angular.module(moduleName, [
 	clientServerDataSource.moduleName,
 	dataPager.moduleName,
 	dataServiceDataSource.moduleName,
+	serverSideDataSource.moduleName,
 	simpleDataSource.moduleName,
 ])
 	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);
