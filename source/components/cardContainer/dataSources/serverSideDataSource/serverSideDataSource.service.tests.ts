@@ -22,6 +22,8 @@ import {
 	events,
 } from '../dataSources.module';
 
+import { SortDirection } from '../../sorts/sort';
+
 import * as angular from 'angular';
 import 'angular-mocks';
 
@@ -43,15 +45,16 @@ describe('serverSideDataSource', () => {
 		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, test.mock.serviceName);
+			factoryName, __dataSourceProcessor.processorServiceName, test.mock.serviceName, '$rootScope');
 		serverSideDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		mock = dependencies[test.mock.serviceName];
+		$rootScope = dependencies.$rootScope;
 
 		filter = <any>{
 			type: 'myFilter',
-			filter: (item: number): boolean => { return item === this.value; },
-			serialize: (): number => { return this.value; },
+			filter: (item: number): boolean => { return item === filter.value; },
+			serialize: (): number => { return filter.value; },
 			value: 1,
 		};
 
@@ -65,7 +68,7 @@ describe('serverSideDataSource', () => {
 		source.filters = { 'myFilter': filter };
 		source.sorts = <any>[{
 			column: { label: 'col1' },
-			direction: 1,
+			direction: SortDirection.none,
 		}];
 		source.pager = <any>{
 			pageNumber: 5,
@@ -77,7 +80,7 @@ describe('serverSideDataSource', () => {
 		source.refresh();
 
 		let filterValues: any = dataService.get.firstCall.args[0].filters;
-		expect(filters['myFilter']).to.equal(1);
+		expect(filterValues['myFilter']).to.equal(1);
 	});
 
 	it('should apply sorts to the server request', (): void => {
@@ -85,7 +88,7 @@ describe('serverSideDataSource', () => {
 
 		let sorts: any = dataService.get.firstCall.args[0].sorts;
 		expect(sorts[0].column).to.equal('col1');
-		expect(sorts[0].direction).to.equal(1);
+		expect(sorts[0].direction).to.equal('none');
 	});
 
 	it('should apply the paging data to the server request', (): void => {
@@ -99,17 +102,29 @@ describe('serverSideDataSource', () => {
 	it('should specify no value for unserializable filters', (): void => {
 		let clientSideFilter: any = { filter: (item: number): boolean => { return item === 1; }};
 		source.filters = { 'clientSideFilter': clientSideFilter };
+		source.refresh();
 
 		let filterValues: any = dataService.get.firstCall.args[0].filters;
-		expect(filters['clientSideFilter']).to.be.null;
+		expect(filters['clientSideFilter']).to.not.exist;
 	});
 
 	it('should set the data set and count with the response from the server', (): void => {
 		source.refresh();
 		mock.flush(dataService);
+		$rootScope.$digest();
 
 		expect(source.dataSet[0]).to.equal(1);
 		expect(source.dataSet[1]).to.equal(2);
 		expect(source.count).to.equal(2);
+	});
+
+	it('should not reload if the data source is still reloading', (): void => {
+		source.refresh();
+		sinon.assert.calledOnce(dataService.get);
+		dataService.get.reset();
+
+		source.refresh();
+
+		sinon.assert.notCalled(dataService.get);
 	});
 });
