@@ -18,6 +18,7 @@ export interface IFilterOption {
 	active?: boolean;
 	label: string;
 	type?: string;
+	value?: number;
 	filter<TItemType>(item: TItemType): boolean;
 }
 
