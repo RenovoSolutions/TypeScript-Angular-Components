@@ -50,10 +50,10 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 
 	serialize(): IModeFilterValue {
 		let activeOption: IModeFilterOption = <any>this.activeOption;
-		return {
-			displayAll: activeOption.displayAll,
-			value: activeOption.value,
-		};
+		if (activeOption.displayAll) {
+			return null;
+		}
+		return activeOption.value;
 	}
 
 	private buildModeOption(option: IModeFilterOptionSettings): IModeFilterOption {
