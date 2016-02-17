@@ -20,6 +20,9 @@ var RangeFilterGroup = (function (_super) {
     }
     RangeFilterGroup.prototype.serialize = function () {
         var activeOption = this.activeOption;
+        if (this.isNullOption(activeOption)) {
+            return null;
+        }
         return {
             highInclusive: activeOption.highInclusive,
             highExclusive: activeOption.highExclusive,
@@ -48,6 +51,12 @@ var RangeFilterGroup = (function (_super) {
             return result;
         };
         return modeOption;
+    };
+    RangeFilterGroup.prototype.isNullOption = function (option) {
+        return option.highInclusive == null
+            && option.highExclusive == null
+            && option.lowInclusive == null
+            && option.lowExclusive == null;
     };
     return RangeFilterGroup;
 })(filterGroup_service_1.FilterGroup);

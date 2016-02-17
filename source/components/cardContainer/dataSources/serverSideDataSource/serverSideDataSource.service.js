@@ -14,6 +14,7 @@ var __synchronizedRequests = typescript_angular_utilities_1.services.synchronize
 var asyncDataSource_service_1 = require('../asyncDataSource.service');
 var dataSourceProcessor_service_1 = require('../dataSourceProcessor.service');
 var sort_1 = require('../../sorts/sort');
+var events = require('../dataSourceEvents');
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources.serverSideDataSource';
 exports.factoryName = 'serverSideDataSource';
 var ServerSideDataSource = (function (_super) {
@@ -54,6 +55,7 @@ var ServerSideDataSource = (function (_super) {
         _super.prototype.resolveReload.call(this, data.dataSet);
         this.dataSet = this.rawDataSet;
         this.filteredDataSet = this.rawDataSet;
+        this.observable.fire(events.redrawing);
         this.reloading = false;
     };
     return ServerSideDataSource;

@@ -8,4 +8,5 @@ import * as dataSourceProcessor from './dataSourceProcessor.service';
 import * as dataSourceBase from './dataSourceBase.service';
 export { clientServerDataSource, dataPager, dataServiceDataSource, serverSideDataSource, simpleDataSource, events, dataSourceProcessor, dataSourceBase };
 export * from './dataSource';
+export { IAsyncDataSource, IDataSetFunction } from './asyncDataSource.service';
 export declare var moduleName: string;

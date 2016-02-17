@@ -20,10 +20,10 @@ var ModeFilterGroup = (function (_super) {
     }
     ModeFilterGroup.prototype.serialize = function () {
         var activeOption = this.activeOption;
-        return {
-            displayAll: activeOption.displayAll,
-            value: activeOption.value,
-        };
+        if (activeOption.displayAll) {
+            return null;
+        }
+        return activeOption.value;
     };
     ModeFilterGroup.prototype.buildModeOption = function (option) {
         var _this = this;
