@@ -82,7 +82,7 @@ export class DateFilterController implements IDateFilterBindings {
 	}
 
 	public set selectedDate2(v: Date) {
-		this.filter.selectedDate2 =v;
+		this.filter.selectedDate2 = v;
 		this.refreshDataSource();
 	}
 
