@@ -40,11 +40,15 @@ export class DateFilterController implements IDateFilterBindings {
 	label: string;
 	selector: string;
 	source: IDataSource<any>;
-	type: string = "days"
+	type: string = "days";
+	private inputField: angular.IAugmentedJQuery;
 
-	static $inject = ['$scope', __date.serviceName];
-	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility) {
+	static $inject = ['$scope', __date.serviceName, '$element'];
+	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility, private $element: angular.IAugmentedJQuery) {
 		this.filter.includeTime = this.includeTime
+		//this is added to address an agular quirk on the service event list page.
+		//the input field was not clearing correclty when the selectedDate1 value is null.
+		this.inputField = this.$element.find('rl-date-time input');
 		this.filter.dateRange = false;
 		if (this.clearButton == null)
 			this.clearButton = true;
@@ -54,6 +58,9 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.filter.selectedDate1 != null) {
 			return moment(this.filter.selectedDate1).format('M/D/YYYY');
 		} else {
+			//clear input field of date value. and rest past day/week count
+			this.inputField.val('');
+			this.clearCount();
 			return null
 		}
 	}
@@ -62,17 +69,20 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.dateUtility.isDate(v)) {
 			this.filter.selectedDate1 = moment(v).toDate();
 		} else {
+			//clear input field of date value. and rest past day/week count
+			this.inputField.val('');
+			this.clearCount();
 			this.filter.selectedDate1 = null;
 		}
 		this.refreshDataSource();
 	}
 
 	public get selectedDate2(): Date {
-		return this.filter.selectedDate2;
+		return moment(this.filter.selectedDate2).toDate();
 	}
 
 	public set selectedDate2(v: Date) {
-		this.filter.selectedDate2 = v;
+		this.filter.selectedDate2 = moment(v).toDate();
 		this.refreshDataSource();
 	}
 
