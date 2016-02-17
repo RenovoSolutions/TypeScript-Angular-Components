@@ -12,6 +12,7 @@ import __synchronizedRequests = services.synchronizedRequests;
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
+import * as events from './dataSourceEvents';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSideDataSource';
 export var factoryName: string = 'serverSideDataSource';
@@ -91,6 +92,7 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 		super.resolveReload(data.dataSet);
 		this.dataSet = this.rawDataSet;
 		this.filteredDataSet = this.rawDataSet;
+		this.observable.fire(events.redrawing);
 		this.reloading = false;
 	}
 }
