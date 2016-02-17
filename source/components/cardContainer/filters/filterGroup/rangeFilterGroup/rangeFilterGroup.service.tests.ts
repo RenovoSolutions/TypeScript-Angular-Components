@@ -138,4 +138,18 @@ describe('rangeFilterGroup', () => {
 		expect(serializedValue.lowInclusive).to.equal(5);
 		expect(serializedValue.highInclusive).to.equal(10);
 	});
+
+	it('should return null if the selected option has no values', (): void => {
+		let defaultOption: IRangeFilterOptionMock = {
+			active: true,
+		};
+
+		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+			options: [
+				defaultOption,
+			],
+		});
+
+		expect(rangeFilterGroup.serialize()).to.be.null;
+	});
 });

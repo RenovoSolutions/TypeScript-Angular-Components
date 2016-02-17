@@ -56,6 +56,9 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 
 	serialize(): IRangeFilterValue {
 		let activeOption: IRangeFilterOption = <any>this.activeOption;
+		if (this.isNullOption(activeOption)) {
+			return null;
+		}
 		return {
 			highInclusive: activeOption.highInclusive,
 			highExclusive: activeOption.highExclusive,
@@ -87,6 +90,13 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 		};
 
 		return modeOption;
+	}
+
+	private isNullOption(option: IRangeFilterOption): boolean {
+		return option.highInclusive == null
+			&& option.highExclusive == null
+			&& option.lowInclusive == null
+			&& option.lowExclusive == null;
 	}
 }
 
