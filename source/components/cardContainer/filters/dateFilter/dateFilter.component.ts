@@ -78,11 +78,11 @@ export class DateFilterController implements IDateFilterBindings {
 	}
 
 	public get selectedDate2(): Date {
-		return moment(this.filter.selectedDate2).toDate();
+		return this.filter.selectedDate2;
 	}
 
 	public set selectedDate2(v: Date) {
-		this.filter.selectedDate2 = moment(v).toDate();
+		this.filter.selectedDate2 =v;
 		this.refreshDataSource();
 	}
 
