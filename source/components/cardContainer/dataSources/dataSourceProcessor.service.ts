@@ -34,6 +34,7 @@ export interface IDataSourceProcessor {
 							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType>;
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
@@ -47,7 +48,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
 
-		processedData = this.sort(processedData);
+		processedData = this.sort(processedData, sorts);
 
 		if (this.object.isNullOrEmpty(filters) === false) {
 			processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
@@ -81,7 +82,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 		var processedData: TDataType[] = data;
 
-		processedData = this.sort(processedData);
+		processedData = this.sort(processedData, sorts);
 
 		var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 
@@ -126,10 +127,11 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 		return result;
 	}
 
-	sort(sorts: ISort[], data: TDataType[]): TDataType[] {
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[] {
 		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
+			return this.sorter.sort(data, sorts);
 		}
+		return data;
 	}
 
 	private wrapData<TDataType>(data: TDataType[]): IWrappedItem<TDataType>[] {
