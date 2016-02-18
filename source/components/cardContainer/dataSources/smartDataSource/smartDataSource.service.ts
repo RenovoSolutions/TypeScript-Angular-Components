@@ -57,6 +57,14 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		super(<any>getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
 	}
 
+	onSortChange(): void {
+		if (this.throttled) {
+			this.reload();
+		} else {
+			super.onSortChange();
+		}
+	}
+
 	protected getParams(): IServerSearchParams {
 		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
 			return filter.type;
