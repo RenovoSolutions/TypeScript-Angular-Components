@@ -2,6 +2,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
+import * as Rx from 'rx';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
@@ -48,6 +49,7 @@ export interface IDataResult<TDataType> {
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean;
 	appliedFilters: { [index: string]: any };
+	subscribers: Rx.Subscriber[];
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
@@ -84,10 +86,15 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	}
 
 	private updateAppliedFilters(): void {
+		_.each(this.subscribers, (subscriber: Rx.Subscriber): void => {
+			subscriber.dispose();
+		});
+		this.subscribers = [];
 		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
 			return filter.type;
 		});
 		this.appliedFilters = _.mapValues(filterDictionary, (filter: filters.ISerializableFilter<any>): any => {
+			this.subscribers.push(filter.subscribe(this.reload.bind(this)));
 			if (_.isFunction(filter.serialize)) {
 				return filter.serialize();
 			}
