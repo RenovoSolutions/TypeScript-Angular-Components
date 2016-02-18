@@ -49,7 +49,6 @@ export interface IDataResult<TDataType> {
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean;
 	appliedFilters: { [index: string]: any };
-	subscribers: Rx.Subscriber[];
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
@@ -58,6 +57,14 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
 		super(<any>getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
+
+		if (_.isFunction(getDataSet)) {
+			this.reload();
+		}
+
+		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
+			filter.subscribe((): void => { this.onFilterChange(filter); });
+		});
 	}
 
 	onSortChange(): void {
@@ -94,20 +101,21 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	}
 
 	private updateAppliedFilters(): void {
-		_.each(this.subscribers, (subscriber: Rx.Subscriber): void => {
-			subscriber.dispose();
-		});
-		this.subscribers = [];
 		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
 			return filter.type;
 		});
 		this.appliedFilters = _.mapValues(filterDictionary, (filter: filters.ISerializableFilter<any>): any => {
-			this.subscribers.push(filter.subscribe(this.reload.bind(this)));
 			if (_.isFunction(filter.serialize)) {
 				return filter.serialize();
 			}
 			return null;
 		});
+	}
+
+	private onFilterChange(filter: filters.ISerializableFilter<any>): void {
+		if (_.has(this.appliedFilters, filter.type)) {
+			this.reload();
+		}
 	}
 
 	protected resolveReload(result: any): void {
