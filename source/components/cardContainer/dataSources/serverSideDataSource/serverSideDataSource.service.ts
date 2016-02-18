@@ -92,7 +92,11 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 	protected resolveReload(result: any): void {
 		let data: IDataResult<TDataType> = <IDataResult<TDataType>>result;
 		super.resolveReload(data.dataSet);
-		this.setProcessedData(data);
+		this.setProcessedData({
+			count: data.count,
+			filteredDataSet: data.dataSet,
+			dataSet: data.dataSet,
+		});
 		this.observable.fire(events.redrawing);
 		this.reloading = false;
 	}
