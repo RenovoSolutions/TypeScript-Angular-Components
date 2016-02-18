@@ -13,8 +13,8 @@ import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDat
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSideDataSource';
-export var factoryName: string = 'serverSideDataSource';
+export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.smartDataSource';
+export var factoryName: string = 'smartDataSource';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
