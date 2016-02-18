@@ -13,6 +13,7 @@ export var defaultPageSize: number = 10;
 export interface IDataPager {
 	pageNumber: number;
 	pageSize: number;
+	startItem: number;
 	filter<T>(dataSet: T[]): T[];
 }
 
@@ -20,12 +21,14 @@ export class DataPager implements IDataPager {
 	pageNumber: number = 1;
 	pageSize: number = defaultPageSize;
 
+	get startItem(): number {
+		return (this.pageNumber - 1) * size;
+	}
+
 	filter(dataSet: any[]): any[] {
-		var size: number = this.pageSize;
-		var start: number = (this.pageNumber - 1) * size;
 		return _(dataSet)
-			.drop(start)
-			.take(size)
+			.drop(this.startItem)
+			.take(this.pageSize)
 			.value();
 	}
 }
