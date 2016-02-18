@@ -68,6 +68,14 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		}
 	}
 
+	refresh(): void {
+		if (this.throttled) {
+			this.reload();
+		} else {
+			super.refresh();
+		}
+	}
+
 	protected getParams(): IServerSearchParams {
 		this.updateAppliedFilters();
 		return {
