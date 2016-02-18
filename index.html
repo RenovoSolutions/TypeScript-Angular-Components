@@ -68,9 +68,7 @@
 				<rl-spinner ng-model="test.number"></rl-spinner>
 				<rl-date-time ng-model="test.date"></rl-date-time>
 				<div rl-alias="test.number as val">{{val}}</div>
-				<rl-select-filter filter="test.filter" options="test.filterOptions" label="Test filter" selector="'display'" null-option="Any"></rl-select-filter>
-				{{test.filter.selectedValue}}
-				<rl-card-container builder="test.builder">
+				<rl-card-container builder="test.builder" card-as="myItem">
 					<rl-card-content>
 						Name: {{myItem.name}}
 						Value: {{myItem.value}}
