@@ -47,9 +47,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData);
 
 		if (this.object.isNullOrEmpty(filters) === false) {
 			processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
@@ -83,9 +81,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData);
 
 		var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 
@@ -128,6 +124,12 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 		}
 
 		return result;
+	}
+
+	sort(sorts: ISort[], data: TDataType[]): TDataType[] {
+		if (this.object.isNullOrEmpty(sorts) === false) {
+			processedData = this.sorter.sort(processedData, sorts);
+		}
 	}
 
 	private wrapData<TDataType>(data: TDataType[]): IWrappedItem<TDataType>[] {
