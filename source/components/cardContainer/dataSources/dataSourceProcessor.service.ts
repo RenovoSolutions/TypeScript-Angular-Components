@@ -35,6 +35,7 @@ export interface IDataSourceProcessor {
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType>;
 	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
@@ -63,10 +64,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
 	}
 
@@ -120,16 +118,20 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
 	}
 
 	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[] {
 		if (this.object.isNullOrEmpty(sorts) === false) {
 			return this.sorter.sort(data, sorts);
+		}
+		return data;
+	}
+
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[] {
+		if (pager != null) {
+			return pager.filter(data);
 		}
 		return data;
 	}
