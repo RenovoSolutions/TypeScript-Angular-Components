@@ -73,7 +73,6 @@ export declare class CardContainerController {
     sortDirection: ISortDirections;
     numberSelected: number;
     selectionColumn: IColumn;
-    pager: dataPager.IDataPager;
     private maxColSorts;
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;

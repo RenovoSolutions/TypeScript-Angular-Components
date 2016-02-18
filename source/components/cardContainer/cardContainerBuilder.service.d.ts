@@ -26,6 +26,7 @@ import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGrou
 import ISelectFilter = selectFilter.ISelectFilter;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
+import IDataPager = dataSources.dataPager.IDataPager;
 export declare let factoryName: string;
 export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IClientServerDataServiceFunction, IServerSearchFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
 export interface ICardContainerBuilder {
@@ -77,6 +78,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
         (item: any): string;
     };
     _searchFilter: IGenericSearchFilter;
+    _pager: IDataPager;
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
     containerData: any;

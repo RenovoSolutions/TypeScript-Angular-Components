@@ -9,13 +9,13 @@ exports.defaultPageSize = 10;
 var PageSizeController = (function () {
     function PageSizeController($scope) {
         var _this = this;
-        if (this.containerService == null) {
+        if (this.builder == null) {
             return;
         }
         this.selectedPageSize = exports.defaultPageSize;
         this.pageSizes = exports.availablePageSizes;
         this.hasPageFilter = true;
-        var pager = this.containerService.pager;
+        var pager = this.builder._pager;
         if (pager == null) {
             this.hasPageFilter = false;
         }
@@ -23,7 +23,7 @@ var PageSizeController = (function () {
             $scope.$watch(function () { return _this.selectedPageSize; }, function (newPageSize) {
                 if (pager != null) {
                     pager.pageSize = newPageSize;
-                    _this.containerService.dataSource.refresh();
+                    _this.builder._dataSource.refresh();
                 }
             });
         }
@@ -41,7 +41,7 @@ function pageSize() {
         controllerAs: 'controller',
         scope: {},
         bindToController: {
-            containerService: '=',
+            builder: '=',
         },
     };
 }

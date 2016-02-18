@@ -14,7 +14,7 @@ export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TData
     };
 }
 export interface IServerSearchFunction<TDataType> {
-    (searchParams: any): angular.IPromise<IDataResult<TDataType>>;
+    (searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
 }
 export interface IServerSearchParams {
     filters: {

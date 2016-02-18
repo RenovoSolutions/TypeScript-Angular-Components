@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import { CardContainerBuilder } from '../cardContainerBuilder.service';
 export declare var moduleName: string;
 export declare var directiveName: string;
 export declare var controllerName: string;
@@ -14,7 +15,7 @@ export declare class CardSearchController {
     searchLengthError: boolean;
     minSearchLength: number;
     hasSearchFilter: boolean;
-    private containerService;
+    builder: CardContainerBuilder;
     private searchFilter;
     static $inject: string[];
     constructor($scope: angular.IScope, $timeout: angular.ITimeoutService);

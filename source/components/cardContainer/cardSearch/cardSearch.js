@@ -1,7 +1,5 @@
 'use strict';
 var angular = require('angular');
-var typescript_angular_utilities_1 = require('typescript-angular-utilities');
-var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearchFilter;
 exports.moduleName = 'rl.ui.components.cardContainer.cardSearch';
 exports.directiveName = 'rlCardSearch';
 exports.controllerName = 'CardSearchController';
@@ -12,11 +10,11 @@ var CardSearchController = (function () {
         var _this = this;
         this.searchLengthError = false;
         this.hasSearchFilter = true;
-        if (this.containerService == null) {
+        if (this.builder == null) {
             return;
         }
         if (this.searchFilter == null) {
-            var filter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
+            var filter = this.builder._searchFilter;
             this.searchFilter = filter;
             if (filter == null) {
                 this.hasSearchFilter = false;
@@ -24,7 +22,7 @@ var CardSearchController = (function () {
         }
         if (this.hasSearchFilter) {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.containerService.dataSource;
+            var dataSource = this.builder._dataSource;
             var delay = this.delay != null
                 ? this.delay
                 : exports.defaultSearchDelay;
@@ -60,7 +58,7 @@ function cardSearch() {
         scope: {},
         bindToController: {
             delay: '=searchDelay',
-            containerService: '=',
+            builder: '=',
             searchFilter: '=?',
         },
     };
