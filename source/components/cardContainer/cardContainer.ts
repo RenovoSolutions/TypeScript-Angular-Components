@@ -209,7 +209,7 @@ export class CardContainerController {
 			this.dataSource.sorts = _.take(sortList, this.maxColSorts);
 		}
 
-		this.dataSource.refresh();
+		this.dataSource.onSortChange();
 	}
 
 	selectionChanged(): void {
