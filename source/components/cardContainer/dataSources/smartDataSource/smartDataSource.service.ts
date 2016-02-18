@@ -47,6 +47,7 @@ export interface IDataResult<TDataType> {
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean;
+	appliedFilters: { [index: string]: any };
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
@@ -66,16 +67,9 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	}
 
 	protected getParams(): IServerSearchParams {
-		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
-			return filter.type;
-		});
+		this.updateAppliedFilters();
 		return {
-			filters: _.mapValues(filterDictionary, (filter: filters.ISerializableFilter<any>): any => {
-				if (_.isFunction(filter.serialize)) {
-					return filter.serialize();
-				}
-				return null;
-			}),
+			filters: this.appliedFilters,
 			sorts: _.map(this.sorts, (sort: ISort): ISortParams => {
 				return {
 					column: sort.column.label,
@@ -87,6 +81,18 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 				pageSize: this.pager.pageSize,
 			},
 		};
+	}
+
+	private updateAppliedFilters(): void {
+		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
+			return filter.type;
+		});
+		this.appliedFilters = _.mapValues(filterDictionary, (filter: filters.ISerializableFilter<any>): any => {
+			if (_.isFunction(filter.serialize)) {
+				return filter.serialize();
+			}
+			return null;
+		});
 	}
 
 	protected resolveReload(result: any): void {
