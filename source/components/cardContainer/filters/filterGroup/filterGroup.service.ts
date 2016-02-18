@@ -35,16 +35,16 @@ export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerial
 	activeOption: IFilterOption;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
-	serialize(): any;
 }
 
-export class FilterGroup implements IFilterGroup {
+export class FilterGroup extends filters.SerializableFilter<any> implements IFilterGroup {
 	label: string;
 	type: string;
 	options: IFilterOption[];
-	activeOption: IFilterOption;
+	private _activeOption: IFilterOption;
 
 	constructor(private settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+		super();
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.options = settings.options;
@@ -57,6 +57,15 @@ export class FilterGroup implements IFilterGroup {
 
 			option.type = object.toString(option.type).toLowerCase();
 		});
+	}
+
+	get activeOption(): IFilterOption {
+		return this._activeOption;
+	}
+
+	set activeOption(value: IFilterOption) {
+		this._activeOption = value;
+		this.onChange(false);
 	}
 
 	private setDefaultOption(): IFilterOption {
