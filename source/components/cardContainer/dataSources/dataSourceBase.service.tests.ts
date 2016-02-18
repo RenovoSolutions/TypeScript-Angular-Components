@@ -25,6 +25,8 @@ import 'angular-mocks';
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;
 	processAndCount: Sinon.SinonSpy;
+	sort: Sinon.SinonSpy;
+	page: Sinon.SinonSpy;
 }
 
 describe('dataSourceBase', () => {
@@ -51,6 +53,8 @@ describe('dataSourceBase', () => {
 					filteredDataSet: data,
 				};
 			}),
+			sort: sinon.spy((data: any): any => { return data; }),
+			page: sinon.spy((data: any): any => { return data; }),
 		};
 
 		var services: any = test.angularFixture.inject(__observable.factoryName, __array.serviceName);
@@ -86,6 +90,31 @@ describe('dataSourceBase', () => {
 			expect(dataSourceBase.dataSet).to.equal(testArray);
 			expect(dataSourceBase.filteredDataSet).to.equal(testArray);
 			expect(dataSourceBase.count).to.equal(3);
+		});
+	});
+
+	describe('onSortChange', (): void => {
+		it('should reapply sorts and pagin and signal redrawing', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.onSortChange();
+
+			sinon.assert.calledOnce(redrawSpy);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+
+		it('should not reapply if data is being reloaded', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.loadingDataSet = true;
+			dataSourceBase.onSortChange();
+
+			sinon.assert.notCalled(redrawSpy);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.sort);
 		});
 	});
 
