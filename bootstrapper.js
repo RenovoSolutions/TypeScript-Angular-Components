@@ -40,7 +40,6 @@
 
 		self.builder = cardContainerBuilderFactory.getInstance();
 		self.builder.dataSource.buildSimpleDataSource(items);
-		self.builder.cardAs = 'myItem';
 		self.builder.addColumn({
 			label: 'Name',
 			size: 6,
