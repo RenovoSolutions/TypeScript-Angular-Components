@@ -217,10 +217,6 @@ describe('CardContainerController', () => {
 	});
 
 	describe('sort', (): void => {
-		beforeEach((): void => {
-			mockedDataSource.onSortChange = sinon.spy();
-		});
-
 		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
 			var columns: IColumn[] = <any>[
 				{
@@ -593,6 +589,7 @@ describe('CardContainerController', () => {
 	function buildMockedDataSource(): IDataSourceMock {
 		return <any>{
 			refresh: sinon.spy(),
+			onSortChange: sinon.spy(),
 		};
 	}
 });

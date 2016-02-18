@@ -31,7 +31,7 @@ interface IDataServiceMock {
 	get: Sinon.SinonSpy;
 }
 
-interface ITestFilter extends filters.ISerializableFilter {
+interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
 }
 
@@ -79,10 +79,7 @@ describe('smartDataSource', () => {
 		mock.promise(dataService, 'get', { dataSet: data, count: 2 });
 
 		source = <any>smartDataSourceFactory.getInstance<number>(<any>dataService.get);
-		source.filters = {
-			'filter1': appliedFilter,
-			'filter2': unappliedFilter,
-		};
+		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },
 			direction: SortDirection.none,
@@ -90,6 +87,7 @@ describe('smartDataSource', () => {
 		source.pager = <any>{
 			pageNumber: 1,
 			pageSize: 2,
+			filter: sinon.spy(),
 		};
 	});
 
