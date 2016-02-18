@@ -9,7 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer.service';
+import { CardContainerBuilder } from '../cardContainerBuilder.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
 export var directiveName: string = 'rlSelectionControl';
@@ -19,20 +19,20 @@ export class SelectionControlController {
 	selectedItems: number;
 	pagingEnabled: boolean;
 	dataSource: IDataSource<any>;
-	private containerService: ICardContainerService;
+	private builder: CardContainerBuilder;
 
 	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor(private $scope: angular.IScope
 			, bool: __boolean.IBooleanUtility) {
-		if (this.containerService == null) {
+		if (this.builder == null) {
 			return;
 		}
 
-		this.selectedItems = this.containerService.numberSelected;
-		this.pagingEnabled = bool.toBool(this.containerService.pager);
-		this.dataSource = this.containerService.dataSource;
+		this.selectedItems = this.builder._numberSelected;
+		this.pagingEnabled = bool.toBool(this.builder._pager);
+		this.dataSource = this.builder.dataSource;
 
-		$scope.$watch((): number => { return this.containerService.numberSelected; }, (value: number): void => {
+		$scope.$watch((): number => { return this.builder._numberSelected; }, (value: number): void => {
 			this.selectedItems = value;
 		});
 	}
@@ -79,7 +79,7 @@ export function selectionControl(): angular.IDirective {
 		controllerAs: 'selection',
 		scope: {},
 		bindToController: {
-			containerService: '=',
+			builder: '=',
 		},
 	};
 }

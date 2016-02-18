@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { IDataSource, dataPager } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer.service';
+import { CardContainerBuilder } from '../cardContainerBuilder.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pager';
 export var directiveName: string = 'rlPager';
@@ -27,7 +27,7 @@ export class PagerController {
 	currentPage: number;
 	pages: number[];
 	hasPageFilter: boolean = true;
-	private containerService: ICardContainerService;
+	private builder: CardContainerBuilder;
 	private pager: dataPager.IDataPager;
 	private dataSource: IDataSource<any>;
 	private lastPage: number;
@@ -35,18 +35,18 @@ export class PagerController {
 
 	static $inject: string[] = ['$scope'];
 	constructor($scope: angular.IScope) {
-		if (this.containerService == null) {
+		if (this.builder == null) {
 			return;
 		}
 
-		this.pager = this.containerService.pager;
+		this.pager = this.builder._pager;
 
 		if (this.pager == null) {
 			this.hasPageFilter = false;
 		} else {
 			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;
 			this.lastPage = 1;
-			this.dataSource = this.containerService.dataSource;
+			this.dataSource = this.builder._dataSource;
 
 			$scope.$watch((): number => { return this.dataSource.count; }, this.updatePageCount);
 			$scope.$watch((): number => { return this.pager.pageSize; }, this.updatePageCount);
@@ -134,7 +134,7 @@ export function pager(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			pageCount: '=visiblePages',
-			containerService: '=',
+			builder: '=',
 		},
 	};
 }

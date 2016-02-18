@@ -6,7 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IDataSource } from '../dataSources/dataSource';
-import { ICardContainerService } from '../cardContainer.service';
+import { CardContainerBuilder } from '../cardContainerBuilder.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
 export var directiveName: string = 'rlCardSearch';
@@ -28,19 +28,18 @@ export class CardSearchController {
 	searchLengthError: boolean = false;
 	minSearchLength: number;
 	hasSearchFilter: boolean = true;
-	private containerService: ICardContainerService;
+	builder: CardContainerBuilder;
 	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
 	static $inject: string[] = ['$scope', '$timeout'];
 	constructor($scope: angular.IScope
 			, $timeout: angular.ITimeoutService) {
-		if (this.containerService == null) {
+		if (this.builder == null) {
 			return;
 		}
 
 		if (this.searchFilter == null) {
-			let filter: __genericSearchFilter.IGenericSearchFilter
-				= <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
+			let filter: __genericSearchFilter.IGenericSearchFilter = this.builder._searchFilter;
 			this.searchFilter = filter;
 
 			if (filter == null) {
@@ -51,7 +50,7 @@ export class CardSearchController {
 		if (this.hasSearchFilter) {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
-			var dataSource: IDataSource<any> = this.containerService.dataSource;
+			var dataSource: IDataSource<any> = this.builder._dataSource;
 
 			var delay: number = this.delay != null
 				? this.delay
@@ -92,7 +91,7 @@ export function cardSearch(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			delay: '=searchDelay',
-			containerService: '=',
+			builder: '=',
 			searchFilter: '=?',
 		},
 	};

@@ -19,15 +19,15 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-interface IContainerServiceMock {
-	lookupFilter: Sinon.SinonSpy;
-	dataSource: any;
+interface IContainerBuilderMock {
+	_searchFilter: any;
+	_dataSource: any;
 }
 
 describe('CardSearchController', () => {
 	var scope: angular.IScope;
 	var cardSearch: CardSearchController;
-	var containerService: IContainerServiceMock;
+	var builder: IContainerBuilderMock;
 	var filter: any;
 	var $timeout: angular.ITimeoutService;
 	var refreshSpy: Sinon.SinonSpy;
@@ -39,9 +39,9 @@ describe('CardSearchController', () => {
 
 		filter = {};
 
-		containerService = {
-			lookupFilter: sinon.spy((): any => { return filter; }),
-			dataSource: {
+		builder = {
+			_searchFilter: filter,
+			_dataSource: {
 				refresh: refreshSpy,
 			},
 		};
@@ -52,22 +52,20 @@ describe('CardSearchController', () => {
 
 	it('should lookup the search filter from the card container', (): void => {
 		buildController();
-		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.true;
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
-		containerService.lookupFilter = sinon.spy((): any => { return null; });
+		builder._searchFilter = null;
 		buildController();
-		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.false;
 		expect(cardSearch.searchPlaceholder).to.not.exist;
 	});
 
 	it('should still init the search filter if it was specified with an attribute binding', (): void => {
 		let filter: any = {};
-		buildController();
+		buildController(null, filter);
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
@@ -128,7 +126,7 @@ describe('CardSearchController', () => {
 	function buildController(delay?: number, filter?: any): void {
 		var bindings: any = {
 			delay: delay,
-			containerService: containerService,
+			builder: builder,
 			searchFilter: filter,
 		};
 
