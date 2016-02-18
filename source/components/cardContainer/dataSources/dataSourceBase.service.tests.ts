@@ -113,8 +113,31 @@ describe('dataSourceBase', () => {
 			dataSourceBase.onSortChange();
 
 			sinon.assert.notCalled(redrawSpy);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
 			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+	});
+
+	describe('onPagingChange', (): void => {
+		it('should reapply sorts and pagin and signal redrawing', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.onPagingChange();
+
+			sinon.assert.calledOnce(redrawSpy);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+
+		it('should not reapply if data is being reloaded', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.loadingDataSet = true;
+			dataSourceBase.onPagingChange();
+
+			sinon.assert.notCalled(redrawSpy);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
 		});
 	});
 

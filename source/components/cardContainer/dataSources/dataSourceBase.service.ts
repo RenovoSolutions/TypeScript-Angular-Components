@@ -77,6 +77,13 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		}
 	}
 
+	onPagingChange(): void {
+		if (!this.loadingDataSet) {
+			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+			this.observable.fire(events.redrawing);
+		}
+	}
+
 	refresh(): void {
 		if (!this.loadingDataSet) {
 			this.processData();

@@ -25,6 +25,7 @@ export interface IDataSource<TDataType> {
 	processData(): void;
 
 	onSortChange(): void;
+	onPagingChange(): void;
 	refresh(): void;
 	remove(data: TDataType): void;
 	push(data: TDataType): void;
