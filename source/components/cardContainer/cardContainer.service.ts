@@ -17,7 +17,7 @@ export class CardContainerService {
 	private filters: { [index: string]: filters.IFilter };
 
 	constructor(private cardContainer: CardContainerController) {
-		this.pager = cardContainer.pager;
+		this.pager = cardContainer.builder._pager;
 		this.dataSource = cardContainer.dataSource;
 		this.filters = <{ [index: string]: filters.IFilter }>cardContainer.filters;
 	}

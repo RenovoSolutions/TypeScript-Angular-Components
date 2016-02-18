@@ -87,7 +87,6 @@ export class CardContainerController {
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
 	selectionColumn: IColumn;
-	pager: dataPager.IDataPager;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
 
@@ -237,12 +236,12 @@ export class CardContainerController {
 			if (this.paging === false) {
 				this.dataSource.pager = null;
 			} else {
-				this.pager = this.dataPagerFactory.getInstance();
-				this.dataSource.pager = this.pager;
+				this.builder._pager = this.dataPagerFactory.getInstance();
+				this.dataSource.pager = this.builder._pager;
 			}
 		} else if (this.dataSource.pager) {
 			// If the paging flag is not set and the dataSource has a pager, save a reference here
-			this.pager = this.dataSource.pager;
+			this.builder._pager = this.dataSource.pager;
 		}
 	}
 

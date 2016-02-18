@@ -75,7 +75,7 @@ describe('CardContainerController', () => {
 			cardContainer.paging = true;
 			buildController();
 
-			expect(cardContainer.pager).to.equal(cardContainer.dataSource.pager);
+			expect(cardContainer.builder._pager).to.equal(cardContainer.dataSource.pager);
 			expect(cardContainer.dataSource.pager.pageNumber).to.exist;
 			expect(cardContainer.dataSource.pager.pageSize).to.exist;
 			expect(_.isFunction(cardContainer.dataSource.pager.filter)).to.be.true;
@@ -85,7 +85,7 @@ describe('CardContainerController', () => {
 			cardContainer.paging = false;
 			buildController();
 
-			expect(cardContainer.pager).to.not.exist;
+			expect(cardContainer.builder._pager).to.not.exist;
 			expect(cardContainer.dataSource.pager).to.not.exist;
 		});
 
@@ -102,7 +102,7 @@ describe('CardContainerController', () => {
 			cardContainer.source = <any>dataSource;
 			buildController();
 
-			expect(cardContainer.pager).to.equal(pager);
+			expect(cardContainer.builder._pager).to.equal(pager);
 			expect(cardContainer.dataSource.pager).to.equal(pager);
 		});
 	});
