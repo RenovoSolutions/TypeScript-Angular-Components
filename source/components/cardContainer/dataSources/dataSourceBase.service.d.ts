@@ -7,14 +7,12 @@ import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
 export declare class DataSourceBase<TDataType> implements IDataSource<TDataType> {
     private dataSourceProcessor;
-    private array;
+    protected array: __array.IArrayUtility;
     dataSet: TDataType[];
     filteredDataSet: TDataType[];
     rawDataSet: TDataType[];
     sorts: ISort[];
-    filters: {
-        [index: string]: filters.IFilter;
-    };
+    filters: filters.IFilter[];
     pager: IDataPager;
     count: number;
     countFilterGroups: boolean;

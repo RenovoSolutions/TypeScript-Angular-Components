@@ -9,9 +9,7 @@ import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
-    filters: {
-        [index: string]: filters.ISerializableFilter;
-    };
+    filters: filters.ISerializableFilter<any>[];
 }
 export interface IServerSearchFunction<TDataType> {
     (searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;

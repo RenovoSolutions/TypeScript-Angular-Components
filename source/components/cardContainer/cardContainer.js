@@ -156,10 +156,6 @@ var CardContainerController = (function () {
     };
     CardContainerController.prototype.syncFilters = function () {
         if (this.filters != null) {
-            // Convert filter array to dictionary if necessary
-            if (_.isArray(this.filters)) {
-                this.filters = this.array.toDictionary(this.filters, function (filter) { return filter.type; });
-            }
             this.dataSource.filters = this.filters;
             this.dataSource.refresh();
         }

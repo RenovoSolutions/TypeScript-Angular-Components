@@ -43,13 +43,13 @@ var DataSourceProcessor = (function () {
         }
         var wrappedData = this.wrapData(processedData);
         // Run filtration logic and compute visible items
-        _.each(filters, function (filter) {
+        _.each(filters, function (filter /* filters.IFilterWithCounts */) {
             _.each(wrappedData, function (item) {
                 item.filterData[filter.type] = filter.filter(item.data);
             });
         });
         // Give each filter a chance to update option counts
-        _.each(filters, function (filter) {
+        _.each(filters, function (filter /* filters.IFilterWithCounts */) {
             if (_.isFunction(filter.updateOptionCounts)) {
                 var otherFiltersApplied = _.filter(wrappedData, function (item) {
                     // Omit the true or false of the current filter an

@@ -7,9 +7,7 @@ export interface IDataSource<TDataType> {
     filteredDataSet: TDataType[];
     rawDataSet: TDataType[];
     sorts: ISort[];
-    filters: {
-        [index: string]: filters.IFilter;
-    };
+    filters: filters.IFilter[];
     pager: IDataPager;
     count: number;
     countFilterGroups: boolean;

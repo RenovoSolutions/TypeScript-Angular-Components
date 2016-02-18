@@ -30,8 +30,11 @@ var ServerSideDataSource = (function (_super) {
         }
     };
     ServerSideDataSource.prototype.getParams = function () {
+        var filterDictionary = this.array.toDictionary(this.filters, function (filter) {
+            return filter.type;
+        });
         return {
-            filters: _.mapValues(this.filters, function (filter) {
+            filters: _.mapValues(filterDictionary, function (filter) {
                 if (_.isFunction(filter.serialize)) {
                     return filter.serialize();
                 }
