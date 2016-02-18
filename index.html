@@ -12,7 +12,7 @@
 		<script src="/node_modules/jquery/dist/jquery.js"></script>
 		<script src="/node_modules/angular/angular.js"></script>
 		<script src="/node_modules/angular-animate/angular-animate.js"></script>
-		<script src="/node_modules/lodash/index.js"></script>
+		<script src="/node_modules/lodash/lodash.js"></script>
 		<script src="/node_modules/moment/moment.js"></script>
 		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
 		<script src="/output/components.js"></script>
@@ -68,9 +68,7 @@
 				<rl-spinner ng-model="test.number"></rl-spinner>
 				<rl-date-time ng-model="test.date"></rl-date-time>
 				<div rl-alias="test.number as val">{{val}}</div>
-				<rl-select-filter filter="test.filter" options="test.filterOptions" label="Test filter" selector="'display'" null-option="Any"></rl-select-filter>
-				{{test.filter.selectedValue}}
-				<rl-card-container builder="test.builder">
+				<rl-card-container builder="test.builder" card-as="myItem">
 					<rl-card-content>
 						Name: {{myItem.name}}
 						Value: {{myItem.value}}

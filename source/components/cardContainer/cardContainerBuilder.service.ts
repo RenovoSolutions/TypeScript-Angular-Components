@@ -168,14 +168,21 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.paging = this._paging;
 		cardContainer.columns = this._columns;
 		cardContainer.containerData = this.containerData;
-		cardContainer.cardController = this.cardController;
-		cardContainer.cardControllerAs = this.cardControllerAs;
-		cardContainer.cardAs = this.cardAs;
 		cardContainer.clickableCards = this._clickableCards;
 		cardContainer.maxColumnSorts = this.maxColumnSorts;
 		cardContainer.permanentFooters = this._permanentFooters;
 		cardContainer.selectableCards = this._selectableCards;
 		cardContainer.disableSelection = this._disableSelection;
+
+		if (cardContainer.cardController == null) {
+			cardContainer.cardController = this.cardController;
+		}
+		if (cardContainer.cardControllerAs == null) {
+			cardContainer.cardControllerAs = this.cardControllerAs;
+		}
+		if (cardContainer.cardAs == null) {
+			cardContainer.cardAs = this.cardAs;
+		}
 	}
 }
 
@@ -271,13 +278,17 @@ export class FilterBuilder implements IFilterBuilder {
 
 export interface ICardContainerBuilderFactory {
 	getInstance(): ICardContainerBuilder;
+	useMock: boolean;
+	mockBuilder: ICardContainerBuilder;
 }
 
 cardContainerBuilderFactory.$inject = ['$injector'];
 export function cardContainerBuilderFactory($injector: angular.auto.IInjectorService): ICardContainerBuilderFactory {
 	return {
+		useMock: false,
 		getInstance(): ICardContainerBuilder {
-			return new CardContainerBuilder($injector);
+			return this.useMock ? this.mockBuilder : new CardContainerBuilder($injector);
 		},
+		mockBuilder: new CardContainerBuilder($injector),
 	};
 }

@@ -3,13 +3,18 @@
 	<div class="content-group" ng-repeat="entry in log.messages" rl-alias="entry as {{log.messageAs}}">
 		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
 			<template default>
-				<div ng-bind-html="entry.message"></div>
-				<span ng-if="log.canDeleteEntry(entry)">
-					<rl-button-async class="pull-right" action="log.messageLog.deleteMessage(entry)" size="sm"><i class="fa fa-remove"></i></rl-button-async>
-					<div class="clearfix"></div>
-				</span>
-				<div class="byline">{{entry.createdBy.name}}</div>
-				<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
+				<div class="message-body">
+					<div class="message-content">
+						<div ng-bind-html="entry.message"></div>
+					</div>
+					<span class="message-button" ng-if="log.canDeleteEntry(entry)">
+						<rl-button-async type="message-delete-button flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rl-button-async>
+					</span>
+				</div>
+				<div class="message-byline">
+					<div class="byline">{{entry.createdBy.name}}</div>
+					<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
+				</div>
 			</template>
 		</rl-generic-container>
 	</div>
@@ -17,12 +22,12 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="text-center">
-				<rl-button-async type="default" action="log.getTop()" ng-disabled="log.loading" button-right-aligned="true">
-					<span ng-show="log.hasPreviousPage">Top</span>
-					<span ng-hide="log.hasPreviousPage">Refresh</span>
+				<rl-button-async type="primary-invert" action="log.getTop()" ng-disabled="log.loading" button-right-aligned="true">
+					<span ng-show="log.hasPreviousPage">Top <i class="fa fa-caret-up"></i></span>
+					<span ng-hide="log.hasPreviousPage"><i class="fa fa-refresh"></i> Refresh</span>
 				</rl-button-async>
-				<rl-button-async type="default" ng-disabled="log.hasNextPage == false || log.loading" action="log.getOlder()">
-					Older <i class="fa fa-chevron-right"></i>
+				<rl-button-async type="primary-invert" ng-disabled="log.hasNextPage == false || log.loading" action="log.getOlder()">
+					Older <i class="fa fa-caret-right"></i>
 				</rl-button-async>
 			</div>
 		</div>

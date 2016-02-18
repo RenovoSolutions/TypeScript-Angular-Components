@@ -48,6 +48,7 @@ export interface IDataSourceBuilder {
     buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
     buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
+    buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export interface IFilterBuilder {
     buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
@@ -99,6 +100,7 @@ export declare class DataSourceBuilder implements IDataSourceBuilder {
     buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
     buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>;
+    buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export declare class FilterBuilder implements IFilterBuilder {
     private $injector;
@@ -116,5 +118,7 @@ export declare class FilterBuilder implements IFilterBuilder {
 }
 export interface ICardContainerBuilderFactory {
     getInstance(): ICardContainerBuilder;
+    useMock: boolean;
+    mockBuilder: ICardContainerBuilder;
 }
 export declare function cardContainerBuilderFactory($injector: angular.auto.IInjectorService): ICardContainerBuilderFactory;

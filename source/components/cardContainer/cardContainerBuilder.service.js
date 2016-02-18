@@ -57,14 +57,20 @@ var CardContainerBuilder = (function () {
         cardContainer.paging = this._paging;
         cardContainer.columns = this._columns;
         cardContainer.containerData = this.containerData;
-        cardContainer.cardController = this.cardController;
-        cardContainer.cardControllerAs = this.cardControllerAs;
-        cardContainer.cardAs = this.cardAs;
         cardContainer.clickableCards = this._clickableCards;
         cardContainer.maxColumnSorts = this.maxColumnSorts;
         cardContainer.permanentFooters = this._permanentFooters;
         cardContainer.selectableCards = this._selectableCards;
         cardContainer.disableSelection = this._disableSelection;
+        if (cardContainer.cardController == null) {
+            cardContainer.cardController = this.cardController;
+        }
+        if (cardContainer.cardControllerAs == null) {
+            cardContainer.cardControllerAs = this.cardControllerAs;
+        }
+        if (cardContainer.cardAs == null) {
+            cardContainer.cardAs = this.cardAs;
+        }
     };
     return CardContainerBuilder;
 })();
@@ -92,6 +98,10 @@ var DataSourceBuilder = (function () {
         }
         var factory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
         this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
+        return this.parent._dataSource;
+    };
+    DataSourceBuilder.prototype.buildCustomDataSource = function (dataSource) {
+        this.parent._dataSource = dataSource;
         return this.parent._dataSource;
     };
     return DataSourceBuilder;
@@ -148,9 +158,11 @@ exports.FilterBuilder = FilterBuilder;
 cardContainerBuilderFactory.$inject = ['$injector'];
 function cardContainerBuilderFactory($injector) {
     return {
+        useMock: false,
         getInstance: function () {
-            return new CardContainerBuilder($injector);
+            return this.useMock ? this.mockBuilder : new CardContainerBuilder($injector);
         },
+        mockBuilder: new CardContainerBuilder($injector),
     };
 }
 exports.cardContainerBuilderFactory = cardContainerBuilderFactory;

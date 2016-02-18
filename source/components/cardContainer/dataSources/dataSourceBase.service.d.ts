@@ -2,7 +2,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
 import { IDataSource } from './dataSource';
-import { IDataSourceProcessor } from './dataSourceProcessor.service';
+import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
 export declare class DataSourceBase<TDataType> implements IDataSource<TDataType> {
@@ -23,6 +23,8 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     constructor(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
     watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
     processData(): void;
+    processDataNoClientFilters(): void;
+    setProcessedData(processedData: IProcessResult<TDataType>): void;
     refresh(): void;
     remove(data: TDataType): void;
     push(data: TDataType): void;

@@ -22,6 +22,20 @@ var DataSourceBase = (function () {
         else {
             processedData = this.dataSourceProcessor.process(this.sorts, this.filters, this.pager, this.rawDataSet);
         }
+        this.setProcessedData(processedData);
+    };
+    //used when we need to process data but without client filters.
+    DataSourceBase.prototype.processDataNoClientFilters = function () {
+        var processedData;
+        if (this.countFilterGroups) {
+            processedData = this.dataSourceProcessor.processAndCount(this.sorts, null, this.pager, this.rawDataSet);
+        }
+        else {
+            processedData = this.dataSourceProcessor.process(this.sorts, null, this.pager, this.rawDataSet);
+        }
+        this.setProcessedData(processedData);
+    };
+    DataSourceBase.prototype.setProcessedData = function (processedData) {
         this.count = processedData.count;
         this.dataSet = processedData.dataSet;
         this.filteredDataSet = processedData.filteredDataSet;
