@@ -70,7 +70,7 @@ export class CardContainerController {
 	builder: CardContainerBuilder;
 
 	source: IDataSource<any>;
-	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
+	filters: filters.IFilter[];
 	paging: boolean;
 	columns: IColumn[];
 	containerData: any;
@@ -219,12 +219,7 @@ export class CardContainerController {
 
 	private syncFilters(): void {
 		if (this.filters != null) {
-			// Convert filter array to dictionary if necessary
-			if (_.isArray(this.filters)) {
-				this.filters = this.array.toDictionary(<filters.IFilter[]>this.filters, (filter: any /* filters.IFilter */): string => { return filter.type; });
-			}
-
-			this.dataSource.filters = <{ [index: string]: filters.IFilter }>this.filters;
+			this.dataSource.filters = this.filters;
 			this.dataSource.refresh();
 		} else if (this.dataSource.filters != null) {
 			this.filters = this.dataSource.filters;

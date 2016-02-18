@@ -31,7 +31,7 @@ interface IDataServiceMock {
 	get: Sinon.SinonSpy;
 }
 
-interface ITestFilter extends filters.ISerializableFilter {
+interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
 }
 
@@ -69,7 +69,7 @@ describe('serverSideDataSource', () => {
 		mock.promise(dataService, 'get', { dataSet: [1, 2], count: 2 });
 
 		source = <any>serverSideDataSourceFactory.getInstance<number>(<any>dataService.get);
-		source.filters = { 'myFilter': filter };
+		source.filters = <any>[filter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },
 			direction: SortDirection.none,
@@ -105,7 +105,7 @@ describe('serverSideDataSource', () => {
 
 	it('should specify no value for unserializable filters', (): void => {
 		let clientSideFilter: any = { filter: (item: number): boolean => { return item === 1; }};
-		source.filters = { 'clientSideFilter': clientSideFilter };
+		source.filters = [clientSideFilter];
 		source.refresh();
 
 		let filterValues: any = dataService.get.firstCall.args[0].filters;

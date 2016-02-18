@@ -15,7 +15,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];
 	sorts: ISort[] = [];
-	filters: { [index: string]: filters.IFilter } = {};
+	filters: filters.IFilter[] = [];
 	pager: IDataPager;
 	count: number = 0;
 
@@ -27,7 +27,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	constructor(observableFactory: __observable.IObservableServiceFactory
 			, private dataSourceProcessor: IDataSourceProcessor
-			, private array: __array.IArrayUtility) {
+			, protected array: __array.IArrayUtility) {
 		this.observable = observableFactory.getInstance();
 	}
 
@@ -40,7 +40,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 		if (this.countFilterGroups) {
 			processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
-																			, <{ [index: string]: filters.IFilterWithCounts }>this.filters
+																			, <filters.IFilterWithCounts[]>this.filters
 																			, this.pager
 																			, this.rawDataSet);
 		} else {

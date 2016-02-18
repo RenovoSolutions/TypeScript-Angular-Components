@@ -27,11 +27,11 @@ export interface IWrappedItem<TItemType> {
 
 export interface IDataSourceProcessor {
 	process<TDataType>(sorts: ISort[]
-					, filters: { [index: string]: filters.IFilter }
+					, filters: filters.IFilter[]
 					, pager: IDataPager
 					, data: TDataType[]): IProcessResult<TDataType>;
 	processAndCount<TDataType>(sorts: ISort[]
-							, filters: { [index: string]: filters.IFilterWithCounts }
+							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType>;
 }
@@ -42,7 +42,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			, private sorter: ISorter) { }
 
 	process<TDataType>(sorts: ISort[]
-					, filters: { [index: string]: filters.IFilter }
+					, filters: filters.IFilter[]
 					, pager: IDataPager
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
@@ -72,7 +72,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 	}
 
 	processAndCount<TDataType>(sorts: ISort[]
-							, filters: { [index: string]: filters.IFilterWithCounts }
+							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType> {
 		// If there are no filters that need to updated option counts, use the normal processor
