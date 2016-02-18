@@ -221,7 +221,7 @@ export class CardContainerController {
 		if (this.filters != null) {
 			// Convert filter array to dictionary if necessary
 			if (_.isArray(this.filters)) {
-				this.filters = this.array.toDictionary(<filters.IFilter[]>this.filters, (filter: filters.IFilter): string => { return filter.type; });
+				this.filters = this.array.toDictionary(<filters.IFilter[]>this.filters, (filter: any /* filters.IFilter */): string => { return filter.type; });
 			}
 
 			this.dataSource.filters = <{ [index: string]: filters.IFilter }>this.filters;

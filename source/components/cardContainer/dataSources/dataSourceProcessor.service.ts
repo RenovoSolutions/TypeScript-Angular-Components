@@ -90,14 +90,14 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 		var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 
 		// Run filtration logic and compute visible items
-		_.each(filters, (filter: filters.IFilterWithCounts): void => {
+		_.each(filters, (filter: any /* filters.IFilterWithCounts */): void => {
 			_.each(wrappedData, (item: IWrappedItem<TDataType>): void => {
 				item.filterData[filter.type] = filter.filter(item.data);
 			});
 		});
 
 		// Give each filter a chance to update option counts
-		_.each(filters, (filter: filters.IFilterWithCounts): void => {
+		_.each(filters, (filter: any /* filters.IFilterWithCounts */): void => {
 			if (_.isFunction(filter.updateOptionCounts)) {
 				var otherFiltersApplied: IWrappedItem<TDataType>[] = _.filter(wrappedData, (item: IWrappedItem<TDataType>): boolean => {
 					// Omit the true or false of the current filter an
