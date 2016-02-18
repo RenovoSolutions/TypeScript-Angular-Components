@@ -18,7 +18,7 @@ export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serv
 export var factoryName: string = 'serverSideDataSource';
 
 export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
-	filters: { [index: string]: filters.ISerializableFilter };
+	filters: { [index: string]: filters.ISerializableFilter<any> };
 }
 
 export interface IServerSearchFunction<TDataType> {
@@ -67,7 +67,7 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 
 	protected getParams(): IServerSearchParams {
 		return {
-			filters: _.mapValues(this.filters, (filter: filters.ISerializableFilter): any => {
+			filters: _.mapValues(this.filters, (filter: filters.ISerializableFilter<any>): any => {
 				if (_.isFunction(filter.serialize)) {
 					return filter.serialize();
 				}

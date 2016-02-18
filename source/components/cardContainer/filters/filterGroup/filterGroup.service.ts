@@ -28,7 +28,7 @@ interface IConfiguredFilterOption extends IFilterOption {
 	count?: number;
 }
 
-export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter {
+export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter<any> {
 	label: string;
 	type: string;
 	options: IFilterOption[];
