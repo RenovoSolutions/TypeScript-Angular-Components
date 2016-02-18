@@ -92,12 +92,17 @@ var DataSourceBuilder = (function () {
         this.parent._dataSource = factory.getInstance(getDataSet);
         return this.parent._dataSource;
     };
-    DataSourceBuilder.prototype.buildServerSearchDataSource = function (getDataSet, getFilterModel, validateModel) {
+    DataSourceBuilder.prototype.buildClientServerDataSource = function (getDataSet, getFilterModel, validateModel) {
         if (_.isUndefined(this.parent._searchFilter)) {
             this.parent.useSearch();
         }
-        var factory = this.$injector.get(dataSources.serverSearchDataSource.factoryName);
+        var factory = this.$injector.get(dataSources.clientServerDataSource.factoryName);
         this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
+        return this.parent._dataSource;
+    };
+    DataSourceBuilder.prototype.buildServerSideDataSource = function (getDataSet) {
+        var factory = this.$injector.get(dataSources.serverSideDataSource.factoryName);
+        this.parent._dataSource = factory.getInstance(getDataSet);
         return this.parent._dataSource;
     };
     DataSourceBuilder.prototype.buildCustomDataSource = function (dataSource) {

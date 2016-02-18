@@ -18,6 +18,18 @@ var RangeFilterGroup = (function (_super) {
         settings.options = _.map(settings.options, this.buildRangeOption.bind(this));
         _super.call(this, settings, object);
     }
+    RangeFilterGroup.prototype.serialize = function () {
+        var activeOption = this.activeOption;
+        if (this.isNullOption(activeOption)) {
+            return null;
+        }
+        return {
+            highInclusive: activeOption.highInclusive,
+            highExclusive: activeOption.highExclusive,
+            lowInclusive: activeOption.lowInclusive,
+            lowExclusive: activeOption.lowExclusive,
+        };
+    };
     RangeFilterGroup.prototype.buildRangeOption = function (option) {
         var _this = this;
         var modeOption = option;
@@ -39,6 +51,12 @@ var RangeFilterGroup = (function (_super) {
             return result;
         };
         return modeOption;
+    };
+    RangeFilterGroup.prototype.isNullOption = function (option) {
+        return option.highInclusive == null
+            && option.highExclusive == null
+            && option.lowInclusive == null
+            && option.lowExclusive == null;
     };
     return RangeFilterGroup;
 })(filterGroup_service_1.FilterGroup);

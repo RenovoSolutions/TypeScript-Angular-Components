@@ -23,6 +23,7 @@ interface IRangeFilterOptionMock {
 	highExclusive?: number;
 	lowInclusive?: number;
 	lowExclusive?: number;
+	active?: boolean;
 }
 
 interface ITestObject {
@@ -30,35 +31,35 @@ interface ITestObject {
 }
 
 describe('rangeFilterGroup', () => {
-	var rangeFilterGroupFactory: IRangeFilterGroupFactory;
-	var rangeFilterGroup: IRangeFilterGroup;
+	let rangeFilterGroupFactory: IRangeFilterGroupFactory;
+	let rangeFilterGroup: IRangeFilterGroup;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		var services: any = test.angularFixture.inject(factoryName);
+		let services: any = test.angularFixture.inject(factoryName);
 		rangeFilterGroupFactory = services[factoryName];
 	});
 
 	it('should build an option filter functin that filters out items that arent in the range', (): void => {
-		var lowAndHighInclusiveOption: IRangeFilterOptionMock = {
+		let lowAndHighInclusiveOption: IRangeFilterOptionMock = {
 			lowInclusive: 5,
 			highInclusive: 10,
 		};
-		var lowAndHighExclusiveOption: IRangeFilterOptionMock = {
+		let lowAndHighExclusiveOption: IRangeFilterOptionMock = {
 			lowExclusive: 5,
 			highExclusive: 10,
 		};
-		var lowInclusiveOnlyOption: IRangeFilterOptionMock = {
+		let lowInclusiveOnlyOption: IRangeFilterOptionMock = {
 			lowInclusive: 5,
 		};
-		var lowExclusiveOnlyOption: IRangeFilterOptionMock = {
+		let lowExclusiveOnlyOption: IRangeFilterOptionMock = {
 			lowExclusive: 5,
 		};
-		var highInclusiveOnlyOption: IRangeFilterOptionMock = {
+		let highInclusiveOnlyOption: IRangeFilterOptionMock = {
 			highInclusive: 10,
 		};
-		var highExclusiveOnlyOption: IRangeFilterOptionMock = {
+		let highExclusiveOnlyOption: IRangeFilterOptionMock = {
 			highExclusive: 10,
 		};
 
@@ -113,5 +114,42 @@ describe('rangeFilterGroup', () => {
 		expect(rangeFilterGroup.filter({ value: 9 })).to.be.true;
 		expect(rangeFilterGroup.filter({ value: 10 })).to.be.false;
 		expect(rangeFilterGroup.filter({})).to.be.false;
+	});
+
+	it('should serialize to the values of the active option', (): void => {
+		let inactiveOption: IRangeFilterOptionMock = {
+			lowInclusive: 2,
+			highInclusive: 5,
+		};
+		let activeOption: IRangeFilterOptionMock = {
+			lowInclusive: 5,
+			highInclusive: 10,
+			active: true,
+		};
+
+		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+			options: [
+				inactiveOption,
+				activeOption,
+			],
+		});
+
+		let serializedValue: any = rangeFilterGroup.serialize();
+		expect(serializedValue.lowInclusive).to.equal(5);
+		expect(serializedValue.highInclusive).to.equal(10);
+	});
+
+	it('should return null if the selected option has no values', (): void => {
+		let defaultOption: IRangeFilterOptionMock = {
+			active: true,
+		};
+
+		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+			options: [
+				defaultOption,
+			],
+		});
+
+		expect(rangeFilterGroup.serialize()).to.be.null;
 	});
 });

@@ -15,10 +15,12 @@ import * as dateFilter from './filters/dateFilter/dateFilter.module';
 import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
 
 import IDataSource = dataSources.IDataSource;
+import IAsyncDataSource = dataSources.IAsyncDataSource;
 import IDataSourceDataServiceFunction = dataSources.dataServiceDataSource.IDataServiceFunction;
-import IServerSearchDataServiceFunction = dataSources.serverSearchDataSource.IDataServiceSearchFunction;
-import IGetFilterModel = dataSources.serverSearchDataSource.IGetFilterModel;
-import IValidateFilterModel = dataSources.serverSearchDataSource.IValidateFilterModel;
+import IClientServerDataServiceFunction = dataSources.clientServerDataSource.IDataServiceSearchFunction;
+import IServerSearchFunction = dataSources.serverSideDataSource.IServerSearchFunction;
+import IGetFilterModel = dataSources.clientServerDataSource.IGetFilterModel;
+import IValidateFilterModel = dataSources.clientServerDataSource.IValidateFilterModel;
 import IFilter = filters.IFilter;
 import IGenericSearchFilter = __genericSearchFilter.IGenericSearchFilter;
 import IFilterGroup = filterGroup.IFilterGroup;
@@ -39,7 +41,8 @@ export {
 	IDataSourceDataServiceFunction,
 	IDateFilter,
 	IDateFilterSettings,
-	IServerSearchDataServiceFunction,
+	IClientServerDataServiceFunction,
+	IServerSearchFunction,
 	IGetFilterModel,
 	IValidateFilterModel,
 	IFilter,
@@ -76,10 +79,11 @@ export interface ICardContainerBuilder {
 
 export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
-	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType>;
-	buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>
+	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType>;
+	buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>
 											, getFilterModel?: IGetFilterModel<TDataType>
-											, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType>
+											, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
+	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 
@@ -199,22 +203,28 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		return this.parent._dataSource;
 	}
 
-	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IDataSource<TDataType> {
+	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType> {
 		let factory: dataSources.dataServiceDataSource.IDataServiceDataSourceFactory = this.$injector.get<any>(dataSources.dataServiceDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet);
-		return this.parent._dataSource;
+		return <any>this.parent._dataSource;
 	}
 
-	buildServerSearchDataSource<TDataType>(getDataSet: IServerSearchDataServiceFunction<TDataType>
+	buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>
 										, getFilterModel?: IGetFilterModel<TDataType>
-										, validateModel?: IValidateFilterModel<TDataType>): IDataSource<TDataType> {
+										, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType> {
 		if (_.isUndefined(this.parent._searchFilter)) {
 			this.parent.useSearch();
 		}
 
-		let factory: dataSources.serverSearchDataSource.IServerSearchDataSourceFactory = this.$injector.get<any>(dataSources.serverSearchDataSource.factoryName);
+		let factory: dataSources.clientServerDataSource.IClientServerDataSourceFactory = this.$injector.get<any>(dataSources.clientServerDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
-		return this.parent._dataSource;
+		return <any>this.parent._dataSource;
+	}
+
+	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
+		let factory: dataSources.serverSideDataSource.IServerSideDataSourceFactory = this.$injector.get<any>(dataSources.serverSideDataSource.factoryName);
+		this.parent._dataSource = factory.getInstance(getDataSet);
+		return <any>this.parent._dataSource;
 	}
 
 	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>{

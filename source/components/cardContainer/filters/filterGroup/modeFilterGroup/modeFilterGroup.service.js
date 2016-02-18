@@ -18,6 +18,13 @@ var ModeFilterGroup = (function (_super) {
         settings.options = _.map(settings.options, this.buildModeOption.bind(this));
         _super.call(this, settings, object);
     }
+    ModeFilterGroup.prototype.serialize = function () {
+        var activeOption = this.activeOption;
+        if (activeOption.displayAll) {
+            return null;
+        }
+        return activeOption.value;
+    };
     ModeFilterGroup.prototype.buildModeOption = function (option) {
         var _this = this;
         var modeOption = option;

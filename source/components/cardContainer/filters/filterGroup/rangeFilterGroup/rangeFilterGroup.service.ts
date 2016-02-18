@@ -35,6 +35,14 @@ export interface IRangeFilterOption extends IFilterOption {
 
 export interface IRangeFilterGroup extends IFilterGroup {
 	options: IRangeFilterOption[];
+	serialize(): IRangeFilterValue;
+}
+
+export interface IRangeFilterValue {
+	highInclusive?: number;
+	highExclusive?: number;
+	lowInclusive?: number;
+	lowExclusive?: number;
 }
 
 class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
@@ -44,6 +52,19 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 		this.getValue = settings.getValue;
 		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
 		super(<any>settings, object);
+	}
+
+	serialize(): IRangeFilterValue {
+		let activeOption: IRangeFilterOption = <any>this.activeOption;
+		if (this.isNullOption(activeOption)) {
+			return null;
+		}
+		return {
+			highInclusive: activeOption.highInclusive,
+			highExclusive: activeOption.highExclusive,
+			lowInclusive: activeOption.lowInclusive,
+			lowExclusive: activeOption.lowExclusive,
+		};
 	}
 
 	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
@@ -69,6 +90,13 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 		};
 
 		return modeOption;
+	}
+
+	private isNullOption(option: IRangeFilterOption): boolean {
+		return option.highInclusive == null
+			&& option.highExclusive == null
+			&& option.lowInclusive == null
+			&& option.lowExclusive == null;
 	}
 }
 

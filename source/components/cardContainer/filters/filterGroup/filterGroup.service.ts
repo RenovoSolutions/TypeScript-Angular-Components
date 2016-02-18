@@ -12,6 +12,7 @@ export interface IFilterGroupSettings {
 	label: string;
 	type: string;
 	options: IFilterOption[];
+	serialize?: {(): any};
 }
 
 export interface IFilterOption {
@@ -20,19 +21,21 @@ export interface IFilterOption {
 	type?: string;
 	value?: any;
 	filter<TItemType>(item: TItemType): boolean;
+	serialize?: {(): any};
 }
 
 interface IConfiguredFilterOption extends IFilterOption {
 	count?: number;
 }
 
-export interface IFilterGroup extends filters.IFilterWithCounts {
+export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter {
 	label: string;
 	type: string;
 	options: IFilterOption[];
 	activeOption: IFilterOption;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
+	serialize(): any;
 }
 
 export class FilterGroup implements IFilterGroup {
@@ -41,7 +44,7 @@ export class FilterGroup implements IFilterGroup {
 	options: IFilterOption[];
 	activeOption: IFilterOption;
 
-	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(private settings: IFilterGroupSettings, object: __object.IObjectUtility) {
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.options = settings.options;
@@ -68,6 +71,17 @@ export class FilterGroup implements IFilterGroup {
 
 	filter<TItemType>(item: TItemType): boolean {
 		return this.activeOption.filter(item);
+	}
+
+	serialize(): any {
+		if (_.isFunction(this.settings.serialize)) {
+			return this.settings.serialize();
+		}
+
+		if (_.isFunction(this.activeOption.serialize)) {
+			return this.activeOption.serialize();
+		}
+		return null;
 	}
 
 	setActiveOption(index: number): void {

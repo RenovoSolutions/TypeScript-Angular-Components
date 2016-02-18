@@ -22,6 +22,12 @@ interface IModeFilterOptionMock {
 	value: boolean;
 }
 
+interface IModeFilterOptionMock2 {
+	value?: number;
+	displayAll?: boolean;
+	active?: boolean
+}
+
 interface ITestObject {
 	flag?: boolean;
 }
@@ -65,5 +71,34 @@ describe('modeFilterGroup', () => {
 		expect(modeFilterGroup.filter(falseObj)).to.be.true;
 		expect(modeFilterGroup.filter(trueObj)).to.be.false;
 		expect(modeFilterGroup.filter(emptyObj)).to.be.false;
+	});
+
+	it('should serialize to the value of the active option', (): void => {
+		var inactiveOption: IModeFilterOptionMock2 = {
+			value: 1,
+		};
+		var activeOption: IModeFilterOptionMock2 = {
+			value: 2,
+			active: true,
+		};
+
+		modeFilterGroup = modeFilterGroupFactory.getInstance(<any>{
+			options: [inactiveOption, activeOption],
+		});
+
+		expect(modeFilterGroup.serialize()).to.equal(2);
+	});
+
+	it('should return null if the default option is selected', (): void => {
+		var defaultOption: IModeFilterOptionMock2 = {
+			displayAll: true,
+			active: true,
+		};
+
+		modeFilterGroup = modeFilterGroupFactory.getInstance(<any>{
+			options: [defaultOption],
+		});
+
+		expect(modeFilterGroup.serialize()).to.be.null;
 	});
 });
