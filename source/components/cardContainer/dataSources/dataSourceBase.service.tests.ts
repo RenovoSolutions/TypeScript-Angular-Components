@@ -30,7 +30,7 @@ interface IDataSourceProcessorMock {
 }
 
 describe('dataSourceBase', () => {
-	var dataSourceBase: IDataSource<number>;
+	var dataSourceBase: DataSourceBase<number>;
 	var dataSourceProcessor: IDataSourceProcessorMock;
 
 	beforeEach(() => {

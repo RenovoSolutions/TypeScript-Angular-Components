@@ -20,13 +20,11 @@ export interface IDataSource<TDataType> {
 	loadingDataSet: boolean;
 
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
-	observable: __observable.IObservableService;
-
-	processData(): void;
 
 	onSortChange(): void;
 	onPagingChange(): void;
 	refresh(): void;
+
 	remove(data: TDataType): void;
 	push(data: TDataType): void;
 	replace(oldData: TDataType, newData: TDataType): void;
