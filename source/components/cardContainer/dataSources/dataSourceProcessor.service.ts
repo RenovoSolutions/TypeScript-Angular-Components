@@ -27,13 +27,15 @@ export interface IWrappedItem<TItemType> {
 
 export interface IDataSourceProcessor {
 	process<TDataType>(sorts: ISort[]
-					, filters: { [index: string]: filters.IFilter }
+					, filters: filters.IFilter[]
 					, pager: IDataPager
 					, data: TDataType[]): IProcessResult<TDataType>;
 	processAndCount<TDataType>(sorts: ISort[]
-							, filters: { [index: string]: filters.IFilterWithCounts }
+							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType>;
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
@@ -42,14 +44,12 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			, private sorter: ISorter) { }
 
 	process<TDataType>(sorts: ISort[]
-					, filters: { [index: string]: filters.IFilter }
+					, filters: filters.IFilter[]
 					, pager: IDataPager
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData, sorts);
 
 		if (this.object.isNullOrEmpty(filters) === false) {
 			processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
@@ -64,15 +64,12 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
 	}
 
 	processAndCount<TDataType>(sorts: ISort[]
-							, filters: { [index: string]: filters.IFilterWithCounts }
+							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType> {
 		// If there are no filters that need to updated option counts, use the normal processor
@@ -83,21 +80,19 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData, sorts);
 
 		var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 
 		// Run filtration logic and compute visible items
-		_.each(filters, (filter: filters.IFilterWithCounts): void => {
+		_.each(filters, (filter: any /* filters.IFilterWithCounts */): void => {
 			_.each(wrappedData, (item: IWrappedItem<TDataType>): void => {
 				item.filterData[filter.type] = filter.filter(item.data);
 			});
 		});
 
 		// Give each filter a chance to update option counts
-		_.each(filters, (filter: filters.IFilterWithCounts): void => {
+		_.each(filters, (filter: any /* filters.IFilterWithCounts */): void => {
 			if (_.isFunction(filter.updateOptionCounts)) {
 				var otherFiltersApplied: IWrappedItem<TDataType>[] = _.filter(wrappedData, (item: IWrappedItem<TDataType>): boolean => {
 					// Omit the true or false of the current filter an
@@ -123,11 +118,22 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
+	}
+
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[] {
+		if (this.object.isNullOrEmpty(sorts) === false) {
+			return this.sorter.sort(data, sorts);
+		}
+		return data;
+	}
+
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[] {
+		if (pager != null) {
+			return pager.filter(data);
+		}
+		return data;
 	}
 
 	private wrapData<TDataType>(data: TDataType[]): IWrappedItem<TDataType>[] {

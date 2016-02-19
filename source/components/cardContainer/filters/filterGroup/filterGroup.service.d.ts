@@ -19,22 +19,22 @@ export interface IFilterOption {
         (): any;
     };
 }
-export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter {
+export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter<any> {
     label: string;
     type: string;
     options: IFilterOption[];
     activeOption: IFilterOption;
     setActiveOption(index: number): void;
     setOptionCounts(counts: number[]): void;
-    serialize(): any;
 }
-export declare class FilterGroup implements IFilterGroup {
+export declare class FilterGroup extends filters.SerializableFilter<any> implements IFilterGroup {
     private settings;
     label: string;
     type: string;
     options: IFilterOption[];
-    activeOption: IFilterOption;
+    private _activeOption;
     constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility);
+    activeOption: IFilterOption;
     private setDefaultOption();
     filter<TItemType>(item: TItemType): boolean;
     serialize(): any;

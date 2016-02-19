@@ -38,7 +38,7 @@ export class PageSizeController {
 			$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
 				if (pager != null) {
 					pager.pageSize = newPageSize;
-					this.builder._dataSource.refresh();
+					this.builder._dataSource.onPagingChange();
 				}
 			});
 		}

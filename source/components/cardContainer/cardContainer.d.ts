@@ -40,9 +40,7 @@ export declare class CardContainerController {
     private parentChild;
     builder: CardContainerBuilder;
     source: IDataSource<any>;
-    filters: filters.IFilter[] | {
-        [index: string]: filters.IFilter;
-    };
+    filters: filters.IFilter[];
     paging: boolean;
     columns: IColumn[];
     containerData: any;

@@ -146,7 +146,7 @@ var CardContainerController = (function () {
             //  of sorts applied to the maximum number of sorts
             this.dataSource.sorts = _.take(sortList, this.maxColSorts);
         }
-        this.dataSource.refresh();
+        this.dataSource.onSortChange();
     };
     CardContainerController.prototype.selectionChanged = function () {
         this.updateSelected();
@@ -154,10 +154,6 @@ var CardContainerController = (function () {
     };
     CardContainerController.prototype.syncFilters = function () {
         if (this.filters != null) {
-            // Convert filter array to dictionary if necessary
-            if (_.isArray(this.filters)) {
-                this.filters = this.array.toDictionary(this.filters, function (filter) { return filter.type; });
-            }
             this.dataSource.filters = this.filters;
             this.dataSource.refresh();
         }

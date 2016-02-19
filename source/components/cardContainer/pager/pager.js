@@ -37,7 +37,7 @@ var PagerController = (function () {
             $scope.$watch(function () { return _this.currentPage; }, function (page) {
                 _this.updatePaging();
                 _this.pager.pageNumber = page;
-                _this.dataSource.refresh();
+                _this.dataSource.onPagingChange();
             });
         }
     }

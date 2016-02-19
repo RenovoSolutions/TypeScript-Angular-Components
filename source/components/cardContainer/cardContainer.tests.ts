@@ -27,6 +27,7 @@ import 'angular-mocks';
 
 interface IDataSourceMock {
 	refresh: Sinon.SinonSpy;
+	onSortChange?: Sinon.SinonSpy;
 	pager?: IDataPagerMock;
 	filters?: { [index: string]: IFilterMock};
 	rawDataSet?: any[];
@@ -267,7 +268,7 @@ describe('CardContainerController', () => {
 			expect(columns[1].sortDirection).to.be.null;
 			expect(columns[0].sortDirection).to.be.null;
 
-			sinon.assert.calledThrice(mockedDataSource.refresh);
+			sinon.assert.calledThrice(mockedDataSource.onSortChange);
 		});
 
 		it('should change sort direction if specified column is already at the front of the sort', (): void => {
@@ -306,7 +307,7 @@ describe('CardContainerController', () => {
 			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[1]);
 			expect(columns[0].sortDirection).to.be.null;
 
-			sinon.assert.callCount(mockedDataSource.refresh, 4);
+			sinon.assert.callCount(mockedDataSource.onSortChange, 4);
 		});
 
 		it('should replace all sorts with columns secondary sorts if present', (): void => {
@@ -369,7 +370,7 @@ describe('CardContainerController', () => {
 
 			expect(cardContainer.dataSource.sorts).to.be.empty;
 
-			sinon.assert.callCount(mockedDataSource.refresh, 5);
+			sinon.assert.callCount(mockedDataSource.onSortChange, 5);
 		});
 
 		it('should override the default max column size', (): void => {
@@ -596,6 +597,7 @@ describe('CardContainerController', () => {
 	function buildMockedDataSource(): IDataSourceMock {
 		return <any>{
 			refresh: sinon.spy(),
+			onSortChange: sinon.spy(),
 		};
 	}
 });

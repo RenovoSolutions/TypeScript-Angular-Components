@@ -24,7 +24,7 @@ interface IDataPagerMock {
 }
 
 interface IDataSourceMock {
-	refresh: Sinon.SinonSpy;
+	onPagingChange: Sinon.SinonSpy;
 	count: number;
 }
 
@@ -135,13 +135,13 @@ describe('PagerController', () => {
 			scope.$digest();
 
 			expect(dataPager.pageNumber).to.equal(2);
-			sinon.assert.calledOnce(dataSource.refresh);
+			sinon.assert.calledOnce(dataSource.onPagingChange);
 
 			pager.currentPage = 4;
 			scope.$digest();
 
 			expect(dataPager.pageNumber).to.equal(4);
-			sinon.assert.calledTwice(dataSource.refresh);
+			sinon.assert.calledTwice(dataSource.onPagingChange);
 		});
 	});
 
@@ -312,7 +312,7 @@ describe('PagerController', () => {
 
 		dataSource = {
 			count: lastPage,
-			refresh: sinon.spy(),
+			onPagingChange: sinon.spy(),
 		};
 
 		var bindings: any = {
@@ -331,7 +331,7 @@ describe('PagerController', () => {
 
 		if (lastPage != null) {
 			scope.$digest();
-			dataSource.refresh.reset();
+			dataSource.onPagingChange.reset();
 		}
 	}
 });

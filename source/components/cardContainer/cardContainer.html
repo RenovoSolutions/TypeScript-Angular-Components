@@ -32,17 +32,25 @@
 			</template>
 		</rl-generic-container>
 
-		<div ng-repeat="card in cardContainer.dataSource.dataSet">
-			<rl-card columns="cardContainer.columns" item="card"
-					 clickable="cardContainer.clickableCards"
-					 selectable="cardContainer.selectableCards"
-					 selection-changed="cardContainer.selectionChanged()"
-					 container-data="cardContainer.containerData"
-					 source="cardContainer.dataSource"
-					 permanent-footer="cardContainer.permanentFooters"
-					 card-controller="cardContainer.cardController"
-					 card-controller-as="cardContainer.cardControllerAs"
-					 card-as="cardContainer.cardAs"></rl-card>
+		<div ng-if="cardContainer.dataSource.dataSet | isEmpty:false">
+			<div ng-repeat="card in cardContainer.dataSource.dataSet">
+				<rl-card columns="cardContainer.columns" item="card"
+						 clickable="cardContainer.clickableCards"
+						 selectable="cardContainer.selectableCards"
+						 selection-changed="cardContainer.selectionChanged()"
+						 container-data="cardContainer.containerData"
+						 source="cardContainer.dataSource"
+						 permanent-footer="cardContainer.permanentFooters"
+						 card-controller="cardContainer.cardController"
+						 card-controller-as="cardContainer.cardControllerAs"
+						 card-as="cardContainer.cardAs"></rl-card>
+			</div>
+		</div>
+		<div ng-if="cardContainer.dataSource.needsRefinedSearch">
+			Please refine your search results
+		</div>
+		<div ng-if="cardContainer.dataSource.isEmpty">
+			There are no items to show
 		</div>
 
 		<div>

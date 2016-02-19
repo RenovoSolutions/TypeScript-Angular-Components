@@ -1,10 +1,17 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 exports.factoryName = 'filterGroup';
-var FilterGroup = (function () {
+var FilterGroup = (function (_super) {
+    __extends(FilterGroup, _super);
     function FilterGroup(settings, object) {
+        _super.call(this);
         this.settings = settings;
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
@@ -17,6 +24,17 @@ var FilterGroup = (function () {
             option.type = object.toString(option.type).toLowerCase();
         });
     }
+    Object.defineProperty(FilterGroup.prototype, "activeOption", {
+        get: function () {
+            return this._activeOption;
+        },
+        set: function (value) {
+            this._activeOption = value;
+            this.onChange(false);
+        },
+        enumerable: true,
+        configurable: true
+    });
     FilterGroup.prototype.setDefaultOption = function () {
         var defaultOption = this.options[0];
         _.each(this.options, function (item) {
@@ -36,7 +54,7 @@ var FilterGroup = (function () {
         if (_.isFunction(this.activeOption.serialize)) {
             return this.activeOption.serialize();
         }
-        return null;
+        return this.activeOption.value;
     };
     FilterGroup.prototype.setActiveOption = function (index) {
         if (index >= 0 && index < this.options.length) {
@@ -56,7 +74,7 @@ var FilterGroup = (function () {
         });
     };
     return FilterGroup;
-})();
+})(typescript_angular_utilities_1.filters.SerializableFilter);
 exports.FilterGroup = FilterGroup;
 filterGroupFactory.$inject = [__object.serviceName];
 function filterGroupFactory(object) {

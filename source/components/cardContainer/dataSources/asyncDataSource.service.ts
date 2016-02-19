@@ -49,8 +49,9 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 		this.loadingDataSet = false;
 		this.rawDataSet = data;
 
-		this.refresh();
+		this.processData();
 		this.observable.fire(events.async.reloaded);
+		this.observable.fire(events.redrawing);
 		this.observable.fire(events.changed);
 	}
 

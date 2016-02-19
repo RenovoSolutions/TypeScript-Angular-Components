@@ -29,7 +29,8 @@ interface IFilterOptionMock {
 	filter?: Sinon.SinonSpy;
 	count?: number;
 	active?: boolean;
-	serialize?: {(): number};
+	serialize?: { (): number };
+	value?: number;
 }
 
 describe('filterGroup', () => {
@@ -146,6 +147,22 @@ describe('filterGroup', () => {
 		filterGroup = filterGroupFactory.getInstance(<any>{
 			serialize: (): number => { return 4; },
 			options: [],
+		});
+
+		expect(filterGroup.serialize()).to.equal(4);
+	});
+
+	it('should use the value of the option if no serialize is specified', (): void => {
+		let inactiveOption: IFilterOptionMock = {
+			active: false
+		};
+		let activeOption: IFilterOptionMock = {
+			active: true,
+			value: 4,
+		};
+
+		filterGroup = filterGroupFactory.getInstance(<any>{
+			options: [inactiveOption, activeOption],
 		});
 
 		expect(filterGroup.serialize()).to.equal(4);

@@ -8,7 +8,7 @@ import { IAsyncDataSource, AsyncDataSource } from '../asyncDataSource.service';
 import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
-export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
+export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
     filters: filters.ISerializableFilter<any>[];
 }
 export interface IServerSearchFunction<TDataType> {
@@ -32,15 +32,27 @@ export interface IPagingParams {
 export interface IDataResult<TDataType> {
     dataSet: TDataType[];
     count: number;
+    isEmpty?: boolean;
 }
-export declare class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
+export declare class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
     private object;
+    throttled: boolean;
+    appliedFilters: {
+        [index: string]: any;
+    };
+    private _filters;
+    private subscriptions;
     constructor(getDataSet: IServerSearchFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
+    filters: filters.IFilter[];
+    onSortChange(): void;
     refresh(): void;
     protected getParams(): IServerSearchParams;
+    private updateAppliedFilters();
+    private setupSubscriptions();
+    private onFilterChange(filter);
     protected resolveReload(result: any): void;
 }
-export interface IServerSideDataSourceFactory {
+export interface ISmartDataSourceFactory {
     getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
-export declare function serverSideDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory;
+export declare function smartDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory;
