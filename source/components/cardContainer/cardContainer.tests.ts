@@ -19,6 +19,7 @@ import {
 	controllerName,
 	card,
 	sorts,
+	builder as __builder,
 } from './cardContainer.module';
 
 import * as angular from 'angular';
@@ -46,10 +47,11 @@ interface IFilterMock {
 }
 
 describe('CardContainerController', () => {
-	var scope: ICardContainerScope;
-	var cardContainer: CardContainerController;
-	var mockedDataSource: IDataSourceMock;
-	var $attrs: ICardContainerAttrs;
+	let scope: ICardContainerScope;
+	let cardContainer: CardContainerController;
+	let builder: __builder.CardContainerBuilder;
+	let mockedDataSource: IDataSourceMock;
+	let $attrs: ICardContainerAttrs;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -61,6 +63,11 @@ describe('CardContainerController', () => {
 		});
 
 		cardContainer = <any>{};
+
+		let services: any = test.angularFixture.inject(__builder.factoryName);
+
+		builder = services[__builder.factoryName].getInstance();
+		builder._dataSource = null;
 	});
 
 	describe('data source', (): void => {
@@ -72,7 +79,7 @@ describe('CardContainerController', () => {
 
 	describe('paging', (): void => {
 		it('should build a pager and give to the data source if paging is on', (): void => {
-			cardContainer.paging = true;
+			builder.usePaging();
 			buildController();
 
 			expect(cardContainer.builder._pager).to.equal(cardContainer.dataSource.pager);
@@ -82,7 +89,6 @@ describe('CardContainerController', () => {
 		});
 
 		it('should not have a pager if paging is off', (): void => {
-			cardContainer.paging = false;
 			buildController();
 
 			expect(cardContainer.builder._pager).to.not.exist;
@@ -90,16 +96,16 @@ describe('CardContainerController', () => {
 		});
 
 		it('should use the data sources pager if paging is not specified', (): void => {
-			var pager: IDataPagerMock = {
+			let pager: IDataPagerMock = {
 				pageNumber: 1,
 				pageSize: 10,
 				filter: sinon.spy(),
 			};
 
-			var dataSource: IDataSourceMock = buildMockedDataSource();
+			let dataSource: IDataSourceMock = buildMockedDataSource();
 			dataSource.pager = pager;
 
-			cardContainer.source = <any>dataSource;
+			builder._dataSource = <any>dataSource;
 			buildController();
 
 			expect(cardContainer.builder._pager).to.equal(pager);
@@ -108,7 +114,7 @@ describe('CardContainerController', () => {
 	});
 
 	describe('card coordination', (): void => {
-		var behavior: card.ICardBehavior; //*behavior will move to card
+		let behavior: card.ICardBehavior; //*behavior will move to card
 
 		beforeEach((): void => {
 			behavior = {
@@ -123,7 +129,7 @@ describe('CardContainerController', () => {
 				{ viewData: { behavior: behavior } },
 			];
 
-			var okayToOpen: boolean = false;
+			let okayToOpen: boolean = false;
 
 			okayToOpen = cardContainer.openCard();
 
@@ -135,39 +141,37 @@ describe('CardContainerController', () => {
 
 	describe('column sizes', (): void => {
 		it('should fill column size with all breakpoint values', (): void => {
-			cardContainer.columns = <any>[
-				{
-					size: {},
+			builder.addColumn(<any>{
+				size: {},
+			});
+			builder.addColumn(<any>{
+				size: {
+					xs: 1,
 				},
-				{
-					size: {
-						xs: 1,
-					},
+			});
+			builder.addColumn(<any>{
+				size: {
+					lg: 1,
 				},
-				{
-					size: {
-						lg: 1,
-					},
+			});
+			builder.addColumn(<any>{
+				size: {
+					xs: 1,
+					md: 2,
 				},
-				{
-					size: {
-						xs: 1,
-						md: 2,
-					},
+			});
+			builder.addColumn(<any>{
+				size: {
+					xs: 1,
+					sm: 2,
+					md: 3,
+					lg: 4,
 				},
-				{
-					size: {
-						xs: 1,
-						sm: 2,
-						md: 3,
-						lg: 4,
-					},
-				},
-			];
+			});
 
 			buildController();
 
-			var size: IBreakpointSize = cardContainer.columns[0].size;
+			let size: IBreakpointSize = cardContainer.columns[0].size;
 			expect(size.xs).to.equal(0);
 			expect(size.sm).to.equal(0);
 			expect(size.md).to.equal(0);
@@ -199,15 +203,13 @@ describe('CardContainerController', () => {
 		});
 
 		it('should use constant size for all breakpoints', (): void => {
-			cardContainer.columns = <any>[
-				{
-					size: 3,
-				},
-			];
+			builder.addColumn(<any>{
+				size: 3,
+			});
 
 			buildController();
 
-			var size: IBreakpointSize = cardContainer.columns[0].size;
+			let size: IBreakpointSize = cardContainer.columns[0].size;
 			expect(size.xs).to.equal(3);
 			expect(size.sm).to.equal(3);
 			expect(size.md).to.equal(3);
@@ -217,7 +219,7 @@ describe('CardContainerController', () => {
 
 	describe('sort', (): void => {
 		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
-			var columns: IColumn[] = <any>[
+			let columns: IColumn[] = <any>[
 				{
 					label: 'col1',
 					size: {},
@@ -231,7 +233,9 @@ describe('CardContainerController', () => {
 					size: {},
 				},
 			];
-			cardContainer.columns = columns;
+			builder.addColumn(columns[0]);
+			builder.addColumn(columns[1]);
+			builder.addColumn(columns[2]);
 			cardContainer.maxColumnSorts = 2;
 			buildController();
 
@@ -267,7 +271,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should change sort direction if specified column is already at the front of the sort', (): void => {
-			var columns: IColumn[] = <any>[
+			let columns: IColumn[] = <any>[
 				{
 					label: 'col1',
 					size: {},
@@ -306,7 +310,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should replace all sorts with columns secondary sorts if present', (): void => {
-			var columnWithSecondarySorts: IColumn = <any>{
+			let columnWithSecondarySorts: IColumn = <any>{
 				label: 'colWithSecondary',
 				size: {},
 				secondarySorts: {
@@ -324,27 +328,26 @@ describe('CardContainerController', () => {
 					],
 				},
 			};
-			var secondarySortColumn: IColumn = <any>{
+			let secondarySortColumn: IColumn = <any>{
 				label: 'secondarySortCol',
 				size: {},
 			};
-			var columns: IColumn[] = <any>[
-				{
-					label: 'colWithoutSecondary1',
-					size: {},
-				},
-				{
-					label: 'colWithoutSecondary2',
-					size: {},
-				},
-				columnWithSecondarySorts,
-				secondarySortColumn,
-			];
-			cardContainer.columns = columns;
+			let colWithoutSecondary1: IColumn = <any>{
+				label: 'colWithoutSecondary1',
+				size: {},
+			};
+			let colWithoutSecondary2: IColumn = <any>{
+				label: 'colWithoutSecondary2',
+				size: {},
+			};
+			builder.addColumn(colWithoutSecondary1);
+			builder.addColumn(colWithoutSecondary2);
+			builder.addColumn(columnWithSecondarySorts);
+			builder.addColumn(secondarySortColumn);
 			buildController();
 
-			cardContainer.sort(columns[0]);
-			cardContainer.sort(columns[1]);
+			cardContainer.sort(colWithoutSecondary1);
+			cardContainer.sort(colWithoutSecondary2);
 
 			cardContainer.sort(columnWithSecondarySorts);
 
@@ -370,8 +373,8 @@ describe('CardContainerController', () => {
 		});
 
 		it('should override the default max column size', (): void => {
-			cardContainer.maxColumnSorts = 1;
-			var columns: IColumn[] = <any>[
+			builder.maxColumnSorts = 1;
+			let columns: IColumn[] = <any>[
 				{
 					label: 'col1',
 					size: {},
@@ -381,7 +384,8 @@ describe('CardContainerController', () => {
 					size: {},
 				},
 			];
-			cardContainer.columns = columns;
+			builder.addColumn(columns[0]);
+			builder.addColumn(columns[1]);
 			buildController();
 
 			cardContainer.sort(columns[0]);
@@ -394,7 +398,7 @@ describe('CardContainerController', () => {
 	});
 
 	describe('selectable cards', (): void => {
-		var dataSource: IDataSourceMock;
+		let dataSource: IDataSourceMock;
 		beforeEach((): void => {
 			dataSource = buildMockedDataSource();
 			dataSource.rawDataSet = [
@@ -402,8 +406,8 @@ describe('CardContainerController', () => {
 				{ id: 1 },
 			];
 
-			cardContainer.source = <any>dataSource;
-			cardContainer.selectableCards = true;
+			builder._dataSource = <any>dataSource;
+			builder.useSelection();
 		});
 
 		it('should add view data to all data items', (): void => {
@@ -416,15 +420,15 @@ describe('CardContainerController', () => {
 
 			sinon.assert.calledTwice(dataSource.watch);
 
-			var firstCall: Sinon.SinonSpyCall = dataSource.watch.firstCall;
+			let firstCall: Sinon.SinonSpyCall = dataSource.watch.firstCall;
 			expect(firstCall.args[1]).to.equal('changed');
 
-			var secondCall: Sinon.SinonSpyCall = dataSource.watch.secondCall;
+			let secondCall: Sinon.SinonSpyCall = dataSource.watch.secondCall;
 			expect(secondCall.args[1]).to.equal('redrawing');
 		});
 
 		it('should add view data to new items when changed is fire', (): void => {
-			var changeEvent: Sinon.SinonSpy;
+			let changeEvent: Sinon.SinonSpy;
 			dataSource.watch = sinon.spy((listener: Sinon.SinonSpy, event: string): void => {
 				if (event === 'changed') {
 					changeEvent = listener;
@@ -459,25 +463,25 @@ describe('CardContainerController', () => {
 				item.viewData.selected = true;
 			});
 
-			expect(cardContainer.numberSelected).to.equal(0);
+			expect(cardContainer.builder._numberSelected).to.equal(0);
 
 			cardContainer.selectionChanged();
 
-			expect(cardContainer.numberSelected).to.equal(2);
+			expect(cardContainer.builder._numberSelected).to.equal(2);
 
 			_.each(dataSource.dataSet, (item: any): void => {
 				item.viewData.selected = false;
 			});
 
-			expect(cardContainer.numberSelected).to.equal(2);
+			expect(cardContainer.builder._numberSelected).to.equal(2);
 
 			scope.$emit('selectionChanged');
 
-			expect(cardContainer.numberSelected).to.equal(0);
+			expect(cardContainer.builder._numberSelected).to.equal(0);
 		});
 
 		it('should fire selectionChanged when selectionChanged is called', (): void => {
-			var selectionSpy: Sinon.SinonSpy = sinon.spy();
+			let selectionSpy: Sinon.SinonSpy = sinon.spy();
 			dataSource.watch = sinon.spy();
 			buildController();
 
@@ -489,7 +493,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should clear selected items that are not in the filtered data set when collection is redrawn', (): void => {
-			var redrawingEvent: Sinon.SinonSpy;
+			let redrawingEvent: Sinon.SinonSpy;
 			dataSource.watch = sinon.spy((listener: Sinon.SinonSpy, event: string): void => {
 				if (event === 'redrawing') {
 					redrawingEvent = listener;
@@ -511,7 +515,7 @@ describe('CardContainerController', () => {
 
 			redrawingEvent();
 
-			expect(cardContainer.numberSelected).to.equal(4);
+			expect(cardContainer.builder._numberSelected).to.equal(4);
 
 			dataSource.dataSet.pop();
 			dataSource.dataSet.pop();
@@ -519,7 +523,7 @@ describe('CardContainerController', () => {
 
 			redrawingEvent();
 
-			expect(cardContainer.numberSelected).to.equal(2);
+			expect(cardContainer.builder._numberSelected).to.equal(2);
 		});
 
 		it('should apply a sort in the select column', (): void => {
@@ -536,7 +540,7 @@ describe('CardContainerController', () => {
 		it('should allow individual items to disable selection if a disable selection function is provided', (): void => {
 			dataSource.watch = sinon.spy();
 			$attrs.disableSelection = 'disableSelection';
-			cardContainer.disableSelection = (): string => {
+			builder.disableSelection = (): string => {
 				return 'disabled';
 			};
 			dataSource.rawDataSet = [
@@ -556,7 +560,7 @@ describe('CardContainerController', () => {
 		it('should allow items to enable selection via a disable selection function if disable reason is null', (): void => {
 			dataSource.watch = sinon.spy();
 			$attrs.disableSelection = 'disableSelection';
-			cardContainer.disableSelection = (): string => {
+			builder.disableSelection = (): string => {
 				return null;
 			};
 			dataSource.rawDataSet = [
@@ -573,16 +577,20 @@ describe('CardContainerController', () => {
 	});
 
 	function buildController(): void {
-		if (cardContainer.source == null) {
+		if (cardContainer.source == null && builder._dataSource == null) {
 			mockedDataSource = buildMockedDataSource();
 			cardContainer.source = <any>mockedDataSource;
+			builder._dataSource = <any>mockedDataSource;
 		}
 
-		var controllerResult: test.IControllerResult<CardContainerController>
+		cardContainer.builder = builder;
+
+		let controllerResult: test.IControllerResult<CardContainerController>
 			= test.angularFixture.controllerWithBindings<CardContainerController>(controllerName, cardContainer);
 
 		scope = <ICardContainerScope>controllerResult.scope;
 		cardContainer = controllerResult.controller;
+		mockedDataSource.refresh.reset();
 	}
 
 	function buildMockedDataSource(): IDataSourceMock {

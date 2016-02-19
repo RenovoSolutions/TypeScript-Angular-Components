@@ -317,9 +317,9 @@ describe('PagerController', () => {
 
 		var bindings: any = {
 			pageCount: pageCount,
-			containerService: {
-				pager: dataPager,
-				dataSource: dataSource,
+			builder: {
+				_pager: dataPager,
+				_dataSource: dataSource,
 			},
 		};
 
