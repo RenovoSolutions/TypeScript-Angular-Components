@@ -72,6 +72,7 @@ describe('asyncDataSource', () => {
 		redrawingSpy = sinon.spy();
 		source.watch(reloadedSpy, events.async.reloaded);
 		source.watch(changedSpy, events.changed);
+		source.watch(redrawingSpy, events.redrawing);
 		source.processData = sinon.spy();
 	});
 
