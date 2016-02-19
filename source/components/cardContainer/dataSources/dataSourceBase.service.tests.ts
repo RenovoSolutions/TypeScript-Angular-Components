@@ -132,7 +132,7 @@ describe('dataSourceBase', () => {
 	});
 
 	describe('onSortChange', (): void => {
-		it('should reapply sorts and pagin and signal redrawing', (): void => {
+		it('should reapply sorts and paging and signal redrawing', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
 			dataSourceBase.watch(redrawSpy, 'redrawing');
 
@@ -157,7 +157,7 @@ describe('dataSourceBase', () => {
 	});
 
 	describe('onPagingChange', (): void => {
-		it('should reapply sorts and pagin and signal redrawing', (): void => {
+		it('should reapply paging and signal redrawing', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
 			dataSourceBase.watch(redrawSpy, 'redrawing');
 
