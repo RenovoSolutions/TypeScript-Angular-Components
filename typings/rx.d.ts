@@ -4,9 +4,9 @@ declare module "rx" {
 }
 
 declare module Rx {
-	class Subject {
-		onNext(params: any): void;
-		subscribe(...params: any[]): Subscriber;
+	class Subject<T> {
+		onNext(value: T): void;
+		subscribe(onNext: { (value: T): void }, onError?: { (error: any): void }, onCompleted?: {(): void}): Subscriber;
 	}
 
 	interface Subscriber {
