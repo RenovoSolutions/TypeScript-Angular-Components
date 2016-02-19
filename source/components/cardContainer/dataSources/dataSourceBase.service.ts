@@ -44,8 +44,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	}
 
 	get isEmpty(): boolean {
-		return __object.objectUtility.isNullOrEmpty(this.dataSet)
-			&& this._isEmpty != null ? this._isEmpty : true;
+		return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
+			&& (this._isEmpty != null ? this._isEmpty : true);
 	}
 
 	set isEmpty(value: boolean) {
