@@ -427,6 +427,8 @@ describe('CardContainerController', () => {
 
 			builder._dataSource = <any>dataSource;
 
+			buildController();
+
 			expect(cardContainer.filters).to.equal(filters);
 		});
 	});
