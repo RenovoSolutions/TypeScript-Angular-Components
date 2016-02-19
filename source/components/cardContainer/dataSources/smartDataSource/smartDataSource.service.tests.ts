@@ -33,11 +33,19 @@ interface IDataServiceMock {
 
 interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
+	trigger: Function;
+	dispose: Sinon.SinonSpy;
+}
+
+interface IDataSourceProcessorMock {
+	process: Sinon.SinonSpy;
+	sort: Sinon.SinonSpy;
+	page: Sinon.SinonSpy;
 }
 
 describe('smartDataSource', () => {
 	let smartDataSourceFactory: ISmartDataSourceFactory;
-	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+	let dataSourceProcessor: IDataSourceProcessorMock;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
 	let mock: test.mock.IMock;
@@ -62,19 +70,37 @@ describe('smartDataSource', () => {
 			filter: (item: number): boolean => { return true; },
 			serialize: (): number => { return appliedFilter.value; },
 			value: 1,
+			trigger: null,
+			dispose: sinon.spy(),
+			subscribe: (callback: Function): any => {
+				appliedFilter.trigger = callback;
+				return {
+					dispose: appliedFilter.dispose,
+				};
+			},
 		};
 		unappliedFilter = <any>{
 			type: 'filter2',
 			filter: (item: number): boolean => { return item === unappliedFilter.value; },
 			serialize: (): number => { return unappliedFilter.value; },
 			value: null,
+			trigger: null,
+			dispose: sinon.spy(),
+			subscribe: (callback: Function): any => {
+				unappliedFilter.trigger = callback;
+				return {
+					dispose: unappliedFilter.dispose,
+				};
+			},
 		};
 
 		data = [1, 2];
 
 		dataService = mock.service();
 
-		sinon.spy(dataSourceProcessor, 'processAndCount');
+		dataSourceProcessor.process = sinon.spy((data: any): any => { return data; });
+		dataSourceProcessor.sort = sinon.spy();
+		dataSourceProcessor.page = sinon.spy();
 
 		mock.promise(dataService, 'get', { dataSet: data, count: 2 });
 
@@ -103,32 +129,20 @@ describe('smartDataSource', () => {
 			expect(source.throttled).to.be.true;
 		});
 
-		it('should make a request if any filter changes', (): void => {
-			unappliedFilter.value = 2;
+		it('should make a request when excecuting a full refresh', (): void => {
 			source.refresh();
 			sinon.assert.calledOnce(dataService.get);
 		});
 
 		it('should make a request if the sorts change', (): void => {
-			source.sorts = <any>[{
-				column: { label: 'col2' },
-				direction: SortDirection.ascending,
-			}];
-			source.refresh();
+			source.onSortChange();
 			sinon.assert.calledOnce(dataService.get);
 		});
 
 		it('should handle paging without making a server request', (): void => {
-			expect(source.dataSet).to.have.length(2);
-			expect(source.dataSet[0]).to.equal(1);
-			expect(source.dataSet[1]).to.equal(2);
-
-			source.pager.pageNumber = 2;
-			source.refresh();
-
+			source.onPagingChange();
+			sinon.assert.calledOnce(dataSourceProcessor.page);
 			sinon.assert.notCalled(dataService.get);
-			expect(source.dataSet[0]).to.equal(3);
-			expect(source.dataSet[1]).to.equal(4);
 		});
 	});
 
@@ -140,13 +154,13 @@ describe('smartDataSource', () => {
 			source.reload();
 			mock.flush(dataService);
 			dataService.get.reset();
+			dataSourceProcessor.process.reset();
 
 			expect(source.throttled).to.be.false;
 		});
 
 		it('should make a request if any applied filter changes', (): void => {
-			appliedFilter.value = 2;
-			source.refresh();
+			appliedFilter.trigger();
 			sinon.assert.calledOnce(dataService.get);
 		});
 
@@ -154,29 +168,20 @@ describe('smartDataSource', () => {
 			unappliedFilter.value = 2;
 			source.refresh();
 			sinon.assert.notCalled(dataService.get);
-			expect(source.dataSet).to.have.length(1);
+			sinon.assert.calledOnce(dataSourceProcessor.process);
 		});
 
 		it('should handle sorting on the client', (): void => {
-			source.sorts = <any>[{
-				column: { label: 'col2' },
-				direction: SortDirection.ascending,
-			}];
-			source.refresh();
+			source.onSortChange();
+			sinon.assert.calledOnce(dataSourceProcessor.sort);
+			sinon.assert.calledOnce(dataSourceProcessor.page);
 			sinon.assert.notCalled(dataService.get);
 		});
 
 		it('should handle paging without making a server request', (): void => {
-			expect(source.dataSet).to.have.length(2);
-			expect(source.dataSet[0]).to.equal(1);
-			expect(source.dataSet[1]).to.equal(2);
-
-			source.pager.pageNumber = 2;
-			source.refresh();
-
+			source.onPagingChange();
+			sinon.assert.calledOnce(dataSourceProcessor.page);
 			sinon.assert.notCalled(dataService.get);
-			expect(source.dataSet[0]).to.equal(3);
-			expect(source.dataSet[1]).to.equal(4);
 		});
 	});
 });
