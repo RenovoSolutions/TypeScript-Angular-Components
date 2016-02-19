@@ -9,7 +9,6 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var dataSources_module_1 = require('./dataSources/dataSources.module');
 var sorts_module_1 = require('./sorts/sorts.module');
 var breakpoint_1 = require('../../services/breakpoints/breakpoint');
-var cardContainer_service_1 = require('./cardContainer.service');
 exports.directiveName = 'rlCardContainer';
 exports.controllerName = 'CardContainerController';
 exports.defaultMaxColumnSorts = 2;
@@ -22,7 +21,6 @@ var CardContainerController = (function () {
         this.array = array;
         this.dataPagerFactory = dataPagerFactory;
         this.parentChild = parentChild;
-        this.numberSelected = 0;
         this.addViewData = function () {
             _.each(_this.dataSource.rawDataSet, function (item) {
                 if (_.isUndefined(item.viewData)) {
@@ -47,7 +45,7 @@ var CardContainerController = (function () {
             _this.updateSelected();
         };
         this.updateSelected = function () {
-            _this.numberSelected = _.filter(_this.dataSource.filteredDataSet, function (item) {
+            _this.builder._numberSelected = _.filter(_this.dataSource.filteredDataSet, function (item) {
                 return item.viewData != null && item.viewData.selected;
             }).length;
         };
@@ -90,7 +88,7 @@ var CardContainerController = (function () {
         if (this.dataSource.sorts == null) {
             this.dataSource.sorts = [];
         }
-        $scope.containerService = new cardContainer_service_1.CardContainerService(this);
+        $scope.builder = this.builder;
         $scope.containerData = this.containerData;
     }
     CardContainerController.prototype.sortSelected = function () {

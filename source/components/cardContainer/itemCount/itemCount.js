@@ -9,7 +9,7 @@ function itemCount() {
         require: '^^rlCardContainer',
         template: require('./itemCount.html'),
         scope: {
-            containerService: '=',
+            builder: '=',
         },
     };
 }

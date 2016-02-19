@@ -10,7 +10,7 @@ export declare class SelectionControlController {
     selectedItems: number;
     pagingEnabled: boolean;
     dataSource: IDataSource<any>;
-    private containerService;
+    private builder;
     static $inject: string[];
     constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility);
     selectPage(): void;
