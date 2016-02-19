@@ -10,12 +10,17 @@ var DataPager = (function () {
         this.pageNumber = 1;
         this.pageSize = exports.defaultPageSize;
     }
+    Object.defineProperty(DataPager.prototype, "startItem", {
+        get: function () {
+            return (this.pageNumber - 1) * this.pageSize;
+        },
+        enumerable: true,
+        configurable: true
+    });
     DataPager.prototype.filter = function (dataSet) {
-        var size = this.pageSize;
-        var start = (this.pageNumber - 1) * size;
         return _(dataSet)
-            .drop(start)
-            .take(size)
+            .drop(this.startItem)
+            .take(this.pageSize)
             .value();
     };
     return DataPager;

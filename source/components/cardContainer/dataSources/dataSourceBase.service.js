@@ -40,6 +40,19 @@ var DataSourceBase = (function () {
         this.dataSet = processedData.dataSet;
         this.filteredDataSet = processedData.filteredDataSet;
     };
+    DataSourceBase.prototype.onSortChange = function () {
+        if (!this.loadingDataSet) {
+            this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
+            this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+            this.observable.fire(events.redrawing);
+        }
+    };
+    DataSourceBase.prototype.onPagingChange = function () {
+        if (!this.loadingDataSet) {
+            this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+            this.observable.fire(events.redrawing);
+        }
+    };
     DataSourceBase.prototype.refresh = function () {
         if (!this.loadingDataSet) {
             this.processData();

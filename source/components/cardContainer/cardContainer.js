@@ -148,7 +148,7 @@ var CardContainerController = (function () {
             //  of sorts applied to the maximum number of sorts
             this.dataSource.sorts = _.take(sortList, this.maxColSorts);
         }
-        this.dataSource.refresh();
+        this.dataSource.onSortChange();
     };
     CardContainerController.prototype.selectionChanged = function () {
         this.updateSelected();

@@ -24,10 +24,7 @@ var ServerSideDataSource = (function (_super) {
         this.object = object;
     }
     ServerSideDataSource.prototype.refresh = function () {
-        if (!this.reloading) {
-            this.reloading = true;
-            this.reload();
-        }
+        this.reload();
     };
     ServerSideDataSource.prototype.getParams = function () {
         var filterDictionary = this.array.toDictionary(this.filters, function (filter) {
@@ -54,12 +51,13 @@ var ServerSideDataSource = (function (_super) {
     };
     ServerSideDataSource.prototype.resolveReload = function (result) {
         var data = result;
-        this.count = data.count;
         _super.prototype.resolveReload.call(this, data.dataSet);
-        this.dataSet = this.rawDataSet;
-        this.filteredDataSet = this.rawDataSet;
+        this.setProcessedData({
+            count: data.count,
+            filteredDataSet: data.dataSet,
+            dataSet: data.dataSet,
+        });
         this.observable.fire(events.redrawing);
-        this.reloading = false;
     };
     return ServerSideDataSource;
 })(asyncDataSource_service_1.AsyncDataSource);

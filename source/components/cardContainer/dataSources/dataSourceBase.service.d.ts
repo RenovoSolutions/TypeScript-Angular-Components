@@ -23,6 +23,8 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     processData(): void;
     processDataNoClientFilters(): void;
     setProcessedData(processedData: IProcessResult<TDataType>): void;
+    onSortChange(): void;
+    onPagingChange(): void;
     refresh(): void;
     remove(data: TDataType): void;
     push(data: TDataType): void;

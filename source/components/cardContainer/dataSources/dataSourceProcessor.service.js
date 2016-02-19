@@ -11,9 +11,7 @@ var DataSourceProcessor = (function () {
     }
     DataSourceProcessor.prototype.process = function (sorts, filters, pager, data) {
         var processedData = data;
-        if (this.object.isNullOrEmpty(sorts) === false) {
-            processedData = this.sorter.sort(processedData, sorts);
-        }
+        processedData = this.sort(processedData, sorts);
         if (this.object.isNullOrEmpty(filters) === false) {
             processedData = _.reduce(filters, function (filteredData, filter) {
                 // Filter the data set using the filter function on the filter
@@ -25,9 +23,7 @@ var DataSourceProcessor = (function () {
             filteredDataSet: processedData,
             dataSet: processedData,
         };
-        if (pager != null) {
-            result.dataSet = pager.filter(processedData);
-        }
+        result.dataSet = this.page(processedData, pager);
         return result;
     };
     DataSourceProcessor.prototype.processAndCount = function (sorts, filters, pager, data) {
@@ -38,9 +34,7 @@ var DataSourceProcessor = (function () {
             return this.process(sorts, filters, pager, data);
         }
         var processedData = data;
-        if (this.object.isNullOrEmpty(sorts) === false) {
-            processedData = this.sorter.sort(processedData, sorts);
-        }
+        processedData = this.sort(processedData, sorts);
         var wrappedData = this.wrapData(processedData);
         // Run filtration logic and compute visible items
         _.each(filters, function (filter /* filters.IFilterWithCounts */) {
@@ -70,10 +64,20 @@ var DataSourceProcessor = (function () {
             filteredDataSet: processedData,
             dataSet: processedData,
         };
-        if (pager != null) {
-            result.dataSet = pager.filter(processedData);
-        }
+        result.dataSet = this.page(processedData, pager);
         return result;
+    };
+    DataSourceProcessor.prototype.sort = function (data, sorts) {
+        if (this.object.isNullOrEmpty(sorts) === false) {
+            return this.sorter.sort(data, sorts);
+        }
+        return data;
+    };
+    DataSourceProcessor.prototype.page = function (data, pager) {
+        if (pager != null) {
+            return pager.filter(data);
+        }
+        return data;
     };
     DataSourceProcessor.prototype.wrapData = function (data) {
         return _.map(data, function (item) {

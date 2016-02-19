@@ -15,6 +15,8 @@ var serverSideDataSource = require('./serverSideDataSource/serverSideDataSource.
 exports.serverSideDataSource = serverSideDataSource;
 var simpleDataSource = require('./simpleDataSource/simpleDataSource.service');
 exports.simpleDataSource = simpleDataSource;
+var smartDataSource = require('./smartDataSource/smartDataSource.service');
+exports.smartDataSource = smartDataSource;
 var events = require('./dataSourceEvents');
 exports.events = events;
 var dataSourceProcessor = require('./dataSourceProcessor.service');
@@ -31,6 +33,7 @@ angular.module(exports.moduleName, [
     dataServiceDataSource.moduleName,
     serverSideDataSource.moduleName,
     simpleDataSource.moduleName,
+    smartDataSource.moduleName,
 ])
     .service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);
 //# sourceMappingURL=dataSources.module.js.map
