@@ -171,6 +171,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 
 		cardContainer.source = this._dataSource;
 		cardContainer.filters = this._filters;
+		cardContainer.searchFilter = this._searchFilter;
 		cardContainer.paging = this._paging;
 		cardContainer.columns = this._columns;
 		cardContainer.containerData = this.containerData;

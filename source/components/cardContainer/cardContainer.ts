@@ -10,6 +10,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __parentChild = services.parentChildBehavior;
+import __genericSearchFilter = services.genericSearchFilter;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
@@ -61,6 +62,7 @@ export class CardContainerController {
 
 	source: IDataSource<any>;
 	filters: filters.IFilter[];
+	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
 	columns: IColumn[];
 	containerData: any;
