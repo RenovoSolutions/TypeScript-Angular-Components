@@ -94,8 +94,8 @@ var SmartDataSource = (function (_super) {
     SmartDataSource.prototype.resolveReload = function (result) {
         var data = result;
         this.throttled = (data.count > data.dataSet.length);
-        this.count = data.count;
         _super.prototype.resolveReload.call(this, data.dataSet);
+        this.count = data.count;
     };
     return SmartDataSource;
 })(asyncDataSource_service_1.AsyncDataSource);
