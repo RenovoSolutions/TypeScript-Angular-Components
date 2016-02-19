@@ -55,7 +55,7 @@ export class PagerController {
 				this.updatePaging();
 
 				this.pager.pageNumber = page;
-				this.dataSource.refresh();
+				this.dataSource.onPagingChange();
 			});
 		}
 	}

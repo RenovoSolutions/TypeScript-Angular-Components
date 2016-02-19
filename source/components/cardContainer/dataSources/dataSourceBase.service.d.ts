@@ -17,12 +17,17 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     count: number;
     countFilterGroups: boolean;
     loadingDataSet: boolean;
+    private _isEmpty;
     observable: __observable.IObservableService;
     constructor(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
     watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
+    needsRefinedSearch: boolean;
+    isEmpty: boolean;
     processData(): void;
     processDataNoClientFilters(): void;
     setProcessedData(processedData: IProcessResult<TDataType>): void;
+    onSortChange(): void;
+    onPagingChange(): void;
     refresh(): void;
     remove(data: TDataType): void;
     push(data: TDataType): void;

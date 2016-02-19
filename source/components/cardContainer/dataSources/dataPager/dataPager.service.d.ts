@@ -4,11 +4,13 @@ export declare var defaultPageSize: number;
 export interface IDataPager {
     pageNumber: number;
     pageSize: number;
+    startItem: number;
     filter<T>(dataSet: T[]): T[];
 }
 export declare class DataPager implements IDataPager {
     pageNumber: number;
     pageSize: number;
+    startItem: number;
     filter(dataSet: any[]): any[];
 }
 export interface IDataPagerFactory {

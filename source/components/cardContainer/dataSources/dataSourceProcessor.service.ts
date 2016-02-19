@@ -34,6 +34,8 @@ export interface IDataSourceProcessor {
 							, filters: filters.IFilterWithCounts[]
 							, pager: IDataPager
 							, data: TDataType[]): IProcessResult<TDataType>;
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
@@ -47,9 +49,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData, sorts);
 
 		if (this.object.isNullOrEmpty(filters) === false) {
 			processedData = _.reduce(filters, (filteredData: TDataType[], filter: filters.IFilter): TDataType[] => {
@@ -64,10 +64,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
 	}
 
@@ -83,9 +80,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 		var processedData: TDataType[] = data;
 
-		if (this.object.isNullOrEmpty(sorts) === false) {
-			processedData = this.sorter.sort(processedData, sorts);
-		}
+		processedData = this.sort(processedData, sorts);
 
 		var wrappedData: IWrappedItem<TDataType>[] = this.wrapData(processedData);
 
@@ -123,11 +118,22 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 			dataSet: processedData,
 		};
 
-		if (pager != null) {
-			result.dataSet = pager.filter(processedData);
-		}
-
+		result.dataSet = this.page(processedData, pager);
 		return result;
+	}
+
+	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[] {
+		if (this.object.isNullOrEmpty(sorts) === false) {
+			return this.sorter.sort(data, sorts);
+		}
+		return data;
+	}
+
+	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[] {
+		if (pager != null) {
+			return pager.filter(data);
+		}
+		return data;
 	}
 
 	private wrapData<TDataType>(data: TDataType[]): IWrappedItem<TDataType>[] {

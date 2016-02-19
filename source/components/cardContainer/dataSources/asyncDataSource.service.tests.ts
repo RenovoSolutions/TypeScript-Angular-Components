@@ -37,6 +37,7 @@ describe('asyncDataSource', () => {
 	let source: AsyncDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
+	let redrawingSpy: Sinon.SinonSpy;
 	let $q: angular.IQService;
 
 	beforeEach(() => {
@@ -68,9 +69,11 @@ describe('asyncDataSource', () => {
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
+		redrawingSpy = sinon.spy();
 		source.watch(reloadedSpy, events.async.reloaded);
 		source.watch(changedSpy, events.changed);
-		source.refresh = sinon.spy();
+		source.watch(redrawingSpy, events.redrawing);
+		source.processData = sinon.spy();
 	});
 
 	it('should call make a request to get the data when reload is called', (): void => {
@@ -80,14 +83,15 @@ describe('asyncDataSource', () => {
 
 		mock.flush(dataService);
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>source.refresh);
+		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
 	});
 
-	it('should fire changed and reloaded events when the reload completeds', (): void => {
+	it('should fire changed, reloaded, and redrawing events when the reload completeds', (): void => {
 		source.reload();
 		mock.flush(dataService);
 		sinon.assert.calledOnce(changedSpy);
 		sinon.assert.calledOnce(reloadedSpy);
+		sinon.assert.calledOnce(redrawingSpy);
 	});
 
 	it('should allow the consumer to specify params for the request', (): void => {

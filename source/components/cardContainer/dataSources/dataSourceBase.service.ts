@@ -3,6 +3,7 @@
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
+import __object = services.object;
 
 import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
@@ -22,6 +23,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	countFilterGroups: boolean = false;
 
 	loadingDataSet: boolean = false;
+	private _isEmpty: boolean;
 
 	observable: __observable.IObservableService;
 
@@ -33,6 +35,21 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction {
 		return this.observable.register(action, event);
+	}
+
+	get needsRefinedSearch(): boolean {
+		return __object.objectUtility.isNullOrEmpty(this.dataSet)
+			&& (this.rawDataSet.length < this.count
+				|| this._isEmpty === false);
+	}
+
+	get isEmpty(): boolean {
+		return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
+			&& (this._isEmpty != null ? this._isEmpty : true);
+	}
+
+	set isEmpty(value: boolean) {
+		this._isEmpty = value;
 	}
 
 	processData(): void {
@@ -67,6 +84,21 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		this.count = processedData.count;
 		this.dataSet = processedData.dataSet;
 		this.filteredDataSet = processedData.filteredDataSet;
+	}
+
+	onSortChange(): void {
+		if (!this.loadingDataSet) {
+			this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
+			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+			this.observable.fire(events.redrawing);
+		}
+	}
+
+	onPagingChange(): void {
+		if (!this.loadingDataSet) {
+			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+			this.observable.fire(events.redrawing);
+		}
 	}
 
 	refresh(): void {

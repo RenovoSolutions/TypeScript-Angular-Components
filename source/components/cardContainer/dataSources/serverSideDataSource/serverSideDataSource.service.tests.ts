@@ -77,6 +77,7 @@ describe('serverSideDataSource', () => {
 		source.pager = <any>{
 			pageNumber: 5,
 			pageSize: 10,
+			filter: sinon.spy(),
 		};
 	});
 
@@ -120,15 +121,5 @@ describe('serverSideDataSource', () => {
 		expect(source.dataSet[0]).to.equal(1);
 		expect(source.dataSet[1]).to.equal(2);
 		expect(source.count).to.equal(2);
-	});
-
-	it('should not reload if the data source is still reloading', (): void => {
-		source.refresh();
-		sinon.assert.calledOnce(dataService.get);
-		dataService.get.reset();
-
-		source.refresh();
-
-		sinon.assert.notCalled(dataService.get);
 	});
 });

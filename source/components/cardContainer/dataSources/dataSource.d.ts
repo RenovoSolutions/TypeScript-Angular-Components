@@ -12,9 +12,11 @@ export interface IDataSource<TDataType> {
     count: number;
     countFilterGroups: boolean;
     loadingDataSet: boolean;
+    needsRefinedSearch: boolean;
+    isEmpty: boolean;
     watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
-    observable: __observable.IObservableService;
-    processData(): void;
+    onSortChange(): void;
+    onPagingChange(): void;
     refresh(): void;
     remove(data: TDataType): void;
     push(data: TDataType): void;
