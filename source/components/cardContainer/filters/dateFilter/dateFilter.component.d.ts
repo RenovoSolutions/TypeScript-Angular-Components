@@ -21,6 +21,7 @@ export interface IDateFilterBindings {
 export declare class DateFilterController implements IDateFilterBindings {
     private $scope;
     private dateUtility;
+    private $element;
     clearButton: boolean;
     count: number;
     filter: IDateFilter;
@@ -30,8 +31,9 @@ export declare class DateFilterController implements IDateFilterBindings {
     selector: string;
     source: IDataSource<any>;
     type: string;
+    private inputField;
     static $inject: string[];
-    constructor($scope: angular.IScope, dateUtility: __date.IDateUtility);
+    constructor($scope: angular.IScope, dateUtility: __date.IDateUtility, $element: angular.IAugmentedJQuery);
     selectedDate1: string;
     selectedDate2: Date;
     refreshDataSource(): void;
