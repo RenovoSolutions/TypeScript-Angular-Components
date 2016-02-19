@@ -134,8 +134,8 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	protected resolveReload(result: any): void {
 		let data: IDataResult<TDataType> = <IDataResult<TDataType>>result;
 		this.throttled = (data.count > data.dataSet.length);
-		this.count = data.count;
 		super.resolveReload(data.dataSet);
+		this.count = data.count;
 	}
 }
 
