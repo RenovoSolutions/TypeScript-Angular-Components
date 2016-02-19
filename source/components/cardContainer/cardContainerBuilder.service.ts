@@ -111,8 +111,6 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_searchFilter: IGenericSearchFilter;
 	_pager: IDataPager;
 
-	_numberSelected: number = 0;
-
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
 

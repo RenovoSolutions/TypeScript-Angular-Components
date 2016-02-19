@@ -18,6 +18,7 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
+import { ICardContainerService, CardContainerService } from './cardContainer.service';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
 export var directiveName: string = 'rlCardContainer';
@@ -27,6 +28,7 @@ export var defaultMaxColumnSorts: number = 2;
 export var defaultSelectionTitle: string = 'Select card';
 
 export interface ICardContainerScope extends angular.IScope {
+	containerService: ICardContainerService;
 	containerData: any;
 	builder: ICardContainerBuilder;
 }
@@ -73,6 +75,7 @@ export class CardContainerController {
 
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
+	numberSelected: number = 0;
 	selectionColumn: IColumn;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
@@ -126,7 +129,7 @@ export class CardContainerController {
 			this.dataSource.sorts = [];
 		}
 
-		$scope.builder = this.builder;
+		$scope.containerService = new CardContainerService(this);
 		$scope.containerData = this.containerData;
 	}
 
@@ -282,7 +285,7 @@ export class CardContainerController {
 	}
 
 	private updateSelected: {(): void} = (): void => {
-		this.builder._numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
+		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
 			return item.viewData != null && item.viewData.selected;
 		}).length;
 	}
