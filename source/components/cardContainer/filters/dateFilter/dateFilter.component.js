@@ -14,12 +14,16 @@ var DateOptions;
 })(DateOptions || (DateOptions = {}));
 ;
 var DateFilterController = (function () {
-    function DateFilterController($scope, dateUtility) {
+    function DateFilterController($scope, dateUtility, $element) {
         this.$scope = $scope;
         this.dateUtility = dateUtility;
+        this.$element = $element;
         this.count = 0;
         this.type = "days";
         this.filter.includeTime = this.includeTime;
+        //this is added to address an agular quirk on the service event list page.
+        //the input field was not clearing correclty when the selectedDate1 value is null.
+        this.inputField = this.$element.find('rl-date-time input');
         this.filter.dateRange = false;
         if (this.clearButton == null)
             this.clearButton = true;
@@ -30,6 +34,9 @@ var DateFilterController = (function () {
                 return moment(this.filter.selectedDate1).format('M/D/YYYY');
             }
             else {
+                //clear input field of date value. and rest past day/week count
+                this.inputField.val('');
+                this.clearCount();
                 return null;
             }
         },
@@ -38,6 +45,9 @@ var DateFilterController = (function () {
                 this.filter.selectedDate1 = moment(v).toDate();
             }
             else {
+                //clear input field of date value. and rest past day/week count
+                this.inputField.val('');
+                this.clearCount();
                 this.filter.selectedDate1 = null;
             }
             this.refreshDataSource();
@@ -113,7 +123,7 @@ var DateFilterController = (function () {
         }
         this.countChange();
     };
-    DateFilterController.$inject = ['$scope', __date.serviceName];
+    DateFilterController.$inject = ['$scope', __date.serviceName, '$element'];
     return DateFilterController;
 })();
 exports.DateFilterController = DateFilterController;
