@@ -98,7 +98,7 @@ describe('smartDataSource', () => {
 
 		dataService = mock.service();
 
-		dataSourceProcessor.process = sinon.spy((data: any): any => { return data; });
+		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
 		dataSourceProcessor.sort = sinon.spy();
 		dataSourceProcessor.page = sinon.spy();
 
@@ -115,6 +115,25 @@ describe('smartDataSource', () => {
 			pageSize: 2,
 			filter: sinon.spy(),
 		};
+	});
+
+	it('should use the count returned by the server when a reload resolves', (): void => {
+		let clientCount: number = 2;
+		let serverCount: number = 4;
+		dataSourceProcessor.process = sinon.spy((data: any): any => {
+			return {
+				dataSet: data,
+				count: clientCount,
+			};
+		});
+
+		data = [1, 2, 3, 4];
+		mock.promise(dataService, 'get', { dataSet: data, count: serverCount });
+		source.getDataSet = dataService.get;
+		source.reload();
+		mock.flush(dataService);
+
+		expect(source.count).to.equal(serverCount);
 	});
 
 	describe('throttled', (): void => {
