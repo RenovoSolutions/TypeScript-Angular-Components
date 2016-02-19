@@ -19,6 +19,7 @@ import 'angular-mocks';
 
 interface IDataSourceMock {
 	refresh: Sinon.SinonSpy;
+	pager: IDataPagerMock;
 }
 
 interface IDataPagerMock {
@@ -27,7 +28,6 @@ interface IDataPagerMock {
 
 interface ICardContainerMock {
 	dataSource: IDataSourceMock;
-	pager: IDataPagerMock;
 	searchFilter: any;
 	numberSelected: number;
 }
@@ -38,8 +38,10 @@ describe('CardContainerService', () => {
 
 	beforeEach((): void => {
 		cardContainer = {
-			dataSource: { refresh: sinon.spy() },
-			pager: { pageSize: 5 },
+			dataSource: {
+				refresh: sinon.spy(),
+				pager: { pageSize: 5 },
+			},
 			searchFilter: {},
 			numberSelected: 0,
 		};
@@ -49,7 +51,7 @@ describe('CardContainerService', () => {
 
 	it('should put the dataSource, pager, and search filter on the service', (): void => {
 		expect(containerService.dataSource).to.equal(cardContainer.dataSource);
-		expect(containerService.pager).to.equal(cardContainer.pager);
+		expect(containerService.pager).to.equal(cardContainer.dataSource.pager);
 		expect(containerService.searchFilter).to.equal(cardContainer.searchFilter);
 	});
 

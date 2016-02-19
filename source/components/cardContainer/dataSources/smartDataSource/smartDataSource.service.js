@@ -21,6 +21,7 @@ var SmartDataSource = (function (_super) {
     function SmartDataSource(getDataSet, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
         _super.call(this, getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
         this.object = object;
+        this.throttleLimit = 200;
     }
     Object.defineProperty(SmartDataSource.prototype, "filters", {
         get: function () {
@@ -60,8 +61,8 @@ var SmartDataSource = (function (_super) {
                 };
             }),
             paging: {
-                pageNumber: this.pager.pageNumber,
-                pageSize: this.pager.pageSize,
+                pageNumber: 1,
+                pageSize: this.throttleLimit,
             },
         };
     };

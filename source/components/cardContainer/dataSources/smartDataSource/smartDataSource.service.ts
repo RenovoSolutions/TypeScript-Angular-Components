@@ -52,6 +52,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];
 	private subscriptions: Rx.Subscriber[];
+	private throttleLimit: number = 200;
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
@@ -98,8 +99,8 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 				};
 			}),
 			paging: {
-				pageNumber: this.pager.pageNumber,
-				pageSize: this.pager.pageSize,
+				pageNumber: 1,
+				pageSize: this.throttleLimit,
 			},
 		};
 	}

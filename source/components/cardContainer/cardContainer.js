@@ -155,7 +155,7 @@ var CardContainerController = (function () {
         this.$scope.$emit('selectionChanged');
     };
     CardContainerController.prototype.syncFilters = function () {
-        if (this.filters != null) {
+        if (!this.object.isNullOrEmpty(this.filters)) {
             this.dataSource.filters = this.filters;
             this.dataSource.refresh();
         }

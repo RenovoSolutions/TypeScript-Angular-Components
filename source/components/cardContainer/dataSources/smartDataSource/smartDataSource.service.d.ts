@@ -42,6 +42,7 @@ export declare class SmartDataSource<TDataType> extends AsyncDataSource<TDataTyp
     };
     private _filters;
     private subscriptions;
+    private throttleLimit;
     constructor(getDataSet: IServerSearchFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     filters: filters.IFilter[];
     onSortChange(): void;

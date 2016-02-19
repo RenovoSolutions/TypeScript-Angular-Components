@@ -18,7 +18,7 @@ export class CardContainerService {
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
 	constructor(private cardContainer: CardContainerController) {
-		this.pager = cardContainer.builder._pager;
+		this.pager = cardContainer.dataSource.pager;
 		this.dataSource = cardContainer.dataSource;
 		this.searchFilter = cardContainer.searchFilter;
 	}

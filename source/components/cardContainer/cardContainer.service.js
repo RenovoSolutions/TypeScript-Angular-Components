@@ -1,7 +1,7 @@
 var CardContainerService = (function () {
     function CardContainerService(cardContainer) {
         this.cardContainer = cardContainer;
-        this.pager = cardContainer.builder._pager;
+        this.pager = cardContainer.dataSource.pager;
         this.dataSource = cardContainer.dataSource;
         this.searchFilter = cardContainer.searchFilter;
     }
