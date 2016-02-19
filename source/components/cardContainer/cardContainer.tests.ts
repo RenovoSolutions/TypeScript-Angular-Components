@@ -29,7 +29,7 @@ interface IDataSourceMock {
 	refresh: Sinon.SinonSpy;
 	onSortChange?: Sinon.SinonSpy;
 	pager?: IDataPagerMock;
-	filters?: { [index: string]: IFilterMock};
+	filters?: IFilterMock[];
 	rawDataSet?: any[];
 	dataSet?: any[];
 	filteredDataSet?: any[];
@@ -395,6 +395,39 @@ describe('CardContainerController', () => {
 			expect(cardContainer.dataSource.sorts).to.have.length(1);
 			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[1]);
 			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
+		});
+	});
+
+	describe('filters', (): void => {
+		it('should set the filters on the data source and call refresh', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+
+			builder._dataSource = <any>dataSource;
+			builder._filters = filters;
+
+			buildController();
+
+			expect(dataSource.filters).to.equal(filters);
+			sinon.assert.calledOnce(dataSource.refresh);
+		});
+
+		it('should init filters from data source filters if no filters are specified', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+			dataSource.filters = filters;
+
+			builder._dataSource = <any>dataSource;
+
+			expect(cardContainer.filters).to.equal(filters);
 		});
 	});
 
