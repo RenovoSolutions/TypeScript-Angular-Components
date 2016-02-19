@@ -63,6 +63,44 @@ describe('dataSourceBase', () => {
 													, services[__array.serviceName]);
 	});
 
+	describe('stateFlags', (): void => {
+		it('should need refined search if the data set is empty and the raw data set is smaller than the total count', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [1, 2];
+			dataSourceBase.count = 3;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.true;
+			expect(dataSourceBase.isEmpty).to.be.false;
+		});
+
+		it('should need refined search if the data set is empty and isEmpty is set to false', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [1, 2];
+			dataSourceBase.count = 2;
+			dataSourceBase.isEmpty = false;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.true;
+			expect(dataSourceBase.isEmpty).to.be.false;
+		});
+
+		it('should specify isEmpty if the data set is empty and isEmpty is true', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [];
+			dataSourceBase.isEmpty = true;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.false;
+			expect(dataSourceBase.isEmpty).to.be.true;
+		});
+
+		it('should specify isEmpty if the data set is empty and isEmpty is unspecified', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [];
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.false;
+			expect(dataSourceBase.isEmpty).to.be.true;
+		});
+	});
+
 	describe('processData', (): void => {
 		it('should process data', (): void => {
 			dataSourceProcessor.process.reset();
