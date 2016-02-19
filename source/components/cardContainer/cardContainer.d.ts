@@ -17,21 +17,9 @@ export interface ICardContainerScope extends angular.IScope {
 }
 export interface ICardContainerBindings {
     builder: ICardContainerBuilder;
-    source: IDataSource<any>;
-    filters: filters.IFilter[] | {
-        [index: string]: filters.IFilter;
-    };
-    paging: boolean;
-    columns: IColumn[];
-    containerData: any;
     cardController: string;
     cardControllerAs: string;
     cardAs: string;
-    clickableCards: boolean;
-    maxColumnSorts: number;
-    permanentFooters: boolean;
-    selectableCards: boolean;
-    disableSelection(item: any): string;
 }
 export interface ICardBehavior {
     close(): boolean;
