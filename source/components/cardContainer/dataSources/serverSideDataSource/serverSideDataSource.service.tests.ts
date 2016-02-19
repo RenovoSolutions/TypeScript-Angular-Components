@@ -121,14 +121,4 @@ describe('serverSideDataSource', () => {
 		expect(source.dataSet[1]).to.equal(2);
 		expect(source.count).to.equal(2);
 	});
-
-	it('should not reload if the data source is still reloading', (): void => {
-		source.refresh();
-		sinon.assert.calledOnce(dataService.get);
-		dataService.get.reset();
-
-		source.refresh();
-
-		sinon.assert.notCalled(dataService.get);
-	});
 });
