@@ -19,15 +19,15 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-interface IContainerBuilderMock {
-	_searchFilter: any;
-	_dataSource: any;
+interface IContainerServiceMock {
+	searchFilter: any;
+	dataSource: any;
 }
 
 describe('CardSearchController', () => {
 	var scope: angular.IScope;
 	var cardSearch: CardSearchController;
-	var builder: IContainerBuilderMock;
+	var containerService: IContainerServiceMock;
 	var filter: any;
 	var $timeout: angular.ITimeoutService;
 	var refreshSpy: Sinon.SinonSpy;
@@ -39,9 +39,9 @@ describe('CardSearchController', () => {
 
 		filter = {};
 
-		builder = {
-			_searchFilter: filter,
-			_dataSource: {
+		containerService = {
+			searchFilter: filter,
+			dataSource: {
 				refresh: refreshSpy,
 			},
 		};
@@ -57,7 +57,7 @@ describe('CardSearchController', () => {
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
-		builder._searchFilter = null;
+		containerService.searchFilter = null;
 		buildController();
 		expect(cardSearch.hasSearchFilter).to.be.false;
 		expect(cardSearch.searchPlaceholder).to.not.exist;
@@ -65,7 +65,7 @@ describe('CardSearchController', () => {
 
 	it('should still init the search filter if it was specified with an attribute binding', (): void => {
 		let filter: any = {};
-		buildController(null, filter);
+		buildController();
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
@@ -126,7 +126,7 @@ describe('CardSearchController', () => {
 	function buildController(delay?: number, filter?: any): void {
 		var bindings: any = {
 			delay: delay,
-			builder: builder,
+			containerService: containerService,
 			searchFilter: filter,
 		};
 

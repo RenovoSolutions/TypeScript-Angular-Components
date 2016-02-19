@@ -12,7 +12,7 @@ export function itemCount(): angular.IDirective {
 		require: '^^rlCardContainer',
 		template: require('./itemCount.html'),
 		scope: {
-			builder: '=',
+			containerService: '=',
 		},
 	};
 }

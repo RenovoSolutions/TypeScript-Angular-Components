@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 import { dataPager } from '../dataSources/dataSources.module';
-import { CardContainerBuilder } from '../cardContainerBuilder.service';
+import { ICardContainerService } from '../cardContainer.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export var directiveName: string = 'rlPageSize';
@@ -18,11 +18,11 @@ export class PageSizeController {
 	selectedPageSize: number;
 	pageSizes: number[];
 	hasPageFilter: boolean;
-	builder: CardContainerBuilder;
+	private containerService: ICardContainerService;
 
 	static $inject: string[] = ['$scope'];
 	constructor($scope: angular.IScope) {
-		if (this.builder == null) {
+		if (this.containerService == null) {
 			return;
 		}
 
@@ -30,7 +30,7 @@ export class PageSizeController {
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
 
-		var pager: dataPager.IDataPager = this.builder._pager;
+		var pager: dataPager.IDataPager = this.containerService.pager;
 
 		if (pager == null) {
 			this.hasPageFilter = false;
@@ -38,7 +38,7 @@ export class PageSizeController {
 			$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
 				if (pager != null) {
 					pager.pageSize = newPageSize;
-					this.builder._dataSource.onPagingChange();
+					this.containerService.dataSource.onPagingChange();
 				}
 			});
 		}
@@ -54,7 +54,7 @@ export function pageSize(): angular.IDirective {
 		controllerAs: 'controller',
 		scope: {},
 		bindToController: {
-			builder: '=',
+			containerService: '=',
 		},
 	};
 }
