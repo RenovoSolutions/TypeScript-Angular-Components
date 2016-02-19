@@ -79,7 +79,6 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     };
     _searchFilter: IGenericSearchFilter;
     _pager: IDataPager;
-    _numberSelected: number;
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
     containerData: any;

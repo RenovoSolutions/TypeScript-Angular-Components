@@ -10,11 +10,11 @@ var CardSearchController = (function () {
         var _this = this;
         this.searchLengthError = false;
         this.hasSearchFilter = true;
-        if (this.builder == null) {
+        if (this.containerService == null) {
             return;
         }
         if (this.searchFilter == null) {
-            var filter = this.builder._searchFilter;
+            var filter = this.containerService.searchFilter;
             this.searchFilter = filter;
             if (filter == null) {
                 this.hasSearchFilter = false;
@@ -22,7 +22,7 @@ var CardSearchController = (function () {
         }
         if (this.hasSearchFilter) {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.builder._dataSource;
+            var dataSource = this.containerService.dataSource;
             var delay = this.delay != null
                 ? this.delay
                 : exports.defaultSearchDelay;
@@ -58,7 +58,7 @@ function cardSearch() {
         scope: {},
         bindToController: {
             delay: '=searchDelay',
-            builder: '=',
+            containerService: '=',
             searchFilter: '=?',
         },
     };

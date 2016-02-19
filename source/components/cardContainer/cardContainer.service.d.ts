@@ -1,18 +1,18 @@
 import { CardContainerController } from './cardContainer';
-import { filters } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
+import __genericSearchFilter = services.genericSearchFilter;
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 export interface ICardContainerService {
     pager: dataPager.IDataPager;
     dataSource: IDataSource<any>;
     numberSelected: number;
-    lookupFilter(type: string): filters.IFilter;
+    searchFilter: __genericSearchFilter.IGenericSearchFilter;
 }
 export declare class CardContainerService {
     private cardContainer;
     pager: dataPager.IDataPager;
     dataSource: IDataSource<any>;
-    private filters;
+    searchFilter: __genericSearchFilter.IGenericSearchFilter;
     constructor(cardContainer: CardContainerController);
-    lookupFilter(type: string): filters.IFilter;
     numberSelected: number;
 }

@@ -1,14 +1,10 @@
-var _ = require('lodash');
 var CardContainerService = (function () {
     function CardContainerService(cardContainer) {
         this.cardContainer = cardContainer;
-        this.pager = cardContainer.pager;
+        this.pager = cardContainer.builder._pager;
         this.dataSource = cardContainer.dataSource;
-        this.filters = cardContainer.filters;
+        this.searchFilter = cardContainer.searchFilter;
     }
-    CardContainerService.prototype.lookupFilter = function (type) {
-        return _.find(this.filters, function (filter) { return filter.type === type; });
-    };
     Object.defineProperty(CardContainerService.prototype, "numberSelected", {
         get: function () {
             return this.cardContainer.numberSelected;

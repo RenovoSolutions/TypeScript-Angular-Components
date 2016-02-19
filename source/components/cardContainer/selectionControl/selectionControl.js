@@ -11,13 +11,13 @@ var SelectionControlController = (function () {
     function SelectionControlController($scope, bool) {
         var _this = this;
         this.$scope = $scope;
-        if (this.builder == null) {
+        if (this.containerService == null) {
             return;
         }
-        this.selectedItems = this.builder._numberSelected;
-        this.pagingEnabled = bool.toBool(this.builder._pager);
-        this.dataSource = this.builder._dataSource;
-        $scope.$watch(function () { return _this.builder._numberSelected; }, function (value) {
+        this.selectedItems = this.containerService.numberSelected;
+        this.pagingEnabled = bool.toBool(this.containerService.pager);
+        this.dataSource = this.containerService.dataSource;
+        $scope.$watch(function () { return _this.containerService.numberSelected; }, function (value) {
             _this.selectedItems = value;
         });
     }
@@ -58,7 +58,7 @@ function selectionControl() {
         controllerAs: 'selection',
         scope: {},
         bindToController: {
-            builder: '=',
+            containerService: '=',
         },
     };
 }

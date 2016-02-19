@@ -11,7 +11,6 @@ exports.factoryName = 'cardContainerBuilder';
 var CardContainerBuilder = (function () {
     function CardContainerBuilder($injector) {
         this.$injector = $injector;
-        this._numberSelected = 0;
         this.dataSource = new DataSourceBuilder($injector, this);
         this.filters = new FilterBuilder($injector, this);
         this._columns = [];
@@ -55,6 +54,7 @@ var CardContainerBuilder = (function () {
         }
         cardContainer.source = this._dataSource;
         cardContainer.filters = this._filters;
+        cardContainer.searchFilter = this._searchFilter;
         cardContainer.paging = this._paging;
         cardContainer.columns = this._columns;
         cardContainer.containerData = this.containerData;

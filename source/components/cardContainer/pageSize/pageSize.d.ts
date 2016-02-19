@@ -1,5 +1,4 @@
 import * as angular from 'angular';
-import { CardContainerBuilder } from '../cardContainerBuilder.service';
 export declare var moduleName: string;
 export declare var directiveName: string;
 export declare var controllerName: string;
@@ -9,7 +8,7 @@ export declare class PageSizeController {
     selectedPageSize: number;
     pageSizes: number[];
     hasPageFilter: boolean;
-    builder: CardContainerBuilder;
+    private containerService;
     static $inject: string[];
     constructor($scope: angular.IScope);
 }

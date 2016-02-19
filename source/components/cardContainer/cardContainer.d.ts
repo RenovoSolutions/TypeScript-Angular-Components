@@ -3,15 +3,18 @@ import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __parentChild = services.parentChildBehavior;
+import __genericSearchFilter = services.genericSearchFilter;
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
+import { ICardContainerService } from './cardContainer.service';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
 export declare var defaultMaxColumnSorts: number;
 export declare var defaultSelectionTitle: string;
 export interface ICardContainerScope extends angular.IScope {
+    containerService: ICardContainerService;
     containerData: any;
     builder: ICardContainerBuilder;
 }
@@ -41,6 +44,7 @@ export declare class CardContainerController {
     builder: CardContainerBuilder;
     source: IDataSource<any>;
     filters: filters.IFilter[];
+    searchFilter: __genericSearchFilter.IGenericSearchFilter;
     paging: boolean;
     columns: IColumn[];
     containerData: any;
@@ -56,6 +60,7 @@ export declare class CardContainerController {
     };
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
+    numberSelected: number;
     selectionColumn: IColumn;
     private maxColSorts;
     private disablingSelections;

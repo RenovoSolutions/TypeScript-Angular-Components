@@ -13,7 +13,7 @@ export declare class PagerController {
     currentPage: number;
     pages: number[];
     hasPageFilter: boolean;
-    private builder;
+    private containerService;
     private pager;
     private dataSource;
     private lastPage;

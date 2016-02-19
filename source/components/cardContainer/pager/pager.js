@@ -21,17 +21,17 @@ var PagerController = (function () {
             }
             _this.updatePaging();
         };
-        if (this.builder == null) {
+        if (this.containerService == null) {
             return;
         }
-        this.pager = this.builder._pager;
+        this.pager = this.containerService.pager;
         if (this.pager == null) {
             this.hasPageFilter = false;
         }
         else {
             this.visiblePageCount = this.pageCount != null ? this.pageCount : exports.defaultVisiblePageCount;
             this.lastPage = 1;
-            this.dataSource = this.builder._dataSource;
+            this.dataSource = this.containerService.dataSource;
             $scope.$watch(function () { return _this.dataSource.count; }, this.updatePageCount);
             $scope.$watch(function () { return _this.pager.pageSize; }, this.updatePageCount);
             $scope.$watch(function () { return _this.currentPage; }, function (page) {
@@ -95,7 +95,7 @@ function pager() {
         scope: {},
         bindToController: {
             pageCount: '=visiblePages',
-            builder: '=',
+            containerService: '=',
         },
     };
 }
