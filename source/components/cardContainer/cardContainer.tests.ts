@@ -499,21 +499,21 @@ describe('CardContainerController', () => {
 				item.viewData.selected = true;
 			});
 
-			expect(cardContainer.builder._numberSelected).to.equal(0);
+			expect(cardContainer.numberSelected).to.equal(0);
 
 			cardContainer.selectionChanged();
 
-			expect(cardContainer.builder._numberSelected).to.equal(2);
+			expect(cardContainer.numberSelected).to.equal(2);
 
 			_.each(dataSource.dataSet, (item: any): void => {
 				item.viewData.selected = false;
 			});
 
-			expect(cardContainer.builder._numberSelected).to.equal(2);
+			expect(cardContainer.numberSelected).to.equal(2);
 
 			scope.$emit('selectionChanged');
 
-			expect(cardContainer.builder._numberSelected).to.equal(0);
+			expect(cardContainer.numberSelected).to.equal(0);
 		});
 
 		it('should fire selectionChanged when selectionChanged is called', (): void => {
@@ -551,7 +551,7 @@ describe('CardContainerController', () => {
 
 			redrawingEvent();
 
-			expect(cardContainer.builder._numberSelected).to.equal(4);
+			expect(cardContainer.numberSelected).to.equal(4);
 
 			dataSource.dataSet.pop();
 			dataSource.dataSet.pop();
@@ -559,7 +559,7 @@ describe('CardContainerController', () => {
 
 			redrawingEvent();
 
-			expect(cardContainer.builder._numberSelected).to.equal(2);
+			expect(cardContainer.numberSelected).to.equal(2);
 		});
 
 		it('should apply a sort in the select column', (): void => {
