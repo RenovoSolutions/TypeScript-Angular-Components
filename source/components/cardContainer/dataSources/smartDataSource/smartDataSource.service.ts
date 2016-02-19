@@ -44,6 +44,7 @@ export interface IPagingParams {
 export interface IDataResult<TDataType> {
 	dataSet: TDataType[];
 	count: number;
+	isEmpty?: boolean;
 }
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
@@ -136,6 +137,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		this.throttled = (data.count > data.dataSet.length);
 		super.resolveReload(data.dataSet);
 		this.count = data.count;
+		this.isEmpty = data.isEmpty;
 	}
 }
 
