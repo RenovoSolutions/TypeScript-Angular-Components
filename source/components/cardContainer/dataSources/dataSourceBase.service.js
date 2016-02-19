@@ -1,11 +1,13 @@
 'use strict';
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __object = typescript_angular_utilities_1.services.object;
 var events = require('./dataSourceEvents');
 var DataSourceBase = (function () {
     function DataSourceBase(observableFactory, dataSourceProcessor, array) {
         this.dataSourceProcessor = dataSourceProcessor;
         this.array = array;
         this.sorts = [];
-        this.filters = {};
+        this.filters = [];
         this.count = 0;
         this.countFilterGroups = false;
         this.loadingDataSet = false;
@@ -14,6 +16,26 @@ var DataSourceBase = (function () {
     DataSourceBase.prototype.watch = function (action, event) {
         return this.observable.register(action, event);
     };
+    Object.defineProperty(DataSourceBase.prototype, "needsRefinedSearch", {
+        get: function () {
+            return __object.objectUtility.isNullOrEmpty(this.dataSet)
+                && (this.rawDataSet.length < this.count
+                    || this._isEmpty === false);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DataSourceBase.prototype, "isEmpty", {
+        get: function () {
+            return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
+                && (this._isEmpty != null ? this._isEmpty : true);
+        },
+        set: function (value) {
+            this._isEmpty = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     DataSourceBase.prototype.processData = function () {
         var processedData;
         if (this.countFilterGroups) {
@@ -39,6 +61,19 @@ var DataSourceBase = (function () {
         this.count = processedData.count;
         this.dataSet = processedData.dataSet;
         this.filteredDataSet = processedData.filteredDataSet;
+    };
+    DataSourceBase.prototype.onSortChange = function () {
+        if (!this.loadingDataSet) {
+            this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
+            this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+            this.observable.fire(events.redrawing);
+        }
+    };
+    DataSourceBase.prototype.onPagingChange = function () {
+        if (!this.loadingDataSet) {
+            this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+            this.observable.fire(events.redrawing);
+        }
     };
     DataSourceBase.prototype.refresh = function () {
         if (!this.loadingDataSet) {

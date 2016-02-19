@@ -25,10 +25,12 @@ import 'angular-mocks';
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;
 	processAndCount: Sinon.SinonSpy;
+	sort: Sinon.SinonSpy;
+	page: Sinon.SinonSpy;
 }
 
 describe('dataSourceBase', () => {
-	var dataSourceBase: IDataSource<number>;
+	var dataSourceBase: DataSourceBase<number>;
 	var dataSourceProcessor: IDataSourceProcessorMock;
 
 	beforeEach(() => {
@@ -51,12 +53,52 @@ describe('dataSourceBase', () => {
 					filteredDataSet: data,
 				};
 			}),
+			sort: sinon.spy((data: any): any => { return data; }),
+			page: sinon.spy((data: any): any => { return data; }),
 		};
 
 		var services: any = test.angularFixture.inject(__observable.factoryName, __array.serviceName);
 		dataSourceBase = new DataSourceBase<number>(services[__observable.factoryName]
 													, <any>dataSourceProcessor
 													, services[__array.serviceName]);
+	});
+
+	describe('stateFlags', (): void => {
+		it('should need refined search if the data set is empty and the raw data set is smaller than the total count', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [1, 2];
+			dataSourceBase.count = 3;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.true;
+			expect(dataSourceBase.isEmpty).to.be.false;
+		});
+
+		it('should need refined search if the data set is empty and isEmpty is set to false', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [];
+			dataSourceBase.count = 0;
+			dataSourceBase.isEmpty = false;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.true;
+			expect(dataSourceBase.isEmpty).to.be.false;
+		});
+
+		it('should specify isEmpty if the data set is empty and isEmpty is true', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [];
+			dataSourceBase.isEmpty = true;
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.false;
+			expect(dataSourceBase.isEmpty).to.be.true;
+		});
+
+		it('should specify isEmpty if the data set is empty and isEmpty is unspecified', (): void => {
+			dataSourceBase.dataSet = [];
+			dataSourceBase.rawDataSet = [];
+
+			expect(dataSourceBase.needsRefinedSearch).to.be.false;
+			expect(dataSourceBase.isEmpty).to.be.true;
+		});
 	});
 
 	describe('processData', (): void => {
@@ -86,6 +128,54 @@ describe('dataSourceBase', () => {
 			expect(dataSourceBase.dataSet).to.equal(testArray);
 			expect(dataSourceBase.filteredDataSet).to.equal(testArray);
 			expect(dataSourceBase.count).to.equal(3);
+		});
+	});
+
+	describe('onSortChange', (): void => {
+		it('should reapply sorts and paging and signal redrawing', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.onSortChange();
+
+			sinon.assert.calledOnce(redrawSpy);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+
+		it('should not reapply if data is being reloaded', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.loadingDataSet = true;
+			dataSourceBase.onSortChange();
+
+			sinon.assert.notCalled(redrawSpy);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+	});
+
+	describe('onPagingChange', (): void => {
+		it('should reapply paging and signal redrawing', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.onPagingChange();
+
+			sinon.assert.calledOnce(redrawSpy);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+
+		it('should not reapply if data is being reloaded', (): void => {
+			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.watch(redrawSpy, 'redrawing');
+
+			dataSourceBase.loadingDataSet = true;
+			dataSourceBase.onPagingChange();
+
+			sinon.assert.notCalled(redrawSpy);
+			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
 		});
 	});
 

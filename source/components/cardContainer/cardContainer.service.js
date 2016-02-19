@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var CardContainerService = (function () {
     function CardContainerService(cardContainer) {
         this.cardContainer = cardContainer;
@@ -6,7 +7,7 @@ var CardContainerService = (function () {
         this.filters = cardContainer.filters;
     }
     CardContainerService.prototype.lookupFilter = function (type) {
-        return this.filters[type];
+        return _.find(this.filters, function (filter) { return filter.type === type; });
     };
     Object.defineProperty(CardContainerService.prototype, "numberSelected", {
         get: function () {
