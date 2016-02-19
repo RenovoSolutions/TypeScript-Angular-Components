@@ -47,8 +47,6 @@ export interface IDataResult<TDataType> {
 }
 
 export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	private reloading: boolean;
-
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
@@ -59,10 +57,7 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 	}
 
 	refresh(): void {
-		if (!this.reloading) {
-			this.reloading = true;
-			this.reload();
-		}
+		this.reload();
 	}
 
 	protected getParams(): IServerSearchParams {
@@ -98,7 +93,6 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 			dataSet: data.dataSet,
 		});
 		this.observable.fire(events.redrawing);
-		this.reloading = false;
 	}
 }
 
