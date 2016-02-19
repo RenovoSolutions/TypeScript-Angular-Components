@@ -75,8 +75,8 @@ describe('dataSourceBase', () => {
 
 		it('should need refined search if the data set is empty and isEmpty is set to false', (): void => {
 			dataSourceBase.dataSet = [];
-			dataSourceBase.rawDataSet = [1, 2];
-			dataSourceBase.count = 2;
+			dataSourceBase.rawDataSet = [];
+			dataSourceBase.count = 0;
 			dataSourceBase.isEmpty = false;
 
 			expect(dataSourceBase.needsRefinedSearch).to.be.true;
