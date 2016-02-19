@@ -28,6 +28,7 @@ export var defaultSelectionTitle: string = 'Select card';
 
 export interface ICardContainerScope extends angular.IScope {
 	containerData: any;
+	builder: ICardContainerBuilder;
 }
 
 export interface ICardContainerBindings {
