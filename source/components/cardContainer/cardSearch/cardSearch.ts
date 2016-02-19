@@ -39,8 +39,7 @@ export class CardSearchController {
 		}
 
 		if (this.searchFilter == null) {
-			let filter: __genericSearchFilter.IGenericSearchFilter
-				= <__genericSearchFilter.IGenericSearchFilter>this.containerService.lookupFilter(__genericSearchFilter.filterName);
+			let filter: __genericSearchFilter.IGenericSearchFilter = this.containerService.searchFilter;
 			this.searchFilter = filter;
 
 			if (filter == null) {

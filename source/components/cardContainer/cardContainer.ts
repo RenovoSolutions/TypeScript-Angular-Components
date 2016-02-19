@@ -10,6 +10,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __parentChild = services.parentChildBehavior;
+import __genericSearchFilter = services.genericSearchFilter;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
@@ -30,25 +31,15 @@ export var defaultSelectionTitle: string = 'Select card';
 export interface ICardContainerScope extends angular.IScope {
 	containerService: ICardContainerService;
 	containerData: any;
+	builder: ICardContainerBuilder;
 }
 
 export interface ICardContainerBindings {
 	builder: ICardContainerBuilder;
 
-	// deprecated - specify card container options using the builder
-	source: IDataSource<any>;
-	filters: filters.IFilter[] | { [index: string]: filters.IFilter };
-	paging: boolean;
-	columns: IColumn[];
-	containerData: any;
 	cardController: string;
 	cardControllerAs: string;
 	cardAs: string;
-	clickableCards: boolean;
-	maxColumnSorts: number;
-	permanentFooters: boolean;
-	selectableCards: boolean;
-	disableSelection(item: any): string;
 }
 
 export interface ICardBehavior {
@@ -71,6 +62,7 @@ export class CardContainerController {
 
 	source: IDataSource<any>;
 	filters: filters.IFilter[];
+	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
 	columns: IColumn[];
 	containerData: any;
@@ -87,7 +79,6 @@ export class CardContainerController {
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
 	selectionColumn: IColumn;
-	pager: dataPager.IDataPager;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
 
@@ -232,12 +223,12 @@ export class CardContainerController {
 			if (this.paging === false) {
 				this.dataSource.pager = null;
 			} else {
-				this.pager = this.dataPagerFactory.getInstance();
-				this.dataSource.pager = this.pager;
+				this.builder._pager = this.dataPagerFactory.getInstance();
+				this.dataSource.pager = this.builder._pager;
 			}
 		} else if (this.dataSource.pager) {
 			// If the paging flag is not set and the dataSource has a pager, save a reference here
-			this.pager = this.dataSource.pager;
+			this.builder._pager = this.dataSource.pager;
 		}
 	}
 
@@ -355,72 +346,6 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			// summary: a builder for the card container
 			builder: '=?',
 
-			// summary: The data source for the card container
-			// remarks: Can be an array of objects, or an implementation of the data source contract: {
-			//     sorts: A list of sorts to apply to the data. Sorts should be in this format: {
-			//         column: The name of the column to sort on,
-			//         direction: Sort ascending or descending (sortDirection.js)
-			//     },
-			//     filters: A list of filters to apply to the data source,
-			//     pager: A pager that can be optionally used to page the data: {
-			//         filter: function(dataSet) {
-			//             Takes the data set and filters it down to pages
-			//         }
-			//     },
-			//     refresh: [function] Call to trigger the data source to refresh,
-			//     dataSet: Will contain the resulting data provided by the source, after sorts and filters are applied,
-			//     count: The number of items available in the data set (used for paging).
-			//     loadingDataSet: A boolean indicating if the dataSet is being refreshed / loaded,
-			// }
-			source: '=?',
-
-			// summary: A list of filters to be applied to the data source
-			// remarks: Each filter should implement the data filter contract: {
-			//     type: A name that can be used to look up the filter,
-			//     filter: function(item) { takes an item and returns false if it should be removed from the data set },
-			// }
-			filters: '=?',
-
-			// summary: Turn paging on or off (true / false)
-			paging: '=?',
-
-			// summary: A list of the columns for building the column header and card headers.
-			// remarks: Each column object should be in the following format: {
-			//     label: The label for the column header,
-			//     description: A description for the column; shown in tooltips,
-			//     size: A description of the column size at breakpoints; either a constant int (for constant size) or breakpoint detail object: {
-			//         [xs]: optional size for xs breakpoint (defaults to 0),
-			//         [sm]: optional size for sm breakpoint (defaults to xs),
-			//         [md]: optional size for md breakpoint (defaults to sm),
-			//         [lg]: optional size for lg breakpoint (defaults to md),
-			//     },
-			//     getValue: A function that takes a data record and retrieves the value for the column,
-			//     headerTemplateUrl: The path to an HTML template for the column header,
-			//     headerTemplate: An HTML template string for the column header (overriden by headerTemplateUrl if present),
-			//     templateUrl: The path to an HTML template for the card header,
-			//     template: An HTML template string for the card header (overriden by templateUrl if present),
-			//     secondarySorts: A set of secondary sorts to apply on other columns when this column is sorted (ascending and / or descending): {
-			//        sortDirection.ascending ('asc'):  [
-			//             {
-			//                 column: The label of another column to sort on,
-			//                 direction: The direction to sort the column,
-			//             },
-			//             ...
-			//        ],
-			//        sortDirection.descending ('desc'): [
-			//             {
-			//                 column: The label of another column to sort on,
-			//                 direction: The direction to sort the column,
-			//             },
-			//             ...
-			//        ],
-			//     }
-			// }
-			columns: '=?',
-
-			// summary: container-wide data available in cards
-			containerData: '=?',
-
 			// summary: controller shared by all components on a card
 			// remarks: this controller cannot override any of the following variable names:
 			//          columns
@@ -443,20 +368,6 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 			// summary: name used to access the card data
 			cardAs: '@',
-
-			// summary: Indicates if cards should show active state on mouse over
-			clickableCards: '=?',
-
-			// summary: The number of sorts that can be applied at a time.
-			maxColumnSorts: '=?',
-
-			permanentFooters: '=?',
-
-			// summary: If true, turns on selection for cards via the cardData.viewData.selected property
-			selectableCards: '=?',
-			// summary: Function called with each item. If true is returned selection is disabled for this item.
-			//          If function is not defined, selection is enabled for all by default.
-			disableSelection: '&',
 		},
 		link(scope: angular.IScope
 			, element: angular.IAugmentedJQuery

@@ -32,6 +32,7 @@ import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGrou
 import ISelectFilter = selectFilter.ISelectFilter;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
+import IDataPager = dataSources.dataPager.IDataPager;
 
 export let factoryName: string = 'cardContainerBuilder';
 
@@ -108,6 +109,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
 	_searchFilter: IGenericSearchFilter;
+	_pager: IDataPager;
 
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
@@ -169,6 +171,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 
 		cardContainer.source = this._dataSource;
 		cardContainer.filters = this._filters;
+		cardContainer.searchFilter = this._searchFilter;
 		cardContainer.paging = this._paging;
 		cardContainer.columns = this._columns;
 		cardContainer.containerData = this.containerData;

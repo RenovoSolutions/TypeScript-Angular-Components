@@ -26,16 +26,16 @@ interface ISelectionViewData {
 	selected: boolean;
 }
 
-interface IContainerServiceMock {
-	numberSelected: number;
-	dataSource: any;
-	pager: any;
+interface IContainerBuilderMock {
+	_numberSelected: number;
+	_dataSource: any;
+	_pager: any;
 }
 
 describe('selectionControl', () => {
 	var scope: angular.IScope;
 	var selection: SelectionControlController;
-	var containerService: IContainerServiceMock;
+	var builder: IContainerBuilderMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -44,13 +44,13 @@ describe('selectionControl', () => {
 	describe('pagingEnabled', (): void => {
 		it('should set pagingEnabled to true if a pager exists on the card container', (): void => {
 			buildController(null, true);
-			expect(containerService.pager).to.exist;
+			expect(builder._pager).to.exist;
 			expect(selection.pagingEnabled).to.be.true;
 		});
 
 		it('should set pagingEnabled to false if a pager does not exist on the card container', (): void => {
 			buildController(null, false);
-			expect(containerService.pager).to.not.exist;
+			expect(builder._pager).to.not.exist;
 			expect(selection.pagingEnabled).to.be.false;
 		});
 	});
@@ -58,12 +58,12 @@ describe('selectionControl', () => {
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
 		buildController();
 
-		containerService.numberSelected = 2;
+		builder._numberSelected = 2;
 		scope.$digest();
 
 		expect(selection.selectedItems).to.equal(2);
 
-		containerService.numberSelected = 4;
+		builder._numberSelected = 4;
 		scope.$digest();
 
 		expect(selection.selectedItems).to.equal(4);
@@ -141,17 +141,17 @@ describe('selectionControl', () => {
 	});
 
 	function buildController(items?: IItemMock[], hasPager?: boolean): void {
-		containerService = {
-			numberSelected: 0,
-			dataSource: {
+		builder = {
+			_numberSelected: 0,
+			_dataSource: {
 				dataSet: _.take(items, 2),
 				filteredDataSet: items,
 			},
-			pager: hasPager ? {} : null,
+			_pager: hasPager ? {} : null,
 		};
 
 		var bindings: any = {
-			containerService: containerService,
+			builder: builder,
 		};
 
 		var controllerResult: test.IControllerResult<SelectionControlController> =

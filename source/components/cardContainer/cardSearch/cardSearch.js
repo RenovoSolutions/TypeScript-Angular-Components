@@ -1,7 +1,5 @@
 'use strict';
 var angular = require('angular');
-var typescript_angular_utilities_1 = require('typescript-angular-utilities');
-var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearchFilter;
 exports.moduleName = 'rl.ui.components.cardContainer.cardSearch';
 exports.directiveName = 'rlCardSearch';
 exports.controllerName = 'CardSearchController';
@@ -16,7 +14,7 @@ var CardSearchController = (function () {
             return;
         }
         if (this.searchFilter == null) {
-            var filter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
+            var filter = this.containerService.searchFilter;
             this.searchFilter = filter;
             if (filter == null) {
                 this.hasSearchFilter = false;
