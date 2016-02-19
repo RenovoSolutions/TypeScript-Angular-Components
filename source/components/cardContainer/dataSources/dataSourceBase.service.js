@@ -1,4 +1,6 @@
 'use strict';
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __object = typescript_angular_utilities_1.services.object;
 var events = require('./dataSourceEvents');
 var DataSourceBase = (function () {
     function DataSourceBase(observableFactory, dataSourceProcessor, array) {
@@ -14,6 +16,26 @@ var DataSourceBase = (function () {
     DataSourceBase.prototype.watch = function (action, event) {
         return this.observable.register(action, event);
     };
+    Object.defineProperty(DataSourceBase.prototype, "needsRefinedSearch", {
+        get: function () {
+            return __object.objectUtility.isNullOrEmpty(this.dataSet)
+                && (this.rawDataSet.length < this.count
+                    || this._isEmpty === false);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(DataSourceBase.prototype, "isEmpty", {
+        get: function () {
+            return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
+                && (this._isEmpty != null ? this._isEmpty : true);
+        },
+        set: function (value) {
+            this._isEmpty = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
     DataSourceBase.prototype.processData = function () {
         var processedData;
         if (this.countFilterGroups) {

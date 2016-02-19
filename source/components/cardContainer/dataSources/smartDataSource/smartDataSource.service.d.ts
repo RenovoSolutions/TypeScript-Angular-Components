@@ -32,6 +32,7 @@ export interface IPagingParams {
 export interface IDataResult<TDataType> {
     dataSet: TDataType[];
     count: number;
+    isEmpty?: boolean;
 }
 export declare class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
     private object;

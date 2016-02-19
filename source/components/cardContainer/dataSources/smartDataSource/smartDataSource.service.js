@@ -96,6 +96,7 @@ var SmartDataSource = (function (_super) {
         this.throttled = (data.count > data.dataSet.length);
         _super.prototype.resolveReload.call(this, data.dataSet);
         this.count = data.count;
+        this.isEmpty = data.isEmpty;
     };
     return SmartDataSource;
 })(asyncDataSource_service_1.AsyncDataSource);
