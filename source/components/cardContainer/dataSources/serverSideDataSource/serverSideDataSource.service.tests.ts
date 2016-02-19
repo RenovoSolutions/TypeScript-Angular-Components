@@ -77,6 +77,7 @@ describe('serverSideDataSource', () => {
 		source.pager = <any>{
 			pageNumber: 5,
 			pageSize: 10,
+			filter: sinon.spy(),
 		};
 	});
 
