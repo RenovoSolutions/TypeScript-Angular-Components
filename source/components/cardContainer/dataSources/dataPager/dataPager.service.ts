@@ -22,7 +22,7 @@ export class DataPager implements IDataPager {
 	pageSize: number = defaultPageSize;
 
 	get startItem(): number {
-		return (this.pageNumber - 1) * size;
+		return (this.pageNumber - 1) * this.pageSize;
 	}
 
 	filter(dataSet: any[]): any[] {
