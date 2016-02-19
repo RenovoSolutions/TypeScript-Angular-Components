@@ -30,7 +30,7 @@ export class SelectionControlController {
 
 		this.selectedItems = this.builder._numberSelected;
 		this.pagingEnabled = bool.toBool(this.builder._pager);
-		this.dataSource = this.builder.dataSource;
+		this.dataSource = this.builder._dataSource;
 
 		$scope.$watch((): number => { return this.builder._numberSelected; }, (value: number): void => {
 			this.selectedItems = value;
