@@ -49,6 +49,8 @@ export interface IDataResult<TDataType> {
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean;
 	appliedFilters: { [index: string]: any };
+	private _filters: filters.IFilter[];
+	private subscriptions: Rx.Subscriber[];
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, observableFactory: __observable.IObservableServiceFactory
@@ -57,14 +59,15 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
 		super(<any>getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
+	}
 
-		if (_.isFunction(getDataSet)) {
-			this.reload();
-		}
+	get filters(): filters.IFilter[] {
+		return this._filters;
+	}
 
-		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
-			filter.subscribe((): void => { this.onFilterChange(filter); });
-		});
+	set filters(value: filters.IFilter[]) {
+		this._filters = value;
+		this.setupSubscriptions();
 	}
 
 	onSortChange(): void {
@@ -109,6 +112,16 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 				return filter.serialize();
 			}
 			return null;
+		});
+	}
+
+	private setupSubscriptions() {
+		_.each(this.subscriptions, (subscription: Rx.Subscriber): void => {
+			subscription.dispose();
+		});
+		this.subscriptions = [];
+		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
+			this.subscriptions.push(filter.subscribe((): void => { this.onFilterChange(filter); }));
 		});
 	}
 
