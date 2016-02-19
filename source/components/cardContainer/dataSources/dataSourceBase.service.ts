@@ -3,6 +3,7 @@
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
+import __object = services.object;
 
 import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
@@ -22,6 +23,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	countFilterGroups: boolean = false;
 
 	loadingDataSet: boolean = false;
+	private _isEmpty: boolean;
 
 	observable: __observable.IObservableService;
 
@@ -33,6 +35,21 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction {
 		return this.observable.register(action, event);
+	}
+
+	get needsRefinedSearch(): boolean {
+		return __object.objectUtility.isNullOrEmpty(this.dataSet)
+			&& this.rawDataSet.length < this.count
+			&& this._isEmpty === false;
+	}
+
+	get isEmpty(): boolean {
+		return __object.objectUtility.isNullOrEmpty(this.dataSet)
+			&& this._isEmpty != null ? this._isEmpty : true;
+	}
+
+	set isEmpty(value: boolean) {
+		this._isEmpty = value;
 	}
 
 	processData(): void {
