@@ -36,6 +36,11 @@ var CardSearchController = (function () {
                 }
                 timer = $timeout(dataSource.refresh.bind(dataSource), delay);
             });
+            $scope.$watch(function () {
+                return _this.searchFilter.searchText;
+            }, function () {
+                _this.searchText = _this.searchFilter.searchText;
+            });
         }
     }
     CardSearchController.prototype.validateSearchLength = function (search, minLength) {
