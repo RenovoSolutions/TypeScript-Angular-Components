@@ -18,9 +18,9 @@ var DataSourceBase = (function () {
     };
     Object.defineProperty(DataSourceBase.prototype, "needsRefinedSearch", {
         get: function () {
-            return __object.objectUtility.isNullOrEmpty(this.dataSet)
-                && (this.rawDataSet.length < this.count
-                    || this._isEmpty === false);
+            var noItemsDisplayed = __object.objectUtility.isNullOrEmpty(this.dataSet);
+            var moreItemsOnServer = this._isEmpty === false || (this.rawDataSet != null && this.rawDataSet.length < this.count);
+            return noItemsDisplayed && moreItemsOnServer;
         },
         enumerable: true,
         configurable: true
