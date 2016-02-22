@@ -38,9 +38,9 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	}
 
 	get needsRefinedSearch(): boolean {
-		return __object.objectUtility.isNullOrEmpty(this.dataSet)
-			&& (this.rawDataSet.length < this.count
-				|| this._isEmpty === false);
+		let noItemsDisplayed = __object.objectUtility.isNullOrEmpty(this.dataSet);
+		let moreItemsOnServer = this._isEmpty === false || (this.rawDataSet != null && this.rawDataSet.length < this.count);
+		return noItemsDisplayed && moreItemsOnServer;
 	}
 
 	get isEmpty(): boolean {
