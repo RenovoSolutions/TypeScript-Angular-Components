@@ -19,12 +19,13 @@ interface ITestObj {
 
 describe('selectFilter', (): void => {
 	let selectFilter: ISelectFilter<ITestObj>;
+	let selectFilterFactory: ISelectFilterFactory;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
 		let services: any = __test.angularFixture.inject(factoryName);
-		let selectFilterFactory: ISelectFilterFactory = services[factoryName]
+		selectFilterFactory = services[factoryName]
 		selectFilter = selectFilterFactory.getInstance('value');
 	});
 
@@ -34,10 +35,9 @@ describe('selectFilter', (): void => {
 		selectFilter.selectedValue = 1;
 
 		expect(selectFilter.filter(item)).to.be.true;
-
-
 	});
-		it('should return false if the items value does not equal the selected value', (): void => {
+
+	it('should return false if the items value does not equal the selected value', (): void => {
 		let item: ITestObj = { value: 2};
 
 		selectFilter.selectedValue = 1;
@@ -49,6 +49,16 @@ describe('selectFilter', (): void => {
 		let item1: any = { value: { prop: 2 } };
 		let item2: any = { prop: 2 };
 
+		selectFilter.selectedValue = item2;
+
+		expect(selectFilter.filter(item1)).to.be.true;
+	});
+
+	it('should allow for specifying a comparer', (): void => {
+		let item1: any = { value: { prop: 2 } };
+		let item2: any = { prop: 2, otherProp: 3 };
+
+		selectFilter = selectFilterFactory.getInstance('value', (item1: any, item2: any): boolean => { return item1.prop === item2.prop; });
 		selectFilter.selectedValue = item2;
 
 		expect(selectFilter.filter(item1)).to.be.true;
