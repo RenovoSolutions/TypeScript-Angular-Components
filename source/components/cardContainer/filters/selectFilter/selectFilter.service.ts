@@ -1,7 +1,8 @@
 'use strict';
 
 import * as _ from 'lodash';
-import {filters} from 'typescript-angular-utilities';
+import {filters, services} from 'typescript-angular-utilities';
+import __object = services.object;
 
 export let factoryName: string = 'rlSelectFilterFactory';
 
@@ -20,7 +21,7 @@ class SelectFilter<T> implements ISelectFilter<T> {
 			return true;
 		}
 
-		return this.getValue(item) === this.selectedValue;
+		return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
 	}
 
 	private getValue(item: T): any {

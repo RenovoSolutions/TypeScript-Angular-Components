@@ -44,4 +44,13 @@ describe('selectFilter', (): void => {
 
 		expect(selectFilter.filter(item)).to.be.false;
 	});
+
+	it('should return true if the items are equal but not the same instance', (): void => {
+		let item1: any = { value: { prop: 2 } };
+		let item2: any = { prop: 2 };
+
+		selectFilter.selectedValue = item2;
+
+		expect(selectFilter.filter(item1)).to.be.true;
+	});
 });
