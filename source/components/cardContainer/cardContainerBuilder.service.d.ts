@@ -24,6 +24,7 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
+import IEqualityFunction = selectFilter.IEqualityFunction;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
 import IDataPager = dataSources.dataPager.IDataPager;
@@ -58,9 +59,9 @@ export interface IFilterBuilder {
     buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
     buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
     buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
-    buildSelectFilter<T>(valueSelector: string | {
-        (item: T): any;
-    }): ISelectFilter<T>;
+    buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
+        (item: TDataType): any;
+    }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(valueSelector: IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: IFilter): void;
@@ -115,9 +116,9 @@ export declare class FilterBuilder implements IFilterBuilder {
     buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup;
     buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup;
     buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
-    buildSelectFilter<T>(valueSelector: string | {
-        (item: T): any;
-    }): ISelectFilter<T>;
+    buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
+        (item: TDataType): any;
+    }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: filters.IFilter): void;
