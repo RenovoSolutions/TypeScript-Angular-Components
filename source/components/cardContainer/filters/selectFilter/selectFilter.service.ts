@@ -14,13 +14,13 @@ export interface IEqualityFunction<TFilterType> {
 	(item1: TFilterType, item2: TFilterType): boolean;
 }
 
-class SelectFilter<T> implements ISelectFilter<T> {
+class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	selectedValue: any;
 	type: string = 'selectFilter';
 
-	constructor(private valueSelector: string | { (item:T):any }, private comparer: IEqualityFunction<T>) {}
+	constructor(private valueSelector: string | { (item:TDataType):any }, private comparer: IEqualityFunction<TFilterType>) {}
 
-	filter(item: T): boolean {
+	filter(item: TDataType): boolean {
 		if (this.selectedValue == null) {
 			return true;
 		}
@@ -32,9 +32,9 @@ class SelectFilter<T> implements ISelectFilter<T> {
 		return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
 	}
 
-	private getValue(item: T): any {
+	private getValue(item: TDataType): any {
 		if (_.isFunction(this.valueSelector)) {
-			let func = (<{ (item: T): any }>this.valueSelector);
+			let func = (<{ (item: TDataType): any }>this.valueSelector);
 			return(func(item))
 		} else {
 			let property = <string>this.valueSelector;
@@ -45,13 +45,13 @@ class SelectFilter<T> implements ISelectFilter<T> {
 }
 
 export interface ISelectFilterFactory  {
-	getInstance<T>(valueSelector: string | { (item:T):any }, comparer?: IEqualityFunction<T>): ISelectFilter<T>;
+	getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
 }
 
 export function selectFilterFactory(): ISelectFilterFactory {
 	return {
-		getInstance<T>(valueSelector: string | { (item:T):any }, comparer?: IEqualityFunction<T>): ISelectFilter<T> {
-			return new SelectFilter<T>(valueSelector, comparer);
+		getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+			return new SelectFilter<TDataType, TFilterType>(valueSelector, comparer);
 		},
 	};
 }
