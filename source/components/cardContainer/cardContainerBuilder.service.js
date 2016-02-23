@@ -137,9 +137,9 @@ var FilterBuilder = (function () {
         this.parent._filters.push(filter);
         return filter;
     };
-    FilterBuilder.prototype.buildSelectFilter = function (valueSelector) {
+    FilterBuilder.prototype.buildSelectFilter = function (valueSelector, comparer) {
         var factory = this.$injector.get(selectFilter.factoryName);
-        var filter = factory.getInstance(valueSelector);
+        var filter = factory.getInstance(valueSelector, comparer);
         this.parent._filters.push(filter);
         return filter;
     };
