@@ -14,9 +14,10 @@ exports.factoryName = 'rangeFilterGroup';
 var RangeFilterGroup = (function (_super) {
     __extends(RangeFilterGroup, _super);
     function RangeFilterGroup(settings, object) {
+        _super.call(this, settings, object);
         this.getValue = settings.getValue;
         settings.options = _.map(settings.options, this.buildRangeOption.bind(this));
-        _super.call(this, settings, object);
+        this.initOptions();
     }
     RangeFilterGroup.prototype.serialize = function () {
         var activeOption = this.activeOption;
@@ -59,7 +60,7 @@ var RangeFilterGroup = (function (_super) {
             && option.lowExclusive == null;
     };
     return RangeFilterGroup;
-})(filterGroup_service_1.FilterGroup);
+}(filterGroup_service_1.FilterGroup));
 rangeFilterGroupFactory.$inject = [__object.serviceName];
 function rangeFilterGroupFactory(object) {
     'use strict';

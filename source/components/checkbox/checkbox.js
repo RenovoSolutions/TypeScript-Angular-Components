@@ -20,7 +20,7 @@ var CheckboxController = (function () {
     });
     CheckboxController.$inject = ['$element'];
     return CheckboxController;
-})();
+}());
 exports.CheckboxController = CheckboxController;
 function checkbox() {
     return {

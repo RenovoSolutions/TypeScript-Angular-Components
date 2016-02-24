@@ -51,7 +51,7 @@ var Sorter = (function () {
     };
     Sorter.$inject = [mergeSort_service_1.serviceName];
     return Sorter;
-})();
+}());
 exports.Sorter = Sorter;
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, Sorter);

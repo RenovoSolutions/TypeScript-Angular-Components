@@ -25,7 +25,7 @@ var ColumnSearchFilter = (function () {
         return this.string.contains(value, search);
     };
     return ColumnSearchFilter;
-})();
+}());
 exports.ColumnSearchFilter = ColumnSearchFilter;
 columnSearchFilterFactory.$inject = [__object.serviceName, __string.serviceName];
 function columnSearchFilterFactory(object, string) {

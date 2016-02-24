@@ -111,7 +111,7 @@ var CardController = (function () {
     };
     CardController.$inject = ['$scope', '$controller', '$q', __parentChild.serviceName, __object.serviceName];
     return CardController;
-})();
+}());
 exports.CardController = CardController;
 function card() {
     'use strict';

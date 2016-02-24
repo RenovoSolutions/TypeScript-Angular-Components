@@ -54,7 +54,7 @@ var MessageLogController = (function () {
     };
     MessageLogController.$inject = ['$scope', messageLog_service_1.factoryName];
     return MessageLogController;
-})();
+}());
 exports.MessageLogController = MessageLogController;
 messageLog.$inject = [
     '$interpolate',

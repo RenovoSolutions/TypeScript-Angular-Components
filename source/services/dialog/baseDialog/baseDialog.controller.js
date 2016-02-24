@@ -15,6 +15,6 @@ var BaseDialogController = (function () {
     }
     BaseDialogController.$inject = ['$scope', '$controller', baseDialog_service_1.serviceName];
     return BaseDialogController;
-})();
+}());
 exports.BaseDialogController = BaseDialogController;
 //# sourceMappingURL=baseDialog.controller.js.map

@@ -29,7 +29,7 @@ var TextboxController = (function () {
     });
     TextboxController.$inject = ['$element', '$scope', componentValidator_service_1.factoryName];
     return TextboxController;
-})();
+}());
 exports.TextboxController = TextboxController;
 function textbox() {
     return {
