@@ -86,6 +86,7 @@ export interface IDataSourceBuilder {
 											, getFilterModel?: IGetFilterModel<TDataType>
 											, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
 	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
+	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 
@@ -227,6 +228,12 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 
 	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
 		let factory: dataSources.serverSideDataSource.IServerSideDataSourceFactory = this.$injector.get<any>(dataSources.serverSideDataSource.factoryName);
+		this.parent._dataSource = factory.getInstance(getDataSet);
+		return <any>this.parent._dataSource;
+	}
+
+	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
+		let factory: dataSources.smartDataSource.ISmartDataSourceFactory = this.$injector.get<any>(dataSources.smartDataSource.factoryName);
 		this.parent._dataSource = factory.getInstance(getDataSet);
 		return <any>this.parent._dataSource;
 	}
