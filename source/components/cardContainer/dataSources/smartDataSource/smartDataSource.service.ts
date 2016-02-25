@@ -115,6 +115,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 			}
 			return null;
 		});
+		this.appliedFilters = _.omitBy(this.appliedFilters, (value: any): boolean => { return value == null; });
 	}
 
 	private setupSubscriptions() {
