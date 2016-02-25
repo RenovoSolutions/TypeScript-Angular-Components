@@ -94,7 +94,7 @@ export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
@@ -271,7 +271,7 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
 		let filter: ISelectFilter<TDataType> = factory.getInstance(valueSelector, comparer);
 		this.parent._filters.push(filter);
