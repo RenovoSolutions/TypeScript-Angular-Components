@@ -1,4 +1,3 @@
-"use strict";
 var CardContainerService = (function () {
     function CardContainerService(cardContainer) {
         this.cardContainer = cardContainer;
@@ -14,6 +13,6 @@ var CardContainerService = (function () {
         configurable: true
     });
     return CardContainerService;
-}());
+})();
 exports.CardContainerService = CardContainerService;
 //# sourceMappingURL=cardContainer.service.js.map

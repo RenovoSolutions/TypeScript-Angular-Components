@@ -24,7 +24,7 @@ var SelectFilterController = (function () {
     });
     SelectFilterController.$inject = ['$scope'];
     return SelectFilterController;
-}());
+})();
 exports.SelectFilterController = SelectFilterController;
 function selectFilter() {
     'use strict';

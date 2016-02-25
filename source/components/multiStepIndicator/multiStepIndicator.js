@@ -81,7 +81,7 @@ var MultiStepIndicatorController = (function () {
     };
     MultiStepIndicatorController.$inject = ['$state', '$q', __object.serviceName];
     return MultiStepIndicatorController;
-}());
+})();
 exports.MultiStepIndicatorController = MultiStepIndicatorController;
 function multiStepIndicator() {
     'use strict';

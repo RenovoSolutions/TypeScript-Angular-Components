@@ -1,4 +1,3 @@
-"use strict";
 var angular = require('angular');
 var alias = require('./alias/alias');
 exports.alias = alias;

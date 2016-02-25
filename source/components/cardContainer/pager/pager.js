@@ -83,7 +83,7 @@ var PagerController = (function () {
     };
     PagerController.$inject = ['$scope'];
     return PagerController;
-}());
+})();
 exports.PagerController = PagerController;
 function pager() {
     'use strict';

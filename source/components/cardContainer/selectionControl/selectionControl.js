@@ -47,7 +47,7 @@ var SelectionControlController = (function () {
     };
     SelectionControlController.$inject = ['$scope', __boolean.serviceName];
     return SelectionControlController;
-}());
+})();
 exports.SelectionControlController = SelectionControlController;
 function selectionControl() {
     'use strict';

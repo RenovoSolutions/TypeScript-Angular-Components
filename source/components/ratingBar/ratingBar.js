@@ -33,7 +33,7 @@ var RatingBarController = (function () {
     };
     RatingBarController.$inject = ['$scope'];
     return RatingBarController;
-}());
+})();
 exports.RatingBarController = RatingBarController;
 function ratingBar() {
     'use strict';

@@ -14,7 +14,7 @@ var HeaderColumnController = (function () {
     }
     HeaderColumnController.$inject = ['$scope'];
     return HeaderColumnController;
-}());
+})();
 exports.HeaderColumnController = HeaderColumnController;
 headerColumn.$inject = ['$compile'];
 function headerColumn($compile) {

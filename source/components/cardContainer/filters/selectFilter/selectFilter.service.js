@@ -29,7 +29,7 @@ var SelectFilter = (function () {
         }
     };
     return SelectFilter;
-}());
+})();
 function selectFilterFactory() {
     return {
         getInstance: function (valueSelector, comparer) {

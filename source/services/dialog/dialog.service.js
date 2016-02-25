@@ -12,7 +12,7 @@ var DialogService = (function () {
         return this.dialog.open(options, closeHandler);
     };
     return DialogService;
-}());
+})();
 exports.DialogService = DialogService;
 function dialogServiceProvider() {
     'use strict';

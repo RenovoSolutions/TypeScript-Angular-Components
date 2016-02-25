@@ -1,4 +1,3 @@
-import '../../../libraries/bootstrap-datetimepicker/index';
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;

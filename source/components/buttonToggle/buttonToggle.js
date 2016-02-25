@@ -23,7 +23,7 @@ var ButtonToggleController = (function () {
     };
     ButtonToggleController.$inject = ['$scope', __boolean.serviceName];
     return ButtonToggleController;
-}());
+})();
 function buttonToggle() {
     'use strict';
     return {

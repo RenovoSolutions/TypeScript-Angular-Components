@@ -16,14 +16,14 @@ var DateFilter = (function () {
         }
         if (this.dateRange) {
             var itemDate = this.getValue(item);
-            var selectedDate1 = void 0;
+            var selectedDate1;
             //have to set the selectedDate1 to a valid Date object for comparisons.
             if (this.includeTime) {
                 selectedDate1 = moment(this.selectedDate1).toDate();
             }
             else {
                 //increase it by 1 days. to inlcude the selectec date in the range.
-                selectedDate1 = moment(this.selectedDate1).add('days', 1).toDate();
+                selectedDate1 = moment(this.selectedDate1).add(1, 'days').toDate();
             }
             return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
         }
@@ -41,7 +41,7 @@ var DateFilter = (function () {
         return item[property];
     };
     return DateFilter;
-}());
+})();
 dateFilterFactory.$inject = [__date.serviceName];
 function dateFilterFactory(dateUtility) {
     return {

@@ -124,7 +124,7 @@ var TypeaheadController = (function () {
         __arrayUtility.serviceName,
         __promiseUtility.serviceName];
     return TypeaheadController;
-}());
+})();
 exports.TypeaheadController = TypeaheadController;
 function typeahead() {
     'use strict';
