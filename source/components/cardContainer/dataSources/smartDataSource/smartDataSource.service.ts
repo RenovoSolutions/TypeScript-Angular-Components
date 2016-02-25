@@ -48,7 +48,7 @@ export interface IDataResult<TDataType> {
 }
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	throttled: boolean;
+	throttled: boolean = true;
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];
 	private subscriptions: Rx.Subscriber[];
