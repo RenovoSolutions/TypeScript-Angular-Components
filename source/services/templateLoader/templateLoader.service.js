@@ -41,7 +41,7 @@ var TemplateLoader = (function () {
     };
     TemplateLoader.$inject = ['$interpolate', 'templateSelectorValue', __object.serviceName];
     return TemplateLoader;
-})();
+}());
 angular.module(exports.moduleName, [__object.moduleName])
     .value('templateSelectorValue', 'template')
     .service(exports.serviceName, TemplateLoader);

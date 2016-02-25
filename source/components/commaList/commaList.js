@@ -32,7 +32,7 @@ var CommaListController = (function () {
     };
     CommaListController.$inject = ['$attrs', __object.serviceName];
     return CommaListController;
-})();
+}());
 exports.CommaListController = CommaListController;
 function commaList() {
     'use strict';

@@ -29,11 +29,13 @@ export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerial
 }
 export declare class FilterGroup extends filters.SerializableFilter<any> implements IFilterGroup {
     private settings;
+    private object;
     label: string;
     type: string;
     options: IFilterOption[];
     private _activeOption;
     constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility);
+    initOptions(): void;
     activeOption: IFilterOption;
     private setDefaultOption();
     filter<TItemType>(item: TItemType): boolean;

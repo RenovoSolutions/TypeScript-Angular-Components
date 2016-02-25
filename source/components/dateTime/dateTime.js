@@ -31,7 +31,7 @@ var DateTimeController = (function () {
     };
     DateTimeController.$inject = ['$scope', componentValidator_service_1.factoryName];
     return DateTimeController;
-})();
+}());
 exports.DateTimeController = DateTimeController;
 dateTime.$inject = [typescript_angular_utilities_1.services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName, __object.serviceName];
 function dateTime(moment, dateTimeFormatStrings, object) {

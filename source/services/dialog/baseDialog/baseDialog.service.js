@@ -62,6 +62,6 @@ var BaseDialogService = (function () {
     };
     BaseDialogService.$inject = ['$modal', '$rootScope', __promise.serviceName];
     return BaseDialogService;
-})();
+}());
 exports.BaseDialogService = BaseDialogService;
 //# sourceMappingURL=baseDialog.service.js.map

@@ -65,7 +65,7 @@ var AutosaveService = (function () {
         };
     };
     return AutosaveService;
-})();
+}());
 autosaveServiceFactory.$inject = [autosaveAction_service_1.serviceName, triggers.factoryName];
 function autosaveServiceFactory(autosaveService, triggerServiceFactory) {
     'use strict';

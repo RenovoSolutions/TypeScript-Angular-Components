@@ -43,11 +43,14 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 	options: IFilterOption[];
 	private _activeOption: IFilterOption;
 
-	constructor(private settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(private settings: IFilterGroupSettings, private object: __object.IObjectUtility) {
 		super();
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
-		this.options = settings.options;
+	}
+
+	initOptions() {
+		this.options = this.settings.options;
 		this.activeOption = this.setDefaultOption();
 
 		_.each(this.options, (option: IFilterOption): void => {
@@ -55,7 +58,7 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 				option.type = option.label;
 			}
 
-			option.type = object.toString(option.type).toLowerCase();
+			option.type = this.object.toString(option.type).toLowerCase();
 		});
 	}
 

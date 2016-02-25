@@ -115,7 +115,7 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.count > 0) {
 			this.filter.dateRange = true;
 			// add days has to be a negative number to go backwords.
-			this.selectedDate2 = moment(this.selectedDate1).add(this.type, (this.count * -1)).toDate();
+			this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type).toDate();
 		} else if (this.count == 0) {
 			//only change this values the first time.
 			if (this.filter.dateRange) {

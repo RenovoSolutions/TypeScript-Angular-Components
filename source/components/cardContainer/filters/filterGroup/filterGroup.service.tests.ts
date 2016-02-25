@@ -10,7 +10,7 @@ import test = services.test;
 
 import {
 	IFilterGroupFactory,
-	IFilterGroup,
+	FilterGroup,
 	factoryName,
 } from './filterGroup.service';
 
@@ -35,7 +35,7 @@ interface IFilterOptionMock {
 
 describe('filterGroup', () => {
 	let filterGroupFactory: IFilterGroupFactory;
-	let filterGroup: IFilterGroup;
+	let filterGroup: FilterGroup;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -47,9 +47,10 @@ describe('filterGroup', () => {
 	it('should filter on the active option', (): void => {
 		let option1: IFilterOptionMock = { filter: sinon.spy() };
 		let option2: IFilterOptionMock = { filter: sinon.spy() };
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			options: [option1, option2],
 		});
+		filterGroup.initOptions();
 
 		expect(filterGroup.activeOption).to.equal(option1);
 
@@ -74,9 +75,10 @@ describe('filterGroup', () => {
 			filter: sinon.spy(),
 		};
 
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			options: [optionWithExplicitType, optionWithImplicitType],
 		});
+		filterGroup.initOptions();
 
 		filterGroup.setOptionCounts(<any>{
 			option1: 5,
@@ -100,9 +102,10 @@ describe('filterGroup', () => {
 				}),
 			};
 
-			filterGroup = filterGroupFactory.getInstance(<any>{
+			filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 				options: [option1, option2],
 			});
+			filterGroup.initOptions();
 
 			filterGroup.updateOptionCounts(_.range(1, 11));
 
@@ -118,9 +121,10 @@ describe('filterGroup', () => {
 			active: true
 		};
 
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			options: [option1, option2],
 		});
+		filterGroup.initOptions();
 
 		expect(filterGroup.activeOption).to.equal(option2);
 		expect(filterGroup.activeOption).to.not.equal(option1);
@@ -136,18 +140,20 @@ describe('filterGroup', () => {
 			serialize: (): number => { return 4; },
 		};
 
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			options: [inactiveOption, activeOption],
 		});
+		filterGroup.initOptions();
 
 		expect(filterGroup.serialize()).to.equal(4);
 	});
 
 	it('should use the custom serializer provided by the consumer', (): void => {
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			serialize: (): number => { return 4; },
 			options: [],
 		});
+		filterGroup.initOptions();
 
 		expect(filterGroup.serialize()).to.equal(4);
 	});
@@ -161,9 +167,10 @@ describe('filterGroup', () => {
 			value: 4,
 		};
 
-		filterGroup = filterGroupFactory.getInstance(<any>{
+		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
 			options: [inactiveOption, activeOption],
 		});
+		filterGroup.initOptions();
 
 		expect(filterGroup.serialize()).to.equal(4);
 	});

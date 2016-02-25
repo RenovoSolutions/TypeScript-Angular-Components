@@ -49,9 +49,10 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 	private getValue: { (item: any): number };
 
 	constructor(settings: IRangeFilterGroupSettings, object: __object.IObjectUtility) {
+		super(<any>settings, object);
 		this.getValue = settings.getValue;
 		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
-		super(<any>settings, object);
+		this.initOptions();
 	}
 
 	serialize(): IRangeFilterValue {

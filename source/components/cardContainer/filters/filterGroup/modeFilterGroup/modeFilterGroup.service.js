@@ -14,9 +14,10 @@ exports.factoryName = 'modeFilterGroup';
 var ModeFilterGroup = (function (_super) {
     __extends(ModeFilterGroup, _super);
     function ModeFilterGroup(settings, object) {
+        _super.call(this, settings, object);
         this.getValue = settings.getValue;
         settings.options = _.map(settings.options, this.buildModeOption.bind(this));
-        _super.call(this, settings, object);
+        this.initOptions();
     }
     ModeFilterGroup.prototype.serialize = function () {
         var activeOption = this.activeOption;
@@ -37,7 +38,7 @@ var ModeFilterGroup = (function (_super) {
         return modeOption;
     };
     return ModeFilterGroup;
-})(filterGroup_service_1.FilterGroup);
+}(filterGroup_service_1.FilterGroup));
 exports.ModeFilterGroup = ModeFilterGroup;
 modeFilterGroupFactory.$inject = [__object.serviceName];
 function modeFilterGroupFactory(object) {

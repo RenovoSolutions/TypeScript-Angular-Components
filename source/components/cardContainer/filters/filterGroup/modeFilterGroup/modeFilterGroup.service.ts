@@ -38,9 +38,10 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 	private getValue: {(item: any): string | number | boolean};
 
 	constructor(settings: IModeFilterGroupSettings, object: __object.IObjectUtility) {
+		super(<any>settings, object);
 		this.getValue = settings.getValue;
 		settings.options = _.map<IModeFilterOptionSettings, IModeFilterOption>(settings.options, this.buildModeOption.bind(this));
-		super(<any>settings, object);
+		this.initOptions();
 	}
 
 	serialize(): number | string | boolean {

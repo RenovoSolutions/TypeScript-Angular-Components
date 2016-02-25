@@ -23,7 +23,7 @@ var FilterGroupController = (function () {
     };
     FilterGroupController.$inject = ['$scope'];
     return FilterGroupController;
-})();
+}());
 exports.FilterGroupController = FilterGroupController;
 function filterGroup() {
     'use strict';

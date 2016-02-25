@@ -13,17 +13,21 @@ var FilterGroup = (function (_super) {
     function FilterGroup(settings, object) {
         _super.call(this);
         this.settings = settings;
+        this.object = object;
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
-        this.options = settings.options;
+    }
+    FilterGroup.prototype.initOptions = function () {
+        var _this = this;
+        this.options = this.settings.options;
         this.activeOption = this.setDefaultOption();
         _.each(this.options, function (option) {
             if (_.isUndefined(option.type)) {
                 option.type = option.label;
             }
-            option.type = object.toString(option.type).toLowerCase();
+            option.type = _this.object.toString(option.type).toLowerCase();
         });
-    }
+    };
     Object.defineProperty(FilterGroup.prototype, "activeOption", {
         get: function () {
             return this._activeOption;
@@ -74,7 +78,7 @@ var FilterGroup = (function (_super) {
         });
     };
     return FilterGroup;
-})(typescript_angular_utilities_1.filters.SerializableFilter);
+}(typescript_angular_utilities_1.filters.SerializableFilter));
 exports.FilterGroup = FilterGroup;
 filterGroupFactory.$inject = [__object.serviceName];
 function filterGroupFactory(object) {
