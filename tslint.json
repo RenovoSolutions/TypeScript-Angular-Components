@@ -1,0 +1,55 @@
+{
+	"rules": {
+		"indent": [
+			true,
+			"tabs"
+		],
+		"quotemark": [
+			true,
+			"single"
+		],
+		"semicolon": [
+			true,
+			"always"
+		],
+		"trailing-comma": [
+			true,
+			{
+				"multiline": "always",
+				"singleline": "never"
+			}
+		],
+		"triple-equals": [
+			true,
+			"allow-null-check"
+		],
+		"typedef": [
+			true,
+			"call-signature",
+			"parameter",
+			"arrow-parameter",
+			"property-declaration",
+			"variable-declaration",
+			"member-variable-declaration"
+		],
+		"use-strict": [
+			true,
+			"check-module",
+			"check-function"
+		],
+		"variable-name": [
+			true,
+			"check-format",
+			"allow-leading-underscore",
+			"ban-keywords"
+		],
+		"whitespace": [
+			true,
+			"check-branch",
+			"check-decl",
+			"check-operator",
+			"check-separator",
+			"check-type"
+		]
+	}
+}
