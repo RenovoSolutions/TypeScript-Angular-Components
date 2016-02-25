@@ -53,6 +53,7 @@ export interface IDataSourceBuilder {
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType>;
     buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
     buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
+    buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
     buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export interface IFilterBuilder {
@@ -61,7 +62,7 @@ export interface IFilterBuilder {
     buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
     buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
         (item: TDataType): any;
-    }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+    }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(valueSelector: IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: IFilter): void;
@@ -107,6 +108,7 @@ export declare class DataSourceBuilder implements IDataSourceBuilder {
     buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType>;
     buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>, getFilterModel?: IGetFilterModel<TDataType>, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
     buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
+    buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
     buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 export declare class FilterBuilder implements IFilterBuilder {
@@ -118,7 +120,7 @@ export declare class FilterBuilder implements IFilterBuilder {
     buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
     buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
         (item: TDataType): any;
-    }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+    }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: filters.IFilter): void;
