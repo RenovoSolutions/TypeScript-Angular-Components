@@ -17,6 +17,7 @@ export class DateTimeStaticController {
 	dateValue: string;
 	includeTime: boolean = false;
 	displayValue: string;
+	displayTimeZone: boolean = true;
 
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
@@ -42,7 +43,8 @@ function dateTimeStatic(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			dateValue: '=',
-			includeTime: '@'
+			includeTime: '=',
+			displayTimeZone: '='
 		}
 	};
 }
