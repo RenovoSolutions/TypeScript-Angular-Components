@@ -2,8 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['cardContainerBuilder'];
-	function TestController(cardContainerBuilderFactory) {
+	TestController.$inject = ['$q', 'cardContainerBuilder'];
+	function TestController($q, cardContainerBuilderFactory) {
 		var self = this;
 		self.text = null;
 		self.options = [
@@ -13,6 +13,9 @@
 			{ name: 'item4' },
 			{ name: 'item5' },
 		];
+		self.getOptions = function () {
+			return $q.when(self.options);
+		}
 		self.validator = {
 			validate: function () {
 				return self.text === 'valid';
