@@ -1,13 +1,11 @@
+"use strict";
 var CardContainerService = (function () {
     function CardContainerService(cardContainer) {
         this.cardContainer = cardContainer;
-        this.pager = cardContainer.pager;
+        this.pager = cardContainer.dataSource.pager;
         this.dataSource = cardContainer.dataSource;
-        this.filters = cardContainer.filters;
+        this.searchFilter = cardContainer.searchFilter;
     }
-    CardContainerService.prototype.lookupFilter = function (type) {
-        return this.filters[type];
-    };
     Object.defineProperty(CardContainerService.prototype, "numberSelected", {
         get: function () {
             return this.cardContainer.numberSelected;
@@ -16,6 +14,6 @@ var CardContainerService = (function () {
         configurable: true
     });
     return CardContainerService;
-})();
+}());
 exports.CardContainerService = CardContainerService;
 //# sourceMappingURL=cardContainer.service.js.map

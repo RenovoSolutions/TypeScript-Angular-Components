@@ -9,9 +9,7 @@ import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
-    filters: {
-        [index: string]: filters.ISerializableFilter;
-    };
+    filters: filters.ISerializableFilter<any>[];
 }
 export interface IServerSearchFunction<TDataType> {
     (searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
@@ -37,7 +35,6 @@ export interface IDataResult<TDataType> {
 }
 export declare class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
     private object;
-    private reloading;
     constructor(getDataSet: IServerSearchFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     refresh(): void;
     protected getParams(): IServerSearchParams;

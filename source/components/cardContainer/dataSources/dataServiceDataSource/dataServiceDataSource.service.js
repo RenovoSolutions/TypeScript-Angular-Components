@@ -24,7 +24,7 @@ var DataServiceDataSource = (function (_super) {
         }
     }
     return DataServiceDataSource;
-})(asyncDataSource_service_1.AsyncDataSource);
+}(asyncDataSource_service_1.AsyncDataSource));
 exports.DataServiceDataSource = DataServiceDataSource;
 dataServiceDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __synchronizedRequests.factoryName];
 function dataServiceDataSourceFactory(observableFactory, dataSourceProcessor, array, synchronizedRequests) {

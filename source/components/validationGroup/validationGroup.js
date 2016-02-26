@@ -22,7 +22,7 @@ var ValidationGroupController = (function () {
     }
     ValidationGroupController.$inject = ['$scope', componentValidator_service_1.factoryName];
     return ValidationGroupController;
-})();
+}());
 exports.ValidationGroupController = ValidationGroupController;
 function validationGroup() {
     return {

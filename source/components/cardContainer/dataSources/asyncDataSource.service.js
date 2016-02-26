@@ -28,8 +28,9 @@ var AsyncDataSource = (function (_super) {
     AsyncDataSource.prototype.resolveReload = function (data) {
         this.loadingDataSet = false;
         this.rawDataSet = data;
-        this.refresh();
+        this.processData();
         this.observable.fire(events.async.reloaded);
+        this.observable.fire(events.redrawing);
         this.observable.fire(events.changed);
     };
     // override with params for getDataSet
@@ -37,6 +38,6 @@ var AsyncDataSource = (function (_super) {
         return null;
     };
     return AsyncDataSource;
-})(dataSourceBase_service_1.DataSourceBase);
+}(dataSourceBase_service_1.DataSourceBase));
 exports.AsyncDataSource = AsyncDataSource;
 //# sourceMappingURL=asyncDataSource.service.js.map

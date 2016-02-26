@@ -54,6 +54,7 @@ var CardContainerBuilder = (function () {
         }
         cardContainer.source = this._dataSource;
         cardContainer.filters = this._filters;
+        cardContainer.searchFilter = this._searchFilter;
         cardContainer.paging = this._paging;
         cardContainer.columns = this._columns;
         cardContainer.containerData = this.containerData;
@@ -73,7 +74,7 @@ var CardContainerBuilder = (function () {
         }
     };
     return CardContainerBuilder;
-})();
+}());
 exports.CardContainerBuilder = CardContainerBuilder;
 var DataSourceBuilder = (function () {
     function DataSourceBuilder($injector, parent) {
@@ -110,7 +111,7 @@ var DataSourceBuilder = (function () {
         return this.parent._dataSource;
     };
     return DataSourceBuilder;
-})();
+}());
 exports.DataSourceBuilder = DataSourceBuilder;
 var FilterBuilder = (function () {
     function FilterBuilder($injector, parent) {
@@ -136,9 +137,9 @@ var FilterBuilder = (function () {
         this.parent._filters.push(filter);
         return filter;
     };
-    FilterBuilder.prototype.buildSelectFilter = function (valueSelector) {
+    FilterBuilder.prototype.buildSelectFilter = function (valueSelector, comparer) {
         var factory = this.$injector.get(selectFilter.factoryName);
-        var filter = factory.getInstance(valueSelector);
+        var filter = factory.getInstance(valueSelector, comparer);
         this.parent._filters.push(filter);
         return filter;
     };
@@ -158,7 +159,7 @@ var FilterBuilder = (function () {
         this.parent._filters.push(filter);
     };
     return FilterBuilder;
-})();
+}());
 exports.FilterBuilder = FilterBuilder;
 cardContainerBuilderFactory.$inject = ['$injector'];
 function cardContainerBuilderFactory($injector) {

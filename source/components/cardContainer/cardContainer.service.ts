@@ -1,6 +1,7 @@
 import { CardContainerController } from './cardContainer';
 
-import { filters } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
+import __genericSearchFilter = services.genericSearchFilter;
 
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 
@@ -8,22 +9,18 @@ export interface ICardContainerService {
 	pager: dataPager.IDataPager;
 	dataSource: IDataSource<any>;
 	numberSelected: number;
-	lookupFilter(type: string): filters.IFilter;
+	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 }
 
 export class CardContainerService {
 	pager: dataPager.IDataPager;
 	dataSource: IDataSource<any>;
-	private filters: { [index: string]: filters.IFilter };
+	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
 	constructor(private cardContainer: CardContainerController) {
-		this.pager = cardContainer.pager;
+		this.pager = cardContainer.dataSource.pager;
 		this.dataSource = cardContainer.dataSource;
-		this.filters = <{ [index: string]: filters.IFilter }>cardContainer.filters;
-	}
-
-	lookupFilter(type: string): filters.IFilter {
-		return this.filters[type];
+		this.searchFilter = cardContainer.searchFilter;
 	}
 
 	get numberSelected(): number {

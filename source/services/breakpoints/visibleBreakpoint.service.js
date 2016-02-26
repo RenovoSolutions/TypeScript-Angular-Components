@@ -17,6 +17,6 @@ var VisibleBreakpointService = (function () {
         return $('.device-' + breakpoint).is(':visible');
     };
     return VisibleBreakpointService;
-})();
+}());
 exports.VisibleBreakpointService = VisibleBreakpointService;
 //# sourceMappingURL=visibleBreakpoint.service.js.map

@@ -11,7 +11,7 @@ var DocumentService = (function () {
         return this.documentControl.height();
     };
     return DocumentService;
-})();
+}());
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, DocumentService);
 //# sourceMappingURL=documentWrapper.service.js.map

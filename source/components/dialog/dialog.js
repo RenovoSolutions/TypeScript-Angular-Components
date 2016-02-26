@@ -9,7 +9,7 @@ var DialogController = (function () {
     function DialogController() {
     }
     return DialogController;
-})();
+}());
 exports.DialogController = DialogController;
 dialog.$inject = ['$compile'];
 function dialog($compile) {

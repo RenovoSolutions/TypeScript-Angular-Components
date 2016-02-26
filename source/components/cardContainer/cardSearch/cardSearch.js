@@ -1,7 +1,5 @@
 'use strict';
 var angular = require('angular');
-var typescript_angular_utilities_1 = require('typescript-angular-utilities');
-var __genericSearchFilter = typescript_angular_utilities_1.services.genericSearchFilter;
 exports.moduleName = 'rl.ui.components.cardContainer.cardSearch';
 exports.directiveName = 'rlCardSearch';
 exports.controllerName = 'CardSearchController';
@@ -16,7 +14,7 @@ var CardSearchController = (function () {
             return;
         }
         if (this.searchFilter == null) {
-            var filter = this.containerService.lookupFilter(__genericSearchFilter.filterName);
+            var filter = this.containerService.searchFilter;
             this.searchFilter = filter;
             if (filter == null) {
                 this.hasSearchFilter = false;
@@ -38,6 +36,11 @@ var CardSearchController = (function () {
                 }
                 timer = $timeout(dataSource.refresh.bind(dataSource), delay);
             });
+            $scope.$watch(function () {
+                return _this.searchFilter.searchText;
+            }, function () {
+                _this.searchText = _this.searchFilter.searchText;
+            });
         }
     }
     CardSearchController.prototype.validateSearchLength = function (search, minLength) {
@@ -48,7 +51,7 @@ var CardSearchController = (function () {
     };
     CardSearchController.$inject = ['$scope', '$timeout'];
     return CardSearchController;
-})();
+}());
 exports.CardSearchController = CardSearchController;
 function cardSearch() {
     'use strict';

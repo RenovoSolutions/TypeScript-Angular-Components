@@ -23,14 +23,14 @@ var PageSizeController = (function () {
             $scope.$watch(function () { return _this.selectedPageSize; }, function (newPageSize) {
                 if (pager != null) {
                     pager.pageSize = newPageSize;
-                    _this.containerService.dataSource.refresh();
+                    _this.containerService.dataSource.onPagingChange();
                 }
             });
         }
     }
     PageSizeController.$inject = ['$scope'];
     return PageSizeController;
-})();
+}());
 exports.PageSizeController = PageSizeController;
 function pageSize() {
     'use strict';

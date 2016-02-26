@@ -20,7 +20,7 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface IContainerServiceMock {
-	lookupFilter: Sinon.SinonSpy;
+	searchFilter: any;
 	dataSource: any;
 }
 
@@ -40,7 +40,7 @@ describe('CardSearchController', () => {
 		filter = {};
 
 		containerService = {
-			lookupFilter: sinon.spy((): any => { return filter; }),
+			searchFilter: filter,
 			dataSource: {
 				refresh: refreshSpy,
 			},
@@ -52,15 +52,13 @@ describe('CardSearchController', () => {
 
 	it('should lookup the search filter from the card container', (): void => {
 		buildController();
-		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.true;
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
-		containerService.lookupFilter = sinon.spy((): any => { return null; });
+		containerService.searchFilter = null;
 		buildController();
-		sinon.assert.calledOnce(containerService.lookupFilter);
 		expect(cardSearch.hasSearchFilter).to.be.false;
 		expect(cardSearch.searchPlaceholder).to.not.exist;
 	});

@@ -11,9 +11,7 @@ var DataSourceProcessor = (function () {
     }
     DataSourceProcessor.prototype.process = function (sorts, filters, pager, data) {
         var processedData = data;
-        if (this.object.isNullOrEmpty(sorts) === false) {
-            processedData = this.sorter.sort(processedData, sorts);
-        }
+        processedData = this.sort(processedData, sorts);
         if (this.object.isNullOrEmpty(filters) === false) {
             processedData = _.reduce(filters, function (filteredData, filter) {
                 // Filter the data set using the filter function on the filter
@@ -25,9 +23,7 @@ var DataSourceProcessor = (function () {
             filteredDataSet: processedData,
             dataSet: processedData,
         };
-        if (pager != null) {
-            result.dataSet = pager.filter(processedData);
-        }
+        result.dataSet = this.page(processedData, pager);
         return result;
     };
     DataSourceProcessor.prototype.processAndCount = function (sorts, filters, pager, data) {
@@ -38,18 +34,16 @@ var DataSourceProcessor = (function () {
             return this.process(sorts, filters, pager, data);
         }
         var processedData = data;
-        if (this.object.isNullOrEmpty(sorts) === false) {
-            processedData = this.sorter.sort(processedData, sorts);
-        }
+        processedData = this.sort(processedData, sorts);
         var wrappedData = this.wrapData(processedData);
         // Run filtration logic and compute visible items
-        _.each(filters, function (filter) {
+        _.each(filters, function (filter /* filters.IFilterWithCounts */) {
             _.each(wrappedData, function (item) {
                 item.filterData[filter.type] = filter.filter(item.data);
             });
         });
         // Give each filter a chance to update option counts
-        _.each(filters, function (filter) {
+        _.each(filters, function (filter /* filters.IFilterWithCounts */) {
             if (_.isFunction(filter.updateOptionCounts)) {
                 var otherFiltersApplied = _.filter(wrappedData, function (item) {
                     // Omit the true or false of the current filter an
@@ -70,10 +64,20 @@ var DataSourceProcessor = (function () {
             filteredDataSet: processedData,
             dataSet: processedData,
         };
-        if (pager != null) {
-            result.dataSet = pager.filter(processedData);
-        }
+        result.dataSet = this.page(processedData, pager);
         return result;
+    };
+    DataSourceProcessor.prototype.sort = function (data, sorts) {
+        if (this.object.isNullOrEmpty(sorts) === false) {
+            return this.sorter.sort(data, sorts);
+        }
+        return data;
+    };
+    DataSourceProcessor.prototype.page = function (data, pager) {
+        if (pager != null) {
+            return pager.filter(data);
+        }
+        return data;
     };
     DataSourceProcessor.prototype.wrapData = function (data) {
         return _.map(data, function (item) {
@@ -90,6 +94,6 @@ var DataSourceProcessor = (function () {
     };
     DataSourceProcessor.$inject = [__object.serviceName, sorter_service_1.serviceName];
     return DataSourceProcessor;
-})();
+}());
 exports.DataSourceProcessor = DataSourceProcessor;
 //# sourceMappingURL=dataSourceProcessor.service.js.map

@@ -3,6 +3,7 @@
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
+import __object = services.object;
 
 import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
@@ -15,19 +16,20 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];
 	sorts: ISort[] = [];
-	filters: { [index: string]: filters.IFilter } = {};
+	filters: filters.IFilter[] = [];
 	pager: IDataPager;
 	count: number = 0;
 
 	countFilterGroups: boolean = false;
 
 	loadingDataSet: boolean = false;
+	private _isEmpty: boolean;
 
 	observable: __observable.IObservableService;
 
 	constructor(observableFactory: __observable.IObservableServiceFactory
 			, private dataSourceProcessor: IDataSourceProcessor
-			, private array: __array.IArrayUtility) {
+			, protected array: __array.IArrayUtility) {
 		this.observable = observableFactory.getInstance();
 	}
 
@@ -35,12 +37,27 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		return this.observable.register(action, event);
 	}
 
+	get needsRefinedSearch(): boolean {
+		let noItemsDisplayed = __object.objectUtility.isNullOrEmpty(this.dataSet);
+		let moreItemsOnServer = this._isEmpty === false || (this.rawDataSet != null && this.rawDataSet.length < this.count);
+		return noItemsDisplayed && moreItemsOnServer;
+	}
+
+	get isEmpty(): boolean {
+		return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
+			&& (this._isEmpty != null ? this._isEmpty : true);
+	}
+
+	set isEmpty(value: boolean) {
+		this._isEmpty = value;
+	}
+
 	processData(): void {
 		var processedData: IProcessResult<TDataType>;
 
 		if (this.countFilterGroups) {
 			processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
-																			, <{ [index: string]: filters.IFilterWithCounts }>this.filters
+																			, <filters.IFilterWithCounts[]>this.filters
 																			, this.pager
 																			, this.rawDataSet);
 		} else {
@@ -67,6 +84,21 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		this.count = processedData.count;
 		this.dataSet = processedData.dataSet;
 		this.filteredDataSet = processedData.filteredDataSet;
+	}
+
+	onSortChange(): void {
+		if (!this.loadingDataSet) {
+			this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
+			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+			this.observable.fire(events.redrawing);
+		}
+	}
+
+	onPagingChange(): void {
+		if (!this.loadingDataSet) {
+			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
+			this.observable.fire(events.redrawing);
+		}
 	}
 
 	refresh(): void {

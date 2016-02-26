@@ -14,24 +14,20 @@ export interface IWrappedItem<TItemType> {
     filterData: any;
 }
 export interface IDataSourceProcessor {
-    process<TDataType>(sorts: ISort[], filters: {
-        [index: string]: filters.IFilter;
-    }, pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
-    processAndCount<TDataType>(sorts: ISort[], filters: {
-        [index: string]: filters.IFilterWithCounts;
-    }, pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    process<TDataType>(sorts: ISort[], filters: filters.IFilter[], pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    processAndCount<TDataType>(sorts: ISort[], filters: filters.IFilterWithCounts[], pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
+    page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
 }
 export declare class DataSourceProcessor implements IDataSourceProcessor {
     private object;
     private sorter;
     static $inject: string[];
     constructor(object: __object.IObjectUtility, sorter: ISorter);
-    process<TDataType>(sorts: ISort[], filters: {
-        [index: string]: filters.IFilter;
-    }, pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
-    processAndCount<TDataType>(sorts: ISort[], filters: {
-        [index: string]: filters.IFilterWithCounts;
-    }, pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    process<TDataType>(sorts: ISort[], filters: filters.IFilter[], pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    processAndCount<TDataType>(sorts: ISort[], filters: filters.IFilterWithCounts[], pager: IDataPager, data: TDataType[]): IProcessResult<TDataType>;
+    sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
+    page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
     private wrapData<TDataType>(data);
     private unwrapData<TDataType>(data);
 }

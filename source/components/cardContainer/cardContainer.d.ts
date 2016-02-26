@@ -3,6 +3,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __parentChild = services.parentChildBehavior;
+import __genericSearchFilter = services.genericSearchFilter;
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
@@ -15,24 +16,13 @@ export declare var defaultSelectionTitle: string;
 export interface ICardContainerScope extends angular.IScope {
     containerService: ICardContainerService;
     containerData: any;
+    builder: ICardContainerBuilder;
 }
 export interface ICardContainerBindings {
     builder: ICardContainerBuilder;
-    source: IDataSource<any>;
-    filters: filters.IFilter[] | {
-        [index: string]: filters.IFilter;
-    };
-    paging: boolean;
-    columns: IColumn[];
-    containerData: any;
     cardController: string;
     cardControllerAs: string;
     cardAs: string;
-    clickableCards: boolean;
-    maxColumnSorts: number;
-    permanentFooters: boolean;
-    selectableCards: boolean;
-    disableSelection(item: any): string;
 }
 export interface ICardBehavior {
     close(): boolean;
@@ -53,9 +43,8 @@ export declare class CardContainerController {
     private parentChild;
     builder: CardContainerBuilder;
     source: IDataSource<any>;
-    filters: filters.IFilter[] | {
-        [index: string]: filters.IFilter;
-    };
+    filters: filters.IFilter[];
+    searchFilter: __genericSearchFilter.IGenericSearchFilter;
     paging: boolean;
     columns: IColumn[];
     containerData: any;
@@ -73,7 +62,6 @@ export declare class CardContainerController {
     sortDirection: ISortDirections;
     numberSelected: number;
     selectionColumn: IColumn;
-    pager: dataPager.IDataPager;
     private maxColSorts;
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;

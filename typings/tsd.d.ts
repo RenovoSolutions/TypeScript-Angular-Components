@@ -3,6 +3,7 @@
 /// <reference path="bootstrapDateTimePicker.d.ts" />
 /// <reference path="signaturePadExternalModule.d.ts" />
 /// <reference path="uuid.d.ts" />
+/// <reference path="rx.d.ts" />
 
 // TSD managed typings
 /// <reference path="angularjs/angular.d.ts" />

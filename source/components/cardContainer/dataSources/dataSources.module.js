@@ -1,7 +1,4 @@
 'use strict';
-function __export(m) {
-    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-}
 var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var sorts_module_1 = require('../sorts/sorts.module');
@@ -15,13 +12,14 @@ var serverSideDataSource = require('./serverSideDataSource/serverSideDataSource.
 exports.serverSideDataSource = serverSideDataSource;
 var simpleDataSource = require('./simpleDataSource/simpleDataSource.service');
 exports.simpleDataSource = simpleDataSource;
+var smartDataSource = require('./smartDataSource/smartDataSource.service');
+exports.smartDataSource = smartDataSource;
 var events = require('./dataSourceEvents');
 exports.events = events;
 var dataSourceProcessor = require('./dataSourceProcessor.service');
 exports.dataSourceProcessor = dataSourceProcessor;
 var dataSourceBase = require('./dataSourceBase.service');
 exports.dataSourceBase = dataSourceBase;
-__export(require('./dataSource'));
 exports.moduleName = 'rl.ui.components.cardContainer.dataSources';
 angular.module(exports.moduleName, [
     typescript_angular_utilities_1.services.object.moduleName,
@@ -31,6 +29,7 @@ angular.module(exports.moduleName, [
     dataServiceDataSource.moduleName,
     serverSideDataSource.moduleName,
     simpleDataSource.moduleName,
+    smartDataSource.moduleName,
 ])
     .service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);
 //# sourceMappingURL=dataSources.module.js.map

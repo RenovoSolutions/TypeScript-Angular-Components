@@ -9,6 +9,7 @@ import * as dataPager from './dataPager/dataPager.service';
 import * as dataServiceDataSource from './dataServiceDataSource/dataServiceDataSource.service';
 import * as serverSideDataSource from './serverSideDataSource/serverSideDataSource.service';
 import * as simpleDataSource from './simpleDataSource/simpleDataSource.service';
+import * as smartDataSource from './smartDataSource/smartDataSource.service';
 import * as events from './dataSourceEvents';
 import * as dataSourceProcessor from './dataSourceProcessor.service';
 import * as dataSourceBase from './dataSourceBase.service';
@@ -19,6 +20,7 @@ export {
 	dataServiceDataSource,
 	serverSideDataSource,
 	simpleDataSource,
+	smartDataSource,
 	events,
 	dataSourceProcessor,
 	dataSourceBase,
@@ -38,5 +40,6 @@ angular.module(moduleName, [
 	dataServiceDataSource.moduleName,
 	serverSideDataSource.moduleName,
 	simpleDataSource.moduleName,
+	smartDataSource.moduleName,
 ])
 	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);

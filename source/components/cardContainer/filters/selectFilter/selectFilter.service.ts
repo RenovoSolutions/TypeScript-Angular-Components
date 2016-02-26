@@ -1,7 +1,8 @@
 'use strict';
 
 import * as _ from 'lodash';
-import {filters} from 'typescript-angular-utilities';
+import {filters, services} from 'typescript-angular-utilities';
+import __object = services.object;
 
 export let factoryName: string = 'rlSelectFilterFactory';
 
@@ -9,23 +10,31 @@ export interface ISelectFilter<T> extends filters.IFilter {
 	selectedValue: any;
 }
 
-class SelectFilter<T> implements ISelectFilter<T> {
+export interface IEqualityFunction<TFilterType> {
+	(item1: TFilterType, item2: TFilterType): boolean;
+}
+
+class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	selectedValue: any;
 	type: string = 'selectFilter';
 
-	constructor(private valueSelector: string | { (item:T):any }) {}
+	constructor(private valueSelector: string | { (item:TDataType):any }, private comparer: IEqualityFunction<TFilterType>) {}
 
-	filter(item: T): boolean {
+	filter(item: TDataType): boolean {
 		if (this.selectedValue == null) {
 			return true;
 		}
 
-		return this.getValue(item) === this.selectedValue;
+		if (this.comparer != null) {
+			return this.comparer(this.getValue(item), this.selectedValue);
+		}
+
+		return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
 	}
 
-	private getValue(item: T): any {
+	private getValue(item: TDataType): any {
 		if (_.isFunction(this.valueSelector)) {
-			let func = (<{ (item: T): any }>this.valueSelector);
+			let func = (<{ (item: TDataType): any }>this.valueSelector);
 			return(func(item))
 		} else {
 			let property = <string>this.valueSelector;
@@ -36,13 +45,13 @@ class SelectFilter<T> implements ISelectFilter<T> {
 }
 
 export interface ISelectFilterFactory  {
-	getInstance<T>(valueSelector: string | { (item:T):any }): ISelectFilter<T>;
+	getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
 }
 
 export function selectFilterFactory(): ISelectFilterFactory {
 	return {
-		getInstance<T>(valueSelector: string | { (item:T):any }): ISelectFilter<T> {
-			return new SelectFilter<T>(valueSelector);
+		getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+			return new SelectFilter<TDataType, TFilterType>(valueSelector, comparer);
 		},
 	};
 }
