@@ -15,9 +15,9 @@ import __date = services.date;
 
 export class DateTimeStaticController {
 	dateValue: string;
-	includeTime: boolean = false;
+	includeTime: boolean;
 	displayValue: string;
-	displayTimeZone: boolean = true;
+	displayTimeZone: boolean ;
 
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
@@ -25,7 +25,8 @@ export class DateTimeStaticController {
 			this.displayValue = moment(this.dateValue).format('MM/DD/YYYY');
 
 			if (this.includeTime) {
-				this.displayValue = this.displayValue + moment(this.dateValue).format('+-HHmm');
+				this.displayTimeZone = true;
+				this.displayValue = this.displayValue + moment(this.dateValue).format(' h:mm a');
 			}
 		}
 	}
@@ -42,8 +43,8 @@ function dateTimeStatic(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			dateValue: '=',
-			includeTime: '=',
-			displayTimeZone: '='
+			includeTime: '=?',
+			displayTimeZone: '=?'
 		}
 	};
 }
