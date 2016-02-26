@@ -21,7 +21,6 @@ export class DateTimeStaticController {
 
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
-		console.log(new Date(this.dateValue));
 		if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
 			this.displayValue = moment(this.dateValue).format('MM/DD/YYYY');
 
