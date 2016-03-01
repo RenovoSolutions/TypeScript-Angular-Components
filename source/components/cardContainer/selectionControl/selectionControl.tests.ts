@@ -159,6 +159,7 @@ describe('selectionControl', () => {
 
 		scope = controllerResult.scope;
 		selection = controllerResult.controller;
+		selection.$onInit();
 	}
 
 	function setAllSelected(items: IItemMock[]): void {
