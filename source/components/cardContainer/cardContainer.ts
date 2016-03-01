@@ -395,10 +395,12 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 				if (footer.length === 0) {
 					var defaultFooter = require('./defaultCardContainerFooter.html');
-					footer = $compile(defaultFooter)(scope);
+					footer = footerArea.append(defaultFooter);
+					$compile(footer)(scope);
 				}
-
-				footerArea.append(footer);
+				else {
+					footerArea.append(footer);
+				}
 			});
 		}
 	};
