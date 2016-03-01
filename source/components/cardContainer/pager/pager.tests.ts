@@ -26,6 +26,7 @@ interface IDataPagerMock {
 interface IDataSourceMock {
 	onPagingChange: Sinon.SinonSpy;
 	count: number;
+	pager: IDataPagerMock;
 }
 
 describe('PagerController', () => {
@@ -313,12 +314,12 @@ describe('PagerController', () => {
 		dataSource = {
 			count: lastPage,
 			onPagingChange: sinon.spy(),
+			pager: dataPager,
 		};
 
 		var bindings: any = {
 			pageCount: pageCount,
-			containerService: {
-				pager: dataPager,
+			cardContainer: {
 				dataSource: dataSource,
 			},
 		};
@@ -328,6 +329,7 @@ describe('PagerController', () => {
 
 		scope = controllerResult.scope;
 		pager = controllerResult.controller;
+		pager.$onInit();
 
 		if (lastPage != null) {
 			scope.$digest();

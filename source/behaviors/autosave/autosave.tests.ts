@@ -83,12 +83,6 @@ describe('AutosaveController', () => {
 			childLink = <any>{};
 		}
 
-		var $element: any = {
-			controller(): IMockFormController {
-				return null;
-			},
-		};
-
 		var $parse: any = (expression: string): Sinon.SinonSpy => {
 			if (expression === 'link') {
 				return sinon.spy((): IChildLinkMock => {
@@ -99,11 +93,17 @@ describe('AutosaveController', () => {
 			}
 		};
 
+		var bindings: any = {
+			keyupListener: sinon.spy(),
+			autosaveController: {},
+		}
+
 		var controllerResult: test.IControllerResult<AutosaveController>
 			= test.angularFixture.controllerWithBindings<AutosaveController>(controllerName
-				, { keyupListener: sinon.spy() }, { $element: $element, $parse: $parse }, { childLink: childLink, });
+				, bindings, { $element: {}, $parse: $parse }, { childLink: childLink, });
 
 		scope = <IParentScope>controllerResult.scope;
 		autosave = controllerResult.controller;
+		autosave.$onInit();
 	}
 });

@@ -2,8 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['cardContainerBuilder'];
-	function TestController(cardContainerBuilderFactory) {
+	TestController.$inject = ['$scope', 'cardContainerBuilder'];
+	function TestController($scope, cardContainerBuilderFactory) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
@@ -30,6 +30,12 @@
 			{ name: 'Item 5', value: 5 },
 			{ name: 'Item 6', value: 6 },
 		];
+
+		self.count = 0;
+		self.save = function () {
+			self.count++;
+			$scope.myForm.$setPristine();
+		};
 
 		self.builder = cardContainerBuilderFactory.getInstance();
 		self.builder.dataSource.buildSimpleDataSource(items);

@@ -12,6 +12,7 @@ import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
+import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as lazyLoad from './lazyLoad/lazyLoad';
@@ -48,6 +49,7 @@ export {
 	checkbox,
 	commaList,
 	dateTime,
+	dateTimeStatic,
 	dialog,
 	genericContainer,
 	lazyLoad,
@@ -83,6 +85,7 @@ angular.module(moduleName, [
 	checkbox.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
+	dateTimeStatic.moduleName,
 	dialog.moduleName,
 	genericContainer.moduleName,
 	lazyLoad.moduleName,

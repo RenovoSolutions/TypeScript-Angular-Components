@@ -9,7 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer.service';
+import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
 export var directiveName: string = 'rlSelectionControl';
@@ -19,20 +19,22 @@ export class SelectionControlController {
 	selectedItems: number;
 	pagingEnabled: boolean;
 	dataSource: IDataSource<any>;
-	private containerService: ICardContainerService;
+	private cardContainer: CardContainerController;
 
 	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor(private $scope: angular.IScope
-			, bool: __boolean.IBooleanUtility) {
-		if (this.containerService == null) {
+			, private bool: __boolean.IBooleanUtility) {}
+
+	$onInit(): void {
+		if (this.cardContainer == null) {
 			return;
 		}
 
-		this.selectedItems = this.containerService.numberSelected;
-		this.pagingEnabled = bool.toBool(this.containerService.pager);
-		this.dataSource = this.containerService.dataSource;
+		this.selectedItems = this.cardContainer.numberSelected;
+		this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
+		this.dataSource = this.cardContainer.dataSource;
 
-		$scope.$watch((): number => { return this.containerService.numberSelected; }, (value: number): void => {
+		this.$scope.$watch((): number => { return this.cardContainer.numberSelected; }, (value: number): void => {
 			this.selectedItems = value;
 		});
 	}
@@ -74,13 +76,12 @@ export function selectionControl(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
+		require: { cardContainer: '^^rlCardContainer' },
 		template: require('./selectionControl.html'),
 		controller: controllerName,
 		controllerAs: 'selection',
 		scope: {},
-		bindToController: {
-			containerService: '=',
-		},
+		bindToController: {},
 	};
 }
 

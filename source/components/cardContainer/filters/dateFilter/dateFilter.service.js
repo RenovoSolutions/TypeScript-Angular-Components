@@ -23,7 +23,7 @@ var DateFilter = (function () {
             }
             else {
                 //increase it by 1 days. to inlcude the selectec date in the range.
-                selectedDate1 = moment(this.selectedDate1).add('days', 1).toDate();
+                selectedDate1 = moment(this.selectedDate1).add(1, 'days').toDate();
             }
             return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
         }

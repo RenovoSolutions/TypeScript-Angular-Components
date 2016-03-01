@@ -9,7 +9,6 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var dataSources_module_1 = require('./dataSources/dataSources.module');
 var sorts_module_1 = require('./sorts/sorts.module');
 var breakpoint_1 = require('../../services/breakpoints/breakpoint');
-var cardContainer_service_1 = require('./cardContainer.service');
 exports.directiveName = 'rlCardContainer';
 exports.controllerName = 'CardContainerController';
 exports.defaultMaxColumnSorts = 2;
@@ -90,7 +89,6 @@ var CardContainerController = (function () {
         if (this.dataSource.sorts == null) {
             this.dataSource.sorts = [];
         }
-        $scope.containerService = new cardContainer_service_1.CardContainerService(this);
         $scope.containerData = this.containerData;
     }
     CardContainerController.prototype.sortSelected = function () {
@@ -250,7 +248,7 @@ function cardContainer($compile) {
             // summary: a builder for the card container
             builder: '=?',
             // summary: controller shared by all components on a card
-            // remarks: this controller cannot override any of the following variable names:
+            // remarks: this controller cannot override any of the following letiable names:
             //          columns
             //          item
             //          contentTemplate
@@ -278,15 +276,21 @@ function cardContainer($compile) {
                 var header = clone.filter('rl-container-header');
                 if (header.length === 0) {
                     var defaultHeader = require('./defaultCardContainerHeader.html');
-                    header = $compile(defaultHeader)(scope);
+                    header = headerArea.append(defaultHeader);
+                    $compile(header)(scope);
                 }
-                headerArea.append(header);
+                else {
+                    headerArea.append(header);
+                }
                 var footer = clone.filter('rl-container-footer');
                 if (footer.length === 0) {
                     var defaultFooter = require('./defaultCardContainerFooter.html');
-                    footer = $compile(defaultFooter)(scope);
+                    footer = footerArea.append(defaultFooter);
+                    $compile(footer)(scope);
                 }
-                footerArea.append(footer);
+                else {
+                    footerArea.append(footer);
+                }
             });
         }
     };

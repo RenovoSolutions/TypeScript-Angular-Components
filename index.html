@@ -20,6 +20,13 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
+				<ng-form name="myForm" rl-autosave save="test.save()">
+					<rl-textbox ng-model="test.val"></rl-textbox>
+				</ng-form>
+				<div>
+					{{test.count}}
+				</div>
+
 				<rl-generic-container selector="test.toggle">
 					<template default>
 						<span>1, 2, 3, 4, 5</span>

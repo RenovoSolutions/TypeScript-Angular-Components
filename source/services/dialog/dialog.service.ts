@@ -1,9 +1,9 @@
 'use strict';
 import * as ng from 'angular';
 
-import * as baseDialog from './baseDialog/baseDialog.module';
+import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
 
-export { baseDialog };
+export { bootstrapModalDialog };
 
 export var moduleName: string = 'rl.ui.services.dialog';
 export var serviceName: string = 'dialog';
@@ -35,7 +35,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 
 export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
 	setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-	$get(baseDialog: baseDialog.BaseDialogService): IDialogService<TDialogSettings>;
+	$get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogService<TDialogSettings>;
 }
 
 export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
@@ -45,16 +45,16 @@ export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider
 		setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 			this.dialogImplementation = dialogImplementation;
 		},
-		$get: (baseDialog: baseDialog.BaseDialogService): IDialogImplementation<TDialogSettings> => {
+		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogImplementation<TDialogSettings> => {
 			let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																			? this.dialogImplementation
-																			: baseDialog;
+																			: bootstrapModalDialog;
 			return new DialogService<TDialogSettings>(dialogImplementation);
 		},
 	};
-	provider.$get.$inject = [baseDialog.serviceName];
+	provider.$get.$inject = [bootstrapModalDialog.serviceName];
 	return provider;
 }
 
-ng.module(moduleName, [baseDialog.moduleName])
+ng.module(moduleName, [bootstrapModalDialog.moduleName])
 	.provider(serviceName, dialogServiceProvider);

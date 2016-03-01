@@ -9,6 +9,14 @@ export let moduleName: string = 'rl.ui.components.dialog';
 export let directiveName: string = 'rlDialog';
 export let controllerName: string = 'DialogController';
 
+interface IDialogScope extends angular.IScope{
+	$parent: IParentScope;
+}
+
+interface IParentScope extends angular.IScope{
+	$close: { (): void };
+}
+
 export interface IDialogBindings {
 	autosave: boolean;
 }
@@ -16,6 +24,8 @@ export interface IDialogBindings {
 export class DialogController implements IDialogBindings {
 	autosave: boolean;
 	hasFooter: boolean;
+	close: { (): void };
+
 }
 
 dialog.$inject = ['$compile'];
@@ -31,11 +41,12 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 		bindToController: {
 			autosave: '=',
 		},
-		link(scope: angular.IScope
+		link(scope: IDialogScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
 			, controller: DialogController
 			, transclude: angular.ITranscludeFunction): void {
+			controller.close = scope.$parent.$close;
 			transclude((clone: JQuery, dialogScope: angular.IScope): void => {
 				let header: JQuery = clone.filter('rl-dialog-header');
 				let content: JQuery = clone.filter('rl-dialog-content');

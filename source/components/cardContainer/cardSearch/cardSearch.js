@@ -7,15 +7,19 @@ exports.defaultSearchPlaceholder = 'Search';
 exports.defaultSearchDelay = 1000;
 var CardSearchController = (function () {
     function CardSearchController($scope, $timeout) {
-        var _this = this;
+        this.$scope = $scope;
+        this.$timeout = $timeout;
         this.searchLengthError = false;
         this.hasSearchFilter = true;
-        if (this.containerService == null) {
+    }
+    CardSearchController.prototype.$onInit = function () {
+        var _this = this;
+        if (this.cardContainer == null) {
             return;
         }
         this.minSearchError = 'You must enter at least {{cardSearch.minSearchLength}} characters to perform a search';
         if (this.searchFilter == null) {
-            var filter = this.containerService.searchFilter;
+            var filter = this.cardContainer.searchFilter;
             this.searchFilter = filter;
             if (filter == null) {
                 this.hasSearchFilter = false;
@@ -23,27 +27,27 @@ var CardSearchController = (function () {
         }
         if (this.hasSearchFilter) {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.containerService.dataSource;
+            var dataSource = this.cardContainer.dataSource;
             var delay = this.delay != null
                 ? this.delay
                 : exports.defaultSearchDelay;
             var timer;
-            $scope.$watch(function () { return _this.searchText; }, function (search) {
+            this.$scope.$watch(function () { return _this.searchText; }, function (search) {
                 _this.searchFilter.searchText = search;
                 _this.minSearchLength = _this.searchFilter.minSearchLength;
                 _this.validateSearchLength(search, _this.minSearchLength);
                 if (timer != null) {
-                    $timeout.cancel(timer);
+                    _this.$timeout.cancel(timer);
                 }
-                timer = $timeout(dataSource.refresh.bind(dataSource), delay);
+                timer = _this.$timeout(dataSource.refresh.bind(dataSource), delay);
             });
-            $scope.$watch(function () {
+            this.$scope.$watch(function () {
                 return _this.searchFilter.searchText;
             }, function () {
                 _this.searchText = _this.searchFilter.searchText;
             });
         }
-    }
+    };
     CardSearchController.prototype.validateSearchLength = function (search, minLength) {
         // show error if search string exists but is below minimum size
         this.searchLengthError = search != null
@@ -58,13 +62,13 @@ function cardSearch() {
     'use strict';
     return {
         restrict: 'E',
+        require: { cardContainer: '^^rlCardContainer' },
         template: require('./cardSearch.html'),
         controller: exports.controllerName,
         controllerAs: 'cardSearch',
         scope: {},
         bindToController: {
             delay: '=searchDelay',
-            containerService: '=',
             searchFilter: '=?',
         },
     };
