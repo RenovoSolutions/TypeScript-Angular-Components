@@ -37,7 +37,6 @@ export {
 };
 
 export * from './cardContainer';
-export * from './cardContainer.service';
 export * from './column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer';

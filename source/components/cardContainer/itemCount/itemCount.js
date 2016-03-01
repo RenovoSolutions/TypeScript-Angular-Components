@@ -6,11 +6,12 @@ function itemCount() {
     'use strict';
     return {
         restrict: 'E',
-        require: '^^rlCardContainer',
+        require: { cardContainer: '^^rlCardContainer' },
         template: require('./itemCount.html'),
-        scope: {
-            containerService: '=',
-        },
+        controller: function () { },
+        controllerAs: 'itemCount',
+        scope: {},
+        bindToController: true,
     };
 }
 exports.itemCount = itemCount;

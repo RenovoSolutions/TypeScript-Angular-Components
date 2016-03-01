@@ -7,16 +7,13 @@ import __genericSearchFilter = services.genericSearchFilter;
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
-import { ICardContainerService } from './cardContainer.service';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
-export declare var directiveName: string;
-export declare var controllerName: string;
-export declare var defaultMaxColumnSorts: number;
-export declare var defaultSelectionTitle: string;
+export declare let directiveName: string;
+export declare let controllerName: string;
+export declare let defaultMaxColumnSorts: number;
+export declare let defaultSelectionTitle: string;
 export interface ICardContainerScope extends angular.IScope {
-    containerService: ICardContainerService;
     containerData: any;
-    builder: ICardContainerBuilder;
 }
 export interface ICardContainerBindings {
     builder: ICardContainerBuilder;

@@ -19,7 +19,7 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-interface IContainerServiceMock {
+interface ICardContainerMock {
 	searchFilter: any;
 	dataSource: any;
 }
@@ -27,7 +27,7 @@ interface IContainerServiceMock {
 describe('CardSearchController', () => {
 	var scope: angular.IScope;
 	var cardSearch: CardSearchController;
-	var containerService: IContainerServiceMock;
+	var cardContainer: ICardContainerMock;
 	var filter: any;
 	var $timeout: angular.ITimeoutService;
 	var refreshSpy: Sinon.SinonSpy;
@@ -39,7 +39,7 @@ describe('CardSearchController', () => {
 
 		filter = {};
 
-		containerService = {
+		cardContainer = {
 			searchFilter: filter,
 			dataSource: {
 				refresh: refreshSpy,
@@ -57,7 +57,7 @@ describe('CardSearchController', () => {
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
-		containerService.searchFilter = null;
+		cardContainer.searchFilter = null;
 		buildController();
 		expect(cardSearch.hasSearchFilter).to.be.false;
 		expect(cardSearch.searchPlaceholder).to.not.exist;
@@ -126,7 +126,7 @@ describe('CardSearchController', () => {
 	function buildController(delay?: number, filter?: any): void {
 		var bindings: any = {
 			delay: delay,
-			containerService: containerService,
+			cardContainer: cardContainer,
 			searchFilter: filter,
 		};
 
@@ -135,5 +135,6 @@ describe('CardSearchController', () => {
 
 		scope = controllerResult.scope;
 		cardSearch = controllerResult.controller;
+		cardSearch.$onInit();
 	}
 });

@@ -35,6 +35,9 @@ export class AutosaveController {
 	autosave: IAutosaveService;
 	keyupListener: { (callback: triggers.IChangeListener): triggers.IClearChangeListener };
 
+	autosaveController: AutosaveController;
+	form: angular.IFormController;
+
 	static $inject: string[] = ['$scope'
 							, '$attrs'
 							, '$parse'
@@ -44,41 +47,48 @@ export class AutosaveController {
 							, __parentChild.serviceName
 							, __objectUtility.serviceName];
 	constructor(private $scope: angular.IScope
-		, $attrs: IAutosaveAttributes
-		, $parse: angular.IParseService
+		, private $attrs: IAutosaveAttributes
+		, private $parse: angular.IParseService
 		, private $element: angular.IAugmentedJQuery
 		, private $timeout: angular.ITimeoutService
-		, autosaveFactory: IAutosaveServiceFactory
-		, parentChildBehavior: __parentChild.IParentChildBehaviorService
-		, objectUtility: __objectUtility.IObjectUtility) {
-		var contentForm: angular.IFormController = $element.controller('form');
+		, private autosaveFactory: IAutosaveServiceFactory
+		, private parentChildBehavior: __parentChild.IParentChildBehaviorService
+		, private objectUtility: __objectUtility.IObjectUtility) {}
 
-		var hasValidator: boolean = objectUtility.isNullOrWhitespace($attrs.validate) === false;
+	$onInit(): void {
+		this.autosaveController.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
+			this.$element.on('keyup', (): void => { this.$scope.$apply(callback); });
+			return (): void => {
+				this.$element.off('keyup');
+			};
+		};
 
-		var validateExpression: angular.ICompiledExpression = $parse($attrs.validate);
+		var hasValidator: boolean = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
+
+		var validateExpression: angular.ICompiledExpression = this.$parse(this.$attrs.validate);
 		var validate: { (): boolean };
 
 		if (hasValidator) {
 			validate = (): boolean => {
-				return validateExpression($scope);
+				return validateExpression(this.$scope);
 			};
 		}
 
-		var saveExpression: angular.ICompiledExpression = $parse($attrs.save);
+		var saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
 		var save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
-			return saveExpression($scope);
+			return saveExpression(this.$scope);
 		};
 
-		let debounce: number = $parse($attrs.debounceDuration)($scope);
+		let debounce: number = this.$parse(this.$attrs.debounceDuration)(this.$scope);
 
-		let unbind: Function = $scope.$watch((): any => { return this.keyupListener; }, (keyupListener: any): void => {
+		let unbind: Function = this.$scope.$watch((): any => { return this.keyupListener; }, (keyupListener: any): void => {
 			if (keyupListener) {
-				this.autosave = autosaveFactory.getInstance({
+				this.autosave = this.autosaveFactory.getInstance({
 					save: save,
 					validate: validate,
-					contentForm: contentForm,
+					contentForm: this.form,
 					debounceDuration: debounce,
-					triggers: $attrs.triggers,
+					triggers: this.$attrs.triggers,
 					setChangeListener: keyupListener,
 				});
 
@@ -87,8 +97,8 @@ export class AutosaveController {
 				};
 
 				// register autosave behavior and assign the value back to the parent
-				var childLink: any = $parse($attrs.rlAutosave)($scope);
-				parentChildBehavior.registerChildBehavior(childLink, behavior);
+				var childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
+				this.parentChildBehavior.registerChildBehavior(childLink, behavior);
 
 				unbind();
 			}
@@ -100,17 +110,12 @@ export function autosave(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',
-		require: ['rlAutosave', '?ngForm'],
-		controller: controllerName,
-		link(scope: angular.IScope, element: angular.IAugmentedJQuery, attrs: any, controllers: any[]): void {
-			let autosaveController: AutosaveController = controllers[0];
-			autosaveController.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
-				element.on('keyup', (): void => { scope.$apply(callback); });
-				return (): void => {
-					element.off('keyup');
-				};
-			};
+		require: {
+			autosaveController: 'rlAutosave',
+			form: '?ngForm',
 		},
+		controller: controllerName,
+		bindToController: true,
 	};
 }
 

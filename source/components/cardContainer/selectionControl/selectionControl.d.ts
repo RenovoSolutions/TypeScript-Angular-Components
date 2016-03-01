@@ -7,12 +7,14 @@ export declare var directiveName: string;
 export declare var controllerName: string;
 export declare class SelectionControlController {
     private $scope;
+    private bool;
     selectedItems: number;
     pagingEnabled: boolean;
     dataSource: IDataSource<any>;
-    private containerService;
+    private cardContainer;
     static $inject: string[];
     constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility);
+    $onInit(): void;
     selectPage(): void;
     selectAll(): void;
     clearPage(): void;
