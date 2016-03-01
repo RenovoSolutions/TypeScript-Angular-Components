@@ -9,44 +9,56 @@ exports.directiveName = 'rlAutosave';
 exports.controllerName = 'AutosaveController';
 var AutosaveController = (function () {
     function AutosaveController($scope, $attrs, $parse, $element, $timeout, autosaveFactory, parentChildBehavior, objectUtility) {
-        var _this = this;
         this.$scope = $scope;
+        this.$attrs = $attrs;
+        this.$parse = $parse;
         this.$element = $element;
         this.$timeout = $timeout;
-        var contentForm = $element.controller('form');
-        var hasValidator = objectUtility.isNullOrWhitespace($attrs.validate) === false;
-        var validateExpression = $parse($attrs.validate);
+        this.autosaveFactory = autosaveFactory;
+        this.parentChildBehavior = parentChildBehavior;
+        this.objectUtility = objectUtility;
+    }
+    AutosaveController.prototype.$onInit = function () {
+        var _this = this;
+        this.autosaveController.keyupListener = function (callback) {
+            _this.$element.on('keyup', function () { _this.$scope.$apply(callback); });
+            return function () {
+                _this.$element.off('keyup');
+            };
+        };
+        var hasValidator = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
+        var validateExpression = this.$parse(this.$attrs.validate);
         var validate;
         if (hasValidator) {
             validate = function () {
-                return validateExpression($scope);
+                return validateExpression(_this.$scope);
             };
         }
-        var saveExpression = $parse($attrs.save);
+        var saveExpression = this.$parse(this.$attrs.save);
         var save = function () {
-            return saveExpression($scope);
+            return saveExpression(_this.$scope);
         };
-        var debounce = $parse($attrs.debounceDuration)($scope);
-        var unbind = $scope.$watch(function () { return _this.keyupListener; }, function (keyupListener) {
+        var debounce = this.$parse(this.$attrs.debounceDuration)(this.$scope);
+        var unbind = this.$scope.$watch(function () { return _this.keyupListener; }, function (keyupListener) {
             if (keyupListener) {
-                _this.autosave = autosaveFactory.getInstance({
+                _this.autosave = _this.autosaveFactory.getInstance({
                     save: save,
                     validate: validate,
-                    contentForm: contentForm,
+                    contentForm: _this.form,
                     debounceDuration: debounce,
-                    triggers: $attrs.triggers,
+                    triggers: _this.$attrs.triggers,
                     setChangeListener: keyupListener,
                 });
                 var behavior = {
                     autosave: _this.autosave.autosave,
                 };
                 // register autosave behavior and assign the value back to the parent
-                var childLink = $parse($attrs.rlAutosave)($scope);
-                parentChildBehavior.registerChildBehavior(childLink, behavior);
+                var childLink = _this.$parse(_this.$attrs.rlAutosave)(_this.$scope);
+                _this.parentChildBehavior.registerChildBehavior(childLink, behavior);
                 unbind();
             }
         });
-    }
+    };
     AutosaveController.$inject = ['$scope',
         '$attrs',
         '$parse',
@@ -62,17 +74,12 @@ function autosave() {
     'use strict';
     return {
         restrict: 'A',
-        require: ['rlAutosave', '?ngForm'],
-        controller: exports.controllerName,
-        link: function (scope, element, attrs, controllers) {
-            var autosaveController = controllers[0];
-            autosaveController.keyupListener = function (callback) {
-                element.on('keyup', function () { scope.$apply(callback); });
-                return function () {
-                    element.off('keyup');
-                };
-            };
+        require: {
+            autosaveController: 'rlAutosave',
+            form: '?ngForm',
         },
+        controller: exports.controllerName,
+        bindToController: true,
     };
 }
 exports.autosave = autosave;
