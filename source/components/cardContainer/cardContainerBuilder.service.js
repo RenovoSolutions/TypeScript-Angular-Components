@@ -106,6 +106,11 @@ var DataSourceBuilder = (function () {
         this.parent._dataSource = factory.getInstance(getDataSet);
         return this.parent._dataSource;
     };
+    DataSourceBuilder.prototype.buildSmartDataSource = function (getDataSet) {
+        var factory = this.$injector.get(dataSources.smartDataSource.factoryName);
+        this.parent._dataSource = factory.getInstance(getDataSet);
+        return this.parent._dataSource;
+    };
     DataSourceBuilder.prototype.buildCustomDataSource = function (dataSource) {
         this.parent._dataSource = dataSource;
         return this.parent._dataSource;

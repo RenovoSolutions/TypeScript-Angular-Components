@@ -25,6 +25,7 @@ function dialog($compile) {
             autosave: '=',
         },
         link: function (scope, element, attrs, controller, transclude) {
+            controller.close = scope.$parent.$close;
             transclude(function (clone, dialogScope) {
                 var header = clone.filter('rl-dialog-header');
                 var content = clone.filter('rl-dialog-content');

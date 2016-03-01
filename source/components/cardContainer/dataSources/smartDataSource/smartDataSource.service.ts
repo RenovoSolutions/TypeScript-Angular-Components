@@ -48,7 +48,7 @@ export interface IDataResult<TDataType> {
 }
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	throttled: boolean;
+	throttled: boolean = true;
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];
 	private subscriptions: Rx.Subscriber[];
@@ -115,6 +115,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 			}
 			return null;
 		});
+		this.appliedFilters = _.omitBy(this.appliedFilters, (value: any): boolean => { return value == null; });
 	}
 
 	private setupSubscriptions() {
@@ -123,7 +124,9 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		});
 		this.subscriptions = [];
 		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
-			this.subscriptions.push(filter.subscribe((): void => { this.onFilterChange(filter); }));
+			if (_.isFunction(filter.subscribe)) {
+				this.subscriptions.push(filter.subscribe((): void => { this.onFilterChange(filter); }));
+			}
 		});
 	}
 

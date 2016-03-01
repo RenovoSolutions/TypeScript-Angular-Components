@@ -21,6 +21,7 @@ var SmartDataSource = (function (_super) {
     function SmartDataSource(getDataSet, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {
         _super.call(this, getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
         this.object = object;
+        this.throttled = true;
         this.throttleLimit = 200;
     }
     Object.defineProperty(SmartDataSource.prototype, "filters", {
@@ -76,6 +77,7 @@ var SmartDataSource = (function (_super) {
             }
             return null;
         });
+        this.appliedFilters = _.omitBy(this.appliedFilters, function (value) { return value == null; });
     };
     SmartDataSource.prototype.setupSubscriptions = function () {
         var _this = this;
@@ -84,7 +86,9 @@ var SmartDataSource = (function (_super) {
         });
         this.subscriptions = [];
         _.each(this.filters, function (filter) {
-            _this.subscriptions.push(filter.subscribe(function () { _this.onFilterChange(filter); }));
+            if (_.isFunction(filter.subscribe)) {
+                _this.subscriptions.push(filter.subscribe(function () { _this.onFilterChange(filter); }));
+            }
         });
     };
     SmartDataSource.prototype.onFilterChange = function (filter) {

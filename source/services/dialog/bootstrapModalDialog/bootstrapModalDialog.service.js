@@ -60,7 +60,7 @@ var BootstrapModalDialogService = (function () {
         options.scope = modalScope;
         return options;
     };
-    BootstrapModalDialogService.$inject = ['$modal', '$rootScope', __promise.serviceName];
+    BootstrapModalDialogService.$inject = ['$uibModal', '$rootScope', __promise.serviceName];
     return BootstrapModalDialogService;
 }());
 exports.BootstrapModalDialogService = BootstrapModalDialogService;
