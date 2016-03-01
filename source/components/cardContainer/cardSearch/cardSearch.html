@@ -1,6 +1,6 @@
 <div class="input-group" ng-show="cardSearch.hasSearchFilter" ng-class="{ 'has-error': cardSearch.searchLengthError }">
 	<input class="form-control" type="text" placeholder="{{cardSearch.searchPlaceholder}}" ng-model="cardSearch.searchText"
-			popover="You must enter at least {{cardSearch.minSearchLength}} characters to perform a search" popover-trigger="mouseenter" popover-enable="cardSearch.searchLengthError" />
+		   rl-popover="cardSearch.minSearchError" popover-trigger="mouseenter" popover-enable="cardSearch.searchLengthError" />
 	<div class="input-group-btn">
 		<button type="button" class="btn btn-default" ng-disabled="cardSearch.searchText | isEmpty" ng-click="cardSearch.searchText = null">
 			<i class="fa fa-times"></i>
