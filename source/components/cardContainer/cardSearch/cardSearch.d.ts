@@ -16,12 +16,8 @@ export declare class CardSearchController {
     searchLengthError: boolean;
     minSearchLength: number;
     hasSearchFilter: boolean;
-<<<<<<< HEAD
     minSearchError: string;
-    private containerService;
-=======
     private cardContainer;
->>>>>>> master
     private searchFilter;
     static $inject: string[];
     constructor($scope: angular.IScope, $timeout: angular.ITimeoutService);
