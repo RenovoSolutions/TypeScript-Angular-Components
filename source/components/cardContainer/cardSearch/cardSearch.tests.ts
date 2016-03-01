@@ -135,5 +135,6 @@ describe('CardSearchController', () => {
 
 		scope = controllerResult.scope;
 		cardSearch = controllerResult.controller;
+		cardSearch.$onInit();
 	}
 });

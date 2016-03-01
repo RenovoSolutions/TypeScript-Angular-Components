@@ -384,10 +384,12 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 				if (header.length === 0) {
 					var defaultHeader = require('./defaultCardContainerHeader.html');
-					header = $compile(defaultHeader)(scope);
+					header = headerArea.append(defaultHeader);
+					$compile(header)(scope);
 				}
-
-				headerArea.append(header);
+				else {
+					headerArea.append(header);
+				}
 
 				var footer: JQuery = clone.filter('rl-container-footer');
 
