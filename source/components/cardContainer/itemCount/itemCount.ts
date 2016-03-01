@@ -9,11 +9,12 @@ export function itemCount(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: '^^rlCardContainer',
+		require: { cardContainer: '^^rlCardContainer' },
 		template: require('./itemCount.html'),
-		scope: {
-			containerService: '=',
-		},
+		controller(): void {},
+		controllerAs: 'itemCount',
+		scope: {},
+		bindToController: true,
 	};
 }
 
