@@ -21,7 +21,7 @@ export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSet
 export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
 	closeHandler: IDialogCloseHandler;
 
-	static $inject: string[] = ['$modal', '$rootScope', __promise.serviceName];
+	static $inject: string[] = ['$uibModal', '$rootScope', __promise.serviceName];
 	constructor(private $modal: ng.ui.bootstrap.IModalService
 			, private $rootScope: ng.IRootScopeService
 			, private promise: __promise.IPromiseUtility) { }
