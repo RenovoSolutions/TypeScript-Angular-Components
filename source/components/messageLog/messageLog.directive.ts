@@ -20,13 +20,25 @@ import { ITemplateLoader, serviceName as templateLoaderService } from '../../ser
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';
 
+export enum DeletePermissions{
+	deleteMine = 0,
+	deleteAll = 1,
+	deleteNone = 2
+}
+
+export enum EditPermissions{
+	editMine = 0,
+	editAll = 1,
+	editNone = 2
+}
+
 export interface IMessageLogBindings {
 	pageSize: number;
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
 	currentUser?: IUser;
-	canDelete?: boolean;
+	canDelete?: DeletePermissions;
 
 	selector: { (IMessage): any } | string;
 }
@@ -39,7 +51,7 @@ export class MessageLogController implements IMessageLogBindings {
 	messageAs: string;
 	selector: { (IMessage): any } | string;
 	currentUser: IUser;
-	canDelete: boolean;
+	canDelete: DeletePermissions;
 
 	messages: IMessage[];
 	hasNextPage: boolean;
@@ -102,7 +114,15 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
-		return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.createdBy.id);
+		switch (this.canDelete)
+		{
+			case DeletePermissions.deleteAll:
+				return true;
+			case DeletePermissions.deleteMine:
+				return (this.currentUser == null || this.currentUser.id === entry.createdBy.id);
+			default:
+				return false;
+		}
 	}
 }
 
@@ -136,10 +156,10 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			canDelete: '=?',
 		},
 		link: (scope: angular.IScope,
-			   element: angular.IAugmentedJQuery,
-			   attributes: angular.IAttributes,
-			   controller: MessageLogController,
-			   transclude: angular.ITranscludeFunction): void => {
+			element: angular.IAugmentedJQuery,
+			attributes: angular.IAttributes,
+			controller: MessageLogController,
+			transclude: angular.ITranscludeFunction): void => {
 			controller.templates = templateLoader.loadTemplates(transclude).templates;
 		}
 	};
