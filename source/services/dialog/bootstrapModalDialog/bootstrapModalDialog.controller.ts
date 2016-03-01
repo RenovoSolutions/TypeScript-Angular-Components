@@ -1,20 +1,20 @@
 'use strict';
 import * as ng from 'angular';
 
-import { serviceName, BaseDialogService } from './baseDialog.service';
+import { serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.service';
 
-export var controllerName: string = 'BaseDialogController';
+export var controllerName: string = 'BootstrapModalDialogController';
 
-export interface IBaseDialogScope extends ng.IScope {
+export interface IBootstrapModalDialogScope extends ng.IScope {
 	modalController: string | Function;
 	resolveData: any;
 }
 
-export class BaseDialogController {
+export class BootstrapModalDialogController {
 	static $inject: string[] = ['$scope', '$controller', serviceName];
-	constructor($scope: IBaseDialogScope
+	constructor($scope: IBootstrapModalDialogScope
 			, $controller: ng.IControllerService
-			, baseDialog: BaseDialogService) {
+			, baseDialog: BootstrapModalDialogService) {
 		let controller: any;
 
 		if ($scope.modalController != null) {

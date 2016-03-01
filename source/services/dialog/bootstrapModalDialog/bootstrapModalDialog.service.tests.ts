@@ -7,7 +7,7 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, serviceName, BaseDialogService } from './baseDialog.module';
+import { moduleName, serviceName, BaseDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service';
 
 import * as angular from 'angular';
@@ -19,7 +19,7 @@ interface IModalMock {
 	open: Sinon.SinonSpy;
 }
 
-describe('baseDialog', () => {
+describe('bootstrapModalDialog', () => {
 	let baseDialog: BaseDialogService;
 	let $modal: IModalMock;
 	let mock: test.mock.IMock;
