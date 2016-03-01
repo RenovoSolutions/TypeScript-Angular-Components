@@ -21,7 +21,7 @@ var PopoverController = (function () {
         }
         else {
             var templatePath = this.guid.random() + '.html';
-            var templateContent = this.$parse(this.$attrs.rlPopover)(this.$scope);
+            var templateContent = '<div>' + this.$parse(this.$attrs.rlPopover)(this.$scope) + '</div>';
             this.$templateCache.put(templatePath, templateContent);
             this.$element.attr('uib-popover-template', '\'' + templatePath + '\'');
         }
