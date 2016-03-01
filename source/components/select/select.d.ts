@@ -1,3 +1,5 @@
+import 'ui-select';
+import 'ui-select/dist/select.css';
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;

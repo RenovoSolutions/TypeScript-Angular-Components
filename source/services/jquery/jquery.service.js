@@ -11,7 +11,7 @@ var JQueryUtility = (function () {
         contentArea.append(newContent);
     };
     return JQueryUtility;
-})();
+}());
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, JQueryUtility);
 //# sourceMappingURL=jquery.service.js.map

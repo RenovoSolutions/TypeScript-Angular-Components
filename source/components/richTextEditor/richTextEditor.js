@@ -23,7 +23,7 @@ var RichTextEditorController = (function () {
     }
     RichTextEditorController.$inject = [__object.serviceName, richTextEditor_config_1.providerName];
     return RichTextEditorController;
-})();
+}());
 exports.RichTextEditorController = RichTextEditorController;
 function richTextEditor() {
     'use strict';

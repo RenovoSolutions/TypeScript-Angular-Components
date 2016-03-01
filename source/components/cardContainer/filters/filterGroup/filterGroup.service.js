@@ -16,6 +16,7 @@ var FilterGroup = (function (_super) {
         this.object = object;
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
+        this.initOptions();
     }
     FilterGroup.prototype.initOptions = function () {
         var _this = this;
@@ -78,7 +79,7 @@ var FilterGroup = (function (_super) {
         });
     };
     return FilterGroup;
-})(typescript_angular_utilities_1.filters.SerializableFilter);
+}(typescript_angular_utilities_1.filters.SerializableFilter));
 exports.FilterGroup = FilterGroup;
 filterGroupFactory.$inject = [__object.serviceName];
 function filterGroupFactory(object) {

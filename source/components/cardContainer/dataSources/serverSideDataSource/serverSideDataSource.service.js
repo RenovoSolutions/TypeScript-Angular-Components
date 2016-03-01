@@ -60,7 +60,7 @@ var ServerSideDataSource = (function (_super) {
         this.observable.fire(events.redrawing);
     };
     return ServerSideDataSource;
-})(asyncDataSource_service_1.AsyncDataSource);
+}(asyncDataSource_service_1.AsyncDataSource));
 exports.ServerSideDataSource = ServerSideDataSource;
 serverSideDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
 function serverSideDataSourceFactory(observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {

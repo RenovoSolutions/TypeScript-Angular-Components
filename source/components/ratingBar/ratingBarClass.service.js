@@ -20,6 +20,6 @@ var RatingBarClassService = (function () {
         }
     };
     return RatingBarClassService;
-})();
+}());
 exports.RatingBarClassService = RatingBarClassService;
 //# sourceMappingURL=ratingBarClass.service.js.map

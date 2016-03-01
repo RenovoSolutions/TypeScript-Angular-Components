@@ -32,7 +32,6 @@ var cardContainer_1 = require('./cardContainer');
 var builder = require('./cardContainerBuilder.service');
 exports.builder = builder;
 __export(require('./cardContainer'));
-__export(require('./column'));
 exports.moduleName = 'rl.ui.components.cardContainer';
 angular.module(exports.moduleName, [
     // dependencies

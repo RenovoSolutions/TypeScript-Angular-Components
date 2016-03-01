@@ -60,7 +60,7 @@ var RangeFilterGroup = (function (_super) {
             && option.lowExclusive == null;
     };
     return RangeFilterGroup;
-})(filterGroup_service_1.FilterGroup);
+}(filterGroup_service_1.FilterGroup));
 rangeFilterGroupFactory.$inject = [__object.serviceName];
 function rangeFilterGroupFactory(object) {
     'use strict';
