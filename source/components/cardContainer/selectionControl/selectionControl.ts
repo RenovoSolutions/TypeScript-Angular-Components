@@ -31,7 +31,7 @@ export class SelectionControlController {
 		}
 
 		this.selectedItems = this.cardContainer.numberSelected;
-		this.pagingEnabled = this.bool.toBool(this.cardContainer.pager);
+		this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
 		this.dataSource = this.cardContainer.dataSource;
 
 		this.$scope.$watch((): number => { return this.cardContainer.numberSelected; }, (value: number): void => {

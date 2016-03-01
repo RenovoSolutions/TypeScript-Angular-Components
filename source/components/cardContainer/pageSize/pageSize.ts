@@ -32,7 +32,7 @@ export class PageSizeController {
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
 
-		var pager: dataPager.IDataPager = this.cardContainer.pager;
+		var pager: dataPager.IDataPager = this.cardContainer.dataSource.pager;
 
 		if (pager == null) {
 			this.hasPageFilter = false;

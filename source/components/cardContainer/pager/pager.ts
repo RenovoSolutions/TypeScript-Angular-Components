@@ -41,7 +41,7 @@ export class PagerController {
 			return;
 		}
 
-		this.pager = this.cardContainer.pager;
+		this.pager = this.cardContainer.dataSource.pager;
 
 		if (this.pager == null) {
 			this.hasPageFilter = false;
@@ -50,10 +50,10 @@ export class PagerController {
 			this.lastPage = 1;
 			this.dataSource = this.cardContainer.dataSource;
 
-			$scope.$watch((): number => { return this.dataSource.count; }, this.updatePageCount);
-			$scope.$watch((): number => { return this.pager.pageSize; }, this.updatePageCount);
+			this.$scope.$watch((): number => { return this.dataSource.count; }, this.updatePageCount);
+			this.$scope.$watch((): number => { return this.pager.pageSize; }, this.updatePageCount);
 
-			$scope.$watch((): number => { return this.currentPage; }, (page: number): void => {
+			this.$scope.$watch((): number => { return this.currentPage; }, (page: number): void => {
 				this.updatePaging();
 
 				this.pager.pageNumber = page;
