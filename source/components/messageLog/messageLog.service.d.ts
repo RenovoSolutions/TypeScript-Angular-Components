@@ -10,6 +10,7 @@ export interface IMessage {
     message: string;
     createdBy?: IUser;
     createdDate?: Date;
+    isSystemNote?: boolean;
 }
 export interface IGetMessagesResult {
     messages: IMessage[];
