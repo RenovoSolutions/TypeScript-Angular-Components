@@ -7,7 +7,7 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, controllerName } from './baseDialog.module';
+import { moduleName, controllerName } from './bootstrapModalDialog.module';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -18,7 +18,7 @@ interface IBaseDialogMock {
 	modalClosing: Sinon.SinonSpy;
 }
 
-describe('BaseDialogController', () => {
+describe('BootsrapModalDialogController', () => {
 	let scope: angular.IScope;
 	let dialog: any;
 	let $controller: Sinon.SinonSpy;

@@ -7,18 +7,18 @@ import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
 import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance } from '../dialog.service';
-import { controllerName, IBaseDialogScope } from './baseDialog.controller';
+import { controllerName, IBootstrapModalDialogScope } from './bootstrapModalDialog.controller';
 
-export var serviceName: string = 'baseDialog';
+export var serviceName: string = 'uiBootstrapModelDialog';
 
-export interface IBaseDialogService extends IDialogService<IBaseDialogSettings> { }
+export interface IBootstrapModalDialogService extends IDialogService<IBootstrapModalDialogSettings> { }
 
-export interface IBaseDialogSettings extends ng.ui.bootstrap.IModalSettings {
+export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSettings {
 	resolveToDialog?: boolean;
 	dialogAs?: string;
 }
 
-export class BaseDialogService implements IDialogImplementation<IBaseDialogSettings> {
+export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
 	closeHandler: IDialogCloseHandler;
 
 	static $inject: string[] = ['$modal', '$rootScope', __promise.serviceName];
@@ -26,7 +26,7 @@ export class BaseDialogService implements IDialogImplementation<IBaseDialogSetti
 			, private $rootScope: ng.IRootScopeService
 			, private promise: __promise.IPromiseUtility) { }
 
-	open(options: IBaseDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
+	open(options: IBootstrapModalDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
 		if (options == null) {
 			options = <any>{};
 		}
@@ -60,11 +60,11 @@ export class BaseDialogService implements IDialogImplementation<IBaseDialogSetti
 		}
 	}
 
-	private configureModalSettings(options: IBaseDialogSettings, resolveData: any): IBaseDialogSettings {
-		let modalScope: IBaseDialogScope = <IBaseDialogScope>options.scope;
+	private configureModalSettings(options: IBootstrapModalDialogSettings, resolveData: any): IBootstrapModalDialogSettings {
+		let modalScope: IBootstrapModalDialogScope = <IBootstrapModalDialogScope>options.scope;
 
 		if (modalScope == null) {
-			modalScope = <IBaseDialogScope>this.$rootScope.$new();
+			modalScope = <IBootstrapModalDialogScope>this.$rootScope.$new();
 		}
 
 		if (options.resolveToDialog) {
@@ -72,7 +72,7 @@ export class BaseDialogService implements IDialogImplementation<IBaseDialogSetti
 				modalScope[options.dialogAs] = resolveData;
 			}
 			else {
-				modalScope = <IBaseDialogScope>_.extend(modalScope, resolveData);
+				modalScope = <IBootstrapModalDialogScope>_.extend(modalScope, resolveData);
 			}
 		} else {
 			modalScope.resolveData = resolveData;
