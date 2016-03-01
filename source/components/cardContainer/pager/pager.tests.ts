@@ -328,6 +328,7 @@ describe('PagerController', () => {
 
 		scope = controllerResult.scope;
 		pager = controllerResult.controller;
+		pager.$onInit();
 
 		if (lastPage != null) {
 			scope.$digest();
