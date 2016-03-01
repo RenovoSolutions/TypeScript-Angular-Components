@@ -19,7 +19,6 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerService, CardContainerService } from './cardContainer.service';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
 export let directiveName: string = 'rlCardContainer';
