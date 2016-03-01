@@ -2,10 +2,10 @@
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __promise = typescript_angular_utilities_1.services.promise;
-var baseDialog_controller_1 = require('./baseDialog.controller');
-exports.serviceName = 'baseDialog';
-var BaseDialogService = (function () {
-    function BaseDialogService($modal, $rootScope, promise) {
+var bootstrapModalDialog_controller_1 = require('./bootstrapModalDialog.controller');
+exports.serviceName = 'uiBootstrapModelDialog';
+var BootstrapModalDialogService = (function () {
+    function BootstrapModalDialogService($modal, $rootScope, promise) {
         var _this = this;
         this.$modal = $modal;
         this.$rootScope = $rootScope;
@@ -20,7 +20,7 @@ var BaseDialogService = (function () {
             }
         };
     }
-    BaseDialogService.prototype.open = function (options, closeHandler) {
+    BootstrapModalDialogService.prototype.open = function (options, closeHandler) {
         var _this = this;
         if (options == null) {
             options = {};
@@ -38,7 +38,7 @@ var BaseDialogService = (function () {
         });
         return dialogInstance;
     };
-    BaseDialogService.prototype.configureModalSettings = function (options, resolveData) {
+    BootstrapModalDialogService.prototype.configureModalSettings = function (options, resolveData) {
         var modalScope = options.scope;
         if (modalScope == null) {
             modalScope = this.$rootScope.$new();
@@ -56,12 +56,12 @@ var BaseDialogService = (function () {
         }
         modalScope.modalController = options.controller;
         options.resolve = null;
-        options.controller = baseDialog_controller_1.controllerName;
+        options.controller = bootstrapModalDialog_controller_1.controllerName;
         options.scope = modalScope;
         return options;
     };
-    BaseDialogService.$inject = ['$modal', '$rootScope', __promise.serviceName];
-    return BaseDialogService;
+    BootstrapModalDialogService.$inject = ['$modal', '$rootScope', __promise.serviceName];
+    return BootstrapModalDialogService;
 }());
-exports.BaseDialogService = BaseDialogService;
-//# sourceMappingURL=baseDialog.service.js.map
+exports.BootstrapModalDialogService = BootstrapModalDialogService;
+//# sourceMappingURL=bootstrapModalDialog.service.js.map

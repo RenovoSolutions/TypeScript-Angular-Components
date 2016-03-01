@@ -3,20 +3,20 @@ import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance } from '../dialog.service';
 export declare var serviceName: string;
-export interface IBaseDialogService extends IDialogService<IBaseDialogSettings> {
+export interface IBootstrapModalDialogService extends IDialogService<IBootstrapModalDialogSettings> {
 }
-export interface IBaseDialogSettings extends ng.ui.bootstrap.IModalSettings {
+export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSettings {
     resolveToDialog?: boolean;
     dialogAs?: string;
 }
-export declare class BaseDialogService implements IDialogImplementation<IBaseDialogSettings> {
+export declare class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
     private $modal;
     private $rootScope;
     private promise;
     closeHandler: IDialogCloseHandler;
     static $inject: string[];
     constructor($modal: ng.ui.bootstrap.IModalService, $rootScope: ng.IRootScopeService, promise: __promise.IPromiseUtility);
-    open(options: IBaseDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
+    open(options: IBootstrapModalDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
     modalClosing: {
         (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void;
     };
