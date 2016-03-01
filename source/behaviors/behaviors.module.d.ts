@@ -1,4 +1,5 @@
 import * as alias from './alias/alias';
 import * as autosave from './autosave/autosave';
-export { alias, autosave };
+import * as popover from './popover/popover';
+export { alias, autosave, popover };
 export declare var moduleName: string;
