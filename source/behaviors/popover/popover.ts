@@ -36,7 +36,7 @@ export class PopoverController {
 		}
 		else {
 			let templatePath: string = this.guid.random() + '.html';
-			let templateContent: string = this.$parse(this.$attrs.rlPopover)(this.$scope);
+			let templateContent: string = '<div>' + this.$parse(this.$attrs.rlPopover)(this.$scope) + '</div>';
 			this.$templateCache.put(templatePath, templateContent);
 			this.$element.attr('uib-popover-template', '\'' + templatePath + '\'');
 		}
