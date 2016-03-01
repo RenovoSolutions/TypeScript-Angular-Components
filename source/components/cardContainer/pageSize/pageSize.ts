@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 import { dataPager } from '../dataSources/dataSources.module';
-import { ICardContainerService } from '../cardContainer.service';
+import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export var directiveName: string = 'rlPageSize';
@@ -18,11 +18,13 @@ export class PageSizeController {
 	selectedPageSize: number;
 	pageSizes: number[];
 	hasPageFilter: boolean;
-	private containerService: ICardContainerService;
+	private cardContainer: CardContainerController;
 
 	static $inject: string[] = ['$scope'];
-	constructor($scope: angular.IScope) {
-		if (this.containerService == null) {
+	constructor(private $scope: angular.IScope) {}
+
+	$onInit(): void {
+		if (this.cardContainer == null) {
 			return;
 		}
 
@@ -30,15 +32,15 @@ export class PageSizeController {
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
 
-		var pager: dataPager.IDataPager = this.containerService.pager;
+		var pager: dataPager.IDataPager = this.cardContainer.pager;
 
 		if (pager == null) {
 			this.hasPageFilter = false;
 		} else {
-			$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
+			this.$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
 				if (pager != null) {
 					pager.pageSize = newPageSize;
-					this.containerService.dataSource.onPagingChange();
+					this.cardContainer.dataSource.onPagingChange();
 				}
 			});
 		}
@@ -49,13 +51,12 @@ export function pageSize(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
+		require: { cardContainer: '^^rlCardContainer' },
 		template: require('./pageSize.html'),
 		controller: controllerName,
 		controllerAs: 'controller',
 		scope: {},
-		bindToController: {
-			containerService: '=',
-		},
+		bindToController: {},
 	};
 }
 
