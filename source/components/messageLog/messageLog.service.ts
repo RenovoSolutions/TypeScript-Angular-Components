@@ -16,8 +16,9 @@ export interface IUser {
 export interface IMessage {
 	id?: number;
 	message: string;
-	createdBy?: IUser,
-	createdDate?: Date,
+	createdBy?: IUser;
+	createdDate?: Date;
+	isSystemNote?: boolean;
 }
 
 export interface IGetMessagesResult {
