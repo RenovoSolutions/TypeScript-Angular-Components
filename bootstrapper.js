@@ -5,6 +5,9 @@
 	TestController.$inject = ['$scope', 'cardContainerBuilder'];
 	function TestController($scope, cardContainerBuilderFactory) {
 		var self = this;
+		self.popover = '<div>{{test.content}}</div>';
+		self.content = 'Some content';
+
 		self.text = null;
 		self.options = [
 			{ name: 'item1' },

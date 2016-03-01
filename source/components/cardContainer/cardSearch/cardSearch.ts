@@ -28,6 +28,7 @@ export class CardSearchController {
 	searchLengthError: boolean = false;
 	minSearchLength: number;
 	hasSearchFilter: boolean = true;
+	minSearchError: string;
 	private cardContainer: CardContainerController;
 	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
@@ -39,6 +40,8 @@ export class CardSearchController {
 		if (this.cardContainer == null) {
 			return;
 		}
+
+		this.minSearchError = 'You must enter at least {{cardSearch.minSearchLength}} characters to perform a search';
 
 		if (this.searchFilter == null) {
 			let filter: __genericSearchFilter.IGenericSearchFilter = this.cardContainer.searchFilter;

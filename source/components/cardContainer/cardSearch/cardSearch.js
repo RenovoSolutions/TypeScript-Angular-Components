@@ -17,6 +17,7 @@ var CardSearchController = (function () {
         if (this.cardContainer == null) {
             return;
         }
+        this.minSearchError = 'You must enter at least {{cardSearch.minSearchLength}} characters to perform a search';
         if (this.searchFilter == null) {
             var filter = this.cardContainer.searchFilter;
             this.searchFilter = filter;
