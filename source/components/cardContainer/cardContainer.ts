@@ -29,9 +29,7 @@ export let defaultMaxColumnSorts: number = 2;
 export let defaultSelectionTitle: string = 'Select card';
 
 export interface ICardContainerScope extends angular.IScope {
-	containerService: ICardContainerService;
 	containerData: any;
-	builder: ICardContainerBuilder;
 }
 
 export interface ICardContainerBindings {
@@ -131,7 +129,6 @@ export class CardContainerController {
 			this.dataSource.sorts = [];
 		}
 
-		$scope.containerService = new CardContainerService(this);
 		$scope.containerData = this.containerData;
 	}
 
