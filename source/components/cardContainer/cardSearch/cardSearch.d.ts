@@ -14,6 +14,7 @@ export declare class CardSearchController {
     searchLengthError: boolean;
     minSearchLength: number;
     hasSearchFilter: boolean;
+    minSearchError: string;
     private containerService;
     private searchFilter;
     static $inject: string[];
