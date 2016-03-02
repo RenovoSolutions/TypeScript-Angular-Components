@@ -8,9 +8,9 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
 import {
-	moduleName as jqueryModuleName,
-	serviceName as jqueryServiceName,
-	IJQueryUtility,
+moduleName as jqueryModuleName,
+serviceName as jqueryServiceName,
+IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
@@ -20,13 +20,13 @@ import { ITemplateLoader, serviceName as templateLoaderService } from '../../ser
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';
 
-export enum DeletePermissions{
+export enum DeletePermissions {
 	deleteMine = 0,
 	deleteAll = 1,
 	deleteNone = 2
 }
 
-export enum EditPermissions{
+export enum EditPermissions {
 	editMine = 0,
 	editAll = 1,
 	editNone = 2
@@ -39,6 +39,7 @@ export interface IMessageLogBindings {
 	messageAs: string;
 	currentUser?: IUser;
 	canDelete?: DeletePermissions;
+	canEdit?: EditPermissions;
 
 	selector: { (IMessage): any } | string;
 }
@@ -49,9 +50,10 @@ export class MessageLogController implements IMessageLogBindings {
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
-	selector: { (IMessage): any } | string;
+	selector: { (iMessage: IMessage): any } | string;
 	currentUser: IUser;
 	canDelete: DeletePermissions;
+	canEdit: EditPermissions;
 
 	messages: IMessage[];
 	hasNextPage: boolean;
@@ -62,6 +64,9 @@ export class MessageLogController implements IMessageLogBindings {
 
 	loading: boolean;
 	loadingInitial: boolean;
+
+	editEvent: { (iMessage: IMessage): any };
+
 
 	static $inject: string[] = ['$scope', factoryName];
 	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
@@ -99,9 +104,9 @@ export class MessageLogController implements IMessageLogBindings {
 
 	getEntrySelector(entry: IMessage): any {
 		if (_.isString(this.selector)) {
-			return entry[<string> this.selector];
+			return entry[<string>this.selector];
 		} else if (_.isFunction(this.selector)) {
-			return (<{ (IMessage): any }> this.selector)(entry);
+			return (<{ (IMessage): any }>this.selector)(entry);
 		}
 	}
 
@@ -114,8 +119,7 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
-		switch (this.canDelete)
-		{
+		switch (this.canDelete) {
 			case DeletePermissions.deleteAll:
 				return true;
 			case DeletePermissions.deleteMine:
@@ -123,6 +127,20 @@ export class MessageLogController implements IMessageLogBindings {
 			default:
 				return false;
 		}
+	}
+	canEditEntry(entry: IMessage): boolean {
+		switch (this.canEdit) {
+			case EditPermissions.editAll:
+				return true;
+			case EditPermissions.editMine:
+				return (this.currentUser == null || this.currentUser.id === entry.createdBy.id);
+			default:
+				return false;
+		}
+	}
+
+	editMessage(entry: IMessage): void{
+		this.editEvent(entry);
 	}
 }
 
@@ -133,9 +151,9 @@ messageLog.$inject = [
 	__object.serviceName,
 ];
 export function messageLog($interpolate: angular.IInterpolateService,
-							jquery: IJQueryUtility,
-							templateLoader: ITemplateLoader,
-							object: __object.IObjectUtility): angular.IDirective {
+	jquery: IJQueryUtility,
+	templateLoader: ITemplateLoader,
+	object: __object.IObjectUtility): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -154,6 +172,8 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			messageAs: "@",
 			currentUser: '=?',
 			canDelete: '=?',
+			canEdit: '=?',
+			editEvent: '&',
 		},
 		link: (scope: angular.IScope,
 			element: angular.IAugmentedJQuery,
