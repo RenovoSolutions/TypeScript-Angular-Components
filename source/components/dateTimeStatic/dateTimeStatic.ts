@@ -7,17 +7,27 @@ import * as moment from 'moment';
 
 
 export let moduleName: string = 'rl.ui.components.dateTimeStatic';
-export let directiveName: string = 'rlDateTimeStatic';
+export let componentName: string = 'rlDateTimeStatic';
 export let controllerName: string = 'DateTimeStaticController';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 
-export class DateTimeStaticController {
+export interface IDateTimeStaticBindings {
+	dateValue: string;
+	includeTime: boolean;
+	displayTimeZone: boolean;
+}
+
+export interface IDateTimeStaticController extends IDateTimeStaticBindings {
+
+}
+
+export class DateTimeStaticController implements IDateTimeStaticController {
 	dateValue: string;
 	includeTime: boolean;
 	displayValue: string;
-	displayTimeZone: boolean ;
+	displayTimeZone: boolean;
 
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
@@ -32,23 +42,18 @@ export class DateTimeStaticController {
 	}
 }
 
-dateTimeStatic.$inject = [];
-function dateTimeStatic(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./dateTimeStatic.html'),
-		controller: controllerName,
-		controllerAs: 'view',
-		scope: {},
-		bindToController: {
-			dateValue: '=',
-			includeTime: '=?',
-			displayTimeZone: '=?'
-		}
-	};
-}
+
+let dateTimeStaticComponent: angular.IComponentOptions = {
+	template: require('./dateTimeStatic.html'),
+	controller: controllerName,
+	controllerAs: 'view',
+	bindings: {
+		dateValue: '<',
+		includeTime: '<?',
+		displayTimeZone: '<?',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, dateTimeStatic)
+	.component(componentName, dateTimeStaticComponent)
 	.controller(controllerName, DateTimeStaticController);
