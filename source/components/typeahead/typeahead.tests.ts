@@ -36,12 +36,9 @@ describe('TypeaheadController', () => {
 	let typeahead: TypeaheadController;
 	let $q: angular.IQService;
 	let parentChild: __parentChild.IParentChildBehaviorService;
-	let selectSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-
-		selectSpy = sinon.spy();
 
 		let services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
 		$q = services.$q;
@@ -87,13 +84,129 @@ describe('TypeaheadController', () => {
 		});
 	});
 
-	function buildController(transform?: Sinon.SinonSpy | string, useClientSearching?: boolean, create?: Sinon.SinonSpy): void {
+	describe('loadItems', (): void => {
+		let items: string[];
+
+		beforeEach((): void => {
+			items = ['Item 1', 'Item 2', 'Another item', 'A fourth item'];
+		});
+
+		it('should return an empty list if no text is entered', (): void => {
+			buildController();
+
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			typeahead.getItems = getItemsSpy;
+
+			let data: string[];
+
+			typeahead.refresh('').then((result: string[]): void => {
+				expect(result).to.be.empty;
+			});
+
+			sinon.assert.notCalled(getItemsSpy);
+		});
+
+		it('should return the result of the getItems function if useClientSearching is off', (): void => {
+			buildController();
+
+			// simulate a server-side search
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when([items[0], items[1]]); });
+			typeahead.getItems = getItemsSpy;
+
+			let data: string[];
+
+			typeahead.refresh('Item ').then((result: string[]): void => {
+				data = result;
+			});
+
+			sinon.assert.calledOnce(getItemsSpy);
+			let firstArg: IGetItemsParams = getItemsSpy.firstCall.args[0];
+			expect(firstArg.search).to.equal('Item ');
+
+			scope.$digest();
+
+			expect(data.length).to.equal(2);
+			expect(data[0]).to.equal(items[0]);
+			expect(data[1]).to.equal(items[1]);
+		});
+
+		it('should apply the search string if useClientSearching is on', (): void => {
+			buildController(null, true);
+
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			typeahead.getItems = getItemsSpy;
+
+			let data: string[];
+
+			typeahead.refresh('A').then((result: string[]): void => {
+				data = result;
+			});
+
+			sinon.assert.calledOnce(getItemsSpy);
+			expect(getItemsSpy.firstCall.args).to.be.empty;
+
+			scope.$digest();
+
+			expect(data.length).to.equal(2);
+			expect(data[0]).to.equal(items[2]);
+			expect(data[1]).to.equal(items[3]);
+		});
+
+		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
+			, (): void => {
+				buildController(null, true);
+
+				let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+				typeahead.getItems = getItemsSpy;
+				typeahead.refresh('A');
+				scope.$digest();
+
+				getItemsSpy.reset();
+
+				let data: string[];
+
+				typeahead.refresh('2').then((result: string[]): void => {
+					data = result;
+				});
+
+				scope.$digest();
+
+				sinon.assert.notCalled(getItemsSpy);
+
+				expect(data.length).to.equal(1);
+				expect(data[0]).to.equal(items[1]);
+			});
+
+		it('should add a special search option to the list if a create handler is provided and no match is found', (): void => {
+			let createSpy: Sinon.SinonSpy = sinon.spy();
+			buildController(null, true, createSpy);
+
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			typeahead.getItems = getItemsSpy;
+
+			let data: string[];
+
+			typeahead.refresh('A').then((result: string[]): void => {
+				data = result;
+			});
+
+			scope.$digest();
+
+			expect(data.length).to.equal(3);
+			expect(data[0].__isSearchOption).to.be.true;
+			expect(data[1]).to.equal(items[2]);
+			expect(data[2]).to.equal(items[3]);
+		});
+	});
+
+	function buildController(transform?: Sinon.SinonSpy | string, useClientSearching?: boolean, create?: Sinon.SinonSpy, select?: Sinon.SinonSpy, allowCollapse: boolean): void {
 		let bindings: any = {
-			select: selectSpy,
+			select: select,
 			useClientSearching: useClientSearching,
 			childLink: {},
 			transform: transform,
 			create: create,
+			allowCollapse: allowCollapse,
 		};
 
 		let $attrs: any = {};
