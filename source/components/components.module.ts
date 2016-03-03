@@ -30,6 +30,7 @@ import * as tabs from './tabs/tabs.module';
 import * as textarea from './textarea/textarea';
 import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
+import * as typeahead2 from './typeahead2/typeahead2';
 import * as userRating from './userRating/userRating';
 import * as validationGroup from './validationGroup/validationGroup';
 
@@ -66,6 +67,7 @@ export {
 	textarea,
 	textbox,
 	typeahead,
+	typeahead2,
 	userRating,
 	validationGroup,
 };
@@ -101,6 +103,7 @@ angular.module(moduleName, [
 	textarea.moduleName,
 	textbox.moduleName,
 	typeahead.moduleName,
+	typeahead2.moduleName,
 	userRating.moduleName,
 	validationGroup.moduleName,
 ])
