@@ -219,5 +219,6 @@ describe('TypeaheadController', () => {
 
 		scope = controllerResult.scope;
 		typeahead = controllerResult.controller;
+		typeahead.$onInit();
 	}
 });
