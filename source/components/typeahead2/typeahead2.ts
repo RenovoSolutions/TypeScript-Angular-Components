@@ -103,8 +103,9 @@ export class TypeaheadController {
 	loadDelay: number;
 	placeholder: string;
 	collapseOnSelect: boolean;
-	useCustomOption: boolean;
+	allowCustomOption: boolean;
 	collapsed: boolean;
+	hasSearchOption: boolean = false;
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
@@ -112,6 +113,10 @@ export class TypeaheadController {
 
 	set selection(value: any) {
 		if (value != null) {
+			if (value.__isSearchOption) {
+				value = this.create({ value: value.text });
+			}
+
 			this.select({ value: value });
 
 			if (this.collapseOnSelect) {
@@ -119,8 +124,11 @@ export class TypeaheadController {
 				this.ngModel.$setViewValue(value);
 			}
 		}
-		// create if applicable
 	}
+
+	private _searchOption: any = {
+		__isSearchOption: true,
+	};
 
 	static $inject: string[] = ['$scope'
 		, '$q'
@@ -144,7 +152,7 @@ export class TypeaheadController {
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.placeholder = this.label != null ? 'Search for ' + this.label.toLowerCase() : 'Search';
 		this.collapseOnSelect = this.object.isNullOrEmpty(this.$attrs.select);
-		this.useCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
+		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
 
 		this.parentChild.registerChildBehavior(this.childLink, {
 			add: this.addItem.bind(this),
@@ -155,6 +163,10 @@ export class TypeaheadController {
 	getDisplayName(item: any): string {
 		if (item == null) {
 			return null;
+		}
+
+		if (item.__isSearchOption) {
+			return item.text;
 		}
 
 		if (this.transform == null) {
@@ -171,7 +183,14 @@ export class TypeaheadController {
 			this.visibleItems = [];
 			return null;
 		}
-		return this.loadItems(search);
+		return this.loadItems(search).then((): void => {
+			this._searchOption.text = search;
+
+			if (this.showCustomSearch(search)) {
+				this.hasSearchOption = true;
+				this.visibleItems.unshift(this._searchOption);
+			}
+		});
 	}
 
 	loadItems(search: string): angular.IPromise<void> {
@@ -186,7 +205,7 @@ export class TypeaheadController {
 
 			if (this.cachedItems != null) {
 				this.visibleItems = this.filter(this.cachedItems);
-				return null;
+				return this.$q.when();
 			} else {
 				return this.$q.when(this.getItems()).then((items: any[]): void => {
 					this.cachedItems = items;
@@ -199,6 +218,14 @@ export class TypeaheadController {
 	clear(): void {
 		this.ngModel.$setViewValue(null);
 		this.collapsed = false;
+	}
+
+	private showCustomSearch(search: string): boolean {
+		return this.allowCustomOption
+			&& !this.hasSearchOption
+			&& !_.find(this.visibleItems, (item: any): boolean => {
+			return this.getDisplayName(item) === search;
+		});
 	}
 
 	private filter(list: any[]): any[] {
