@@ -95,7 +95,7 @@ export function cardSearch(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: { cardContainer: '^^rlCardContainer' },
+		require: { cardContainer: '?^^rlCardContainer' },
 		template: require('./cardSearch.html'),
 		controller: controllerName,
 		controllerAs: 'cardSearch',

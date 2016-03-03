@@ -39,7 +39,7 @@ function pageSize() {
     'use strict';
     return {
         restrict: 'E',
-        require: { cardContainer: '^^rlCardContainer' },
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./pageSize.html'),
         controller: exports.controllerName,
         controllerAs: 'controller',

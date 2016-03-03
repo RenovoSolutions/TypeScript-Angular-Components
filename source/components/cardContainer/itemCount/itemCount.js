@@ -6,7 +6,7 @@ function itemCount() {
     'use strict';
     return {
         restrict: 'E',
-        require: { cardContainer: '^^rlCardContainer' },
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./itemCount.html'),
         controller: function () { },
         controllerAs: 'itemCount',

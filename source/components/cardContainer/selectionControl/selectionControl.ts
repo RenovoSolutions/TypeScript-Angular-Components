@@ -76,7 +76,7 @@ export function selectionControl(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: { cardContainer: '^^rlCardContainer' },
+		require: { cardContainer: '?^^rlCardContainer' },
 		template: require('./selectionControl.html'),
 		controller: controllerName,
 		controllerAs: 'selection',
