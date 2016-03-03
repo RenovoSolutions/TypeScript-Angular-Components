@@ -204,11 +204,11 @@ let typeahead: angular.IComponentOptions = <any>{
 		childLink: '=?',
 		select: '&',
 		create: '&',
-		transform: '>?',
+		transform: '<?',
 		getItems: '&',
 		label: '@',
-		useClientSearching: '>?',
-		ngDisabled: '>?',
+		useClientSearching: '<?',
+		ngDisabled: '<?',
 	},
 };
 
