@@ -20,14 +20,14 @@ export interface ITypeaheadBindings {
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
 
 	/**
-	 * Event that gets fired with updates to the selection
+	 * Event that gets fired with updates to the selection - use if selection adds to a list
 	 * @param {any} value The new selection
 	 * @param {bool} isNew Indicates whether the selection was picked from the list or selected as the search
 	 */
 	select(params: ISelectParams): void;
 
 	/**
-	 * Event that is used to convert a search text to its object representation
+	 * Event that is used to convert a search text to its object representation - use if the user can specify a custom option
 	 * @param {any} value The string value representing the new selection
 	 * @returns {any} Object representing the new value to be displayed, if applicable
 	 */
