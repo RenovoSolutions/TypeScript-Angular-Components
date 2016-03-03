@@ -93,7 +93,7 @@ function pager() {
     'use strict';
     return {
         restrict: 'E',
-        require: { cardContainer: '^^rlCardContainer' },
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./pager.html'),
         controller: exports.controllerName,
         controllerAs: 'pager',
