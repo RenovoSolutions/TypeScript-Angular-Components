@@ -20,7 +20,7 @@ export interface IDateTimeStaticBindings {
 }
 
 export interface IDateTimeStaticController extends IDateTimeStaticBindings {
-
+	displayValue: string;
 }
 
 export class DateTimeStaticController implements IDateTimeStaticController {
@@ -41,7 +41,6 @@ export class DateTimeStaticController implements IDateTimeStaticController {
 		}
 	}
 }
-
 
 let dateTimeStaticComponent: angular.IComponentOptions = {
 	template: require('./dateTimeStatic.html'),
