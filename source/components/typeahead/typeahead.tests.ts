@@ -97,7 +97,7 @@ describe('TypeaheadController', () => {
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
-			let data: string[];
+			let typeahead.visibleItems: string[];
 
 			typeahead.refresh('').then((result: string[]): void => {
 				expect(result).to.be.empty;
@@ -113,11 +113,9 @@ describe('TypeaheadController', () => {
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when([items[0], items[1]]); });
 			typeahead.getItems = getItemsSpy;
 
-			let data: string[];
+			let typeahead.visibleItems: string[];
 
-			typeahead.refresh('Item ').then((result: string[]): void => {
-				data = result;
-			});
+			typeahead.refresh('Item ');
 
 			sinon.assert.calledOnce(getItemsSpy);
 			let firstArg: IGetItemsParams = getItemsSpy.firstCall.args[0];
@@ -125,9 +123,9 @@ describe('TypeaheadController', () => {
 
 			scope.$digest();
 
-			expect(data.length).to.equal(2);
-			expect(data[0]).to.equal(items[0]);
-			expect(data[1]).to.equal(items[1]);
+			expect(typeahead.visibleItems.length).to.equal(2);
+			expect(typeahead.visibleItems[0]).to.equal(items[0]);
+			expect(typeahead.visibleItems[1]).to.equal(items[1]);
 		});
 
 		it('should apply the search string if useClientSearching is on', (): void => {
@@ -136,20 +134,16 @@ describe('TypeaheadController', () => {
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
-			let data: string[];
-
-			typeahead.refresh('A').then((result: string[]): void => {
-				data = result;
-			});
+			typeahead.refresh('A');
 
 			sinon.assert.calledOnce(getItemsSpy);
 			expect(getItemsSpy.firstCall.args).to.be.empty;
 
 			scope.$digest();
 
-			expect(data.length).to.equal(2);
-			expect(data[0]).to.equal(items[2]);
-			expect(data[1]).to.equal(items[3]);
+			expect(typeahead.visibleItems.length).to.equal(2);
+			expect(typeahead.visibleItems[0]).to.equal(items[2]);
+			expect(typeahead.visibleItems[1]).to.equal(items[3]);
 		});
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
@@ -163,18 +157,14 @@ describe('TypeaheadController', () => {
 
 				getItemsSpy.reset();
 
-				let data: string[];
-
-				typeahead.refresh('2').then((result: string[]): void => {
-					data = result;
-				});
+				typeahead.refresh('2');
 
 				scope.$digest();
 
 				sinon.assert.notCalled(getItemsSpy);
 
-				expect(data.length).to.equal(1);
-				expect(data[0]).to.equal(items[1]);
+				expect(typeahead.visibleItems.length).to.equal(1);
+				expect(typeahead.visibleItems[0]).to.equal(items[1]);
 			});
 
 		it('should add a special search option to the list if a create handler is provided and no match is found', (): void => {
@@ -184,18 +174,16 @@ describe('TypeaheadController', () => {
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
-			let data: string[];
+			let typeahead.visibleItems: string[];
 
-			typeahead.refresh('A').then((result: string[]): void => {
-				data = result;
-			});
+			typeahead.refresh('A');
 
 			scope.$digest();
 
-			expect(data.length).to.equal(3);
-			expect(data[0].__isSearchOption).to.be.true;
-			expect(data[1]).to.equal(items[2]);
-			expect(data[2]).to.equal(items[3]);
+			expect(typeahead.visibleItems.length).to.equal(3);
+			expect(typeahead.visibleItems[0].__isSearchOption).to.be.true;
+			expect(typeahead.visibleItems[1]).to.equal(items[2]);
+			expect(typeahead.visibleItems[2]).to.equal(items[3]);
 		});
 	});
 
@@ -215,8 +203,8 @@ describe('TypeaheadController', () => {
 
 			let items: string[] = [];
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
-			typeahead.getItemsInParent = getItemsSpy;
-			typeahead.getItems('');
+			typeahead.getItems = getItemsSpy;
+			typeahead.refresh('A');
 			scope.$digest();
 
 			let newItem: string = 'New item';
@@ -234,8 +222,8 @@ describe('TypeaheadController', () => {
 
 			let items: string[] = ['Item 1'];
 			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
-			typeahead.getItemsInParent = getItemsSpy;
-			typeahead.getItems('');
+			typeahead.getItems = getItemsSpy;
+			typeahead.refresh('I');
 			scope.$digest();
 
 			parentChild.triggerChildBehavior(typeahead.childLink, (behavior: ITypeaheadBehavior): void => {
