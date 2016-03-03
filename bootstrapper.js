@@ -6,6 +6,10 @@
 	function TestController($q, cardContainerBuilderFactory) {
 		var self = this;
 		self.text = null;
+		self.set = [];
+		self.select = function (value) {
+			self.set.push(value);
+		}
 		self.options = [
 			{ name: 'item1' },
 			{ name: 'item2' },

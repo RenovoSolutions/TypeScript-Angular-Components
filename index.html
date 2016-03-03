@@ -20,7 +20,11 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
-				<rl-select get-options="test.getOptions()" ng-model="test.selection" selector="'name'"></rl-select>
+				<rl-select get-options="test.getOptions()" ng-model="test.selection" selector="'name'" select="test.select(value)"></rl-select>
+
+				<div ng-repeat="value in test.set">
+					{{value}}
+				</div>
 
 				<rl-generic-container selector="test.toggle">
 					<template default>
