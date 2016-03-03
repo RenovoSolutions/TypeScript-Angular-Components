@@ -199,6 +199,53 @@ describe('TypeaheadController', () => {
 		});
 	});
 
+	describe('behavior', (): void => {
+		it('should register a child behavior for adding items to the cached item list', (): void => {
+			buildController(null, true);
+
+			let behavior: ITypeaheadBehavior = parentChild.getChildBehavior(typeahead.childLink);
+
+			expect(behavior).to.exist;
+			expect(_.isFunction(behavior.add)).to.be.true;
+			expect(_.isFunction(behavior.remove)).to.be.true;
+		});
+
+		it('should add the specified item to the cached item list', (): void => {
+			buildController(null, true);
+
+			let items: string[] = [];
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			typeahead.getItemsInParent = getItemsSpy;
+			typeahead.getItems('');
+			scope.$digest();
+
+			let newItem: string = 'New item';
+
+			parentChild.triggerChildBehavior(typeahead.childLink, (behavior: ITypeaheadBehavior): void => {
+				behavior.add(newItem);
+			});
+
+			expect(items.length).to.equal(1);
+			expect(items[0]).to.equal(newItem);
+		});
+
+		it('should remove the specified item from the cached items list', (): void => {
+			buildController(null, true);
+
+			let items: string[] = ['Item 1'];
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			typeahead.getItemsInParent = getItemsSpy;
+			typeahead.getItems('');
+			scope.$digest();
+
+			parentChild.triggerChildBehavior(typeahead.childLink, (behavior: ITypeaheadBehavior): void => {
+				behavior.remove(items[0]);
+			});
+
+			expect(items).to.be.empty;
+		});
+	});
+
 	function buildController(transform?: Sinon.SinonSpy | string, useClientSearching?: boolean, create?: Sinon.SinonSpy, select?: Sinon.SinonSpy, allowCollapse: boolean): void {
 		let bindings: any = {
 			select: select,
