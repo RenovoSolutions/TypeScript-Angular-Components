@@ -80,6 +80,10 @@ describe('TypeaheadController', () => {
 
 			buildController(transform);
 
+			let item: ITestObject = {
+				prop: 1,
+			};
+
 			expect(typeahead.getDisplayName(item)).to.equal(item.prop);
 		});
 	});
@@ -282,7 +286,7 @@ describe('TypeaheadController', () => {
 
 		it('should call create with the search text if the search option is selected', (): void => {
 			let createSpy: Sinon.SinonSpy = sinon.spy((value: string): any => { return { value: value }; });
-			buildController(null, true, null, null, true, createSpy);
+			buildController(null, true, createSpy);
 			initialLoad();
 
 			typeahead._searchOption.text = 'search';
@@ -304,7 +308,11 @@ describe('TypeaheadController', () => {
 		}
 	});
 
-	function buildController(transform?: Sinon.SinonSpy | string, useClientSearching?: boolean, create?: Sinon.SinonSpy, select?: Sinon.SinonSpy, allowCollapse: boolean): void {
+	function buildController(transform?: Sinon.SinonSpy | string
+						, useClientSearching?: boolean
+						, create?: Sinon.SinonSpy
+						, select?: Sinon.SinonSpy
+						, allowCollapse: boolean): void {
 		let ngModel: any = {
 			$viewValue: null,
 			$setViewValue: (value: any): void => { ngModel.$viewValue = value; },
@@ -317,7 +325,7 @@ describe('TypeaheadController', () => {
 			transform: transform,
 			create: create,
 			allowCollapse: allowCollapse,
-			ngModel: bindings,
+			ngModel: ngModel,
 		};
 
 		let $attrs: any = {};

@@ -133,7 +133,7 @@ export class TypeaheadController {
 		}
 	}
 
-	private _searchOption: any = {
+	_searchOption: any = {
 		__isSearchOption: true,
 	};
 
