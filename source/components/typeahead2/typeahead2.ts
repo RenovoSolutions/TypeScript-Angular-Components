@@ -78,6 +78,11 @@ export interface ICreateParams {
 	value: any;
 }
 
+export interface ITypeaheadAttrs extends angular.IAttributes {
+	select: string;
+	create: string;
+}
+
 export class TypeaheadController {
 	// bindings
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
@@ -97,19 +102,29 @@ export class TypeaheadController {
 	loading: boolean = false;
 	loadDelay: number;
 	placeholder: string;
+	collapseOnSelect: boolean;
+	useCustomOption: boolean;
+	collapsed: boolean;
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
 	}
 
 	set selection(value: any) {
-		// fire select event
+		if (value != null) {
+			this.select({ value: value });
+
+			if (this.collapseOnSelect) {
+				this.collapsed = true;
+				this.ngModel.$setViewValue(value);
+			}
+		}
 		// create if applicable
-		this.ngModel.$setViewValue(value);
 	}
 
 	static $inject: string[] = ['$scope'
 		, '$q'
+		, '$attrs'
 		, __parentChild.serviceName
 		, __genericSearch.factoryName
 		, __objectUtility.serviceName
@@ -117,6 +132,7 @@ export class TypeaheadController {
 		, __promiseUtility.serviceName];
 	constructor(private $scope: angular.IScope
 		, private $q: angular.IQService
+		, private $attrs: ITypeaheadAttrs
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
@@ -127,6 +143,8 @@ export class TypeaheadController {
 		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.placeholder = this.label != null ? 'Search for ' + this.label.toLowerCase() : 'Search';
+		this.collapseOnSelect = this.object.isNullOrEmpty(this.$attrs.select);
+		this.useCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
 
 		this.parentChild.registerChildBehavior(this.childLink, {
 			add: this.addItem.bind(this),
@@ -176,6 +194,11 @@ export class TypeaheadController {
 				});
 			}
 		}
+	}
+
+	clear(): void {
+		this.ngModel.$setViewValue(null);
+		this.collapsed = false;
 	}
 
 	private filter(list: any[]): any[] {

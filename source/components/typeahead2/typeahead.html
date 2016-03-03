@@ -3,15 +3,21 @@
 		<label ng-show="typeahead.selection" class="show-hide angular-animate">
 			{{typeahead.label}}
 		</label>
-		<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
-			<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
-			<ui-select-choices repeat="item in typeahead.visibleItems"
-							   refresh="typeahead.refresh($select.search)"
-							   refresh-delay="typeahead.loadDelay">
-				{{typeahead.getDisplayName(item)}}
-			</ui-select-choices>
-		</ui-select>
-        <!--<span class="error-string" ng-show="typeahead.selectValidator.error">{{typeahead.selectValidator.error}}</span>-->
+		<div ng-if="!typeahead.collapsed">
+			<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
+				<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
+				<ui-select-choices repeat="item in typeahead.visibleItems"
+								refresh="typeahead.refresh($select.search)"
+								refresh-delay="typeahead.loadDelay">
+					{{typeahead.getDisplayName(item)}}
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div ng-if="typeahead.collapsed">
+			<span>{{typeahead.getDisplayName(typeahead.selection)}}</span>
+			<rl-button type="default flat" action="typeahead.clear()"><i class="fa fa-remove"></i></rl-button>
+		</div>
+		<!--<span class="error-string" ng-show="typeahead.selectValidator.error">{{typeahead.selectValidator.error}}</span>-->
 		<rl-busy loading="typeahead.loading"></rl-busy>
 	</div>
 </div>
