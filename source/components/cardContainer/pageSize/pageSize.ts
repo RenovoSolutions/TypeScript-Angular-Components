@@ -51,7 +51,7 @@ export function pageSize(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: { cardContainer: '^^rlCardContainer' },
+		require: { cardContainer: '?^^rlCardContainer' },
 		template: require('./pageSize.html'),
 		controller: controllerName,
 		controllerAs: 'controller',

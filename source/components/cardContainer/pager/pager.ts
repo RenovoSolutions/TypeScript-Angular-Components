@@ -130,7 +130,7 @@ export function pager(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		require: { cardContainer: '^^rlCardContainer' },
+		require: { cardContainer: '?^^rlCardContainer' },
 		template: require('./pager.html'),
 		controller: controllerName,
 		controllerAs: 'pager',
