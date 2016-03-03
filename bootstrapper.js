@@ -10,6 +10,11 @@
 		self.select = function (value) {
 			self.set.push(value);
 		}
+		self.create = function (value) {
+			return {
+				name: value,
+			};
+		};
 		self.options = [
 			{ name: 'item1' },
 			{ name: 'item2' },
@@ -18,7 +23,7 @@
 			{ name: 'item5' },
 		];
 		self.getOptions = function () {
-			return $q.when(self.options);
+			return $q.when(_.clone(self.options));
 		}
 		self.validator = {
 			validate: function () {

@@ -21,7 +21,9 @@
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
 				<rl-typeahead-two get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
-								  label="Test"></rl-typeahead-two>
+								  create="test.create(value)" label="Test create"></rl-typeahead-two>
+				<rl-typeahead-two get-items="test.getOptions()" ng-model="test.any" transform="'name'"
+								  select="test.select(value)" label="Test select"></rl-typeahead-two>
 
 				<div ng-repeat="value in test.set">
 					{{value}}
