@@ -105,7 +105,7 @@ export declare class TypeaheadController {
     collapsed: boolean;
     hasSearchOption: boolean;
     selection: any;
-    _searchOption: any;
+    private _searchOption;
     static $inject: string[];
     constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, promise: __promiseUtility.IPromiseUtility);
     $onInit(): void;
