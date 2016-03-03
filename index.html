@@ -24,6 +24,8 @@
 								  create="test.create(value)" label="Test create"></rl-typeahead-two>
 				<rl-typeahead-two get-items="test.getOptions()" ng-model="test.any" transform="'name'"
 								  select="test.select(value)" label="Test select"></rl-typeahead-two>
+				<rl-typeahead-two get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
+								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead-two>
 
 				<div ng-repeat="value in test.set">
 					{{value}}
@@ -56,8 +58,8 @@
 				</ng-form>
 
 				Selection: {{test.selection}}
-				<rl-select ng-model="test.selection" options="test.options" option-as="item"
-						   selector="'name'" label="Test selector" null-option="None"></rl-select>
+				<!--<rl-select ng-model="test.selection" options="test.options" option-as="item"
+						   selector="'name'" label="Test selector" null-option="None"></rl-select>-->
 				<rl-tabset>
 					<rl-tab>
 						<rl-tab-header>Header</rl-tab-header>

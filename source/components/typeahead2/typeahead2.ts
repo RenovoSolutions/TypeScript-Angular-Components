@@ -34,6 +34,12 @@ export interface ITypeaheadBindings {
 	create(params: ICreateParams): any;
 
 	/**
+	 * Specifies whether making a selection should collapse the typeahead and show the selection
+	 * or just fire an event - defaults to true if no select handler is specified
+	 */
+	allowCollapse: boolean;
+
+	/**
 	 * Selector for getting the display value for the items
 	 */
 	transform(item: any): string | string;
@@ -67,7 +73,6 @@ export interface ITypeaheadBehavior {
 
 export interface ISelectParams {
 	value: any;
-	isNew: boolean;
 }
 
 export interface IGetItemsParams {
@@ -88,11 +93,13 @@ export class TypeaheadController {
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
 	hasSelection: boolean;
 	select: { (params: ISelectParams): void };
+	create: { (params: ICreateParams): void };
 	transform: { (item: any): string } | string;
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
 	label: string;
 	useClientSearching: boolean;
 	ngDisabled: boolean;
+	allowCollapse: boolean;
 
 	ngModel: angular.INgModelController;
 
@@ -151,7 +158,7 @@ export class TypeaheadController {
 		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.placeholder = this.label != null ? 'Search for ' + this.label.toLowerCase() : 'Search';
-		this.collapseOnSelect = this.object.isNullOrEmpty(this.$attrs.select);
+		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
 		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
 
 		this.parentChild.registerChildBehavior(this.childLink, {
@@ -254,6 +261,7 @@ let typeahead: angular.IComponentOptions = <any>{
 		childLink: '=?',
 		select: '&',
 		create: '&',
+		allowCollapse: '<?',
 		transform: '<?',
 		getItems: '&',
 		label: '@',
