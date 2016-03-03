@@ -111,7 +111,7 @@ export class TypeaheadController {
 	placeholder: string;
 	collapseOnSelect: boolean;
 	allowCustomOption: boolean;
-	collapsed: boolean;
+	collapsed: boolean = false;
 	hasSearchOption: boolean = false;
 
 	get selection(): any {
