@@ -161,7 +161,7 @@ var TypeaheadController = (function () {
         __arrayUtility.serviceName,
         componentValidator_service_1.factoryName];
     return TypeaheadController;
-}());
+})();
 exports.TypeaheadController = TypeaheadController;
 var typeahead = {
     require: { ngModel: 'ngModel' },

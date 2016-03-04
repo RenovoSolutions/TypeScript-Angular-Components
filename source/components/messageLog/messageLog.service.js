@@ -101,7 +101,7 @@ var MessageLog = (function () {
         });
     };
     return MessageLog;
-}());
+})();
 exports.MessageLog = MessageLog;
 function messageLogFactory() {
     'use strict';

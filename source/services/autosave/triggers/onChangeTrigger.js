@@ -53,6 +53,6 @@ var OnChangeTrigger = (function (_super) {
         console.log('No change listener register');
     };
     return OnChangeTrigger;
-}(trigger_1.Trigger));
+})(trigger_1.Trigger);
 exports.OnChangeTrigger = OnChangeTrigger;
 //# sourceMappingURL=onChangeTrigger.js.map

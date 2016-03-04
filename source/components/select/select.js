@@ -83,7 +83,7 @@ var SelectController = (function () {
     };
     SelectController.$inject = ['$element', '$scope', '$q', componentValidator_service_1.factoryName, __object.serviceName];
     return SelectController;
-}());
+})();
 exports.SelectController = SelectController;
 function select() {
     return {

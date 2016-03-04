@@ -21,7 +21,7 @@ var SimpleDataSource = (function (_super) {
         this.processData();
     }
     return SimpleDataSource;
-}(dataSourceBase_service_1.DataSourceBase));
+})(dataSourceBase_service_1.DataSourceBase);
 exports.SimpleDataSource = SimpleDataSource;
 simpleDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName];
 function simpleDataSourceFactory(observableFactory, dataSourceProcessor, array) {

@@ -68,7 +68,7 @@ var AutosaveController = (function () {
         __parentChild.serviceName,
         __objectUtility.serviceName];
     return AutosaveController;
-}());
+})();
 exports.AutosaveController = AutosaveController;
 function autosave() {
     'use strict';

@@ -12,7 +12,7 @@ export interface ICompareFunction<TDataType> {
 }
 
 export interface ISort {
-	column: IColumn;
+	column: IColumn<any>;
 	direction: SortDirection;
 }
 

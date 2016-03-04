@@ -64,7 +64,7 @@ var ClientServerDataSource = (function (_super) {
         return searchModel;
     };
     return ClientServerDataSource;
-}(asyncDataSource_service_1.AsyncDataSource));
+})(asyncDataSource_service_1.AsyncDataSource);
 exports.ClientServerDataSource = ClientServerDataSource;
 clientServerDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
 function clientServerDataSourceFactory(observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {

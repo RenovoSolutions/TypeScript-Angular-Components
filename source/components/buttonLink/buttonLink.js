@@ -11,7 +11,7 @@ var ButtonLinkController = (function () {
         this.target = this.newTab ? '_blank' : '_self';
     }
     return ButtonLinkController;
-}());
+})();
 exports.ButtonLinkController = ButtonLinkController;
 function buttonLink() {
     return {

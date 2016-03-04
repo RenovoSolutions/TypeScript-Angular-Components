@@ -41,7 +41,7 @@ var ContentProviderService = (function () {
         return this.content;
     };
     return ContentProviderService;
-}());
+})();
 contentProviderServiceFactory.$inject = [__observable.factoryName];
 function contentProviderServiceFactory(observableFactory) {
     'use strict';

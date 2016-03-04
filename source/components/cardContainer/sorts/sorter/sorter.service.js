@@ -2,6 +2,7 @@
 var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __transform = typescript_angular_utilities_1.services.transform;
 var sortDirection_1 = require('../sortDirection');
 var mergeSort_service_1 = require('../mergeSort/mergeSort.service');
 exports.moduleName = 'rl.ui.components.cardContainer.sorts.sorter';
@@ -33,8 +34,8 @@ var Sorter = (function () {
             if (sort.direction === sortDirection_1.SortDirection.none) {
                 return typescript_angular_utilities_1.types.CompareResult.equal;
             }
-            var valueOfA = sort.column.getValue(a);
-            var valueOfB = sort.column.getValue(b);
+            var valueOfA = __transform.transform.getValue(a, sort.column.getValue);
+            var valueOfB = __transform.transform.getValue(b, sort.column.getValue);
             var greaterResult = typescript_angular_utilities_1.types.CompareResult.greater;
             var lessResult = typescript_angular_utilities_1.types.CompareResult.less;
             var descendingSort = (sort.direction === sortDirection_1.SortDirection.descending);
@@ -51,7 +52,7 @@ var Sorter = (function () {
     };
     Sorter.$inject = [mergeSort_service_1.serviceName];
     return Sorter;
-}());
+})();
 exports.Sorter = Sorter;
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, Sorter);

@@ -6,37 +6,28 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 
 import __object = services.object;
+import __transform = services.transform.transform;
 
 export var moduleName: string = 'rl.ui.components.commaList';
 export var directiveName: string = 'rlCommaList';
 export var controllerName: string = 'CommaListController';
 
-export interface ICommaListAttrs extends angular.IAttributes {
-	transform: string;
-}
-
-export interface ITransformParam {
-	item: any;
-}
-
 export class CommaListController {
 	inList: any[];
 	list: any[];
-	transform: {(param: ITransformParam): string};
-	hasTransform: boolean;
+	transform: {(item: any): string} | string;
 	max: number;
 	remainingItems: number = 0;
 
-	static $inject: string[] = ['$attrs', __object.serviceName];
-	constructor($attrs: ICommaListAttrs, object: __object.IObjectUtility) {
-		this.hasTransform = object.isNullOrWhitespace($attrs.transform) === false;
+	static $inject: string[] = [__object.serviceName];
+	constructor(object: __object.IObjectUtility) {
 		this.list = this.getFirstItems(this.inList);
 	}
 
 	private getFirstItems(list: any[]): any[] {
-		if (this.hasTransform) {
+		if (this.transform != null) {
 			list = _.map(list, (item: any): string => {
-				return this.transform({ item: item });
+				return __transform.getValue(item, this.transform);
 			});
 		};
 
@@ -71,7 +62,7 @@ function commaList(): angular.IDirective {
 		bindToController: {
 			inList: '=list',
 			max: '=',
-			transform: '&',
+			transform: '=',
 		},
 	};
 }

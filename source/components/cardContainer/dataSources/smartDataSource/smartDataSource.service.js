@@ -104,7 +104,7 @@ var SmartDataSource = (function (_super) {
         this.isEmpty = data.isEmpty;
     };
     return SmartDataSource;
-}(asyncDataSource_service_1.AsyncDataSource));
+})(asyncDataSource_service_1.AsyncDataSource);
 exports.SmartDataSource = SmartDataSource;
 smartDataSourceFactory.$inject = [__observable.factoryName, dataSourceProcessor_service_1.processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
 function smartDataSourceFactory(observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory) {

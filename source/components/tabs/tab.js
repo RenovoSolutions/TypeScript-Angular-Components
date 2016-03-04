@@ -11,7 +11,7 @@ var TabController = (function () {
     }
     TabController.$inject = ['$scope'];
     return TabController;
-}());
+})();
 exports.TabController = TabController;
 function tab() {
     return {

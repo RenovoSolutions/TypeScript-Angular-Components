@@ -26,6 +26,6 @@ var RatingBarBackgroundService = (function () {
         }
     };
     return RatingBarBackgroundService;
-}());
+})();
 exports.RatingBarBackgroundService = RatingBarBackgroundService;
 //# sourceMappingURL=ratingBarBackgrounds.service.js.map

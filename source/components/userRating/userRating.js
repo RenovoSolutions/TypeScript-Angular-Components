@@ -39,7 +39,7 @@ var UserRatingController = (function () {
     };
     UserRatingController.$inject = ['$scope'];
     return UserRatingController;
-}());
+})();
 exports.UserRatingController = UserRatingController;
 function userRating() {
     'use strict';

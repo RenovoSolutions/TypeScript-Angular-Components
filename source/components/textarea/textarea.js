@@ -28,7 +28,7 @@ var TextareaController = (function () {
     });
     TextareaController.$inject = ['$element', '$scope', componentValidator_service_1.factoryName];
     return TextareaController;
-}());
+})();
 exports.TextareaController = TextareaController;
 function textarea() {
     return {

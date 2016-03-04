@@ -38,7 +38,7 @@ var ModeFilterGroup = (function (_super) {
         return modeOption;
     };
     return ModeFilterGroup;
-}(filterGroup_service_1.FilterGroup));
+})(filterGroup_service_1.FilterGroup);
 exports.ModeFilterGroup = ModeFilterGroup;
 modeFilterGroupFactory.$inject = [__object.serviceName];
 function modeFilterGroupFactory(object) {

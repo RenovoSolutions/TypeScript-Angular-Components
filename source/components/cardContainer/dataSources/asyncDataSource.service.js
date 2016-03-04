@@ -38,6 +38,6 @@ var AsyncDataSource = (function (_super) {
         return null;
     };
     return AsyncDataSource;
-}(dataSourceBase_service_1.DataSourceBase));
+})(dataSourceBase_service_1.DataSourceBase);
 exports.AsyncDataSource = AsyncDataSource;
 //# sourceMappingURL=asyncDataSource.service.js.map

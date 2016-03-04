@@ -43,7 +43,7 @@ export interface ICardContainerBuilder {
     };
     useSearch(): IGenericSearchFilter;
     usePaging(): void;
-    addColumn(column: IColumn): void;
+    addColumn<TItemType>(column: IColumn<TItemType>): void;
     useClickableCards(): void;
     usePermanentFooters(): void;
     useSelection(): void;
@@ -72,7 +72,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     _dataSource: IDataSource<any>;
     _filters: filters.IFilter[];
     _paging: boolean;
-    _columns: IColumn[];
+    _columns: IColumn<any>[];
     _clickableCards: boolean;
     _permanentFooters: boolean;
     _selectableCards: boolean;
@@ -91,7 +91,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     constructor($injector: angular.auto.IInjectorService);
     useSearch(filter?: IGenericSearchFilter): IGenericSearchFilter;
     usePaging(): void;
-    addColumn(column: IColumn): void;
+    addColumn<TItemType>(column: IColumn<TItemType>): void;
     useClickableCards(): void;
     usePermanentFooters(): void;
     useSelection(): void;

@@ -232,7 +232,7 @@ var CardContainerController = (function () {
     };
     CardContainerController.$inject = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataSources_module_1.dataPager.factoryName, __parentChild.serviceName];
     return CardContainerController;
-}());
+})();
 exports.CardContainerController = CardContainerController;
 cardContainer.$inject = ['$compile'];
 function cardContainer($compile) {

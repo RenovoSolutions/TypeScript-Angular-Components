@@ -16,7 +16,7 @@ var DateFilter = (function () {
         }
         if (this.dateRange) {
             var itemDate = this.getValue(item);
-            var selectedDate1 = void 0;
+            var selectedDate1;
             //have to set the selectedDate1 to a valid Date object for comparisons.
             if (this.includeTime) {
                 selectedDate1 = moment(this.selectedDate1).toDate();
@@ -41,7 +41,7 @@ var DateFilter = (function () {
         return item[property];
     };
     return DateFilter;
-}());
+})();
 dateFilterFactory.$inject = [__date.serviceName];
 function dateFilterFactory(dateUtility) {
     return {

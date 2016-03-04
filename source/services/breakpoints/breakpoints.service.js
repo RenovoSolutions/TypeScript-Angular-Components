@@ -51,6 +51,6 @@ var BreakpointService = (function () {
     };
     BreakpointService.$inject = ['$rootScope', visibleBreakpoint_service_1.visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapper_service_1.serviceName, __observable.factoryName];
     return BreakpointService;
-}());
+})();
 exports.BreakpointService = BreakpointService;
 //# sourceMappingURL=breakpoints.service.js.map
