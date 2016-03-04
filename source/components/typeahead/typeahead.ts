@@ -9,6 +9,7 @@ import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
+import __transform = services.transform.transform;
 
 import {
 	IComponentValidator,
@@ -204,21 +205,11 @@ export class TypeaheadController {
 	}
 
 	getDisplayName(item: any): string {
-		if (item == null) {
-			return null;
-		}
-
-		if (item.__isSearchOption) {
+		if (item != null && item.__isSearchOption) {
 			return item.text;
 		}
 
-		if (this.transform == null) {
-			return item;
-		}
-
-		return _.isFunction(this.transform)
-			? (<{ (item: any): string }>this.transform)(item)
-			: item[<string>this.transform];
+		return __transform.getValue(item, this.transform);
 	}
 
 	refresh(search: string): angular.IPromise<void> {
