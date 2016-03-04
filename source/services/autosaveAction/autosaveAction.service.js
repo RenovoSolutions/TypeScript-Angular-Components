@@ -51,7 +51,7 @@ var AutosaveActionService = (function () {
     };
     AutosaveActionService.$inject = ['$timeout'];
     return AutosaveActionService;
-}());
+})();
 ng.module(exports.moduleName, [])
     .service(exports.serviceName, AutosaveActionService);
 //# sourceMappingURL=autosaveAction.service.js.map

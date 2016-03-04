@@ -74,7 +74,7 @@ var LongClickButtonController = (function () {
     };
     LongClickButtonController.$inject = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
     return LongClickButtonController;
-}());
+})();
 exports.LongClickButtonController = LongClickButtonController;
 function longClickButton() {
     'use strict';

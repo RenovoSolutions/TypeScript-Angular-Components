@@ -6,12 +6,12 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var __genericSearch = typescript_angular_utilities_1.services.genericSearchFilter;
 var __objectUtility = typescript_angular_utilities_1.services.object;
 var __arrayUtility = typescript_angular_utilities_1.services.array;
-var __promiseUtility = typescript_angular_utilities_1.services.promise;
+var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.typeahead';
 exports.componentName = 'rlTypeahead';
 exports.controllerName = 'TypeaheadController';
 var TypeaheadController = (function () {
-    function TypeaheadController($scope, $q, $attrs, parentChild, genericSearchFactory, object, array, promise) {
+    function TypeaheadController($scope, $q, $attrs, parentChild, genericSearchFactory, object, array, componentValidatorFactory) {
         this.$scope = $scope;
         this.$q = $q;
         this.$attrs = $attrs;
@@ -19,7 +19,7 @@ var TypeaheadController = (function () {
         this.genericSearchFactory = genericSearchFactory;
         this.object = object;
         this.array = array;
-        this.promise = promise;
+        this.componentValidatorFactory = componentValidatorFactory;
         this.loading = false;
         this.collapsed = false;
         this.hasSearchOption = false;
@@ -52,6 +52,13 @@ var TypeaheadController = (function () {
         this.placeholder = this.label != null ? 'Search for ' + this.label.toLowerCase() : 'Search';
         this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
         this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
+        if (!_.isUndefined(this.validator)) {
+            this.typeaheadValidator = this.componentValidatorFactory.getInstance({
+                ngModel: this.ngModel,
+                $scope: this.$scope,
+                validators: [this.validator],
+            });
+        }
         this.parentChild.registerChildBehavior(this.childLink, {
             add: this.addItem.bind(this),
             remove: this.removeItem.bind(this),
@@ -77,7 +84,9 @@ var TypeaheadController = (function () {
             this.visibleItems = [];
             return null;
         }
+        this.loading = true;
         return this.loadItems(search).then(function () {
+            _this.loading = false;
             _this._searchOption.text = search;
             if (_this.showCustomSearch(search)) {
                 _this.hasSearchOption = true;
@@ -141,9 +150,9 @@ var TypeaheadController = (function () {
         __genericSearch.factoryName,
         __objectUtility.serviceName,
         __arrayUtility.serviceName,
-        __promiseUtility.serviceName];
+        componentValidator_service_1.factoryName];
     return TypeaheadController;
-}());
+})();
 exports.TypeaheadController = TypeaheadController;
 var typeahead = {
     require: { ngModel: 'ngModel' },
@@ -160,6 +169,7 @@ var typeahead = {
         label: '@',
         useClientSearching: '<?',
         ngDisabled: '<?',
+        validator: '<?',
     },
 };
 angular.module(exports.moduleName, [
@@ -167,7 +177,7 @@ angular.module(exports.moduleName, [
     __genericSearch.moduleName,
     __objectUtility.moduleName,
     __arrayUtility.moduleName,
-    __promiseUtility.moduleName
+    componentValidator_service_1.moduleName
 ])
     .component(exports.componentName, typeahead)
     .controller(exports.controllerName, TypeaheadController);

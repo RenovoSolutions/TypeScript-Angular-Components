@@ -19,7 +19,7 @@ var TabsetController = (function () {
         tab.isVisible = true;
     };
     return TabsetController;
-}());
+})();
 exports.TabsetController = TabsetController;
 function tabset() {
     return {

@@ -79,7 +79,7 @@ var SimpleCardController = (function () {
     };
     SimpleCardController.$inject = ['$scope', '$element', __parentChild.serviceName];
     return SimpleCardController;
-}());
+})();
 exports.SimpleCardController = SimpleCardController;
 function simpleCard() {
     'use strict';

@@ -23,6 +23,6 @@ var Trigger = (function () {
         this.settings = settings;
     };
     return Trigger;
-}());
+})();
 exports.Trigger = Trigger;
 //# sourceMappingURL=trigger.js.map

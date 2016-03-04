@@ -37,7 +37,7 @@ var ComponentValidator = (function () {
         });
     };
     return ComponentValidator;
-}());
+})();
 exports.ComponentValidator = ComponentValidator;
 componentValidatorFactory.$inject = [__validation.serviceName];
 function componentValidatorFactory(validationService) {

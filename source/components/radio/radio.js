@@ -15,7 +15,7 @@ var RadioController = (function () {
     }
     RadioController.$inject = ['$scope', '$element'];
     return RadioController;
-}());
+})();
 exports.RadioController = RadioController;
 function radio() {
     'use strict';

@@ -28,7 +28,7 @@ var SpinnerController = (function () {
     }
     SpinnerController.$inject = ['$scope', componentValidator_service_1.factoryName];
     return SpinnerController;
-}());
+})();
 exports.SpinnerController = SpinnerController;
 spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
 function spinner($timeout, stringUtility, numberUtility) {

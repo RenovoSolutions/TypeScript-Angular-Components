@@ -29,7 +29,7 @@ var TriggerService = (function () {
         });
     };
     return TriggerService;
-}());
+})();
 triggerServiceFactory.$inject = ['$rootScope', '$timeout'];
 function triggerServiceFactory($rootScope, $timeout) {
     return {

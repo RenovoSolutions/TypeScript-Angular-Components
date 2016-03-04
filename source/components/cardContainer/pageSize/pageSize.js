@@ -33,7 +33,7 @@ var PageSizeController = (function () {
     };
     PageSizeController.$inject = ['$scope'];
     return PageSizeController;
-}());
+})();
 exports.PageSizeController = PageSizeController;
 function pageSize() {
     'use strict';
