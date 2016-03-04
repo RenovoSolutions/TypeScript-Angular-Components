@@ -29,7 +29,7 @@ var SimpleCardListController = (function () {
     };
     SimpleCardListController.$inject = ['$scope', '$attrs', '$parse', __observable.factoryName];
     return SimpleCardListController;
-}());
+})();
 exports.SimpleCardListController = SimpleCardListController;
 function simpleCardList() {
     'use strict';

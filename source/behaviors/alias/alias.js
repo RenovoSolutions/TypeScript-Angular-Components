@@ -18,7 +18,7 @@ var AliasController = (function () {
     }
     AliasController.$inject = ['$scope', '$attrs', '$parse', '$interpolate'];
     return AliasController;
-}());
+})();
 exports.AliasController = AliasController;
 function alias() {
     return {

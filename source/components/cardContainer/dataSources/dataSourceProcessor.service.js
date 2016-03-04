@@ -94,6 +94,6 @@ var DataSourceProcessor = (function () {
     };
     DataSourceProcessor.$inject = [__object.serviceName, sorter_service_1.serviceName];
     return DataSourceProcessor;
-}());
+})();
 exports.DataSourceProcessor = DataSourceProcessor;
 //# sourceMappingURL=dataSourceProcessor.service.js.map

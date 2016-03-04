@@ -20,7 +20,7 @@ var WindowService = (function () {
         return this.windowControl.height();
     };
     return WindowService;
-}());
+})();
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, WindowService);
 //# sourceMappingURL=windowWrapper.service.js.map

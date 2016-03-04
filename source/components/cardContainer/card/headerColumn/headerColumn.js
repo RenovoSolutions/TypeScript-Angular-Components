@@ -1,5 +1,7 @@
 // /// <reference path='../../../../../typings/jquery/jquery.d.ts' />
 'use strict';
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __transform = typescript_angular_utilities_1.services.transform;
 exports.directiveName = 'rlCardHeaderColumn';
 exports.controllerName = 'CardHeaderColumnController';
 var HeaderColumnController = (function () {
@@ -7,14 +9,14 @@ var HeaderColumnController = (function () {
         var _this = this;
         this.$scope = $scope;
         this.update = function () {
-            _this.value = _this.column.getValue(_this.item);
+            _this.value = __transform.transform.getValue(_this.item, _this.column.getValue);
         };
         this.update();
         $scope.$on('card.refresh', this.update); //*event?
     }
     HeaderColumnController.$inject = ['$scope'];
     return HeaderColumnController;
-}());
+})();
 exports.HeaderColumnController = HeaderColumnController;
 headerColumn.$inject = ['$compile'];
 function headerColumn($compile) {

@@ -31,7 +31,7 @@ var EditableMessageLogController = (function () {
     };
     EditableMessageLogController.$inject = ['$scope', messageLog_service_1.factoryName, __object.serviceName];
     return EditableMessageLogController;
-}());
+})();
 exports.EditableMessageLogController = EditableMessageLogController;
 function editableMessageLog() {
     'use strict';

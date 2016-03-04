@@ -16,7 +16,7 @@ var LazyLoadController = (function () {
     }
     LazyLoadController.$inject = ['$scope'];
     return LazyLoadController;
-}());
+})();
 exports.LazyLoadController = LazyLoadController;
 function lazyLoad() {
     'use strict';

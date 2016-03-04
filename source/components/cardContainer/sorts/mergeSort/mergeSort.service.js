@@ -46,7 +46,7 @@ var MergeSort = (function () {
         return result;
     };
     return MergeSort;
-}());
+})();
 exports.MergeSort = MergeSort;
 angular.module(exports.moduleName, [])
     .service(exports.serviceName, MergeSort);

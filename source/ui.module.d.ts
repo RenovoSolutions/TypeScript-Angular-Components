@@ -1,7 +1,3 @@
-import 'angular-ui-bootstrap';
-import 'angular-sanitize';
-import '../libraries/angular-bootstrap-slider/slider';
-import 'signature_pad';
 import * as behaviors from './behaviors/behaviors.module';
 import * as components from './components/components.module';
 import * as services from './services/services.module';

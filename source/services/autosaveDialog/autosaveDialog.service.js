@@ -55,6 +55,6 @@ var AutosaveDialogService = (function () {
     };
     AutosaveDialogService.$inject = ['$rootScope', dialog_service_1.serviceName, autosave_service_1.factoryName, __promise.serviceName];
     return AutosaveDialogService;
-}());
+})();
 exports.AutosaveDialogService = AutosaveDialogService;
 //# sourceMappingURL=autosaveDialog.service.js.map

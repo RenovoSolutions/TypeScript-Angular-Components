@@ -34,7 +34,7 @@ var GenericContainerController = (function () {
     };
     GenericContainerController.$inject = ['$scope', __object.serviceName];
     return GenericContainerController;
-}());
+})();
 exports.GenericContainerController = GenericContainerController;
 genericContainer.$inject = [
     '$compile',

@@ -30,6 +30,6 @@ var SortDirection = (function () {
     SortDirection.ascending = new SortDirection(1);
     SortDirection.descending = new SortDirection(2);
     return SortDirection;
-}());
+})();
 exports.SortDirection = SortDirection;
 //# sourceMappingURL=sortDirection.js.map

@@ -107,6 +107,6 @@ var DataSourceBase = (function () {
         }
     };
     return DataSourceBase;
-}());
+})();
 exports.DataSourceBase = DataSourceBase;
 //# sourceMappingURL=dataSourceBase.service.js.map

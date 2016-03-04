@@ -125,7 +125,7 @@ var DateFilterController = (function () {
     };
     DateFilterController.$inject = ['$scope', __date.serviceName, '$element'];
     return DateFilterController;
-}());
+})();
 exports.DateFilterController = DateFilterController;
 function dateFilter() {
     'use strict';

@@ -22,6 +22,6 @@ var AutosaveDialogController = (function () {
     }
     AutosaveDialogController.$inject = ['$scope'];
     return AutosaveDialogController;
-}());
+})();
 exports.AutosaveDialogController = AutosaveDialogController;
 //# sourceMappingURL=autosaveDialog.controller.js.map

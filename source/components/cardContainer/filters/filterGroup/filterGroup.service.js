@@ -79,7 +79,7 @@ var FilterGroup = (function (_super) {
         });
     };
     return FilterGroup;
-}(typescript_angular_utilities_1.filters.SerializableFilter));
+})(typescript_angular_utilities_1.filters.SerializableFilter);
 exports.FilterGroup = FilterGroup;
 filterGroupFactory.$inject = [__object.serviceName];
 function filterGroupFactory(object) {
