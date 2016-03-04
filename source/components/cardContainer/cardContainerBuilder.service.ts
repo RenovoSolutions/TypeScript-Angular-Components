@@ -73,7 +73,7 @@ export interface ICardContainerBuilder {
 
 	useSearch(): IGenericSearchFilter;
 	usePaging(): void;
-	addColumn(column: IColumn): void;
+	addColumn<TItemType>(column: IColumn<TItemType>): void;
 	useClickableCards(): void;
 	usePermanentFooters(): void;
 	useSelection(): void;
@@ -105,7 +105,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_dataSource: IDataSource<any>;
 	_filters: filters.IFilter[];
 	_paging: boolean;
-	_columns: IColumn[];
+	_columns: IColumn<any>[];
 	_clickableCards: boolean;
 	_permanentFooters: boolean;
 	_selectableCards: boolean;
@@ -142,7 +142,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._paging = true;
 	}
 
-	addColumn(column: IColumn): void {
+	addColumn<TItemType>(column: IColumn<TItemType>): void {
 		this._columns.push(column);
 	}
 

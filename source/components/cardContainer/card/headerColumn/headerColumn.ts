@@ -4,18 +4,21 @@
 
 import * as angular from 'angular';
 
+import { services } from 'typescript-angular-utilities';
+import __transform = services.transform;
+
 import { IColumn } from '../../column';
 
 export var directiveName: string = 'rlCardHeaderColumn';
 export var controllerName: string = 'CardHeaderColumnController';
 
 export interface IHeaderColumnBindings {
-	column: IColumn;
+	column: IColumn<any>;
 	item: any;
 }
 
 export class HeaderColumnController {
-	column: IColumn;
+	column: IColumn<any>;
 	item: any;
 
 	value: string | number | boolean;
@@ -29,7 +32,7 @@ export class HeaderColumnController {
 	}
 
 	private update: {(): void} = (): void => {
-		this.value = this.column.getValue(this.item);
+		this.value = __transform.transform.getValue(this.item, this.column.getValue);
 	}
 }
 
@@ -56,7 +59,7 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 					, element: angular.IAugmentedJQuery
 					, attrs: angular.IAttributes
 					, header: HeaderColumnController): void {
-					var column: IColumn = header.column;
+					var column: IColumn<any> = header.column;
 					if (column.templateUrl != null) {
 						header.renderedTemplate = $compile('<div ng-include="\'' + column.templateUrl + '\'"></div>')(scope);
 					} else if (column.template != null) {

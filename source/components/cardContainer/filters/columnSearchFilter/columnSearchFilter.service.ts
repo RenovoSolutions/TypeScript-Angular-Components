@@ -5,6 +5,7 @@ import * as angular from 'angular';
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __string = services.string;
+import __transform = services.transform;
 
 import { IColumn } from '../../column';
 
@@ -15,14 +16,14 @@ export var filterName: string = 'column-search';
 export interface IColumnSearchFilter extends filters.IFilter {
 	searchText: string;
 	caseSensitive: boolean;
-	column: IColumn;
+	column: IColumn<any>;
 }
 
 export class ColumnSearchFilter implements IColumnSearchFilter {
 	type: string = filterName;
 	searchText: string;
 	caseSensitive: boolean;
-	column: IColumn;
+	column: IColumn<any>;
 
 	constructor(private object: __object.IObjectUtility
 			, private string: __string.IStringUtilityService) { }
@@ -32,7 +33,7 @@ export class ColumnSearchFilter implements IColumnSearchFilter {
 			return true;
 		}
 
-		var value: string = this.object.toString(this.column.getValue(item));
+		var value: string = this.object.toString(__transform.transform.getValue(item, this.column.getValue));
 
 		var search: string = this.searchText;
 
