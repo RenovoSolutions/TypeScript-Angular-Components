@@ -35,15 +35,28 @@ describe('TypeaheadController', () => {
 	let scope: angular.IScope;
 	let typeahead: TypeaheadController;
 	let $q: angular.IQService;
+	let $timeout: angular.ITimeoutService;
 	let parentChild: __parentChild.IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		let services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
+		let services: any = test.angularFixture.inject('$q', '$timeout', __parentChild.serviceName);
 		$q = services.$q;
+		$timeout = services.$timeout;
 		parentChild = services[__parentChild.serviceName];
 	});
+
+    it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {
+		let allowCollapse: boolean = true;
+		buildControllerWithoutInit(null, true, null, null, allowCollapse);
+
+		typeahead.ngModel.$viewValue = 'Item';
+		typeahead.$onInit();
+		$timeout.flush();
+
+		expect(typeahead.collapsed).to.be.true;
+    });
 
 	describe('transform', (): void => {
 		it('should call transform on the scope if transform is provided', (): void => {
@@ -306,6 +319,15 @@ describe('TypeaheadController', () => {
 						, create?: Sinon.SinonSpy
 						, select?: Sinon.SinonSpy
 						, allowCollapse?: boolean): void {
+		buildControllerWithoutInit(transform, useClientSearching, create, select, allowCollapse);
+		typeahead.$onInit();
+	}
+
+	function buildControllerWithoutInit(transform?: Sinon.SinonSpy | string
+						, useClientSearching?: boolean
+						, create?: Sinon.SinonSpy
+						, select?: Sinon.SinonSpy
+						, allowCollapse?: boolean): void {
 		let ngModel: any = {
 			$viewValue: null,
 			$setViewValue: (value: any): void => { ngModel.$viewValue = value; },
@@ -331,6 +353,5 @@ describe('TypeaheadController', () => {
 
 		scope = controllerResult.scope;
 		typeahead = controllerResult.controller;
-		typeahead.$onInit();
 	}
 });

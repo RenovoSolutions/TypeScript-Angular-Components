@@ -159,6 +159,7 @@ export class TypeaheadController {
 	static $inject: string[] = ['$scope'
 		, '$q'
 		, '$attrs'
+		, '$timeout'
 		, __parentChild.serviceName
 		, __genericSearch.factoryName
 		, __objectUtility.serviceName
@@ -167,6 +168,7 @@ export class TypeaheadController {
 	constructor(private $scope: angular.IScope
 		, private $q: angular.IQService
 		, private $attrs: ITypeaheadAttrs
+		, private $timeout: angular.ITimeoutService
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
@@ -180,6 +182,12 @@ export class TypeaheadController {
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
 		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
+
+		this.$timeout((): void => {
+			if (this.collapseOnSelect && !this.object.isNullOrEmpty(this.ngModel.$viewValue)) {
+				this.collapsed = true;
+			}
+		});
 
 		if (!_.isUndefined(this.validator)) {
 			this.typeaheadValidator = this.componentValidatorFactory.getInstance({
