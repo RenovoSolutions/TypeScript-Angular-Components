@@ -92,8 +92,8 @@ export interface IDataSourceBuilder {
 
 export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
-	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
-	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
+	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
+	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
@@ -257,14 +257,14 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup {
+	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup {
 		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get<any>(filterGroup.modeFilterGroup.factoryName);
 		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup {
+	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup {
 		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
 		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
