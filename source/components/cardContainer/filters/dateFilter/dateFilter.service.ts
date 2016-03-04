@@ -5,12 +5,13 @@ import * as moment from 'moment';
 
 import {filters, services} from 'typescript-angular-utilities';
 import __date = services.date;
+import __transform = services.transform;
 
 export let factoryName: string = 'rlDateFilterFactory';
 
 export interface IDateFilterSettings{
 	type: string;
-	valueSelector: string,
+	valueSelector: { (item: any): Date } | string;
 }
 
 export interface IDateFilter extends filters.IFilter {
@@ -29,7 +30,7 @@ class DateFilter implements IDateFilter {
 	includeTime: boolean = false;
 	dateRange: boolean;
 
-	constructor(private valueSelector: string, private dateUtility: __date.IDateUtility, public type: string) {
+	constructor(private valueSelector: { (item: any): Date } | string, private dateUtility: __date.IDateUtility, public type: string) {
 
 	}
 
@@ -61,8 +62,7 @@ class DateFilter implements IDateFilter {
 	}
 
 	private getValue(item: any): Date {
-		let property = this.valueSelector;
-		return item[property];
+		return __transform.transform.getValue(item, this.valueSelector);
 	}
 
 }
