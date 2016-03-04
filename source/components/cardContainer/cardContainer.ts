@@ -19,19 +19,16 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sor
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerService, CardContainerService } from './cardContainer.service';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
-export var directiveName: string = 'rlCardContainer';
-export var controllerName: string = 'CardContainerController';
+export let directiveName: string = 'rlCardContainer';
+export let controllerName: string = 'CardContainerController';
 
-export var defaultMaxColumnSorts: number = 2;
-export var defaultSelectionTitle: string = 'Select card';
+export let defaultMaxColumnSorts: number = 2;
+export let defaultSelectionTitle: string = 'Select card';
 
 export interface ICardContainerScope extends angular.IScope {
-	containerService: ICardContainerService;
 	containerData: any;
-	builder: ICardContainerBuilder;
 }
 
 export interface ICardContainerBindings {
@@ -131,7 +128,6 @@ export class CardContainerController {
 			this.dataSource.sorts = [];
 		}
 
-		$scope.containerService = new CardContainerService(this);
 		$scope.containerData = this.containerData;
 	}
 
@@ -140,14 +136,14 @@ export class CardContainerController {
 	}
 
 	openCard(): boolean {
-		var behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
+		let behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
 
 		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 	}
 
 	sort(column: IColumn): void {
-		var sortList: ISort[] = this.dataSource.sorts;
-		var firstSort: ISort = sortList[0];
+		let sortList: ISort[] = this.dataSource.sorts;
+		let firstSort: ISort = sortList[0];
 
 		// If column is already the primary sort, change the direction
 		if (firstSort != null
@@ -176,7 +172,7 @@ export class CardContainerController {
 			});
 
 			// Build ascending sort for column
-			var newSort: ISort = {
+			let newSort: ISort = {
 				column: column,
 				direction: SortDirection.ascending,
 			};
@@ -191,7 +187,7 @@ export class CardContainerController {
 		// If column has secondary sorts, wipe the sort order and just apply the secondary sorts
 		if (firstSort != null && column.secondarySorts != null) {
 			sortList.length = 0;
-			var secondarySorts: ISort[] = this.buildSecondarySorts(firstSort.direction, column.secondarySorts);
+			let secondarySorts: ISort[] = this.buildSecondarySorts(firstSort.direction, column.secondarySorts);
 			sortList.push(firstSort);
 			sortList.push.apply(sortList, secondarySorts);
 		} else {
@@ -234,7 +230,7 @@ export class CardContainerController {
 
 	private buildColumnSizes(): void {
 		_.each(this.columns, (column: IColumn): void => {
-			var sizes: IBreakpointSize | number = column.size;
+			let sizes: IBreakpointSize | number = column.size;
 			if (_.isObject(sizes)) {
 				sizes[xs] = this.object.valueOrDefault(sizes[xs], 0);
 				sizes[sm] = this.object.valueOrDefault(sizes[sm], sizes[xs]);
@@ -270,7 +266,7 @@ export class CardContainerController {
 	}
 
 	private clearFilteredSelections: {(): void} = (): void => {
-		var nonVisibleItems: any[] = _.difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
+		let nonVisibleItems: any[] = _.difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
 
 		_.each(nonVisibleItems, (item: IViewDataEntity<ISelectionViewData>): void => {
 			if (_.isUndefined(item.viewData)) {
@@ -295,7 +291,7 @@ export class CardContainerController {
 	private updateDisabledSelections: {(): void} = (): void => {
 		if (this.disablingSelections) {
 			_.each(this.dataSource.rawDataSet, (item: IViewDataEntity<ISelectionViewData>): void => {
-				var disabledReason: string = this.disableSelection({ item: item });
+				let disabledReason: string = this.disableSelection({ item: item });
 				item.viewData.disabledSelection = (disabledReason != null);
 				item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
 			});
@@ -303,7 +299,7 @@ export class CardContainerController {
 	}
 
 	private buildSecondarySorts(direction: SortDirection, secondarySorts: ISecondarySorts): ISort[] {
-		var sortList: IPartialSort[] = secondarySorts[SortDirection.getFullName(direction)];
+		let sortList: IPartialSort[] = secondarySorts[SortDirection.getFullName(direction)];
 		return _.map(sortList, (sort: IPartialSort): ISort => {
 			return {
 				direction: sort.direction,
@@ -347,7 +343,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			builder: '=?',
 
 			// summary: controller shared by all components on a card
-			// remarks: this controller cannot override any of the following variable names:
+			// remarks: this controller cannot override any of the following letiable names:
 			//          columns
 			//          item
 			//          contentTemplate
@@ -374,29 +370,33 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			, attrs: angular.IAttributes
 			, controller: CardContainerController
 			, transclude: angular.ITranscludeFunction): void {
-			var headerArea: JQuery = element.find('.container-header-template');
-			var footerArea: JQuery = element.find('.container-footer-template');
+			let headerArea: JQuery = element.find('.container-header-template');
+			let footerArea: JQuery = element.find('.container-footer-template');
 
 			controller.makeCard = transclude;
 
 			transclude(scope, (clone: JQuery): void => {
-				var header: JQuery = clone.filter('rl-container-header');
+				let header: JQuery = clone.filter('rl-container-header');
 
 				if (header.length === 0) {
-					var defaultHeader = require('./defaultCardContainerHeader.html');
-					header = $compile(defaultHeader)(scope);
+					let defaultHeader = require('./defaultCardContainerHeader.html');
+					header = headerArea.append(defaultHeader);
+					$compile(header)(scope);
+				}
+				else {
+					headerArea.append(header);
 				}
 
-				headerArea.append(header);
-
-				var footer: JQuery = clone.filter('rl-container-footer');
+				let footer: JQuery = clone.filter('rl-container-footer');
 
 				if (footer.length === 0) {
-					var defaultFooter = require('./defaultCardContainerFooter.html');
-					footer = $compile(defaultFooter)(scope);
+					let defaultFooter = require('./defaultCardContainerFooter.html');
+					footer = footerArea.append(defaultFooter);
+					$compile(footer)(scope);
 				}
-
-				footerArea.append(footer);
+				else {
+					footerArea.append(footer);
+				}
 			});
 		}
 	};

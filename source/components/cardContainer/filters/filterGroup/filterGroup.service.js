@@ -16,6 +16,7 @@ var FilterGroup = (function (_super) {
         this.object = object;
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
+        this.initOptions();
     }
     FilterGroup.prototype.initOptions = function () {
         var _this = this;

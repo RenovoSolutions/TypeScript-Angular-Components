@@ -9,6 +9,7 @@ exports.defaultVisiblePageCount = 5;
 var PagerController = (function () {
     function PagerController($scope) {
         var _this = this;
+        this.$scope = $scope;
         this.canGoBack = false;
         this.canGoForward = false;
         this.hasPageFilter = true;
@@ -21,26 +22,29 @@ var PagerController = (function () {
             }
             _this.updatePaging();
         };
-        if (this.containerService == null) {
+    }
+    PagerController.prototype.$onInit = function () {
+        var _this = this;
+        if (this.cardContainer == null) {
             return;
         }
-        this.pager = this.containerService.pager;
+        this.pager = this.cardContainer.dataSource.pager;
         if (this.pager == null) {
             this.hasPageFilter = false;
         }
         else {
             this.visiblePageCount = this.pageCount != null ? this.pageCount : exports.defaultVisiblePageCount;
             this.lastPage = 1;
-            this.dataSource = this.containerService.dataSource;
-            $scope.$watch(function () { return _this.dataSource.count; }, this.updatePageCount);
-            $scope.$watch(function () { return _this.pager.pageSize; }, this.updatePageCount);
-            $scope.$watch(function () { return _this.currentPage; }, function (page) {
+            this.dataSource = this.cardContainer.dataSource;
+            this.$scope.$watch(function () { return _this.dataSource.count; }, this.updatePageCount);
+            this.$scope.$watch(function () { return _this.pager.pageSize; }, this.updatePageCount);
+            this.$scope.$watch(function () { return _this.currentPage; }, function (page) {
                 _this.updatePaging();
                 _this.pager.pageNumber = page;
                 _this.dataSource.onPagingChange();
             });
         }
-    }
+    };
     PagerController.prototype.updatePaging = function () {
         var page = this.currentPage;
         this.canGoBack = page > 1;
@@ -89,13 +93,13 @@ function pager() {
     'use strict';
     return {
         restrict: 'E',
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./pager.html'),
         controller: exports.controllerName,
         controllerAs: 'pager',
         scope: {},
         bindToController: {
             pageCount: '=visiblePages',
-            containerService: '=',
         },
     };
 }

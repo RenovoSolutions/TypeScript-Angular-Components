@@ -9,18 +9,21 @@ exports.directiveName = 'rlSelectionControl';
 exports.controllerName = 'SelectionControlController';
 var SelectionControlController = (function () {
     function SelectionControlController($scope, bool) {
-        var _this = this;
         this.$scope = $scope;
-        if (this.containerService == null) {
+        this.bool = bool;
+    }
+    SelectionControlController.prototype.$onInit = function () {
+        var _this = this;
+        if (this.cardContainer == null) {
             return;
         }
-        this.selectedItems = this.containerService.numberSelected;
-        this.pagingEnabled = bool.toBool(this.containerService.pager);
-        this.dataSource = this.containerService.dataSource;
-        $scope.$watch(function () { return _this.containerService.numberSelected; }, function (value) {
+        this.selectedItems = this.cardContainer.numberSelected;
+        this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
+        this.dataSource = this.cardContainer.dataSource;
+        this.$scope.$watch(function () { return _this.cardContainer.numberSelected; }, function (value) {
             _this.selectedItems = value;
         });
-    }
+    };
     SelectionControlController.prototype.selectPage = function () {
         _.each(this.dataSource.dataSet, function (item) {
             item.viewData.selected = true;
@@ -53,13 +56,12 @@ function selectionControl() {
     'use strict';
     return {
         restrict: 'E',
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./selectionControl.html'),
         controller: exports.controllerName,
         controllerAs: 'selection',
         scope: {},
-        bindToController: {
-            containerService: '=',
-        },
+        bindToController: {},
     };
 }
 exports.selectionControl = selectionControl;

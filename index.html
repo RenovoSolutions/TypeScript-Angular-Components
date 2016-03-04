@@ -26,6 +26,13 @@
 							  select="test.select(value)" label="Test select"></rl-typeahead>
 				<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
 							  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
+				
+				<ng-form name="myForm" rl-autosave save="test.save()">
+					<rl-textbox ng-model="test.val"></rl-textbox>
+				</ng-form>
+				<div>
+					{{test.count}}
+				</div>
 
 				<div ng-repeat="value in test.set">
 					{{value}}
@@ -79,6 +86,10 @@
 				<rl-spinner ng-model="test.number"></rl-spinner>
 				<rl-date-time ng-model="test.date"></rl-date-time>
 				<div rl-alias="test.number as val">{{val}}</div>
+
+				<button rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</button>
+				<button rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</button>
+
 				<rl-card-container builder="test.builder" card-as="myItem">
 					<rl-card-content>
 						Name: {{myItem.name}}

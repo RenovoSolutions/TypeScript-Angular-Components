@@ -7,7 +7,7 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, serviceName, BaseDialogService } from './baseDialog.module';
+import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service';
 
 import * as angular from 'angular';
@@ -19,9 +19,9 @@ interface IModalMock {
 	open: Sinon.SinonSpy;
 }
 
-describe('baseDialog', () => {
-	let baseDialog: BaseDialogService;
-	let $modal: IModalMock;
+describe('bootstrapModalDialog', () => {
+	let bootstrapModalDialog: BootstrapModalDialogService;
+	let $uibModal: IModalMock;
 	let mock: test.mock.IMock;
 	let $rootScope: angular.IRootScopeService;
 	let $controller: angular.IControllerService;
@@ -35,7 +35,7 @@ describe('baseDialog', () => {
 		closeSpy = sinon.spy();
 		dismissSpy = sinon.spy();
 
-		$modal = {
+		$uibModal = {
 			open: sinon.spy((): any => {
 				return {
 					close: closeSpy,
@@ -45,11 +45,11 @@ describe('baseDialog', () => {
 		};
 
 		test.angularFixture.mock({
-			$modal: $modal,
+			$uibModal: $uibModal,
 		});
 
 		let services: any = test.angularFixture.inject(serviceName, test.mock.serviceName, '$rootScope', '$controller');
-		baseDialog = services[serviceName];
+		bootstrapModalDialog = services[serviceName];
 		mock = services[test.mock.serviceName];
 		$rootScope = services.$rootScope;
 		$controller = services.$controller;
@@ -57,10 +57,10 @@ describe('baseDialog', () => {
 
 	it('should call the closeHandler when the dialog closes', (): void => {
 		let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return true; });
-		baseDialog.open(null, closeHandler);
+		bootstrapModalDialog.open(null, closeHandler);
 		$rootScope.$digest();
 
-		baseDialog.modalClosing(null, null, true);
+		bootstrapModalDialog.modalClosing(null, null, true);
 
 		sinon.assert.calledOnce(closeHandler);
 		sinon.assert.calledWith(closeHandler, true);
@@ -68,14 +68,14 @@ describe('baseDialog', () => {
 
 	it('should prevent the dialog from closing if the close handler returns false', (): void => {
 		let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return false; });
-		baseDialog.open(null, closeHandler);
+		bootstrapModalDialog.open(null, closeHandler);
 		$rootScope.$digest();
 
 		let event: any = {
 			preventDefault: sinon.spy(),
 		};
 
-		baseDialog.modalClosing(event, null, false);
+		bootstrapModalDialog.modalClosing(event, null, false);
 
 		sinon.assert.calledOnce(closeHandler);
 		sinon.assert.calledOnce(event.preventDefault);
@@ -100,14 +100,14 @@ describe('baseDialog', () => {
 			},
 		};
 
-		baseDialog.open(options);
+		bootstrapModalDialog.open(options);
 
-		sinon.assert.notCalled($modal.open);
+		sinon.assert.notCalled($uibModal.open);
 		expect(dataResult).to.not.exist;
 
 		mock.flush(dataService);
 
-		sinon.assert.calledOnce($modal.open);
+		sinon.assert.calledOnce($uibModal.open);
 
 		$controller(dialogController, options.scope.resolveData);
 
@@ -124,15 +124,15 @@ describe('baseDialog', () => {
 			},
 		};
 
-		baseDialog.open(options);
+		bootstrapModalDialog.open(options);
 
 		mock.flush(dataService);
 
-		sinon.assert.notCalled($modal.open);
+		sinon.assert.notCalled($uibModal.open);
 	});
 
 	it('should return an object with functions to dismiss and close the dialog once its open', (): void => {
-		let dialogInstance: IDialogInstance = baseDialog.open(null, null);
+		let dialogInstance: IDialogInstance = bootstrapModalDialog.open(null, null);
 
 		dialogInstance.close();
 		dialogInstance.dismiss();

@@ -7,7 +7,7 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, serviceName, IDialogService, IDialogServiceProvider } from './dialog.service';
+import { moduleName, serviceName, IDialogService, IDialogServiceProvider, bootstrapModalDialog } from './dialog.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -31,9 +31,9 @@ describe('dialog', () => {
 			dialogProvider.setImplementation(testImplementation);
 		});
 
-		test.angularFixture.mock({
-			baseDialog: {},
-		});
+		let mocks: any = {};
+		mocks[bootstrapModalDialog.serviceName] = {};
+		test.angularFixture.mock(mocks);
 
 		var services: any = test.angularFixture.inject(serviceName);
 		dialog = services[serviceName];

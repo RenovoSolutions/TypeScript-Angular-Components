@@ -7,33 +7,33 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, controllerName } from './baseDialog.module';
+import { moduleName, controllerName, serviceName } from './bootstrapModalDialog.module';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
 import test = services.test;
 
-interface IBaseDialogMock {
+interface IBootstrapModalDialogMock {
 	modalClosing: Sinon.SinonSpy;
 }
 
-describe('BaseDialogController', () => {
+describe('BootsrapModalDialogController', () => {
 	let scope: angular.IScope;
 	let dialog: any;
 	let $controller: Sinon.SinonSpy;
-	let baseDialog: IBaseDialogMock;
+	let bootstrapModalDialog: IBootstrapModalDialogMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		baseDialog = {
+		bootstrapModalDialog = {
 			modalClosing: sinon.spy(),
 		};
 
-		test.angularFixture.mock({
-			baseDialog: baseDialog,
-		});
+		let mocks: any = {};
+		mocks[serviceName] = bootstrapModalDialog;
+		test.angularFixture.mock(mocks);
 	});
 
 	it('should return the dialog controller as the controller instance', (): void => {
@@ -53,7 +53,7 @@ describe('BaseDialogController', () => {
 
 		scope.$broadcast('modal.closing');
 
-		sinon.assert.calledOnce(baseDialog.modalClosing);
+		sinon.assert.calledOnce(bootstrapModalDialog.modalClosing);
 	});
 
 	function buildController(dialogController?: any, dialogControllerName?: string): void {

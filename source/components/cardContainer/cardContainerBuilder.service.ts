@@ -86,6 +86,7 @@ export interface IDataSourceBuilder {
 											, getFilterModel?: IGetFilterModel<TDataType>
 											, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
 	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
+	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
 }
 
@@ -93,7 +94,7 @@ export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
 	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
 	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
@@ -231,6 +232,12 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		return <any>this.parent._dataSource;
 	}
 
+	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
+		let factory: dataSources.smartDataSource.ISmartDataSourceFactory = this.$injector.get<any>(dataSources.smartDataSource.factoryName);
+		this.parent._dataSource = factory.getInstance(getDataSet);
+		return <any>this.parent._dataSource;
+	}
+
 	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>{
 		this.parent._dataSource = dataSource;
 		return this.parent._dataSource;
@@ -264,7 +271,7 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
 		let filter: ISelectFilter<TDataType> = factory.getInstance(valueSelector, comparer);
 		this.parent._filters.push(filter);

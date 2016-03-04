@@ -70,7 +70,7 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 
 	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
 		var modeOption: IRangeFilterOption = <any>option;
-		modeOption.filter = (item: number): boolean => {
+		modeOption.filter = (item: any): boolean => {
 			var value: number = this.getValue(item);
 
 			var result: boolean = true;

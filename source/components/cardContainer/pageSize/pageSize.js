@@ -8,26 +8,29 @@ exports.availablePageSizes = [10, 25, 50, 100];
 exports.defaultPageSize = 10;
 var PageSizeController = (function () {
     function PageSizeController($scope) {
+        this.$scope = $scope;
+    }
+    PageSizeController.prototype.$onInit = function () {
         var _this = this;
-        if (this.containerService == null) {
+        if (this.cardContainer == null) {
             return;
         }
         this.selectedPageSize = exports.defaultPageSize;
         this.pageSizes = exports.availablePageSizes;
         this.hasPageFilter = true;
-        var pager = this.containerService.pager;
+        var pager = this.cardContainer.dataSource.pager;
         if (pager == null) {
             this.hasPageFilter = false;
         }
         else {
-            $scope.$watch(function () { return _this.selectedPageSize; }, function (newPageSize) {
+            this.$scope.$watch(function () { return _this.selectedPageSize; }, function (newPageSize) {
                 if (pager != null) {
                     pager.pageSize = newPageSize;
-                    _this.containerService.dataSource.onPagingChange();
+                    _this.cardContainer.dataSource.onPagingChange();
                 }
             });
         }
-    }
+    };
     PageSizeController.$inject = ['$scope'];
     return PageSizeController;
 }());
@@ -36,13 +39,12 @@ function pageSize() {
     'use strict';
     return {
         restrict: 'E',
+        require: { cardContainer: '?^^rlCardContainer' },
         template: require('./pageSize.html'),
         controller: exports.controllerName,
         controllerAs: 'controller',
         scope: {},
-        bindToController: {
-            containerService: '=',
-        },
+        bindToController: {},
     };
 }
 exports.pageSize = pageSize;

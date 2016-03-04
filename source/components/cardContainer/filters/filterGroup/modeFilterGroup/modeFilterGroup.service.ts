@@ -31,12 +31,7 @@ export interface IModeFilterOption extends IFilterOption {
 
 export interface IModeFilterGroup extends IFilterGroup {
 	options: IModeFilterOption[];
-	serialize(): IModeFilterValue;
-}
-
-export interface IModeFilterValue {
-	displayAll?: boolean;
-	value?: number | string | boolean;
+	serialize(): number | string | boolean;
 }
 
 export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
@@ -49,7 +44,7 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 		this.initOptions();
 	}
 
-	serialize(): IModeFilterValue {
+	serialize(): number | string | boolean {
 		let activeOption: IModeFilterOption = <any>this.activeOption;
 		if (activeOption.displayAll) {
 			return null;
