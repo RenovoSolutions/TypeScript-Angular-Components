@@ -190,7 +190,9 @@ export class TypeaheadController {
 			this.visibleItems = [];
 			return null;
 		}
+		this.loading = true;
 		return this.loadItems(search).then((): void => {
+			this.loading = false;
 			this._searchOption.text = search;
 
 			if (this.showCustomSearch(search)) {
