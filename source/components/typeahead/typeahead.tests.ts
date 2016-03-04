@@ -58,49 +58,6 @@ describe('TypeaheadController', () => {
 		expect(typeahead.collapsed).to.be.true;
     });
 
-	describe('transform', (): void => {
-		it('should call transform on the scope if transform is provided', (): void => {
-			let transform: Sinon.SinonSpy = sinon.spy((item: any): any => { return item.prop; });
-
-			buildController(transform);
-
-			let item: ITestObject = {
-				prop: 1,
-			};
-
-			expect(typeahead.getDisplayName(item)).to.equal(1);
-			sinon.assert.calledOnce(transform);
-		});
-
-		it('should return the item directly if transform is not provided', (): void => {
-			buildController();
-
-			let item: ITestObject = { prop: 1 };
-
-			expect(typeahead.getDisplayName(item)).to.equal(item);
-		});
-
-		it('should return the item directly if the object is null', (): void => {
-			let transform: Sinon.SinonSpy = sinon.spy((wrappedItem: any): any => { return wrappedItem.value.prop; });
-
-			buildController(transform);
-
-			expect(typeahead.getDisplayName(null)).to.be.null;
-		});
-
-		it('should use transform as a property selector if a string value is provided', (): void => {
-			let transform: string = 'prop';
-
-			buildController(transform);
-
-			let item: ITestObject = {
-				prop: 1,
-			};
-
-			expect(typeahead.getDisplayName(item)).to.equal(item.prop);
-		});
-	});
-
 	describe('loadItems', (): void => {
 		let items: string[];
 
