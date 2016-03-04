@@ -62,6 +62,11 @@ export interface ITypeaheadBindings {
 	label: string;
 
 	/**
+	 * Prefix to show before the label in the placeholder. Default 'Search for'
+	 */
+	prefix: string;
+
+	/**
 	 * Option for specifying whether searching should take place on the client or server
 	 */
 	useClientSearching: boolean;
@@ -108,6 +113,7 @@ export class TypeaheadController {
 	transform: { (item: any): string } | string;
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
 	label: string;
+	prefix: string;
 	useClientSearching: boolean;
 	ngDisabled: boolean;
 	allowCollapse: boolean;
@@ -170,7 +176,8 @@ export class TypeaheadController {
 	$onInit(): void {
 		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
-		this.placeholder = this.label != null ? 'Search for ' + this.label.toLowerCase() : 'Search';
+		this.prefix = this.prefix || 'Search for';
+		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
 		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
 
@@ -288,6 +295,7 @@ let typeahead: angular.IComponentOptions = <any>{
 		transform: '<?',
 		getItems: '&',
 		label: '@',
+		prefix: '@',
 		useClientSearching: '<?',
 		ngDisabled: '<?',
 		validator: '<?',
