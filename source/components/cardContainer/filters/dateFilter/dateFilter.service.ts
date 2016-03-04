@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 import {filters, services} from 'typescript-angular-utilities';
 import __date = services.date;
-import __transform = services.transform;
+import __transform = services.transform.transform;
 
 export let factoryName: string = 'rlDateFilterFactory';
 
@@ -62,7 +62,7 @@ class DateFilter implements IDateFilter {
 	}
 
 	private getValue(item: any): Date {
-		return __transform.transform.getValue(item, this.valueSelector);
+		return __transform.getValue(item, this.valueSelector);
 	}
 
 }

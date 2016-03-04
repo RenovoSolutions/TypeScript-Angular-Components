@@ -11,7 +11,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
-import __transform = services.transform;
+import __transform = services.transform.transform;
 
 import {
 	IComponentValidator,
@@ -86,7 +86,7 @@ export class SelectController {
 			return this.nullOption;
 		}
 
-		return __transform.transform.getValue(item, this.selector);
+		return __transform.getValue(item, this.selector);
 	}
 
 	loadItems(): angular.IPromise<any[]> {

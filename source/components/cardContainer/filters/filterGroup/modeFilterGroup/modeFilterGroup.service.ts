@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
-import __transform = services.transform;
+import __transform = services.transform.transform;
 
 import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
 
@@ -60,7 +60,7 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 				return true;
 			}
 
-			return __transform.transform.getValue(item, this.getValue) === modeOption.value;
+			return __transform.getValue(item, this.getValue) === modeOption.value;
 		};
 
 		return modeOption;

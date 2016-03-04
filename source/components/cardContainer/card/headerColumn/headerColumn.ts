@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
-import __transform = services.transform;
+import __transform = services.transform.transform;
 
 import { IColumn } from '../../column';
 
@@ -32,7 +32,7 @@ export class HeaderColumnController {
 	}
 
 	private update: {(): void} = (): void => {
-		this.value = __transform.transform.getValue(this.item, this.column.getValue);
+		this.value = __transform.getValue(this.item, this.column.getValue);
 	}
 }
 

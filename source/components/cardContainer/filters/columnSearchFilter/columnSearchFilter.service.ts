@@ -5,7 +5,7 @@ import * as angular from 'angular';
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __string = services.string;
-import __transform = services.transform;
+import __transform = services.transform.transform;
 
 import { IColumn } from '../../column';
 
@@ -33,7 +33,7 @@ export class ColumnSearchFilter implements IColumnSearchFilter {
 			return true;
 		}
 
-		var value: string = this.object.toString(__transform.transform.getValue(item, this.column.getValue));
+		var value: string = this.object.toString(__transform.getValue(item, this.column.getValue));
 
 		var search: string = this.searchText;
 
