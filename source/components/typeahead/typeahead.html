@@ -7,8 +7,8 @@
 			<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
 				<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
 				<ui-select-choices repeat="item in typeahead.visibleItems"
-								refresh="typeahead.refresh($select.search)"
-								refresh-delay="typeahead.loadDelay">
+								   refresh="typeahead.refresh($select.search)"
+								   refresh-delay="typeahead.loadDelay">
 					{{typeahead.getDisplayName(item)}}
 				</ui-select-choices>
 			</ui-select>
