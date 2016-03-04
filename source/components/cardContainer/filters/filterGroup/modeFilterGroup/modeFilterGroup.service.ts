@@ -5,16 +5,17 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __transform = services.transform;
 
 import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.modeFilterGroup';
 export var factoryName: string = 'modeFilterGroup';
 
-export interface IModeFilterGroupSettings {
+export interface IModeFilterGroupSettings<TItemType> {
 	label: string;
 	type: string;
-	getValue<TItemType>(item: TItemType): string | number | boolean;
+	getValue: { (item: TItemType): string | number | boolean } | string;
 	options: IModeFilterOptionSettings[];
 }
 
@@ -35,9 +36,9 @@ export interface IModeFilterGroup extends IFilterGroup {
 }
 
 export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
-	private getValue: {(item: any): string | number | boolean};
+	private getValue: { (item: any): string | number | boolean } | string;
 
-	constructor(settings: IModeFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(settings: IModeFilterGroupSettings<any>, object: __object.IObjectUtility) {
 		super(<any>settings, object);
 		this.getValue = settings.getValue;
 		settings.options = _.map<IModeFilterOptionSettings, IModeFilterOption>(settings.options, this.buildModeOption.bind(this));
@@ -59,7 +60,7 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 				return true;
 			}
 
-			return this.getValue(item) === modeOption.value;
+			return __transform.transform.getValue(item, this.getValue) === modeOption.value;
 		};
 
 		return modeOption;
@@ -67,14 +68,14 @@ export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
 }
 
 export interface IModeFilterGroupFactory {
-	getInstance(settings: IModeFilterGroupSettings): IModeFilterGroup;
+	getInstance<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
 }
 
 modeFilterGroupFactory.$inject = [__object.serviceName];
 export function modeFilterGroupFactory(object: __object.IObjectUtility): IModeFilterGroupFactory {
 	'use strict';
 	return {
-		getInstance(settings: IModeFilterGroupSettings): IModeFilterGroup {
+		getInstance(settings: IModeFilterGroupSettings<any>): IModeFilterGroup {
 			return new ModeFilterGroup(settings, object);
 		},
 	};
