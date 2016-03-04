@@ -14,6 +14,8 @@ IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
+import * as componentServices from '../../services/services.module';
+import __autosaveDialog = componentServices.autosaveDialog;
 
 import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
 
@@ -41,7 +43,7 @@ export interface IMessageLogBindings {
 	canDelete?: DeletePermissions;
 	canEdit?: EditPermissions;
 
-	selector: { (IMessage): any } | string;
+	selector: { (IMessage: any): any } | string;
 }
 
 export class MessageLogController implements IMessageLogBindings {
@@ -65,11 +67,9 @@ export class MessageLogController implements IMessageLogBindings {
 	loading: boolean;
 	loadingInitial: boolean;
 
-	editEvent: { (iMessage: IMessage): any };
 
-
-	static $inject: string[] = ['$scope', factoryName];
-	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
+	static $inject: string[] = [__autosaveDialog.serviceName, '$scope', factoryName];
+	constructor(private autosaveDialog: __autosaveDialog.IAutosaveDialogService, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
 		$scope.$watch((): IMessage[]=> { return this.messageLog.visibleMessages; }
@@ -139,8 +139,20 @@ export class MessageLogController implements IMessageLogBindings {
 		}
 	}
 
-	editMessage(entry: IMessage): void{
-		this.editEvent(entry);
+	editMessage(entry: IMessage): void {
+		this.autosaveDialog.open({
+			save: this.saveNote.bind(this),
+			form: 'noteForm',
+			data: {
+				entry: entry,
+				originalEntry: entry,
+			},
+			template: require('./messageLogEditDialog.html'),
+		});
+	}
+
+	saveNote(data: any): ng.IPromise<void> {
+		return this.messageLog.addMessage(data.entry);
 	}
 }
 
@@ -173,7 +185,6 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			currentUser: '=?',
 			canDelete: '=?',
 			canEdit: '=?',
-			editEvent: '&',
 		},
 		link: (scope: angular.IScope,
 			element: angular.IAugmentedJQuery,

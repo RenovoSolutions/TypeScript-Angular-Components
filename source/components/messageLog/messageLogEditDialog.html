@@ -1,0 +1,12 @@
+<rl-dialog autosave="true">
+	<rl-dialog-header>
+		<h4 ng-if="::dialog.entry.message == null">New note</h4>
+	</rl-dialog-header>
+	<rl-dialog-content>
+		<ng-form name="noteForm">
+			<div class="form-group">
+				<rl-textbox ng-model="dialog.entry.message" label="Title" maxlength="250"></rl-textbox>
+			</div>
+		</ng-form>
+	</rl-dialog-content>
+</rl-dialog>

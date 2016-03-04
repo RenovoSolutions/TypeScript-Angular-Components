@@ -99,6 +99,12 @@ export class MessageLog {
 		});
 	}
 
+	updateMessage(message: IMessage): ng.IPromise<void>{
+		return this.dataService.saveMessage(message).then((): void => {
+			this.getTopPage();
+		});
+	}
+
 	deleteMessage(message: IMessage): ng.IPromise<void> {
 		return this.dataService.deleteMessage(message).then((): void => {
 			this.refresh();
