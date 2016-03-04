@@ -42,6 +42,10 @@ export interface ITypeaheadBindings {
      */
     label: string;
     /**
+     * Prefix to show before the label in the placeholder. Default 'Search for'
+     */
+    prefix: string;
+    /**
      * Option for specifying whether searching should take place on the client or server
      */
     useClientSearching: boolean;
@@ -75,6 +79,7 @@ export declare class TypeaheadController {
     private $scope;
     private $q;
     private $attrs;
+    private $timeout;
     private parentChild;
     private genericSearchFactory;
     private object;
@@ -95,6 +100,7 @@ export declare class TypeaheadController {
         (params?: IGetItemsParams): angular.IPromise<any>;
     };
     label: string;
+    prefix: string;
     useClientSearching: boolean;
     ngDisabled: boolean;
     allowCollapse: boolean;
@@ -114,7 +120,7 @@ export declare class TypeaheadController {
     selection: any;
     _searchOption: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
     getDisplayName(item: any): string;
     refresh(search: string): angular.IPromise<void>;

@@ -56,7 +56,7 @@ var CardSearchController = (function () {
     };
     CardSearchController.$inject = ['$scope', '$timeout'];
     return CardSearchController;
-})();
+}());
 exports.CardSearchController = CardSearchController;
 function cardSearch() {
     'use strict';

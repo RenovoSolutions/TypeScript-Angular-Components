@@ -1,3 +1,6 @@
+import 'ng-wig/dist/css/ng-wig.css';
+import 'ng-wig/dist/ng-wig';
+import './editorButtons.css';
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;

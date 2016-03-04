@@ -15,6 +15,6 @@ var BootstrapModalDialogController = (function () {
     }
     BootstrapModalDialogController.$inject = ['$scope', '$controller', bootstrapModalDialog_service_1.serviceName];
     return BootstrapModalDialogController;
-})();
+}());
 exports.BootstrapModalDialogController = BootstrapModalDialogController;
 //# sourceMappingURL=bootstrapModalDialog.controller.js.map
