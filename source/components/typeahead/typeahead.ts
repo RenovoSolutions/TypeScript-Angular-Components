@@ -8,7 +8,6 @@ import __parentChild = services.parentChildBehavior;
 import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
-import __promiseUtility = services.promise;
 import __validation = services.validation;
 
 export var moduleName: string = 'rl.ui.components.typeahead';
@@ -137,22 +136,18 @@ export class TypeaheadController {
 		__isSearchOption: true,
 	};
 
-	static $inject: string[] = ['$scope'
-		, '$q'
+	static $inject: string[] = ['$q'
 		, '$attrs'
 		, __parentChild.serviceName
 		, __genericSearch.factoryName
 		, __objectUtility.serviceName
-		, __arrayUtility.serviceName
-		, __promiseUtility.serviceName];
-	constructor(private $scope: angular.IScope
-		, private $q: angular.IQService
+		, __arrayUtility.serviceName];
+	constructor(private $q: angular.IQService
 		, private $attrs: ITypeaheadAttrs
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
-		, private array: __arrayUtility.IArrayUtility
-		, private promise: __promiseUtility.IPromiseUtility) { }
+		, private array: __arrayUtility.IArrayUtility) { }
 
 	$onInit(): void {
 		this.searchFilter = this.genericSearchFactory.getInstance();
@@ -277,7 +272,6 @@ angular.module(moduleName, [
 	, __genericSearch.moduleName
 	, __objectUtility.moduleName
 	, __arrayUtility.moduleName
-	, __promiseUtility.moduleName
 ])
 	.component(componentName, typeahead)
 	.controller(controllerName, TypeaheadController);
