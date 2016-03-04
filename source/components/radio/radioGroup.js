@@ -15,7 +15,7 @@ var RadioGroup = (function () {
         });
     }
     return RadioGroup;
-})();
+}());
 exports.RadioGroup = RadioGroup;
 var RadioGroupController = (function () {
     function RadioGroupController($scope, $attrs, $element, object) {
@@ -43,7 +43,7 @@ var RadioGroupController = (function () {
     RadioGroupController.nextId = 1;
     RadioGroupController.$inject = ['$scope', '$attrs', '$element', __object.serviceName];
     return RadioGroupController;
-})();
+}());
 exports.RadioGroupController = RadioGroupController;
 function radioGroup() {
     'use strict';

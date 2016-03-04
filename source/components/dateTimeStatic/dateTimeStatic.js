@@ -18,7 +18,7 @@ var DateTimeStaticController = (function () {
         }
     }
     return DateTimeStaticController;
-})();
+}());
 exports.DateTimeStaticController = DateTimeStaticController;
 dateTimeStatic.$inject = [];
 function dateTimeStatic() {

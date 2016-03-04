@@ -29,7 +29,7 @@ var ButtonAsyncController = (function () {
     };
     ButtonAsyncController.$inject = [__promiseUtility.serviceName];
     return ButtonAsyncController;
-})();
+}());
 exports.ButtonAsyncController = ButtonAsyncController;
 function buttonAsync() {
     'use strict';

@@ -2,6 +2,7 @@
 var moment = require('moment');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __date = typescript_angular_utilities_1.services.date;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.factoryName = 'rlDateFilterFactory';
 var DateFilter = (function () {
     function DateFilter(valueSelector, dateUtility, type) {
@@ -16,7 +17,7 @@ var DateFilter = (function () {
         }
         if (this.dateRange) {
             var itemDate = this.getValue(item);
-            var selectedDate1;
+            var selectedDate1 = void 0;
             //have to set the selectedDate1 to a valid Date object for comparisons.
             if (this.includeTime) {
                 selectedDate1 = moment(this.selectedDate1).toDate();
@@ -37,11 +38,10 @@ var DateFilter = (function () {
         }
     };
     DateFilter.prototype.getValue = function (item) {
-        var property = this.valueSelector;
-        return item[property];
+        return __transform.getValue(item, this.valueSelector);
     };
     return DateFilter;
-})();
+}());
 dateFilterFactory.$inject = [__date.serviceName];
 function dateFilterFactory(dateUtility) {
     return {

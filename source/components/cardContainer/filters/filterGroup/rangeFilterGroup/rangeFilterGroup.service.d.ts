@@ -3,10 +3,12 @@ import __object = services.object;
 import { IFilterOption, IFilterGroup } from '../filterGroup.service';
 export declare var moduleName: string;
 export declare var factoryName: string;
-export interface IRangeFilterGroupSettings {
+export interface IRangeFilterGroupSettings<TItemType> {
     label: string;
     type: string;
-    getValue<TItemType>(item: TItemType): number;
+    getValue: {
+        (item: TItemType): number;
+    } | string;
     options: IRangeFilterOptionSettings[];
 }
 export interface IRangeFilterOptionSettings {
@@ -33,6 +35,6 @@ export interface IRangeFilterValue {
     lowExclusive?: number;
 }
 export interface IRangeFilterGroupFactory {
-    getInstance(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
+    getInstance<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 }
 export declare function rangeFilterGroupFactory(object: __object.IObjectUtility): IRangeFilterGroupFactory;

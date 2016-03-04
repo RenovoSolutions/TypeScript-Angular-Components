@@ -24,7 +24,7 @@ var DataPager = (function () {
             .value();
     };
     return DataPager;
-})();
+}());
 exports.DataPager = DataPager;
 function dataPagerFactory() {
     'use strict';

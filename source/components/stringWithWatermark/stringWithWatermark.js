@@ -14,7 +14,7 @@ var StringWithWatermarkController = (function () {
     }
     StringWithWatermarkController.$inject = ['$scope', __object.serviceName];
     return StringWithWatermarkController;
-})();
+}());
 exports.StringWithWatermarkController = StringWithWatermarkController;
 function stringWithWatermark() {
     'use strict';

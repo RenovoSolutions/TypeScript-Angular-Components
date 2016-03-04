@@ -10,7 +10,7 @@ var ButtonController = (function () {
         this.configuredSize = this.size != null ? 'btn-' + this.size : null;
     }
     return ButtonController;
-})();
+}());
 exports.ButtonController = ButtonController;
 function button() {
     return {

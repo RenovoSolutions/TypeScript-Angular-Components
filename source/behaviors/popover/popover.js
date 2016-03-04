@@ -38,7 +38,7 @@ var PopoverController = (function () {
         '$templateCache',
         __guid.serviceName];
     return PopoverController;
-})();
+}());
 exports.PopoverController = PopoverController;
 function popover() {
     'use strict';

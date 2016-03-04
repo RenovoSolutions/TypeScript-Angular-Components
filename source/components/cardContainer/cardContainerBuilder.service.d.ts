@@ -58,8 +58,8 @@ export interface IDataSourceBuilder {
 }
 export interface IFilterBuilder {
     buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
-    buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
-    buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
+    buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
+    buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
     buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
         (item: TDataType): any;
     }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
@@ -116,8 +116,8 @@ export declare class FilterBuilder implements IFilterBuilder {
     private parent;
     constructor($injector: angular.auto.IInjectorService, parent: CardContainerBuilder);
     buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup;
-    buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup;
-    buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup;
+    buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup;
+    buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup;
     buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
         (item: TDataType): any;
     }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;

@@ -1,7 +1,7 @@
 'use strict';
-var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.factoryName = 'rlSelectFilterFactory';
 var SelectFilter = (function () {
     function SelectFilter(valueSelector, comparer) {
@@ -19,17 +19,10 @@ var SelectFilter = (function () {
         return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
     };
     SelectFilter.prototype.getValue = function (item) {
-        if (_.isFunction(this.valueSelector)) {
-            var func = this.valueSelector;
-            return (func(item));
-        }
-        else {
-            var property = this.valueSelector;
-            return item[property];
-        }
+        return __transform.getValue(item, this.valueSelector);
     };
     return SelectFilter;
-})();
+}());
 function selectFilterFactory() {
     return {
         getInstance: function (valueSelector, comparer) {

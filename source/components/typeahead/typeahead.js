@@ -6,6 +6,7 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var __genericSearch = typescript_angular_utilities_1.services.genericSearchFilter;
 var __objectUtility = typescript_angular_utilities_1.services.object;
 var __arrayUtility = typescript_angular_utilities_1.services.array;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.typeahead';
 exports.componentName = 'rlTypeahead';
@@ -73,18 +74,10 @@ var TypeaheadController = (function () {
         });
     };
     TypeaheadController.prototype.getDisplayName = function (item) {
-        if (item == null) {
-            return null;
-        }
-        if (item.__isSearchOption) {
+        if (item != null && item.__isSearchOption) {
             return item.text;
         }
-        if (this.transform == null) {
-            return item;
-        }
-        return _.isFunction(this.transform)
-            ? this.transform(item)
-            : item[this.transform];
+        return __transform.getValue(item, this.transform);
     };
     TypeaheadController.prototype.refresh = function (search) {
         var _this = this;
@@ -161,7 +154,7 @@ var TypeaheadController = (function () {
         __arrayUtility.serviceName,
         componentValidator_service_1.factoryName];
     return TypeaheadController;
-})();
+}());
 exports.TypeaheadController = TypeaheadController;
 var typeahead = {
     require: { ngModel: 'ngModel' },

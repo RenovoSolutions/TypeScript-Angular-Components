@@ -8,6 +8,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 var filterGroup_service_1 = require('../filterGroup.service');
 exports.moduleName = 'rl.ui.components.cardContainer.filters.filterGroup.rangeFilterGroup';
 exports.factoryName = 'rangeFilterGroup';
@@ -35,7 +36,7 @@ var RangeFilterGroup = (function (_super) {
         var _this = this;
         var modeOption = option;
         modeOption.filter = function (item) {
-            var value = _this.getValue(item);
+            var value = __transform.getValue(item, _this.getValue);
             var result = true;
             if (_.isUndefined(option.highExclusive) === false) {
                 result = value < option.highExclusive;
@@ -60,7 +61,7 @@ var RangeFilterGroup = (function (_super) {
             && option.lowExclusive == null;
     };
     return RangeFilterGroup;
-})(filterGroup_service_1.FilterGroup);
+}(filterGroup_service_1.FilterGroup));
 rangeFilterGroupFactory.$inject = [__object.serviceName];
 function rangeFilterGroupFactory(object) {
     'use strict';

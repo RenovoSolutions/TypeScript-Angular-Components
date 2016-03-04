@@ -62,6 +62,6 @@ var BootstrapModalDialogService = (function () {
     };
     BootstrapModalDialogService.$inject = ['$uibModal', '$rootScope', __promise.serviceName];
     return BootstrapModalDialogService;
-})();
+}());
 exports.BootstrapModalDialogService = BootstrapModalDialogService;
 //# sourceMappingURL=bootstrapModalDialog.service.js.map

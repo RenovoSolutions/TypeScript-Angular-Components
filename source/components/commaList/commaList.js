@@ -3,20 +3,20 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.moduleName = 'rl.ui.components.commaList';
 exports.directiveName = 'rlCommaList';
 exports.controllerName = 'CommaListController';
 var CommaListController = (function () {
-    function CommaListController($attrs, object) {
+    function CommaListController(object) {
         this.remainingItems = 0;
-        this.hasTransform = object.isNullOrWhitespace($attrs.transform) === false;
         this.list = this.getFirstItems(this.inList);
     }
     CommaListController.prototype.getFirstItems = function (list) {
         var _this = this;
-        if (this.hasTransform) {
+        if (this.transform != null) {
             list = _.map(list, function (item) {
-                return _this.transform({ item: item });
+                return __transform.getValue(item, _this.transform);
             });
         }
         ;
@@ -30,9 +30,9 @@ var CommaListController = (function () {
         }
         return newList;
     };
-    CommaListController.$inject = ['$attrs', __object.serviceName];
+    CommaListController.$inject = [__object.serviceName];
     return CommaListController;
-})();
+}());
 exports.CommaListController = CommaListController;
 function commaList() {
     'use strict';
@@ -45,7 +45,7 @@ function commaList() {
         bindToController: {
             inList: '=list',
             max: '=',
-            transform: '&',
+            transform: '=',
         },
     };
 }
