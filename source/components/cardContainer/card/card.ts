@@ -41,7 +41,8 @@ export interface ICardScope extends angular.IScope {
 	containerData: any;
 
 	__rlCardContainer: CardContainerController;
-	__initContents(hasBody: boolean, hasFooter: boolean): void;
+	__setHasBody(hasBody: boolean): void;
+	__setHasFooter(hasFooter: boolean): void;
 }
 
 export interface ICardBehavior {
@@ -108,8 +109,10 @@ export class CardController {
 			close: this.autosave,
 		});
 
-		$scope.__initContents = (hasBody: boolean, hasFooter: boolean): void => {
+		$scope.__setHasBody = (hasBody: boolean): void => {
 			this.hasBody = hasBody;
+		};
+		$scope.__setHasFooter = (hasFooter: boolean): void => {
 			this.hasFooter = hasFooter;
 		};
 	}
@@ -213,21 +216,20 @@ export function card(): angular.IDirective {
 			, attrs: angular.IAttributes
 			, rlCardContainer: CardContainerController): void {
 			scope.__rlCardContainer = rlCardContainer;
-			rlCardContainer.makeCard(scope, (clone: JQuery): void => {
-				let content: JQuery = clone.filter('rl-card-content');
-				let footer: JQuery = clone.filter('rl-card-footer');
-
+			rlCardContainer.makeCard(scope, (content: JQuery): void => {
 				let contentArea: JQuery = element.find('.content-template');
 				contentArea.append(content);
-
 				let hasBody: boolean = content.length > 0;
+				scope.__setHasBody(hasBody);
+			}, null, 'contentSlot');
+			rlCardContainer.makeCard(scope, (footer: JQuery): void => {
 				let hasFooter: boolean = (footer.length > 0);
 				if (hasFooter) {
 					let footerArea: JQuery = element.find('.footer-template');
 					footerArea.append(footer);
 				}
-				scope.__initContents(hasBody, hasFooter);
-			});
+				scope.__setHasFooter(hasFooter);
+			}, null, 'footerSlot');
 		},
 	};
 }
