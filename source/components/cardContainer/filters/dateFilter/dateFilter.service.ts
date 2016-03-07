@@ -12,6 +12,12 @@ export let factoryName: string = 'rlDateFilterFactory';
 export interface IDateFilterSettings{
 	type: string;
 	valueSelector: { (item: any): Date } | string;
+
+	// component settings
+	clearButton: boolean;
+	includeDateRange: boolean;
+	includeTime: boolean;
+	label: string;
 }
 
 export interface IDateFilter extends filters.IFilter {
@@ -27,15 +33,27 @@ export interface IDateFilter extends filters.IFilter {
 class DateFilter implements IDateFilter {
 	selectedDate1: Date;
 	selectedDate2: Date;
-	includeTime: boolean = false;
+	includeTime: boolean;
 	dateRange: boolean;
 
 	private valueSelector: { (item: any): Date } | string;
 	public type: string;
 
+	// component settings
+	clearButton: boolean;
+	includeDateRange: boolean;
+	label: string;
+	template: string;
+
 	constructor(settings: IDateFilterSettings, private dateUtility: __date.IDateUtility) {
 		this.valueSelector = settings.valueSelector;
 		this.type = settings.type;
+		this.clearButton = settings.clearButton;
+		this.includeDateRange = settings.includeDateRange;
+		this.includeTime = settings.includeTime != null ? settings.includeTime : false;
+		this.label = settings.label;
+		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.includeTime"
+									     include-date-range="filter.includeDateRange" clear-button="filter.clearButton"></rl-date-filter>`;
 	}
 
 	filter(item: any): boolean {
