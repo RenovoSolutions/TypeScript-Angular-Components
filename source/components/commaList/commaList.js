@@ -43,9 +43,9 @@ function commaList() {
         controllerAs: 'commaList',
         scope: {},
         bindToController: {
-            inList: '=list',
-            max: '=',
-            transform: '=',
+            inList: '<list',
+            max: '<?',
+            transform: '<?',
         },
     };
 }
