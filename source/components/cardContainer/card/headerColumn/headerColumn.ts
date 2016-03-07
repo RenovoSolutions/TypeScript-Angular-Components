@@ -12,11 +12,13 @@ export var controllerName: string = 'CardHeaderColumnController';
 export interface IHeaderColumnBindings {
 	column: IColumn;
 	item: any;
+	alias: string;
 }
 
 export class HeaderColumnController {
 	column: IColumn;
 	item: any;
+	alias: string;
 
 	value: string | number | boolean;
 
@@ -40,15 +42,16 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 		restrict: 'E',
 		template: `
 			<div rl-size-for-breakpoints="header.column.size" title="{{::header.column.description}}">
-				<div class="template-container"></div>
+				<div class="template-container" rl-alias="header.item as {{header.alias}}"></div>
 			</div>
 		`,
 		controller: controllerName,
 		controllerAs: 'header',
 		scope: {},
 		bindToController: {
-			column: '=',
-			item: '=',
+			column: '<',
+			item: '<',
+			alias: '<',
 		},
 		compile(): angular.IDirectivePrePost {
 			return {
