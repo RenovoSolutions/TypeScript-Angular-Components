@@ -30,7 +30,7 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 			, array: __array.IArrayUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
 		super(observableFactory, dataSourceProcessor, array);
-		this.observable.allowableEvents.push(events.async.reloaded);
+		this.observable.allowableEvents = events.async.all;
 		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
 	}
 
