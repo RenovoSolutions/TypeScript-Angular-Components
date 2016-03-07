@@ -26,7 +26,6 @@ export interface IDateFilterBindings {
 	label: string;
 	selectedDate1: string;
 	selectedDate2: Date;
-	selector: string;
 	source: IDataSource<any>;
 	type: string;
 }
@@ -38,7 +37,6 @@ export class DateFilterController implements IDateFilterBindings {
 	includeDateRange: boolean;
 	includeTime: boolean;
 	label: string;
-	selector: string;
 	source: IDataSource<any>;
 	type: string = "days";
 	private inputField: angular.IAugmentedJQuery;
@@ -160,7 +158,6 @@ export function dateFilter(): angular.IDirective {
 			filter: '=',
 			source: '=',
 			label: '@',
-			selector: '=',
 			includeTime: '=',
 			includeDateRange: '=',
 			clearButton: '='
