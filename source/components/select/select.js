@@ -94,12 +94,12 @@ function select() {
         controllerAs: 'select',
         scope: {},
         bindToController: {
-            options: '=',
+            options: '<?',
             getOptions: '&',
-            selector: '=',
-            validator: '=',
+            selector: '<?',
+            validator: '<?',
             label: '@',
-            ngDisabled: '=',
+            ngDisabled: '<?',
             nullOption: '@',
         },
     };
