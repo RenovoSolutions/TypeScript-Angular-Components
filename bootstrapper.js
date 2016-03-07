@@ -2,8 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['$scope', 'cardContainerBuilder'];
-	function TestController($scope, cardContainerBuilderFactory) {
+	TestController.$inject = ['$scope', '$q', 'cardContainerBuilder'];
+	function TestController($scope, $q, cardContainerBuilderFactory) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
@@ -16,6 +16,15 @@
 		};
 
 		self.text = null;
+		self.set = [];
+		self.select = function (value) {
+			self.set.push(value);
+		}
+		self.create = function (value) {
+			return {
+				name: value,
+			};
+		};
 		self.options = [
 			{ name: 'item1' },
 			{ name: 'item2' },
@@ -23,6 +32,9 @@
 			{ name: 'item4' },
 			{ name: 'item5' },
 		];
+		self.getOptions = function () {
+			return $q.when(_.clone(self.options));
+		}
 		self.validator = {
 			validate: function () {
 				return self.text === 'valid';

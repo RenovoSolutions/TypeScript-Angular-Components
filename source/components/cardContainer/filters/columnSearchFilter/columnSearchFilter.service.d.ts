@@ -8,7 +8,7 @@ export declare var filterName: string;
 export interface IColumnSearchFilter extends filters.IFilter {
     searchText: string;
     caseSensitive: boolean;
-    column: IColumn;
+    column: IColumn<any>;
 }
 export declare class ColumnSearchFilter implements IColumnSearchFilter {
     private object;
@@ -16,7 +16,7 @@ export declare class ColumnSearchFilter implements IColumnSearchFilter {
     type: string;
     searchText: string;
     caseSensitive: boolean;
-    column: IColumn;
+    column: IColumn<any>;
     constructor(object: __object.IObjectUtility, string: __string.IStringUtilityService);
     filter<TItemType>(item: TItemType): boolean;
 }

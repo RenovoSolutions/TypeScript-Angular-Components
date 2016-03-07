@@ -8,6 +8,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 var filterGroup_service_1 = require('../filterGroup.service');
 exports.moduleName = 'rl.ui.components.cardContainer.filters.filterGroup.modeFilterGroup';
 exports.factoryName = 'modeFilterGroup';
@@ -33,7 +34,7 @@ var ModeFilterGroup = (function (_super) {
             if (modeOption.displayAll) {
                 return true;
             }
-            return _this.getValue(item) === modeOption.value;
+            return __transform.getValue(item, _this.getValue) === modeOption.value;
         };
         return modeOption;
     };
