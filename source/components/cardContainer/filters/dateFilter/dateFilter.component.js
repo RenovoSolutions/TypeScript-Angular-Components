@@ -139,7 +139,6 @@ function dateFilter() {
             filter: '=',
             source: '=',
             label: '@',
-            selector: '=',
             includeTime: '=',
             includeDateRange: '=',
             clearButton: '='

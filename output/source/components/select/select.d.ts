@@ -8,11 +8,7 @@ import { IComponentValidator, IComponentValidatorFactory } from '../../services/
 export declare var moduleName: string;
 export declare var directiveName: string;
 export declare var controllerName: string;
-export interface IUISelect {
-    search: string;
-}
 export declare class SelectController {
-    private $scope;
     private $q;
     private object;
     options: any[];
@@ -26,23 +22,13 @@ export declare class SelectController {
     label: string;
     ngDisabled: boolean;
     nullOption: string;
-    select: {
-        (params: any): void;
-    };
     ngModel: angular.INgModelController;
     selectValidator: IComponentValidator;
     loading: boolean;
-    selectionTwo: any;
-    uiSelect: IUISelect;
-    hasSearchOption: boolean;
     private _nullOption;
-    private _searchOption;
     selection: any;
     static $inject: string[];
     constructor($element: angular.IAugmentedJQuery, $scope: angular.IScope, $q: angular.IQService, componentValidatorFactory: IComponentValidatorFactory, object: __object.IObjectUtility);
-    refreshOptions(search: string): void;
-    private useSearch(search);
-    getItems(search: string): any[];
     getDisplayName(item: any): string;
     loadItems(): angular.IPromise<any[]>;
     configureOptions(options: any[]): any[];

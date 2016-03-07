@@ -4,10 +4,16 @@ var __object = typescript_angular_utilities_1.services.object;
 var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.factoryName = 'rlSelectFilterFactory';
 var SelectFilter = (function () {
-    function SelectFilter(valueSelector, comparer) {
-        this.valueSelector = valueSelector;
-        this.comparer = comparer;
+    function SelectFilter(settings) {
         this.type = 'selectFilter';
+        this.valueSelector = settings.valueSelector;
+        this.comparer = settings.comparer;
+        this.options = settings.options;
+        this.getOptions = settings.getOptions;
+        this.label = settings.label;
+        this.displayNameSelector = settings.displayNameSelector;
+        this.nullOption = settings.nullOption;
+        this.template = "<rl-select-filter filter=\"filter\" source=\"dataSource\" options=\"filter.options\" get-options=\"filter.getOptions()\"\n\t\t\t\t\t\t\t\t\t\t   label=\"{{filter.label}}\" selector=\"filter.displayNameSelector\" null-option=\"{{filter.nullOption}}\"></rl-select-filter>";
     }
     SelectFilter.prototype.filter = function (item) {
         if (this.selectedValue == null) {
@@ -25,8 +31,8 @@ var SelectFilter = (function () {
 }());
 function selectFilterFactory() {
     return {
-        getInstance: function (valueSelector, comparer) {
-            return new SelectFilter(valueSelector, comparer);
+        getInstance: function (settings) {
+            return new SelectFilter(settings);
         },
     };
 }
