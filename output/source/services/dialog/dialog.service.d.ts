@@ -1,6 +1,6 @@
 import * as ng from 'angular';
-import * as baseDialog from './baseDialog/baseDialog.module';
-export { baseDialog };
+import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
+export { bootstrapModalDialog };
 export declare var moduleName: string;
 export declare var serviceName: string;
 export interface IDialogCloseHandler {
@@ -23,6 +23,6 @@ export declare class DialogService<TDialogSettings> implements IDialogService<TD
 }
 export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
     setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-    $get(baseDialog: baseDialog.BaseDialogService): IDialogService<TDialogSettings>;
+    $get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogService<TDialogSettings>;
 }
 export declare function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings>;

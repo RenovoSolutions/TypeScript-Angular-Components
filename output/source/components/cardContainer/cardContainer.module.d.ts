@@ -11,6 +11,5 @@ import * as sorts from './sorts/sorts.module';
 import * as builder from './cardContainerBuilder.service';
 export { builder, card, cardSearch, columnHeader, dataSources, filters, itemCount, pager, pageSize, selectionControl, sorts };
 export * from './cardContainer';
-export * from './cardContainer.service';
 export * from './column';
 export declare var moduleName: string;
