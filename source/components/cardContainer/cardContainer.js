@@ -239,7 +239,12 @@ function cardContainer($compile) {
     'use strict';
     return {
         restrict: 'E',
-        transclude: true,
+        transclude: {
+            'containerHeaderSlot': '?rlContainerHeader',
+            'containerFooterSlot': '?rlContainerFooter',
+            'contentSlot': '?rlCardContent',
+            'footerSlot': '?rlCardFooter',
+        },
         template: require('./cardContainer.html'),
         controller: exports.controllerName,
         controllerAs: 'cardContainer',
@@ -272,8 +277,7 @@ function cardContainer($compile) {
             var headerArea = element.find('.container-header-template');
             var footerArea = element.find('.container-footer-template');
             controller.makeCard = transclude;
-            transclude(scope, function (clone) {
-                var header = clone.filter('rl-container-header');
+            transclude(scope, function (header) {
                 if (header.length === 0) {
                     var defaultHeader = require('./defaultCardContainerHeader.html');
                     header = headerArea.append(defaultHeader);
@@ -282,7 +286,8 @@ function cardContainer($compile) {
                 else {
                     headerArea.append(header);
                 }
-                var footer = clone.filter('rl-container-footer');
+            }, null, 'containerHeaderSlot');
+            transclude(scope, function (footer) {
                 if (footer.length === 0) {
                     var defaultFooter = require('./defaultCardContainerFooter.html');
                     footer = footerArea.append(defaultFooter);
@@ -291,7 +296,7 @@ function cardContainer($compile) {
                 else {
                     footerArea.append(footer);
                 }
-            });
+            }, null, 'containerFooterSlot');
         }
     };
 }

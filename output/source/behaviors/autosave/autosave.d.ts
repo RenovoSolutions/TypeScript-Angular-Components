@@ -18,13 +18,21 @@ export interface IAutosaveBehavior {
 }
 export declare class AutosaveController {
     private $scope;
+    private $attrs;
+    private $parse;
     private $element;
     private $timeout;
+    private autosaveFactory;
+    private parentChildBehavior;
+    private objectUtility;
     autosave: IAutosaveService;
     keyupListener: {
         (callback: triggers.IChangeListener): triggers.IClearChangeListener;
     };
+    autosaveController: AutosaveController;
+    form: angular.IFormController;
     static $inject: string[];
     constructor($scope: angular.IScope, $attrs: IAutosaveAttributes, $parse: angular.IParseService, $element: angular.IAugmentedJQuery, $timeout: angular.ITimeoutService, autosaveFactory: IAutosaveServiceFactory, parentChildBehavior: __parentChild.IParentChildBehaviorService, objectUtility: __objectUtility.IObjectUtility);
+    $onInit(): void;
 }
 export declare function autosave(): angular.IDirective;
