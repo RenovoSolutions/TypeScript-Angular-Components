@@ -27,6 +27,12 @@
 					{{test.count}}
 				</div>
 
+				<rl-simple-card>
+					<rl-card-header>Header</rl-card-header>
+					<rl-card-content>Content</rl-card-content>
+					<rl-card-footer>Footer</rl-card-footer>
+				</rl-simple-card>
+
 				<rl-generic-container selector="test.toggle">
 					<template default>
 						<span>1, 2, 3, 4, 5</span>
@@ -80,10 +86,16 @@
 				<button rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</button>
 
 				<rl-card-container builder="test.builder" card-as="myItem">
+					<rl-container-header>
+						<rl-card-search></rl-card-search>
+					</rl-container-header>
 					<rl-card-content>
 						Name: {{myItem.name}}
 						Value: {{myItem.value}}
 					</rl-card-content>
+					<rl-container-footer>
+						<rl-item-count></rl-item-count>
+					</rl-container-footer>
 				</rl-card-container>
 				<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
 			</div>
