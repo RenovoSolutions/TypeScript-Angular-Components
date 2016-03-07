@@ -5,11 +5,13 @@ export declare var controllerName: string;
 export interface IHeaderColumnBindings {
     column: IColumn;
     item: any;
+    alias: string;
 }
 export declare class HeaderColumnController {
     private $scope;
     column: IColumn;
     item: any;
+    alias: string;
     value: string | number | boolean;
     renderedTemplate: JQuery;
     static $inject: string[];
