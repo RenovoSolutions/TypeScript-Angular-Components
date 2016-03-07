@@ -10,6 +10,13 @@ export let factoryName: string = 'rlSelectFilterFactory';
 export interface ISelectFilterSettings<TDataType, TFilterType> {
 	valueSelector: string | { (item: TDataType): any };
 	comparer: IEqualityFunction<TFilterType>;
+
+	// component settings
+	options: any[];
+	getOptions?: { (): angular.IPromise<any[]> };
+	label: string;
+	displayNameSelector: string | { (item: any): string };
+	nullOption: string;
 }
 
 export interface ISelectFilter<T> extends filters.IFilter {
@@ -27,9 +34,24 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	private valueSelector: string | { (item: TDataType): any };
 	private comparer: IEqualityFunction<TFilterType>;
 
+	// component settings
+	options: any[];
+	getOptions?: { (): angular.IPromise<any[]> };
+	label: string;
+	displayNameSelector: string | { (item: any): string };
+	nullOption: string;
+	template: string;
+
 	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>) {
 		this.valueSelector = settings.valueSelector;
 		this.comparer = settings.comparer;
+		this.options = settings.options;
+		this.getOptions = settings.getOptions;
+		this.label = settings.label;
+		this.displayNameSelector = settings.displayNameSelector;
+		this.nullOption = settings.nullOption;
+		this.template = `<rl-select-filter filter="filter" source="dataSource" options="filter.options" get-options="filter.getOptions()"
+										   label="{{filter.label}}" selector="filter.displayNameSelector" null-option="{{filter.nullOption}}"></rl-select-filter>`;
 	}
 
 	filter(item: TDataType): boolean {
