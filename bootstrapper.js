@@ -8,6 +8,13 @@
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
 
+		var templateScope = $scope.$new();
+		templateScope.text = 'Some text';
+		self.template = {
+			template: '<div>{{text}}</div>',
+			scope: templateScope,
+		};
+
 		self.text = null;
 		self.options = [
 			{ name: 'item1' },

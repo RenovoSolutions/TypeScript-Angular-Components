@@ -20,6 +20,8 @@
 
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
+				<rl-template-renderer template="test.template"></rl-template-renderer>
+
 				<ng-form name="myForm" rl-autosave save="test.save()">
 					<rl-textbox ng-model="test.val"></rl-textbox>
 				</ng-form>
