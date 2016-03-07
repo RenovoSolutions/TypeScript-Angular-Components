@@ -30,6 +30,7 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
+import ISelectFilterSettings = selectFilter.ISelectFilterSettings;
 import IEqualityFunction = selectFilter.IEqualityFunction;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
@@ -56,8 +57,8 @@ export {
 	IModeFilterGroupSettings,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
-	ISelectFilter
-
+	ISelectFilter,
+	ISelectFilterSettings,
 }
 
 export interface ICardContainerBuilder {
@@ -95,7 +96,7 @@ export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
 	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
 	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
@@ -278,9 +279,9 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
-		let filter: ISelectFilter<TDataType> = factory.getInstance(valueSelector, comparer);
+		let filter: ISelectFilter<TDataType> = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}

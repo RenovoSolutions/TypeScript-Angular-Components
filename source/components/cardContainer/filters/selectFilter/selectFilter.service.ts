@@ -7,6 +7,11 @@ import __transform = services.transform.transform;
 
 export let factoryName: string = 'rlSelectFilterFactory';
 
+export interface ISelectFilterSettings<TDataType, TFilterType> {
+	valueSelector: string | { (item: TDataType): any };
+	comparer: IEqualityFunction<TFilterType>;
+}
+
 export interface ISelectFilter<T> extends filters.IFilter {
 	selectedValue: any;
 }
@@ -19,7 +24,13 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	selectedValue: any;
 	type: string = 'selectFilter';
 
-	constructor(private valueSelector: string | { (item:TDataType):any }, private comparer: IEqualityFunction<TFilterType>) {}
+	private valueSelector: string | { (item: TDataType): any };
+	private comparer: IEqualityFunction<TFilterType>;
+
+	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>) {
+		this.valueSelector = settings.valueSelector;
+		this.comparer = settings.comparer;
+	}
 
 	filter(item: TDataType): boolean {
 		if (this.selectedValue == null) {
@@ -40,13 +51,13 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 }
 
 export interface ISelectFilterFactory  {
-	getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+	getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
 }
 
 export function selectFilterFactory(): ISelectFilterFactory {
 	return {
-		getInstance<TDataType, TFilterType>(valueSelector: string | { (item:TDataType):any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
-			return new SelectFilter<TDataType, TFilterType>(valueSelector, comparer);
+		getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
+			return new SelectFilter<TDataType, TFilterType>(settings);
 		},
 	};
 }

@@ -21,7 +21,7 @@ export interface IDateFilter extends filters.IFilter {
 	type: string;
 	dateRange: boolean;
 
-	filter(item: any): boolean
+	filter(item: any): boolean;
 }
 
 class DateFilter implements IDateFilter {
@@ -30,8 +30,12 @@ class DateFilter implements IDateFilter {
 	includeTime: boolean = false;
 	dateRange: boolean;
 
-	constructor(private valueSelector: { (item: any): Date } | string, private dateUtility: __date.IDateUtility, public type: string) {
+	private valueSelector: { (item: any): Date } | string;
+	public type: string;
 
+	constructor(settings: IDateFilterSettings, private dateUtility: __date.IDateUtility) {
+		this.valueSelector = settings.valueSelector;
+		this.type = settings.type;
 	}
 
 	filter(item: any): boolean {
@@ -75,7 +79,7 @@ dateFilterFactory.$inject = [__date.serviceName];
 export function dateFilterFactory(dateUtility: __date.IDateUtility): IDateFilterFactory {
 	return {
 		getInstance(settings:IDateFilterSettings): IDateFilter {
-			return new DateFilter(settings.valueSelector, dateUtility, settings.type);
+			return new DateFilter(settings, dateUtility);
 		},
 	};
 }
