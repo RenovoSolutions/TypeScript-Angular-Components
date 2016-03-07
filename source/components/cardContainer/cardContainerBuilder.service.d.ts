@@ -47,6 +47,7 @@ export interface ICardContainerBuilder {
     useClickableCards(): void;
     usePermanentFooters(): void;
     useSelection(): void;
+    renderFilters(): void;
 }
 export interface IDataSourceBuilder {
     buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
@@ -81,6 +82,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     };
     _searchFilter: IGenericSearchFilter;
     _pager: IDataPager;
+    _renderFilters: boolean;
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
     containerData: any;
@@ -95,6 +97,7 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     useClickableCards(): void;
     usePermanentFooters(): void;
     useSelection(): void;
+    renderFilters(): void;
     disableSelection: {
         (item: any): string;
     };

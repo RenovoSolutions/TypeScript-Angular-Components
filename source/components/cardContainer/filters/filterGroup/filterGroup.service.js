@@ -14,6 +14,7 @@ var FilterGroup = (function (_super) {
         _super.call(this);
         this.settings = settings;
         this.object = object;
+        this.template = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
         this.label = settings.label;
         this.type = settings.type != null ? settings.type : settings.label;
         this.initOptions();
