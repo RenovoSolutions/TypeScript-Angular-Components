@@ -60,9 +60,9 @@ function commaList(): angular.IDirective {
 		controllerAs: 'commaList',
 		scope: {},
 		bindToController: {
-			inList: '=list',
-			max: '=',
-			transform: '=',
+			inList: '<list',
+			max: '<?',
+			transform: '<?',
 		},
 	};
 }
