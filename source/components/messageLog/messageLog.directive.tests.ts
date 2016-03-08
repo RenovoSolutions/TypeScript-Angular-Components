@@ -10,9 +10,12 @@ import test = services.test;
 import __isEmpty = filters.isEmpty;
 
 import {
-	moduleName,
-	controllerName,
-	MessageLogController,
+moduleName,
+controllerName,
+MessageLogController,
+DeletePermissions,
+EditPermissions,
+IUser
 } from './messageLog.module';
 
 import * as angular from 'angular';
@@ -135,6 +138,72 @@ describe('messageLog', () => {
 			sinon.assert.calledOnce(messageLogService.getTopPage);
 		});
 
+		it('should return true for edit permissions', (): void => {
+			buildController();
+			var message: any = {
+				message: '',
+				createdBy: {
+					id: 1,
+					name: 'Test User'
+				}
+			};
+			var message2: any = {
+				message: '',
+				createdBy: {
+					id: 2,
+					name: 'Test User'
+				}
+			};
+			log.canEdit = EditPermissions.editAll;
+			log.currentUser = {
+				id: 1,
+				name: 'Test User'
+			};
+			expect(log.canEditEntry(message)).to.be.true;
+			expect(log.canEditEntry(message2)).to.be.true;
+
+			log.canEdit = EditPermissions.editMine;
+			expect(log.canEditEntry(message)).to.be.true;
+			expect(log.canEditEntry(message2)).to.be.false;
+
+			log.canEdit = EditPermissions.editNone;
+			expect(log.canEditEntry(message)).to.be.false;
+			expect(log.canEditEntry(message2)).to.be.false;
+		});
+
+		it('should return true for Delete permissions', (): void => {
+			buildController();
+			var message: any = {
+				message: '',
+				createdBy: {
+					id: 1,
+					name: 'Test User'
+				}
+			};
+			var message2: any = {
+				message: '',
+				createdBy: {
+					id: 2,
+					name: 'Test User'
+				}
+			};
+			log.canDelete = DeletePermissions.deleteAll;
+			log.currentUser = {
+				id: 1,
+				name: 'Test User'
+			};
+			expect(log.canDeleteEntry(message)).to.be.true;
+			expect(log.canDeleteEntry(message2)).to.be.true;
+
+			log.canDelete = DeletePermissions.deleteMine;
+			expect(log.canDeleteEntry(message)).to.be.true;
+			expect(log.canDeleteEntry(message2)).to.be.false;
+
+			log.canDelete = DeletePermissions.deleteNone;
+			expect(log.canDeleteEntry(message)).to.be.false;
+			expect(log.canDeleteEntry(message2)).to.be.false;
+		});
+
 		function buildController(pageSize?: number): void {
 			var bindings: any = {
 				pageSize: pageSize,
@@ -157,15 +226,15 @@ describe('messageLog', () => {
 						<p>Message is greater than 3</p>
 					</template>
 				</rl-message-log>
-				`, <any> {
-					logService: messageLogService,
-					selectorFunction: function(entry) {
-						return entry > 3;
-					},
-				});
+				`, <any>{
+						logService: messageLogService,
+						selectorFunction: function(entry) {
+							return entry > 3;
+						},
+					});
 
-			expect(directiveResult.controller.getEntrySelector(<any> 4)).to.be.true;
-			expect(directiveResult.controller.getEntrySelector(<any> 3)).to.be.false;
+			expect(directiveResult.controller.getEntrySelector(<any>4)).to.be.true;
+			expect(directiveResult.controller.getEntrySelector(<any>3)).to.be.false;
 
 			expect(directiveResult.controller.templates['true']).to.contain('<p>Message is greater than 3</p>');
 		});
@@ -174,9 +243,9 @@ describe('messageLog', () => {
 			var directiveResult: test.IDirectiveResult<MessageLogController> =
 				test.angularFixture.directive<MessageLogController>('rlMessageLog',
 					'<rl-message-log service="logService"></rl-message-log>',
-					<any> { logService: messageLogService });
+					<any>{ logService: messageLogService });
 
-			expect(directiveResult.controller.getEntrySelector(<any> 1)).to.be.undefined;
+			expect(directiveResult.controller.getEntrySelector(<any>1)).to.be.undefined;
 		});
 	});
 });
