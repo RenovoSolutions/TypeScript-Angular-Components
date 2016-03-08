@@ -10,12 +10,14 @@ export interface ISecondarySorts {
     ascending?: IPartialSort[];
     descending?: IPartialSort[];
 }
-export interface IColumn {
+export interface IColumn<TItemType> {
     label: string;
     description?: string;
     displayColumnHeader?: boolean;
     size: IBreakpointSize | number;
-    getValue<TItemType>(item: TItemType): number | string | boolean;
+    getValue: {
+        (item: TItemType): number | string | boolean;
+    } | string;
     headerTemplateUrl?: string;
     headerTemplate?: string;
     templateUrl?: string;

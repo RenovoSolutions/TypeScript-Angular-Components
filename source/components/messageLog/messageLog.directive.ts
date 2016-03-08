@@ -6,6 +6,7 @@ import * as ng from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __transform = services.transform.transform;
 
 import {
 moduleName as jqueryModuleName,

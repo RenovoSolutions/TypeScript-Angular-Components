@@ -26,29 +26,32 @@ class ContentProviderService implements IContentProviderService {
 
 	private observable: __observable.IObservableService;
 	private content: JQuery;
+	private scope: ng.IScope;
 
-	setContent(content: JQuery): void {
+	setContent(content: JQuery, scope?: ng.IScope): void {
 		this.content = content;
+		this.scope = scope;
 		this.observable.fire('contentChanged');
 	}
 
 	setTranscludeContent: {(transcludeFunction: ng.ITranscludeFunction): void} = (transcludeFunction: ng.ITranscludeFunction): void => {
+		let scope: ng.IScope = null;
 		if (_.isFunction(transcludeFunction)) {
-			transcludeFunction((clone: JQuery): void => {
-				this.setContent(clone);
+			transcludeFunction((clone: JQuery, transcludeScope: ng.IScope): void => {
+				this.setContent(clone, transcludeScope);
 			});
 		} else {
 			this.setContent(null);
 		}
 	}
 
-	register(action: {(newContent: JQuery): void}, selector?: string): __observable.IUnregisterFunction {
+	register(action: {(newContent: JQuery, scope?: angular.IScope): void}, selector?: string): __observable.IUnregisterFunction {
 		if (this.content != null) {
-			action(this.getContent(selector));
+			action(this.getContent(selector), this.scope);
 		}
 
 		return this.observable.register((): void => {
-			action(this.getContent(selector));
+			action(this.getContent(selector), this.scope);
 		}, 'contentChanged');
 	}
 

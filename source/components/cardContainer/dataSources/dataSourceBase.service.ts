@@ -31,6 +31,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 			, private dataSourceProcessor: IDataSourceProcessor
 			, protected array: __array.IArrayUtility) {
 		this.observable = observableFactory.getInstance();
+		this.observable.allowableEvents = events.all;
 	}
 
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction {

@@ -8,53 +8,79 @@ import __parentChild = services.parentChildBehavior;
 import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
-import __promiseUtility = services.promise;
+import __validation = services.validation;
+import __transform = services.transform.transform;
+
+import {
+	IComponentValidator,
+	IComponentValidatorFactory,
+	factoryName as componentValidatorFactoryName,
+	moduleName as componentValidatorModuleName,
+} from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.typeahead';
-export var directiveName: string = 'rlTypeahead';
+export var componentName: string = 'rlTypeahead';
 export var controllerName: string = 'TypeaheadController';
-
 
 export interface ITypeaheadBindings {
 	// summary: IChild object with typeahead behaviors
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
 
-	// summary: two-way bound selection object from the consumer
-	selection: any;
-
-	// summary: indicates to the consumer if a selection was made
-	hasSelection: boolean;
-
-	// summary: function that gets called with updates to the selection
-	// param1: (value) the new selection
-	// param2: (hasSelection) indicates whether the new selection is a list object or a manually typed value
+	/**
+	 * Event that gets fired with updates to the selection - use if selection adds to a list
+	 * @param {any} value The new selection
+	 * @param {bool} isNew Indicates whether the selection was picked from the list or selected as the search
+	 */
 	select(params: ISelectParams): void;
 
-	// summary: function to transform the items into display strings
-	// param1: (value) the item to transofrm
-	transform(params: ITransformParams): string;
+	/**
+	 * Event that is used to convert a search text to its object representation - use if the user can specify a custom option
+	 * @param {any} value The string value representing the new selection
+	 * @returns {any} Object representing the new value to be displayed, if applicable
+	 */
+	create(params: ICreateParams): any;
 
-	// summary: function to get the full list of items or search for items on the server
-	// param1: (search - only if client searching is off) Search value for the server
+	/**
+	 * Specifies whether making a selection should collapse the typeahead and show the selection
+	 * or just fire an event - defaults to true if no select handler is specified
+	 */
+	allowCollapse: boolean;
+
+	/**
+	 * Selector for getting the display value for the items
+	 */
+	transform(item: any): string | string;
+
+	/**
+	 * Event for loading the data set or searching against the server
+	 * @param?: {string} search Search value for the server
+	 */
 	getItems(params?: IGetItemsParams): angular.IPromise<any>;
 
-	// summary: placeholder to display in the typeahead textbox
-	placeholder: string;
+	/**
+	 * Flower-up label for the typeahead
+	 */
+	label: string;
 
-	// summary: specifies whether searching should take place on the client or server - defaults to server
+	/**
+	 * Prefix to show before the label in the placeholder. Default 'Search for'
+	 */
+	prefix: string;
+
+	/**
+	 * Option for specifying whether searching should take place on the client or server
+	 */
 	useClientSearching: boolean;
 
-	// summary: two-way binding to indicate whether the typeahead textarea should show an error
-	hasError: boolean;
+	/**
+	 * Option for disabling the typeahead
+	 */
+	ngDisabled: boolean;
 
-	// summary: specifies whether the search icon and spinner should be shown - defaults to true
-	showSearch: boolean;
-
-	// summary: function for applying the selection. If present, an add button is added to the typeahead
-	//          once applied, the item is removed from the typeahead list if client searching is used
-	// param1: (value) selection to apply
-	// returns: promise to show an apply spinner on
-	apply(param: IApplyParam): angular.IPromise<any>;
+	/**
+	 * Handler for specifying custom validation logic
+	 */
+	validator: __validation.IValidationHandler;
 }
 
 export interface ITypeaheadBehavior {
@@ -64,204 +90,223 @@ export interface ITypeaheadBehavior {
 
 export interface ISelectParams {
 	value: any;
-	hasSelection: boolean;
-}
-
-export interface ITransformParams {
-	value: any;
 }
 
 export interface IGetItemsParams {
 	search: string;
 }
 
-export interface IApplyParam {
+export interface ICreateParams {
 	value: any;
 }
 
 export interface ITypeaheadAttrs extends angular.IAttributes {
-	selection: string;
-	transform: string;
-	apply: string;
+	select: string;
+	create: string;
 }
 
 export class TypeaheadController {
 	// bindings
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
-	selectionBinding: any;
 	hasSelection: boolean;
 	select: { (params: ISelectParams): void };
-	transformInParent: { (params: ITransformParams): string };
-	getItemsInParent: { (params?: IGetItemsParams): angular.IPromise<any> };
-	placeholder: string;
+	create: { (params: ICreateParams): void };
+	transform: { (item: any): string } | string;
+	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
+	label: string;
+	prefix: string;
 	useClientSearching: boolean;
-	hasError: boolean;
-	showSearch: boolean;
-	apply: { (param: IApplyParam): angular.IPromise<any> };
+	ngDisabled: boolean;
+	allowCollapse: boolean;
+	validator: __validation.IValidationHandler;
+
+	ngModel: angular.INgModelController;
 
 	private cachedItems: any[];
 	private searchFilter: __genericSearch.IGenericSearchFilter;
-	private useScopeSelection: boolean;
-	private hasTransform: boolean;
-	selection: any;
+	visibleItems: any[];
+	typeaheadValidator: IComponentValidator;
 	loading: boolean = false;
 	loadDelay: number;
-	useApply: boolean;
+	placeholder: string;
+	collapseOnSelect: boolean;
+	allowCustomOption: boolean;
+	collapsed: boolean = false;
+	hasSearchOption: boolean = false;
+
+	get selection(): any {
+		return this.ngModel.$viewValue;
+	}
+
+	set selection(value: any) {
+		if (value != null) {
+			if (value.__isSearchOption) {
+				value = this.create({ value: value.text });
+			}
+
+			this.select({ value: value });
+
+			if (this.collapseOnSelect) {
+				this.collapsed = true;
+				this.ngModel.$setViewValue(value);
+			}
+		}
+	}
+
+	_searchOption: any = {
+		__isSearchOption: true,
+	};
 
 	static $inject: string[] = ['$scope'
-		, '$attrs'
 		, '$q'
+		, '$attrs'
+		, '$timeout'
 		, __parentChild.serviceName
 		, __genericSearch.factoryName
 		, __objectUtility.serviceName
 		, __arrayUtility.serviceName
-		, __promiseUtility.serviceName];
+		, componentValidatorFactoryName];
 	constructor(private $scope: angular.IScope
-		, $attrs: ITypeaheadAttrs
 		, private $q: angular.IQService
+		, private $attrs: ITypeaheadAttrs
+		, private $timeout: angular.ITimeoutService
 		, private parentChild: __parentChild.IParentChildBehaviorService
-		, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
-		, object: __objectUtility.IObjectUtility
+		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
+		, private object: __objectUtility.IObjectUtility
 		, private array: __arrayUtility.IArrayUtility
-		, private promise: __promiseUtility.IPromiseUtility) {
-		this.searchFilter = genericSearchFactory.getInstance();
+		, private componentValidatorFactory: IComponentValidatorFactory) { }
+
+	$onInit(): void {
+		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
+		this.prefix = this.prefix || 'Search for';
+		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
+		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
+		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
 
-		this.selection = this.selectionBinding;
+		this.$timeout((): void => {
+			if (this.collapseOnSelect && !this.object.isNullOrEmpty(this.ngModel.$viewValue)) {
+				this.collapsed = true;
+			}
+		});
 
-		if (this.hasSelection == null) {
-			this.hasSelection = false;
+		if (!_.isUndefined(this.validator)) {
+			this.typeaheadValidator = this.componentValidatorFactory.getInstance({
+				ngModel: this.ngModel,
+				$scope: this.$scope,
+				validators: [this.validator],
+			});
 		}
-
-		if (this.placeholder == null) {
-			this.placeholder = 'Search';
-		}
-
-		if (this.showSearch == null) {
-			this.showSearch = true;
-		}
-
-		this.useScopeSelection = object.isNullOrEmpty($attrs.selection) === false;
-		this.hasTransform = object.isNullOrEmpty($attrs.transform) === false;
-		this.useApply = object.isNullOrEmpty($attrs.apply) === false;
 
 		this.parentChild.registerChildBehavior(this.childLink, {
-			add: this.addItem,
-			remove: this.removeItem,
+			add: this.addItem.bind(this),
+			remove: this.removeItem.bind(this),
 		});
+	}
 
-		$scope.$watch((): any => { return this.selection; }, (value: any): void => {
-			this.hasSelection = _.isObject(value);
-			this.setSelection(value);
-		});
+	getDisplayName(item: any): string {
+		if (item != null && item.__isSearchOption) {
+			return item.text;
+		}
 
-		$scope.$watch((): any => { return this.selectionBinding; }, (value: any): void => {
-			if (value == null) {
-				this.selection = null;
+		return __transform.getValue(item, this.transform);
+	}
+
+	refresh(search: string): angular.IPromise<void> {
+		if (this.object.isNullOrEmpty(search)) {
+			this.visibleItems = [];
+			return null;
+		}
+		this.loading = true;
+		return this.loadItems(search).then((): void => {
+			this.loading = false;
+			this._searchOption.text = search;
+
+			if (this.showCustomSearch(search)) {
+				this.hasSearchOption = true;
+				this.visibleItems.unshift(this._searchOption);
 			}
 		});
 	}
 
-	private setSelection(object: any): void {
-		if (this.useScopeSelection) {
-			this.selection = object;
-		}
-
-		if (_.isFunction(this.select)) {
-			this.select({ value: object, hasSelection: this.hasSelection });
-		}
-	}
-
-	transform(object: any): string {
-		if (this.hasTransform && object != null) {
-			return this.transformInParent({
-				value: object,
-			});
-		}
-		return object;
-	}
-
-	getItems(search: string): angular.IPromise<any> {
+	loadItems(search: string): angular.IPromise<void> {
 		if (!this.useClientSearching) {
-			return this.getItemsInParent({
+			return this.$q.when(this.getItems({
 				search: search,
+			})).then((items: any[]): void => {
+				this.visibleItems = items;
 			});
 		} else {
 			this.searchFilter.searchText = search;
 
 			if (this.cachedItems != null) {
-				return this.$q.when(this.filter(this.cachedItems));
+				this.visibleItems = this.filter(this.cachedItems);
+				return this.$q.when();
 			} else {
-				return this.$q.when(this.getItemsInParent()).then((data: any[]): any[]=> {
-					this.cachedItems = data;
-					return this.filter(data);
+				return this.$q.when(this.getItems()).then((items: any[]): void => {
+					this.cachedItems = items;
+					this.visibleItems = this.filter(items);
 				});
 			}
 		}
 	}
 
-	applyItem(): angular.IPromise<void> {
-		if (this.useApply && this.hasSelection) {
-			var request: angular.IPromise<any> = this.apply({ value: this.selection });
-			if (this.promise.isPromise(request)) {
-				return request.then((): void => {
-					this.removeItem(this.selection);
-					this.selection = null;
-				});
-			} else if (!_.isUndefined(request)) {
-				this.removeItem(this.selection);
-				this.selection = null;
-			}
-		}
-		return this.$q.when();
+	clear(): void {
+		this.ngModel.$setViewValue(null);
+		this.collapsed = false;
+	}
+
+	private showCustomSearch(search: string): boolean {
+		return this.allowCustomOption
+			&& !this.hasSearchOption
+			&& !_.find(this.visibleItems, (item: any): boolean => {
+			return this.getDisplayName(item) === search;
+		});
 	}
 
 	private filter(list: any[]): any[] {
 		return _.filter(list, (item: any): boolean => { return this.searchFilter.filter(item); });
 	}
 
-	private addItem: { (item: any): void } = (item: any): void => {
+	private addItem(item: any): void {
 		if (this.cachedItems != null) {
 			this.cachedItems.push(item);
 		}
 	}
 
-	private removeItem: { (item: any): void } = (item: any): void => {
+	private removeItem(item: any): void {
 		if (this.cachedItems != null) {
 			this.array.remove(this.cachedItems, item);
 		}
 	}
 }
 
-export function typeahead(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./typeahead.html'),
-		controller: controllerName,
-		controllerAs: 'typeahead',
-		scope: {},
-		bindToController: {
-			childLink: '=?',
-			selectionBinding: '=?selection',
-			hasSelection: '=?',
-			select: '&',
-			transformInParent: '&transform',
-			getItemsInParent: '&getItems',
-			placeholder: '@',
-			useClientSearching: '=?',
-			hasError: '=?',
-			showSearch: '=?',
-			apply: '&',
-		},
-	};
-}
+let typeahead: angular.IComponentOptions = <any>{
+	require: { ngModel: 'ngModel' },
+	template: require('./typeahead.html'),
+	controller: controllerName,
+	controllerAs: 'typeahead',
+	bindings: {
+		childLink: '=?',
+		select: '&',
+		create: '&',
+		allowCollapse: '<?',
+		transform: '<?',
+		getItems: '&',
+		label: '@',
+		prefix: '@',
+		useClientSearching: '<?',
+		ngDisabled: '<?',
+		validator: '<?',
+	},
+};
 
 angular.module(moduleName, [
 	__parentChild.moduleName
 	, __genericSearch.moduleName
 	, __objectUtility.moduleName
 	, __arrayUtility.moduleName
-	, __promiseUtility.moduleName])
-	.directive(directiveName, typeahead)
+	, componentValidatorModuleName
+])
+	.component(componentName, typeahead)
 	.controller(controllerName, TypeaheadController);

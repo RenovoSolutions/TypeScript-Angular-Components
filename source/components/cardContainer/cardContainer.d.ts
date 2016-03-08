@@ -43,7 +43,7 @@ export declare class CardContainerController {
     filters: filters.IFilter[];
     searchFilter: __genericSearchFilter.IGenericSearchFilter;
     paging: boolean;
-    columns: IColumn[];
+    columns: IColumn<any>[];
     containerData: any;
     cardController: string;
     cardControllerAs: string;
@@ -58,7 +58,7 @@ export declare class CardContainerController {
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
     numberSelected: number;
-    selectionColumn: IColumn;
+    selectionColumn: IColumn<any>;
     private maxColSorts;
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;
@@ -66,7 +66,7 @@ export declare class CardContainerController {
     constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
     sortSelected(): void;
     openCard(): boolean;
-    sort(column: IColumn): void;
+    sort(column: IColumn<any>): void;
     selectionChanged(): void;
     private syncFilters();
     private setupPaging();

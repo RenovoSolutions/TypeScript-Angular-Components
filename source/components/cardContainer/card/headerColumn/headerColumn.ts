@@ -4,19 +4,24 @@
 
 import * as angular from 'angular';
 
+import { services } from 'typescript-angular-utilities';
+import __transform = services.transform.transform;
+
 import { IColumn } from '../../column';
 
 export var directiveName: string = 'rlCardHeaderColumn';
 export var controllerName: string = 'CardHeaderColumnController';
 
 export interface IHeaderColumnBindings {
-	column: IColumn;
+	column: IColumn<any>;
 	item: any;
+	alias: string;
 }
 
 export class HeaderColumnController {
-	column: IColumn;
+	column: IColumn<any>;
 	item: any;
+	alias: string;
 
 	value: string | number | boolean;
 
@@ -29,7 +34,7 @@ export class HeaderColumnController {
 	}
 
 	private update: {(): void} = (): void => {
-		this.value = this.column.getValue(this.item);
+		this.value = __transform.getValue(this.item, this.column.getValue);
 	}
 }
 
@@ -40,15 +45,16 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 		restrict: 'E',
 		template: `
 			<div rl-size-for-breakpoints="header.column.size" title="{{::header.column.description}}">
-				<div class="template-container"></div>
+				<div class="template-container" rl-alias="header.item as {{header.alias}}"></div>
 			</div>
 		`,
 		controller: controllerName,
 		controllerAs: 'header',
 		scope: {},
 		bindToController: {
-			column: '=',
-			item: '=',
+			column: '<',
+			item: '<',
+			alias: '<',
 		},
 		compile(): angular.IDirectivePrePost {
 			return {
@@ -56,7 +62,7 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 					, element: angular.IAugmentedJQuery
 					, attrs: angular.IAttributes
 					, header: HeaderColumnController): void {
-					var column: IColumn = header.column;
+					var column: IColumn<any> = header.column;
 					if (column.templateUrl != null) {
 						header.renderedTemplate = $compile('<div ng-include="\'' + column.templateUrl + '\'"></div>')(scope);
 					} else if (column.template != null) {
