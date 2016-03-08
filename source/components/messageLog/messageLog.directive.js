@@ -2,6 +2,7 @@
 'use strict';
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 var jquery_service_1 = require('../../services/jquery/jquery.service');
 var messageLog_service_1 = require('./messageLog.service');
 var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
@@ -36,12 +37,7 @@ var MessageLogController = (function () {
         this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
     }
     MessageLogController.prototype.getEntrySelector = function (entry) {
-        if (_.isString(this.selector)) {
-            return entry[this.selector];
-        }
-        else if (_.isFunction(this.selector)) {
-            return this.selector(entry);
-        }
+        return __transform.getValue(entry, this.selector);
     };
     MessageLogController.prototype.getOlder = function () {
         return this.messageLog.getNextPage();

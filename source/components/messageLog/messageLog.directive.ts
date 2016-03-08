@@ -6,6 +6,7 @@ import * as ng from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __transform = services.transform.transform;
 
 import {
 	moduleName as jqueryModuleName,
@@ -86,11 +87,7 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	getEntrySelector(entry: IMessage): any {
-		if (_.isString(this.selector)) {
-			return entry[<string> this.selector];
-		} else if (_.isFunction(this.selector)) {
-			return (<{ (IMessage): any }> this.selector)(entry);
-		}
+		return __transform.getValue(entry, this.selector);
 	}
 
 	getOlder(): ng.IPromise<void> {
