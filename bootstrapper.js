@@ -71,6 +71,7 @@
 			getValue: function (item) {
 				return item.value;
 			},
+			template: '<b>{{myItem.value}}</b>',
 		});
 		self.builder.renderFilters();
 		self.builder.filters.buildModeFilterGroup({

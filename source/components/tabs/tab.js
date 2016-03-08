@@ -16,7 +16,11 @@ exports.TabController = TabController;
 function tab() {
     return {
         restrict: 'E',
-        transclude: true,
+        transclude: {
+            'headerSlot': '?rlTabHeader',
+            'contentSlot': '?rlTabContent',
+            'footerSlot': '?rlTabFooter',
+        },
         require: ['^^rlTabset', 'rlTab'],
         template: require('./tab.html'),
         controller: exports.controllerName,
@@ -24,10 +28,7 @@ function tab() {
         scope: {},
         bindToController: {},
         link: function (scope, element, attrs, controllers, transclude) {
-            transclude(function (clone) {
-                var header = clone.filter('rl-tab-header');
-                var content = clone.filter('rl-tab-content');
-                var footer = clone.filter('rl-tab-footer');
+            transclude(function (header) {
                 var tabset = controllers[0];
                 var tab = controllers[1];
                 tab.header = {
@@ -35,14 +36,7 @@ function tab() {
                     isValid: true,
                 };
                 tabset.registerTab(element, tab.header);
-                var contentArea = element.find('.content-template');
-                contentArea.append(content);
-                scope.hasFooter = (footer.length > 0);
-                if (scope.hasFooter) {
-                    var footerArea = element.find('.footer-template');
-                    footerArea.append(footer);
-                }
-            });
+            }, null, 'headerSlot');
         },
     };
 }
