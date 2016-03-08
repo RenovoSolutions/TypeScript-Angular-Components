@@ -36,7 +36,7 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 
 	// component settings
 	options: any[];
-	getOptions?: { (): angular.IPromise<any[]> };
+	getOptions: { (): angular.IPromise<any[]> };
 	label: string;
 	displayNameSelector: string | { (item: any): string };
 	nullOption: string;
