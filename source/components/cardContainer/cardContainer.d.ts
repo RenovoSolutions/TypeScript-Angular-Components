@@ -55,6 +55,7 @@ export declare class CardContainerController {
     disableSelection: {
         (item: any): string;
     };
+    renderFilters: boolean;
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
     numberSelected: number;

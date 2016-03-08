@@ -33,6 +33,7 @@ export declare class FilterGroup extends filters.SerializableFilter<any> impleme
     label: string;
     type: string;
     options: IFilterOption[];
+    template: string;
     private _activeOption;
     constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility);
     initOptions(): void;

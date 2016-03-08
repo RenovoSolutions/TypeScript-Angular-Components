@@ -8,6 +8,13 @@
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
 
+		var templateScope = $scope.$new();
+		templateScope.text = 'Some text';
+		self.template = {
+			template: '<div>{{text}}</div>',
+			scope: templateScope,
+		};
+
 		self.text = null;
 		self.set = [];
 		self.select = function (value) {
@@ -37,10 +44,10 @@
 		var items = [
 			{ name: 'Item 1', value: 1 },
 			{ name: 'Item 2', value: 2 },
-			{ name: 'Item 3', value: 3 },
-			{ name: 'Item 4', value: 4 },
-			{ name: 'Item 5', value: 5 },
-			{ name: 'Item 6', value: 6 },
+			{ name: 'Item 3', value: 1 },
+			{ name: 'Item 4', value: 1 },
+			{ name: 'Item 5', value: 2 },
+			{ name: 'Item 6', value: 2 },
 		];
 
 		self.count = 0;
@@ -65,6 +72,26 @@
 				return item.value;
 			},
 			template: '<b>{{myItem.value}}</b>',
+		});
+		self.builder.renderFilters();
+		self.builder.filters.buildModeFilterGroup({
+			label: "Mode Filter",
+			type: "modeFilter",
+			getValue: 'value',
+			options: [
+				{
+					label: "All",
+					displayAll: true,
+				},
+				{
+					label: "1",
+					value: 1,
+				},
+				{
+					label: "2",
+					value: 2,
+				},
+			],
 		});
 	}
 }());

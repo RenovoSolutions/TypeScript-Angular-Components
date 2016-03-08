@@ -28,6 +28,7 @@ import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as tabs from './tabs/tabs.module';
+import * as templateRenderer from './templateRenderer/templateRenderer';
 import * as textarea from './textarea/textarea';
 import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
@@ -65,6 +66,7 @@ export {
 	spinner,
 	stringWithWatermark,
 	tabs,
+	templateRenderer,
 	textarea,
 	textbox,
 	typeahead,
@@ -101,6 +103,7 @@ angular.module(moduleName, [
 	spinner.moduleName,
 	stringWithWatermark.moduleName,
 	tabs.moduleName,
+	templateRenderer.moduleName,
 	textarea.moduleName,
 	textbox.moduleName,
 	typeahead.moduleName,

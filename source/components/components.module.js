@@ -52,6 +52,8 @@ var stringWithWatermark = require('./stringWithWatermark/stringWithWatermark');
 exports.stringWithWatermark = stringWithWatermark;
 var tabs = require('./tabs/tabs.module');
 exports.tabs = tabs;
+var templateRenderer = require('./templateRenderer/templateRenderer');
+exports.templateRenderer = templateRenderer;
 var textarea = require('./textarea/textarea');
 exports.textarea = textarea;
 var textbox = require('./textbox/textbox');
@@ -92,6 +94,7 @@ angular.module(exports.moduleName, [
     spinner.moduleName,
     stringWithWatermark.moduleName,
     tabs.moduleName,
+    templateRenderer.moduleName,
     textarea.moduleName,
     textbox.moduleName,
     typeahead.moduleName,

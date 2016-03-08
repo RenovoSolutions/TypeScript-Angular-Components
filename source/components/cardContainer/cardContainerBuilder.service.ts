@@ -77,6 +77,7 @@ export interface ICardContainerBuilder {
 	useClickableCards(): void;
 	usePermanentFooters(): void;
 	useSelection(): void;
+	renderFilters(): void;
 }
 
 export interface IDataSourceBuilder {
@@ -112,6 +113,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_disableSelection: { (item: any): string };
 	_searchFilter: IGenericSearchFilter;
 	_pager: IDataPager;
+	_renderFilters: boolean;
 
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
@@ -158,6 +160,10 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._selectableCards = true;
 	}
 
+	renderFilters(): void {
+		this._renderFilters = true;
+	}
+
 	set disableSelection(value: { (item: any): string }) {
 		if (!this._selectableCards) {
 			this.useSelection();
@@ -182,6 +188,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.permanentFooters = this._permanentFooters;
 		cardContainer.selectableCards = this._selectableCards;
 		cardContainer.disableSelection = this._disableSelection;
+		cardContainer.renderFilters = this._renderFilters;
 
 		if (cardContainer.cardController == null) {
 			cardContainer.cardController = this.cardController;

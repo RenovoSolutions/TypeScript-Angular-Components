@@ -70,7 +70,8 @@ export class CardContainerController {
 	maxColumnSorts: number;
 	permanentFooters: boolean;
 	selectableCards: boolean;
-	disableSelection: {(item: any): string};
+	disableSelection: { (item: any): string };
+	renderFilters: boolean;
 
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;

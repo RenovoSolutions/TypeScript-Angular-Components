@@ -1,64 +1,71 @@
-<div class="card-container">
-	<div>
-		<div class="card-container-header">
-			<div class="container-header-template"></div>
-		</div>
-
-		<rl-generic-container selector="cardContainer.selectableCards">
-			<template when-selector="false" default>
-				<div class="card-columns-header">
-					<div ng-repeat="column in cardContainer.columns">
-						<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>
-					</div>
-					<div class="clearfix"></div>
+<div class="row">
+	<div class="col-md-3 col-xs-12" ng-if="cardContainer.renderFilters">
+		<rl-card-container-filters filters="cardContainer.filters" source="cardContainer.dataSource"></rl-card-container-filters>
+	</div>
+	<div class="col-xs-12" ng-class="{ 'col-md-9': cardContainer.renderFilters }">
+		<div class="card-container">
+			<div>
+				<div class="card-container-header">
+					<div class="container-header-template"></div>
 				</div>
-			</template>
-			<template when-selector="true">
-				<div class="card-columns-header">
-					<div class="select-group">
-						<div class="select-column">
-							<i class="fa fa-check" style="margin-left: 6px; cursor: pointer" ng-click="cardContainer.sortSelected()"></i>
-							<i ng-show="cardContainer.sortColumn.sortDirection === cardContainer.sortDirection.ascending" class="fa fa-sort-asc"></i>
-							<i ng-show="cardContainer.sortColumn.sortDirection === cardContainer.sortDirection.descending" class="fa fa-sort-desc"></i>
-						</div>
-						<div class="select-content">
+
+				<rl-generic-container selector="cardContainer.selectableCards">
+					<template when-selector="false" default>
+						<div class="card-columns-header">
 							<div ng-repeat="column in cardContainer.columns">
 								<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>
 							</div>
+							<div class="clearfix"></div>
 						</div>
+					</template>
+					<template when-selector="true">
+						<div class="card-columns-header">
+							<div class="select-group">
+								<div class="select-column">
+									<i class="fa fa-check" style="margin-left: 6px; cursor: pointer" ng-click="cardContainer.sortSelected()"></i>
+									<i ng-show="cardContainer.sortColumn.sortDirection === cardContainer.sortDirection.ascending" class="fa fa-sort-asc"></i>
+									<i ng-show="cardContainer.sortColumn.sortDirection === cardContainer.sortDirection.descending" class="fa fa-sort-desc"></i>
+								</div>
+								<div class="select-content">
+									<div ng-repeat="column in cardContainer.columns">
+										<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>
+									</div>
+								</div>
+							</div>
+							<div class="clearfix"></div>
+						</div>
+					</template>
+				</rl-generic-container>
+
+				<div ng-if="cardContainer.dataSource.dataSet | isEmpty:false">
+					<div ng-repeat="card in cardContainer.dataSource.dataSet">
+						<rl-card columns="cardContainer.columns" item="card"
+								clickable="cardContainer.clickableCards"
+								selectable="cardContainer.selectableCards"
+								selection-changed="cardContainer.selectionChanged()"
+								container-data="cardContainer.containerData"
+								source="cardContainer.dataSource"
+								permanent-footer="cardContainer.permanentFooters"
+								card-controller="cardContainer.cardController"
+								card-controller-as="cardContainer.cardControllerAs"
+								card-as="cardContainer.cardAs"></rl-card>
 					</div>
-					<div class="clearfix"></div>
 				</div>
-			</template>
-		</rl-generic-container>
+				<div ng-if="cardContainer.dataSource.needsRefinedSearch">
+					Please refine your search results
+				</div>
+				<div ng-if="cardContainer.dataSource.isEmpty">
+					There are no items to show
+				</div>
 
-		<div ng-if="cardContainer.dataSource.dataSet | isEmpty:false">
-			<div ng-repeat="card in cardContainer.dataSource.dataSet">
-				<rl-card columns="cardContainer.columns" item="card"
-						 clickable="cardContainer.clickableCards"
-						 selectable="cardContainer.selectableCards"
-						 selection-changed="cardContainer.selectionChanged()"
-						 container-data="cardContainer.containerData"
-						 source="cardContainer.dataSource"
-						 permanent-footer="cardContainer.permanentFooters"
-						 card-controller="cardContainer.cardController"
-						 card-controller-as="cardContainer.cardControllerAs"
-						 card-as="cardContainer.cardAs"></rl-card>
+				<div>
+					<rl-busy loading="cardContainer.dataSource.loadingDataSet" size="2x"></rl-busy>
+				</div>
+
+				<div class="card-container-footer">
+					<div class="container-footer-template"></div>
+				</div>
 			</div>
-		</div>
-		<div ng-if="cardContainer.dataSource.needsRefinedSearch">
-			Please refine your search results
-		</div>
-		<div ng-if="cardContainer.dataSource.isEmpty">
-			There are no items to show
-		</div>
-
-		<div>
-			<rl-busy loading="cardContainer.dataSource.loadingDataSet" size="2x"></rl-busy>
-		</div>
-
-		<div class="card-container-footer">
-			<div class="container-footer-template"></div>
 		</div>
 	</div>
 </div>
