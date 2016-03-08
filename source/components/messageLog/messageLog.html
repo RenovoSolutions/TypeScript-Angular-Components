@@ -1,6 +1,6 @@
 <div>
 	<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
-	<div class="content-group" ng-repeat="entry in log.messages" rl-alias="entry as {{log.messageAs}}">
+	<div class="content-group" ng-repeat="entry in log.messages" rl-alias="entry as {{log.messageAs}}" ng-class="{ 'system-note': entry.isSystemNote }">
 		<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
 			<template default>
 				<div class="message-body">
@@ -8,7 +8,7 @@
 						<div ng-bind-html="entry.message"></div>
 					</div>
 					<span class="message-button" ng-if="log.canDeleteEntry(entry)">
-						<rl-button-async type="message-delete-button flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rl-button-async>
+						<rl-button-async type="message-delete flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rl-button-async>
 					</span>
 				</div>
 				<div class="message-byline">
