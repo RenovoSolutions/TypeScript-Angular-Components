@@ -5,11 +5,15 @@ var __date = typescript_angular_utilities_1.services.date;
 var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.factoryName = 'rlDateFilterFactory';
 var DateFilter = (function () {
-    function DateFilter(valueSelector, dateUtility, type) {
-        this.valueSelector = valueSelector;
+    function DateFilter(settings, dateUtility) {
         this.dateUtility = dateUtility;
-        this.type = type;
-        this.includeTime = false;
+        this.valueSelector = settings.valueSelector;
+        this.type = settings.type;
+        this.clearButton = settings.clearButton;
+        this.includeDateRange = settings.includeDateRange;
+        this.includeTime = settings.includeTime != null ? settings.includeTime : false;
+        this.label = settings.label;
+        this.template = "<rl-date-filter filter=\"filter\" source=\"dataSource\" label=\"{{filter.label}}\" include-time=\"filter.includeTime\"\n\t\t\t\t\t\t\t\t\t     include-date-range=\"filter.includeDateRange\" clear-button=\"filter.clearButton\"></rl-date-filter>";
     }
     DateFilter.prototype.filter = function (item) {
         if (!this.dateUtility.isDate(this.selectedDate1)) {
@@ -46,7 +50,7 @@ dateFilterFactory.$inject = [__date.serviceName];
 function dateFilterFactory(dateUtility) {
     return {
         getInstance: function (settings) {
-            return new DateFilter(settings.valueSelector, dateUtility, settings.type);
+            return new DateFilter(settings, dateUtility);
         },
     };
 }

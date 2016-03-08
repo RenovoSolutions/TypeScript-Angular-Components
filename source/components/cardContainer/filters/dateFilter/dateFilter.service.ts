@@ -12,6 +12,12 @@ export let factoryName: string = 'rlDateFilterFactory';
 export interface IDateFilterSettings{
 	type: string;
 	valueSelector: { (item: any): Date } | string;
+
+	// component settings
+	clearButton: boolean;
+	includeDateRange: boolean;
+	includeTime: boolean;
+	label: string;
 }
 
 export interface IDateFilter extends filters.IFilter {
@@ -21,17 +27,33 @@ export interface IDateFilter extends filters.IFilter {
 	type: string;
 	dateRange: boolean;
 
-	filter(item: any): boolean
+	filter(item: any): boolean;
 }
 
 class DateFilter implements IDateFilter {
 	selectedDate1: Date;
 	selectedDate2: Date;
-	includeTime: boolean = false;
+	includeTime: boolean;
 	dateRange: boolean;
 
-	constructor(private valueSelector: { (item: any): Date } | string, private dateUtility: __date.IDateUtility, public type: string) {
+	private valueSelector: { (item: any): Date } | string;
+	public type: string;
 
+	// component settings
+	clearButton: boolean;
+	includeDateRange: boolean;
+	label: string;
+	template: string;
+
+	constructor(settings: IDateFilterSettings, private dateUtility: __date.IDateUtility) {
+		this.valueSelector = settings.valueSelector;
+		this.type = settings.type;
+		this.clearButton = settings.clearButton;
+		this.includeDateRange = settings.includeDateRange;
+		this.includeTime = settings.includeTime != null ? settings.includeTime : false;
+		this.label = settings.label;
+		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.includeTime"
+									     include-date-range="filter.includeDateRange" clear-button="filter.clearButton"></rl-date-filter>`;
 	}
 
 	filter(item: any): boolean {
@@ -75,7 +97,7 @@ dateFilterFactory.$inject = [__date.serviceName];
 export function dateFilterFactory(dateUtility: __date.IDateUtility): IDateFilterFactory {
 	return {
 		getInstance(settings:IDateFilterSettings): IDateFilter {
-			return new DateFilter(settings.valueSelector, dateUtility, settings.type);
+			return new DateFilter(settings, dateUtility);
 		},
 	};
 }

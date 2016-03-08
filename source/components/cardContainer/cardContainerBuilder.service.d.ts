@@ -24,12 +24,12 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
-import IEqualityFunction = selectFilter.IEqualityFunction;
+import ISelectFilterSettings = selectFilter.ISelectFilterSettings;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
 import IDataPager = dataSources.dataPager.IDataPager;
 export declare let factoryName: string;
-export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IClientServerDataServiceFunction, IServerSearchFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter };
+export { IColumn, IDataSource, IDataSourceDataServiceFunction, IDateFilter, IDateFilterSettings, IClientServerDataServiceFunction, IServerSearchFunction, IGetFilterModel, IValidateFilterModel, IFilter, IGenericSearchFilter, IColumnSearchFilter, IFilterGroup, IFilterGroupSettings, IModeFilterGroup, IModeFilterGroupSettings, IRangeFilterGroup, IRangeFilterGroupSettings, ISelectFilter, ISelectFilterSettings };
 export interface ICardContainerBuilder {
     dataSource: IDataSourceBuilder;
     filters: IFilterBuilder;
@@ -61,9 +61,7 @@ export interface IFilterBuilder {
     buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
     buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
     buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
-    buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
-        (item: TDataType): any;
-    }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+    buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(valueSelector: IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: IFilter): void;
@@ -121,9 +119,7 @@ export declare class FilterBuilder implements IFilterBuilder {
     buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup;
     buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup;
     buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup;
-    buildSelectFilter<TDataType, TFilterType>(valueSelector: string | {
-        (item: TDataType): any;
-    }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+    buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
     buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter;
     buildColumnSearchFilter(): IColumnSearchFilter;
     addCustomFilter(filter: filters.IFilter): void;

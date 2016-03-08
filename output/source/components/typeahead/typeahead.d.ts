@@ -4,7 +4,8 @@ import __parentChild = services.parentChildBehavior;
 import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
-import __promiseUtility = services.promise;
+import __validation = services.validation;
+import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare var moduleName: string;
 export declare var componentName: string;
 export declare var controllerName: string;
@@ -41,6 +42,10 @@ export interface ITypeaheadBindings {
      */
     label: string;
     /**
+     * Prefix to show before the label in the placeholder. Default 'Search for'
+     */
+    prefix: string;
+    /**
      * Option for specifying whether searching should take place on the client or server
      */
     useClientSearching: boolean;
@@ -48,6 +53,10 @@ export interface ITypeaheadBindings {
      * Option for disabling the typeahead
      */
     ngDisabled: boolean;
+    /**
+     * Handler for specifying custom validation logic
+     */
+    validator: __validation.IValidationHandler;
 }
 export interface ITypeaheadBehavior {
     add(item: any): void;
@@ -70,11 +79,12 @@ export declare class TypeaheadController {
     private $scope;
     private $q;
     private $attrs;
+    private $timeout;
     private parentChild;
     private genericSearchFactory;
     private object;
     private array;
-    private promise;
+    private componentValidatorFactory;
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
     hasSelection: boolean;
     select: {
@@ -90,13 +100,16 @@ export declare class TypeaheadController {
         (params?: IGetItemsParams): angular.IPromise<any>;
     };
     label: string;
+    prefix: string;
     useClientSearching: boolean;
     ngDisabled: boolean;
     allowCollapse: boolean;
+    validator: __validation.IValidationHandler;
     ngModel: angular.INgModelController;
     private cachedItems;
     private searchFilter;
     visibleItems: any[];
+    typeaheadValidator: IComponentValidator;
     loading: boolean;
     loadDelay: number;
     placeholder: string;
@@ -105,9 +118,9 @@ export declare class TypeaheadController {
     collapsed: boolean;
     hasSearchOption: boolean;
     selection: any;
-    private _searchOption;
+    _searchOption: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, promise: __promiseUtility.IPromiseUtility);
+    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
     getDisplayName(item: any): string;
     refresh(search: string): angular.IPromise<void>;
