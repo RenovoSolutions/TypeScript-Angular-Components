@@ -54,8 +54,10 @@ var CardController = (function () {
         parentChild.registerChildBehavior(this.item, {
             close: this.autosave,
         });
-        $scope.__initContents = function (hasBody, hasFooter) {
+        $scope.__setHasBody = function (hasBody) {
             _this.hasBody = hasBody;
+        };
+        $scope.__setHasFooter = function (hasFooter) {
             _this.hasFooter = hasFooter;
         };
     }
@@ -137,19 +139,20 @@ function card() {
         },
         link: function (scope, element, attrs, rlCardContainer) {
             scope.__rlCardContainer = rlCardContainer;
-            rlCardContainer.makeCard(scope, function (clone) {
-                var content = clone.filter('rl-card-content');
-                var footer = clone.filter('rl-card-footer');
+            rlCardContainer.makeCard(scope, function (content) {
                 var contentArea = element.find('.content-template');
                 contentArea.append(content);
                 var hasBody = content.length > 0;
+                scope.__setHasBody(hasBody);
+            }, null, 'contentSlot');
+            rlCardContainer.makeCard(scope, function (footer) {
                 var hasFooter = (footer.length > 0);
                 if (hasFooter) {
                     var footerArea = element.find('.footer-template');
                     footerArea.append(footer);
                 }
-                scope.__initContents(hasBody, hasFooter);
-            });
+                scope.__setHasFooter(hasFooter);
+            }, null, 'footerSlot');
         },
     };
 }

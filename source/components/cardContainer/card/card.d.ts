@@ -29,7 +29,8 @@ export interface ICardScope extends angular.IScope {
     remove(): void;
     containerData: any;
     __rlCardContainer: CardContainerController;
-    __initContents(hasBody: boolean, hasFooter: boolean): void;
+    __setHasBody(hasBody: boolean): void;
+    __setHasFooter(hasFooter: boolean): void;
 }
 export interface ICardBehavior {
     close(): boolean;

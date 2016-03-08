@@ -5,14 +5,14 @@
 			<i class="close-icon fa fa-close fa-stack-1x"></i>
 		</span>
 	</button>
-	<div class="header-template "></div>
+	<div ng-transclude="headerSlot"></div>
 	<div class="clearfix "></div>
 </div>
-<div class="modal-body ">
-	<div class="content-template "></div>
-	<div class="clearfix "></div>
+<div class="modal-body">
+	<div ng-transclude="contentSLot"></div>
+	<div class="clearfix"></div>
 </div>
-<div class="modal-footer " ng-show="dialog.hasFooter ">
-	<div class="footer-template "></div>
-	<div class="clearfix "></div>
+<div class="modal-footer" ng-show="dialog.hasFooter">
+	<div class="footer-template"></div>
+	<div class="clearfix"></div>
 </div>

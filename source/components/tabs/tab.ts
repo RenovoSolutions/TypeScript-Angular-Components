@@ -28,7 +28,11 @@ export class TabController {
 export function tab(): ng.IDirective {
 	return {
 		restrict: 'E',
-		transclude: true,
+		transclude: {
+			'headerSlot': '?rlTabHeader',
+			'contentSlot': '?rlTabContent',
+			'footerSlot': '?rlTabFooter',
+		},
 		require: ['^^rlTabset', 'rlTab'],
 		template: require('./tab.html'),
 		controller: controllerName,
@@ -40,11 +44,7 @@ export function tab(): ng.IDirective {
 			, attrs: ng.IAttributes
 			, controllers: any[]
 			, transclude: ng.ITranscludeFunction): void {
-			transclude((clone: JQuery): void => {
-				let header: JQuery = clone.filter('rl-tab-header');
-				let content: JQuery = clone.filter('rl-tab-content');
-				let footer: JQuery = clone.filter('rl-tab-footer');
-
+			transclude((header: JQuery): void => {
 				let tabset: TabsetController = controllers[0];
 				let tab: TabController = controllers[1];
 				tab.header = {
@@ -52,16 +52,7 @@ export function tab(): ng.IDirective {
 					isValid: true,
 				};
 				tabset.registerTab(element, tab.header);
-
-				let contentArea: JQuery = element.find('.content-template');
-				contentArea.append(content);
-
-				scope.hasFooter = (footer.length > 0);
-				if (scope.hasFooter) {
-					let footerArea: JQuery = element.find('.footer-template');
-					footerArea.append(footer);
-				}
-			});
+			}, null, 'headerSlot');
 		},
 	};
 }

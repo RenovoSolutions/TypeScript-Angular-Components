@@ -334,7 +334,12 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 	'use strict';
 	return {
 		restrict: 'E',
-		transclude: true,
+		transclude: {
+			'containerHeaderSlot': '?rlContainerHeader',
+			'containerFooterSlot': '?rlContainerFooter',
+			'contentSlot': '?rlCardContent',
+			'footerSlot': '?rlCardFooter',
+		},
 		template: require('./cardContainer.html'),
 		controller: controllerName,
 		controllerAs: 'cardContainer',
@@ -376,9 +381,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 			controller.makeCard = transclude;
 
-			transclude(scope, (clone: JQuery): void => {
-				let header: JQuery = clone.filter('rl-container-header');
-
+			transclude(scope, (header: JQuery): void => {
 				if (header.length === 0) {
 					let defaultHeader = require('./defaultCardContainerHeader.html');
 					header = headerArea.append(defaultHeader);
@@ -387,9 +390,8 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 				else {
 					headerArea.append(header);
 				}
-
-				let footer: JQuery = clone.filter('rl-container-footer');
-
+			}, null, 'containerHeaderSlot');
+			transclude(scope, (footer: JQuery): void => {
 				if (footer.length === 0) {
 					let defaultFooter = require('./defaultCardContainerFooter.html');
 					footer = footerArea.append(defaultFooter);
@@ -398,7 +400,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 				else {
 					footerArea.append(footer);
 				}
-			});
+			}, null, 'containerFooterSlot');
 		}
 	};
 }
