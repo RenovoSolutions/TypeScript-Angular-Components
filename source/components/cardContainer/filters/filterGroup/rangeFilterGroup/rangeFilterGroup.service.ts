@@ -5,16 +5,17 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __transform = services.transform.transform;
 
 import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.rangeFilterGroup';
 export var factoryName: string = 'rangeFilterGroup';
 
-export interface IRangeFilterGroupSettings {
+export interface IRangeFilterGroupSettings<TItemType> {
 	label: string;
 	type: string;
-	getValue<TItemType>(item: TItemType): number;
+	getValue: { (item: TItemType): number } | string;
 	options: IRangeFilterOptionSettings[];
 }
 
@@ -46,9 +47,9 @@ export interface IRangeFilterValue {
 }
 
 class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
-	private getValue: { (item: any): number };
+	private getValue: { (item: any): number } | string;
 
-	constructor(settings: IRangeFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(settings: IRangeFilterGroupSettings<any>, object: __object.IObjectUtility) {
 		super(<any>settings, object);
 		this.getValue = settings.getValue;
 		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
@@ -71,7 +72,7 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
 		var modeOption: IRangeFilterOption = <any>option;
 		modeOption.filter = (item: any): boolean => {
-			var value: number = this.getValue(item);
+			var value: number = __transform.getValue(item, this.getValue);
 
 			var result: boolean = true;
 
@@ -102,14 +103,14 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 }
 
 export interface IRangeFilterGroupFactory {
-	getInstance(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
+	getInstance<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 }
 
 rangeFilterGroupFactory.$inject = [__object.serviceName];
 export function rangeFilterGroupFactory(object: __object.IObjectUtility): IRangeFilterGroupFactory {
 	'use strict';
 	return {
-		getInstance(settings: IRangeFilterGroupSettings): IRangeFilterGroup {
+		getInstance(settings: IRangeFilterGroupSettings<any>): IRangeFilterGroup {
 			return new RangeFilterGroup(settings, object);
 		},
 	};

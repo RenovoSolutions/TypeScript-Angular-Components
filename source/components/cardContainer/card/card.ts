@@ -20,7 +20,7 @@ export var directiveName: string = 'rlCard';
 export var controllerName: string = 'CardController';
 
 export interface ICardBindings {
-	columns: IColumn[];
+	columns: IColumn<any>[];
 	item: any;
 	clickable: boolean;
 	source: IDataSource<any>;
@@ -57,7 +57,7 @@ export interface ICardChildBehavior {
 
 export class CardController {
 	// bindings
-	columns: IColumn[];
+	columns: IColumn<any>[];
 	item: any;
 	clickable: boolean;
 	source: IDataSource<any>;
