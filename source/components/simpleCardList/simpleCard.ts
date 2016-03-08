@@ -132,7 +132,11 @@ export function simpleCard(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		transclude: true,
+		transclude: {
+			'headerSlot': '?rlCardHeader',
+			'contentSlot': '?rlCardContent',
+			'footerSlot': '?rlCardFooter',
+		},
 		require: '?^^rlSimpleCardList',
 		template: require('./simpleCard.html'),
 		controller: controllerName,
@@ -145,29 +149,6 @@ export function simpleCard(): angular.IDirective {
 			childLink: '=?',
 			validate: '&',
 			save: '&',
-		},
-		link(scope: ISimpleCardScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, controller: any
-			, transclude: angular.ITranscludeFunction): void {
-			transclude((clone: JQuery): void => {
-				let header: JQuery = clone.filter('rl-card-header');
-				let content: JQuery = clone.filter('rl-card-content');
-				let footer: JQuery = clone.filter('rl-card-footer');
-
-				let headerArea: JQuery = element.find('.header-template');
-				headerArea.append(header);
-
-				let contentArea: JQuery = element.find('.content-template');
-				contentArea.append(content);
-
-				scope.hasFooter = (footer.length > 0);
-				if (scope.hasFooter) {
-					let footerArea: JQuery = element.find('.footer-template');
-					footerArea.append(footer);
-				}
-			});
 		},
 	};
 }

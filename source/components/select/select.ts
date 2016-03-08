@@ -11,6 +11,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
+import __transform = services.transform.transform;
 
 import {
 	IComponentValidator,
@@ -81,21 +82,11 @@ export class SelectController {
 	}
 
 	getDisplayName(item: any): string {
-		if (item == null) {
-			return null;
-		}
-
-		if (item.__isNullOption) {
+		if (item != null && item.__isNullOption) {
 			return this.nullOption;
 		}
 
-		if (this.selector == null) {
-			return item;
-		}
-
-		return _.isFunction(this.selector)
-			? (<{ (item: any): string }>this.selector)(item)
-			: item[<string>this.selector];
+		return __transform.getValue(item, this.selector);
 	}
 
 	loadItems(): angular.IPromise<any[]> {
@@ -125,12 +116,12 @@ export function select(): angular.IDirective {
 		controllerAs: 'select',
 		scope: {},
 		bindToController: {
-			options: '=',
+			options: '<?',
 			getOptions: '&',
-			selector: '=',
-			validator: '=',
+			selector: '<?',
+			validator: '<?',
 			label: '@',
-			ngDisabled: '=',
+			ngDisabled: '<?',
 			nullOption: '@',
 		},
 	};

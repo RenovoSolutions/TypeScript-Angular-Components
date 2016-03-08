@@ -7,4 +7,7 @@ export interface IDialogBindings {
 export declare class DialogController implements IDialogBindings {
     autosave: boolean;
     hasFooter: boolean;
+    close: {
+        (): void;
+    };
 }

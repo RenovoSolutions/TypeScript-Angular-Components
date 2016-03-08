@@ -14,7 +14,6 @@ export interface IDateFilterBindings {
     label: string;
     selectedDate1: string;
     selectedDate2: Date;
-    selector: string;
     source: IDataSource<any>;
     type: string;
 }
@@ -28,7 +27,6 @@ export declare class DateFilterController implements IDateFilterBindings {
     includeDateRange: boolean;
     includeTime: boolean;
     label: string;
-    selector: string;
     source: IDataSource<any>;
     type: string;
     private inputField;

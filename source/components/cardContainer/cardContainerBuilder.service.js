@@ -38,6 +38,9 @@ var CardContainerBuilder = (function () {
     CardContainerBuilder.prototype.useSelection = function () {
         this._selectableCards = true;
     };
+    CardContainerBuilder.prototype.renderFilters = function () {
+        this._renderFilters = true;
+    };
     Object.defineProperty(CardContainerBuilder.prototype, "disableSelection", {
         set: function (value) {
             if (!this._selectableCards) {
@@ -63,6 +66,7 @@ var CardContainerBuilder = (function () {
         cardContainer.permanentFooters = this._permanentFooters;
         cardContainer.selectableCards = this._selectableCards;
         cardContainer.disableSelection = this._disableSelection;
+        cardContainer.renderFilters = this._renderFilters;
         if (cardContainer.cardController == null) {
             cardContainer.cardController = this.cardController;
         }
@@ -142,9 +146,9 @@ var FilterBuilder = (function () {
         this.parent._filters.push(filter);
         return filter;
     };
-    FilterBuilder.prototype.buildSelectFilter = function (valueSelector, comparer) {
+    FilterBuilder.prototype.buildSelectFilter = function (settings) {
         var factory = this.$injector.get(selectFilter.factoryName);
-        var filter = factory.getInstance(valueSelector, comparer);
+        var filter = factory.getInstance(settings);
         this.parent._filters.push(filter);
         return filter;
     };

@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "1.9.1",
+  "version": "1.10.0",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -78,7 +78,7 @@
     "ng-wig": "~2.3.4",
     "rx": "~4.0.8",
     "signature_pad": "~1.5.3",
-    "typescript-angular-utilities": "~2.9.0",
+    "typescript-angular-utilities": "~2.9.1",
     "ui-select": "~0.14.7"
   },
   "license": "GPL-3.0"

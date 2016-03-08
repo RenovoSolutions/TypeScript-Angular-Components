@@ -7,6 +7,18 @@ var messageLog_service_1 = require('./messageLog.service');
 var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
 exports.directiveName = 'rlMessageLog';
 exports.controllerName = 'MessageLogController';
+(function (DeletePermissions) {
+    DeletePermissions[DeletePermissions["deleteMine"] = 0] = "deleteMine";
+    DeletePermissions[DeletePermissions["deleteAll"] = 1] = "deleteAll";
+    DeletePermissions[DeletePermissions["deleteNone"] = 2] = "deleteNone";
+})(exports.DeletePermissions || (exports.DeletePermissions = {}));
+var DeletePermissions = exports.DeletePermissions;
+(function (EditPermissions) {
+    EditPermissions[EditPermissions["editMine"] = 0] = "editMine";
+    EditPermissions[EditPermissions["editAll"] = 1] = "editAll";
+    EditPermissions[EditPermissions["editNone"] = 2] = "editNone";
+})(exports.EditPermissions || (exports.EditPermissions = {}));
+var EditPermissions = exports.EditPermissions;
 var MessageLogController = (function () {
     function MessageLogController($scope, messageLogFactory) {
         var _this = this;
@@ -50,7 +62,27 @@ var MessageLogController = (function () {
         return this.messageLog.getTopPage();
     };
     MessageLogController.prototype.canDeleteEntry = function (entry) {
-        return this.canDelete && (this.currentUser == null || this.currentUser.id == entry.createdBy.id);
+        switch (this.canDelete) {
+            case DeletePermissions.deleteAll:
+                return true;
+            case DeletePermissions.deleteMine:
+                return (this.currentUser == null || this.currentUser.id === entry.createdBy.id);
+            default:
+                return false;
+        }
+    };
+    MessageLogController.prototype.canEditEntry = function (entry) {
+        switch (this.canEdit) {
+            case EditPermissions.editAll:
+                return true;
+            case EditPermissions.editMine:
+                return (this.currentUser == null || this.currentUser.id === entry.createdBy.id);
+            default:
+                return false;
+        }
+    };
+    MessageLogController.prototype.editMessage = function (entry) {
+        this.editEvent(entry);
     };
     MessageLogController.$inject = ['$scope', messageLog_service_1.factoryName];
     return MessageLogController;
@@ -81,6 +113,8 @@ function messageLog($interpolate, jquery, templateLoader, object) {
             messageAs: "@",
             currentUser: '=?',
             canDelete: '=?',
+            canEdit: '=?',
+            editEvent: '&',
         },
         link: function (scope, element, attributes, controller, transclude) {
             controller.templates = templateLoader.loadTemplates(transclude).templates;

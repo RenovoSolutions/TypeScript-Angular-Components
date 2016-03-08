@@ -61,7 +61,7 @@ export class CardContainerController {
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
-	columns: IColumn[];
+	columns: IColumn<any>[];
 	containerData: any;
 	cardController: string;
 	cardControllerAs: string;
@@ -70,12 +70,13 @@ export class CardContainerController {
 	maxColumnSorts: number;
 	permanentFooters: boolean;
 	selectableCards: boolean;
-	disableSelection: {(item: any): string};
+	disableSelection: { (item: any): string };
+	renderFilters: boolean;
 
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
-	selectionColumn: IColumn;
+	selectionColumn: IColumn<any>;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
 
@@ -141,7 +142,7 @@ export class CardContainerController {
 		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 	}
 
-	sort(column: IColumn): void {
+	sort(column: IColumn<any>): void {
 		let sortList: ISort[] = this.dataSource.sorts;
 		let firstSort: ISort = sortList[0];
 
@@ -229,7 +230,7 @@ export class CardContainerController {
 	}
 
 	private buildColumnSizes(): void {
-		_.each(this.columns, (column: IColumn): void => {
+		_.each(this.columns, (column: IColumn<any>): void => {
 			let sizes: IBreakpointSize | number = column.size;
 			if (_.isObject(sizes)) {
 				sizes[xs] = this.object.valueOrDefault(sizes[xs], 0);
@@ -259,8 +260,8 @@ export class CardContainerController {
 		this.updateDisabledSelections();
 	}
 
-	private lookupColumn(label: string): IColumn {
-		return _.find(this.columns, (column: IColumn): boolean => {
+	private lookupColumn(label: string): IColumn<any> {
+		return _.find(this.columns, (column: IColumn<any>): boolean => {
 			return column.label === label;
 		});
 	}
@@ -333,7 +334,12 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 	'use strict';
 	return {
 		restrict: 'E',
-		transclude: true,
+		transclude: {
+			'containerHeaderSlot': '?rlContainerHeader',
+			'containerFooterSlot': '?rlContainerFooter',
+			'contentSlot': '?rlCardContent',
+			'footerSlot': '?rlCardFooter',
+		},
 		template: require('./cardContainer.html'),
 		controller: controllerName,
 		controllerAs: 'cardContainer',
@@ -375,9 +381,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 			controller.makeCard = transclude;
 
-			transclude(scope, (clone: JQuery): void => {
-				let header: JQuery = clone.filter('rl-container-header');
-
+			transclude(scope, (header: JQuery): void => {
 				if (header.length === 0) {
 					let defaultHeader = require('./defaultCardContainerHeader.html');
 					header = headerArea.append(defaultHeader);
@@ -386,9 +390,8 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 				else {
 					headerArea.append(header);
 				}
-
-				let footer: JQuery = clone.filter('rl-container-footer');
-
+			}, null, 'containerHeaderSlot');
+			transclude(scope, (footer: JQuery): void => {
 				if (footer.length === 0) {
 					let defaultFooter = require('./defaultCardContainerFooter.html');
 					footer = footerArea.append(defaultFooter);
@@ -397,7 +400,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 				else {
 					footerArea.append(footer);
 				}
-			});
+			}, null, 'containerFooterSlot');
 		}
 	};
 }

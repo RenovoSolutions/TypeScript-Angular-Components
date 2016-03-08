@@ -41,6 +41,7 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 	label: string;
 	type: string;
 	options: IFilterOption[];
+	template: string = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
 	private _activeOption: IFilterOption;
 
 	constructor(private settings: IFilterGroupSettings, private object: __object.IObjectUtility) {

@@ -10,7 +10,7 @@ export declare var moduleName: string;
 export declare var directiveName: string;
 export declare var controllerName: string;
 export interface ICardBindings {
-    columns: IColumn[];
+    columns: IColumn<any>[];
     item: any;
     clickable: boolean;
     source: IDataSource<any>;
@@ -29,7 +29,8 @@ export interface ICardScope extends angular.IScope {
     remove(): void;
     containerData: any;
     __rlCardContainer: CardContainerController;
-    __initContents(hasBody: boolean, hasFooter: boolean): void;
+    __setHasBody(hasBody: boolean): void;
+    __setHasFooter(hasFooter: boolean): void;
 }
 export interface ICardBehavior {
     close(): boolean;
@@ -52,7 +53,7 @@ export declare class CardController {
     private $scope;
     private $q;
     private parentChild;
-    columns: IColumn[];
+    columns: IColumn<any>[];
     item: any;
     clickable: boolean;
     source: IDataSource<any>;

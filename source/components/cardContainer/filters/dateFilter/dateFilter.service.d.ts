@@ -3,7 +3,13 @@ import __date = services.date;
 export declare let factoryName: string;
 export interface IDateFilterSettings {
     type: string;
-    valueSelector: string;
+    valueSelector: {
+        (item: any): Date;
+    } | string;
+    clearButton?: boolean;
+    includeDateRange?: boolean;
+    includeTime?: boolean;
+    label?: string;
 }
 export interface IDateFilter extends filters.IFilter {
     selectedDate1: Date;

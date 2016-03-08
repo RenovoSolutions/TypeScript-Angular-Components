@@ -85,7 +85,11 @@ function simpleCard() {
     'use strict';
     return {
         restrict: 'E',
-        transclude: true,
+        transclude: {
+            'headerSlot': '?rlCardHeader',
+            'contentSlot': '?rlCardContent',
+            'footerSlot': '?rlCardFooter',
+        },
         require: '?^^rlSimpleCardList',
         template: require('./simpleCard.html'),
         controller: exports.controllerName,
@@ -98,22 +102,6 @@ function simpleCard() {
             childLink: '=?',
             validate: '&',
             save: '&',
-        },
-        link: function (scope, element, attrs, controller, transclude) {
-            transclude(function (clone) {
-                var header = clone.filter('rl-card-header');
-                var content = clone.filter('rl-card-content');
-                var footer = clone.filter('rl-card-footer');
-                var headerArea = element.find('.header-template');
-                headerArea.append(header);
-                var contentArea = element.find('.content-template');
-                contentArea.append(content);
-                scope.hasFooter = (footer.length > 0);
-                if (scope.hasFooter) {
-                    var footerArea = element.find('.footer-template');
-                    footerArea.append(footer);
-                }
-            });
         },
     };
 }

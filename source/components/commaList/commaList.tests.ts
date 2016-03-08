@@ -11,8 +11,6 @@ import {
 	moduleName,
 	controllerName,
 	CommaListController,
-	ICommaListAttrs,
-	ITransformParam,
 } from './commaList';
 
 import * as angular from 'angular';
@@ -73,21 +71,11 @@ describe('CommaListController', () => {
 		var bindings: any = {
 			inList: list,
 			max: max,
-			transform(object: ITransformParam): string {
-				return transform(object.item);
-			},
+			transform: transform,
 		};
-
-		var $attrs: ICommaListAttrs = <any>{
-			transform: '',
-		};
-
-		if (transform != null) {
-			$attrs.transform = 'transform';
-		}
 
 		var controllerResult: test.IControllerResult<CommaListController>
-			= test.angularFixture.controllerWithBindings<CommaListController>(controllerName, bindings, { $attrs: $attrs });
+			= test.angularFixture.controllerWithBindings<CommaListController>(controllerName, bindings);
 
 		scope = <angular.IScope>controllerResult.scope;
 		commaList = controllerResult.controller;

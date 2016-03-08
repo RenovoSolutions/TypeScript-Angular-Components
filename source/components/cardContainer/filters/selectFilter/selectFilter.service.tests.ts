@@ -26,7 +26,7 @@ describe('selectFilter', (): void => {
 
 		let services: any = __test.angularFixture.inject(factoryName);
 		selectFilterFactory = services[factoryName]
-		selectFilter = selectFilterFactory.getInstance('value');
+		selectFilter = selectFilterFactory.getInstance({ valueSelector: 'value' });
 	});
 
 	it('should return true if the items value equal the selected value', (): void => {
@@ -58,7 +58,10 @@ describe('selectFilter', (): void => {
 		let item1: any = { value: { prop: 2 } };
 		let item2: any = { prop: 2, otherProp: 3 };
 
-		selectFilter = selectFilterFactory.getInstance('value', (item1: any, item2: any): boolean => { return item1.prop === item2.prop; });
+		selectFilter = selectFilterFactory.getInstance({
+			valueSelector: 'value',
+			comparer: (item1: any, item2: any): boolean => { return item1.prop === item2.prop; },
+		});
 		selectFilter.selectedValue = item2;
 
 		expect(selectFilter.filter(item1)).to.be.true;

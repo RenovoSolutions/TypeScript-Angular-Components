@@ -30,6 +30,7 @@ import IModeFilterGroupSettings = filterGroup.modeFilterGroup.IModeFilterGroupSe
 import IRangeFilterGroup = filterGroup.rangeFilterGroup.IRangeFilterGroup;
 import IRangeFilterGroupSettings = filterGroup.rangeFilterGroup.IRangeFilterGroupSettings;
 import ISelectFilter = selectFilter.ISelectFilter;
+import ISelectFilterSettings = selectFilter.ISelectFilterSettings;
 import IEqualityFunction = selectFilter.IEqualityFunction;
 import IDateFilter = dateFilter.IDateFilter;
 import IDateFilterSettings = dateFilter.IDateFilterSettings;
@@ -56,8 +57,8 @@ export {
 	IModeFilterGroupSettings,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
-	ISelectFilter
-
+	ISelectFilter,
+	ISelectFilterSettings,
 }
 
 export interface ICardContainerBuilder {
@@ -73,10 +74,11 @@ export interface ICardContainerBuilder {
 
 	useSearch(): IGenericSearchFilter;
 	usePaging(): void;
-	addColumn(column: IColumn): void;
+	addColumn<TItemType>(column: IColumn<TItemType>): void;
 	useClickableCards(): void;
 	usePermanentFooters(): void;
 	useSelection(): void;
+	renderFilters(): void;
 }
 
 export interface IDataSourceBuilder {
@@ -92,9 +94,9 @@ export interface IDataSourceBuilder {
 
 export interface IFilterBuilder {
 	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
-	buildModeFilterGroup(settings: IModeFilterGroupSettings): IModeFilterGroup;
-	buildRangeFilterGroup(settings: IRangeFilterGroupSettings): IRangeFilterGroup;
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType>;
+	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
+	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
+	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
 	buildColumnSearchFilter(): IColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
@@ -105,13 +107,14 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_dataSource: IDataSource<any>;
 	_filters: filters.IFilter[];
 	_paging: boolean;
-	_columns: IColumn[];
+	_columns: IColumn<any>[];
 	_clickableCards: boolean;
 	_permanentFooters: boolean;
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
 	_searchFilter: IGenericSearchFilter;
 	_pager: IDataPager;
+	_renderFilters: boolean;
 
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
@@ -142,7 +145,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._paging = true;
 	}
 
-	addColumn(column: IColumn): void {
+	addColumn<TItemType>(column: IColumn<TItemType>): void {
 		this._columns.push(column);
 	}
 
@@ -156,6 +159,10 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 
 	useSelection(): void {
 		this._selectableCards = true;
+	}
+
+	renderFilters(): void {
+		this._renderFilters = true;
 	}
 
 	set disableSelection(value: { (item: any): string }) {
@@ -182,6 +189,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.permanentFooters = this._permanentFooters;
 		cardContainer.selectableCards = this._selectableCards;
 		cardContainer.disableSelection = this._disableSelection;
+		cardContainer.renderFilters = this._renderFilters;
 
 		if (cardContainer.cardController == null) {
 			cardContainer.cardController = this.cardController;
@@ -257,23 +265,23 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildModeFilterGroup(settings: filterGroup.modeFilterGroup.IModeFilterGroupSettings): filterGroup.modeFilterGroup.IModeFilterGroup {
+	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup {
 		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get<any>(filterGroup.modeFilterGroup.factoryName);
 		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildRangeFilterGroup(settings: filterGroup.rangeFilterGroup.IRangeFilterGroupSettings): filterGroup.rangeFilterGroup.IRangeFilterGroup {
+	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup {
 		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
 		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(valueSelector: string | { (item: TDataType): any }, comparer?: IEqualityFunction<TFilterType>): ISelectFilter<TDataType> {
+	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
 		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
-		let filter: ISelectFilter<TDataType> = factory.getInstance(valueSelector, comparer);
+		let filter: ISelectFilter<TDataType> = factory.getInstance(settings);
 		this.parent._filters.push(filter);
 		return filter;
 	}

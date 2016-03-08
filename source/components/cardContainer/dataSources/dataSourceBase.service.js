@@ -12,6 +12,7 @@ var DataSourceBase = (function () {
         this.countFilterGroups = false;
         this.loadingDataSet = false;
         this.observable = observableFactory.getInstance();
+        this.observable.allowableEvents = events.all;
     }
     DataSourceBase.prototype.watch = function (action, event) {
         return this.observable.register(action, event);

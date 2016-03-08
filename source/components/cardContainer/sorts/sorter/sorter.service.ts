@@ -3,7 +3,8 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { types } from 'typescript-angular-utilities';
+import { types, services } from 'typescript-angular-utilities';
+import __transform = services.transform.transform;
 
 import { ISort, ICompareFunction } from '../sort';
 import { SortDirection } from '../sortDirection';
@@ -49,8 +50,8 @@ export class Sorter implements ISorter {
 				return types.CompareResult.equal;
 			}
 
-			var valueOfA: any = sort.column.getValue(a);
-			var valueOfB: any = sort.column.getValue(b);
+			var valueOfA: any = __transform.getValue(a, sort.column.getValue);
+			var valueOfB: any = __transform.getValue(b, sort.column.getValue);
 
 			var greaterResult: types.CompareResult = types.CompareResult.greater;
 			var lessResult: types.CompareResult = types.CompareResult.less;

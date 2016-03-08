@@ -10,9 +10,10 @@ var ContentProviderService = (function () {
     function ContentProviderService(observableFactory) {
         var _this = this;
         this.setTranscludeContent = function (transcludeFunction) {
+            var scope = null;
             if (_.isFunction(transcludeFunction)) {
-                transcludeFunction(function (clone) {
-                    _this.setContent(clone);
+                transcludeFunction(function (clone, transcludeScope) {
+                    _this.setContent(clone, transcludeScope);
                 });
             }
             else {
@@ -21,17 +22,18 @@ var ContentProviderService = (function () {
         };
         this.observable = observableFactory.getInstance();
     }
-    ContentProviderService.prototype.setContent = function (content) {
+    ContentProviderService.prototype.setContent = function (content, scope) {
         this.content = content;
+        this.scope = scope;
         this.observable.fire('contentChanged');
     };
     ContentProviderService.prototype.register = function (action, selector) {
         var _this = this;
         if (this.content != null) {
-            action(this.getContent(selector));
+            action(this.getContent(selector), this.scope);
         }
         return this.observable.register(function () {
-            action(_this.getContent(selector));
+            action(_this.getContent(selector), _this.scope);
         }, 'contentChanged');
     };
     ContentProviderService.prototype.getContent = function (selector) {

@@ -2,13 +2,29 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['$scope', 'cardContainerBuilder'];
-	function TestController($scope, cardContainerBuilderFactory) {
+	TestController.$inject = ['$scope', '$q', 'cardContainerBuilder'];
+	function TestController($scope, $q, cardContainerBuilderFactory) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
 
+		var templateScope = $scope.$new();
+		templateScope.text = 'Some text';
+		self.template = {
+			template: '<div>{{text}}</div>',
+			scope: templateScope,
+		};
+
 		self.text = null;
+		self.set = [];
+		self.select = function (value) {
+			self.set.push(value);
+		}
+		self.create = function (value) {
+			return {
+				name: value,
+			};
+		};
 		self.options = [
 			{ name: 'item1' },
 			{ name: 'item2' },
@@ -16,6 +32,9 @@
 			{ name: 'item4' },
 			{ name: 'item5' },
 		];
+		self.getOptions = function () {
+			return $q.when(_.clone(self.options));
+		}
 		self.validator = {
 			validate: function () {
 				return self.text === 'valid';
@@ -25,10 +44,10 @@
 		var items = [
 			{ name: 'Item 1', value: 1 },
 			{ name: 'Item 2', value: 2 },
-			{ name: 'Item 3', value: 3 },
-			{ name: 'Item 4', value: 4 },
-			{ name: 'Item 5', value: 5 },
-			{ name: 'Item 6', value: 6 },
+			{ name: 'Item 3', value: 1 },
+			{ name: 'Item 4', value: 1 },
+			{ name: 'Item 5', value: 2 },
+			{ name: 'Item 6', value: 2 },
 		];
 
 		self.count = 0;
@@ -52,6 +71,27 @@
 			getValue: function (item) {
 				return item.value;
 			},
+			template: '<b>{{myItem.value}}</b>',
+		});
+		self.builder.renderFilters();
+		self.builder.filters.buildModeFilterGroup({
+			label: "Mode Filter",
+			type: "modeFilter",
+			getValue: 'value',
+			options: [
+				{
+					label: "All",
+					displayAll: true,
+				},
+				{
+					label: "1",
+					value: 1,
+				},
+				{
+					label: "2",
+					value: 2,
+				},
+			],
 		});
 	}
 }());

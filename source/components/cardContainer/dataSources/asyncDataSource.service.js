@@ -10,6 +10,7 @@ var AsyncDataSource = (function (_super) {
     __extends(AsyncDataSource, _super);
     function AsyncDataSource(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory) {
         _super.call(this, observableFactory, dataSourceProcessor, array);
+        this.observable.allowableEvents = events.async.all;
         this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
     }
     Object.defineProperty(AsyncDataSource.prototype, "getDataSet", {
