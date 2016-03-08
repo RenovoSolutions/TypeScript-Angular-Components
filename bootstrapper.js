@@ -64,6 +64,7 @@
 			getValue: function (item) {
 				return item.value;
 			},
+			template: '<b>{{myItem.value}}</b>',
 		});
 	}
 }());

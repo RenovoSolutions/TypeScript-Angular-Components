@@ -4,7 +4,7 @@
 			<div class="header" ng-click="__card.toggleContent()" ng-class="{ 'active': __card.hasBody || !__card.permanentFooter }">
 				<div class="row">
 					<div ng-repeat="column in __card.columns">
-						<rl-card-header-column column="column" item="__card.item"></rl-card-header-column>
+						<rl-card-header-column column="column" item="__card.item" alias="__card.cardAs"></rl-card-header-column>
 					</div>
 				</div>
 			</div>
