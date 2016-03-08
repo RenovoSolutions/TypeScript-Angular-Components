@@ -9,8 +9,13 @@ var TabsetController = (function () {
     }
     TabsetController.prototype.registerTab = function (element, header) {
         var index = this.findPosition(element);
+        if (_.has(this.tabHeaders, index)) {
+            header.isVisible = this.tabHeaders[index].isVisible;
+        }
+        else {
+            header.isVisible = (index === 0);
+        }
         this.tabHeaders[index] = header;
-        header.isVisible = (index === 0);
     };
     TabsetController.prototype.select = function (tab) {
         _.each(this.tabHeaders, function (otherTab) {
