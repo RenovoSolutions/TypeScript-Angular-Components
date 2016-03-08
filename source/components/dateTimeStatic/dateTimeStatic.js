@@ -3,7 +3,7 @@
 var angular = require('angular');
 var moment = require('moment');
 exports.moduleName = 'rl.ui.components.dateTimeStatic';
-exports.directiveName = 'rlDateTimeStatic';
+exports.componentName = 'rlDateTimeStatic';
 exports.controllerName = 'DateTimeStaticController';
 var DateTimeStaticController = (function () {
     function DateTimeStaticController(dateUtility) {
@@ -20,23 +20,17 @@ var DateTimeStaticController = (function () {
     return DateTimeStaticController;
 }());
 exports.DateTimeStaticController = DateTimeStaticController;
-dateTimeStatic.$inject = [];
-function dateTimeStatic() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./dateTimeStatic.html'),
-        controller: exports.controllerName,
-        controllerAs: 'view',
-        scope: {},
-        bindToController: {
-            dateValue: '=',
-            includeTime: '=?',
-            displayTimeZone: '=?'
-        }
-    };
-}
+var dateTimeStaticComponent = {
+    template: require('./dateTimeStatic.html'),
+    controller: exports.controllerName,
+    controllerAs: 'view',
+    bindings: {
+        dateValue: '<',
+        includeTime: '<?',
+        displayTimeZone: '<?',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, dateTimeStatic)
+    .component(exports.componentName, dateTimeStaticComponent)
     .controller(exports.controllerName, DateTimeStaticController);
 //# sourceMappingURL=dateTimeStatic.js.map
