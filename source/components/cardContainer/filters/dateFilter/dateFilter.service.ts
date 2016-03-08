@@ -14,10 +14,10 @@ export interface IDateFilterSettings{
 	valueSelector: { (item: any): Date } | string;
 
 	// component settings
-	clearButton: boolean;
-	includeDateRange: boolean;
-	includeTime: boolean;
-	label: string;
+	clearButton?: boolean;
+	includeDateRange?: boolean;
+	includeTime?: boolean;
+	label?: string;
 }
 
 export interface IDateFilter extends filters.IFilter {

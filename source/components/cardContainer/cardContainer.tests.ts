@@ -220,7 +220,7 @@ describe('CardContainerController', () => {
 
 	describe('sort', (): void => {
 		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
-			let columns: IColumn[] = <any>[
+			let columns: IColumn<any>[] = <any>[
 				{
 					label: 'col1',
 					size: {},
@@ -272,7 +272,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should change sort direction if specified column is already at the front of the sort', (): void => {
-			let columns: IColumn[] = <any>[
+			let columns: IColumn<any>[] = <any>[
 				{
 					label: 'col1',
 					size: {},
@@ -311,7 +311,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should replace all sorts with columns secondary sorts if present', (): void => {
-			let columnWithSecondarySorts: IColumn = <any>{
+			let columnWithSecondarySorts: IColumn<any> = <any>{
 				label: 'colWithSecondary',
 				size: {},
 				secondarySorts: {
@@ -329,15 +329,15 @@ describe('CardContainerController', () => {
 					],
 				},
 			};
-			let secondarySortColumn: IColumn = <any>{
+			let secondarySortColumn: IColumn<any> = <any>{
 				label: 'secondarySortCol',
 				size: {},
 			};
-			let colWithoutSecondary1: IColumn = <any>{
+			let colWithoutSecondary1: IColumn<any> = <any>{
 				label: 'colWithoutSecondary1',
 				size: {},
 			};
-			let colWithoutSecondary2: IColumn = <any>{
+			let colWithoutSecondary2: IColumn<any> = <any>{
 				label: 'colWithoutSecondary2',
 				size: {},
 			};
@@ -375,7 +375,7 @@ describe('CardContainerController', () => {
 
 		it('should override the default max column size', (): void => {
 			builder.maxColumnSorts = 1;
-			let columns: IColumn[] = <any>[
+			let columns: IColumn<any>[] = <any>[
 				{
 					label: 'col1',
 					size: {},

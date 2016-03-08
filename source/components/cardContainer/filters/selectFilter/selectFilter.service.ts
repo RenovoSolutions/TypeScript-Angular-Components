@@ -9,14 +9,14 @@ export let factoryName: string = 'rlSelectFilterFactory';
 
 export interface ISelectFilterSettings<TDataType, TFilterType> {
 	valueSelector: string | { (item: TDataType): any };
-	comparer: IEqualityFunction<TFilterType>;
+	comparer?: IEqualityFunction<TFilterType>;
 
 	// component settings
-	options: any[];
+	options?: any[];
 	getOptions?: { (): angular.IPromise<any[]> };
-	label: string;
-	displayNameSelector: string | { (item: any): string };
-	nullOption: string;
+	label?: string;
+	displayNameSelector?: string | { (item: any): string };
+	nullOption?: string;
 }
 
 export interface ISelectFilter<T> extends filters.IFilter {
