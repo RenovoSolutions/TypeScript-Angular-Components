@@ -10,7 +10,7 @@ export let factoryName: string = 'rlDateFilterFactory';
 
 export interface IDateFilterSettings{
 	type: string;
-	valueSelector: string,
+	valueSelector: string;
 }
 
 export interface IDateFilter extends filters.IFilter {

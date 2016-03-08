@@ -141,7 +141,7 @@ export class MessageLogController implements IMessageLogBindings {
 
 	editMessage(entry: IMessage): void {
 		this.autosaveDialog.open({
-			save: this.saveNote.bind(this),
+			save: this.updateNote.bind(this),
 			form: 'noteForm',
 			data: {
 				entry: entry,
@@ -150,7 +150,9 @@ export class MessageLogController implements IMessageLogBindings {
 			template: require('./messageLogEditDialog.html'),
 		});
 	}
-
+	updateNote(data: any): ng.IPromise<void> {
+		return this.messageLog.updateMessage(data.entry);
+	}
 	saveNote(data: any): ng.IPromise<void> {
 		return this.messageLog.addMessage(data.entry);
 	}
