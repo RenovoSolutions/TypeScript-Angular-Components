@@ -63,29 +63,6 @@ describe('SelectController', () => {
 		expect(dropdown.selection).to.equal(option);
 	});
 
-	describe('getDisplayName', (): void => {
-		beforeEach((): void => {
-			buildController();
-		});
-
-		it('should return null for a null item', (): void => {
-			dropdown.selector = 'value';
-			expect(dropdown.getDisplayName(null)).to.be.null;
-		});
-
-		it('should select the display name using a property name', (): void => {
-			let option: ITestOption = { value: 2 };
-			dropdown.selector = 'value';
-			expect(dropdown.getDisplayName(option)).to.equal(option.value);
-		});
-
-		it('should get the display name using a function', (): void => {
-			let option: ITestOption = { value: 2 };
-			dropdown.selector = (item: ITestOption): string => { return item.value.toString(); };
-			expect(dropdown.getDisplayName(option)).to.equal(option.value.toString());
-		});
-	});
-
 	describe('getOptions', (): void => {
 		let getOptions: Sinon.SinonSpy;
 

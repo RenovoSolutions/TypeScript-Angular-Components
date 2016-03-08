@@ -3,6 +3,7 @@ var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 var __string = typescript_angular_utilities_1.services.string;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.moduleName = 'rl.ui.components.cardContainer.filters.columnSearchFilter';
 exports.factoryName = 'columnSearchFilter';
 exports.filterName = 'column-search';
@@ -16,7 +17,7 @@ var ColumnSearchFilter = (function () {
         if (this.column == null) {
             return true;
         }
-        var value = this.object.toString(this.column.getValue(item));
+        var value = this.object.toString(__transform.getValue(item, this.column.getValue));
         var search = this.searchText;
         if (!this.caseSensitive) {
             search = search.toLowerCase();
