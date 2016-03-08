@@ -11,7 +11,7 @@ export var moduleName: string = 'rl.ui.components.cardContainer.columnHeader';
 export var directiveName: string = 'rlColumnHeader';
 
 export interface ICardColumnHeaderScope extends angular.IScope {
-	column: IColumn;
+	column: IColumn<any>;
 	sorting: string;
 	sort(): void;
 
@@ -40,7 +40,7 @@ export function cardColumnHeader($compile: angular.ICompileService): angular.IDi
 		compile(): angular.IDirectivePrePost {
 			return {
 				pre(scope: ICardColumnHeaderScope): void {
-					var column: IColumn = scope.column;
+					var column: IColumn<any> = scope.column;
 					if (column.headerTemplateUrl != null) {
 						scope.renderedTemplate = $compile('<div ng-include="\'' + column.headerTemplateUrl + '\'"></div>')(scope);
 					} else if (column.headerTemplate != null) {

@@ -6,7 +6,7 @@ export interface ICompareFunction<TDataType> {
     (a: TDataType, b: TDataType): types.CompareResult;
 }
 export interface ISort {
-    column: IColumn;
+    column: IColumn<any>;
     direction: SortDirection;
 }
 export interface IPartialSort {

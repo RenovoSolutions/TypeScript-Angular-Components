@@ -1,17 +1,23 @@
-<div class="input-group" ng-class="{ 'has-error': typeahead.hasError }">
-	<input type="text" ng-model="typeahead.selection" class="form-control"
-		placeholder="{{typeahead.placeholder}}" typeahead="object as typeahead.transform(object) for object in typeahead.getItems($viewValue)"
-		typeahead-loading="typeahead.loading" typeahead-wait-ms="typeahead.loadDelay" />
-	<div class="input-group-addon" ng-if="typeahead.showSearch">
+<div class="validation-input-group">
+	<div class="field validation-input" ng-class="{ 'has-error': typeahead.ngModel.$invalid, 'required-error': typeahead.ngModel.$error.required }">
+		<label ng-show="typeahead.selection" class="show-hide angular-animate">
+			{{typeahead.label}}
+		</label>
+		<div ng-if="!typeahead.collapsed">
+			<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
+				<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
+				<ui-select-choices repeat="item in typeahead.visibleItems"
+								   refresh="typeahead.refresh($select.search)"
+								   refresh-delay="typeahead.loadDelay">
+					{{typeahead.getDisplayName(item)}}
+				</ui-select-choices>
+			</ui-select>
+		</div>
+		<div ng-if="typeahead.collapsed">
+			<span>{{typeahead.getDisplayName(typeahead.selection)}}</span>
+			<rl-button type="default flat" action="typeahead.clear()"><i class="fa fa-remove"></i></rl-button>
+		</div>
+		<span class="error-string" ng-show="typeahead.typeaheadValidator.error">{{typeahead.typeaheadValidator.error}}</span>
 		<rl-busy loading="typeahead.loading"></rl-busy>
-		<span ng-hide="typeahead.loading">
-			<i class="fa fa-search" ng-hide="typeahead.hasSelection"></i>
-			<i class="fa fa-check" ng-show="typeahead.hasSelection"></i>
-		</span>
-	</div>
-	<div class="input-group-btn" ng-if="typeahead.useApply">
-		<rl-button-async type="default" action="typeahead.applyItem()" right-aligned="true" ng-disabled="!typeahead.hasSelection">
-			<i class="fa fa-plus new"></i>
-		</rl-button-async>
 	</div>
 </div>
