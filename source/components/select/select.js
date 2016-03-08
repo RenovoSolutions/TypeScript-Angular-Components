@@ -6,6 +6,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.select';
 exports.directiveName = 'rlSelect';
@@ -53,18 +54,10 @@ var SelectController = (function () {
         configurable: true
     });
     SelectController.prototype.getDisplayName = function (item) {
-        if (item == null) {
-            return null;
-        }
-        if (item.__isNullOption) {
+        if (item != null && item.__isNullOption) {
             return this.nullOption;
         }
-        if (this.selector == null) {
-            return item;
-        }
-        return _.isFunction(this.selector)
-            ? this.selector(item)
-            : item[this.selector];
+        return __transform.getValue(item, this.selector);
     };
     SelectController.prototype.loadItems = function () {
         var _this = this;

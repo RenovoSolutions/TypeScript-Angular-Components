@@ -4,7 +4,7 @@ import { IColumn } from '../column';
 export declare var moduleName: string;
 export declare var directiveName: string;
 export interface ICardColumnHeaderScope extends angular.IScope {
-    column: IColumn;
+    column: IColumn<any>;
     sorting: string;
     sort(): void;
     renderedTemplate: JQuery;

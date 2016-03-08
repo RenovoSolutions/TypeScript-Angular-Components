@@ -4,22 +4,59 @@ import __parentChild = services.parentChildBehavior;
 import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
-import __promiseUtility = services.promise;
+import __validation = services.validation;
+import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export interface ITypeaheadBindings {
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
-    selection: any;
-    hasSelection: boolean;
+    /**
+     * Event that gets fired with updates to the selection - use if selection adds to a list
+     * @param {any} value The new selection
+     * @param {bool} isNew Indicates whether the selection was picked from the list or selected as the search
+     */
     select(params: ISelectParams): void;
-    transform(params: ITransformParams): string;
+    /**
+     * Event that is used to convert a search text to its object representation - use if the user can specify a custom option
+     * @param {any} value The string value representing the new selection
+     * @returns {any} Object representing the new value to be displayed, if applicable
+     */
+    create(params: ICreateParams): any;
+    /**
+     * Specifies whether making a selection should collapse the typeahead and show the selection
+     * or just fire an event - defaults to true if no select handler is specified
+     */
+    allowCollapse: boolean;
+    /**
+     * Selector for getting the display value for the items
+     */
+    transform(item: any): string | string;
+    /**
+     * Event for loading the data set or searching against the server
+     * @param?: {string} search Search value for the server
+     */
     getItems(params?: IGetItemsParams): angular.IPromise<any>;
-    placeholder: string;
+    /**
+     * Flower-up label for the typeahead
+     */
+    label: string;
+    /**
+     * Prefix to show before the label in the placeholder. Default 'Search for'
+     */
+    prefix: string;
+    /**
+     * Option for specifying whether searching should take place on the client or server
+     */
     useClientSearching: boolean;
-    hasError: boolean;
-    showSearch: boolean;
-    apply(param: IApplyParam): angular.IPromise<any>;
+    /**
+     * Option for disabling the typeahead
+     */
+    ngDisabled: boolean;
+    /**
+     * Handler for specifying custom validation logic
+     */
+    validator: __validation.IValidationHandler;
 }
 export interface ITypeaheadBehavior {
     add(item: any): void;
@@ -27,63 +64,70 @@ export interface ITypeaheadBehavior {
 }
 export interface ISelectParams {
     value: any;
-    hasSelection: boolean;
-}
-export interface ITransformParams {
-    value: any;
 }
 export interface IGetItemsParams {
     search: string;
 }
-export interface IApplyParam {
+export interface ICreateParams {
     value: any;
 }
 export interface ITypeaheadAttrs extends angular.IAttributes {
-    selection: string;
-    transform: string;
-    apply: string;
+    select: string;
+    create: string;
 }
 export declare class TypeaheadController {
     private $scope;
     private $q;
+    private $attrs;
+    private $timeout;
     private parentChild;
+    private genericSearchFactory;
+    private object;
     private array;
-    private promise;
+    private componentValidatorFactory;
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
-    selectionBinding: any;
     hasSelection: boolean;
     select: {
         (params: ISelectParams): void;
     };
-    transformInParent: {
-        (params: ITransformParams): string;
+    create: {
+        (params: ICreateParams): void;
     };
-    getItemsInParent: {
+    transform: {
+        (item: any): string;
+    } | string;
+    getItems: {
         (params?: IGetItemsParams): angular.IPromise<any>;
     };
-    placeholder: string;
+    label: string;
+    prefix: string;
     useClientSearching: boolean;
-    hasError: boolean;
-    showSearch: boolean;
-    apply: {
-        (param: IApplyParam): angular.IPromise<any>;
-    };
+    ngDisabled: boolean;
+    allowCollapse: boolean;
+    validator: __validation.IValidationHandler;
+    ngModel: angular.INgModelController;
     private cachedItems;
     private searchFilter;
-    private useScopeSelection;
-    private hasTransform;
-    selection: any;
+    visibleItems: any[];
+    typeaheadValidator: IComponentValidator;
     loading: boolean;
     loadDelay: number;
-    useApply: boolean;
+    placeholder: string;
+    collapseOnSelect: boolean;
+    allowCustomOption: boolean;
+    collapsed: boolean;
+    hasSearchOption: boolean;
+    selection: any;
+    _searchOption: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: ITypeaheadAttrs, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, promise: __promiseUtility.IPromiseUtility);
-    private setSelection(object);
-    transform(object: any): string;
-    getItems(search: string): angular.IPromise<any>;
-    applyItem(): angular.IPromise<void>;
+    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
+    $onInit(): void;
+    getDisplayName(item: any): string;
+    refresh(search: string): angular.IPromise<void>;
+    loadItems(search: string): angular.IPromise<void>;
+    clear(): void;
+    private showCustomSearch(search);
     private filter(list);
-    private addItem;
-    private removeItem;
+    private addItem(item);
+    private removeItem(item);
 }
-export declare function typeahead(): angular.IDirective;
