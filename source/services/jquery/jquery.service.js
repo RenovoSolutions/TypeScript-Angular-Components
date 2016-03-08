@@ -8,7 +8,7 @@ var JQueryUtility = (function () {
     }
     JQueryUtility.prototype.replaceContent = function (contentArea, newContent) {
         contentArea.empty();
-        contentArea.append(newContent);
+        return contentArea.append(newContent);
     };
     return JQueryUtility;
 }());
