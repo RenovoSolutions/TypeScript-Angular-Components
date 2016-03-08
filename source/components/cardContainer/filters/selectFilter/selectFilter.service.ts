@@ -3,6 +3,7 @@
 import * as _ from 'lodash';
 import {filters, services} from 'typescript-angular-utilities';
 import __object = services.object;
+import __transform = services.transform.transform;
 
 export let factoryName: string = 'rlSelectFilterFactory';
 
@@ -33,13 +34,7 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	}
 
 	private getValue(item: TDataType): any {
-		if (_.isFunction(this.valueSelector)) {
-			let func = (<{ (item: TDataType): any }>this.valueSelector);
-			return(func(item))
-		} else {
-			let property = <string>this.valueSelector;
-			return item[property];
-		}
+		return __transform.getValue(item, this.valueSelector);
 	}
 
 }

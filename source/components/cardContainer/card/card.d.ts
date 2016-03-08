@@ -10,7 +10,7 @@ export declare var moduleName: string;
 export declare var directiveName: string;
 export declare var controllerName: string;
 export interface ICardBindings {
-    columns: IColumn[];
+    columns: IColumn<any>[];
     item: any;
     clickable: boolean;
     source: IDataSource<any>;
@@ -53,7 +53,7 @@ export declare class CardController {
     private $scope;
     private $q;
     private parentChild;
-    columns: IColumn[];
+    columns: IColumn<any>[];
     item: any;
     clickable: boolean;
     source: IDataSource<any>;

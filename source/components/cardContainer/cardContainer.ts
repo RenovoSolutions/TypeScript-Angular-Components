@@ -61,7 +61,7 @@ export class CardContainerController {
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
-	columns: IColumn[];
+	columns: IColumn<any>[];
 	containerData: any;
 	cardController: string;
 	cardControllerAs: string;
@@ -75,7 +75,7 @@ export class CardContainerController {
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
-	selectionColumn: IColumn;
+	selectionColumn: IColumn<any>;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
 
@@ -141,7 +141,7 @@ export class CardContainerController {
 		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
 	}
 
-	sort(column: IColumn): void {
+	sort(column: IColumn<any>): void {
 		let sortList: ISort[] = this.dataSource.sorts;
 		let firstSort: ISort = sortList[0];
 
@@ -229,7 +229,7 @@ export class CardContainerController {
 	}
 
 	private buildColumnSizes(): void {
-		_.each(this.columns, (column: IColumn): void => {
+		_.each(this.columns, (column: IColumn<any>): void => {
 			let sizes: IBreakpointSize | number = column.size;
 			if (_.isObject(sizes)) {
 				sizes[xs] = this.object.valueOrDefault(sizes[xs], 0);
@@ -259,8 +259,8 @@ export class CardContainerController {
 		this.updateDisabledSelections();
 	}
 
-	private lookupColumn(label: string): IColumn {
-		return _.find(this.columns, (column: IColumn): boolean => {
+	private lookupColumn(label: string): IColumn<any> {
+		return _.find(this.columns, (column: IColumn<any>): boolean => {
 			return column.label === label;
 		});
 	}

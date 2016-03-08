@@ -2,6 +2,7 @@
 var moment = require('moment');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __date = typescript_angular_utilities_1.services.date;
+var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.factoryName = 'rlDateFilterFactory';
 var DateFilter = (function () {
     function DateFilter(valueSelector, dateUtility, type) {
@@ -37,8 +38,7 @@ var DateFilter = (function () {
         }
     };
     DateFilter.prototype.getValue = function (item) {
-        var property = this.valueSelector;
-        return item[property];
+        return __transform.getValue(item, this.valueSelector);
     };
     return DateFilter;
 }());
