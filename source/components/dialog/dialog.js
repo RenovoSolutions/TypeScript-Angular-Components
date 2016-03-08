@@ -16,7 +16,11 @@ function dialog($compile) {
     'use strict';
     return {
         restrict: 'E',
-        transclude: true,
+        transclude: {
+            headerSlot: '?rlDialogHeader',
+            contentSlot: '?rlDialogContent',
+            footerSlot: '?rlDialogFooter',
+        },
         template: require('./dialog.html'),
         controller: exports.controllerName,
         controllerAs: 'dialog',
@@ -26,14 +30,7 @@ function dialog($compile) {
         },
         link: function (scope, element, attrs, controller, transclude) {
             controller.close = scope.$parent.$close;
-            transclude(function (clone, dialogScope) {
-                var header = clone.filter('rl-dialog-header');
-                var content = clone.filter('rl-dialog-content');
-                var footer = clone.filter('rl-dialog-footer');
-                var headerArea = element.find('.header-template');
-                headerArea.append(header);
-                var contentArea = element.find('.content-template');
-                contentArea.append(content);
+            transclude(function (footer, dialogScope) {
                 controller.hasFooter = (footer.length > 0);
                 if (!controller.hasFooter && controller.autosave) {
                     footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
@@ -43,7 +40,7 @@ function dialog($compile) {
                     var footerArea = element.find('.footer-template');
                     footerArea.append(footer);
                 }
-            });
+            }, null, 'footerSlot');
         },
     };
 }
