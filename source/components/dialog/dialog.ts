@@ -33,7 +33,11 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
-		transclude: true,
+		transclude: {
+			headerSlot: '?rlDialogHeader',
+			contentSlot: '?rlDialogContent',
+			footerSlot: '?rlDialogFooter',
+		},
 		template: require('./dialog.html'),
 		controller: controllerName,
 		controllerAs: 'dialog',
@@ -47,17 +51,7 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 			, controller: DialogController
 			, transclude: angular.ITranscludeFunction): void {
 			controller.close = scope.$parent.$close;
-			transclude((clone: JQuery, dialogScope: angular.IScope): void => {
-				let header: JQuery = clone.filter('rl-dialog-header');
-				let content: JQuery = clone.filter('rl-dialog-content');
-				let footer: JQuery = clone.filter('rl-dialog-footer');
-
-				let headerArea: JQuery = element.find('.header-template');
-				headerArea.append(header);
-
-				let contentArea: JQuery = element.find('.content-template');
-				contentArea.append(content);
-
+			transclude((footer: JQuery, dialogScope: angular.IScope): void => {
 				controller.hasFooter = (footer.length > 0);
 				if (!controller.hasFooter && controller.autosave) {
 					footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
@@ -68,7 +62,7 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 					let footerArea: JQuery = element.find('.footer-template');
 					footerArea.append(footer);
 				}
-			});
+			}, null, 'footerSlot');
 		},
 	};
 }

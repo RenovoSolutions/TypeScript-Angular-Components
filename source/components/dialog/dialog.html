@@ -1,14 +1,14 @@
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-		<i class="fa fa-close" " ng-click="dialog.close() "></i></button>
-	<div class="header-template "></div>
+		<i class="fa fa-close" ng-click="dialog.close() "></i></button>
+	<div ng-transclude="headerSlot"></div>
 	<div class="clearfix "></div>
 </div>
-<div class="modal-body ">
-	<div class="content-template "></div>
-	<div class="clearfix "></div>
+<div class="modal-body">
+	<div ng-transclude="contentSLot"></div>
+	<div class="clearfix"></div>
 </div>
-<div class="modal-footer " ng-show="dialog.hasFooter ">
-	<div class="footer-template "></div>
-	<div class="clearfix "></div>
+<div class="modal-footer" ng-show="dialog.hasFooter">
+	<div class="footer-template"></div>
+	<div class="clearfix"></div>
 </div>
