@@ -6,5 +6,7 @@ declare module angular {
 		(scope: IScope, cloneAttachFn: ICloneAttachFunction, futureParent?: IAugmentedJQuery, slotName?: string): IAugmentedJQuery;
 		// If one argument is provided, then it's assumed to be the cloneAttachFn.
 		(cloneAttachFn?: ICloneAttachFunction, futureParent?: IAugmentedJQuery, slotName?: string): IAugmentedJQuery;
+
+		isSlotFilled(slotName: string): boolean;
 	}
 }

@@ -277,26 +277,26 @@ function cardContainer($compile) {
             var headerArea = element.find('.container-header-template');
             var footerArea = element.find('.container-footer-template');
             controller.makeCard = transclude;
-            transclude(scope, function (header) {
-                if (header.length === 0) {
-                    var defaultHeader = require('./defaultCardContainerHeader.html');
-                    header = headerArea.append(defaultHeader);
-                    $compile(header)(scope);
-                }
-                else {
+            if (transclude.isSlotFilled('containerHeaderSlot')) {
+                transclude(scope, function (header) {
                     headerArea.append(header);
-                }
-            }, null, 'containerHeaderSlot');
-            transclude(scope, function (footer) {
-                if (footer.length === 0) {
-                    var defaultFooter = require('./defaultCardContainerFooter.html');
-                    footer = footerArea.append(defaultFooter);
-                    $compile(footer)(scope);
-                }
-                else {
+                }, null, 'containerHeaderSlot');
+            }
+            else {
+                var defaultHeader = require('./defaultCardContainerHeader.html');
+                var header = headerArea.append(defaultHeader);
+                $compile(header)(scope);
+            }
+            if (transclude.isSlotFilled('containerFooterSlot')) {
+                transclude(scope, function (footer) {
                     footerArea.append(footer);
-                }
-            }, null, 'containerFooterSlot');
+                }, null, 'containerFooterSlot');
+            }
+            else {
+                var defaultFooter = require('./defaultCardContainerFooter.html');
+                var footer = footerArea.append(defaultFooter);
+                $compile(footer)(scope);
+            }
         }
     };
 }
