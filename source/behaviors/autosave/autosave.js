@@ -20,7 +20,7 @@ var AutosaveController = (function () {
     }
     AutosaveController.prototype.$onInit = function () {
         var _this = this;
-        this.autosaveController.keyupListener = function (callback) {
+        this.keyupListener = function (callback) {
             _this.$element.on('keyup', function () { _this.$scope.$apply(callback); });
             return function () {
                 _this.$element.off('keyup');
@@ -39,25 +39,20 @@ var AutosaveController = (function () {
             return saveExpression(_this.$scope);
         };
         var debounce = this.$parse(this.$attrs.debounceDuration)(this.$scope);
-        var unbind = this.$scope.$watch(function () { return _this.keyupListener; }, function (keyupListener) {
-            if (keyupListener) {
-                _this.autosave = _this.autosaveFactory.getInstance({
-                    save: save,
-                    validate: validate,
-                    contentForm: _this.form,
-                    debounceDuration: debounce,
-                    triggers: _this.$attrs.triggers,
-                    setChangeListener: keyupListener,
-                });
-                var behavior = {
-                    autosave: _this.autosave.autosave,
-                };
-                // register autosave behavior and assign the value back to the parent
-                var childLink = _this.$parse(_this.$attrs.rlAutosave)(_this.$scope);
-                _this.parentChildBehavior.registerChildBehavior(childLink, behavior);
-                unbind();
-            }
+        this.autosave = this.autosaveFactory.getInstance({
+            save: save,
+            validate: validate,
+            contentForm: this.form,
+            debounceDuration: debounce,
+            triggers: this.$attrs.triggers,
+            setChangeListener: this.keyupListener,
         });
+        var behavior = {
+            autosave: this.autosave.autosave,
+        };
+        // register autosave behavior and assign the value back to the parent
+        var childLink = this.$parse(this.$attrs.rlAutosave)(this.$scope);
+        this.parentChildBehavior.registerChildBehavior(childLink, behavior);
     };
     AutosaveController.$inject = ['$scope',
         '$attrs',
@@ -76,7 +71,7 @@ function autosave() {
         restrict: 'A',
         require: {
             autosaveController: 'rlAutosave',
-            form: '?ngForm',
+            form: '?form',
         },
         controller: exports.controllerName,
         bindToController: true,
