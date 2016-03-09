@@ -35,7 +35,6 @@ export class AutosaveController {
 	autosave: IAutosaveService;
 	keyupListener: { (callback: triggers.IChangeListener): triggers.IClearChangeListener };
 
-	autosaveController: AutosaveController;
 	form: angular.IFormController;
 
 	static $inject: string[] = ['$scope'
@@ -56,7 +55,7 @@ export class AutosaveController {
 		, private objectUtility: __objectUtility.IObjectUtility) {}
 
 	$onInit(): void {
-		this.autosaveController.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
+		this.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
 			this.$element.on('keyup', (): void => { this.$scope.$apply(callback); });
 			return (): void => {
 				this.$element.off('keyup');
@@ -81,28 +80,22 @@ export class AutosaveController {
 
 		let debounce: number = this.$parse(this.$attrs.debounceDuration)(this.$scope);
 
-		let unbind: Function = this.$scope.$watch((): any => { return this.keyupListener; }, (keyupListener: any): void => {
-			if (keyupListener) {
-				this.autosave = this.autosaveFactory.getInstance({
-					save: save,
-					validate: validate,
-					contentForm: this.form,
-					debounceDuration: debounce,
-					triggers: this.$attrs.triggers,
-					setChangeListener: keyupListener,
-				});
-
-				var behavior: IAutosaveBehavior = {
-					autosave: this.autosave.autosave,
-				};
-
-				// register autosave behavior and assign the value back to the parent
-				var childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
-				this.parentChildBehavior.registerChildBehavior(childLink, behavior);
-
-				unbind();
-			}
+		this.autosave = this.autosaveFactory.getInstance({
+			save: save,
+			validate: validate,
+			contentForm: this.form,
+			debounceDuration: debounce,
+			triggers: this.$attrs.triggers,
+			setChangeListener: this.keyupListener,
 		});
+
+		var behavior: IAutosaveBehavior = {
+			autosave: this.autosave.autosave,
+		};
+
+		// register autosave behavior and assign the value back to the parent
+		var childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
+		this.parentChildBehavior.registerChildBehavior(childLink, behavior);
 	}
 }
 
@@ -112,7 +105,7 @@ export function autosave(): angular.IDirective {
 		restrict: 'A',
 		require: {
 			autosaveController: 'rlAutosave',
-			form: '?ngForm',
+			form: '?form',
 		},
 		controller: controllerName,
 		bindToController: true,
