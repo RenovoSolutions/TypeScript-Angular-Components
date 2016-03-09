@@ -20,8 +20,14 @@ export class TabsetController {
 
 	registerTab(element: ng.IAugmentedJQuery, header: ITabHeader): void {
 		let index: number = this.findPosition(element);
+
+		if (_.has(this.tabHeaders, index)) {
+			header.isVisible = this.tabHeaders[index].isVisible;
+		} else {
+			header.isVisible = (index === 0);
+		}
+
 		this.tabHeaders[index] = header;
-		header.isVisible = (index === 0);
 	}
 
 	select(tab: ITabHeader): void {
