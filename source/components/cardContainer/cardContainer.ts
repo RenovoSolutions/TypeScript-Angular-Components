@@ -381,26 +381,25 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 			controller.makeCard = transclude;
 
-			transclude(scope, (header: JQuery): void => {
-				if (header.length === 0) {
-					let defaultHeader = require('./defaultCardContainerHeader.html');
-					header = headerArea.append(defaultHeader);
-					$compile(header)(scope);
-				}
-				else {
+			if (transclude.isSlotFilled('containerHeaderSlot')) {
+				transclude(scope, (header: JQuery): void => {
 					headerArea.append(header);
-				}
-			}, null, 'containerHeaderSlot');
-			transclude(scope, (footer: JQuery): void => {
-				if (footer.length === 0) {
-					let defaultFooter = require('./defaultCardContainerFooter.html');
-					footer = footerArea.append(defaultFooter);
-					$compile(footer)(scope);
-				}
-				else {
+				}, null, 'containerHeaderSlot');
+			} else {
+				let defaultHeader = require('./defaultCardContainerHeader.html');
+				let header: JQuery = headerArea.append(defaultHeader);
+				$compile(header)(scope);
+			}
+
+			if (transclude.isSlotFilled('containerFooterSlot')) {
+				transclude(scope, (footer: JQuery): void => {
 					footerArea.append(footer);
-				}
-			}, null, 'containerFooterSlot');
+				}, null, 'containerFooterSlot');
+			} else {
+				let defaultFooter = require('./defaultCardContainerFooter.html');
+				let footer: JQuery = footerArea.append(defaultFooter);
+				$compile(footer)(scope);
+			}
 		}
 	};
 }
