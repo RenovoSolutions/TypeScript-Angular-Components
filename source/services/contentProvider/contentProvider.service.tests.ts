@@ -41,7 +41,7 @@ describe('contentProvider', () => {
 	});
 
 	it('should set the content to the content provided by the transclude function', (): void => {
-		contentProvider.setTranscludeContent(transcludeSpy);
+		contentProvider.setTranscludeContent(<any> transcludeSpy);
 
 		sinon.assert.calledOnce(transcludeSpy);
 
