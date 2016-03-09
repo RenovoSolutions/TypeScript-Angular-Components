@@ -5,6 +5,9 @@
 import * as ng from 'angular';
 import * as _ from 'lodash';
 
+import { services } from 'typescript-angular-utilities';
+import __array = services.array;
+
 export let directiveName: string = 'rlTabset';
 export let controllerName: string = 'rlTabsetController';
 
@@ -21,7 +24,7 @@ export class TabsetController {
 	registerTab(element: ng.IAugmentedJQuery, header: ITabHeader): void {
 		let index: number = this.findPosition(element);
 
-		if (_.has(this.tabHeaders, index)) {
+		if (__array.arrayUtility.has(this.tabHeaders, index)) {
 			header.isVisible = this.tabHeaders[index].isVisible;
 		} else {
 			header.isVisible = (index === 0);
