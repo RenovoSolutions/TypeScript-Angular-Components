@@ -23,6 +23,10 @@ describe('CheckboxController', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
+
+		test.angularFixture.mock({
+			useDefaultTheme: true,
+		});
 	});
 
 	it('should toggle the state if active', (): void => {
