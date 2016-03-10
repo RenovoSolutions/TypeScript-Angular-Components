@@ -2,7 +2,11 @@
 
 'use strict';
 
+import './checkbox.css';
+
 import * as angular from 'angular';
+
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
 export var moduleName: string = 'rl.ui.components.checkbox';
 export var componentName: string = 'rlCheckbox';
@@ -28,6 +32,9 @@ export class CheckboxController {
 			this.checked = !this.checked;
 		}
 	}
+
+	static $inject: string[] = [defaultThemeValueName];
+	constructor(public useDefaultTheme: boolean) {}
 
 	$onInit(): void {
 		this.active = this.active != null ? this.active : true;

@@ -1,0 +1,17 @@
+.rl-checkbox.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f096"; /*fa-square-o*/
+	font-size: 1.5em;
+	position: relative;
+	top: .05em;
+}
+
+.rl-checkbox-checked.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f046"; /*fa-check-square-o*/
+	font-size: 1.4em;
+}
+
+.disabled:before {
+	cursor: not-allowed;
+}
