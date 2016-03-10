@@ -1,12 +1,14 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
+require('./checkbox.css');
 var angular = require('angular');
+var componentsDefaultTheme_1 = require('../componentsDefaultTheme');
 exports.moduleName = 'rl.ui.components.checkbox';
-exports.directiveName = 'rlCheckbox';
+exports.componentName = 'rlCheckbox';
 exports.controllerName = 'CheckboxController';
 var CheckboxController = (function () {
-    function CheckboxController($element) {
-        this.ngModel = $element.controller('ngModel');
+    function CheckboxController(useDefaultTheme) {
+        this.useDefaultTheme = useDefaultTheme;
     }
     Object.defineProperty(CheckboxController.prototype, "checked", {
         get: function () {
@@ -18,26 +20,30 @@ var CheckboxController = (function () {
         enumerable: true,
         configurable: true
     });
-    CheckboxController.$inject = ['$element'];
+    CheckboxController.prototype.toggle = function () {
+        if (this.active && !this.ngDisabled) {
+            this.checked = !this.checked;
+        }
+    };
+    CheckboxController.prototype.$onInit = function () {
+        this.active = this.active != null ? this.active : true;
+    };
+    CheckboxController.$inject = [componentsDefaultTheme_1.defaultThemeValueName];
     return CheckboxController;
 }());
 exports.CheckboxController = CheckboxController;
-function checkbox() {
-    return {
-        restrict: 'E',
-        require: 'ngModel',
-        transclude: true,
-        template: require('./checkbox.html'),
-        controller: exports.controllerName,
-        controllerAs: 'checkbox',
-        scope: {},
-        bindToController: {
-            ngDisabled: '=',
-        },
-    };
-}
-exports.checkbox = checkbox;
+exports.checkbox = {
+    require: { ngModel: 'ngModel' },
+    transclude: true,
+    template: require('./checkbox.html'),
+    controller: exports.controllerName,
+    controllerAs: 'checkbox',
+    bindings: {
+        ngDisabled: '<?',
+        active: '<?',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, checkbox)
+    .component(exports.componentName, exports.checkbox)
     .controller(exports.controllerName, CheckboxController);
 //# sourceMappingURL=checkbox.js.map
