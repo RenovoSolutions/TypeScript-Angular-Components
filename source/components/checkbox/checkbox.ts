@@ -11,6 +11,7 @@ export var controllerName: string = 'CheckboxController';
 export class CheckboxController {
 	// bindings
 	ngDisabled: boolean;
+	active: boolean;
 
 	ngModel: angular.INgModelController;
 
@@ -23,6 +24,7 @@ export class CheckboxController {
 	}
 
 	$onInit(): void {
+		this.active = this.active != null ? this.active : true;
 	}
 }
 
@@ -34,6 +36,7 @@ export let checkbox: angular.IComponentOptions {
 	controllerAs: 'checkbox',
 	bindings: {
 		ngDisabled: '<?',
+		active: '<?',
 	},
 };
 
