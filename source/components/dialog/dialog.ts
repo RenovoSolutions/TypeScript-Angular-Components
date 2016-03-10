@@ -15,6 +15,7 @@ interface IDialogScope extends angular.IScope{
 
 interface IParentScope extends angular.IScope{
 	$close: { (): void };
+	$dismiss: { (): void };
 }
 
 export interface IDialogBindings {
@@ -25,6 +26,7 @@ export class DialogController implements IDialogBindings {
 	autosave: boolean;
 	hasFooter: boolean;
 	close: { (): void };
+	dismiss: { (): void };
 
 }
 
@@ -51,18 +53,21 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 			, controller: DialogController
 			, transclude: angular.ITranscludeFunction): void {
 			controller.close = scope.$parent.$close;
-			transclude((footer: JQuery, dialogScope: angular.IScope): void => {
-				controller.hasFooter = (footer.length > 0);
-				if (!controller.hasFooter && controller.autosave) {
-					footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
-					controller.hasFooter = true;
-				}
+			controller.dismiss = scope.$parent.$dismiss;
+			let footerArea: JQuery = element.find('.footer-template');
 
-				if (controller.hasFooter) {
-					let footerArea: JQuery = element.find('.footer-template');
-					footerArea.append(footer);
-				}
-			}, null, 'footerSlot');
+			if (transclude.isSlotFilled('footerSlot')) {
+				transclude((footer: JQuery): void => {
+					controller.hasFooter = (footer.length > 0);
+					if (controller.hasFooter) {
+						footerArea.append(footer);
+					}
+				}, null, 'footerSlot');
+			} else if (controller.autosave) {
+				let footer: JQuery = $compile(require('./autosaveDialogFooter.html'))(scope);
+				controller.hasFooter = true;
+				footerArea.append(footer);
+			}
 		},
 	};
 }
