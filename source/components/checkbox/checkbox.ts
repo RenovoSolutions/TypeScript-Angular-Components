@@ -23,6 +23,12 @@ export class CheckboxController {
 		this.ngModel.$setViewValue(value);
 	}
 
+	toggle(): void {
+		if (this.active) {
+			this.checked = !this.checked;
+		}
+	}
+
 	$onInit(): void {
 		this.active = this.active != null ? this.active : true;
 	}
