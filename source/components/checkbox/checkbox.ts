@@ -24,7 +24,7 @@ export class CheckboxController {
 	}
 
 	toggle(): void {
-		if (this.active) {
+		if (this.active && !this.ngDisabled) {
 			this.checked = !this.checked;
 		}
 	}

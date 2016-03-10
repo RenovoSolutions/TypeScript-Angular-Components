@@ -52,6 +52,15 @@ describe('CheckboxController', () => {
 		expect(checkbox.active).to.be.true;
 	});
 
+	it('should not toggle if disabled', (): void => {
+		buildController(true);
+		checkbox.ngDisabled = true;
+
+		checkbox.toggle();
+
+		expect(checkbox.checked).to.be.undefined;
+	});
+
 	function buildController(active?: boolean): void {
 		var bindings: any = {
 			active: active,
