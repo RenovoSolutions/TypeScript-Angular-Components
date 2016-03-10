@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.checkbox';
-export var directiveName: string = 'rlCheckbox';
+export var componentName: string = 'rlCheckbox';
 export var controllerName: string = 'CheckboxController';
 
 export class CheckboxController {
@@ -22,27 +22,21 @@ export class CheckboxController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$element'];
-	constructor($element: angular.IAugmentedJQuery) {
-		this.ngModel = $element.controller('ngModel');
+	$onInit(): void {
 	}
 }
 
-export function checkbox(): angular.IDirective {
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		transclude: true,
-		template: require('./checkbox.html'),
-		controller: controllerName,
-		controllerAs: 'checkbox',
-		scope: {},
-		bindToController: {
-			ngDisabled: '=',
-		},
-	};
-}
+export let checkbox: angular.IComponentOptions {
+	require: { ngModel: 'ngModel' },
+	transclude: true,
+	template: require('./checkbox.html'),
+	controller: controllerName,
+	controllerAs: 'checkbox',
+	bindings: {
+		ngDisabled: '<?',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, checkbox)
+	.component(componentName, checkbox)
 	.controller(controllerName, CheckboxController);
