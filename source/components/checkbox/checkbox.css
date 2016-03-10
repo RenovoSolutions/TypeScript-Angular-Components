@@ -12,6 +12,6 @@
 	font-size: 1.4em;
 }
 
-.disabled:before {
+.disabled.default-theme:before {
 	cursor: not-allowed;
 }
