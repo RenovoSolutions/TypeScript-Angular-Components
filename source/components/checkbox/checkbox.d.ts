@@ -3,10 +3,23 @@ import * as angular from 'angular';
 export declare var moduleName: string;
 export declare var componentName: string;
 export declare var controllerName: string;
-export declare class CheckboxController {
+export interface IToggleParams {
+    value: boolean;
+}
+export interface ICheckboxBindings {
+    ngDisabled?: boolean;
+    active?: boolean;
+    onToggle?: {
+        (params: IToggleParams): void;
+    };
+}
+export declare class CheckboxController implements ICheckboxBindings {
     useDefaultTheme: boolean;
     ngDisabled: boolean;
     active: boolean;
+    onToggle: {
+        (params: IToggleParams): void;
+    };
     ngModel: angular.INgModelController;
     checked: boolean;
     toggle(): void;

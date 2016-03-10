@@ -23,6 +23,7 @@ var CheckboxController = (function () {
     CheckboxController.prototype.toggle = function () {
         if (this.active && !this.ngDisabled) {
             this.checked = !this.checked;
+            this.onToggle({ value: this.checked });
         }
     };
     CheckboxController.prototype.$onInit = function () {
@@ -41,6 +42,7 @@ exports.checkbox = {
     bindings: {
         ngDisabled: '<?',
         active: '<?',
+        onToggle: '&',
     },
 };
 angular.module(exports.moduleName, [])
