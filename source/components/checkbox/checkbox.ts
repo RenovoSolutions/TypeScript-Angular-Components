@@ -28,7 +28,7 @@ export class CheckboxController {
 	}
 }
 
-export let checkbox: angular.IComponentOptions {
+export let checkbox: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	transclude: true,
 	template: require('./checkbox.html'),
