@@ -30,17 +30,21 @@ function dialog($compile) {
         },
         link: function (scope, element, attrs, controller, transclude) {
             controller.close = scope.$parent.$close;
-            transclude(function (footer, dialogScope) {
-                controller.hasFooter = (footer.length > 0);
-                if (!controller.hasFooter && controller.autosave) {
-                    footer = $compile(require('./autosaveDialogFooter.html'))(dialogScope);
-                    controller.hasFooter = true;
-                }
-                if (controller.hasFooter) {
-                    var footerArea = element.find('.footer-template');
-                    footerArea.append(footer);
-                }
-            }, null, 'footerSlot');
+            controller.dismiss = scope.$parent.$dismiss;
+            var footerArea = element.find('.footer-template');
+            if (transclude.isSlotFilled('footerSlot')) {
+                transclude(function (footer) {
+                    controller.hasFooter = (footer.length > 0);
+                    if (controller.hasFooter) {
+                        footerArea.append(footer);
+                    }
+                }, null, 'footerSlot');
+            }
+            else if (controller.autosave) {
+                var footer = $compile(require('./autosaveDialogFooter.html'))(scope);
+                controller.hasFooter = true;
+                footerArea.append(footer);
+            }
         },
     };
 }

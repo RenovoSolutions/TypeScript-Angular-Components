@@ -1,6 +1,8 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 var _ = require('lodash');
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __array = typescript_angular_utilities_1.services.array;
 exports.directiveName = 'rlTabset';
 exports.controllerName = 'rlTabsetController';
 var TabsetController = (function () {
@@ -9,7 +11,7 @@ var TabsetController = (function () {
     }
     TabsetController.prototype.registerTab = function (element, header) {
         var index = this.findPosition(element);
-        if (_.has(this.tabHeaders, index)) {
+        if (__array.arrayUtility.has(this.tabHeaders, index)) {
             header.isVisible = this.tabHeaders[index].isVisible;
         }
         else {
