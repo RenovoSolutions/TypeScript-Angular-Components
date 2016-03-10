@@ -61,6 +61,11 @@ describe('CheckboxController', () => {
 			= test.angularFixture.controllerWithBindings<CheckboxController>(controllerName, bindings);
 
 		checkbox = controllerResult.controller;
+		checkbox.ngModel = <any>{
+			$setViewValue: (value: boolean): void => {
+				checkbox.ngModel.$viewValue = value;
+			},
+		};
 		checkbox.$onInit();
 	}
 });
