@@ -12,10 +12,21 @@ export var moduleName: string = 'rl.ui.components.checkbox';
 export var componentName: string = 'rlCheckbox';
 export var controllerName: string = 'CheckboxController';
 
-export class CheckboxController {
+export interface IToggleParams {
+	value: boolean;
+}
+
+export interface ICheckboxBindings {
+	ngDisabled?: boolean;
+	active?: boolean;
+	onToggle?: {(params: IToggleParams): void}
+}
+
+export class CheckboxController implements ICheckboxBindings {
 	// bindings
 	ngDisabled: boolean;
 	active: boolean;
+	onToggle: {(params: IToggleParams): void}
 
 	ngModel: angular.INgModelController;
 
@@ -30,6 +41,7 @@ export class CheckboxController {
 	toggle(): void {
 		if (this.active && !this.ngDisabled) {
 			this.checked = !this.checked;
+			this.onToggle({ value: this.checked });
 		}
 	}
 
@@ -50,6 +62,7 @@ export let checkbox: angular.IComponentOptions = {
 	bindings: {
 		ngDisabled: '<?',
 		active: '<?',
+		onToggle: '&',
 	},
 };
 

@@ -61,9 +61,20 @@ describe('CheckboxController', () => {
 		expect(checkbox.checked).to.be.undefined;
 	});
 
+	it('should fire an event when the checkbox toggles', (): void => {
+		buildController(true);
+
+		checkbox.toggle();
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>checkbox.onToggle);
+		let arg: any = (<Sinon.SinonSpy>checkbox.onToggle).firstCall.args[0];
+		expect(arg.value).to.be.true;
+	});
+
 	function buildController(active?: boolean): void {
 		var bindings: any = {
 			active: active,
+			onToggle: sinon.spy(),
 		};
 
 		var controllerResult: test.IControllerResult<CheckboxController>
