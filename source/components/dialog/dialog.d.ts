@@ -10,4 +10,7 @@ export declare class DialogController implements IDialogBindings {
     close: {
         (): void;
     };
+    dismiss: {
+        (): void;
+    };
 }
