@@ -11,6 +11,9 @@ var DialogService = (function () {
     DialogService.prototype.open = function (options, closeHandler) {
         return this.dialog.open(options, closeHandler);
     };
+    DialogService.prototype.prompt = function (options) {
+        return this.dialog.prompt(options, require('./promptDialog.html'));
+    };
     return DialogService;
 }());
 exports.DialogService = DialogService;

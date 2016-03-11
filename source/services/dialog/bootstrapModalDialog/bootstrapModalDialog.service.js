@@ -38,6 +38,36 @@ var BootstrapModalDialogService = (function () {
         });
         return dialogInstance;
     };
+    BootstrapModalDialogService.prototype.prompt = function (options, template) {
+        var acceptHandler = options.acceptHandler;
+        var cancelHandler = options.cancelHandler;
+        options.acceptHandler = null;
+        options.cancelHandler = null;
+        var modalScope = this.$rootScope.$new();
+        modalScope.prompt = options;
+        var settings = {
+            scope: modalScope,
+            template: template,
+            controller: bootstrapModalDialog_controller_1.controllerName,
+        };
+        var modalInstance = this.$modal.open(settings);
+        var accept = function () {
+            acceptHandler();
+            modalInstance.close();
+        };
+        var cancel = function () {
+            cancelHandler();
+            modalInstance.close();
+        };
+        modalScope.$accept = accept;
+        modalScope.$cancel = cancel;
+        return {
+            accept: accept,
+            cancel: cancel,
+            close: modalInstance.close,
+            dismiss: modalInstance.dismiss,
+        };
+    };
     BootstrapModalDialogService.prototype.configureModalSettings = function (options, resolveData) {
         var modalScope = options.scope;
         if (modalScope == null) {
