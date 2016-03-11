@@ -9,9 +9,9 @@ import __object = services.object;
 import __transform = services.transform.transform;
 
 import {
-moduleName as jqueryModuleName,
-serviceName as jqueryServiceName,
-IJQueryUtility,
+	moduleName as jqueryModuleName,
+	serviceName as jqueryServiceName,
+	IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
@@ -73,7 +73,7 @@ export class MessageLogController implements IMessageLogBindings {
 	constructor(private autosaveDialog: __autosaveDialog.IAutosaveDialogService, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
-		$scope.$watch((): IMessage[]=> { return this.messageLog.visibleMessages; }
+		$scope.$watch((): IMessage[] => { return this.messageLog.visibleMessages; }
 			, (value: IMessage[]): void => {
 				this.messages = value;
 			});
@@ -120,7 +120,7 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
-		if (entry.isSystemNote)	{
+		if (entry.isSystemNote) {
 			return false;
 		}
 
@@ -134,7 +134,7 @@ export class MessageLogController implements IMessageLogBindings {
 		}
 	}
 	canEditEntry(entry: IMessage): boolean {
-		if (entry.isSystemNote)	{
+		if (entry.isSystemNote) {
 			return false;
 		}
 
@@ -149,11 +149,13 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	editMessage(entry: IMessage): void {
+		let editedEntry: IMessage = _.clone(entry);
+
 		this.autosaveDialog.open({
 			save: this.updateNote.bind(this),
 			form: 'noteForm',
 			data: {
-				entry: entry,
+				entry: editedEntry,
 				originalEntry: entry,
 			},
 			template: require('./messageLogEditDialog.html'),
