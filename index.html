@@ -29,6 +29,10 @@
 				<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
 							  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
 
+				<div ng-repeat="value in test.set">
+					{{value}}
+				</div>
+
 				<ng-form name="myForm" rl-autosave save="test.save()">
 					<rl-textbox ng-model="test.val"></rl-textbox>
 				</ng-form>
@@ -36,9 +40,8 @@
 					{{test.count}}
 				</div>
 
-				<div ng-repeat="value in test.set">
-					{{value}}
-				</div>
+				<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
+				Value: {{test.checked}}
 
 				<rl-button action="test.prompt()">Open prompt</rl-button>
 
