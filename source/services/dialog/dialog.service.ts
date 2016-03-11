@@ -12,6 +12,13 @@ export interface IDialogCloseHandler {
 	(explicit: boolean): boolean;
 }
 
+export interface IPromptSettings {
+	acceptHandler(): void;
+	message: string;
+	okButton?: string;
+	cancelButton?: string;
+}
+
 export interface IDialogInstance {
 	close(): void;
 	dismiss(): void;
@@ -19,10 +26,12 @@ export interface IDialogInstance {
 
 export interface IDialogImplementation<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
+	prompt(options: IPromptSettings, template: string): IDialogInstance;
 }
 
 export interface IDialogService<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
+	prompt(options: IPromptSettings): IDialogInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
@@ -30,6 +39,10 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
 		return this.dialog.open(options, closeHandler);
+	}
+
+	prompt(options: IPromptSettings): IDialogInstance {
+		return this.dialog.prompt(options, '<rl-dialog prompt="promptOptions"></rl-dialog>');
 	}
 }
 

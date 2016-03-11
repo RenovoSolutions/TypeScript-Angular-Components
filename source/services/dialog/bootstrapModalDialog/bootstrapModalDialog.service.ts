@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
-import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance } from '../dialog.service';
+import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance, IPromptSettings } from '../dialog.service';
 import { controllerName, IBootstrapModalDialogScope } from './bootstrapModalDialog.controller';
 
 export var serviceName: string = 'uiBootstrapModelDialog';
@@ -16,6 +16,10 @@ export interface IBootstrapModalDialogService extends IDialogService<IBootstrapM
 export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSettings {
 	resolveToDialog?: boolean;
 	dialogAs?: string;
+}
+
+export interface IPromptScope extends ng.IScope {
+	promptOptions: IPromptSettings;
 }
 
 export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
@@ -45,6 +49,31 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 		});
 
 		return dialogInstance;
+	}
+
+	prompt(options: IPromptSettings, template: string): IDialogInstance {
+		let acceptHandler: { (): void } = options.acceptHandler;
+		options.acceptHandler = null;
+		this.closeHandler = (): boolean => {
+			acceptHandler();
+			return true;
+		};
+
+		let modalScope: IPromptScope = <IPromptScope>this.$rootScope.$new();
+		modalScope.promptOptions = options;
+
+		let settings: IBootstrapModalDialogSettings = {
+			scope: modalScope,
+			template: template,
+			controller: controllerName,
+		};
+
+		let modalInstance: ng.ui.bootstrap.IModalServiceInstance = this.$modal.open(options);
+
+		return {
+			close: modalInstance.close,
+			dismiss: modalInstance.dismiss,
+		};
 	}
 
 	modalClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }
