@@ -18,7 +18,12 @@ export interface IMessage {
 	message: string;
 	createdBy?: IUser;
 	createdDate?: Date;
+
 	isSystemNote?: boolean;
+	lastUpdatedDate?: Date;
+	lastUpdatedBy?: IUser;
+
+	edited?: boolean;
 }
 
 export interface IGetMessagesResult {
