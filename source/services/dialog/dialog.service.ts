@@ -19,7 +19,7 @@ export interface IDialogInstance {
 
 export interface IPromptSettings {
 	acceptHandler(): void;
-	cancelHandler(): void;
+	cancelHandler?: {(): void};
 	message: string;
 	okButton?: string;
 	cancelButton?: string;
@@ -48,6 +48,9 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 	}
 
 	prompt(options: IPromptSettings): IPromptInstance {
+		options.okButton = options.okButton || 'Ok';
+		options.cancelButton = options.cancelButton || 'Cancel';
+
 		return this.dialog.prompt(options, require('./promptDialog.html'));
 	}
 }
