@@ -12,7 +12,9 @@ export interface IDialogInstance {
 }
 export interface IPromptSettings {
     acceptHandler(): void;
-    cancelHandler(): void;
+    cancelHandler?: {
+        (): void;
+    };
     message: string;
     okButton?: string;
     cancelButton?: string;
