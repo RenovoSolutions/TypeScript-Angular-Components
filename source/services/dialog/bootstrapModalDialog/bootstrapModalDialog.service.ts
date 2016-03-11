@@ -6,7 +6,14 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
-import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance, IPromptSettings } from '../dialog.service';
+import {
+	IDialogCloseHandler,
+	IDialogService,
+	IDialogImplementation,
+	IDialogInstance,
+	IPromptSettings,
+	IPromptInstance,
+} from '../dialog.service';
 import { controllerName, IBootstrapModalDialogScope } from './bootstrapModalDialog.controller';
 
 export var serviceName: string = 'uiBootstrapModelDialog';
@@ -19,7 +26,11 @@ export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSet
 }
 
 export interface IPromptScope extends ng.IScope {
-	promptOptions: IPromptSettings;
+	prompt: IPromptSettings;
+	$accept(): void;
+	$cancel(): void;
+	$close(): void;
+	$dismiss(): void;
 }
 
 export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
@@ -51,16 +62,14 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 		return dialogInstance;
 	}
 
-	prompt(options: IPromptSettings, template: string): IDialogInstance {
+	prompt(options: IPromptSettings, template: string): IPromptInstance {
 		let acceptHandler: { (): void } = options.acceptHandler;
+		let cancelHandler: { (): void } = options.cancelHandler;
 		options.acceptHandler = null;
-		this.closeHandler = (): boolean => {
-			acceptHandler();
-			return true;
-		};
+		options.cancelHandler = null;
 
 		let modalScope: IPromptScope = <IPromptScope>this.$rootScope.$new();
-		modalScope.promptOptions = options;
+		modalScope.prompt = options;
 
 		let settings: IBootstrapModalDialogSettings = {
 			scope: modalScope,
@@ -68,9 +77,24 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 			controller: controllerName,
 		};
 
-		let modalInstance: ng.ui.bootstrap.IModalServiceInstance = this.$modal.open(options);
+		let modalInstance: ng.ui.bootstrap.IModalServiceInstance = this.$modal.open(settings);
+
+		let accept: { (): void } = (): void => {
+			acceptHandler();
+			modalInstance.close();
+		};
+
+		let cancel: { (): void } = (): void => {
+			cancelHandler();
+			modalInstance.close();
+		};
+
+		modalScope.$accept = accept;
+		modalScope.$cancel = cancel;
 
 		return {
+			accept: accept,
+			cancel: cancel,
 			close: modalInstance.close,
 			dismiss: modalInstance.dismiss,
 		};
