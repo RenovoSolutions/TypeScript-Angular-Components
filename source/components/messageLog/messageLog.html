@@ -16,7 +16,7 @@
 				</div>
 				<div class="message-byline">
 					<div class="byline">{{entry.createdBy.name}}</div>
-					<div class="byline">{{entry.createdDate | date:'short'}} UTC</div>
+					<div class="byline">{{entry.createdDate | date:'short'}} UTC {{entry.edited}}<span  ng-if="entry.edited" class="edited-note">(edited)</span></div>
 				</div>
 			</template>
 		</rl-generic-container>

@@ -120,6 +120,10 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
+		if (entry.isSystemNote)	{
+			return false;
+		}
+
 		switch (this.canDelete) {
 			case DeletePermissions.deleteAll:
 				return true;
@@ -130,6 +134,10 @@ export class MessageLogController implements IMessageLogBindings {
 		}
 	}
 	canEditEntry(entry: IMessage): boolean {
+		if (entry.isSystemNote)	{
+			return false;
+		}
+
 		switch (this.canEdit) {
 			case EditPermissions.editAll:
 				return true;
