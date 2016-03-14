@@ -161,9 +161,11 @@ export class MessageLogController implements IMessageLogBindings {
 			template: require('./messageLogEditDialog.html'),
 		});
 	}
+
 	updateNote(data: any): ng.IPromise<void> {
 		return this.messageLog.updateMessage(data.entry);
 	}
+
 	saveNote(data: any): ng.IPromise<void> {
 		return this.messageLog.addMessage(data.entry);
 	}
