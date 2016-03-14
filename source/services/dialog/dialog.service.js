@@ -11,6 +11,11 @@ var DialogService = (function () {
     DialogService.prototype.open = function (options, closeHandler) {
         return this.dialog.open(options, closeHandler);
     };
+    DialogService.prototype.prompt = function (options) {
+        options.okButton = options.okButton || 'Ok';
+        options.cancelButton = options.cancelButton || 'Cancel';
+        return this.dialog.prompt(options, require('./promptDialog.html'));
+    };
     return DialogService;
 }());
 exports.DialogService = DialogService;

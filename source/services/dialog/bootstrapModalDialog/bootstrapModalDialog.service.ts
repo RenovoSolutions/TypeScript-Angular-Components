@@ -6,7 +6,14 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
-import { IDialogCloseHandler, IDialogService, IDialogImplementation, IDialogInstance } from '../dialog.service';
+import {
+	IDialogCloseHandler,
+	IDialogService,
+	IDialogImplementation,
+	IDialogInstance,
+	IPromptSettings,
+	IPromptInstance,
+} from '../dialog.service';
 import { controllerName, IBootstrapModalDialogScope } from './bootstrapModalDialog.controller';
 
 export var serviceName: string = 'uiBootstrapModelDialog';
@@ -16,6 +23,14 @@ export interface IBootstrapModalDialogService extends IDialogService<IBootstrapM
 export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSettings {
 	resolveToDialog?: boolean;
 	dialogAs?: string;
+}
+
+export interface IPromptScope extends ng.IScope {
+	prompt: IPromptSettings;
+	$accept(): void;
+	$cancel(): void;
+	$close(): void;
+	$dismiss(): void;
 }
 
 export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
@@ -45,6 +60,44 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 		});
 
 		return dialogInstance;
+	}
+
+	prompt(options: IPromptSettings, template: string): IPromptInstance {
+		let acceptHandler: { (): void } = options.acceptHandler;
+		let cancelHandler: { (): void } = options.cancelHandler;
+		options.acceptHandler = null;
+		options.cancelHandler = null;
+
+		let modalScope: IPromptScope = <IPromptScope>this.$rootScope.$new();
+		modalScope.prompt = options;
+
+		let settings: IBootstrapModalDialogSettings = {
+			scope: modalScope,
+			template: template,
+			controller: controllerName,
+		};
+
+		let modalInstance: ng.ui.bootstrap.IModalServiceInstance = this.$modal.open(settings);
+
+		let accept: { (): void } = (): void => {
+			acceptHandler();
+			modalInstance.close();
+		};
+
+		let cancel: { (): void } = (): void => {
+			cancelHandler();
+			modalInstance.close();
+		};
+
+		modalScope.$accept = accept;
+		modalScope.$cancel = cancel;
+
+		return {
+			accept: accept,
+			cancel: cancel,
+			close: modalInstance.close,
+			dismiss: modalInstance.dismiss,
+		};
 	}
 
 	modalClosing: { (event: ng.IAngularEvent, reason: any, explicitlyClosed: boolean): void }

@@ -2,8 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['$scope', '$q', 'cardContainerBuilder'];
-	function TestController($scope, $q, cardContainerBuilderFactory) {
+	TestController.$inject = ['$scope', '$q', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, dialog, cardContainerBuilderFactory) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
@@ -41,6 +41,17 @@
 			},
 			errorMessage: 'String must be valid',
 		};
+
+		self.prompt = function() {
+			dialog.prompt({
+				acceptHandler: function() { alert('Yes'); },
+				cancelHandler: function() { alert('No'); },
+				okButton: 'Yes',
+				cancelButton: 'No',
+				message: 'Do you want to do this?',
+			});
+		}
+
 		var items = [
 			{ name: 'Item 1', value: 1 },
 			{ name: 'Item 2', value: 2 },
