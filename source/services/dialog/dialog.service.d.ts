@@ -6,6 +6,10 @@ export declare let serviceName: string;
 export interface IDialogCloseHandler {
     (explicit: boolean): boolean;
 }
+export interface IDialogScope extends angular.IScope {
+    $close(): void;
+    $dismiss(): void;
+}
 export interface IDialogInstance {
     close(): void;
     dismiss(): void;
