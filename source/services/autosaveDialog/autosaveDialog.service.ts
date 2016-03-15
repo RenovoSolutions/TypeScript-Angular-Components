@@ -9,6 +9,7 @@ import __promise = services.promise;
 import {
 	IDialogService,
 	IDialogCloseHandler,
+	IDialogScope,
 	serviceName as dialogServiceName
 } from '../dialog/dialog.service';
 import {
@@ -54,11 +55,13 @@ interface IDialogSettings {
 	bindToController?: boolean;
 }
 
-export interface IAutosaveDialogScope extends ng.IScope {
+export interface IAutosaveDialogScope extends IDialogScope {
 	form?: string;
 	formGetter?: { (scope: ng.IScope): ng.IFormController };
 	setForm(form: ng.IFormController): void;
 	dialog: any;
+
+	$save(): void;
 }
 
 export class AutosaveDialogService implements IAutosaveDialogService {
@@ -99,6 +102,7 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 			scope.setForm = this.setForm;
 			this.data = _.extend(options.data, resolveData);
 			scope.dialog = this.data;
+			scope.$save = (): void => { this.autosave.autosave(this.data); };
 
 			var dialogOptions: IDialogSettings = <IDialogSettings>options;
 			dialogOptions.controller = controllerName;
