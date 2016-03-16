@@ -331,47 +331,41 @@ export class CardContainerController {
 	}
 }
 
-cardContainer.$inject = ['$compile'];
-export function cardContainer($compile: angular.ICompileService): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: {
-			'containerHeaderSlot': '?rlContainerHeader',
-			'containerFooterSlot': '?rlContainerFooter',
-			'contentSlot': '?rlCardContent',
-			'footerSlot': '?rlCardFooter',
-		},
-		template: require('./cardContainer.html'),
-		controller: controllerName,
-		controllerAs: 'cardContainer',
-		scope: {},
-		bindToController: {
-			// summary: a builder for the card container
-			builder: '=?',
+export let cardContainer: angular.IComponentOptions = {
+	transclude: <any>{
+		'containerHeaderSlot': '?rlContainerHeader',
+		'containerFooterSlot': '?rlContainerFooter',
+		'contentSlot': '?rlCardContent',
+		'footerSlot': '?rlCardFooter',
+	},
+	template: require('./cardContainer.html'),
+	controller: controllerName,
+	controllerAs: 'cardContainer',
+	bindings: {
+		// summary: a builder for the card container
+		builder: '=?',
 
-			// summary: controller shared by all components on a card
-			// remarks: this controller cannot override any of the following letiable names:
-			//          columns
-			//          item
-			//          contentTemplate
-			//          footerTemplate
-			//          clickable
-			//          cardController
-			//          cardControllerAs
-			//          cardAs
-			//          showContent
-			//          toggleContent
-			//          collapse
-			//          selected
-			//          setSelected
-			cardController: '@',
+		// summary: controller shared by all components on a card
+		// remarks: this controller cannot override any of the following letiable names:
+		//          columns
+		//          item
+		//          contentTemplate
+		//          footerTemplate
+		//          clickable
+		//          cardController
+		//          cardControllerAs
+		//          cardAs
+		//          showContent
+		//          toggleContent
+		//          collapse
+		//          selected
+		//          setSelected
+		cardController: '@',
 
-			// summary: controller alias specified using controllerAs syntax
-			cardControllerAs: '@',
+		// summary: controller alias specified using controllerAs syntax
+		cardControllerAs: '@',
 
-			// summary: name used to access the card data
-			cardAs: '@',
-		}
-	};
+		// summary: name used to access the card data
+		cardAs: '@',
+	}
 }
