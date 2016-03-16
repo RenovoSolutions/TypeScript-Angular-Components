@@ -55,9 +55,9 @@ describe('TypeaheadListController', () => {
 
 			typeaheadList.loadItems().then((data: ITestObject[]): void => {
 				expect(data).to.have.length(3);
-				expect(data[0]).to.equal(2);
-				expect(data[1]).to.equal(4);
-				expect(data[2]).to.equal(5);
+				expect(data[0].id).to.equal(2);
+				expect(data[1].id).to.equal(4);
+				expect(data[2].id).to.equal(5);
 				done();
 			});
 			scope.$digest();
