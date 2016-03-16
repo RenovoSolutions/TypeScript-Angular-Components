@@ -13,6 +13,7 @@ import {
 	moduleName,
 	controllerName,
 	TypeaheadListController,
+	ITypeaheadListBehavior,
 } from './typeaheadList';
 
 import * as angular from 'angular';
@@ -107,6 +108,36 @@ describe('TypeaheadListController', () => {
 		});
 	});
 
+	describe('behavior', (): void => {
+		it('should provide an add function for the parent to trigger an item to be added', (): void => {
+			buildController();
+			let addSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.addItem = addSpy;
+			typeaheadList.$onInit();
+			let item: ITestObject = { id: 13 };
+			parentChild.triggerChildBehavior(typeaheadList.childLink, (behavior: ITypeaheadListBehavior): void => {
+				behavior.add(item);
+			});
+
+			sinon.assert.calledOnce(addSpy);
+			sinon.assert.calledWith(addSpy, item);
+		});
+
+		it('should provide a remove function for the parent to trigger an item to be removed', (): void => {
+			buildController();
+			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.removeItem = removeSpy;
+			typeaheadList.$onInit();
+			let item: ITestObject = { id: 13 };
+			parentChild.triggerChildBehavior(typeaheadList.childLink, (behavior: ITypeaheadListBehavior): void => {
+				behavior.remove(item);
+			});
+
+			sinon.assert.calledOnce(removeSpy);
+			sinon.assert.calledWith(removeSpy, item);
+		});
+	});
+
 	function buildController(list?: ITestObject[]): void {
 		let ngModel: any = {
 			$viewValue: list,
@@ -118,8 +149,10 @@ describe('TypeaheadListController', () => {
 			ngModel: ngModel,
 		};
 
+		let locals: any = { $element: {}, $transclude: {} };
+
 		let controllerResult: test.IControllerResult<TypeaheadListController> =
-			test.angularFixture.controllerWithBindings<TypeaheadListController>(controllerName, bindings);
+			test.angularFixture.controllerWithBindings<TypeaheadListController>(controllerName, bindings, locals);
 
 		scope = controllerResult.scope;
 		typeaheadList = controllerResult.controller;

@@ -65,11 +65,21 @@ export interface ITypeaheadListBindings {
 	 * Alias for the item in the transclude list item template
 	 */
 	itemAs: string;
+
+	/**
+	 * Link for telling the typeahead list to add or remove an item from outside
+	 */
+	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
 }
 
 export interface ITypeaheadListScope extends angular.IScope {
 	$remove(item: any): void;
 	$transform(item: any): string;
+}
+
+export interface ITypeaheadListBehavior {
+	add(item: any): void;
+	remove(item: any): void;
 }
 
 export interface IAddParams {
@@ -91,6 +101,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	useClientSearching: boolean;
 	ngDisabled: boolean;
 	itemAs: string;
+	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
 
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
@@ -106,6 +117,10 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		this.$scope.$transform = (item: any): string => {
 			return __transform.getValue(item, this.transform);
 		};
+		this.parentChild.registerChildBehavior(this.childLink, {
+			add: this.addItem.bind(this),
+			remove: this.removeItem.bind(this),
+		});
 	}
 
 	loadItems(search?: string): angular.IPromise<any> {
@@ -151,7 +166,8 @@ let typeaheadList: angular.IComponentOptions = {
 		prefix: '@',
 		useClientSearching: '<?',
 		ngDisabled: '<?',
-		itemAs: '@',
+        itemAs: '@',
+		childLink: '=?',
 	},
 };
 
