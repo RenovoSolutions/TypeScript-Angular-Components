@@ -16,6 +16,9 @@ import {
 	controllerName as editableMessageLogControllerName
 } from './editableMessageLog';
 
+import * as componentServices from '../../services/services.module';
+import __autosaveDialog = componentServices.autosaveDialog;
+
 import { moduleName as templateLoaderModule } from '../../services/templateLoader/templateLoader.service';
 
 export * from './messageLog.service';
@@ -23,7 +26,7 @@ export * from './messageLog.directive';
 
 export var moduleName: string = 'rl.ui.components.messageLog';
 
-angular.module(moduleName, [__object.moduleName, jqueryModuleName, templateLoaderModule])
+angular.module(moduleName, [__object.moduleName, jqueryModuleName, templateLoaderModule, __autosaveDialog.moduleName])
 	.factory(factoryName, messageLogFactory)
 	.directive(directiveName, messageLog)
 	.controller(controllerName, MessageLogController)

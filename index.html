@@ -12,6 +12,7 @@
 		<script src="/node_modules/jquery/dist/jquery.js"></script>
 		<script src="/node_modules/angular/angular.js"></script>
 		<script src="/node_modules/angular-animate/angular-animate.js"></script>
+		<script src="/node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
 		<script src="/node_modules/lodash/lodash.js"></script>
 		<script src="/node_modules/moment/moment.js"></script>
 		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
@@ -51,6 +52,10 @@
 					{{test.count}}
 				</div>
 
+				<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
+				Value: {{test.checked}}
+
+				<rl-button action="test.prompt()">Open prompt</rl-button>
 				<rl-simple-card>
 					<rl-card-header>Header</rl-card-header>
 					<rl-card-content>Content</rl-card-content>

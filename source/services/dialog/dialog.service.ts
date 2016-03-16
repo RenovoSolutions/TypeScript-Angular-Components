@@ -5,11 +5,16 @@ import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDial
 
 export { bootstrapModalDialog };
 
-export var moduleName: string = 'rl.ui.services.dialog';
-export var serviceName: string = 'dialog';
+export let moduleName: string = 'rl.ui.services.dialog';
+export let serviceName: string = 'dialog';
 
 export interface IDialogCloseHandler {
 	(explicit: boolean): boolean;
+}
+
+export interface IDialogScope extends angular.IScope {
+	$close(): void;
+	$dismiss(): void;
 }
 
 export interface IDialogInstance {
@@ -17,12 +22,27 @@ export interface IDialogInstance {
 	dismiss(): void;
 }
 
+export interface IPromptSettings {
+	acceptHandler(): void;
+	cancelHandler?: {(): void};
+	message: string;
+	okButton?: string;
+	cancelButton?: string;
+}
+
+export interface IPromptInstance extends IDialogInstance {
+	accept(): void;
+	cancel(): void;
+}
+
 export interface IDialogImplementation<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
+	prompt(options: IPromptSettings, template: string): IPromptInstance;
 }
 
 export interface IDialogService<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
+	prompt(options: IPromptSettings): IPromptInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
@@ -30,6 +50,13 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 
 	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
 		return this.dialog.open(options, closeHandler);
+	}
+
+	prompt(options: IPromptSettings): IPromptInstance {
+		options.okButton = options.okButton || 'Ok';
+		options.cancelButton = options.cancelButton || 'Cancel';
+
+		return this.dialog.prompt(options, require('./promptDialog.html'));
 	}
 }
 
@@ -41,11 +68,11 @@ export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProv
 export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
 	'use strict';
 
-	var provider: IDialogServiceProvider<TDialogSettings> = {
+	let provider: IDialogServiceProvider<TDialogSettings> = {
 		setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
 			this.dialogImplementation = dialogImplementation;
 		},
-		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogImplementation<TDialogSettings> => {
+		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogService<TDialogSettings> => {
 			let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																			? this.dialogImplementation
 																			: bootstrapModalDialog;

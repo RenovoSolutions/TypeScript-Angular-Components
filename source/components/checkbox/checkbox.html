@@ -1,4 +1,5 @@
-<label>
-	<input type="checkbox" ng-model="checkbox.checked" ng-disabled="checkbox.ngDisabled" />
-	<span ng-transclude></span>
-</label>
+<span ng-click="checkbox.toggle()" ng-transclude
+	  ng-class="{ 'rl-checkbox': !checkbox.checked
+	  , 'rl-checkbox-checked': checkbox.checked
+	  , 'disabled': checkbox.ngDisabled
+	  , 'default-theme': checkbox.useDefaultTheme }"></span>

@@ -2,15 +2,31 @@
 
 'use strict';
 
+import './checkbox.css';
+
 import * as angular from 'angular';
 
+import { defaultThemeValueName } from '../componentsDefaultTheme';
+
 export var moduleName: string = 'rl.ui.components.checkbox';
-export var directiveName: string = 'rlCheckbox';
+export var componentName: string = 'rlCheckbox';
 export var controllerName: string = 'CheckboxController';
 
-export class CheckboxController {
+export interface IToggleParams {
+	value: boolean;
+}
+
+export interface ICheckboxBindings {
+	ngDisabled?: boolean;
+	active?: boolean;
+	onToggle?: {(params: IToggleParams): void}
+}
+
+export class CheckboxController implements ICheckboxBindings {
 	// bindings
 	ngDisabled: boolean;
+	active: boolean;
+	onToggle: {(params: IToggleParams): void}
 
 	ngModel: angular.INgModelController;
 
@@ -22,27 +38,34 @@ export class CheckboxController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$element'];
-	constructor($element: angular.IAugmentedJQuery) {
-		this.ngModel = $element.controller('ngModel');
+	toggle(): void {
+		if (this.active && !this.ngDisabled) {
+			this.checked = !this.checked;
+			this.onToggle({ value: this.checked });
+		}
+	}
+
+	static $inject: string[] = [defaultThemeValueName];
+	constructor(public useDefaultTheme: boolean) {}
+
+	$onInit(): void {
+		this.active = this.active != null ? this.active : true;
 	}
 }
 
-export function checkbox(): angular.IDirective {
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		transclude: true,
-		template: require('./checkbox.html'),
-		controller: controllerName,
-		controllerAs: 'checkbox',
-		scope: {},
-		bindToController: {
-			ngDisabled: '=',
-		},
-	};
-}
+export let checkbox: angular.IComponentOptions = {
+	require: { ngModel: 'ngModel' },
+	transclude: true,
+	template: require('./checkbox.html'),
+	controller: controllerName,
+	controllerAs: 'checkbox',
+	bindings: {
+		ngDisabled: '<?',
+		active: '<?',
+		onToggle: '&',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, checkbox)
+	.component(componentName, checkbox)
 	.controller(controllerName, CheckboxController);

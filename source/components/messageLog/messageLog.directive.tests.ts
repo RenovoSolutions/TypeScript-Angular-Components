@@ -21,6 +21,8 @@ IUser
 import * as angular from 'angular';
 import 'angular-mocks';
 
+import { IAutosaveDialogSettings } from '../../services/autosaveDialog/autosaveDialog.servivce';
+
 interface IMockMessageLogService {
 	visibleMessages: number[];
 	hasForwardMessages: boolean;
@@ -29,16 +31,28 @@ interface IMockMessageLogService {
 	pageSize: number;
 	getNextPage: Sinon.SinonSpy;
 	getTopPage: Sinon.SinonSpy;
+	updateMessage: Sinon.SinonSpy;
+	addMessage: Sinon.SinonSpy;
+}
+
+
+interface IAutosaveDialogMock {
+	open: Sinon.SinonSpy;
 }
 
 describe('messageLog', () => {
-	var scope: angular.IScope;
-	var log: MessageLogController;
-	var messageLogService: IMockMessageLogService;
+	let scope: angular.IScope;
+	let log: MessageLogController;
+	let messageLogService: IMockMessageLogService;
+	let autosaveDialog: IAutosaveDialogMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 		angular.mock.module(__isEmpty.moduleName);
+
+		autosaveDialog = {
+			open: sinon.spy(),
+		};
 
 		messageLogService = {
 			visibleMessages: [1, 2, 3, 4, 5],
@@ -48,9 +62,11 @@ describe('messageLog', () => {
 			pageSize: 0,
 			getNextPage: sinon.spy(),
 			getTopPage: sinon.spy(),
+			updateMessage:sinon.spy(),
+			addMessage:sinon.spy(),
 		};
 
-		var messageLogFactory: any = {
+		let messageLogFactory: any = {
 			getInstance(): any {
 				return messageLogService;
 			},
@@ -58,6 +74,7 @@ describe('messageLog', () => {
 
 		test.angularFixture.mock({
 			messageLog: messageLogFactory,
+			autosaveDialog: autosaveDialog,
 		});
 	});
 
@@ -140,20 +157,30 @@ describe('messageLog', () => {
 
 		it('should return true for edit permissions', (): void => {
 			buildController();
-			var message: any = {
+			let message: any = {
 				message: '',
 				createdBy: {
 					id: 1,
 					name: 'Test User'
 				}
 			};
-			var message2: any = {
+			let message2: any = {
 				message: '',
 				createdBy: {
 					id: 2,
 					name: 'Test User'
 				}
 			};
+
+			let messageSysNote: any = {
+				message: '',
+				createdBy: {
+					id: 2,
+					name: 'Test User'
+				},
+				isSystemNote: true,
+			};
+
 			log.canEdit = EditPermissions.editAll;
 			log.currentUser = {
 				id: 1,
@@ -161,32 +188,53 @@ describe('messageLog', () => {
 			};
 			expect(log.canEditEntry(message)).to.be.true;
 			expect(log.canEditEntry(message2)).to.be.true;
+			expect(log.canEditEntry(messageSysNote)).to.be.false;
 
 			log.canEdit = EditPermissions.editMine;
 			expect(log.canEditEntry(message)).to.be.true;
 			expect(log.canEditEntry(message2)).to.be.false;
+			expect(log.canEditEntry(messageSysNote)).to.be.false;
 
 			log.canEdit = EditPermissions.editNone;
 			expect(log.canEditEntry(message)).to.be.false;
 			expect(log.canEditEntry(message2)).to.be.false;
+			expect(log.canEditEntry(messageSysNote)).to.be.false;
 		});
 
 		it('should return true for Delete permissions', (): void => {
 			buildController();
-			var message: any = {
+			let message: any = {
 				message: '',
 				createdBy: {
 					id: 1,
 					name: 'Test User'
 				}
 			};
-			var message2: any = {
+			let message2: any = {
 				message: '',
 				createdBy: {
 					id: 2,
 					name: 'Test User'
 				}
 			};
+
+			let message2: any = {
+				message: '',
+				createdBy: {
+					id: 2,
+					name: 'Test User'
+				}
+			};
+
+			let messageSysNote: any = {
+				message: '',
+				createdBy: {
+					id: 2,
+					name: 'Test User'
+				},
+				isSystemNote: true,
+			};
+
 			log.canDelete = DeletePermissions.deleteAll;
 			log.currentUser = {
 				id: 1,
@@ -194,22 +242,75 @@ describe('messageLog', () => {
 			};
 			expect(log.canDeleteEntry(message)).to.be.true;
 			expect(log.canDeleteEntry(message2)).to.be.true;
+			expect(log.canDeleteEntry(messageSysNote)).to.be.false;
 
 			log.canDelete = DeletePermissions.deleteMine;
 			expect(log.canDeleteEntry(message)).to.be.true;
 			expect(log.canDeleteEntry(message2)).to.be.false;
+			expect(log.canDeleteEntry(messageSysNote)).to.be.false;
 
 			log.canDelete = DeletePermissions.deleteNone;
 			expect(log.canDeleteEntry(message)).to.be.false;
 			expect(log.canDeleteEntry(message2)).to.be.false;
+			expect(log.canDeleteEntry(messageSysNote)).to.be.false;
+		});
+
+		it('should open a dialog for editing', (): void => {
+			buildController();
+
+			let message: any = {
+				message: '',
+				createdBy: {
+					id: 1,
+					name: 'Test User'
+				}
+			};
+
+			log.editMessage(message);
+
+			sinon.assert.calledOnce(autosaveDialog.open);
+			let dialogSettings: IAutosaveDialogSettings = autosaveDialog.open.firstCall.args[0];
+			expect(dialogSettings.save).to.not.be.null;
+			expect(dialogSettings.form).to.equal('noteForm');
+			expect(dialogSettings.data.entry).to.deep.equal(message);
+			expect(dialogSettings.data.originalEntry).to.equal(message);
+			expect(dialogSettings.template).to.not.be.null;
+		});
+
+		it('should fire updateNote function',():void=>{
+			let data: any = {
+				entry: 'test entry',
+			};
+
+			buildController();
+
+			log.updateNote(data);
+
+			sinon.assert.calledOnce(messageLogService.updateMessage);
+			expect(messageLogService.updateMessage.firstCall.args[0]).to.equal(data.entry);
+		});
+
+		it('should fire saveNote function', (): void => {
+			let data: any = {
+				entry: 'test entry',
+			};
+
+			buildController();
+
+			log.saveNote(data);
+
+			sinon.assert.calledOnce(messageLogService.addMessage);
+			expect(messageLogService.addMessage.firstCall.args[0]).to.equal(data.entry);
 		});
 
 		function buildController(pageSize?: number): void {
-			var bindings: any = {
+			let bindings: any = {
 				pageSize: pageSize,
+				hasNextPage: true,
+				hasPreviousPage: false,
 			};
 
-			var controllerResult: test.IControllerResult<MessageLogController>
+			let controllerResult: test.IControllerResult<MessageLogController>
 				= test.angularFixture.controllerWithBindings<MessageLogController>(controllerName, bindings);
 
 			scope = controllerResult.scope;
@@ -219,7 +320,7 @@ describe('messageLog', () => {
 
 	describe('rlMessageLog directive', (): void => {
 		it('should add a message template and selector', (): void => {
-			var directiveResult: test.IDirectiveResult<MessageLogController> =
+			let directiveResult: test.IDirectiveResult<MessageLogController> =
 				test.angularFixture.directive<MessageLogController>('rlMessageLog', `
 				<rl-message-log service="logService" selector="selectorFunction">
 					<template when-selector="true">
@@ -240,7 +341,7 @@ describe('messageLog', () => {
 		});
 
 		it('should have neither a selector or templates', (): void => {
-			var directiveResult: test.IDirectiveResult<MessageLogController> =
+			let directiveResult: test.IDirectiveResult<MessageLogController> =
 				test.angularFixture.directive<MessageLogController>('rlMessageLog',
 					'<rl-message-log service="logService"></rl-message-log>',
 					<any>{ logService: messageLogService });
