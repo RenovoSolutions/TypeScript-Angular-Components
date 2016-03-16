@@ -115,7 +115,7 @@ describe('TypeaheadListController', () => {
 
 		scope = controllerResult.scope;
 		typeaheadList = controllerResult.controller;
-		typeaheadList.loadItems = sinon.spy((): angular.IPromise<void> => {
+		typeaheadList.getItems = sinon.spy((): angular.IPromise<ITestObject[]> => {
 			return $q.when(items);
 		});
 		typeaheadList.$onInit();
