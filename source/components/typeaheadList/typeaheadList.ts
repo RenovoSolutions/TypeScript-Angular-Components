@@ -25,6 +25,9 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
 
+	static $inject: string[] = [__parentChild.serviceName];
+	constructor(private parentChild: __parentChild.IParentChildBehaviorService) {}
+
 	$onInit(): void {
 		//TODO
 	}
@@ -37,8 +40,11 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		});
 	}
 
-	add(item:any): void {
-		//TODO
+	add(item: any): void {
+		this.ngModel.$viewValue.push(item);
+		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
+			behavior.remove(item);
+		});
 	}
 
 	remove(item: any): void {
