@@ -30,6 +30,11 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 
 	loadItems(search?: string): angular.IPromise<any> {
+		return this.getItems({ search: search }).then((data: any[]): any[] => {
+			return _.filter(data, (item: any): boolean => {
+				return !_.find(this.ngModel.$viewValue, item);
+			});
+		});
 	}
 
 	add(item:any): void {
