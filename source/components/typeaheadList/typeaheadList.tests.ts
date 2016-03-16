@@ -124,6 +124,9 @@ describe('TypeaheadListController', () => {
 		scope = controllerResult.scope;
 		typeaheadList = controllerResult.controller;
 		typeaheadList.typeaheadLink = <any>{};
+		(<any>typeaheadList).$transclude = {
+			isSlotFilled(): boolean { return true; },
+		};
 		typeaheadList.getItems = sinon.spy((): angular.IPromise<ITestObject[]> => {
 			return $q.when(items);
 		});

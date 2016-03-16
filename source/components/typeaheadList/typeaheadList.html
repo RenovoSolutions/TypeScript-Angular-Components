@@ -1,4 +1,7 @@
-<div></div><rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
+<div ng-repeat="$item in list.ngModel.$viewValue" rl-alias="$item as {{list.itemAs}}">
+	<div ng-transclude="listItemSlot"></div>
+	<div class="default-template"></div>
+</div>
 <rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
 			  transform="list.transform" get-items="list.loadItems(search)" label="{{list.label}}"
 			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>

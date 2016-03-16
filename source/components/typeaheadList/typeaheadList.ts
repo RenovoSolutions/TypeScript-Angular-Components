@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import __array = services.array;
+import __transform = services.transform.transform;
 
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
 
@@ -58,6 +59,16 @@ export interface ITypeaheadListBindings {
 	 * Option for disabling the typeahead
 	 */
 	ngDisabled: boolean;
+
+	/**
+	 * Alias for the item in the transclude list item template
+	 */
+	itemAs: string;
+}
+
+export interface ITypeaheadListScope extends angular.IScope {
+	$remove(item: any): void;
+	$transform(item: any): string;
 }
 
 export interface IAddParams {
@@ -78,15 +89,27 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	prefix: string;
 	useClientSearching: boolean;
 	ngDisabled: boolean;
+	itemAs: string;
 
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
 
-	static $inject: string[] = [__parentChild.serviceName];
-	constructor(private parentChild: __parentChild.IParentChildBehaviorService) {}
+	static $inject: string[] = ['$scope', '$element', '$transclude', '$compile', __parentChild.serviceName];
+	constructor(private $scope: ITypeaheadListScope
+			, private $element: angular.IAugmentedJquery
+			, private $transclude: angular.ITranscludeFunction
+			, private $compile: angular.ICompileService
+			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
-		//TODO
+		this.$scope.$remove = this.removeItem.bind(this);
+		this.$scope.$transform = (item: any): string => { return __transform.getValue(item, this.transform); };
+
+		if (!this.$transclude.isSlotFilled('listItemSlot')) {
+			let templateArea: angular.IAugmentedJquery = angular.element(this.$element.find('.default-template'));
+			let template: JQuery = templateArea.append(require('defaultListItem.html'));
+			this.$compile(template)(templateArea.scope());
+		}
 	}
 
 	loadItems(search?: string): angular.IPromise<any> {
@@ -116,9 +139,12 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 
 let typeaheadList: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
+	transclude: {
+		listItemSlot: '?rlListItem',
+	},
 	template: require('./typeaheadList.html'),
 	controller: controllerName,
-	controllerAs: 'controller',
+	controllerAs: 'list',
 	bindings: {
 		getItems: '&',
 		add: '&',
@@ -128,6 +154,7 @@ let typeaheadList: angular.IComponentOptions = {
 		prefix: '@',
 		useClientSearching: '<?',
 		ngDisabled: '<?',
+		itemAs: '@',
 	},
 };
 
