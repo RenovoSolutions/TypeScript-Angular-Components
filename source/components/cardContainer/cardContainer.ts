@@ -376,30 +376,7 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 			, attrs: angular.IAttributes
 			, controller: CardContainerController
 			, transclude: angular.ITranscludeFunction): void {
-			let headerArea: JQuery = element.find('.container-header-template');
-			let footerArea: JQuery = element.find('.container-footer-template');
-
 			controller.makeCard = transclude;
-
-			if (transclude.isSlotFilled('containerHeaderSlot')) {
-				transclude(scope, (header: JQuery): void => {
-					headerArea.append(header);
-				}, null, 'containerHeaderSlot');
-			} else {
-				let defaultHeader = require('./defaultCardContainerHeader.html');
-				let header: JQuery = headerArea.append(defaultHeader);
-				$compile(header)(scope);
-			}
-
-			if (transclude.isSlotFilled('containerFooterSlot')) {
-				transclude(scope, (footer: JQuery): void => {
-					footerArea.append(footer);
-				}, null, 'containerFooterSlot');
-			} else {
-				let defaultFooter = require('./defaultCardContainerFooter.html');
-				let footer: JQuery = footerArea.append(defaultFooter);
-				$compile(footer)(scope);
-			}
 		}
 	};
 }

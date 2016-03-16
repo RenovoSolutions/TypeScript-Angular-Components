@@ -21,6 +21,7 @@ import * as sorts from './sorts/sorts.module';
 
 import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
 import * as builder from './cardContainerBuilder.service';
+import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './defaultComponents';
 
 export {
 	builder,
@@ -65,4 +66,6 @@ angular.module(moduleName, [
 ])
 	.directive(directiveName, cardContainer)
 	.controller(controllerName, CardContainerController)
-	.factory(builder.factoryName, builder.cardContainerBuilderFactory);
+	.factory(builder.factoryName, builder.cardContainerBuilderFactory)
+	.component(headerComponentName, defaultContainerHeader)
+	.component(footerComponentName, defaultContainerFooter);
