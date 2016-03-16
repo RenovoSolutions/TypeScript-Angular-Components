@@ -45,7 +45,7 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 		restrict: 'E',
 		template: `
 			<div rl-size-for-breakpoints="header.column.size" title="{{::header.column.description}}">
-				<div class="template-container" rl-alias="header.item as {{header.alias}}"></div>
+				<div class="template-container"></div>
 			</div>
 		`,
 		controller: controllerName,
@@ -62,6 +62,10 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 					, element: angular.IAugmentedJQuery
 					, attrs: angular.IAttributes
 					, header: HeaderColumnController): void {
+					if (header.alias != null) {
+						scope[header.alias] = header.item;
+					}
+
 					var column: IColumn<any> = header.column;
 					if (column.templateUrl != null) {
 						header.renderedTemplate = $compile('<div ng-include="\'' + column.templateUrl + '\'"></div>')(scope);
