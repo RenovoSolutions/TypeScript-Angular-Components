@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
+import __array = services.array;
 
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
 
@@ -48,7 +49,10 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 
 	remove(item: any): void {
-		//TODO
+		__array.arrayUtility.remove(this.ngModel.$viewValue, item);
+		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
+			behavior.add(item);
+		});
 	}
 }
 
