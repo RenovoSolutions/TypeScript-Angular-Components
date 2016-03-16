@@ -3,10 +3,16 @@
 			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>
 <div class="table-container">
 	<div class="row table-header">
-		<div ng-transclude="headerSlot"></div>
-		<div class="default-header-template"></div>
+		<div ng-transclude="headerSlot">
+			<div class="col-xs-12">Name</div>
+		</div>
 	</div>
 	<div class="row table-row" ng-repeat="$item in list.ngModel.$viewValue" rl-alias="$item as {{list.itemAs}}">
-		<div ng-transclude="listItemSlot"></div>
+		<div ng-transclude="listItemSlot">
+			<div class="col-xs-10">{{$transform($item)}}</div>
+			<div class="col-xs-2">
+				<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
+			</div>
+		</div>
 	</div>
 </div>

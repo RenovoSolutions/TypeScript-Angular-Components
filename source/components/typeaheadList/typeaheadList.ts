@@ -102,12 +102,9 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 
 	$onInit(): void {
 		this.$scope.$remove = this.removeItem.bind(this);
-		this.$scope.$transform = (item: any): string => { return __transform.getValue(item, this.transform); };
-
-		if (!this.$transclude.isSlotFilled('headerSlot')) {
-			let headerArea: angular.IAugmentedJQuery = this.$element.find('.default-header-template');
-			headerArea.append('<div class="col-xs-12">Name</div>');
-		}
+		this.$scope.$transform = (item: any): string => {
+			return __transform.getValue(item, this.transform);
+		};
 	}
 
 	loadItems(search?: string): angular.IPromise<any> {
@@ -139,7 +136,7 @@ let typeaheadList: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	transclude: <any>{
 		headerSlot: '?rlListHeader',
-		listItemSlot: 'rlListItem',
+		listItemSlot: '?rlListItem',
 	},
 	template: require('./typeaheadList.html'),
 	controller: controllerName,
