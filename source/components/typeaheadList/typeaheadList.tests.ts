@@ -69,7 +69,7 @@ describe('TypeaheadListController', () => {
 			let list: ITestObject[] = [];
 			buildController(list);
 			let removeSpy: Sinon.SinonSpy = sinon.spy();
-			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, {
+			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
 				remove: removeSpy,
 			});
 
@@ -87,7 +87,7 @@ describe('TypeaheadListController', () => {
 			let list: ITestObject[] = [items[0]];
 			buildController(list);
 			let addSpy: Sinon.SinonSpy = sinon.spy();
-			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, {
+			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
 				add: addSpy,
 			});
 
