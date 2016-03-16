@@ -107,7 +107,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 
 		if (!this.$transclude.isSlotFilled('listItemSlot')) {
 			let templateArea: angular.IAugmentedJquery = angular.element(this.$element.find('.default-item-template'));
-			let template: JQuery = templateArea.append(require('defaultListItem.html'));
+			let template: JQuery = templateArea.append(require('./defaultListItem.html'));
 			this.$compile(template)(templateArea.scope());
 		}
 
