@@ -9,12 +9,14 @@ import __object = services.object;
 import __transform = services.transform.transform;
 
 import {
-moduleName as jqueryModuleName,
-serviceName as jqueryServiceName,
-IJQueryUtility,
+	moduleName as jqueryModuleName,
+	serviceName as jqueryServiceName,
+	IJQueryUtility,
 } from '../../services/jquery/jquery.service';
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
+import * as componentServices from '../../services/services.module';
+import __autosaveDialog = componentServices.autosaveDialog;
 
 import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
 
@@ -42,7 +44,7 @@ export interface IMessageLogBindings {
 	canDelete?: DeletePermissions;
 	canEdit?: EditPermissions;
 
-	selector: { (IMessage): any } | string;
+	selector: { (IMessage: any): any } | string;
 }
 
 export class MessageLogController implements IMessageLogBindings {
@@ -66,14 +68,12 @@ export class MessageLogController implements IMessageLogBindings {
 	loading: boolean;
 	loadingInitial: boolean;
 
-	editEvent: { (iMessage: IMessage): any };
 
-
-	static $inject: string[] = ['$scope', factoryName];
-	constructor($scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
+	static $inject: string[] = [__autosaveDialog.serviceName, '$scope', factoryName];
+	constructor(private autosaveDialog: __autosaveDialog.IAutosaveDialogService, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
-		$scope.$watch((): IMessage[]=> { return this.messageLog.visibleMessages; }
+		$scope.$watch((): IMessage[] => { return this.messageLog.visibleMessages; }
 			, (value: IMessage[]): void => {
 				this.messages = value;
 			});
@@ -120,6 +120,10 @@ export class MessageLogController implements IMessageLogBindings {
 	}
 
 	canDeleteEntry(entry: IMessage): boolean {
+		if (entry.isSystemNote) {
+			return false;
+		}
+
 		switch (this.canDelete) {
 			case DeletePermissions.deleteAll:
 				return true;
@@ -130,6 +134,10 @@ export class MessageLogController implements IMessageLogBindings {
 		}
 	}
 	canEditEntry(entry: IMessage): boolean {
+		if (entry.isSystemNote) {
+			return false;
+		}
+
 		switch (this.canEdit) {
 			case EditPermissions.editAll:
 				return true;
@@ -140,8 +148,26 @@ export class MessageLogController implements IMessageLogBindings {
 		}
 	}
 
-	editMessage(entry: IMessage): void{
-		this.editEvent(entry);
+	editMessage(entry: IMessage): void {
+		let editedEntry: IMessage = _.clone(entry);
+
+		this.autosaveDialog.open({
+			save: this.updateNote.bind(this),
+			form: 'noteForm',
+			data: {
+				entry: editedEntry,
+				originalEntry: entry,
+			},
+			template: require('./messageLogEditDialog.html'),
+		});
+	}
+
+	updateNote(data: any): ng.IPromise<void> {
+		return this.messageLog.updateMessage(data.entry);
+	}
+
+	saveNote(data: any): ng.IPromise<void> {
+		return this.messageLog.addMessage(data.entry);
 	}
 }
 
@@ -174,7 +200,6 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			currentUser: '=?',
 			canDelete: '=?',
 			canEdit: '=?',
-			editEvent: '&',
 		},
 		link: (scope: angular.IScope,
 			element: angular.IAugmentedJQuery,
