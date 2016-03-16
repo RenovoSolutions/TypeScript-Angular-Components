@@ -1,1 +1,4 @@
-<div></div>
+<div></div><rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
+<rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
+			  transform="list.transform" get-items="list.loadItems(search)" label="{{list.label}}"
+			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>

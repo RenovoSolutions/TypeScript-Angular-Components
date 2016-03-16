@@ -16,7 +16,48 @@ export let componentName: string = 'rlTypeaheadList';
 export let controllerName: string = 'TypeaheadListController';
 
 export interface ITypeaheadListBindings {
+	/**
+	 * Event for loading the data set or searching against the server
+	 * @param?: {string} search Search value for the server
+	 */
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
+
+	/**
+	 * Event that is fired when an item is added to the list
+	 * @param?: {object} item The item that was added
+	 */
+	add: { (params?: IAddParams): angular.IPromise<void> };
+
+	/**
+	 * Event that is fired when an item is removed from the list
+	 * @param?: {object} item The item that was removed
+	 */
+	remove: { (params?: IRemoveParams): angular.IPromise<void> };
+
+	/**
+	 * Selector for getting the display value for the items
+	 */
+	transform: { (item: any): string } | string;
+
+	/**
+	 * Flower-up label for the typeahead
+	 */
+	label: string;
+
+	/**
+	 * Prefix to show before the label in the placeholder. Default 'Search for'
+	 */
+	prefix: string;
+
+	/**
+	 * Option for specifying whether searching should take place on the client or server
+	 */
+	useClientSearching: boolean;
+
+	/**
+	 * Option for disabling the typeahead
+	 */
+	ngDisabled: boolean;
 }
 
 export interface IAddParams {
@@ -32,6 +73,11 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
 	add: { (params?: IAddParams): angular.IPromise<void> };
 	remove: { (params?: IRemoveParams): angular.IPromise<void> };
+	transform: { (item: any): string } | string;
+	label: string;
+	prefix: string;
+	useClientSearching: boolean;
+	ngDisabled: boolean;
 
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
@@ -77,6 +123,11 @@ let typeaheadList: angular.IComponentOptions = {
 		getItems: '&',
 		add: '&',
 		remove: '&',
+		transform: '<?',
+		label: '@',
+		prefix: '@',
+		useClientSearching: '<?',
+		ngDisabled: '<?',
 	},
 };
 
