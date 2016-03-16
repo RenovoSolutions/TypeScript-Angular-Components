@@ -47,6 +47,7 @@ var AutosaveDialogService = (function () {
             scope.setForm = _this.setForm;
             _this.data = _.extend(options.data, resolveData);
             scope.dialog = _this.data;
+            scope.$save = function () { _this.autosave.autosave(_this.data); };
             var dialogOptions = options;
             dialogOptions.controller = autosaveDialog_controller_1.controllerName;
             dialogOptions.controllerAs = 'controller';
