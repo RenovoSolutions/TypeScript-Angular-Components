@@ -8,7 +8,7 @@ import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export declare let defaultMaxColumnSorts: number;
 export declare let defaultSelectionTitle: string;
@@ -16,9 +16,35 @@ export interface ICardContainerScope extends angular.IScope {
     containerData: any;
 }
 export interface ICardContainerBindings {
+    /**
+     * A builder for the card container
+     */
     builder: ICardContainerBuilder;
+    /**
+     * Controller shared by all components on a card
+     * this controller cannot override any of the following letiable names:
+     *      columns
+     *      item
+     *      contentTemplate
+     *      footerTemplate
+     *      clickable
+     *      cardController
+     *      cardControllerAs
+     *      cardAs
+     *      showContent
+     *      toggleContent
+     *      collapse
+     *      selected
+     *      setSelected
+     */
     cardController: string;
+    /**
+     * Controller alias specified using controllerAs syntax
+     */
     cardControllerAs: string;
+    /**
+     * Name used to access the card data
+     */
     cardAs: string;
 }
 export interface ICardBehavior {
@@ -64,7 +90,7 @@ export declare class CardContainerController {
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;
     static $inject: string[];
-    constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, $transclude: angular.ITranscludeFunction, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
     sortSelected(): void;
     openCard(): boolean;
     sort(column: IColumn<any>): void;
@@ -82,4 +108,4 @@ export declare class CardContainerController {
     private updateVisualSortIndicator(sort);
     private clearVisualSortIndicator(sort);
 }
-export declare function cardContainer($compile: angular.ICompileService): angular.IDirective;
+export declare let cardContainer: angular.IComponentOptions;

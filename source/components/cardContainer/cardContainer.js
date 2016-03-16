@@ -9,12 +9,12 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var dataSources_module_1 = require('./dataSources/dataSources.module');
 var sorts_module_1 = require('./sorts/sorts.module');
 var breakpoint_1 = require('../../services/breakpoints/breakpoint');
-exports.directiveName = 'rlCardContainer';
+exports.componentName = 'rlCardContainer';
 exports.controllerName = 'CardContainerController';
 exports.defaultMaxColumnSorts = 2;
 exports.defaultSelectionTitle = 'Select card';
 var CardContainerController = (function () {
-    function CardContainerController($scope, $attrs, object, array, dataPagerFactory, parentChild) {
+    function CardContainerController($scope, $attrs, $transclude, object, array, dataPagerFactory, parentChild) {
         var _this = this;
         this.$scope = $scope;
         this.object = object;
@@ -62,6 +62,7 @@ var CardContainerController = (function () {
         if (this.builder != null) {
             this.builder.setCardContainerProperties(this);
         }
+        this.makeCard = $transclude;
         this.dataSource = this.source;
         this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
         this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : exports.defaultMaxColumnSorts;
@@ -230,75 +231,25 @@ var CardContainerController = (function () {
     CardContainerController.prototype.clearVisualSortIndicator = function (sort) {
         sort.column.sortDirection = null;
     };
-    CardContainerController.$inject = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataSources_module_1.dataPager.factoryName, __parentChild.serviceName];
+    CardContainerController.$inject = ['$scope', '$attrs', '$transclude', __object.serviceName, __array.serviceName, dataSources_module_1.dataPager.factoryName, __parentChild.serviceName];
     return CardContainerController;
 }());
 exports.CardContainerController = CardContainerController;
-cardContainer.$inject = ['$compile'];
-function cardContainer($compile) {
-    'use strict';
-    return {
-        restrict: 'E',
-        transclude: {
-            'containerHeaderSlot': '?rlContainerHeader',
-            'containerFooterSlot': '?rlContainerFooter',
-            'contentSlot': '?rlCardContent',
-            'footerSlot': '?rlCardFooter',
-        },
-        template: require('./cardContainer.html'),
-        controller: exports.controllerName,
-        controllerAs: 'cardContainer',
-        scope: {},
-        bindToController: {
-            // summary: a builder for the card container
-            builder: '=?',
-            // summary: controller shared by all components on a card
-            // remarks: this controller cannot override any of the following letiable names:
-            //          columns
-            //          item
-            //          contentTemplate
-            //          footerTemplate
-            //          clickable
-            //          cardController
-            //          cardControllerAs
-            //          cardAs
-            //          showContent
-            //          toggleContent
-            //          collapse
-            //          selected
-            //          setSelected
-            cardController: '@',
-            // summary: controller alias specified using controllerAs syntax
-            cardControllerAs: '@',
-            // summary: name used to access the card data
-            cardAs: '@',
-        },
-        link: function (scope, element, attrs, controller, transclude) {
-            var headerArea = element.find('.container-header-template');
-            var footerArea = element.find('.container-footer-template');
-            controller.makeCard = transclude;
-            if (transclude.isSlotFilled('containerHeaderSlot')) {
-                transclude(scope, function (header) {
-                    headerArea.append(header);
-                }, null, 'containerHeaderSlot');
-            }
-            else {
-                var defaultHeader = require('./defaultCardContainerHeader.html');
-                var header = headerArea.append(defaultHeader);
-                $compile(header)(scope);
-            }
-            if (transclude.isSlotFilled('containerFooterSlot')) {
-                transclude(scope, function (footer) {
-                    footerArea.append(footer);
-                }, null, 'containerFooterSlot');
-            }
-            else {
-                var defaultFooter = require('./defaultCardContainerFooter.html');
-                var footer = footerArea.append(defaultFooter);
-                $compile(footer)(scope);
-            }
-        }
-    };
-}
-exports.cardContainer = cardContainer;
+exports.cardContainer = {
+    transclude: {
+        'containerHeaderSlot': '?rlContainerHeader',
+        'containerFooterSlot': '?rlContainerFooter',
+        'contentSlot': '?rlCardContent',
+        'footerSlot': '?rlCardFooter',
+    },
+    template: require('./cardContainer.html'),
+    controller: exports.controllerName,
+    controllerAs: 'cardContainer',
+    bindings: {
+        builder: '=?',
+        cardController: '@',
+        cardControllerAs: '@',
+        cardAs: '@',
+    }
+};
 //# sourceMappingURL=cardContainer.js.map
