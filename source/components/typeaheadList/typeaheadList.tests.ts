@@ -69,16 +69,20 @@ describe('TypeaheadListController', () => {
 			let list: ITestObject[] = [];
 			buildController(list);
 			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			let addEventSpy: Sinon.SinonSpy = sinon.spy();
 			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
 				remove: removeSpy,
 			});
+			typeaheadList.add = addEventSpy;
 
-			typeaheadList.add(items[0]);
+			typeaheadList.addItem(items[0]);
 
 			expect(list).to.have.length(1);
 			expect(list[0].id).to.equal(1);
 			sinon.assert.calledOnce(removeSpy);
 			expect(removeSpy.firstCall.args[0].id).to.equal(1);
+			sinon.assert.calledOnce(addEventSpy);
+			expect(addEventSpy.firstCall.args[0].item.id).to.equal(1);
 		});
 	});
 
@@ -87,15 +91,19 @@ describe('TypeaheadListController', () => {
 			let list: ITestObject[] = [items[0]];
 			buildController(list);
 			let addSpy: Sinon.SinonSpy = sinon.spy();
+			let removeEventSpy: Sinon.SinonSpy = sinon.spy();
 			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
 				add: addSpy,
 			});
+			typeaheadList.remove = removeEventSpy;
 
-			typeaheadList.remove(list[0]);
+			typeaheadList.removeItem(list[0]);
 
 			expect(list).to.be.empty;
 			sinon.assert.calledOnce(addSpy);
 			expect(addSpy.firstCall.args[0].id).to.equal(1);
+			sinon.assert.calledOnce(removeEventSpy);
+			expect(removeEventSpy.firstCall.args[0].item.id).to.equal(1);
 		});
 	});
 

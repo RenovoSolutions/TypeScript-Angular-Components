@@ -19,9 +19,19 @@ export interface ITypeaheadListBindings {
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
 }
 
+export interface IAddParams {
+	item: any;
+}
+
+export interface IRemoveParams {
+	item: any;
+}
+
 export class TypeaheadListController implements ITypeaheadListBindings {
 	// bindings
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
+	add: { (params?: IAddParams): angular.IPromise<void> };
+	remove: { (params?: IRemoveParams): angular.IPromise<void> };
 
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
@@ -41,18 +51,20 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		});
 	}
 
-	add(item: any): void {
+	addItem(item: any): void {
 		this.ngModel.$viewValue.push(item);
 		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
 			behavior.remove(item);
 		});
+		this.add({ item: item });
 	}
 
-	remove(item: any): void {
+	removeItem(item: any): void {
 		__array.arrayUtility.remove(this.ngModel.$viewValue, item);
 		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
 			behavior.add(item);
 		});
+		this.remove({ item: item });
 	}
 }
 
@@ -63,6 +75,8 @@ let typeaheadList: angular.IComponentOptions = {
 	controllerAs: 'controller',
 	bindings: {
 		getItems: '&',
+		add: '&',
+		remove: '&',
 	},
 };
 
