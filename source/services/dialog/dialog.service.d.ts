@@ -1,6 +1,7 @@
 import * as ng from 'angular';
 import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
 export { bootstrapModalDialog };
+export { directiveName, controllerName, DialogController } from '../../components/dialog/dialog';
 export declare let moduleName: string;
 export declare let serviceName: string;
 export interface IDialogCloseHandler {

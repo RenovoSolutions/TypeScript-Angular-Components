@@ -2,6 +2,10 @@
 var ng = require('angular');
 var bootstrapModalDialog = require('./bootstrapModalDialog/bootstrapModalDialog.module');
 exports.bootstrapModalDialog = bootstrapModalDialog;
+var dialog_1 = require('../../components/dialog/dialog');
+exports.directiveName = dialog_1.directiveName;
+exports.controllerName = dialog_1.controllerName;
+exports.DialogController = dialog_1.DialogController;
 exports.moduleName = 'rl.ui.services.dialog';
 exports.serviceName = 'dialog';
 var DialogService = (function () {

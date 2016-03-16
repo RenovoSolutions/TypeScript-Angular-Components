@@ -4,6 +4,7 @@ import * as ng from 'angular';
 import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
 
 export { bootstrapModalDialog };
+export { directiveName, controllerName, DialogController } from '../../components/dialog/dialog';
 
 export let moduleName: string = 'rl.ui.services.dialog';
 export let serviceName: string = 'dialog';
