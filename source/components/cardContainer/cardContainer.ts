@@ -82,9 +82,10 @@ export class CardContainerController {
 
 	makeCard: angular.ITranscludeFunction;
 
-	static $inject: string[] = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$attrs', '$transclude', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
 	constructor(private $scope: ICardContainerScope
 			, $attrs: ICardContainerAttrs
+			, $transclude: angular.ITranscludeFunction
 			, private object: __object.IObjectUtility
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
@@ -93,6 +94,7 @@ export class CardContainerController {
 			this.builder.setCardContainerProperties(this);
 		}
 
+		this.makeCard = $transclude;
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
@@ -370,13 +372,6 @@ export function cardContainer($compile: angular.ICompileService): angular.IDirec
 
 			// summary: name used to access the card data
 			cardAs: '@',
-		},
-		link(scope: angular.IScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, controller: CardContainerController
-			, transclude: angular.ITranscludeFunction): void {
-			controller.makeCard = transclude;
 		}
 	};
 }

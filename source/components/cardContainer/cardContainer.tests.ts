@@ -621,8 +621,12 @@ describe('CardContainerController', () => {
 
 		cardContainer.builder = builder;
 
+		let locals: any = {
+			$transclude: {},
+		};
+
 		let controllerResult: test.IControllerResult<CardContainerController>
-			= test.angularFixture.controllerWithBindings<CardContainerController>(controllerName, cardContainer);
+			= test.angularFixture.controllerWithBindings<CardContainerController>(controllerName, cardContainer, locals);
 
 		scope = <ICardContainerScope>controllerResult.scope;
 		cardContainer = controllerResult.controller;
