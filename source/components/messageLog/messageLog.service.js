@@ -57,6 +57,12 @@ var MessageLog = (function () {
             _this.getTopPage();
         });
     };
+    MessageLog.prototype.updateMessage = function (message) {
+        var _this = this;
+        return this.dataService.updateMessage(message).then(function () {
+            _this.getTopPage();
+        });
+    };
     MessageLog.prototype.deleteMessage = function (message) {
         var _this = this;
         return this.dataService.deleteMessage(message).then(function () {
