@@ -1,3 +1,6 @@
+<rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
+			  transform="list.transform" get-items="list.loadItems(search)" label="{{list.label}}"
+			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>
 <div class="table-container">
 	<div class="row table-header">
 		<div ng-transclude="headerSlot"></div>
@@ -8,6 +11,3 @@
 		<div class="default-item-template"></div>
 	</div>
 </div>
-<rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
-			  transform="list.transform" get-items="list.loadItems(search)" label="{{list.label}}"
-			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>
