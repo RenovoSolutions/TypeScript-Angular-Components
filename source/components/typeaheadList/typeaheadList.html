@@ -8,11 +8,6 @@
 		</div>
 	</div>
 	<div class="row table-row" ng-repeat="$item in list.ngModel.$viewValue" rl-alias="$item as {{list.itemAs}}">
-		<div ng-transclude="listItemSlot">
-			<div class="col-xs-10">{{$transform($item)}}</div>
-			<div class="col-xs-2">
-				<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
-			</div>
-		</div>
+		<rl-typeahead-list-item transclude="list.$transclude"></rl-typeahead-list-item>
 	</div>
 </div>

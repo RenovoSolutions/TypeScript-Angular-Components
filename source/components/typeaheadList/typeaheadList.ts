@@ -11,6 +11,7 @@ import __array = services.array;
 import __transform = services.transform.transform;
 
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
+import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem';
 
 export let moduleName: string = 'rl.ui.components.typeaheadList';
 export let componentName: string = 'rlTypeaheadList';
@@ -97,7 +98,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	static $inject: string[] = ['$scope', '$element', '$transclude', __parentChild.serviceName];
 	constructor(private $scope: ITypeaheadListScope
 			, private $element: angular.IAugmentedJQuery
-			, private $transclude: angular.ITranscludeFunction
+			, public $transclude: angular.ITranscludeFunction
 			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
@@ -156,4 +157,5 @@ let typeaheadList: angular.IComponentOptions = {
 
 angular.module(moduleName, [__parentChild.moduleName])
 	.component(componentName, typeaheadList)
-	.controller(controllerName, TypeaheadListController);
+	.controller(controllerName, TypeaheadListController)
+	.component(itemComponentName, typeaheadItem);
