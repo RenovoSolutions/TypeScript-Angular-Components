@@ -12,20 +12,27 @@ export interface IAliasAttributes extends angular.IAttributes {
 
 export class AliasController {
 	static $inject: string[] = ['$scope', '$attrs', '$parse', '$interpolate'];
-	constructor($scope: angular.IScope
-			, $attrs: IAliasAttributes
-			, $parse: angular.IParseService
-			, $interpolate: angular.IInterpolateService) {
-		let expression: string[];
-		$scope.$watch((): any => {
-			expression = $attrs.rlAlias.split(' as ');
-			return $parse(expression[0])($scope);
-		}, (item: any): void => {
-			let alias: string = $interpolate(expression[1])($scope);
-			if (alias != null) {
-				$scope[alias] = item;
-			}
-		});
+	constructor(private $scope: angular.IScope
+			, private $attrs: IAliasAttributes
+			, private $parse: angular.IParseService
+			, private $interpolate: angular.IInterpolateService) {
+		let initialValue: any = this.getValue();
+		this.resolveAlias(initialValue);
+		$scope.$watch(this.getValue.bind(this), this.resolveAlias.bind(this));
+	}
+
+	private expression: string[];
+
+	private getValue(): any {
+		this.expression = this.$attrs.rlAlias.split(' as ');
+		return this.$parse(this.expression[0])(this.$scope);
+	}
+
+	private resolveAlias(value: any): void {
+		let alias: string = this.$interpolate(this.expression[1])(this.$scope);
+		if (alias != null) {
+			this.$scope[alias] = value;
+		}
 	}
 }
 
