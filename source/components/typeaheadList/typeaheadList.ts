@@ -94,25 +94,18 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
 
-	static $inject: string[] = ['$scope', '$element', '$transclude', '$compile', __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$element', '$transclude', __parentChild.serviceName];
 	constructor(private $scope: ITypeaheadListScope
-			, private $element: angular.IAugmentedJquery
+			, private $element: angular.IAugmentedJQuery
 			, private $transclude: angular.ITranscludeFunction
-			, private $compile: angular.ICompileService
 			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
 		this.$scope.$remove = this.removeItem.bind(this);
 		this.$scope.$transform = (item: any): string => { return __transform.getValue(item, this.transform); };
 
-		if (!this.$transclude.isSlotFilled('listItemSlot')) {
-			let templateArea: angular.IAugmentedJquery = angular.element(this.$element.find('.default-item-template'));
-			let template: JQuery = templateArea.append(require('./defaultListItem.html'));
-			this.$compile(template)(templateArea.scope());
-		}
-
 		if (!this.$transclude.isSlotFilled('headerSlot')) {
-			let headerArea: angular.IAugmentedJquery = this.$element.find('.default-header-template');
+			let headerArea: angular.IAugmentedJQuery = this.$element.find('.default-header-template');
 			headerArea.append('<div class="col-xs-12">Name</div>');
 		}
 	}
@@ -144,9 +137,9 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 
 let typeaheadList: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
-	transclude: {
+	transclude: <any>{
 		headerSlot: '?rlListHeader',
-		listItemSlot: '?rlListItem',
+		listItemSlot: 'rlListItem',
 	},
 	template: require('./typeaheadList.html'),
 	controller: controllerName,
