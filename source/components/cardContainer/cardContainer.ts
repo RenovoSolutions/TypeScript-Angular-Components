@@ -21,7 +21,7 @@ import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
-export let directiveName: string = 'rlCardContainer';
+export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
 
 export let defaultMaxColumnSorts: number = 2;
@@ -32,10 +32,38 @@ export interface ICardContainerScope extends angular.IScope {
 }
 
 export interface ICardContainerBindings {
+	/**
+	 * A builder for the card container
+	 */
 	builder: ICardContainerBuilder;
 
+	/**
+	 * Controller shared by all components on a card
+	 * this controller cannot override any of the following letiable names:
+	 *      columns
+	 *      item
+	 *      contentTemplate
+	 *      footerTemplate
+	 *      clickable
+	 *      cardController
+	 *      cardControllerAs
+	 *      cardAs
+	 *      showContent
+	 *      toggleContent
+	 *      collapse
+	 *      selected
+	 *      setSelected
+	 */
 	cardController: string;
+
+	/**
+	 * Controller alias specified using controllerAs syntax
+	 */
 	cardControllerAs: string;
+
+	/**
+	 * Name used to access the card data
+	 */
 	cardAs: string;
 }
 
@@ -342,30 +370,9 @@ export let cardContainer: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'cardContainer',
 	bindings: {
-		// summary: a builder for the card container
 		builder: '=?',
-
-		// summary: controller shared by all components on a card
-		// remarks: this controller cannot override any of the following letiable names:
-		//          columns
-		//          item
-		//          contentTemplate
-		//          footerTemplate
-		//          clickable
-		//          cardController
-		//          cardControllerAs
-		//          cardAs
-		//          showContent
-		//          toggleContent
-		//          collapse
-		//          selected
-		//          setSelected
 		cardController: '@',
-
-		// summary: controller alias specified using controllerAs syntax
 		cardControllerAs: '@',
-
-		// summary: name used to access the card data
 		cardAs: '@',
 	}
 }
