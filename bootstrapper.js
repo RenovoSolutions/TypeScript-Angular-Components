@@ -35,6 +35,8 @@
 		self.getOptions = function () {
 			return $q.when(_.clone(self.options));
 		}
+		self.typeaheadList = [self.options[0], self.options[4]];
+
 		self.validator = {
 			validate: function () {
 				return self.text === 'valid';
