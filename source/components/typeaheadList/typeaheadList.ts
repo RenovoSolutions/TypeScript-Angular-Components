@@ -106,9 +106,14 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		this.$scope.$transform = (item: any): string => { return __transform.getValue(item, this.transform); };
 
 		if (!this.$transclude.isSlotFilled('listItemSlot')) {
-			let templateArea: angular.IAugmentedJquery = angular.element(this.$element.find('.default-template'));
+			let templateArea: angular.IAugmentedJquery = angular.element(this.$element.find('.default-item-template'));
 			let template: JQuery = templateArea.append(require('defaultListItem.html'));
 			this.$compile(template)(templateArea.scope());
+		}
+
+		if (!this.$transclude.isSlotFilled('headerSlot')) {
+			let headerArea: angular.IAugmentedJquery = this.$element.find('.default-header-template');
+			headerArea.append('<div class="col-xs-12">Name</div>');
 		}
 	}
 
@@ -140,6 +145,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 let typeaheadList: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	transclude: {
+		headerSlot: '?rlListHeader',
 		listItemSlot: '?rlListItem',
 	},
 	template: require('./typeaheadList.html'),
