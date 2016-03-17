@@ -6,11 +6,13 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
+import { INgModelValidator } from '../../types/ngModelValidator';
+
 export var moduleName: string = 'rl.ui.services.componentValidator';
 export var factoryName: string = 'componentValidator';
 
 export interface IComponentValidatorOptions {
-	ngModel?: angular.INgModelController;
+	ngModel?: INgModelValidator;
 	form?: angular.IFormController;
 	$scope: angular.IScope;
 	validators: __validation.IValidationHandler[];
@@ -27,7 +29,7 @@ export class ComponentValidator implements IComponentValidator {
 	errorType: string;
 
 	private $scope: angular.IScope;
-	private ngModel: angular.INgModelController;
+	private ngModel: INgModelValidator;
 	private form: angular.IFormController;
 	private setValidity: { (isValid: boolean): void };
 
@@ -61,6 +63,7 @@ export class ComponentValidator implements IComponentValidator {
 			if (value) {
 				this.error = null;
 			}
+			this.ngModel.rlErrorMessage = this.error;
 		});
 	}
 }
