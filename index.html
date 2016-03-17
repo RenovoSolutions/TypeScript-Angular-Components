@@ -24,6 +24,8 @@
 				<h3>Inputs</h3>
 				<rl-textbox ng-model="test.otherText" rl-required="We need this"></rl-textbox>
 				<rl-textarea ng-model="test.textAreaText" rl-required="Required textarea"></rl-textarea>
+				<rl-spinner ng-model="test.number" rl-required="Spinner required"></rl-spinner>
+				<rl-date-time ng-model="test.date" rl-required="Date required"></rl-date-time>
 
 				<br/>
 				<rl-template-renderer template="test.template"></rl-template-renderer>
@@ -102,8 +104,6 @@
 						<rl-tab-footer>Footer 2</rl-tab-footer>
 					</rl-tab>
 				</rl-tabset>
-				<rl-spinner ng-model="test.number"></rl-spinner>
-				<rl-date-time ng-model="test.date"></rl-date-time>
 				<div rl-alias="test.number as val">{{val}}</div>
 
 				<button rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</button>
