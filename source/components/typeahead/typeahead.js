@@ -177,7 +177,8 @@ angular.module(exports.moduleName, [
     __parentChild.moduleName,
     __genericSearch.moduleName,
     __objectUtility.moduleName,
-    __arrayUtility.moduleName
+    __arrayUtility.moduleName,
+    input_1.moduleName
 ])
     .component(exports.componentName, typeahead)
     .controller(exports.controllerName, TypeaheadController);

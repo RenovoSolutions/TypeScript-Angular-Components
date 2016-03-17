@@ -32,6 +32,7 @@ var ComponentValidator = (function () {
             }
             else if (!_.isUndefined(_this.form)) {
                 _this.form.$setValidity(_this.errorType, value, 'group');
+                _this.form.rlErrorMessage = _this.error;
             }
             else if (_.isFunction(_this.setValidity)) {
                 _this.setValidity(value);

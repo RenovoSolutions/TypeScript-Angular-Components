@@ -24,18 +24,27 @@ var OnChangeTrigger = (function (_super) {
             return _this.settings.form != null
                 ? _this.settings.form.$dirty
                 : false;
-        }, function (value) {
-            if (value) {
+        }, function () { _this.triggerSaveAction(autosave); });
+        this.$rootScope.$watch(function () {
+            return _this.settings.form != null
+                ? _this.settings.form.$valid
+                : false;
+        }, function () { _this.triggerSaveAction(autosave); });
+    };
+    OnChangeTrigger.prototype.triggerSaveAction = function (autosave) {
+        var _this = this;
+        if (this.settings.form.$dirty && this.settings.form.$valid) {
+            this.setTimer(autosave);
+            this.clearChangeListener = this.setChangeListener(function () {
                 _this.setTimer(autosave);
-                _this.clearChangeListener = _this.setChangeListener(function () {
-                    _this.$timeout.cancel(_this.timer);
-                    _this.setTimer(autosave);
-                });
-            }
-        });
+            });
+        }
     };
     OnChangeTrigger.prototype.setTimer = function (autosave) {
         var _this = this;
+        if (this.timer != null) {
+            this.$timeout.cancel(this.timer);
+        }
         this.timer = this.$timeout(function () {
             _this.clearChangeListener();
             autosave();

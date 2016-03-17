@@ -26,6 +26,7 @@ export declare class OnChangeTrigger extends Trigger<OnChangeSettings> implement
     setTrigger(autosave: {
         (): void;
     }): void;
+    private triggerSaveAction(autosave);
     private setTimer(autosave);
     private initChangeListeners();
     private nullSetListener();

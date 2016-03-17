@@ -89,7 +89,7 @@ select.bindings.getOptions = '&';
 select.bindings.selector = '<?';
 select.bindings.ngDisabled = '<?';
 select.bindings.nullOption = '@';
-angular.module(exports.moduleName, ['ui.select', __object.moduleName])
+angular.module(exports.moduleName, ['ui.select', __object.moduleName, input_1.moduleName])
     .component(exports.componentName, select)
     .controller(exports.controllerName, SelectController);
 //# sourceMappingURL=select.js.map

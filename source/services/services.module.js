@@ -16,6 +16,8 @@ var dialog = require('./dialog/dialog.service');
 exports.dialog = dialog;
 var documentWrapper = require('./documentWrapper/documentWrapper.service');
 exports.documentWrapper = documentWrapper;
+var form = require('./form/form.service');
+exports.form = form;
 var jquery = require('./jquery/jquery.service');
 exports.jquery = jquery;
 var templateLoader = require('./templateLoader/templateLoader.service');
@@ -32,6 +34,7 @@ angular.module(exports.moduleName, [
     contentProvider.moduleName,
     dialog.moduleName,
     documentWrapper.moduleName,
+    form.moduleName,
     jquery.moduleName,
     templateLoader.moduleName,
     windowWrapper.moduleName,
