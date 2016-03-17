@@ -5,7 +5,7 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { INgModelValidator } from '../../types/ngModelValidator';
+import { INgModelValidator } from '../../types/formValidators';
 
 export let moduleName: string = 'rl.ui.behaviors.required';
 export let directiveName: string = 'rlRequired';
