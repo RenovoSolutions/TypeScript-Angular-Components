@@ -92,9 +92,9 @@ export class DateTimeController {
 			}
 
 			if (_.some(validators)) {
-				this.dateTimeValidator = this.componentValidatorFactory.getInstance({
+				this.dateTimeValidator = componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
-					$scope: this.$scope,
+					$scope: $scope,
 					validators: validators,
 				});
 			}
@@ -134,11 +134,12 @@ function dateTime(moment: moment.MomentStatic
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
 			, controllers: any[]): void => {
+			let dateTime: DateTimeController = scope.dateTime;
+
 			let ngModel: angular.INgModelController = controllers[0];
 			dateTime.required = controllers[1];
 			dateTime.ngModel = ngModel;
 
-			let dateTime: DateTimeController = scope.dateTime;
 			// defaults to true
 			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
 			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;

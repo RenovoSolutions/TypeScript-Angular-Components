@@ -14,6 +14,7 @@ import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
+import __object = services.object;
 
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
@@ -83,9 +84,9 @@ export class SpinnerController {
 			}
 
 			if (_.some(validators)) {
-				this.spinnerValidator = this.componentValidatorFactory.getInstance({
+				this.spinnerValidator = componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
-					$scope: this.$scope,
+					$scope: $scope,
 					validators: validators,
 				});
 			}
@@ -123,10 +124,10 @@ function spinner($timeout: angular.ITimeoutService
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
 			, controllers: any[]): void {
+			let spinner: SpinnerController = scope.spinner;
+
 			let ngModel: angular.INgModelController = controllers[0];
 			spinner.required = controllers[1];
-
-			let spinner: SpinnerController = scope.spinner;
 			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
 			scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {
