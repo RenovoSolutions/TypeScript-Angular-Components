@@ -42,6 +42,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
 	validate: { (): boolean };
 	save: { (): angular.IPromise<void> };
+	cardType: string;
 
 	showContent: boolean = false;
 	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
@@ -79,6 +80,8 @@ export class SimpleCardController implements ISimpleCardBindings {
 				this.close();
 			}
 		});
+
+		this.cardType = this.cardType != null ? this.cardType : null;
 	}
 
 	toggleContent(): void {
@@ -149,6 +152,7 @@ export function simpleCard(): angular.IDirective {
 			childLink: '=?',
 			validate: '&',
 			save: '&',
+			cardType: '@',
 		},
 	};
 }
