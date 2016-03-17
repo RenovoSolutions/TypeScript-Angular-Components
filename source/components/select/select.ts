@@ -9,33 +9,23 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __validation = services.validation;
 import __object = services.object;
 import __transform = services.transform.transform;
 
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
+import { input, InputController, moduleName as inputModule } from '../input/input';
 
 export var moduleName: string = 'rl.ui.components.select';
-export var directiveName: string = 'rlSelect';
+export var componentName: string = 'rlSelect';
 export var controllerName: string = 'SelectController';
 
-export class SelectController {
+export class SelectController extends InputController {
 	// bindings
 	options: any[];
 	getOptions: { (): angular.IPromise<any[]> };
 	selector: { (item: any): string } | string;
-	validator: __validation.IValidationHandler;
-	label: string;
 	ngDisabled: boolean;
 	nullOption: string;
 
-	ngModel: angular.INgModelController;
-	selectValidator: IComponentValidator;
 	loading: boolean;
 
 	private _nullOption: any = {
@@ -54,14 +44,11 @@ export class SelectController {
 		}
 	}
 
-	static $inject: string[] = ['$element', '$scope', '$q', componentValidatorFactoryName, __object.serviceName];
-	constructor($element: angular.IAugmentedJQuery
-			, $scope: angular.IScope
-			, private $q: angular.IQService
-			, componentValidatorFactory: IComponentValidatorFactory
-			, private object: __object.IObjectUtility) {
-		this.ngModel = $element.controller('ngModel');
+	static $inject: string[] = ['$q', __object.serviceName];
+	constructor(private $q: angular.IQService
+			, private object: __object.IObjectUtility) {}
 
+	$onInit(): void {
 		if (_.isUndefined(this.options)) {
 			this.loading = true;
 			this.loadItems().then((options: any[]): void => {
@@ -70,14 +57,6 @@ export class SelectController {
 			});
 		} else {
 			this.options = this.configureOptions(this.options);
-		}
-
-		if (!_.isUndefined(this.validator)) {
-			this.selectValidator = componentValidatorFactory.getInstance({
-				ngModel: this.ngModel,
-				$scope: $scope,
-				validators: [this.validator],
-			});
 		}
 	}
 
@@ -107,26 +86,16 @@ export class SelectController {
 	}
 }
 
-export function select(): angular.IDirective {
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		template: require('./select.html'),
-		controller: controllerName,
-		controllerAs: 'select',
-		scope: {},
-		bindToController: {
-			options: '<?',
-			getOptions: '&',
-			selector: '<?',
-			validator: '<?',
-			label: '@',
-			ngDisabled: '<?',
-			nullOption: '@',
-		},
-	};
-}
+let select: angular.IComponentOptions = _.clone(input);
+select.template = require('./select.html');
+select.controller = controllerName;
+select.controllerAs = 'select';
+select.bindings.options = '<?';
+select.bindings.getOptions = '&';
+select.bindings.selector = '<?';
+select.bindings.ngDisabled = '<?';
+select.bindings.nullOption = '@';
 
-angular.module(moduleName, ['ui.select', componentValidatorModuleName, __object.moduleName])
-	.directive(directiveName, select)
+angular.module(moduleName, ['ui.select', __object.moduleName])
+	.directive(componentName, select)
 	.controller(controllerName, SelectController);
