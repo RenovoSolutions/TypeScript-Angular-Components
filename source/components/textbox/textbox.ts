@@ -56,9 +56,9 @@ let textbox: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'textbox',
 	bindings: {
-		validator: '=',
+		validator: '<?',
 		label: '@',
-		maxlength: '=',
+		maxlength: '<?',
 	},
 };
 
