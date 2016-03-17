@@ -52,18 +52,18 @@ export class ComponentValidator implements IComponentValidator {
 
 	private setValidator(): Function {
 		return this.$scope.$watch(this.validator.validate.bind(this.validator), (value: boolean): void => {
+			if (value) {
+				this.error = null;
+			}
+
 			if (!_.isUndefined(this.ngModel)) {
 				this.ngModel.$setValidity(this.errorType, value);
+				this.ngModel.rlErrorMessage = this.error;
 			} else if (!_.isUndefined(this.form)) {
 				this.form.$setValidity(this.errorType, value, <any>'group');
 			} else if (_.isFunction(this.setValidity)) {
 				this.setValidity(value);
 			}
-
-			if (value) {
-				this.error = null;
-			}
-			this.ngModel.rlErrorMessage = this.error;
 		});
 	}
 }
