@@ -27,15 +27,16 @@
 				<rl-spinner ng-model="test.number" rl-required="Spinner required"></rl-spinner>
 				<rl-date-time ng-model="test.date" rl-required="Date required"></rl-date-time>
 
-				<br/>
-				<rl-template-renderer template="test.template"></rl-template-renderer>
-
+				<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
 				<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
 							  create="test.create(value)" label="Test create"></rl-typeahead>
 				<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
 							  select="test.select(value)" label="Test select"></rl-typeahead>
 				<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
 							  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
+
+				<br/>
+				<rl-template-renderer template="test.template"></rl-template-renderer>
 
 				<div ng-repeat="value in test.set">
 					{{value}}
