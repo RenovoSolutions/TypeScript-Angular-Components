@@ -130,16 +130,12 @@ describe('SelectController', () => {
 			getOptions: getOptions ? getOptions : sinon.spy(),
 		};
 
-		let $element: any = {
-			controller(): INgModelMock {
-				return ngModel;
-			},
-		};
-
 		let controllerResult: __test.IControllerResult<SelectController>
-			= __test.angularFixture.controllerWithBindings<SelectController>(controllerName, bindings, { $element });
+			= __test.angularFixture.controllerWithBindings<SelectController>(controllerName, bindings);
 
 		scope = controllerResult.scope;
 		dropdown = controllerResult.controller;
+		dropdown.ngModel = ngModel;
+		dropdown.$onInit();
 	}
 });
