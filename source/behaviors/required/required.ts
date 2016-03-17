@@ -2,6 +2,9 @@
 
 import * as angular from 'angular';
 
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+
 import { INgModelValidator } from '../../types/ngModelValidator';
 
 export let moduleName: string = 'rl.ui.behaviors.required';
@@ -10,6 +13,7 @@ export let controllerName: string = 'RequiredController';
 
 export interface IRequiredAttributes extends angular.IAttributes {
 	rlRequired: string;
+	required: string;
 }
 
 export class RequiredController {
@@ -25,9 +29,11 @@ export class RequiredController {
 	$onInit(): void {
 		this.ngModel = this.$element.controller('ngModel');
 		this.ngModel.rlErrorMessage = this.$interpolate(this.$attrs.rlRequired)(this.$scope);
-		this.$attrs.$set('required', true);
-		this.$element.removeAttr('rl-required');
-		this.$compile(this.$element)(this.$scope);
+
+		if (__object.objectUtility.isNullOrEmpty(this.$attrs.required)) {
+			this.$attrs.$set('required', true);
+			this.$compile(this.$element)(this.$scope);
+		}
 	}
 }
 
