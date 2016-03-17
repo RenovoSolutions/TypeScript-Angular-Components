@@ -13,6 +13,7 @@ import __object = services.object;
 import __transform = services.transform.transform;
 
 import { input, InputController, moduleName as inputModule } from '../input/input';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.select';
 export var componentName: string = 'rlSelect';
@@ -44,9 +45,13 @@ export class SelectController extends InputController {
 		}
 	}
 
-	static $inject: string[] = ['$q', __object.serviceName];
-	constructor(private $q: angular.IQService
-			, private object: __object.IObjectUtility) {}
+	static $inject: string[] = ['$scope', '$q', __object.serviceName, componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, private $q: angular.IQService
+			, private object: __object.IObjectUtility
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		super($scope, componentValidatorFactory);
+	}
 
 	$onInit(): void {
 		if (_.isUndefined(this.options)) {
@@ -97,5 +102,5 @@ select.bindings.ngDisabled = '<?';
 select.bindings.nullOption = '@';
 
 angular.module(moduleName, ['ui.select', __object.moduleName])
-	.directive(componentName, select)
+	.component(componentName, select)
 	.controller(controllerName, SelectController);

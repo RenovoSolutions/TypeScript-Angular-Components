@@ -12,12 +12,7 @@ import __validation = services.validation;
 import __transform = services.transform.transform;
 
 import { input, InputController, moduleName as inputModule } from '../input/input';
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.typeahead';
 export var componentName: string = 'rlTypeahead';
@@ -162,14 +157,17 @@ export class TypeaheadController extends InputController {
 		, __objectUtility.serviceName
 		, __arrayUtility.serviceName
 		, componentValidatorFactoryName];
-	constructor(private $scope: angular.IScope
+	constructor($scope: angular.IScope
 		, private $q: angular.IQService
 		, private $attrs: ITypeaheadAttrs
 		, private $timeout: angular.ITimeoutService
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
-		, private array: __arrayUtility.IArrayUtility) { }
+		, private array: __arrayUtility.IArrayUtility
+		, componentValidatorFactory: IComponentValidatorFactory) {
+			super($scope, componentValidatorFactory);
+		}
 
 	$onInit(): void {
 		this.searchFilter = this.genericSearchFactory.getInstance();
