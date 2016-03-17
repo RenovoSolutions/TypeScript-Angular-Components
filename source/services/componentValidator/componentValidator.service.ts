@@ -24,6 +24,7 @@ export interface IComponentValidator {
 export class ComponentValidator implements IComponentValidator {
 	validator: __validation.ISimpleValidator;
 	error: string;
+	errorType: string;
 
 	private $scope: angular.IScope;
 	private ngModel: angular.INgModelController;
@@ -36,8 +37,9 @@ export class ComponentValidator implements IComponentValidator {
 		this.ngModel = options.ngModel;
 		this.form = options.form;
 
-		this.validator = validationService.buildCustomValidator((error: string): void => {
+		this.validator = validationService.buildCustomValidator((error: string, name: string): void => {
 			this.error = error;
+			this.errorType = name || 'customValidation';
 		});
 		_.each(options.validators, (customValidator: __validation.IValidationHandler): void => {
 			this.validator.registerValidationHandler(customValidator);
@@ -49,9 +51,9 @@ export class ComponentValidator implements IComponentValidator {
 	private setValidator(): Function {
 		return this.$scope.$watch(this.validator.validate.bind(this.validator), (value: boolean): void => {
 			if (!_.isUndefined(this.ngModel)) {
-				this.ngModel.$setValidity('customValidation', value);
+				this.ngModel.$setValidity(this.errorType, value);
 			} else if (!_.isUndefined(this.form)) {
-				this.form.$setValidity('customValidation', value, <any>'group');
+				this.form.$setValidity(this.errorType, value, <any>'group');
 			} else if (_.isFunction(this.setValidity)) {
 				this.setValidity(value);
 			}

@@ -21,13 +21,9 @@ export var moduleName: string = 'rl.ui.components.textbox';
 export var componentName: string = 'rlTextbox';
 export var controllerName: string = 'TextboxController';
 
-export interface IInputValidationHandler extends __validation.IValidationHandler {
-	name: string;
-}
-
 export class TextboxController {
 	// bindings
-	validator: IInputValidationHandler;
+	validator: __validation.IValidationHandler;
 	label: string;
 
 	ngModel: angular.INgModelController;
@@ -47,7 +43,7 @@ export class TextboxController {
 			, private componentValidatorFactory: IComponentValidatorFactory) { }
 
 	$onInit(): void {
-		let validators: IInputValidationHandler[] = [];
+		let validators: __validation.IValidationHandler[] = [];
 
 		if (!_.isUndefined(this.validator)) {
 			validators.push(this.validator);
