@@ -54,6 +54,8 @@ export class SelectController extends InputController {
 	}
 
 	$onInit(): void {
+		super.$onInit();
+
 		if (_.isUndefined(this.options)) {
 			this.loading = true;
 			this.loadItems().then((options: any[]): void => {

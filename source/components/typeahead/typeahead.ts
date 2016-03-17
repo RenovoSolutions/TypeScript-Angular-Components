@@ -170,6 +170,8 @@ export class TypeaheadController extends InputController {
 		}
 
 	$onInit(): void {
+		super.$onInit();
+
 		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.prefix = this.prefix || 'Search for';
@@ -186,6 +188,12 @@ export class TypeaheadController extends InputController {
 		this.parentChild.registerChildBehavior(this.childLink, {
 			add: this.addItem.bind(this),
 			remove: this.removeItem.bind(this),
+		});
+
+		this.$scope.$watch((): any => { return this.ngModel.$viewValue; }, (value: any): void => {
+			if (value != null && this.collapseOnSelect) {
+				this.collapsed = true;
+			}
 		});
 	}
 
