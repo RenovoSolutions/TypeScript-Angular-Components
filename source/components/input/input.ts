@@ -9,6 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
 
+import { INgModelValidator } from '../../types/ngModelValidator';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
@@ -25,7 +26,7 @@ export class InputController {
 	validator: __validation.IValidationHandler;
 	label: string;
 
-	ngModel: angular.INgModelController;
+	ngModel: INgModelValidator;
 	required: RequiredController;
 	inputValidator: IComponentValidator;
 

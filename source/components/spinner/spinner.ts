@@ -16,6 +16,7 @@ import __string = services.string;
 import __number = services.number;
 import __object = services.object;
 
+import { INgModelValidator } from '../../types/ngModelValidator';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
@@ -61,14 +62,14 @@ export class SpinnerController {
 	name: string;
 	validator: __validation.IValidationHandler;
 
-	ngModel: angular.INgModelController;
+	ngModel: INgModelValidator;
 	required: RequiredController;
 	spinnerValidator: IComponentValidator;
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 			, componentValidatorFactory: IComponentValidatorFactory) {
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
 			let validators: __validation.IValidationHandler[] = [];
 
 			if (!_.isUndefined(this.validator)) {
@@ -126,7 +127,7 @@ function spinner($timeout: angular.ITimeoutService
 			, controllers: any[]): void {
 			let spinner: SpinnerController = scope.spinner;
 
-			let ngModel: angular.INgModelController = controllers[0];
+			let ngModel: INgModelValidator = controllers[0];
 			spinner.required = controllers[1];
 			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
