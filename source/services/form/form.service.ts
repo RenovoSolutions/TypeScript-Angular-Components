@@ -14,7 +14,7 @@ export interface IFormService {
 class FormService implements IFormService {
 	getAggregateError(form: IFormValidator): string {
 		let filteredForm: any = _.filter(form, (prop: any): boolean => {
-			return prop.rlErrorMessage != null;
+			return prop != null && prop.rlErrorMessage != null;
 		});
 		let errors: string[] = <any>_.mapValues(filteredForm, 'rlErrorMessage');
 		return _.first(errors);
