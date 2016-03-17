@@ -81,6 +81,7 @@ describe('onChangeTrigger', () => {
 	it('should not save if the form is dirty but invalid', (): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
+			debounceDuration: 1000,
 			setChangeListener: null,
 		});
 		trigger.setTrigger(saveSpy);
@@ -89,7 +90,7 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush();
+		$timeout.flush(1000);
 
 		sinon.assert.notCalled(saveSpy);
 	});
@@ -97,6 +98,7 @@ describe('onChangeTrigger', () => {
 	it('should not save if the form is valid but not dirty', (): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
+			debounceDuration: 1000,
 			setChangeListener: null,
 		});
 		trigger.setTrigger(saveSpy);
@@ -105,7 +107,7 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush();
+		$timeout.flush(1000);
 
 		sinon.assert.notCalled(saveSpy);
 	});
@@ -124,7 +126,8 @@ describe('onChangeTrigger', () => {
 		});
 		trigger.setTrigger(saveSpy);
 
-		expect(baseContentForm.$dirty).to.be.true;
+		baseContentForm.$dirty = true;
+		baseContentForm.$valid = true;
 
 		$rootScope.$digest();
 
