@@ -22,6 +22,7 @@ interface IAutosaveActionMock {
 interface IMockFormController {
 	$pristine: boolean;
 	$dirty: boolean;
+	$valid: boolean;
 	$setPristine: Sinon.SinonSpy;
 }
 
@@ -44,7 +45,8 @@ describe('onChangeTrigger', () => {
 
 		baseContentForm = {
 			$pristine: false,
-			$dirty: true,
+			$dirty: false,
+			$valid: false,
 			$setPristine: setPristineSpy,
 		};
 
@@ -58,7 +60,7 @@ describe('onChangeTrigger', () => {
 		trigger = new OnChangeTrigger($rootScope, $timeout);
 	});
 
-	it('should trigger autosave when the form becomes dirty after the debounce duration', (): void => {
+	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', (): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -66,13 +68,46 @@ describe('onChangeTrigger', () => {
 		});
 		trigger.setTrigger(saveSpy);
 
-		expect(baseContentForm.$dirty).to.be.true;
+		baseContentForm.$dirty = true;
+		baseContentForm.$valid = true;
 
 		$rootScope.$digest();
 
 		$timeout.flush(1000);
 
 		sinon.assert.calledOnce(saveSpy);
+	});
+
+	it('should not save if the form is dirty but invalid', (): void => {
+		trigger.configure({
+			form: <any>baseContentForm,
+			setChangeListener: null,
+		});
+		trigger.setTrigger(saveSpy);
+
+		baseContentForm.$dirty = true;
+
+		$rootScope.$digest();
+
+		$timeout.flush();
+
+		sinon.assert.notCalled(saveSpy);
+	});
+
+	it('should not save if the form is valid but not dirty', (): void => {
+		trigger.configure({
+			form: <any>baseContentForm,
+			setChangeListener: null,
+		});
+		trigger.setTrigger(saveSpy);
+
+		baseContentForm.$valid = true;
+
+		$rootScope.$digest();
+
+		$timeout.flush();
+
+		sinon.assert.notCalled(saveSpy);
 	});
 
 	it('should reset the debounce timer on form changes', (): void => {

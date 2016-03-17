@@ -40,16 +40,24 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 			return this.settings.form != null
 				? this.settings.form.$dirty
 				: false;
-		}, (value: boolean) => {
-			if (value) {
-				this.setTimer(autosave);
+		}, () => { this.triggerSaveAction(autosave); });
 
-				this.clearChangeListener = this.setChangeListener((): void => {
-					this.$timeout.cancel(this.timer);
-					this.setTimer(autosave);
-				});
-			}
-		});
+		this.$rootScope.$watch((): boolean => {
+			return this.settings.form != null
+				? this.settings.form.$valid
+				: false;
+		}, () => { this.triggerSaveAction(autosave); });
+	}
+
+	private triggerSaveAction(autosave: {(): void}): void {
+		if (this.settings.form.$dirty && this.settings.form.$valid) {
+			this.setTimer(autosave);
+
+			this.clearChangeListener = this.setChangeListener((): void => {
+				this.$timeout.cancel(this.timer);
+				this.setTimer(autosave);
+			});
+		}
 	}
 
 	private setTimer(autosave: { (): void }): void {
