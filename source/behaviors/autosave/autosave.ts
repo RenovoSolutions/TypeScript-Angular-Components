@@ -62,8 +62,6 @@ export class AutosaveController {
 			};
 		};
 
-		var hasValidator: boolean = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
-
 		let saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
 		let save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
 			return saveExpression(this.$scope);
