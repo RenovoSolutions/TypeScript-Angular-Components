@@ -17,6 +17,7 @@ import {
 	IAutosaveService,
 	IAutosaveServiceFactory,
 } from '../autosave/autosave.service';
+import { IFormValidator } from '../../types/formValidators';
 
 import { controllerName } from './autosaveDialog.controller';
 
@@ -35,12 +36,11 @@ export interface IAutosaveDialogSettings {
 	resolve?: any;
 
 	save: { (...data: any[]): ng.IPromise<void> };
-	validate?: { (): boolean };
 	form?: string;
 	triggers?: string;
 
 	// optional - instead of specifying a form name
-	formGetter?: { (scope: ng.IScope): ng.IFormController };
+	formGetter?: { (scope: ng.IScope): IFormValidator };
 }
 
 interface IDialogSettings {
@@ -57,8 +57,8 @@ interface IDialogSettings {
 
 export interface IAutosaveDialogScope extends IDialogScope {
 	form?: string;
-	formGetter?: { (scope: ng.IScope): ng.IFormController };
-	setForm(form: ng.IFormController): void;
+	formGetter?: { (scope: ng.IScope): IFormValidator };
+	setForm(form: IFormValidator): void;
 	dialog: any;
 
 	$save(): void;
@@ -93,7 +93,6 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 
 			this.autosave = this.autosaveFactory.getInstance({
 				save: options.save,
-				validate: options.validate,
 				triggers: options.triggers,
 			});
 
@@ -120,7 +119,7 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 		return this.autosave.autosave(this.data);
 	}
 
-	private setForm: { (form: ng.IFormController): void } = (form: ng.IFormController): void => {
+	private setForm: { (form: IFormValidator): void } = (form: IFormValidator): void => {
 		this.autosave.contentForm = form;
 	}
 }
