@@ -16,9 +16,9 @@ import {
 } from '../../services/autosave/autosave.service';
 import { IFormValidator } from '../../types/formValidators';
 
-export var moduleName: string = 'rl.ui.behaviors.autosave';
-export var directiveName: string = 'rlAutosave';
-export var controllerName: string = 'AutosaveController';
+export let moduleName: string = 'rl.ui.behaviors.autosave';
+export let directiveName: string = 'rlAutosave';
+export let controllerName: string = 'AutosaveController';
 
 export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
@@ -64,8 +64,8 @@ export class AutosaveController {
 
 		var hasValidator: boolean = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
 
-		var saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
-		var save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
+		let saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
+		let save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
 			return saveExpression(this.$scope);
 		};
 
@@ -79,12 +79,12 @@ export class AutosaveController {
 			setChangeListener: this.keyupListener,
 		});
 
-		var behavior: IAutosaveBehavior = {
+		let behavior: IAutosaveBehavior = {
 			autosave: this.autosave.autosave,
 		};
 
 		// register autosave behavior and assign the value back to the parent
-		var childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
+		let childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
 		this.parentChildBehavior.registerChildBehavior(childLink, behavior);
 	}
 }
