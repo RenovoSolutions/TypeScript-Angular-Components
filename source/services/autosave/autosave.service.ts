@@ -119,5 +119,5 @@ function autosaveServiceFactory(notification: __notification.INotificationServic
 	};
 }
 
-angular.module(moduleName, [autosaveActionModuleName, triggers.moduleName, formModule])
+angular.module(moduleName, [__notification.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
 	.factory(factoryName, autosaveServiceFactory);
