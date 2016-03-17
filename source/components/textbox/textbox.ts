@@ -7,7 +7,9 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
+import __object = services.object;
 
+import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
 	IComponentValidatorFactory,
@@ -19,12 +21,17 @@ export var moduleName: string = 'rl.ui.components.textbox';
 export var componentName: string = 'rlTextbox';
 export var controllerName: string = 'TextboxController';
 
+export interface IInputValidationHandler extends __validation.IValidationHandler {
+	name: string;
+}
+
 export class TextboxController {
 	// bindings
-	validator: __validation.IValidationHandler;
+	validator: IInputValidationHandler;
 	label: string;
 
 	ngModel: angular.INgModelController;
+	required: RequiredController;
 	textboxValidator: IComponentValidator;
 
 	get text(): string {
@@ -40,18 +47,35 @@ export class TextboxController {
 			, private componentValidatorFactory: IComponentValidatorFactory) { }
 
 	$onInit(): void {
+		let validators: IInputValidationHandler[] = [];
+
 		if (!_.isUndefined(this.validator)) {
+			validators.push(this.validator);
+		}
+
+		if (this.required != null) {
+			validators.push({
+				name: 'required',
+				validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
+				errorMessage: this.required.message,
+			});
+		}
+
+		if (_.some(validators)) {
 			this.textboxValidator = this.componentValidatorFactory.getInstance({
 				ngModel: this.ngModel,
 				$scope: this.$scope,
-				validators: [this.validator],
+				validators: validators,
 			});
 		}
 	}
 }
 
 let textbox: angular.IComponentOptions = {
-	require: { ngModel: 'ngModel' },
+	require: {
+		ngModel: 'ngModel',
+		required: '?' + requiredDirectiveName,
+	},
 	template: require('./textbox.html'),
 	controller: controllerName,
 	controllerAs: 'textbox',

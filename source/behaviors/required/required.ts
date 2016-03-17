@@ -13,33 +13,23 @@ export let controllerName: string = 'RequiredController';
 
 export interface IRequiredAttributes extends angular.IAttributes {
 	rlRequired: string;
-	required: string;
 }
 
 export class RequiredController {
-	static $inject: string[] = ['$scope', '$attrs', '$element', '$interpolate', '$compile'];
+	static $inject: string[] = ['$scope', '$attrs', '$interpolate'];
 	constructor(private $scope: angular.IScope
 			, private $attrs: IRequiredAttributes
-			, private $element: angular.IAugmentedJQuery
-			, private $interpolate: angular.IInterpolateService
-			, private $compile: angular.ICompileService) {}
+			, private $interpolate: angular.IInterpolateService) {}
 
-	ngModel: INgModelValidator;
+	message: string;
 
 	$onInit(): void {
-		this.ngModel = this.$element.controller('ngModel');
-		this.ngModel.rlErrorMessage = this.$interpolate(this.$attrs.rlRequired)(this.$scope);
-
-		if (__object.objectUtility.isNullOrEmpty(this.$attrs.required)) {
-			this.$attrs.$set('required', true);
-			this.$compile(this.$element)(this.$scope);
-		}
+		this.message = this.$interpolate(this.$attrs.rlRequired)(this.$scope);
 	}
 }
 
 function required(): angular.IDirective {
 	return {
-		require: 'ngModel',
 		restrict: 'A',
 		priority: 200,
 		controller: controllerName,
