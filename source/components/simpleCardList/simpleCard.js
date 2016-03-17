@@ -42,6 +42,7 @@ var SimpleCardController = (function () {
                 _this.close();
             }
         });
+        this.cardType = this.cardType != null ? this.cardType : null;
     }
     SimpleCardController.prototype.toggleContent = function () {
         if (this.showContent) {
@@ -102,6 +103,7 @@ function simpleCard() {
             childLink: '=?',
             validate: '&',
             save: '&',
+            cardType: '@',
         },
     };
 }
