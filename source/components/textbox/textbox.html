@@ -1,5 +1,5 @@
-<div class="field" ng-class="{ 'error': textbox.ngModel.$invalid }">
-	<label ng-show="textbox.text && textbox.label" class="show-hide angular-animate">{{textbox.label}}</label>
-	<input  type="text" class="form-control angular-animate" ng-model="textbox.text" placeholder="{{textbox.label}}" maxlength="{{textbox.maxlength}}" />
-	<span class="error-string" ng-hide="textbox.textboxValidator.error | isEmpty">{{textbox.textboxValidator.error}}</span>
+<div class="field" ng-class="{ 'error': input.ngModel.$invalid }">
+	<label ng-show="input.inputValue && input.label" class="show-hide angular-animate">{{input.label}}</label>
+	<input  type="text" class="form-control angular-animate" ng-model="input.inputValue" placeholder="{{input.label}}" maxlength="{{input.maxlength}}" />
+	<span class="error-string" ng-hide="input.inputValidator.error | isEmpty">{{input.inputValidator.error}}</span>
 </div>
