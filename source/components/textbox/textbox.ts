@@ -16,7 +16,7 @@ import {
 } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.textbox';
-export var directiveName: string = 'rlTextbox';
+export var componentName: string = 'rlTextbox';
 export var controllerName: string = 'TextboxController';
 
 export class TextboxController {
@@ -35,36 +35,33 @@ export class TextboxController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$element', '$scope', componentValidatorFactoryName];
-	constructor($element: angular.IAugmentedJQuery, $scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
-		this.ngModel = $element.controller('ngModel');
+	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	constructor(private $scope: angular.IScope
+			, private componentValidatorFactory: IComponentValidatorFactory) { }
 
+	$onInit(): void {
 		if (!_.isUndefined(this.validator)) {
-			this.textboxValidator = componentValidatorFactory.getInstance({
+			this.textboxValidator = this.componentValidatorFactory.getInstance({
 				ngModel: this.ngModel,
-				$scope: $scope,
+				$scope: this.$scope,
 				validators: [this.validator],
 			});
 		}
 	}
 }
 
-export function textbox(): angular.IDirective {
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		template: require('./textbox.html'),
-		controller: controllerName,
-		controllerAs: 'textbox',
-		scope: {},
-		bindToController: {
-			validator: '=',
-			label: '@',
-			maxlength: '=',
-		},
-	};
-}
+let textbox: angular.IComponentOptions = {
+	require: { ngModel: 'ngModel' },
+	template: require('./textbox.html'),
+	controller: controllerName,
+	controllerAs: 'textbox',
+	bindings: {
+		validator: '=',
+		label: '@',
+		maxlength: '=',
+	},
+};
 
 angular.module(moduleName, [componentValidatorModuleName])
-	.directive(directiveName, textbox)
+	.component(componentName, textbox)
 	.controller(controllerName, TextboxController);
