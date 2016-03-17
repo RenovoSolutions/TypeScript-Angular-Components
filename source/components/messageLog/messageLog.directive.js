@@ -4,6 +4,8 @@ var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 var jquery_service_1 = require('../../services/jquery/jquery.service');
 var messageLog_service_1 = require('./messageLog.service');
+var componentServices = require('../../services/services.module');
+var __autosaveDialog = componentServices.autosaveDialog;
 var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
 exports.directiveName = 'rlMessageLog';
 exports.controllerName = 'MessageLogController';
@@ -20,8 +22,9 @@ var DeletePermissions = exports.DeletePermissions;
 })(exports.EditPermissions || (exports.EditPermissions = {}));
 var EditPermissions = exports.EditPermissions;
 var MessageLogController = (function () {
-    function MessageLogController($scope, messageLogFactory) {
+    function MessageLogController(autosaveDialog, $scope, messageLogFactory) {
         var _this = this;
+        this.autosaveDialog = autosaveDialog;
         this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
         $scope.$watch(function () { return _this.messageLog.visibleMessages; }, function (value) {
             _this.messages = value;
@@ -62,6 +65,9 @@ var MessageLogController = (function () {
         return this.messageLog.getTopPage();
     };
     MessageLogController.prototype.canDeleteEntry = function (entry) {
+        if (entry.isSystemNote) {
+            return false;
+        }
         switch (this.canDelete) {
             case DeletePermissions.deleteAll:
                 return true;
@@ -72,6 +78,9 @@ var MessageLogController = (function () {
         }
     };
     MessageLogController.prototype.canEditEntry = function (entry) {
+        if (entry.isSystemNote) {
+            return false;
+        }
         switch (this.canEdit) {
             case EditPermissions.editAll:
                 return true;
@@ -82,9 +91,24 @@ var MessageLogController = (function () {
         }
     };
     MessageLogController.prototype.editMessage = function (entry) {
-        this.editEvent(entry);
+        var editedEntry = _.clone(entry);
+        this.autosaveDialog.open({
+            save: this.updateNote.bind(this),
+            form: 'noteForm',
+            data: {
+                entry: editedEntry,
+                originalEntry: entry,
+            },
+            template: require('./messageLogEditDialog.html'),
+        });
     };
-    MessageLogController.$inject = ['$scope', messageLog_service_1.factoryName];
+    MessageLogController.prototype.updateNote = function (data) {
+        return this.messageLog.updateMessage(data.entry);
+    };
+    MessageLogController.prototype.saveNote = function (data) {
+        return this.messageLog.addMessage(data.entry);
+    };
+    MessageLogController.$inject = [__autosaveDialog.serviceName, '$scope', messageLog_service_1.factoryName];
     return MessageLogController;
 }());
 exports.MessageLogController = MessageLogController;
@@ -114,7 +138,6 @@ function messageLog($interpolate, jquery, templateLoader, object) {
             currentUser: '=?',
             canDelete: '=?',
             canEdit: '=?',
-            editEvent: '&',
         },
         link: function (scope, element, attributes, controller, transclude) {
             controller.templates = templateLoader.loadTemplates(transclude).templates;

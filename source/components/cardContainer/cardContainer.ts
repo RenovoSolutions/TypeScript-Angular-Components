@@ -21,7 +21,7 @@ import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
-export let directiveName: string = 'rlCardContainer';
+export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
 
 export let defaultMaxColumnSorts: number = 2;
@@ -32,10 +32,38 @@ export interface ICardContainerScope extends angular.IScope {
 }
 
 export interface ICardContainerBindings {
+	/**
+	 * A builder for the card container
+	 */
 	builder: ICardContainerBuilder;
 
+	/**
+	 * Controller shared by all components on a card
+	 * this controller cannot override any of the following letiable names:
+	 *      columns
+	 *      item
+	 *      contentTemplate
+	 *      footerTemplate
+	 *      clickable
+	 *      cardController
+	 *      cardControllerAs
+	 *      cardAs
+	 *      showContent
+	 *      toggleContent
+	 *      collapse
+	 *      selected
+	 *      setSelected
+	 */
 	cardController: string;
+
+	/**
+	 * Controller alias specified using controllerAs syntax
+	 */
 	cardControllerAs: string;
+
+	/**
+	 * Name used to access the card data
+	 */
 	cardAs: string;
 }
 
@@ -82,9 +110,10 @@ export class CardContainerController {
 
 	makeCard: angular.ITranscludeFunction;
 
-	static $inject: string[] = ['$scope', '$attrs', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$attrs', '$transclude', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
 	constructor(private $scope: ICardContainerScope
 			, $attrs: ICardContainerAttrs
+			, $transclude: angular.ITranscludeFunction
 			, private object: __object.IObjectUtility
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
@@ -93,6 +122,7 @@ export class CardContainerController {
 			this.builder.setCardContainerProperties(this);
 		}
 
+		this.makeCard = $transclude;
 		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
@@ -329,77 +359,20 @@ export class CardContainerController {
 	}
 }
 
-cardContainer.$inject = ['$compile'];
-export function cardContainer($compile: angular.ICompileService): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: {
-			'containerHeaderSlot': '?rlContainerHeader',
-			'containerFooterSlot': '?rlContainerFooter',
-			'contentSlot': '?rlCardContent',
-			'footerSlot': '?rlCardFooter',
-		},
-		template: require('./cardContainer.html'),
-		controller: controllerName,
-		controllerAs: 'cardContainer',
-		scope: {},
-		bindToController: {
-			// summary: a builder for the card container
-			builder: '=?',
-
-			// summary: controller shared by all components on a card
-			// remarks: this controller cannot override any of the following letiable names:
-			//          columns
-			//          item
-			//          contentTemplate
-			//          footerTemplate
-			//          clickable
-			//          cardController
-			//          cardControllerAs
-			//          cardAs
-			//          showContent
-			//          toggleContent
-			//          collapse
-			//          selected
-			//          setSelected
-			cardController: '@',
-
-			// summary: controller alias specified using controllerAs syntax
-			cardControllerAs: '@',
-
-			// summary: name used to access the card data
-			cardAs: '@',
-		},
-		link(scope: angular.IScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, controller: CardContainerController
-			, transclude: angular.ITranscludeFunction): void {
-			let headerArea: JQuery = element.find('.container-header-template');
-			let footerArea: JQuery = element.find('.container-footer-template');
-
-			controller.makeCard = transclude;
-
-			if (transclude.isSlotFilled('containerHeaderSlot')) {
-				transclude(scope, (header: JQuery): void => {
-					headerArea.append(header);
-				}, null, 'containerHeaderSlot');
-			} else {
-				let defaultHeader = require('./defaultCardContainerHeader.html');
-				let header: JQuery = headerArea.append(defaultHeader);
-				$compile(header)(scope);
-			}
-
-			if (transclude.isSlotFilled('containerFooterSlot')) {
-				transclude(scope, (footer: JQuery): void => {
-					footerArea.append(footer);
-				}, null, 'containerFooterSlot');
-			} else {
-				let defaultFooter = require('./defaultCardContainerFooter.html');
-				let footer: JQuery = footerArea.append(defaultFooter);
-				$compile(footer)(scope);
-			}
-		}
-	};
+export let cardContainer: angular.IComponentOptions = {
+	transclude: <any>{
+		'containerHeaderSlot': '?rlContainerHeader',
+		'containerFooterSlot': '?rlContainerFooter',
+		'contentSlot': '?rlCardContent',
+		'footerSlot': '?rlCardFooter',
+	},
+	template: require('./cardContainer.html'),
+	controller: controllerName,
+	controllerAs: 'cardContainer',
+	bindings: {
+		builder: '=?',
+		cardController: '@',
+		cardControllerAs: '@',
+		cardAs: '@',
+	}
 }

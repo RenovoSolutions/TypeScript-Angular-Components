@@ -49,7 +49,7 @@ export interface ITypeaheadBindings {
 	/**
 	 * Selector for getting the display value for the items
 	 */
-	transform(item: any): string | string;
+	transform: { (item: any): string } | string;
 
 	/**
 	 * Event for loading the data set or searching against the server
