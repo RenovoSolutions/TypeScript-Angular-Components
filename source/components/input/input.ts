@@ -38,7 +38,7 @@ export class InputController {
 	}
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
-	constructor(private $scope: angular.IScope
+	constructor(protected $scope: angular.IScope
 			, private componentValidatorFactory: IComponentValidatorFactory) { }
 
 	$onInit(): void {
