@@ -14,6 +14,7 @@ import {
 	IAutosaveServiceFactory,
 	triggers,
 } from '../../services/autosave/autosave.service';
+import { IFormValidator } from '../../types/formValidators';
 
 export var moduleName: string = 'rl.ui.behaviors.autosave';
 export var directiveName: string = 'rlAutosave';
@@ -21,7 +22,6 @@ export var controllerName: string = 'AutosaveController';
 
 export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
-	validate: string;
 	save: string;
 	debounceDuration: string;
 	triggers: string;
@@ -35,7 +35,7 @@ export class AutosaveController {
 	autosave: IAutosaveService;
 	keyupListener: { (callback: triggers.IChangeListener): triggers.IClearChangeListener };
 
-	form: angular.IFormController;
+	form: IFormValidator;
 
 	static $inject: string[] = ['$scope'
 							, '$attrs'
@@ -64,15 +64,6 @@ export class AutosaveController {
 
 		var hasValidator: boolean = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
 
-		var validateExpression: angular.ICompiledExpression = this.$parse(this.$attrs.validate);
-		var validate: { (): boolean };
-
-		if (hasValidator) {
-			validate = (): boolean => {
-				return validateExpression(this.$scope);
-			};
-		}
-
 		var saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
 		var save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
 			return saveExpression(this.$scope);
@@ -82,7 +73,6 @@ export class AutosaveController {
 
 		this.autosave = this.autosaveFactory.getInstance({
 			save: save,
-			validate: validate,
 			contentForm: this.form,
 			debounceDuration: debounce,
 			triggers: this.$attrs.triggers,
