@@ -8,12 +8,16 @@ export let moduleName: string = 'rl.ui.services.form';
 export let serviceName: string = 'formService';
 
 export interface IFormService {
-	getErrorMessage(form: IFormValidator): string;
+	getAggregateError(form: IFormValidator): string;
 }
 
 class FormService implements IFormService {
-	getErrorMessage(form: IFormValidator): string {
-		return 'string';
+	getAggregateError(form: IFormValidator): string {
+		let filteredForm: any = _.filter(form, (prop: any): boolean => {
+			return prop.rlErrorMessage != null;
+		});
+		let errors: string[] = <any>_.mapValues(filteredForm, 'rlErrorMessage');
+		return _.first(errors);
 	}
 }
 

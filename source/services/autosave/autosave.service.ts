@@ -77,7 +77,7 @@ class AutosaveService implements IAutosaveService {
 
 			return true;
 		} else {
-			this.notification.warning(this.formService.getErrorMessage(this.contentForm));
+			this.notification.warning(this.formService.getAggregateError(this.contentForm));
 			return false;
 		}
 	}
