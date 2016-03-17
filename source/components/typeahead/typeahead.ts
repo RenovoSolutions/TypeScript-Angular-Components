@@ -11,6 +11,7 @@ import __arrayUtility = services.array;
 import __validation = services.validation;
 import __transform = services.transform.transform;
 
+import { input, InputController, moduleName as inputModule } from '../input/input';
 import {
 	IComponentValidator,
 	IComponentValidatorFactory,
@@ -105,7 +106,7 @@ export interface ITypeaheadAttrs extends angular.IAttributes {
 	create: string;
 }
 
-export class TypeaheadController {
+export class TypeaheadController extends InputController {
 	// bindings
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
 	hasSelection: boolean;
@@ -113,19 +114,14 @@ export class TypeaheadController {
 	create: { (params: ICreateParams): void };
 	transform: { (item: any): string } | string;
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
-	label: string;
 	prefix: string;
 	useClientSearching: boolean;
 	ngDisabled: boolean;
 	allowCollapse: boolean;
-	validator: __validation.IValidationHandler;
-
-	ngModel: angular.INgModelController;
 
 	private cachedItems: any[];
 	private searchFilter: __genericSearch.IGenericSearchFilter;
 	visibleItems: any[];
-	typeaheadValidator: IComponentValidator;
 	loading: boolean = false;
 	loadDelay: number;
 	placeholder: string;
@@ -173,8 +169,7 @@ export class TypeaheadController {
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
-		, private array: __arrayUtility.IArrayUtility
-		, private componentValidatorFactory: IComponentValidatorFactory) { }
+		, private array: __arrayUtility.IArrayUtility) { }
 
 	$onInit(): void {
 		this.searchFilter = this.genericSearchFactory.getInstance();
@@ -189,14 +184,6 @@ export class TypeaheadController {
 				this.collapsed = true;
 			}
 		});
-
-		if (!_.isUndefined(this.validator)) {
-			this.typeaheadValidator = this.componentValidatorFactory.getInstance({
-				ngModel: this.ngModel,
-				$scope: this.$scope,
-				validators: [this.validator],
-			});
-		}
 
 		this.parentChild.registerChildBehavior(this.childLink, {
 			add: this.addItem.bind(this),
@@ -281,32 +268,25 @@ export class TypeaheadController {
 	}
 }
 
-let typeahead: angular.IComponentOptions = <any>{
-	require: { ngModel: 'ngModel' },
-	template: require('./typeahead.html'),
-	controller: controllerName,
-	controllerAs: 'typeahead',
-	bindings: {
-		childLink: '=?',
-		select: '&',
-		create: '&',
-		allowCollapse: '<?',
-		transform: '<?',
-		getItems: '&',
-		label: '@',
-		prefix: '@',
-		useClientSearching: '<?',
-		ngDisabled: '<?',
-		validator: '<?',
-	},
-};
+let typeahead: angular.IComponentOptions = _.clone(input);
+typeahead.template = require('./typeahead.html');
+typeahead.controller = controllerName;
+typeahead.controllerAs = 'typeahead';
+typeahead.bindings.childLink = '=?';
+typeahead.bindings.typeahead = '&';
+typeahead.bindings.create = '&';
+typeahead.bindings.allowCollapse = '<?';
+typeahead.bindings.transform = '<?';
+typeahead.bindings.getItems = '&';
+typeahead.bindings.prefix = '@';
+typeahead.bindings.useClientSearching = '<?';
+typeahead.bindings.ngDisabled = '<?';
 
 angular.module(moduleName, [
 	__parentChild.moduleName
 	, __genericSearch.moduleName
 	, __objectUtility.moduleName
 	, __arrayUtility.moduleName
-	, componentValidatorModuleName
 ])
 	.component(componentName, typeahead)
 	.controller(controllerName, TypeaheadController);
