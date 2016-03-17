@@ -11,7 +11,6 @@ export var componentName: string = 'rlTextarea';
 
 let textarea: angular.IComponentOptions = _.clone(input);
 textarea.template = require('./textarea.html');
-textarea.bindings.name = '@';
 textarea.bindings.rows = '<?';
 textarea.bindings.ngDisabled = '<?';
 textarea.bindings.maxlength = '<?';

@@ -3,7 +3,7 @@
 		{{typeahead.label}}
 	</label>
 	<div ng-if="!typeahead.collapsed">
-		<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
+		<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled" name="{{typeahead.name}}">
 			<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
 			<ui-select-choices repeat="item in typeahead.visibleItems"
 								refresh="typeahead.refresh($select.search)"
