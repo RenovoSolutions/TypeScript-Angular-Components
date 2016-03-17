@@ -7,6 +7,7 @@ var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __dateTimeFormatStrings = typescript_angular_utilities_1.services.date;
 var __object = typescript_angular_utilities_1.services.object;
+var required_1 = require('../../behaviors/required/required');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.dateTime';
 exports.directiveName = 'rlDateTime';
@@ -15,11 +16,22 @@ var DateTimeController = (function () {
     function DateTimeController($scope, componentValidatorFactory) {
         var _this = this;
         var unregister = $scope.$watch(function () { return _this.ngModel; }, function (value) {
+            var validators = [];
             if (!_.isUndefined(_this.validator)) {
+                validators.push(_this.validator);
+            }
+            if (_this.required != null) {
+                validators.push({
+                    name: 'rlRequired',
+                    validate: function () { return !__object.objectUtility.isNullOrEmpty(_this.ngModel.$viewValue); },
+                    errorMessage: _this.required.message,
+                });
+            }
+            if (_.some(validators)) {
                 _this.dateTimeValidator = componentValidatorFactory.getInstance({
                     ngModel: _this.ngModel,
                     $scope: $scope,
-                    validators: [_this.validator],
+                    validators: validators,
                 });
             }
             unregister();
@@ -39,7 +51,7 @@ function dateTime(moment, dateTimeFormatStrings, object) {
     return {
         restrict: 'E',
         template: require('./dateTime.html'),
-        require: '?^ngModel',
+        require: ['ngModel', '?' + required_1.directiveName],
         controller: exports.controllerName,
         controllerAs: 'dateTime',
         scope: {},
@@ -53,8 +65,10 @@ function dateTime(moment, dateTimeFormatStrings, object) {
             clearButton: '=',
             onClearEvent: '&'
         },
-        link: function (scope, element, attrs, ngModel) {
+        link: function (scope, element, attrs, controllers) {
             var dateTime = scope.dateTime;
+            var ngModel = controllers[0];
+            dateTime.required = controllers[1];
             dateTime.ngModel = ngModel;
             // defaults to true
             var hasDate = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;

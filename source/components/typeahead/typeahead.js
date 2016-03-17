@@ -1,4 +1,9 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
@@ -7,13 +12,15 @@ var __genericSearch = typescript_angular_utilities_1.services.genericSearchFilte
 var __objectUtility = typescript_angular_utilities_1.services.object;
 var __arrayUtility = typescript_angular_utilities_1.services.array;
 var __transform = typescript_angular_utilities_1.services.transform.transform;
+var input_1 = require('../input/input');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.typeahead';
 exports.componentName = 'rlTypeahead';
 exports.controllerName = 'TypeaheadController';
-var TypeaheadController = (function () {
+var TypeaheadController = (function (_super) {
+    __extends(TypeaheadController, _super);
     function TypeaheadController($scope, $q, $attrs, $timeout, parentChild, genericSearchFactory, object, array, componentValidatorFactory) {
-        this.$scope = $scope;
+        _super.call(this, $scope, componentValidatorFactory);
         this.$q = $q;
         this.$attrs = $attrs;
         this.$timeout = $timeout;
@@ -21,7 +28,6 @@ var TypeaheadController = (function () {
         this.genericSearchFactory = genericSearchFactory;
         this.object = object;
         this.array = array;
-        this.componentValidatorFactory = componentValidatorFactory;
         this.loading = false;
         this.collapsed = false;
         this.hasSearchOption = false;
@@ -61,16 +67,14 @@ var TypeaheadController = (function () {
                 _this.collapsed = true;
             }
         });
-        if (!_.isUndefined(this.validator)) {
-            this.typeaheadValidator = this.componentValidatorFactory.getInstance({
-                ngModel: this.ngModel,
-                $scope: this.$scope,
-                validators: [this.validator],
-            });
-        }
         this.parentChild.registerChildBehavior(this.childLink, {
             add: this.addItem.bind(this),
             remove: this.removeItem.bind(this),
+        });
+        this.$scope.$watch(function () { return _this.ngModel.$viewValue; }, function (value) {
+            if (value != null && _this.collapseOnSelect) {
+                _this.collapsed = true;
+            }
         });
     };
     TypeaheadController.prototype.getDisplayName = function (item) {
@@ -154,33 +158,26 @@ var TypeaheadController = (function () {
         __arrayUtility.serviceName,
         componentValidator_service_1.factoryName];
     return TypeaheadController;
-}());
+}(input_1.InputController));
 exports.TypeaheadController = TypeaheadController;
-var typeahead = {
-    require: { ngModel: 'ngModel' },
-    template: require('./typeahead.html'),
-    controller: exports.controllerName,
-    controllerAs: 'typeahead',
-    bindings: {
-        childLink: '=?',
-        select: '&',
-        create: '&',
-        allowCollapse: '<?',
-        transform: '<?',
-        getItems: '&',
-        label: '@',
-        prefix: '@',
-        useClientSearching: '<?',
-        ngDisabled: '<?',
-        validator: '<?',
-    },
-};
+var typeahead = _.clone(input_1.input);
+typeahead.template = require('./typeahead.html');
+typeahead.controller = exports.controllerName;
+typeahead.controllerAs = 'typeahead';
+typeahead.bindings.childLink = '=?';
+typeahead.bindings.typeahead = '&';
+typeahead.bindings.create = '&';
+typeahead.bindings.allowCollapse = '<?';
+typeahead.bindings.transform = '<?';
+typeahead.bindings.getItems = '&';
+typeahead.bindings.prefix = '@';
+typeahead.bindings.useClientSearching = '<?';
+typeahead.bindings.ngDisabled = '<?';
 angular.module(exports.moduleName, [
     __parentChild.moduleName,
     __genericSearch.moduleName,
     __objectUtility.moduleName,
-    __arrayUtility.moduleName,
-    componentValidator_service_1.moduleName
+    __arrayUtility.moduleName
 ])
     .component(exports.componentName, typeahead)
     .controller(exports.controllerName, TypeaheadController);

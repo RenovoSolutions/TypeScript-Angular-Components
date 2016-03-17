@@ -1,10 +1,11 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
+import { INgModelValidator } from '../../types/formValidators';
 export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IComponentValidatorOptions {
-    ngModel?: angular.INgModelController;
+    ngModel?: INgModelValidator;
     form?: angular.IFormController;
     $scope: angular.IScope;
     validators: __validation.IValidationHandler[];
@@ -18,6 +19,7 @@ export interface IComponentValidator {
 export declare class ComponentValidator implements IComponentValidator {
     validator: __validation.ISimpleValidator;
     error: string;
+    errorType: string;
     private $scope;
     private ngModel;
     private form;
