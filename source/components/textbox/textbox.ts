@@ -55,7 +55,7 @@ export class TextboxController {
 
 		if (this.required != null) {
 			validators.push({
-				name: 'required',
+				name: 'rlRequired',
 				validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
 				errorMessage: this.required.message,
 			});
