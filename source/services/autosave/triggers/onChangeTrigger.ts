@@ -54,13 +54,16 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 			this.setTimer(autosave);
 
 			this.clearChangeListener = this.setChangeListener((): void => {
-				this.$timeout.cancel(this.timer);
 				this.setTimer(autosave);
 			});
 		}
 	}
 
 	private setTimer(autosave: { (): void }): void {
+		if (this.timer != null) {
+			this.$timeout.cancel(this.timer);
+		}
+
 		this.timer = this.$timeout((): void => {
 			this.clearChangeListener();
 			autosave();
