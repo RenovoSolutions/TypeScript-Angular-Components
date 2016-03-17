@@ -80,8 +80,6 @@ export class SimpleCardController implements ISimpleCardBindings {
 				this.close();
 			}
 		});
-
-		this.cardType = this.cardType != null ? this.cardType : null;
 	}
 
 	toggleContent(): void {
