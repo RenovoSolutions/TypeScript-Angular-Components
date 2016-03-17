@@ -15,6 +15,7 @@ import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
 
+import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
 	IComponentValidatorFactory,
@@ -60,17 +61,32 @@ export class SpinnerController {
 	validator: __validation.IValidationHandler;
 
 	ngModel: angular.INgModelController;
+	required: RequiredController;
 	spinnerValidator: IComponentValidator;
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 			, componentValidatorFactory: IComponentValidatorFactory) {
 		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+			let validators: __validation.IValidationHandler[] = [];
+
 			if (!_.isUndefined(this.validator)) {
-				this.spinnerValidator = componentValidatorFactory.getInstance({
+				validators.push(this.validator);
+			}
+
+			if (this.required != null) {
+				validators.push({
+					name: 'rlRequired',
+					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
+					errorMessage: this.required.message,
+				});
+			}
+
+			if (_.some(validators)) {
+				this.spinnerValidator = this.componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
-					$scope: $scope,
-					validators: [this.validator],
+					$scope: this.$scope,
+					validators: validators,
 				});
 			}
 			unregister();
@@ -86,7 +102,7 @@ function spinner($timeout: angular.ITimeoutService
 	return {
 		restrict: 'E',
 		template: require('./spinner.html'),
-		require: '?^ngModel',
+		require: ['ngModel', '?' + requiredDirectiveName],
 		controller: controllerName,
 		controllerAs: 'spinner',
 		scope: {},
@@ -106,7 +122,9 @@ function spinner($timeout: angular.ITimeoutService
 		link(scope: ISpinnerScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, ngModel: angular.INgModelController): void {
+			, controllers: any[]): void {
+			let ngModel: angular.INgModelController = controllers[0];
+			spinner.required = controllers[1];
 
 			let spinner: SpinnerController = scope.spinner;
 			spinner.ngModel = ngModel;

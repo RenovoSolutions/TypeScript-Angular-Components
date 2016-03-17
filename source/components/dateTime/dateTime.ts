@@ -15,6 +15,7 @@ import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
 import __object = services.object;
 
+import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 IComponentValidator,
 IComponentValidatorFactory,
@@ -71,15 +72,30 @@ export class DateTimeController {
 
 	ngModel: angular.INgModelController;
 	dateTimeValidator: IComponentValidator;
+	required: RequiredController;
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
 	constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
 		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+			let validators: __validation.IValidationHandler[] = [];
+
 			if (!_.isUndefined(this.validator)) {
-				this.dateTimeValidator = componentValidatorFactory.getInstance({
+				validators.push(this.validator);
+			}
+
+			if (this.required != null) {
+				validators.push({
+					name: 'rlRequired',
+					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
+					errorMessage: this.required.message,
+				});
+			}
+
+			if (_.some(validators)) {
+				this.dateTimeValidator = this.componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
-					$scope: $scope,
-					validators: [this.validator],
+					$scope: this.$scope,
+					validators: validators,
 				});
 			}
 			unregister();
@@ -100,7 +116,7 @@ function dateTime(moment: moment.MomentStatic
 	return {
 		restrict: 'E',
 		template: require('./dateTime.html'),
-		require: '?^ngModel',
+		require: ['ngModel', '?' + requiredDirectiveName],
 		controller: controllerName,
 		controllerAs: 'dateTime',
 		scope: {},
@@ -117,9 +133,12 @@ function dateTime(moment: moment.MomentStatic
 		link: (scope: IDateTimeScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, ngModel: angular.INgModelController): void => {
-			let dateTime: DateTimeController = scope.dateTime;
+			, controllers: any[]): void => {
+			let ngModel: angular.INgModelController = controllers[0];
+			dateTime.required = controllers[1];
 			dateTime.ngModel = ngModel;
+
+			let dateTime: DateTimeController = scope.dateTime;
 			// defaults to true
 			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
 			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;
