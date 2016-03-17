@@ -1,10 +1,8 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
-		<div class="validation-input-group">
-			<div class="validation-input" ng-class="{ 'error': spinner.ngModel.$invalid, 'required-error': spinner.ngModel.$error.required }">
-				<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
-                <span class="error-string" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
-			</div>
+		<div ng-class="{ 'error': spinner.ngModel.$invalid }">
+			<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
+			<span class="error-string" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
 		</div>
 	</template>
 	<template when-selector="true">
