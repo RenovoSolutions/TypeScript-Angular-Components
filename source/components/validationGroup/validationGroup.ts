@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
+import { IFormValidator } from '../../types/formValidators';
 import {
 	IComponentValidator,
 	IComponentValidatorFactory,
@@ -20,7 +21,7 @@ export var directiveName: string = 'rlValidationGroup';
 export var controllerName: string = 'ValidationGroupController';
 
 export interface IValidationGroupScope extends angular.IScope {
-	validationGroupForm: angular.IFormController;
+	validationGroupForm: IFormValidator;
 }
 
 export class ValidationGroupController {
@@ -31,7 +32,7 @@ export class ValidationGroupController {
 
 	static $inject: string[] = ['$scope', componentValidatorFactoryName];
 	constructor($scope: IValidationGroupScope, componentValidatorFactory: IComponentValidatorFactory) {
-		let unbind = $scope.$watch('validationGroupForm', (form: angular.IFormController): void => {
+		let unbind: Function = $scope.$watch('validationGroupForm', (form: IFormValidator): void => {
 			if (!_.isUndefined(this.validator)) {
 				this.groupValidator = componentValidatorFactory.getInstance({
 					form: $scope.validationGroupForm,

@@ -6,14 +6,14 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
-import { INgModelValidator } from '../../types/formValidators';
+import { INgModelValidator, IFormValidator } from '../../types/formValidators';
 
 export var moduleName: string = 'rl.ui.services.componentValidator';
 export var factoryName: string = 'componentValidator';
 
 export interface IComponentValidatorOptions {
 	ngModel?: INgModelValidator;
-	form?: angular.IFormController;
+	form?: IFormValidator;
 	$scope: angular.IScope;
 	validators: __validation.IValidationHandler[];
 	setValidity?: { (isValid: boolean): void };
@@ -30,7 +30,7 @@ export class ComponentValidator implements IComponentValidator {
 
 	private $scope: angular.IScope;
 	private ngModel: INgModelValidator;
-	private form: angular.IFormController;
+	private form: IFormValidator;
 	private setValidity: { (isValid: boolean): void };
 
 	constructor(validationService: __validation.IValidationService
@@ -61,6 +61,7 @@ export class ComponentValidator implements IComponentValidator {
 				this.ngModel.rlErrorMessage = this.error;
 			} else if (!_.isUndefined(this.form)) {
 				this.form.$setValidity(this.errorType, value, <any>'group');
+				this.form.rlErrorMessage = this.error;
 			} else if (_.isFunction(this.setValidity)) {
 				this.setValidity(value);
 			}
