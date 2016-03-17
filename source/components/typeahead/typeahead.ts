@@ -285,6 +285,7 @@ angular.module(moduleName, [
 	, __genericSearch.moduleName
 	, __objectUtility.moduleName
 	, __arrayUtility.moduleName
+	, inputModule
 ])
 	.component(componentName, typeahead)
 	.controller(controllerName, TypeaheadController);

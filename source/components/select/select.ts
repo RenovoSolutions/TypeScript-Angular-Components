@@ -101,6 +101,6 @@ select.bindings.selector = '<?';
 select.bindings.ngDisabled = '<?';
 select.bindings.nullOption = '@';
 
-angular.module(moduleName, ['ui.select', __object.moduleName])
+angular.module(moduleName, ['ui.select', __object.moduleName, inputModule])
 	.component(componentName, select)
 	.controller(controllerName, SelectController);
