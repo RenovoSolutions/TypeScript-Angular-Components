@@ -15,7 +15,7 @@ import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
 import __object = services.object;
 
-import { INgModelValidator } from '../../types/ngModelValidator';
+import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 IComponentValidator,

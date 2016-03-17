@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
-import { INgModelValidator } from '../../types/ngModelValidator';
+import { INgModelValidator } from '../../types/formValidators';
 
 export var moduleName: string = 'rl.ui.services.componentValidator';
 export var factoryName: string = 'componentValidator';

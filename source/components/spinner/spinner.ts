@@ -16,7 +16,7 @@ import __string = services.string;
 import __number = services.number;
 import __object = services.object;
 
-import { INgModelValidator } from '../../types/ngModelValidator';
+import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
