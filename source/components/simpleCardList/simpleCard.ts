@@ -20,8 +20,8 @@ export interface ISimpleCardBindings {
 	canOpen: boolean;
 	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
-	validate(): boolean;
 	save(): angular.IPromise<void>;
+	saveWhenInvalid?: boolean;
 }
 
 export interface ISimpleCardScope extends angular.IScope {
@@ -40,8 +40,8 @@ export class SimpleCardController implements ISimpleCardBindings {
 	canOpen: boolean;
 	alwaysOpen: boolean;
 	childLink: __parentChild.IChild<ISimpleCardBehavior>;
-	validate: { (): boolean };
 	save: { (): angular.IPromise<void> };
+	saveWhenInvalid: boolean;
 
 	showContent: boolean = false;
 	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
@@ -147,8 +147,8 @@ export function simpleCard(): angular.IDirective {
 			canOpen: '=?',
 			alwaysOpen: '=?',
 			childLink: '=?',
-			validate: '&',
 			save: '&',
+			saveWhenInvalid: '<?',
 		},
 	};
 }
