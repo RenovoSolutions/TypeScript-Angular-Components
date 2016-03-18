@@ -35,6 +35,7 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     save: {
         (): angular.IPromise<void>;
     };
+    cardType: string;
     showContent: boolean;
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
     private listController;
