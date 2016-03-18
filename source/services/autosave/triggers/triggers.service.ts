@@ -4,6 +4,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
+import { OnSubmitTrigger, OnSubmitSettings } from './onSubmitTrigger';
 import { ITrigger, Trigger } from './trigger';
 
 export * from './onChangeTrigger';
@@ -24,6 +25,7 @@ export interface IClearListener {
 
 export interface ITriggers {
 	onChange: ITrigger<OnChangeSettings>;
+	onSubmit: ITrigger<OnSubmitSettings>;
 	none: ITrigger<void>;
 }
 
@@ -38,6 +40,7 @@ class TriggerService implements ITriggerService {
 	constructor($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService) {
 		this.triggers = {
 			onChange: new OnChangeTrigger($rootScope, $timeout),
+			onSubmit: new OnSubmitTrigger(),
 			none: new Trigger<void>('none'),
 		};
 	}
