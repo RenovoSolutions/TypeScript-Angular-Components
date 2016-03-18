@@ -88,8 +88,9 @@ describe('dialog', () => {
 		let options: IAutosaveDialogSettings;
 
 		beforeEach((): void => {
-			dialog.open = sinon.spy((settings: any, handler: IDialogCloseHandler): void => {
+			dialog.open = sinon.spy((settings: any, handler: IDialogCloseHandler): any => {
 				closeHandler = handler;
+				return {};
 			});
 
 			options = <any>{};
