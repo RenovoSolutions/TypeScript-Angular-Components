@@ -45,12 +45,14 @@ export class SelectController extends InputController {
 		}
 	}
 
-	static $inject: string[] = ['$scope', '$q', __object.serviceName, componentValidatorFactoryName];
+	static $inject: string[] = ['$scope', '$attrs', '$q', __object.serviceName, componentValidatorFactoryName];
 	constructor($scope: angular.IScope
+			, $attrs: angular.IAttributes
 			, private $q: angular.IQService
 			, private object: __object.IObjectUtility
 			, componentValidatorFactory: IComponentValidatorFactory) {
-		super($scope, componentValidatorFactory);
+		super($scope, <any>$attrs, componentValidatorFactory);
+		this.inputType = 'select';
 	}
 
 	$onInit(): void {

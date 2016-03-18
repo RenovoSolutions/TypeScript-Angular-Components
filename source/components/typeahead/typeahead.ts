@@ -159,14 +159,15 @@ export class TypeaheadController extends InputController {
 		, componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 		, private $q: angular.IQService
-		, private $attrs: ITypeaheadAttrs
+		, $attrs: ITypeaheadAttrs
 		, private $timeout: angular.ITimeoutService
 		, private parentChild: __parentChild.IParentChildBehaviorService
 		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
 		, private array: __arrayUtility.IArrayUtility
 		, componentValidatorFactory: IComponentValidatorFactory) {
-			super($scope, componentValidatorFactory);
+			super($scope, <any>$attrs, componentValidatorFactory);
+			this.inputType = 'typeahead';
 		}
 
 	$onInit(): void {
@@ -176,8 +177,10 @@ export class TypeaheadController extends InputController {
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
-		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
-		this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
+
+		let $attrs: ITypeaheadAttrs = <any>this.$attrs;
+		this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty($attrs.select);
+		this.allowCustomOption = !this.object.isNullOrEmpty($attrs.create);
 
 		this.$timeout((): void => {
 			if (this.collapseOnSelect && !this.object.isNullOrEmpty(this.ngModel.$viewValue)) {

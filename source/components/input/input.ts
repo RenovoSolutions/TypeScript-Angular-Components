@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
+import __guid = services.guid;
 
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
@@ -21,6 +22,10 @@ import {
 export var moduleName: string = 'rl.ui.components.input';
 export var controllerName: string = 'InputController';
 
+export interface IInputAttributes extends angular.IAttributes {
+	name: string;
+}
+
 export class InputController {
 	// bindings
 	validator: __validation.IValidationHandler;
@@ -30,6 +35,7 @@ export class InputController {
 	ngModel: INgModelValidator;
 	required: RequiredController;
 	inputValidator: IComponentValidator;
+	inputType: string = 'input';
 
 	get inputValue(): string {
 		return this.ngModel.$viewValue;
@@ -39,8 +45,9 @@ export class InputController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
 	constructor(protected $scope: angular.IScope
+			, protected $attrs: IInputAttributes
 			, private componentValidatorFactory: IComponentValidatorFactory) { }
 
 	$onInit(): void {
@@ -48,6 +55,10 @@ export class InputController {
 
 		if (!_.isUndefined(this.validator)) {
 			validators.push(this.validator);
+		}
+
+		if (__object.objectUtility.isNullOrEmpty(this.$attrs.name)) {
+			this.$attrs.$set('name', this.inputType + '-' + __guid.guid.random());
 		}
 
 		if (this.required != null) {
