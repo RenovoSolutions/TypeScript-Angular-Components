@@ -4,27 +4,20 @@ import * as ng from 'angular';
 import * as _ from 'lodash';
 
 import { ITrigger, Trigger } from './trigger';
+import { IListener, IClearListener } from './triggers.service';
 
 export interface OnChangeSettings {
 	form: ng.IFormController;
-	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
+	setChangeListener: { (callback: IListener): IClearListener };
 	debounceDuration?: number;
 	saveWhenInvalid?: boolean;
-}
-
-export interface IChangeListener {
-	(): void;
-}
-
-export interface IClearChangeListener {
-	(): void;
 }
 
 export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigger<OnChangeSettings> {
 	private debounceDuration: number = 1000;
 	private timer: ng.IPromise<void>;
-	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
-	clearChangeListener: IClearChangeListener;
+	setListener: { (callback: IListener): IClearListener };
+	clearListener: IClearListener;
 
 	constructor(private $rootScope: ng.IRootScopeService, private $timeout: ng.ITimeoutService) {
 		super('onChange');
@@ -35,7 +28,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 			return;
 		}
 
-		this.initChangeListeners();
+		this.initListeners();
 
 		this.$rootScope.$watch((): boolean => {
 			return this.settings.form != null
@@ -54,7 +47,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 		if (this.settings.form.$dirty && (this.settings.form.$valid || this.settings.saveWhenInvalid)) {
 			this.setTimer(autosave);
 
-			this.clearChangeListener = this.setChangeListener((): void => {
+			this.clearListener = this.setListener((): void => {
 				this.setTimer(autosave);
 			});
 		}
@@ -66,17 +59,17 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 		}
 
 		this.timer = this.$timeout((): void => {
-			this.clearChangeListener();
+			this.clearListener();
 			autosave();
 		}, this.debounceDuration);
 	}
 
-	private initChangeListeners(): void {
-		this.setChangeListener = this.settings.setChangeListener || this.nullSetListener;
-		this.clearChangeListener = this.nullClearListener;
+	private initListeners(): void {
+		this.setListener = this.settings.setChangeListener || this.nullSetListener;
+		this.clearListener = this.nullClearListener;
 	}
 
-	private nullSetListener(): IClearChangeListener {
+	private nullSetListener(): IClearListener {
 		console.log('No change listener available');
 		return this.nullClearListener;
 	}
