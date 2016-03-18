@@ -9,6 +9,7 @@ export interface OnChangeSettings {
 	form: ng.IFormController;
 	setChangeListener: { (callback: IChangeListener): IClearChangeListener };
 	debounceDuration?: number;
+	saveWhenInvalid?: boolean;
 }
 
 export interface IChangeListener {
@@ -50,7 +51,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 	}
 
 	private triggerSaveAction(autosave: {(): void}): void {
-		if (this.settings.form.$dirty && this.settings.form.$valid) {
+		if (this.settings.form.$dirty && (this.settings.form.$valid) || this.settings.saveWhenInvalid)) {
 			this.setTimer(autosave);
 
 			this.clearChangeListener = this.setChangeListener((): void => {

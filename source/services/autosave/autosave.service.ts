@@ -31,6 +31,7 @@ export interface IAutosaveServiceOptions {
 	debounceDuration?: number;
 	setChangeListener?: { (callback: IChangeListener): IClearChangeListener };
 	triggers?: string;
+	saveWhenInvalid?: boolean;
 }
 
 export interface IChangeListener {
@@ -45,6 +46,7 @@ class AutosaveService implements IAutosaveService {
 	private triggerService: triggers.ITriggerService;
 	contentForm: IFormValidator;
 	save: { (...data: any[]): angular.IPromise<void> };
+	saveWhenInvalid: boolean;
 
 	constructor(private notification: __notification.INotificationService
 			, private autosaveService: IAutosaveActionService
@@ -53,6 +55,7 @@ class AutosaveService implements IAutosaveService {
 			, private formService: IFormService) {
 		this.contentForm = options.contentForm || this.nullForm();
 		this.save = options.save;
+		this.saveWhenInvalid = options.saveWhenInvalid;
 
 		this.triggerService = triggerServiceFactory.getInstance();
 		this.configureTriggers(options);
@@ -64,7 +67,7 @@ class AutosaveService implements IAutosaveService {
 			return true;
 		}
 
-		if (this.contentForm.$valid) {
+		if (this.contentForm.$valid || this.saveWhenInvalid) {
 			var promise: angular.IPromise<void> = this.save(...data);
 
 			if (!_.isUndefined(promise)) {
@@ -87,6 +90,7 @@ class AutosaveService implements IAutosaveService {
 			form: options.contentForm,
 			setChangeListener: options.setChangeListener,
 			debounceDuration: options.debounceDuration,
+			saveWhenInvalid: options.saveWhenInvalid,
 		});
 	}
 

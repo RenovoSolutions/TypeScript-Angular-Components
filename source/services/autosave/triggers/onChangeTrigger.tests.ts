@@ -112,6 +112,24 @@ describe('onChangeTrigger', () => {
 		sinon.assert.notCalled(saveSpy);
 	});
 
+	it('should not save if the form is dirty and invalid if saveWhenInvalid was specified', (): void => {
+		trigger.configure({
+			form: <any>baseContentForm,
+			debounceDuration: 1000,
+			setChangeListener: null,
+			saveWhenInvalid: true,
+		});
+		trigger.setTrigger(saveSpy);
+
+		baseContentForm.$dirty = true;
+
+		$rootScope.$digest();
+
+		$timeout.flush(1000);
+
+		sinon.assert.calledOnce(saveSpy);
+	});
+
 	it('should reset the debounce timer on form changes', (): void => {
 		let triggerChange: { (): void };
 		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {

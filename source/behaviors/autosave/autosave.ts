@@ -25,6 +25,7 @@ export interface IAutosaveAttributes extends angular.IAttributes {
 	save: string;
 	debounceDuration: string;
 	triggers: string;
+	saveWhenInvalid: string;
 }
 
 export interface IAutosaveBehavior {
@@ -75,6 +76,7 @@ export class AutosaveController {
 			debounceDuration: debounce,
 			triggers: this.$attrs.triggers,
 			setChangeListener: this.keyupListener,
+			saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
 		});
 
 		let behavior: IAutosaveBehavior = {

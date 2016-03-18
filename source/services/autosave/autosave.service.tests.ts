@@ -105,7 +105,6 @@ describe('autosave', () => {
 	});
 
 	it('should return false without saving if the form is invalid', (): void => {
-		let validateSpy: Sinon.SinonSpy = sinon.spy((): boolean => { return false; });
 		baseContentForm.$valid = false;
 
 		autosave = autosaveFactory.getInstance({
@@ -119,6 +118,23 @@ describe('autosave', () => {
 
 		sinon.assert.calledOnce(notification.warning);
 		sinon.assert.notCalled(saveSpy);
+	});
+
+	it('should ignore validation state if saveWhenInvalid is set', (): void => {
+		baseContentForm.$valid = false;
+
+		autosave = autosaveFactory.getInstance({
+			save: saveSpy,
+			contentForm: <any>baseContentForm,
+			saveWhenInvalid: true,
+		});
+
+		let close: boolean = autosave.autosave();
+
+		expect(close).to.be.true;
+
+		sinon.assert.notCalled(notification.warning);
+		sinon.assert.calledOnce(saveSpy);
 	});
 
 	it('should always save if no form is specified', (): void => {
