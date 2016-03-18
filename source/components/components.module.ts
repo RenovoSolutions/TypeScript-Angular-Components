@@ -32,6 +32,7 @@ import * as templateRenderer from './templateRenderer/templateRenderer';
 import * as textarea from './textarea/textarea';
 import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
+import * as typeaheadList from './typeaheadList/typeaheadList';
 import * as userRating from './userRating/userRating';
 import * as validationGroup from './validationGroup/validationGroup';
 
@@ -69,6 +70,7 @@ export {
 	textarea,
 	textbox,
 	typeahead,
+	typeaheadList,
 	userRating,
 	validationGroup,
 };
@@ -105,6 +107,7 @@ angular.module(moduleName, [
 	textarea.moduleName,
 	textbox.moduleName,
 	typeahead.moduleName,
+	typeaheadList.moduleName,
 	userRating.moduleName,
 	validationGroup.moduleName,
 ])

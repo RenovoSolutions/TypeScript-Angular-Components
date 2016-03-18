@@ -45,6 +45,17 @@
 					{{value}}
 				</div>
 
+				<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
+								   label="Test list">
+					<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
+					<rl-list-item>
+							<div class="col-xs-10">{{$item.name}}</div>
+							<div class="col-xs-2">
+								<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
+							</div>
+					</rl-list-item>
+				</rl-typeahead-list>
+
 				<ng-form name="myForm" rl-autosave save="test.save()">
 					<rl-textbox ng-model="test.val"></rl-textbox>
 				</ng-form>
@@ -56,7 +67,6 @@
 				Value: {{test.checked}}
 
 				<rl-button action="test.prompt()">Open prompt</rl-button>
-
 				<rl-simple-card>
 					<rl-card-header>Header</rl-card-header>
 					<rl-card-content>Content</rl-card-content>
@@ -121,9 +131,6 @@
 						Name: {{myItem.name}}
 						Value: {{myItem.value}}
 					</rl-card-content>
-					<rl-container-footer>
-						<rl-item-count></rl-item-count>
-					</rl-container-footer>
 				</rl-card-container>
 			</div>
 		</div>

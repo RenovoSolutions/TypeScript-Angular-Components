@@ -58,6 +58,8 @@ var textbox = require('./textbox/textbox');
 exports.textbox = textbox;
 var typeahead = require('./typeahead/typeahead');
 exports.typeahead = typeahead;
+var typeaheadList = require('./typeaheadList/typeaheadList');
+exports.typeaheadList = typeaheadList;
 var userRating = require('./userRating/userRating');
 exports.userRating = userRating;
 var validationGroup = require('./validationGroup/validationGroup');
@@ -95,6 +97,7 @@ angular.module(exports.moduleName, [
     textarea.moduleName,
     textbox.moduleName,
     typeahead.moduleName,
+    typeaheadList.moduleName,
     userRating.moduleName,
     validationGroup.moduleName,
 ])

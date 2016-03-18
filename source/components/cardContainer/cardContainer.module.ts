@@ -19,8 +19,9 @@ import * as pageSize from './pageSize/pageSize';
 import * as selectionControl from './selectionControl/selectionControl';
 import * as sorts from './sorts/sorts.module';
 
-import { directiveName, cardContainer, controllerName, CardContainerController } from './cardContainer';
+import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer';
 import * as builder from './cardContainerBuilder.service';
+import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './defaultComponents';
 
 export {
 	builder,
@@ -63,6 +64,8 @@ angular.module(moduleName, [
 	filters.moduleName,
 	sorts.moduleName,
 ])
-	.directive(directiveName, cardContainer)
+	.component(componentName, cardContainer)
 	.controller(controllerName, CardContainerController)
-	.factory(builder.factoryName, builder.cardContainerBuilderFactory);
+	.factory(builder.factoryName, builder.cardContainerBuilderFactory)
+	.component(headerComponentName, defaultContainerHeader)
+	.component(footerComponentName, defaultContainerFooter);

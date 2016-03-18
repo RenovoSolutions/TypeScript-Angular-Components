@@ -6,7 +6,9 @@
 		<div class="card-container">
 			<div>
 				<div class="card-container-header">
-					<div class="container-header-template"></div>
+					<div ng-transclude="containerHeaderSlot">
+						<rl-default-card-container-header></rl-default-card-container-header>
+					</div>
 				</div>
 
 				<rl-generic-container selector="cardContainer.selectableCards">
@@ -64,7 +66,9 @@
 				</div>
 
 				<div class="card-container-footer">
-					<div class="container-footer-template"></div>
+					<div ng-transclude="containerFooterSlot">
+						<rl-default-card-container-footer></rl-default-card-container-footer>
+					</div>
 				</div>
 			</div>
 		</div>

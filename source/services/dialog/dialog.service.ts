@@ -18,6 +18,7 @@ import { IFormService, serviceName as formServiceName, moduleName as formModule 
 import { IFormValidator } from '../../types/formValidators';
 
 export { bootstrapModalDialog };
+export { directiveName, controllerName, DialogController } from '../../components/dialog/dialog';
 export * from './dialogTypes';
 
 export let moduleName: string = 'rl.ui.services.dialog';

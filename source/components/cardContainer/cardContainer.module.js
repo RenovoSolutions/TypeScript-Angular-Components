@@ -31,6 +31,7 @@ exports.sorts = sorts;
 var cardContainer_1 = require('./cardContainer');
 var builder = require('./cardContainerBuilder.service');
 exports.builder = builder;
+var defaultComponents_1 = require('./defaultComponents');
 __export(require('./cardContainer'));
 exports.moduleName = 'rl.ui.components.cardContainer';
 angular.module(exports.moduleName, [
@@ -53,7 +54,9 @@ angular.module(exports.moduleName, [
     filters.moduleName,
     sorts.moduleName,
 ])
-    .directive(cardContainer_1.directiveName, cardContainer_1.cardContainer)
+    .component(cardContainer_1.componentName, cardContainer_1.cardContainer)
     .controller(cardContainer_1.controllerName, cardContainer_1.CardContainerController)
-    .factory(builder.factoryName, builder.cardContainerBuilderFactory);
+    .factory(builder.factoryName, builder.cardContainerBuilderFactory)
+    .component(defaultComponents_1.headerComponentName, defaultComponents_1.defaultContainerHeader)
+    .component(defaultComponents_1.footerComponentName, defaultComponents_1.defaultContainerFooter);
 //# sourceMappingURL=cardContainer.module.js.map
