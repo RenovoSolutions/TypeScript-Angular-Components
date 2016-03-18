@@ -6,6 +6,10 @@ Contains various TypeScript Angular controls and components.
 ## Behaviors
 Angular directives that are applied as attributes to an element in order to modify the element's behavior.
 
+* [alias]()
+* [autosave]()
+* [popover]()
+
 ## Components
 Angular components that can be added to an application.
 
