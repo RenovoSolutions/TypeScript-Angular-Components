@@ -14,7 +14,9 @@ import { services } from 'typescript-angular-utilities';
 import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
 import __object = services.object;
+import __guid = services.guid;
 
+import { IInputAttributes } from '../input/input';
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
@@ -75,8 +77,14 @@ export class DateTimeController {
 	dateTimeValidator: IComponentValidator;
 	required: RequiredController;
 
-	static $inject: string[] = ['$scope', componentValidatorFactoryName];
-	constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, $attrs: IInputAttributes
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
+			$attrs.$set('name', 'date-time-' + __guid.guid.random());
+		}
+
 		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
 			let validators: __validation.IValidationHandler[] = [];
 
