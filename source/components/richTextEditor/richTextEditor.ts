@@ -37,7 +37,7 @@ export class RichTextEditorController extends InputController {
 
 	toolbar: string;
 
-	static $inject: string[] = [__object.serviceName, providerName];
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName, __object.serviceName, providerName];
 	constructor($scope: angular.IScope
 			, $attrs: angular.IAttributes
 			, componentValidatorFactory: IComponentValidatorFactory
@@ -62,7 +62,7 @@ let richTextEditorBindings: any = richTextEditor.bindings;
 richTextEditorBindings.customButtons = '<?';
 richTextEditorBindings.ngDisabled = '<?';
 
-angular.module(moduleName, ['ngWig', __object.moduleName])
+angular.module(moduleName, ['ngWig', __object.moduleName, inputModule])
 	.component(componentName, richTextEditor)
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)
