@@ -45,7 +45,7 @@ describe('dialog', () => {
 
 	beforeEach(() => {
 		testImplementation = {
-			open: sinon.spy(),
+			open: sinon.spy((): any => { return {}; }),
 		};
 
 		angular.mock.module(moduleName, (dialogProvider: IDialogServiceProvider<any>): void => {

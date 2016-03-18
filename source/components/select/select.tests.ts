@@ -130,8 +130,12 @@ describe('SelectController', () => {
 			getOptions: getOptions ? getOptions : sinon.spy(),
 		};
 
+		let locals: any = {
+			$attrs: { $set: sinon.spy() },
+		};
+
 		let controllerResult: __test.IControllerResult<SelectController>
-			= __test.angularFixture.controllerWithBindings<SelectController>(controllerName, bindings);
+			= __test.angularFixture.controllerWithBindings<SelectController>(controllerName, bindings, locals);
 
 		scope = controllerResult.scope;
 		dropdown = controllerResult.controller;
