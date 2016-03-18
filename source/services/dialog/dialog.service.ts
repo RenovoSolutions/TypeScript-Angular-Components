@@ -79,7 +79,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			scope.dialog = this.data;
 			scope.$save = (): void => { this.autosave.autosave(this.data); };
 
-			let instance: types.IAutosaveDialogInstance = <any>this.dialog.open(<any>options, this.autosaveCloseHandler);
+			let instance: types.IAutosaveDialogInstance = <any>this.open(<any>options, this.autosaveCloseHandler);
 			dialogInstance.close = instance.close;
 			dialogInstance.dismiss = instance.dismiss;
 			dialogInstance.save = instance.save;
