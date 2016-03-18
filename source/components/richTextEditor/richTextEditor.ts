@@ -12,6 +12,8 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
+import { input, InputController, moduleName as inputModule } from '../input/input';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 import { richTextEditorProvider, providerName, IRichTextEditorProvider } from './richTextEditor.config';
 import { headerButton, headerButtonDirectiveName, } from './headerButton';
 import { paragraphButton, paragraphButtonDirectiveName, } from './paragraphButton';
@@ -20,25 +22,30 @@ let externalProviderName: string = providerName + 'Provider';
 export { externalProviderName as providerName, IRichTextEditorProvider };
 
 export var moduleName: string = 'rl.ui.components.richTextEditor';
-export var directiveName: string = 'rlRichTextEditor';
+export var componentName: string = 'rlRichTextEditor';
 export var controllerName: string = 'RichTextEditorController';
 
 export interface IRichTextEditorBindings {
-	ngModel: string;
 	customButtons: string[];
 	ngDisabled: boolean;
 }
 
-export class RichTextEditorController {
+export class RichTextEditorController extends InputController {
 	// bindings
-	ngModel: string;
 	customButtons: string;
 	ngDisabled: boolean;
 
 	toolbar: string;
 
 	static $inject: string[] = [__object.serviceName, providerName];
-	constructor(object: __object.IObjectUtility, provider: void) {
+	constructor($scope: angular.IScope
+			, $attrs: angular.IAttributes
+			, componentValidatorFactory: IComponentValidatorFactory
+			, object: __object.IObjectUtility
+			, provider: void) {
+		super($scope, <any>$attrs, componentValidatorFactory);
+		this.inputType = 'rich-text-editor';
+
 		this.toolbar = 'h1, paragraph, bold, italic, underline, list1, list2, indent, outdent';
 
 		if (!object.isNullOrEmpty(this.customButtons)) {
@@ -47,24 +54,15 @@ export class RichTextEditorController {
 	}
 }
 
-export function richTextEditor(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./richTextEditor.html'),
-		controller: controllerName,
-		controllerAs: 'editor',
-		scope: {},
-		bindToController: {
-			ngModel: '=',
-			customButtons: '=',
-			ngDisabled: '=',
-		},
-	};
-}
+let richTextEditor: angular.IComponentOptions = _.clone(input);
+richTextEditor.template = require('./richTextEditor.html');
+richTextEditor.controller = controllerName;
+richTextEditor.controllerAs = 'editor';
+richTextEditor.bindings.customButtons = '<?';
+richTextEditor.bindings.ngDisabled = '<?';
 
 angular.module(moduleName, ['ngWig', __object.moduleName])
-	.directive(directiveName, richTextEditor)
+	.component(componentName, richTextEditor)
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)
 	.directive(paragraphButtonDirectiveName, paragraphButton)
