@@ -136,6 +136,7 @@ function card() {
             permanentFooter: '=',
             selectable: '=',
             selectionChanged: '&',
+            saveWhenInvalid: '<?',
         },
         link: function (scope, element, attrs, rlCardContainer) {
             scope.__rlCardContainer = rlCardContainer;

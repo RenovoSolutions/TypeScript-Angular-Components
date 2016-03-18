@@ -8,6 +8,7 @@ var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __string = typescript_angular_utilities_1.services.string;
 var __number = typescript_angular_utilities_1.services.number;
 var __object = typescript_angular_utilities_1.services.object;
+var __guid = typescript_angular_utilities_1.services.guid;
 var required_1 = require('../../behaviors/required/required');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.spinner';
@@ -15,8 +16,11 @@ exports.directiveName = 'rlSpinner';
 exports.controllerName = 'SpinnerController';
 exports.defaultMaxValue = 100000000000000000000;
 var SpinnerController = (function () {
-    function SpinnerController($scope, componentValidatorFactory) {
+    function SpinnerController($scope, $attrs, componentValidatorFactory) {
         var _this = this;
+        if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
+            $attrs.$set('name', 'spinner-' + __guid.guid.random());
+        }
         var unregister = $scope.$watch(function () { return _this.ngModel; }, function (value) {
             var validators = [];
             if (!_.isUndefined(_this.validator)) {
@@ -39,7 +43,7 @@ var SpinnerController = (function () {
             unregister();
         });
     }
-    SpinnerController.$inject = ['$scope', componentValidator_service_1.factoryName];
+    SpinnerController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName];
     return SpinnerController;
 }());
 exports.SpinnerController = SpinnerController;

@@ -9,8 +9,8 @@ export interface ISimpleCardBindings {
     canOpen: boolean;
     alwaysOpen: boolean;
     childLink: __parentChild.IChild<ISimpleCardBehavior>;
-    validate(): boolean;
     save(): angular.IPromise<void>;
+    saveWhenInvalid?: boolean;
 }
 export interface ISimpleCardScope extends angular.IScope {
     hasFooter: boolean;
@@ -29,12 +29,10 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     canOpen: boolean;
     alwaysOpen: boolean;
     childLink: __parentChild.IChild<ISimpleCardBehavior>;
-    validate: {
-        (): boolean;
-    };
     save: {
         (): angular.IPromise<void>;
     };
+    saveWhenInvalid: boolean;
     showContent: boolean;
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
     private listController;

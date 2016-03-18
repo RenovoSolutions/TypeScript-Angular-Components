@@ -100,8 +100,8 @@ function simpleCard() {
             canOpen: '=?',
             alwaysOpen: '=?',
             childLink: '=?',
-            validate: '&',
             save: '&',
+            saveWhenInvalid: '<?',
         },
     };
 }
