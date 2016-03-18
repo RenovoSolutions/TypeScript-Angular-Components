@@ -2,7 +2,6 @@
 
 import * as angular from 'angular';
 
-import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
 import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
@@ -41,7 +40,6 @@ import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultThe
 export {
 	defaultThemeValueName,
 
-	autosaveDialogFooter,
 	busy,
 	button,
 	buttonAsync,
@@ -78,7 +76,6 @@ export {
 export let moduleName: string = 'rl.ui.components';
 
 angular.module(moduleName, [
-	autosaveDialogFooter.moduleName,
 	busy.moduleName,
 	button.moduleName,
 	buttonAsync.moduleName,
