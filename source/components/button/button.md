@@ -9,7 +9,7 @@ Basic button with configurable options for **action**, **size**, **type**, and *
 
 #### `action`
 
-This will set the **ng-click event** of the button.
+The expression in the **action** will be triggered when the button is clicked.
 
 #### `size`
 
