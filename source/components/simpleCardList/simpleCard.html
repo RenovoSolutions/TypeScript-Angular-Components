@@ -4,7 +4,7 @@
 		<div class="clearfix"></div>
 	</div>
 
-	<ng-form name="cardForm" rl-autosave="card.autosaveLink" save="card.save()" save-when-invalid="{{card.saveWhenInvalid}}">
+	<ng-form name="cardForm" rl-autosave="card.autosaveLink" save="card.save()" save-when-invalid="card.saveWhenInvalid">
 		<div ng-if="card.showContent || card.alwaysOpen">
 			<div class="body row">
 				<div ng-transclude="contentSlot"></div>
