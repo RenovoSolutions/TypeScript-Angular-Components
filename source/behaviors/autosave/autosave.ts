@@ -26,6 +26,7 @@ export interface IAutosaveAttributes extends angular.IAttributes {
 	debounceDuration: string;
 	triggers: string;
 	saveWhenInvalid: string;
+	ngSubmit: string;
 }
 
 export interface IAutosaveBehavior {
@@ -34,7 +35,8 @@ export interface IAutosaveBehavior {
 
 export class AutosaveController {
 	autosave: IAutosaveService;
-	keyupListener: { (callback: triggers.IChangeListener): triggers.IClearChangeListener };
+	keyupListener: { (callback: triggers.IListener): triggers.IClearListener };
+	submitListener: { (callback: triggers.IListener): triggers.IClearListener };
 
 	form: IFormValidator;
 
@@ -56,10 +58,17 @@ export class AutosaveController {
 		, private objectUtility: __objectUtility.IObjectUtility) {}
 
 	$onInit(): void {
-		this.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
+		this.keyupListener = (callback: triggers.IListener): triggers.IClearListener => {
 			this.$element.on('keyup', (): void => { this.$scope.$apply(callback); });
 			return (): void => {
 				this.$element.off('keyup');
+			};
+		};
+
+		this.submitListener = (callback: triggers.IListener): triggers.IClearListener => {
+			this.$element.on('submit', (): void => { this.$scope.$apply(callback); });
+			return (): void => {
+				this.$element.off('submit');
 			};
 		};
 
@@ -76,6 +85,7 @@ export class AutosaveController {
 			debounceDuration: debounce,
 			triggers: this.$attrs.triggers,
 			setChangeListener: this.keyupListener,
+			setSubmitListener: this.submitListener,
 			saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
 		});
 
@@ -93,6 +103,7 @@ export function autosave(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',
+		priority: 1000,
 		require: {
 			autosaveController: 'rlAutosave',
 			form: '?form',

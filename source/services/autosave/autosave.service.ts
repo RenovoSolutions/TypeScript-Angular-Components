@@ -29,17 +29,10 @@ export interface IAutosaveServiceOptions {
 	save: { (...data: any[]): angular.IPromise<void> };
 	contentForm?: IFormValidator;
 	debounceDuration?: number;
-	setChangeListener?: { (callback: IChangeListener): IClearChangeListener };
+	setChangeListener?: { (callback: triggers.IListener): triggers.IClearListener };
+	setSubmitListener?: { (callback: triggers.IListener): triggers.IClearListener };
 	triggers?: string;
 	saveWhenInvalid?: boolean;
-}
-
-export interface IChangeListener {
-	(): void;
-}
-
-export interface IClearChangeListener {
-	(): void;
 }
 
 class AutosaveService implements IAutosaveService {
