@@ -15,7 +15,7 @@ Angular components that can be added to an application.
 
 * [autosaveDialogFooter]()
 * [busy]()
-* [button]()
+* [button](/source/components/button/button.md)
 * [buttonAsync]()
 * [buttonLink]()
 * [buttonToggle]()
