@@ -19,6 +19,10 @@
 			console.log(form);
 		});
 
+		self.submit = function() {
+			console.log('Submitted');
+		}
+
 		self.text = null;
 		self.set = [];
 		self.select = function (value) {

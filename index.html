@@ -22,7 +22,7 @@
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
 				<h3>Inputs</h3>
-				<div ng-form="testForm">
+				<form name="testForm" rl-autosave save="test.submit()" triggers="onSubmit">
 					<rl-textbox ng-model="test.otherText" rl-required="We need this"></rl-textbox>
 					<rl-textarea ng-model="test.textAreaText" rl-required="Required textarea"></rl-textarea>
 					<rl-spinner ng-model="test.number" rl-required="Spinner required"></rl-spinner>
@@ -37,7 +37,9 @@
 								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
 
 					<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
-				</div>
+
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
 				<br/>
 				<rl-template-renderer template="test.template"></rl-template-renderer>
 
