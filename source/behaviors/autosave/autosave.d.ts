@@ -13,6 +13,7 @@ export interface IAutosaveAttributes extends angular.IAttributes {
     debounceDuration: string;
     triggers: string;
     saveWhenInvalid: string;
+    ngSubmit: string;
 }
 export interface IAutosaveBehavior {
     autosave(): boolean;
@@ -28,7 +29,10 @@ export declare class AutosaveController {
     private objectUtility;
     autosave: IAutosaveService;
     keyupListener: {
-        (callback: triggers.IChangeListener): triggers.IClearChangeListener;
+        (callback: triggers.IListener): triggers.IClearListener;
+    };
+    submitListener: {
+        (callback: triggers.IListener): triggers.IClearListener;
     };
     form: IFormValidator;
     static $inject: string[];

@@ -15,16 +15,13 @@ export interface IAutosaveServiceOptions {
     contentForm?: IFormValidator;
     debounceDuration?: number;
     setChangeListener?: {
-        (callback: IChangeListener): IClearChangeListener;
+        (callback: triggers.IListener): triggers.IClearListener;
+    };
+    setSubmitListener?: {
+        (callback: triggers.IListener): triggers.IClearListener;
     };
     triggers?: string;
     saveWhenInvalid?: boolean;
-}
-export interface IChangeListener {
-    (): void;
-}
-export interface IClearChangeListener {
-    (): void;
 }
 export interface IAutosaveServiceFactory {
     getInstance(options: IAutosaveServiceOptions): IAutosaveService;

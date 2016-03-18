@@ -53,6 +53,9 @@ var AutosaveService = (function () {
             debounceDuration: options.debounceDuration,
             saveWhenInvalid: options.saveWhenInvalid,
         });
+        this.triggerService.triggers.onSubmit.configure({
+            setSubmitListener: options.setSubmitListener,
+        });
     };
     AutosaveService.prototype.nullForm = function () {
         return {
