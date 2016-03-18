@@ -30,6 +30,9 @@ describe('onSubmitTrigger', () => {
 		triggerSpy = sinon.spy((promise: ng.IPromise<void>): ng.IPromise<void> => { return promise; });
 		let autosaveActionService: IAutosaveActionMock = { trigger: triggerSpy };
 
+		let services: any = test.angularFixture.inject('$q');
+		let $q: ng.IQService = services.$q;
+
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 
 		trigger = new OnSubmitTrigger();
