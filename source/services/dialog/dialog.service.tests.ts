@@ -25,7 +25,6 @@ import test = services.test;
 
 interface IDialogMock {
 	open: Sinon.SinonSpy;
-	openAutosaveForm: Sinon.SinonSpy;
 }
 
 interface IAutosaveFactoryMock {
@@ -49,7 +48,7 @@ describe('dialog', () => {
 		};
 
 		angular.mock.module(moduleName, (dialogProvider: IDialogServiceProvider<any>): void => {
-			dialogProvider.setImplementation(testImplementation);
+			dialogProvider.setImplementation(<any>testImplementation);
 		});
 
 		autosave = {

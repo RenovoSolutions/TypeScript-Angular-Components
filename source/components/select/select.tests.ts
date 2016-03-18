@@ -139,7 +139,7 @@ describe('SelectController', () => {
 
 		scope = controllerResult.scope;
 		dropdown = controllerResult.controller;
-		dropdown.ngModel = ngModel;
+		dropdown.ngModel = <any>ngModel;
 		dropdown.$onInit();
 	}
 });
