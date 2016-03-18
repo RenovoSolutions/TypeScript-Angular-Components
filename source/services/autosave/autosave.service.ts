@@ -85,6 +85,9 @@ class AutosaveService implements IAutosaveService {
 			debounceDuration: options.debounceDuration,
 			saveWhenInvalid: options.saveWhenInvalid,
 		});
+		this.triggerService.triggers.onSubmit.configure({
+			setSubmitListener: options.setSubmitListener,
+		});
 	}
 
 	private nullForm(): IFormValidator {
