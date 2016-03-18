@@ -8,6 +8,7 @@ import { IAutosaveServiceFactory } from '../autosave/autosave.service';
 import { IFormService } from '../form/form.service';
 import { IFormValidator } from '../../types/formValidators';
 export { bootstrapModalDialog };
+export { directiveName, controllerName, DialogController } from '../../components/dialog/dialog';
 export * from './dialogTypes';
 export declare let moduleName: string;
 export declare let serviceName: string;

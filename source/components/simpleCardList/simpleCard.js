@@ -102,6 +102,7 @@ function simpleCard() {
             childLink: '=?',
             save: '&',
             saveWhenInvalid: '<?',
+            cardType: '@',
         },
     };
 }
