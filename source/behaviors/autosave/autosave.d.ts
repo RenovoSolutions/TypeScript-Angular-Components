@@ -4,14 +4,15 @@ import __parentChild = services.parentChildBehavior;
 import __objectUtility = services.object;
 import { IAutosaveService, IAutosaveServiceFactory, triggers } from '../../services/autosave/autosave.service';
 import { IFormValidator } from '../../types/formValidators';
-export declare var moduleName: string;
-export declare var directiveName: string;
-export declare var controllerName: string;
+export declare let moduleName: string;
+export declare let directiveName: string;
+export declare let controllerName: string;
 export interface IAutosaveAttributes extends angular.IAttributes {
     rlAutosave: string;
     save: string;
     debounceDuration: string;
     triggers: string;
+    saveWhenInvalid: string;
 }
 export interface IAutosaveBehavior {
     autosave(): boolean;

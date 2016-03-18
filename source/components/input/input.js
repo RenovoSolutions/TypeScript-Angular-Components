@@ -4,14 +4,17 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __guid = typescript_angular_utilities_1.services.guid;
 var required_1 = require('../../behaviors/required/required');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.input';
 exports.controllerName = 'InputController';
 var InputController = (function () {
-    function InputController($scope, componentValidatorFactory) {
+    function InputController($scope, $attrs, componentValidatorFactory) {
         this.$scope = $scope;
+        this.$attrs = $attrs;
         this.componentValidatorFactory = componentValidatorFactory;
+        this.inputType = 'input';
     }
     Object.defineProperty(InputController.prototype, "inputValue", {
         get: function () {
@@ -29,6 +32,9 @@ var InputController = (function () {
         if (!_.isUndefined(this.validator)) {
             validators.push(this.validator);
         }
+        if (__object.objectUtility.isNullOrEmpty(this.$attrs.name)) {
+            this.$attrs.$set('name', this.inputType + '-' + __guid.guid.random());
+        }
         if (this.required != null) {
             validators.push({
                 name: 'rlRequired',
@@ -44,7 +50,7 @@ var InputController = (function () {
             });
         }
     };
-    InputController.$inject = ['$scope', componentValidator_service_1.factoryName];
+    InputController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName];
     return InputController;
 }());
 exports.InputController = InputController;
@@ -59,6 +65,7 @@ exports.input = {
     bindings: {
         validator: '<?',
         label: '@',
+        name: '@',
     },
 };
 angular.module(exports.moduleName, [componentValidator_service_1.moduleName])

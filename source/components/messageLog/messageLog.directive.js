@@ -5,7 +5,7 @@ var __object = typescript_angular_utilities_1.services.object;
 var jquery_service_1 = require('../../services/jquery/jquery.service');
 var messageLog_service_1 = require('./messageLog.service');
 var componentServices = require('../../services/services.module');
-var __autosaveDialog = componentServices.autosaveDialog;
+var __dialog = componentServices.dialog;
 var templateLoader_service_1 = require('../../services/templateLoader/templateLoader.service');
 exports.directiveName = 'rlMessageLog';
 exports.controllerName = 'MessageLogController';
@@ -22,9 +22,9 @@ var DeletePermissions = exports.DeletePermissions;
 })(exports.EditPermissions || (exports.EditPermissions = {}));
 var EditPermissions = exports.EditPermissions;
 var MessageLogController = (function () {
-    function MessageLogController(autosaveDialog, $scope, messageLogFactory) {
+    function MessageLogController(dialog, $scope, messageLogFactory) {
         var _this = this;
-        this.autosaveDialog = autosaveDialog;
+        this.dialog = dialog;
         this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
         $scope.$watch(function () { return _this.messageLog.visibleMessages; }, function (value) {
             _this.messages = value;
@@ -92,9 +92,8 @@ var MessageLogController = (function () {
     };
     MessageLogController.prototype.editMessage = function (entry) {
         var editedEntry = _.clone(entry);
-        this.autosaveDialog.open({
+        this.dialog.openAutosaveForm({
             save: this.updateNote.bind(this),
-            form: 'noteForm',
             data: {
                 entry: editedEntry,
                 originalEntry: entry,
@@ -108,7 +107,7 @@ var MessageLogController = (function () {
     MessageLogController.prototype.saveNote = function (data) {
         return this.messageLog.addMessage(data.entry);
     };
-    MessageLogController.$inject = [__autosaveDialog.serviceName, '$scope', messageLog_service_1.factoryName];
+    MessageLogController.$inject = [__dialog.serviceName, '$scope', messageLog_service_1.factoryName];
     return MessageLogController;
 }());
 exports.MessageLogController = MessageLogController;

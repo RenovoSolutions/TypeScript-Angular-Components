@@ -7,7 +7,7 @@ var FormService = (function () {
     }
     FormService.prototype.getAggregateError = function (form) {
         var filteredForm = _.filter(form, function (prop) {
-            return prop.rlErrorMessage != null;
+            return prop != null && prop.rlErrorMessage != null;
         });
         var errors = _.mapValues(filteredForm, 'rlErrorMessage');
         return _.first(errors);

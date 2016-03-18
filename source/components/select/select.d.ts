@@ -24,7 +24,7 @@ export declare class SelectController extends InputController {
     private _nullOption;
     selection: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $q: angular.IQService, object: __object.IObjectUtility, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $attrs: angular.IAttributes, $q: angular.IQService, object: __object.IObjectUtility, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
     getDisplayName(item: any): string;
     loadItems(): angular.IPromise<any[]>;

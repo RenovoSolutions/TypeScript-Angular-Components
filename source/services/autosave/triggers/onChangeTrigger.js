@@ -33,7 +33,7 @@ var OnChangeTrigger = (function (_super) {
     };
     OnChangeTrigger.prototype.triggerSaveAction = function (autosave) {
         var _this = this;
-        if (this.settings.form.$dirty && this.settings.form.$valid) {
+        if (this.settings.form.$dirty && (this.settings.form.$valid || this.settings.saveWhenInvalid)) {
             this.setTimer(autosave);
             this.clearChangeListener = this.setChangeListener(function () {
                 _this.setTimer(autosave);

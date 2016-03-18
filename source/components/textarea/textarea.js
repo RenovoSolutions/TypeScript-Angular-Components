@@ -6,7 +6,6 @@ exports.moduleName = 'rl.ui.components.textarea';
 exports.componentName = 'rlTextarea';
 var textarea = _.clone(input_1.input);
 textarea.template = require('./textarea.html');
-textarea.bindings.name = '@';
 textarea.bindings.rows = '<?';
 textarea.bindings.ngDisabled = '<?';
 textarea.bindings.maxlength = '<?';

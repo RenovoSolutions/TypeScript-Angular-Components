@@ -20,9 +20,8 @@ exports.controllerName = 'TypeaheadController';
 var TypeaheadController = (function (_super) {
     __extends(TypeaheadController, _super);
     function TypeaheadController($scope, $q, $attrs, $timeout, parentChild, genericSearchFactory, object, array, componentValidatorFactory) {
-        _super.call(this, $scope, componentValidatorFactory);
+        _super.call(this, $scope, $attrs, componentValidatorFactory);
         this.$q = $q;
-        this.$attrs = $attrs;
         this.$timeout = $timeout;
         this.parentChild = parentChild;
         this.genericSearchFactory = genericSearchFactory;
@@ -34,6 +33,7 @@ var TypeaheadController = (function (_super) {
         this._searchOption = {
             __isSearchOption: true,
         };
+        this.inputType = 'typeahead';
     }
     Object.defineProperty(TypeaheadController.prototype, "selection", {
         get: function () {
@@ -56,12 +56,14 @@ var TypeaheadController = (function (_super) {
     });
     TypeaheadController.prototype.$onInit = function () {
         var _this = this;
+        _super.prototype.$onInit.call(this);
         this.searchFilter = this.genericSearchFactory.getInstance();
         this.loadDelay = this.useClientSearching ? 100 : 500;
         this.prefix = this.prefix || 'Search for';
         this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
-        this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty(this.$attrs.select);
-        this.allowCustomOption = !this.object.isNullOrEmpty(this.$attrs.create);
+        var $attrs = this.$attrs;
+        this.collapseOnSelect = this.allowCollapse || this.object.isNullOrEmpty($attrs.select);
+        this.allowCustomOption = !this.object.isNullOrEmpty($attrs.create);
         this.$timeout(function () {
             if (_this.collapseOnSelect && !_this.object.isNullOrEmpty(_this.ngModel.$viewValue)) {
                 _this.collapsed = true;

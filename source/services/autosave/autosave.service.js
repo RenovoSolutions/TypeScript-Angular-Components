@@ -23,7 +23,7 @@ var AutosaveService = (function () {
             if (_this.contentForm.$pristine) {
                 return true;
             }
-            if (_this.contentForm.$valid) {
+            if (_this.contentForm.$valid || _this.saveWhenInvalid) {
                 var promise = _this.save.apply(_this, data);
                 if (!_.isUndefined(promise)) {
                     _this.autosaveService.trigger(promise.then(function () {
@@ -41,6 +41,7 @@ var AutosaveService = (function () {
         };
         this.contentForm = options.contentForm || this.nullForm();
         this.save = options.save;
+        this.saveWhenInvalid = options.saveWhenInvalid;
         this.triggerService = triggerServiceFactory.getInstance();
         this.configureTriggers(options);
         this.triggerService.setTriggers(options.triggers, this.autosave);
@@ -50,6 +51,7 @@ var AutosaveService = (function () {
             form: options.contentForm,
             setChangeListener: options.setChangeListener,
             debounceDuration: options.debounceDuration,
+            saveWhenInvalid: options.saveWhenInvalid,
         });
     };
     AutosaveService.prototype.nullForm = function () {

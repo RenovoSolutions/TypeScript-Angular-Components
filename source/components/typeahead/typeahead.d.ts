@@ -78,7 +78,6 @@ export interface ITypeaheadAttrs extends angular.IAttributes {
 }
 export declare class TypeaheadController extends InputController {
     private $q;
-    private $attrs;
     private $timeout;
     private parentChild;
     private genericSearchFactory;

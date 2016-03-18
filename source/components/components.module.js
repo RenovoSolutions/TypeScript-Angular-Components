@@ -1,7 +1,5 @@
 'use strict';
 var angular = require('angular');
-var autosaveDialogFooter = require('./autosaveDialogFooter/autosaveDialogFooter');
-exports.autosaveDialogFooter = autosaveDialogFooter;
 var busy = require('./busy/busy');
 exports.busy = busy;
 var button = require('./button/button');
@@ -68,7 +66,6 @@ var componentsDefaultTheme_1 = require('./componentsDefaultTheme');
 exports.defaultThemeValueName = componentsDefaultTheme_1.defaultThemeValueName;
 exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
-    autosaveDialogFooter.moduleName,
     busy.moduleName,
     button.moduleName,
     buttonAsync.moduleName,

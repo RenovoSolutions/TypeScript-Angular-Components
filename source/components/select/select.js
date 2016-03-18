@@ -19,13 +19,14 @@ exports.componentName = 'rlSelect';
 exports.controllerName = 'SelectController';
 var SelectController = (function (_super) {
     __extends(SelectController, _super);
-    function SelectController($scope, $q, object, componentValidatorFactory) {
-        _super.call(this, $scope, componentValidatorFactory);
+    function SelectController($scope, $attrs, $q, object, componentValidatorFactory) {
+        _super.call(this, $scope, $attrs, componentValidatorFactory);
         this.$q = $q;
         this.object = object;
         this._nullOption = {
             __isNullOption: true,
         };
+        this.inputType = 'select';
     }
     Object.defineProperty(SelectController.prototype, "selection", {
         get: function () {
@@ -44,6 +45,7 @@ var SelectController = (function (_super) {
     });
     SelectController.prototype.$onInit = function () {
         var _this = this;
+        _super.prototype.$onInit.call(this);
         if (_.isUndefined(this.options)) {
             this.loading = true;
             this.loadItems().then(function (options) {
@@ -76,7 +78,7 @@ var SelectController = (function (_super) {
         }
         return options;
     };
-    SelectController.$inject = ['$scope', '$q', __object.serviceName, componentValidator_service_1.factoryName];
+    SelectController.$inject = ['$scope', '$attrs', '$q', __object.serviceName, componentValidator_service_1.factoryName];
     return SelectController;
 }(input_1.InputController));
 exports.SelectController = SelectController;

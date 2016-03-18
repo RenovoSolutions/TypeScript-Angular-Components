@@ -18,6 +18,7 @@ export interface IAutosaveServiceOptions {
         (callback: IChangeListener): IClearChangeListener;
     };
     triggers?: string;
+    saveWhenInvalid?: boolean;
 }
 export interface IChangeListener {
     (): void;

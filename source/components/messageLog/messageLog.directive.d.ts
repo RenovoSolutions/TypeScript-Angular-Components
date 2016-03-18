@@ -4,7 +4,7 @@ import __object = services.object;
 import { IJQueryUtility } from '../../services/jquery/jquery.service';
 import { IMessageLogDataService, IMessageLog, IMessage, IMessageLogFactory, IUser } from './messageLog.service';
 import * as componentServices from '../../services/services.module';
-import __autosaveDialog = componentServices.autosaveDialog;
+import __dialog = componentServices.dialog;
 import { ITemplateLoader } from '../../services/templateLoader/templateLoader.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
@@ -31,7 +31,7 @@ export interface IMessageLogBindings {
     } | string;
 }
 export declare class MessageLogController implements IMessageLogBindings {
-    private autosaveDialog;
+    private dialog;
     pageSize: number;
     service: IMessageLogDataService;
     messageLogBinding: IMessageLog;
@@ -50,7 +50,7 @@ export declare class MessageLogController implements IMessageLogBindings {
     loading: boolean;
     loadingInitial: boolean;
     static $inject: string[];
-    constructor(autosaveDialog: __autosaveDialog.IAutosaveDialogService, $scope: ng.IScope, messageLogFactory: IMessageLogFactory);
+    constructor(dialog: __dialog.IDialogService<any>, $scope: ng.IScope, messageLogFactory: IMessageLogFactory);
     getEntrySelector(entry: IMessage): any;
     getOlder(): ng.IPromise<void>;
     getTop(): ng.IPromise<void>;

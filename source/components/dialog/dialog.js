@@ -2,12 +2,23 @@
 // /// <reference path='../../../typings/jquery/jquery.d.ts' />
 'use strict';
 var angular = require('angular');
+var dialog_service_1 = require('../../services/dialog/dialog.service');
 exports.moduleName = 'rl.ui.components.dialog';
 exports.directiveName = 'rlDialog';
 exports.controllerName = 'DialogController';
 var DialogController = (function () {
-    function DialogController() {
+    function DialogController($scope, dialogService) {
+        this.$scope = $scope;
+        this.dialogService = dialogService;
     }
+    DialogController.prototype.$onInit = function () {
+        var _this = this;
+        var unbind = this.$scope.$watch('dialogForm', function (form) {
+            _this.dialogService.setForm(form);
+            unbind();
+        });
+    };
+    DialogController.$inject = ['$scope', dialog_service_1.serviceName];
     return DialogController;
 }());
 exports.DialogController = DialogController;
@@ -48,7 +59,7 @@ function dialog($compile) {
         },
     };
 }
-angular.module(exports.moduleName, [])
+angular.module(exports.moduleName, [dialog_service_1.moduleName])
     .directive(exports.directiveName, dialog)
     .controller(exports.controllerName, DialogController);
 //# sourceMappingURL=dialog.js.map

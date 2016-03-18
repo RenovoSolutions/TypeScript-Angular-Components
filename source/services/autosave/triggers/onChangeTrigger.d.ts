@@ -6,6 +6,7 @@ export interface OnChangeSettings {
         (callback: IChangeListener): IClearChangeListener;
     };
     debounceDuration?: number;
+    saveWhenInvalid?: boolean;
 }
 export interface IChangeListener {
     (): void;
