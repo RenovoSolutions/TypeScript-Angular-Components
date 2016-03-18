@@ -22,19 +22,22 @@
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
 				<h3>Inputs</h3>
-				<rl-textbox ng-model="test.otherText" rl-required="We need this"></rl-textbox>
-				<rl-textarea ng-model="test.textAreaText" rl-required="Required textarea"></rl-textarea>
-				<rl-spinner ng-model="test.number" rl-required="Spinner required"></rl-spinner>
-				<rl-date-time ng-model="test.date" rl-required="Date required"></rl-date-time>
+				<div ng-form="testForm">
+					<rl-textbox ng-model="test.otherText" rl-required="We need this"></rl-textbox>
+					<rl-textarea ng-model="test.textAreaText" rl-required="Required textarea"></rl-textarea>
+					<rl-spinner ng-model="test.number" rl-required="Spinner required"></rl-spinner>
+					<rl-date-time ng-model="test.date" rl-required="Date required"></rl-date-time>
 
-				<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
-				<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
-							  create="test.create(value)" label="Test create"></rl-typeahead>
-				<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
-							  select="test.select(value)" label="Test select"></rl-typeahead>
-				<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
-							  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
+					<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
+					<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
+								  create="test.create(value)" label="Test create"></rl-typeahead>
+					<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
+								  select="test.select(value)" label="Test select"></rl-typeahead>
+					<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
+								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
 
+					<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
+				</div>
 				<br/>
 				<rl-template-renderer template="test.template"></rl-template-renderer>
 
@@ -122,7 +125,6 @@
 						<rl-item-count></rl-item-count>
 					</rl-container-footer>
 				</rl-card-container>
-				<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
 			</div>
 		</div>
 	</body>

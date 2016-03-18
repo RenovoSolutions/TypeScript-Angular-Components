@@ -15,6 +15,10 @@
 			scope: templateScope,
 		};
 
+		$scope.$watch('testForm', function(form) {
+			console.log(form);
+		});
+
 		self.text = null;
 		self.set = [];
 		self.select = function (value) {
