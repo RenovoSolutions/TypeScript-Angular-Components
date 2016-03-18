@@ -7,7 +7,16 @@
 
 import { services } from 'typescript-angular-utilities';
 
-import { moduleName, serviceName, IDialogService, IDialogServiceProvider, bootstrapModalDialog } from './dialog.service';
+import {
+	moduleName,
+	serviceName,
+	IDialogService,
+	IDialogServiceProvider,
+	bootstrapModalDialog,
+	IDialogCloseHandler,
+	IAutosaveDialogSettings,
+} from './dialog.service';
+import { factoryName as autosaveFactoryName } from '../autosave/autosave.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -16,11 +25,23 @@ import test = services.test;
 
 interface IDialogMock {
 	open: Sinon.SinonSpy;
+	openAutosaveForm: Sinon.SinonSpy;
+}
+
+interface IAutosaveFactoryMock {
+	getInstance: Sinon.SinonSpy;
+}
+
+interface IAutosaveMock {
+	autosave: Sinon.SinonSpy;
 }
 
 describe('dialog', () => {
 	var dialog: IDialogService<any>;
 	var testImplementation: IDialogMock;
+	let autosaveFactory: IAutosaveFactoryMock;
+	let autosave: IAutosaveMock;
+	let $rootScope: angular.IRootScopeService;
 
 	beforeEach(() => {
 		testImplementation = {
@@ -31,12 +52,22 @@ describe('dialog', () => {
 			dialogProvider.setImplementation(testImplementation);
 		});
 
+		autosave = {
+			autosave: sinon.spy(),
+		};
+
+		autosaveFactory = {
+			getInstance: sinon.spy((): IAutosaveMock => { return autosave; }),
+		};
+
 		let mocks: any = {};
 		mocks[bootstrapModalDialog.serviceName] = {};
+		mocks[autosaveFactoryName] = autosaveFactory;
 		test.angularFixture.mock(mocks);
 
-		var services: any = test.angularFixture.inject(serviceName);
+		var services: any = test.angularFixture.inject(serviceName, '$rootScope');
 		dialog = services[serviceName];
+		$rootScope = services.$rootScope;
 	});
 
 	it('should open a dialog using the configured implementation', (): void => {
@@ -50,5 +81,36 @@ describe('dialog', () => {
 		dialog.open(options);
 		sinon.assert.calledOnce(testImplementation.open);
 		sinon.assert.calledWith(testImplementation.open, options);
+	});
+
+	describe('autosaveCloseHandler', (): void => {
+		let closeHandler: IDialogCloseHandler;
+		let options: IAutosaveDialogSettings;
+
+		beforeEach((): void => {
+			dialog.open = sinon.spy((settings: any, handler: IDialogCloseHandler): void => {
+				closeHandler = handler;
+			});
+
+			options = <any>{};
+		});
+
+		it('should return true if explicitly closed', (): void => {
+			autosaveDialog.open(options);
+			$rootScope.$digest();
+
+			let canClose: boolean = closeHandler(true);
+
+			expect(canClose).to.be.true;
+		});
+
+		it('should autosave if the dialog wasnt closed explicitly', (): void => {
+			autosaveDialog.open(options);
+			$rootScope.$digest();
+
+			closeHandler(false);
+
+			sinon.assert.calledOnce(autosave.autosave);
+		});
 	});
 });
