@@ -36,11 +36,7 @@ export interface IAutosaveDialogSettings {
 	resolve?: any;
 
 	save: { (...data: any[]): ng.IPromise<void> };
-	form?: string;
 	triggers?: string;
-
-	// optional - instead of specifying a form name
-	formGetter?: { (scope: ng.IScope): IFormValidator };
 }
 
 interface IDialogSettings {
@@ -56,8 +52,6 @@ interface IDialogSettings {
 }
 
 export interface IAutosaveDialogScope extends IDialogScope {
-	form?: string;
-	formGetter?: { (scope: ng.IScope): IFormValidator };
 	setForm(form: IFormValidator): void;
 	dialog: any;
 
@@ -96,8 +90,6 @@ export class AutosaveDialogService implements IAutosaveDialogService {
 				triggers: options.triggers,
 			});
 
-			scope.form = options.form;
-			scope.formGetter = options.formGetter;
 			scope.setForm = this.setForm;
 			this.data = _.extend(options.data, resolveData);
 			scope.dialog = this.data;
