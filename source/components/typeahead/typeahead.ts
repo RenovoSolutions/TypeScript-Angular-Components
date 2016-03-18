@@ -281,15 +281,16 @@ let typeahead: angular.IComponentOptions = _.clone(input);
 typeahead.template = require('./typeahead.html');
 typeahead.controller = controllerName;
 typeahead.controllerAs = 'typeahead';
-typeahead.bindings.childLink = '=?';
-typeahead.bindings.typeahead = '&';
-typeahead.bindings.create = '&';
-typeahead.bindings.allowCollapse = '<?';
-typeahead.bindings.transform = '<?';
-typeahead.bindings.getItems = '&';
-typeahead.bindings.prefix = '@';
-typeahead.bindings.useClientSearching = '<?';
-typeahead.bindings.ngDisabled = '<?';
+let typeaheadBindings: any = typeahead.bindings;
+typeaheadBindings.childLink = '=?';
+typeaheadBindings.typeahead = '&';
+typeaheadBindings.create = '&';
+typeaheadBindings.allowCollapse = '<?';
+typeaheadBindings.transform = '<?';
+typeaheadBindings.getItems = '&';
+typeaheadBindings.prefix = '@';
+typeaheadBindings.useClientSearching = '<?';
+typeaheadBindings.ngDisabled = '<?';
 
 angular.module(moduleName, [
 	__parentChild.moduleName

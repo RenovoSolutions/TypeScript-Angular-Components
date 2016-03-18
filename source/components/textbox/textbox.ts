@@ -12,7 +12,8 @@ export var componentName: string = 'rlTextbox';
 
 let textbox: angular.IComponentOptions = _.clone(input);
 textbox.template = require('./textbox.html');
-textbox.bindings.maxlength = '<?';
+let textboxBindings: any = textbox.bindings;
+textboxBindings.maxlength = '<?';
 
 angular.module(moduleName, [inputModule])
 	.component(componentName, textbox);

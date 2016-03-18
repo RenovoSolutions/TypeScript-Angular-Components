@@ -99,11 +99,12 @@ let select: angular.IComponentOptions = _.clone(input);
 select.template = require('./select.html');
 select.controller = controllerName;
 select.controllerAs = 'select';
-select.bindings.options = '<?';
-select.bindings.getOptions = '&';
-select.bindings.selector = '<?';
-select.bindings.ngDisabled = '<?';
-select.bindings.nullOption = '@';
+let selectBindings: any = select.bindings;
+selectBindings.options = '<?';
+selectBindings.getOptions = '&';
+selectBindings.selector = '<?';
+selectBindings.ngDisabled = '<?';
+selectBindings.nullOption = '@';
 
 angular.module(moduleName, ['ui.select', __object.moduleName, inputModule])
 	.component(componentName, select)

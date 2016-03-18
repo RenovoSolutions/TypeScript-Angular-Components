@@ -58,8 +58,9 @@ let richTextEditor: angular.IComponentOptions = _.clone(input);
 richTextEditor.template = require('./richTextEditor.html');
 richTextEditor.controller = controllerName;
 richTextEditor.controllerAs = 'editor';
-richTextEditor.bindings.customButtons = '<?';
-richTextEditor.bindings.ngDisabled = '<?';
+let richTextEditorBindings: any = richTextEditor.bindings;
+richTextEditorBindings.customButtons = '<?';
+richTextEditorBindings.ngDisabled = '<?';
 
 angular.module(moduleName, ['ngWig', __object.moduleName])
 	.component(componentName, richTextEditor)
