@@ -7,7 +7,8 @@ exports.moduleName = 'rl.ui.components.textbox';
 exports.componentName = 'rlTextbox';
 var textbox = _.clone(input_1.input);
 textbox.template = require('./textbox.html');
-textbox.bindings.maxlength = '<?';
+var textboxBindings = textbox.bindings;
+textboxBindings.maxlength = '<?';
 angular.module(exports.moduleName, [input_1.moduleName])
     .component(exports.componentName, textbox);
 //# sourceMappingURL=textbox.js.map

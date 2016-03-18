@@ -13,6 +13,7 @@ var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 var input_1 = require('../input/input');
+var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 var richTextEditor_config_1 = require('./richTextEditor.config');
 var headerButton_1 = require('./headerButton');
 var paragraphButton_1 = require('./paragraphButton');
@@ -31,7 +32,7 @@ var RichTextEditorController = (function (_super) {
             this.toolbar += ', ' + this.customButtons;
         }
     }
-    RichTextEditorController.$inject = [__object.serviceName, richTextEditor_config_1.providerName];
+    RichTextEditorController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName, __object.serviceName, richTextEditor_config_1.providerName];
     return RichTextEditorController;
 }(input_1.InputController));
 exports.RichTextEditorController = RichTextEditorController;
@@ -39,9 +40,10 @@ var richTextEditor = _.clone(input_1.input);
 richTextEditor.template = require('./richTextEditor.html');
 richTextEditor.controller = exports.controllerName;
 richTextEditor.controllerAs = 'editor';
-richTextEditor.bindings.customButtons = '<?';
-richTextEditor.bindings.ngDisabled = '<?';
-angular.module(exports.moduleName, ['ngWig', __object.moduleName])
+var richTextEditorBindings = richTextEditor.bindings;
+richTextEditorBindings.customButtons = '<?';
+richTextEditorBindings.ngDisabled = '<?';
+angular.module(exports.moduleName, ['ngWig', __object.moduleName, input_1.moduleName])
     .component(exports.componentName, richTextEditor)
     .controller(exports.controllerName, RichTextEditorController)
     .directive(headerButton_1.headerButtonDirectiveName, headerButton_1.headerButton)

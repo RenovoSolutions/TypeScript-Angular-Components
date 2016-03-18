@@ -166,15 +166,16 @@ var typeahead = _.clone(input_1.input);
 typeahead.template = require('./typeahead.html');
 typeahead.controller = exports.controllerName;
 typeahead.controllerAs = 'typeahead';
-typeahead.bindings.childLink = '=?';
-typeahead.bindings.typeahead = '&';
-typeahead.bindings.create = '&';
-typeahead.bindings.allowCollapse = '<?';
-typeahead.bindings.transform = '<?';
-typeahead.bindings.getItems = '&';
-typeahead.bindings.prefix = '@';
-typeahead.bindings.useClientSearching = '<?';
-typeahead.bindings.ngDisabled = '<?';
+var typeaheadBindings = typeahead.bindings;
+typeaheadBindings.childLink = '=?';
+typeaheadBindings.select = '&';
+typeaheadBindings.create = '&';
+typeaheadBindings.allowCollapse = '<?';
+typeaheadBindings.transform = '<?';
+typeaheadBindings.getItems = '&';
+typeaheadBindings.prefix = '@';
+typeaheadBindings.useClientSearching = '<?';
+typeaheadBindings.ngDisabled = '<?';
 angular.module(exports.moduleName, [
     __parentChild.moduleName,
     __genericSearch.moduleName,
