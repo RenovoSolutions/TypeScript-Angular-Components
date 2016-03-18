@@ -4,6 +4,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
+import __notification = services.notification;
 
 import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
 import * as types from './dialogTypes';
@@ -13,6 +14,7 @@ import {
 	IAutosaveService,
 	IAutosaveServiceFactory,
 } from '../autosave/autosave.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
 import { IFormValidator } from '../../types/formValidators';
 
 export { bootstrapModalDialog };
@@ -30,14 +32,27 @@ export interface IDialogService<TDialogSettings> {
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
 	private autosave: IAutosaveService;
 	private data: any;
+	private form: IFormValidator;
 
 	constructor(private dialog: types.IDialogImplementation<TDialogSettings>
 			, private $rootScope: angular.IRootScopeService
 			, private autosaveFactory: IAutosaveServiceFactory
-			, private promise: __promise.IPromiseUtility) { }
+			, private promise: __promise.IPromiseUtility
+			, private notification: __notification.INotificationService
+			, private formService: IFormService) { }
 
 	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance {
-		return this.dialog.open(options, closeHandler);
+		let dialogInstance: types.IDialogInstance = this.dialog.open(options, closeHandler);
+		dialogInstance.validateAndNotify = (): boolean => {
+			let valid: boolean = this.form.$valid;
+
+			if (!valid) {
+				this.notification.warning(this.formService.getAggregateError(this.form));
+			}
+
+			return valid;
+		};
+		return dialogInstance;
 	}
 
 	prompt(options: types.IPromptSettings): types.IPromptInstance {
@@ -52,6 +67,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			close(): void {},
 			dismiss(): void { },
 			save(): void { },
+			validateAndNotify(): void { },
 		};
 
 		this.promise.resolvePromises(options.resolve).then((resolveData: any): void => {
@@ -83,6 +99,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			dialogInstance.close = instance.close;
 			dialogInstance.dismiss = instance.dismiss;
 			dialogInstance.save = instance.save;
+			dialogInstance.validateAndNotify = instance.validateAndNotify;
 		});
 
 		return dialogInstance;
@@ -100,6 +117,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 		if (this.autosave != null) {
 			this.autosave.contentForm = form;
 		}
+		this.form = form;
 	}
 }
 
@@ -108,7 +126,9 @@ export interface IDialogServiceProvider<TDialogSettings> extends angular.IServic
 	$get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
 		, $rootScope: angular.IRootScopeService
 		, autosaveFactory: IAutosaveServiceFactory
-		, promise: __promise.IPromiseUtility): IDialogService<TDialogSettings>;
+		, promise: __promise.IPromiseUtility
+		, notification: __notification.INotificationService
+		, formService: IFormService): IDialogService<TDialogSettings>;
 }
 
 export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
@@ -121,16 +141,18 @@ export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider
 		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
 			, $rootScope: angular.IRootScopeService
 			, autosaveFactory: IAutosaveServiceFactory
-			, promise: __promise.IPromiseUtility): IDialogService<TDialogSettings> => {
+			, promise: __promise.IPromiseUtility
+			, notification: __notification.INotificationService
+			, formService: IFormService): IDialogService<TDialogSettings> => {
 			let dialogImplementation: types.IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																			? this.dialogImplementation
 																			: bootstrapModalDialog;
-			return new DialogService<TDialogSettings>(dialogImplementation, $rootScope, autosaveFactory, promise);
+			return new DialogService<TDialogSettings>(dialogImplementation, $rootScope, autosaveFactory, promise, notification, formService);
 		},
 	};
-	provider.$get.$inject = [bootstrapModalDialog.serviceName, '$rootScope', autosaveFactoryName, __promise.serviceName];
+	provider.$get.$inject = [bootstrapModalDialog.serviceName, '$rootScope', autosaveFactoryName, __promise.serviceName, __notification.serviceName, formServiceName];
 	return provider;
 }
 
-angular.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule])
+angular.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule, __notification.moduleName, formModule])
 	.provider(serviceName, dialogServiceProvider);

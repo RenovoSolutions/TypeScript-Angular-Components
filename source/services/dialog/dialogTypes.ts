@@ -14,6 +14,7 @@ export interface IDialogScope extends angular.IScope {
 export interface IDialogInstance {
 	close(): void;
 	dismiss(): void;
+	validateAndNotify(): void;
 }
 
 export interface IPromptSettings {
