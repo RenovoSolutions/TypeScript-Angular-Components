@@ -1,12 +1,12 @@
 'use strict';
-import * as ng from 'angular';
+import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
 import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
-import * from './dialogTypes';
+import * as types from './dialogTypes';
 import {
 	factoryName as autosaveFactoryName,
 	moduleName as autosaveModule,
@@ -22,37 +22,43 @@ export let moduleName: string = 'rl.ui.services.dialog';
 export let serviceName: string = 'dialog';
 
 export interface IDialogService<TDialogSettings> {
-	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance;
-	prompt(options: IPromptSettings): IPromptInstance;
-	openAutosaveForm(options: IAutosaveDialogSettings): void;
+	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
+	prompt(options: types.IPromptSettings): types.IPromptInstance;
+	openAutosaveForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
 	private autosave: IAutosaveService;
 	private data: any;
 
-	constructor(private dialog: IDialogImplementation<TDialogSettings>
-			, private $rootScope: ng.IRootScopeService
+	constructor(private dialog: types.IDialogImplementation<TDialogSettings>
+			, private $rootScope: angular.IRootScopeService
 			, private autosaveFactory: IAutosaveServiceFactory
 			, private promise: __promise.IPromiseUtility) { }
 
-	open(options: TDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
+	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance {
 		return this.dialog.open(options, closeHandler);
 	}
 
-	prompt(options: IPromptSettings): IPromptInstance {
+	prompt(options: types.IPromptSettings): types.IPromptInstance {
 		options.okButton = options.okButton || 'Ok';
 		options.cancelButton = options.cancelButton || 'Cancel';
 
 		return this.dialog.prompt(options, require('./promptDialog.html'));
 	}
 
-	openAutosaveForm(options: IAutosaveDialogSettings): void {
+	openAutosaveForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance {
+		let dialogInstance: types.IAutosaveDialogInstance = {
+			close(): void {},
+			dismiss(): void { },
+			save(): void { },
+		};
+
 		this.promise.resolvePromises(options.resolve).then((resolveData: any): void => {
-			let scope: IAutosaveDialogScope = <IAutosaveDialogScope>options.scope;
+			let scope: types.IAutosaveDialogScope = <types.IAutosaveDialogScope>options.scope;
 
 			if (scope == null) {
-				scope = <IAutosaveDialogScope>this.$rootScope.$new();
+				scope = <types.IAutosaveDialogScope>this.$rootScope.$new();
 				options.scope = scope;
 			}
 
@@ -73,11 +79,16 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			scope.dialog = this.data;
 			scope.$save = (): void => { this.autosave.autosave(this.data); };
 
-			this.dialog.open(options, this.autosaveCloseHandler);
+			let instance: types.IAutosaveDialogInstance = <any>this.dialog.open(<any>options, this.autosaveCloseHandler);
+			dialogInstance.close = instance.close;
+			dialogInstance.dismiss = instance.dismiss;
+			dialogInstance.save = instance.save;
 		});
+
+		return dialogInstance;
 	}
 
-	private autosaveCloseHandler: IDialogCloseHandler = (explicit: boolean): boolean => {
+	private autosaveCloseHandler: types.IDialogCloseHandler = (explicit: boolean): boolean => {
 		if (explicit) {
 			return true;
 		}
@@ -92,28 +103,34 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 	}
 }
 
-export interface IDialogServiceProvider<TDialogSettings> extends ng.IServiceProvider {
-	setImplementation(dialogImplementation: IDialogImplementation<TDialogSettings>): void;
-	$get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogService<TDialogSettings>;
+export interface IDialogServiceProvider<TDialogSettings> extends angular.IServiceProvider {
+	setImplementation(dialogImplementation: types.IDialogImplementation<TDialogSettings>): void;
+	$get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
+		, $rootScope: angular.IRootScopeService
+		, autosaveFactory: IAutosaveServiceFactory
+		, promise: __promise.IPromiseUtility): IDialogService<TDialogSettings>;
 }
 
 export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider<TDialogSettings> {
 	'use strict';
 
 	let provider: IDialogServiceProvider<TDialogSettings> = {
-		setImplementation: (dialogImplementation: IDialogImplementation<TDialogSettings>): void => {
+		setImplementation: (dialogImplementation: types.IDialogImplementation<TDialogSettings>): void => {
 			this.dialogImplementation = dialogImplementation;
 		},
-		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService): IDialogService<TDialogSettings> => {
-			let dialogImplementation: IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
+		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
+			, $rootScope: angular.IRootScopeService
+			, autosaveFactory: IAutosaveServiceFactory
+			, promise: __promise.IPromiseUtility): IDialogService<TDialogSettings> => {
+			let dialogImplementation: types.IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
 																			? this.dialogImplementation
 																			: bootstrapModalDialog;
-			return new DialogService<TDialogSettings>(dialogImplementation);
+			return new DialogService<TDialogSettings>(dialogImplementation, $rootScope, autosaveFactory, promise);
 		},
 	};
 	provider.$get.$inject = [bootstrapModalDialog.serviceName, '$rootScope', autosaveFactoryName, __promise.serviceName];
 	return provider;
 }
 
-ng.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule])
+angular.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule])
 	.provider(serviceName, dialogServiceProvider);

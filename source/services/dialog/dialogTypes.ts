@@ -36,7 +36,7 @@ export interface IAutosaveDialogSettings {
 	triggers?: string;
 }
 
-interface IDialogSettings {
+export interface IDialogSettings {
 	scope?: ng.IScope;
 	template?: string;
 	templateUrl?: string;
@@ -46,6 +46,15 @@ interface IDialogSettings {
 	controller?: string;
 	controllerAs?: string;
 	bindToController?: boolean;
+}
+
+export interface IAutosaveDialogInstance extends IDialogInstance {
+	save(): void;
+}
+
+export interface IAutosaveDialogScope extends IDialogScope {
+	$save(): void;
+	dialog: any;
 }
 
 export interface IPromptInstance extends IDialogInstance {
