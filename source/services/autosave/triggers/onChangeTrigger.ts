@@ -51,7 +51,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 	}
 
 	private triggerSaveAction(autosave: {(): void}): void {
-		if (this.settings.form.$dirty && (this.settings.form.$valid) || this.settings.saveWhenInvalid)) {
+		if (this.settings.form.$dirty && (this.settings.form.$valid || this.settings.saveWhenInvalid)) {
 			this.setTimer(autosave);
 
 			this.clearChangeListener = this.setChangeListener((): void => {
