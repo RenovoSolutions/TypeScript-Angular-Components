@@ -283,7 +283,7 @@ typeahead.controller = controllerName;
 typeahead.controllerAs = 'typeahead';
 let typeaheadBindings: any = typeahead.bindings;
 typeaheadBindings.childLink = '=?';
-typeaheadBindings.typeahead = '&';
+typeaheadBindings.select = '&';
 typeaheadBindings.create = '&';
 typeaheadBindings.allowCollapse = '<?';
 typeaheadBindings.transform = '<?';
