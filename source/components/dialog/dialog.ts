@@ -5,15 +5,19 @@
 
 import * as angular from 'angular';
 
+import { IAutosaveDialogScope } from '../../services/autosaveDialog/autosaveDialog.service';
+import { IFormValidator } from '../../types/formValidators';
+
 export let moduleName: string = 'rl.ui.components.dialog';
 export let directiveName: string = 'rlDialog';
 export let controllerName: string = 'DialogController';
 
-interface IDialogScope extends angular.IScope{
+export interface IDialogScope extends angular.IScope {
+	dialogForm: IFormValidator;
 	$parent: IParentScope;
 }
 
-interface IParentScope extends angular.IScope{
+export interface IParentScope extends angular.IScope {
 	$close: { (): void };
 	$dismiss: { (): void };
 }
@@ -28,6 +32,16 @@ export class DialogController implements IDialogBindings {
 	close: { (): void };
 	dismiss: { (): void };
 
+	static $inject: string[] = ['$scope'];
+	constructor(private $scope: IDialogScope) {}
+
+	$onInit(): void {
+		let unbind: Function = this.$scope.$watch('dialogForm', (form: IFormValidator): void => {
+			let autosaveScope: IAutosaveDialogScope = <any>this.$scope.$parent;
+			autosaveScope.setForm(form);
+			unbind();
+		});
+	}
 }
 
 dialog.$inject = ['$compile'];
