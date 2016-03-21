@@ -6,6 +6,7 @@ import * as busy from './busy/busy';
 import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonLink from './buttonLink/buttonLink';
+import * as buttonSubmit from './buttonSubmit/buttonSubmit';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox';
@@ -46,6 +47,7 @@ export {
 	button,
 	buttonAsync,
 	buttonLink,
+	buttonSubmit,
 	buttonToggle,
 	cardContainer,
 	checkbox,
@@ -84,6 +86,7 @@ angular.module(moduleName, [
 	button.moduleName,
 	buttonAsync.moduleName,
 	buttonLink.moduleName,
+	buttonSubmit.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
 	checkbox.moduleName,
