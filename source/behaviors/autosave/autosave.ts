@@ -26,7 +26,6 @@ export interface IAutosaveAttributes extends angular.IAttributes {
 	debounceDuration: string;
 	triggers: string;
 	saveWhenInvalid: string;
-	ngSubmit: string;
 }
 
 export interface IAutosaveBehavior {
