@@ -25,7 +25,7 @@ export interface IFormScope extends angular.IScope {
 }
 
 export interface IFormBehavior {
-	save(): void;
+	save(): angular.IPromise<void> | boolean;
 }
 
 export class FormController implements IFormBindings {
