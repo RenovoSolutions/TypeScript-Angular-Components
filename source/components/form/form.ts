@@ -5,6 +5,9 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
+import { services } from 'typescript-angular-utilities';
+import __parentChild = services.parentChildBehavior;
+
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory, factoryName as autosaveFactoryName, moduleName as autosaveModule } from '../../services/autosave/autosave.service';
 
@@ -21,19 +24,25 @@ export interface IFormScope extends angular.IScope {
 	rlForm: IFormValidator;
 }
 
+export interface IFormBehavior {
+	save(): void;
+}
+
 export class FormController implements IFormBindings {
 	saving: boolean;
 	save: { (): void };
 	form: IFormValidator;
+	childLink: __parentChild.IChild<IFormBehavior>;
 
 	autosave: IAutosaveService;
 
-	static $inject: string[] = ['$element', '$scope', '$timeout', '$q', autosaveFactoryName];
+	static $inject: string[] = ['$element', '$scope', '$timeout', '$q', autosaveFactoryName, __parentChild.serviceName];
 	constructor(private $element: angular.IAugmentedJQuery
 			, private $scope: IFormScope
 			, private $timeout: angular.ITimeoutService
 			, private $q: angular.IQService
-			, private autosaveFactory: IAutosaveServiceFactory) { }
+			, private autosaveFactory: IAutosaveServiceFactory
+			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
 		this.$element.find('form').on('submit', (): void => {
@@ -46,6 +55,10 @@ export class FormController implements IFormBindings {
 				save: this.saveForm.bind(this),
 				contentForm: this.$scope.rlForm,
 				triggers: 'none',
+			});
+
+			this.parentChild.registerChildBehavior(this.childLink, {
+				save: this.autosave.validateAndSave.bind(this.autosave),
 			});
 		});
 	}
@@ -67,6 +80,7 @@ let form: angular.IComponentOptions = {
 		saving: '=?',
 		save: '&',
 		form: '=?',
+		childLink: '=?',
 	},
 };
 
