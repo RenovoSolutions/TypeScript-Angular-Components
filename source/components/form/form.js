@@ -1,17 +1,20 @@
 // /// <reference path='../../../typings/node/node.d.ts' />
 'use strict';
 var angular = require('angular');
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var autosave_service_1 = require('../../services/autosave/autosave.service');
 exports.moduleName = 'rl.ui.components.form';
 exports.componentName = 'rlForm';
 exports.controllerName = 'rlFormController';
 var FormController = (function () {
-    function FormController($element, $scope, $timeout, $q, autosaveFactory) {
+    function FormController($element, $scope, $timeout, $q, autosaveFactory, parentChild) {
         this.$element = $element;
         this.$scope = $scope;
         this.$timeout = $timeout;
         this.$q = $q;
         this.autosaveFactory = autosaveFactory;
+        this.parentChild = parentChild;
     }
     FormController.prototype.$onInit = function () {
         var _this = this;
@@ -25,6 +28,9 @@ var FormController = (function () {
                 contentForm: _this.$scope.rlForm,
                 triggers: 'none',
             });
+            _this.parentChild.registerChildBehavior(_this.childLink, {
+                save: _this.autosave.validateAndSave.bind(_this.autosave),
+            });
         });
     };
     FormController.prototype.saveForm = function () {
@@ -34,7 +40,7 @@ var FormController = (function () {
             _this.saving = false;
         }).catch(function () { _this.saving = false; });
     };
-    FormController.$inject = ['$element', '$scope', '$timeout', '$q', autosave_service_1.factoryName];
+    FormController.$inject = ['$element', '$scope', '$timeout', '$q', autosave_service_1.factoryName, __parentChild.serviceName];
     return FormController;
 }());
 exports.FormController = FormController;
@@ -47,6 +53,7 @@ var form = {
         saving: '=?',
         save: '&',
         form: '=?',
+        childLink: '=?',
     },
 };
 angular.module(exports.moduleName, [autosave_service_1.moduleName])
