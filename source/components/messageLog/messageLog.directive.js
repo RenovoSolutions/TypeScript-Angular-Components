@@ -92,7 +92,7 @@ var MessageLogController = (function () {
     };
     MessageLogController.prototype.editMessage = function (entry) {
         var editedEntry = _.clone(entry);
-        this.dialog.openAutosaveForm({
+        this.dialog.openForm({
             save: this.updateNote.bind(this),
             data: {
                 entry: editedEntry,

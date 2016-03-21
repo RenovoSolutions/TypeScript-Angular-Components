@@ -15,7 +15,7 @@ export declare let serviceName: string;
 export interface IDialogService<TDialogSettings> {
     open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
     prompt(options: types.IPromptSettings): types.IPromptInstance;
-    openAutosaveFormopenForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
+    openForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
 }
 export declare class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
     private dialog;
