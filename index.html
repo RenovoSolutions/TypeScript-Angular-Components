@@ -38,8 +38,7 @@
 
 					<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
 
-					<button type="submit" class="btn btn-primary">Submit</button>
-					<rl-busy loading="test.spinner"></rl-busy>
+					<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 				</rl-form>
 				<br/>
 				<rl-template-renderer template="test.template"></rl-template-renderer>
