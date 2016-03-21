@@ -1,5 +1,5 @@
 <div class="field" ng-class="{ 'error': input.ngModel.$invalid }">
 	<label ng-show="input.inputValue && input.label" class="show-hide angular-animate">{{input.label}}</label>
-	<textarea class="form-control" ng-model="input.inputValue" name="{{input.name}}" maxlength="{{input.maxlength}}" ng-disabled="input.ngDisabled" placeholder="{{input.label}}"></textarea>
+	<textarea class="form-control" ng-model="input.inputValue" rows="{{input.rows}}" maxlength="{{input.maxlength}}" ng-disabled="input.ngDisabled" placeholder="{{input.label}}"></textarea>
 	<span class="error-string" ng-hide="input.inputValidator.error | isEmpty">{{input.inputValidator.error}}</span>
 </div>
