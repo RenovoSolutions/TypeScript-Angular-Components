@@ -100,10 +100,9 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			dialogInstance.close = instance.close;
 			dialogInstance.dismiss = instance.dismiss;
 
-			let $save: {(): any} = (): any => { return this.autosave.validateAndSave(this.data); };
-			scope.$save = $save;
-			scope.$saveAndClose = (): void => {
-				let promise: any = $save();
+			scope.$save = (): angular.IPromise<void> | boolean => { return this.autosave.validateAndSave(this.data); };;
+			scope.$saveAndClose = (): angular.IPromise<void> | boolean => {
+				let promise: any = scope.$save();
 				if (_.isBoolean(promise) && promise) {
 					instance.close();
 				} else if (this.promise.isPromise(promise)) {
