@@ -77,10 +77,10 @@ var DialogService = (function () {
             var instance = _this.open(options, _this.autosaveCloseHandler);
             dialogInstance.close = instance.close;
             dialogInstance.dismiss = instance.dismiss;
-            var $save = function () { return _this.autosave.validateAndSave(_this.data); };
-            scope.$save = $save;
+            scope.$save = function () { return _this.autosave.validateAndSave(_this.data); };
+            ;
             scope.$saveAndClose = function () {
-                var promise = $save();
+                var promise = scope.$save();
                 if (_.isBoolean(promise) && promise) {
                     instance.close();
                 }

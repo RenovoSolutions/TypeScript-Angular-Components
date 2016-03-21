@@ -43,12 +43,12 @@ export interface IDialogSettings {
     bindToController?: boolean;
 }
 export interface IAutosaveDialogInstance extends IDialogInstance {
-    save(): void;
-    saveAndClose(): void;
+    save(): angular.IPromise<void> | boolean;
+    saveAndClose(): angular.IPromise<void> | boolean;
 }
 export interface IAutosaveDialogScope extends IDialogScope {
-    $save(): void;
-    $saveAndClose(): void;
+    $save(): angular.IPromise<void> | boolean;
+    $saveAndClose(): angular.IPromise<void> | boolean;
     dialog: any;
 }
 export interface IPromptInstance extends IDialogInstance {
