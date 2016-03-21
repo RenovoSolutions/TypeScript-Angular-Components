@@ -21,6 +21,7 @@ export declare class FormController implements IFormBindings {
     save: {
         (): void;
     };
+    form: IFormValidator;
     autosave: IAutosaveService;
     static $inject: string[];
     constructor($element: angular.IAugmentedJQuery, $scope: IFormScope, $timeout: angular.ITimeoutService, $q: angular.IQService, autosaveFactory: IAutosaveServiceFactory);

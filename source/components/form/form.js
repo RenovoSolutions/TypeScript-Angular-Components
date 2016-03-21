@@ -20,6 +20,7 @@ var FormController = (function () {
             _this.$scope.$apply();
         });
         this.$timeout(function () {
+            _this.form = _this.$scope.rlForm;
             _this.autosave = _this.autosaveFactory.getInstance({
                 save: _this.saveForm.bind(_this),
                 contentForm: _this.$scope.rlForm,
@@ -46,6 +47,7 @@ var form = {
     bindings: {
         saving: '=?',
         save: '&',
+        form: '=?',
     },
 };
 angular.module(exports.moduleName, [autosave_service_1.moduleName])

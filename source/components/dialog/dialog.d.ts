@@ -15,6 +15,9 @@ export interface IParentScope extends angular.IScope {
     $dismiss: {
         (): void;
     };
+    $saveAndClose: {
+        (): void;
+    };
 }
 export interface IDialogBindings {
     autosave: boolean;
@@ -30,6 +33,10 @@ export declare class DialogController implements IDialogBindings {
     dismiss: {
         (): void;
     };
+    saveAndClose: {
+        (): void;
+    };
+    form: IFormValidator;
     static $inject: string[];
     constructor($scope: IDialogScope, dialogService: DialogService<any>);
     $onInit(): void;

@@ -53,6 +53,7 @@ var DialogService = (function () {
             close: function () { },
             dismiss: function () { },
             save: function () { },
+            saveAndClose: function () { },
             validateAndNotify: function () { },
         };
         this.promise.resolvePromises(options.resolve).then(function (resolveData) {
@@ -73,11 +74,25 @@ var DialogService = (function () {
             });
             _this.data = _.extend(options.data, resolveData);
             scope.dialog = _this.data;
-            scope.$save = function () { _this.autosave.autosave(_this.data); };
             var instance = _this.open(options, _this.autosaveCloseHandler);
             dialogInstance.close = instance.close;
             dialogInstance.dismiss = instance.dismiss;
-            dialogInstance.save = instance.save;
+            var $save = function () { return _this.autosave.validateAndSave(_this.data); };
+            scope.$save = $save;
+            scope.$saveAndClose = function () {
+                var promise = $save();
+                if (_.isBoolean(promise) && promise) {
+                    instance.close();
+                }
+                else if (_this.promise.isPromise(promise)) {
+                    promise.then(function () {
+                        instance.close();
+                    });
+                }
+                return promise;
+            };
+            dialogInstance.save = scope.$save;
+            dialogInstance.saveAndClose = scope.$saveAndClose;
             dialogInstance.validateAndNotify = instance.validateAndNotify;
         });
         return dialogInstance;

@@ -8,6 +8,8 @@ var buttonAsync = require('./buttonAsync/buttonAsync');
 exports.buttonAsync = buttonAsync;
 var buttonLink = require('./buttonLink/buttonLink');
 exports.buttonLink = buttonLink;
+var buttonSubmit = require('./buttonSubmit/buttonSubmit');
+exports.buttonSubmit = buttonSubmit;
 var buttonToggle = require('./buttonToggle/buttonToggle');
 exports.buttonToggle = buttonToggle;
 var cardContainer = require('./cardContainer/cardContainer.module');
@@ -74,6 +76,7 @@ angular.module(exports.moduleName, [
     button.moduleName,
     buttonAsync.moduleName,
     buttonLink.moduleName,
+    buttonSubmit.moduleName,
     buttonToggle.moduleName,
     cardContainer.moduleName,
     checkbox.moduleName,

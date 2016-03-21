@@ -13,9 +13,11 @@ var DialogController = (function () {
     }
     DialogController.prototype.$onInit = function () {
         var _this = this;
-        var unbind = this.$scope.$watch('dialogForm', function (form) {
-            _this.dialogService.setForm(form);
-            unbind();
+        var unbind = this.$scope.$watch(function () { return _this.form; }, function (form) {
+            if (form != null) {
+                _this.dialogService.setForm(form);
+                unbind();
+            }
         });
     };
     DialogController.$inject = ['$scope', dialog_service_1.serviceName];
@@ -42,6 +44,7 @@ function dialog($compile) {
         link: function (scope, element, attrs, controller, transclude) {
             controller.close = scope.$parent.$close;
             controller.dismiss = scope.$parent.$dismiss;
+            controller.saveAndClose = scope.$parent.$saveAndClose;
             var footerArea = element.find('.footer-template');
             if (transclude.isSlotFilled('footerSlot')) {
                 transclude(function (footer) {

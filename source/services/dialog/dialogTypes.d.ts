@@ -44,9 +44,11 @@ export interface IDialogSettings {
 }
 export interface IAutosaveDialogInstance extends IDialogInstance {
     save(): void;
+    saveAndClose(): void;
 }
 export interface IAutosaveDialogScope extends IDialogScope {
     $save(): void;
+    $saveAndClose(): void;
     dialog: any;
 }
 export interface IPromptInstance extends IDialogInstance {
