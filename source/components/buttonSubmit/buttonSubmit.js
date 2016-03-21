@@ -10,9 +10,6 @@ var ButtonSubmitController = (function () {
         this.type = this.type != null ? this.type : 'default';
         this.configuredSize = this.size != null ? 'btn-' + this.size : null;
     }
-    ButtonSubmitController.prototype.save = function () {
-        this.$element.trigger('submit');
-    };
     ButtonSubmitController.$inject = ['$element'];
     return ButtonSubmitController;
 }());

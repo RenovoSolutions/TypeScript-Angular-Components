@@ -12,5 +12,4 @@ export declare class ButtonSubmitController {
     configuredSize: string;
     static $inject: string[];
     constructor($element: angular.IAugmentedJQuery);
-    save(): void;
 }

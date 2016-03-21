@@ -18,9 +18,6 @@ var FormController = (function () {
     }
     FormController.prototype.$onInit = function () {
         var _this = this;
-        this.$element.find('form').on('submit', function () {
-            _this.autosave.validateAndSave();
-        });
         this.$timeout(function () {
             _this.form = _this.$scope.rlForm;
             _this.autosave = _this.autosaveFactory.getInstance({
@@ -46,7 +43,7 @@ var FormController = (function () {
 exports.FormController = FormController;
 var form = {
     transclude: true,
-    template: "<form ng-transclude name=\"rlForm\"></form>",
+    template: "<form ng-transclude name=\"rlForm\" ng-submit=\"controller.autosave.validateAndSave()\"></form>",
     controller: exports.controllerName,
     controllerAs: 'controller',
     bindings: {
