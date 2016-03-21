@@ -14,7 +14,12 @@ import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
+import __object = services.object;
+import __guid = services.guid;
 
+import { IInputAttributes } from '../input/input';
+import { INgModelValidator } from '../../types/formValidators';
+import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 	IComponentValidator,
 	IComponentValidatorFactory,
@@ -59,18 +64,38 @@ export class SpinnerController {
 	name: string;
 	validator: __validation.IValidationHandler;
 
-	ngModel: angular.INgModelController;
+	ngModel: INgModelValidator;
+	required: RequiredController;
 	spinnerValidator: IComponentValidator;
 
-	static $inject: string[] = ['$scope', componentValidatorFactoryName];
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
+			, $attrs: IInputAttributes
 			, componentValidatorFactory: IComponentValidatorFactory) {
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
+			$attrs.$set('name', 'spinner-' + __guid.guid.random());
+		}
+
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
+			let validators: __validation.IValidationHandler[] = [];
+
 			if (!_.isUndefined(this.validator)) {
+				validators.push(this.validator);
+			}
+
+			if (this.required != null) {
+				validators.push({
+					name: 'rlRequired',
+					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
+					errorMessage: this.required.message,
+				});
+			}
+
+			if (_.some(validators)) {
 				this.spinnerValidator = componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
 					$scope: $scope,
-					validators: [this.validator],
+					validators: validators,
 				});
 			}
 			unregister();
@@ -86,7 +111,7 @@ function spinner($timeout: angular.ITimeoutService
 	return {
 		restrict: 'E',
 		template: require('./spinner.html'),
-		require: '?^ngModel',
+		require: ['ngModel', '?' + requiredDirectiveName],
 		controller: controllerName,
 		controllerAs: 'spinner',
 		scope: {},
@@ -106,9 +131,11 @@ function spinner($timeout: angular.ITimeoutService
 		link(scope: ISpinnerScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, ngModel: angular.INgModelController): void {
-
+			, controllers: any[]): void {
 			let spinner: SpinnerController = scope.spinner;
+
+			let ngModel: INgModelValidator = controllers[0];
+			spinner.required = controllers[1];
 			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
 			scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {

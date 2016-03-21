@@ -7,26 +7,43 @@ var angular = require('angular');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __string = typescript_angular_utilities_1.services.string;
 var __number = typescript_angular_utilities_1.services.number;
+var __object = typescript_angular_utilities_1.services.object;
+var __guid = typescript_angular_utilities_1.services.guid;
+var required_1 = require('../../behaviors/required/required');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.spinner';
 exports.directiveName = 'rlSpinner';
 exports.controllerName = 'SpinnerController';
 exports.defaultMaxValue = 100000000000000000000;
 var SpinnerController = (function () {
-    function SpinnerController($scope, componentValidatorFactory) {
+    function SpinnerController($scope, $attrs, componentValidatorFactory) {
         var _this = this;
+        if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
+            $attrs.$set('name', 'spinner-' + __guid.guid.random());
+        }
         var unregister = $scope.$watch(function () { return _this.ngModel; }, function (value) {
+            var validators = [];
             if (!_.isUndefined(_this.validator)) {
+                validators.push(_this.validator);
+            }
+            if (_this.required != null) {
+                validators.push({
+                    name: 'rlRequired',
+                    validate: function () { return !__object.objectUtility.isNullOrEmpty(_this.ngModel.$viewValue); },
+                    errorMessage: _this.required.message,
+                });
+            }
+            if (_.some(validators)) {
                 _this.spinnerValidator = componentValidatorFactory.getInstance({
                     ngModel: _this.ngModel,
                     $scope: $scope,
-                    validators: [_this.validator],
+                    validators: validators,
                 });
             }
             unregister();
         });
     }
-    SpinnerController.$inject = ['$scope', componentValidator_service_1.factoryName];
+    SpinnerController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName];
     return SpinnerController;
 }());
 exports.SpinnerController = SpinnerController;
@@ -36,7 +53,7 @@ function spinner($timeout, stringUtility, numberUtility) {
     return {
         restrict: 'E',
         template: require('./spinner.html'),
-        require: '?^ngModel',
+        require: ['ngModel', '?' + required_1.directiveName],
         controller: exports.controllerName,
         controllerAs: 'spinner',
         scope: {},
@@ -53,8 +70,10 @@ function spinner($timeout, stringUtility, numberUtility) {
             name: '@',
             validator: '=',
         },
-        link: function (scope, element, attrs, ngModel) {
+        link: function (scope, element, attrs, controllers) {
             var spinner = scope.spinner;
+            var ngModel = controllers[0];
+            spinner.required = controllers[1];
             spinner.ngModel = ngModel;
             var unbindWatches;
             scope.$watch('spinner.ngDisabled', function (disabled) {

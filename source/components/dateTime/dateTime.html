@@ -1,16 +1,14 @@
-<div class="validation-input-group">
-	<div class="input-group validation-input" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'required-error': dateTime.ngModel.$error.required }">
-		<span class="show-date-picker">
-			<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" />
-			<span class="input-group-btn">
-				<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
-			</span>
+<div class="input-group" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid }">
+	<span class="show-date-picker">
+		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" />
+		<span class="input-group-btn">
+			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
 		</span>
-		<span class="input-group-btn" ng-if="dateTime.clearButton">
-			<button type="button" class="btn btn-default pull-left"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
-				<i class="fa fa-times"></i>
-			</button>
-		</span>
-		<span class="error-string" ng-hide="dateTime.dateTimeValidator.error | isEmpty">{{dateTime.dateTimeValidator.error}}</span>
-	</div>
+	</span>
+	<span class="input-group-btn" ng-if="dateTime.clearButton">
+		<button type="button" class="btn btn-default pull-left"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
+			<i class="fa fa-times"></i>
+		</button>
+	</span>
+	<span class="error-string" ng-hide="dateTime.dateTimeValidator.error | isEmpty">{{dateTime.dateTimeValidator.error}}</span>
 </div>

@@ -41,6 +41,9 @@ var CardContainerBuilder = (function () {
     CardContainerBuilder.prototype.renderFilters = function () {
         this._renderFilters = true;
     };
+    CardContainerBuilder.prototype.saveWhenInvalid = function () {
+        this._saveWhenInvalid = true;
+    };
     Object.defineProperty(CardContainerBuilder.prototype, "disableSelection", {
         set: function (value) {
             if (!this._selectableCards) {
@@ -67,6 +70,7 @@ var CardContainerBuilder = (function () {
         cardContainer.selectableCards = this._selectableCards;
         cardContainer.disableSelection = this._disableSelection;
         cardContainer.renderFilters = this._renderFilters;
+        cardContainer.saveWhenInvalid = this._saveWhenInvalid;
         if (cardContainer.cardController == null) {
             cardContainer.cardController = this.cardController;
         }

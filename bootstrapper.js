@@ -2,8 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController);
 
-	TestController.$inject = ['$scope', '$q', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, dialog, cardContainerBuilderFactory) {
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
@@ -14,6 +14,16 @@
 			template: '<div>{{text}}</div>',
 			scope: templateScope,
 		};
+
+		$scope.$watch('testForm', function(form) {
+			console.log(form);
+		});
+
+		self.submit = function() {
+			return $timeout(function() {
+				console.log('Submitted');
+			}, 1000);
+		}
 
 		self.text = null;
 		self.set = [];

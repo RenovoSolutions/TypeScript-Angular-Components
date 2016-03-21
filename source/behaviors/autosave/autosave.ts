@@ -14,17 +14,18 @@ import {
 	IAutosaveServiceFactory,
 	triggers,
 } from '../../services/autosave/autosave.service';
+import { IFormValidator } from '../../types/formValidators';
 
-export var moduleName: string = 'rl.ui.behaviors.autosave';
-export var directiveName: string = 'rlAutosave';
-export var controllerName: string = 'AutosaveController';
+export let moduleName: string = 'rl.ui.behaviors.autosave';
+export let directiveName: string = 'rlAutosave';
+export let controllerName: string = 'AutosaveController';
 
 export interface IAutosaveAttributes extends angular.IAttributes {
 	rlAutosave: string;
-	validate: string;
 	save: string;
 	debounceDuration: string;
 	triggers: string;
+	saveWhenInvalid: string;
 }
 
 export interface IAutosaveBehavior {
@@ -33,9 +34,9 @@ export interface IAutosaveBehavior {
 
 export class AutosaveController {
 	autosave: IAutosaveService;
-	keyupListener: { (callback: triggers.IChangeListener): triggers.IClearChangeListener };
+	keyupListener: { (callback: triggers.IListener): triggers.IClearListener };
 
-	form: angular.IFormController;
+	form: IFormValidator;
 
 	static $inject: string[] = ['$scope'
 							, '$attrs'
@@ -55,26 +56,15 @@ export class AutosaveController {
 		, private objectUtility: __objectUtility.IObjectUtility) {}
 
 	$onInit(): void {
-		this.keyupListener = (callback: triggers.IChangeListener): triggers.IClearChangeListener => {
+		this.keyupListener = (callback: triggers.IListener): triggers.IClearListener => {
 			this.$element.on('keyup', (): void => { this.$scope.$apply(callback); });
 			return (): void => {
 				this.$element.off('keyup');
 			};
 		};
 
-		var hasValidator: boolean = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
-
-		var validateExpression: angular.ICompiledExpression = this.$parse(this.$attrs.validate);
-		var validate: { (): boolean };
-
-		if (hasValidator) {
-			validate = (): boolean => {
-				return validateExpression(this.$scope);
-			};
-		}
-
-		var saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
-		var save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
+		let saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
+		let save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
 			return saveExpression(this.$scope);
 		};
 
@@ -82,19 +72,19 @@ export class AutosaveController {
 
 		this.autosave = this.autosaveFactory.getInstance({
 			save: save,
-			validate: validate,
 			contentForm: this.form,
 			debounceDuration: debounce,
 			triggers: this.$attrs.triggers,
 			setChangeListener: this.keyupListener,
+			saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
 		});
 
-		var behavior: IAutosaveBehavior = {
+		let behavior: IAutosaveBehavior = {
 			autosave: this.autosave.autosave,
 		};
 
 		// register autosave behavior and assign the value back to the parent
-		var childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
+		let childLink: any = this.$parse(this.$attrs.rlAutosave)(this.$scope);
 		this.parentChildBehavior.registerChildBehavior(childLink, behavior);
 	}
 }
@@ -103,10 +93,8 @@ export function autosave(): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',
-		require: {
-			autosaveController: 'rlAutosave',
-			form: '?form',
-		},
+		priority: 1000,
+		require: { form: '?form' },
 		controller: controllerName,
 		bindToController: true,
 	};

@@ -3,55 +3,52 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
+import { services } from 'typescript-angular-utilities';
+import __notification = services.notification;
+
 import {
 	moduleName as autosaveActionModuleName,
 	serviceName as autosaveActionServiceName,
 	IAutosaveActionService,
 } from '../autosaveAction/autosaveAction.service';
 import * as triggers from './triggers/triggers.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
+import { IFormValidator } from '../../types/formValidators';
 
 export { triggers };
 
-export var moduleName: string = 'rl.utilities.services.autosave';
+export var moduleName: string = 'rl.ui.services.autosave';
 export var factoryName: string = 'autosaveFactory';
 
 export interface IAutosaveService {
 	autosave(...data: any[]): boolean;
-	contentForm: angular.IFormController;
+	validateAndSave(...data: any[]): angular.IPromise<void> | boolean;
+	contentForm: IFormValidator;
 }
 
 export interface IAutosaveServiceOptions {
 	save: { (...data: any[]): angular.IPromise<void> };
-	validate?: { (): boolean };
-	contentForm?: angular.IFormController;
+	contentForm?: IFormValidator;
 	debounceDuration?: number;
-	setChangeListener?: { (callback: IChangeListener): IClearChangeListener };
+	setChangeListener?: { (callback: triggers.IListener): triggers.IClearListener };
 	triggers?: string;
-}
-
-export interface IChangeListener {
-	(): void;
-}
-
-export interface IClearChangeListener {
-	(): void;
+	saveWhenInvalid?: boolean;
 }
 
 class AutosaveService implements IAutosaveService {
-	private hasValidator: boolean;
 	private triggerService: triggers.ITriggerService;
-	contentForm: angular.IFormController;
+	contentForm: IFormValidator;
 	save: { (...data: any[]): angular.IPromise<void> };
-	validate: { (): boolean };
+	saveWhenInvalid: boolean;
 
-	constructor(private autosaveService: IAutosaveActionService
+	constructor(private notification: __notification.INotificationService
+			, private autosaveService: IAutosaveActionService
 			, options: IAutosaveServiceOptions
-			, triggerServiceFactory: triggers.ITriggerServiceFactory) {
-		this.hasValidator = options.validate != null;
-
+			, triggerServiceFactory: triggers.ITriggerServiceFactory
+			, private formService: IFormService) {
 		this.contentForm = options.contentForm || this.nullForm();
 		this.save = options.save;
-		this.validate = options.validate;
+		this.saveWhenInvalid = options.saveWhenInvalid;
 
 		this.triggerService = triggerServiceFactory.getInstance();
 		this.configureTriggers(options);
@@ -59,31 +56,34 @@ class AutosaveService implements IAutosaveService {
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
+		let result: boolean | angular.IPromise<void> = this.validateAndSave(...data);
+		if (_.isBoolean(result)) {
+			return result;
+		} else {
+			this.autosaveService.trigger(result);
+			return true;
+		}
+	}
+
+	validateAndSave(...data: any[]): angular.IPromise<void> | boolean {
 		if (this.contentForm.$pristine) {
 			return true;
 		}
 
-		var valid: boolean = true;
-		if (this.hasValidator) {
-			valid = this.validate();
-			if (valid === undefined) {
-				valid = true;
-			}
-		}
-
-		if (valid) {
-			var promise: angular.IPromise<void> = this.save(...data);
+		if (this.contentForm.$valid || this.saveWhenInvalid) {
+			let promise: angular.IPromise<void> = this.save(...data);
 
 			if (!_.isUndefined(promise)) {
-				this.autosaveService.trigger(promise.then((): void => {
+				return promise.then((): void => {
 					if (this.contentForm != null) {
 						this.contentForm.$setPristine();
 					}
-				}));
+				});
 			}
 
 			return true;
 		} else {
+			this.notification.warning(this.formService.getAggregateError(this.contentForm));
 			return false;
 		}
 	}
@@ -93,13 +93,15 @@ class AutosaveService implements IAutosaveService {
 			form: options.contentForm,
 			setChangeListener: options.setChangeListener,
 			debounceDuration: options.debounceDuration,
+			saveWhenInvalid: options.saveWhenInvalid,
 		});
 	}
 
-	private nullForm(): angular.IFormController {
+	private nullForm(): IFormValidator {
 		return <any>{
 			$pristine: false,
 			$dirty: true,
+			$valid: true,
 			$setPristine(): void {
 				return;
 			},
@@ -111,16 +113,18 @@ export interface IAutosaveServiceFactory {
 	getInstance(options: IAutosaveServiceOptions): IAutosaveService;
 }
 
-autosaveServiceFactory.$inject = [autosaveActionServiceName, triggers.factoryName];
-function autosaveServiceFactory(autosaveService: IAutosaveActionService
-							, triggerServiceFactory: triggers.ITriggerServiceFactory): IAutosaveServiceFactory {
+autosaveServiceFactory.$inject = [__notification.serviceName, autosaveActionServiceName, triggers.factoryName, formServiceName];
+function autosaveServiceFactory(notification: __notification.INotificationService
+							, autosaveService: IAutosaveActionService
+							, triggerServiceFactory: triggers.ITriggerServiceFactory
+							, formService: IFormService): IAutosaveServiceFactory {
 	'use strict';
 	return {
 		getInstance(options: IAutosaveServiceOptions): IAutosaveService {
-			return new AutosaveService(autosaveService, options, triggerServiceFactory);
+			return new AutosaveService(notification, autosaveService, options, triggerServiceFactory, formService);
 		}
 	};
 }
 
-angular.module(moduleName, [autosaveActionModuleName, triggers.moduleName])
+angular.module(moduleName, [__notification.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
 	.factory(factoryName, autosaveServiceFactory);

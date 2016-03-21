@@ -66,6 +66,7 @@ export declare class CardController {
     selectionChanged: {
         (): void;
     };
+    saveWhenInvalid: boolean;
     showContent: boolean;
     dirty: boolean;
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;

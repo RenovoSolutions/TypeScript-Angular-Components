@@ -300,7 +300,9 @@ describe('TypeaheadController', () => {
 			ngModel: ngModel,
 		};
 
-		let $attrs: any = {};
+		let $attrs: any = {
+			$set: sinon.spy(),
+		};
 
 		$attrs.select = select != null ? 'select' : null;
 		$attrs.create = create != null ? 'create' : null;

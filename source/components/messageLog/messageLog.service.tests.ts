@@ -71,7 +71,7 @@ describe('messageLog', () => {
 	}
 
 	it('should load an initial page of messages from the server', (): void => {
-		messageLog.dataService = dataService;
+		messageLog.dataService = <any>dataService;
 
 		sinon.assert.calledOnce(dataService.getMessages);
 		mock.flush(dataService);
@@ -81,7 +81,7 @@ describe('messageLog', () => {
 
 	describe('after initial request', (): void => {
 		beforeEach((): void => {
-			messageLog.dataService = dataService;
+			messageLog.dataService = <any>dataService;
 			mock.flush(dataService);
 			dataService.getMessages.reset();
 		});

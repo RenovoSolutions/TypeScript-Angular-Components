@@ -5,7 +5,8 @@ import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
-import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
+import { InputController } from '../input/input';
+import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare var moduleName: string;
 export declare var componentName: string;
 export declare var controllerName: string;
@@ -77,16 +78,13 @@ export interface ITypeaheadAttrs extends angular.IAttributes {
     select: string;
     create: string;
 }
-export declare class TypeaheadController {
-    private $scope;
+export declare class TypeaheadController extends InputController {
     private $q;
-    private $attrs;
     private $timeout;
     private parentChild;
     private genericSearchFactory;
     private object;
     private array;
-    private componentValidatorFactory;
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
     hasSelection: boolean;
     select: {
@@ -101,17 +99,13 @@ export declare class TypeaheadController {
     getItems: {
         (params?: IGetItemsParams): angular.IPromise<any>;
     };
-    label: string;
     prefix: string;
     useClientSearching: boolean;
     ngDisabled: boolean;
     allowCollapse: boolean;
-    validator: __validation.IValidationHandler;
-    ngModel: angular.INgModelController;
     private cachedItems;
     private searchFilter;
     visibleItems: any[];
-    typeaheadValidator: IComponentValidator;
     loading: boolean;
     loadDelay: number;
     placeholder: string;

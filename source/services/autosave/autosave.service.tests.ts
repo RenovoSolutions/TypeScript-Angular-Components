@@ -7,6 +7,7 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
+import __notification = services.notification;
 
 import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
 import { Trigger, ITrigger } from './triggers/trigger';
@@ -22,6 +23,11 @@ interface IMockFormController {
 	$pristine: boolean;
 	$dirty: boolean;
 	$setPristine: Sinon.SinonSpy;
+	$valid: boolean;
+}
+
+interface INotificationMock {
+	warning: Sinon.SinonSpy;
 }
 
 describe('autosave', () => {
@@ -32,6 +38,7 @@ describe('autosave', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
+	let notification: INotificationMock;
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -39,9 +46,14 @@ describe('autosave', () => {
 		triggerSpy = sinon.spy((promise: ng.IPromise<void>): ng.IPromise<void> => { return promise; });
 		let autosaveActionService: IAutosaveActionMock = { trigger: triggerSpy };
 
-		test.angularFixture.mock({
-			autosaveAction: autosaveActionService,
-		});
+		notification = {
+			warning: sinon.spy(),
+		};
+
+		let mocks: any = {};
+		mocks.autosaveAction = autosaveActionService;
+		mocks[__notification.serviceName] = notification;
+		test.angularFixture.mock(mocks);
 
 		setPristineSpy = sinon.spy();
 
@@ -49,6 +61,7 @@ describe('autosave', () => {
 			$pristine: false,
 			$dirty: true,
 			$setPristine: setPristineSpy,
+			$valid: true,
 		};
 
 		let services: any = test.angularFixture.inject(factoryName, '$q', '$rootScope', '$timeout');
@@ -91,29 +104,11 @@ describe('autosave', () => {
 		sinon.assert.notCalled(saveSpy);
 	});
 
-	it('should validate using the validator if one exists', (): void => {
-		let validateSpy: Sinon.SinonSpy = sinon.spy((): boolean => { return true; });
+	it('should return false without saving if the form is invalid', (): void => {
+		baseContentForm.$valid = false;
 
 		autosave = autosaveFactory.getInstance({
 			save: saveSpy,
-			validate: validateSpy,
-			contentForm: <any>baseContentForm,
-		});
-
-		let close: boolean = autosave.autosave();
-
-		expect(close).to.be.true;
-
-		sinon.assert.calledOnce(validateSpy);
-		sinon.assert.calledOnce(saveSpy);
-	});
-
-	it('should return false without saving if validation fails', (): void => {
-		let validateSpy: Sinon.SinonSpy = sinon.spy((): boolean => { return false; });
-
-		autosave = autosaveFactory.getInstance({
-			save: saveSpy,
-			validate: validateSpy,
 			contentForm: <any>baseContentForm,
 		});
 
@@ -121,8 +116,25 @@ describe('autosave', () => {
 
 		expect(close).to.be.false;
 
-		sinon.assert.calledOnce(validateSpy);
+		sinon.assert.calledOnce(notification.warning);
 		sinon.assert.notCalled(saveSpy);
+	});
+
+	it('should ignore validation state if saveWhenInvalid is set', (): void => {
+		baseContentForm.$valid = false;
+
+		autosave = autosaveFactory.getInstance({
+			save: saveSpy,
+			contentForm: <any>baseContentForm,
+			saveWhenInvalid: true,
+		});
+
+		let close: boolean = autosave.autosave();
+
+		expect(close).to.be.true;
+
+		sinon.assert.notCalled(notification.warning);
+		sinon.assert.calledOnce(saveSpy);
 	});
 
 	it('should always save if no form is specified', (): void => {

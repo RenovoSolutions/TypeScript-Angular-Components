@@ -69,6 +69,7 @@ export class CardController {
 	permanentFooter: boolean;
 	selectable: boolean;
 	selectionChanged: {(): void};
+	saveWhenInvalid: boolean;
 
 	showContent: boolean = false;
 	dirty: boolean = false;
@@ -210,6 +211,7 @@ export function card(): angular.IDirective {
 			permanentFooter: '=',
 			selectable: '=',
 			selectionChanged: '&',
+			saveWhenInvalid: '<?',
 		},
 		link(scope: ICardScope
 			, element: angular.IAugmentedJQuery

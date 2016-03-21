@@ -19,31 +19,40 @@ var OnChangeTrigger = (function (_super) {
         if (_.isUndefined(this.settings)) {
             return;
         }
-        this.initChangeListeners();
+        this.initListeners();
         this.$rootScope.$watch(function () {
             return _this.settings.form != null
                 ? _this.settings.form.$dirty
                 : false;
-        }, function (value) {
-            if (value) {
+        }, function () { _this.triggerSaveAction(autosave); });
+        this.$rootScope.$watch(function () {
+            return _this.settings.form != null
+                ? _this.settings.form.$valid
+                : false;
+        }, function () { _this.triggerSaveAction(autosave); });
+    };
+    OnChangeTrigger.prototype.triggerSaveAction = function (autosave) {
+        var _this = this;
+        if (this.settings.form.$dirty && (this.settings.form.$valid || this.settings.saveWhenInvalid)) {
+            this.setTimer(autosave);
+            this.clearListener = this.setListener(function () {
                 _this.setTimer(autosave);
-                _this.clearChangeListener = _this.setChangeListener(function () {
-                    _this.$timeout.cancel(_this.timer);
-                    _this.setTimer(autosave);
-                });
-            }
-        });
+            });
+        }
     };
     OnChangeTrigger.prototype.setTimer = function (autosave) {
         var _this = this;
+        if (this.timer != null) {
+            this.$timeout.cancel(this.timer);
+        }
         this.timer = this.$timeout(function () {
-            _this.clearChangeListener();
+            _this.clearListener();
             autosave();
         }, this.debounceDuration);
     };
-    OnChangeTrigger.prototype.initChangeListeners = function () {
-        this.setChangeListener = this.settings.setChangeListener || this.nullSetListener;
-        this.clearChangeListener = this.nullClearListener;
+    OnChangeTrigger.prototype.initListeners = function () {
+        this.setListener = this.settings.setChangeListener || this.nullSetListener;
+        this.clearListener = this.nullClearListener;
     };
     OnChangeTrigger.prototype.nullSetListener = function () {
         console.log('No change listener available');

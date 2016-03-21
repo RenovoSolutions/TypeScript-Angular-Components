@@ -10,7 +10,7 @@
 			</div>
 
 			<div ng-show="__card.showContent">
-				<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" validate="__card.validateCard()">
+				<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" save-when-invalid="__card.saveWhenInvalid">
 					<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
 						<div class="content-template"></div>
 						<div class="clearfix"></div>
@@ -43,7 +43,7 @@
 					</div>
 
 					<div ng-show="__card.showContent">
-						<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" validate="__card.validateCard()">
+						<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" save-when-invalid="__card.saveWhenInvalid">
 							<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
 								<div class="content-template"></div>
 								<div class="clearfix"></div>

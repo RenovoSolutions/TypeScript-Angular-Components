@@ -1,7 +1,5 @@
 'use strict';
 var angular = require('angular');
-var autosaveDialogFooter = require('./autosaveDialogFooter/autosaveDialogFooter');
-exports.autosaveDialogFooter = autosaveDialogFooter;
 var busy = require('./busy/busy');
 exports.busy = busy;
 var button = require('./button/button');
@@ -10,6 +8,8 @@ var buttonAsync = require('./buttonAsync/buttonAsync');
 exports.buttonAsync = buttonAsync;
 var buttonLink = require('./buttonLink/buttonLink');
 exports.buttonLink = buttonLink;
+var buttonSubmit = require('./buttonSubmit/buttonSubmit');
+exports.buttonSubmit = buttonSubmit;
 var buttonToggle = require('./buttonToggle/buttonToggle');
 exports.buttonToggle = buttonToggle;
 var cardContainer = require('./cardContainer/cardContainer.module');
@@ -24,6 +24,8 @@ var dateTimeStatic = require('./dateTimeStatic/dateTimeStatic');
 exports.dateTimeStatic = dateTimeStatic;
 var dialog = require('./dialog/dialog');
 exports.dialog = dialog;
+var form = require('./form/form');
+exports.form = form;
 var genericContainer = require('./genericContainer/genericContainer');
 exports.genericContainer = genericContainer;
 var lazyLoad = require('./lazyLoad/lazyLoad');
@@ -70,11 +72,11 @@ var componentsDefaultTheme_1 = require('./componentsDefaultTheme');
 exports.defaultThemeValueName = componentsDefaultTheme_1.defaultThemeValueName;
 exports.moduleName = 'rl.ui.components';
 angular.module(exports.moduleName, [
-    autosaveDialogFooter.moduleName,
     busy.moduleName,
     button.moduleName,
     buttonAsync.moduleName,
     buttonLink.moduleName,
+    buttonSubmit.moduleName,
     buttonToggle.moduleName,
     cardContainer.moduleName,
     checkbox.moduleName,
@@ -82,6 +84,7 @@ angular.module(exports.moduleName, [
     dateTime.moduleName,
     dateTimeStatic.moduleName,
     dialog.moduleName,
+    form.moduleName,
     genericContainer.moduleName,
     lazyLoad.moduleName,
     longClickButton.moduleName,

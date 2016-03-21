@@ -14,6 +14,14 @@ export let defaultTriggers: string = 'onChange';
 export let moduleName: string = 'rl.ui.services.autosave.triggers';
 export let factoryName: string = 'autosaveTriggers';
 
+export interface IListener {
+	(): void;
+}
+
+export interface IClearListener {
+	(): void;
+}
+
 export interface ITriggers {
 	onChange: ITrigger<OnChangeSettings>;
 	none: ITrigger<void>;

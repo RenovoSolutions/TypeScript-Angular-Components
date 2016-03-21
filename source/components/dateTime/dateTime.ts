@@ -14,7 +14,11 @@ import { services } from 'typescript-angular-utilities';
 import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
 import __object = services.object;
+import __guid = services.guid;
 
+import { IInputAttributes } from '../input/input';
+import { INgModelValidator } from '../../types/formValidators';
+import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
 import {
 IComponentValidator,
 IComponentValidatorFactory,
@@ -69,17 +73,38 @@ export class DateTimeController {
 
 	validator: __validation.IValidationHandler;
 
-	ngModel: angular.INgModelController;
+	ngModel: INgModelValidator;
 	dateTimeValidator: IComponentValidator;
+	required: RequiredController;
 
-	static $inject: string[] = ['$scope', componentValidatorFactoryName];
-	constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory) {
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: angular.INgModelController): void => {
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
+	constructor($scope: angular.IScope
+			, $attrs: IInputAttributes
+			, componentValidatorFactory: IComponentValidatorFactory) {
+		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
+			$attrs.$set('name', 'date-time-' + __guid.guid.random());
+		}
+
+		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
+			let validators: __validation.IValidationHandler[] = [];
+
 			if (!_.isUndefined(this.validator)) {
+				validators.push(this.validator);
+			}
+
+			if (this.required != null) {
+				validators.push({
+					name: 'rlRequired',
+					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
+					errorMessage: this.required.message,
+				});
+			}
+
+			if (_.some(validators)) {
 				this.dateTimeValidator = componentValidatorFactory.getInstance({
 					ngModel: this.ngModel,
 					$scope: $scope,
-					validators: [this.validator],
+					validators: validators,
 				});
 			}
 			unregister();
@@ -100,7 +125,7 @@ function dateTime(moment: moment.MomentStatic
 	return {
 		restrict: 'E',
 		template: require('./dateTime.html'),
-		require: '?^ngModel',
+		require: ['ngModel', '?' + requiredDirectiveName],
 		controller: controllerName,
 		controllerAs: 'dateTime',
 		scope: {},
@@ -117,9 +142,13 @@ function dateTime(moment: moment.MomentStatic
 		link: (scope: IDateTimeScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, ngModel: angular.INgModelController): void => {
+			, controllers: any[]): void => {
 			let dateTime: DateTimeController = scope.dateTime;
+
+			let ngModel: INgModelValidator = controllers[0];
+			dateTime.required = controllers[1];
 			dateTime.ngModel = ngModel;
+
 			// defaults to true
 			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
 			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;

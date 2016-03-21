@@ -100,6 +100,7 @@ export class CardContainerController {
 	selectableCards: boolean;
 	disableSelection: { (item: any): string };
 	renderFilters: boolean;
+	saveWhenInvalid: boolean;
 
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;

@@ -2,11 +2,11 @@
 
 import * as angular from 'angular';
 
-import * as autosaveDialogFooter from './autosaveDialogFooter/autosaveDialogFooter';
 import * as busy from './busy/busy';
 import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonLink from './buttonLink/buttonLink';
+import * as buttonSubmit from './buttonSubmit/buttonSubmit';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox';
@@ -14,7 +14,9 @@ import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
+import * as form from './form/form';
 import * as genericContainer from './genericContainer/genericContainer';
+import * as input from './input/input';
 import * as lazyLoad from './lazyLoad/lazyLoad';
 import * as longClickButton from './longClickButton/longClickButton';
 import * as messageLog from './messageLog/messageLog.module';
@@ -41,11 +43,11 @@ import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultThe
 export {
 	defaultThemeValueName,
 
-	autosaveDialogFooter,
 	busy,
 	button,
 	buttonAsync,
 	buttonLink,
+	buttonSubmit,
 	buttonToggle,
 	cardContainer,
 	checkbox,
@@ -53,6 +55,7 @@ export {
 	dateTime,
 	dateTimeStatic,
 	dialog,
+	form,
 	genericContainer,
 	lazyLoad,
 	longClickButton,
@@ -79,11 +82,11 @@ export {
 export let moduleName: string = 'rl.ui.components';
 
 angular.module(moduleName, [
-	autosaveDialogFooter.moduleName,
 	busy.moduleName,
 	button.moduleName,
 	buttonAsync.moduleName,
 	buttonLink.moduleName,
+	buttonSubmit.moduleName,
 	buttonToggle.moduleName,
 	cardContainer.moduleName,
 	checkbox.moduleName,
@@ -91,6 +94,7 @@ angular.module(moduleName, [
 	dateTime.moduleName,
 	dateTimeStatic.moduleName,
 	dialog.moduleName,
+	form.moduleName,
 	genericContainer.moduleName,
 	lazyLoad.moduleName,
 	longClickButton.moduleName,

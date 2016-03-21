@@ -2,52 +2,13 @@
 'use strict';
 var angular = require('angular');
 var _ = require('lodash');
-var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
+var input_1 = require('../input/input');
 exports.moduleName = 'rl.ui.components.textbox';
-exports.directiveName = 'rlTextbox';
-exports.controllerName = 'TextboxController';
-var TextboxController = (function () {
-    function TextboxController($element, $scope, componentValidatorFactory) {
-        this.ngModel = $element.controller('ngModel');
-        if (!_.isUndefined(this.validator)) {
-            this.textboxValidator = componentValidatorFactory.getInstance({
-                ngModel: this.ngModel,
-                $scope: $scope,
-                validators: [this.validator],
-            });
-        }
-    }
-    Object.defineProperty(TextboxController.prototype, "text", {
-        get: function () {
-            return this.ngModel.$viewValue;
-        },
-        set: function (value) {
-            this.ngModel.$setViewValue(value);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    TextboxController.$inject = ['$element', '$scope', componentValidator_service_1.factoryName];
-    return TextboxController;
-}());
-exports.TextboxController = TextboxController;
-function textbox() {
-    return {
-        restrict: 'E',
-        require: 'ngModel',
-        template: require('./textbox.html'),
-        controller: exports.controllerName,
-        controllerAs: 'textbox',
-        scope: {},
-        bindToController: {
-            validator: '=',
-            label: '@',
-            maxlength: '=',
-        },
-    };
-}
-exports.textbox = textbox;
-angular.module(exports.moduleName, [componentValidator_service_1.moduleName])
-    .directive(exports.directiveName, textbox)
-    .controller(exports.controllerName, TextboxController);
+exports.componentName = 'rlTextbox';
+var textbox = _.clone(input_1.input);
+textbox.template = require('./textbox.html');
+var textboxBindings = textbox.bindings;
+textboxBindings.maxlength = '<?';
+angular.module(exports.moduleName, [input_1.moduleName])
+    .component(exports.componentName, textbox);
 //# sourceMappingURL=textbox.js.map

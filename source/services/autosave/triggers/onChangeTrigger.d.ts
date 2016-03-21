@@ -1,33 +1,30 @@
 import * as ng from 'angular';
 import { ITrigger, Trigger } from './trigger';
+import { IListener, IClearListener } from './triggers.service';
 export interface OnChangeSettings {
     form: ng.IFormController;
     setChangeListener: {
-        (callback: IChangeListener): IClearChangeListener;
+        (callback: IListener): IClearListener;
     };
     debounceDuration?: number;
-}
-export interface IChangeListener {
-    (): void;
-}
-export interface IClearChangeListener {
-    (): void;
+    saveWhenInvalid?: boolean;
 }
 export declare class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigger<OnChangeSettings> {
     private $rootScope;
     private $timeout;
     private debounceDuration;
     private timer;
-    setChangeListener: {
-        (callback: IChangeListener): IClearChangeListener;
+    setListener: {
+        (callback: IListener): IClearListener;
     };
-    clearChangeListener: IClearChangeListener;
+    clearListener: IClearListener;
     constructor($rootScope: ng.IRootScopeService, $timeout: ng.ITimeoutService);
     setTrigger(autosave: {
         (): void;
     }): void;
+    private triggerSaveAction(autosave);
     private setTimer(autosave);
-    private initChangeListeners();
+    private initListeners();
     private nullSetListener();
     private nullClearListener();
 }

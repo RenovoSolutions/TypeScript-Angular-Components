@@ -5,6 +5,12 @@ export * from './trigger';
 export declare let defaultTriggers: string;
 export declare let moduleName: string;
 export declare let factoryName: string;
+export interface IListener {
+    (): void;
+}
+export interface IClearListener {
+    (): void;
+}
 export interface ITriggers {
     onChange: ITrigger<OnChangeSettings>;
     none: ITrigger<void>;

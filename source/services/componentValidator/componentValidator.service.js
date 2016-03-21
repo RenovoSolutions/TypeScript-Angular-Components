@@ -11,8 +11,9 @@ var ComponentValidator = (function () {
         this.$scope = options.$scope;
         this.ngModel = options.ngModel;
         this.form = options.form;
-        this.validator = validationService.buildCustomValidator(function (error) {
+        this.validator = validationService.buildCustomValidator(function (error, name) {
             _this.error = error;
+            _this.errorType = name || 'customValidation';
         });
         _.each(options.validators, function (customValidator) {
             _this.validator.registerValidationHandler(customValidator);
@@ -22,17 +23,19 @@ var ComponentValidator = (function () {
     ComponentValidator.prototype.setValidator = function () {
         var _this = this;
         return this.$scope.$watch(this.validator.validate.bind(this.validator), function (value) {
+            if (value) {
+                _this.error = null;
+            }
             if (!_.isUndefined(_this.ngModel)) {
-                _this.ngModel.$setValidity('customValidation', value);
+                _this.ngModel.$setValidity(_this.errorType, value);
+                _this.ngModel.rlErrorMessage = _this.error;
             }
             else if (!_.isUndefined(_this.form)) {
-                _this.form.$setValidity('customValidation', value, 'group');
+                _this.form.$setValidity(_this.errorType, value, 'group');
+                _this.form.rlErrorMessage = _this.error;
             }
             else if (_.isFunction(_this.setValidity)) {
                 _this.setValidity(value);
-            }
-            if (value) {
-                _this.error = null;
             }
         });
     };

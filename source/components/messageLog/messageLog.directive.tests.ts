@@ -21,7 +21,7 @@ IUser
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import { IAutosaveDialogSettings } from '../../services/autosaveDialog/autosaveDialog.servivce';
+import { IAutosaveDialogSettings } from '../../services/dialog/dialogTypes';
 
 interface IMockMessageLogService {
 	visibleMessages: number[];
@@ -36,22 +36,22 @@ interface IMockMessageLogService {
 }
 
 
-interface IAutosaveDialogMock {
-	open: Sinon.SinonSpy;
+interface IDialogMock {
+	openForm: Sinon.SinonSpy;
 }
 
 describe('messageLog', () => {
 	let scope: angular.IScope;
 	let log: MessageLogController;
 	let messageLogService: IMockMessageLogService;
-	let autosaveDialog: IAutosaveDialogMock;
+	let dialog: IDialogMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 		angular.mock.module(__isEmpty.moduleName);
 
-		autosaveDialog = {
-			open: sinon.spy(),
+		dialog = {
+			openForm: sinon.spy(),
 		};
 
 		messageLogService = {
@@ -74,7 +74,7 @@ describe('messageLog', () => {
 
 		test.angularFixture.mock({
 			messageLog: messageLogFactory,
-			autosaveDialog: autosaveDialog,
+			dialog: dialog,
 		});
 	});
 
@@ -218,14 +218,6 @@ describe('messageLog', () => {
 				}
 			};
 
-			let message2: any = {
-				message: '',
-				createdBy: {
-					id: 2,
-					name: 'Test User'
-				}
-			};
-
 			let messageSysNote: any = {
 				message: '',
 				createdBy: {
@@ -268,10 +260,9 @@ describe('messageLog', () => {
 
 			log.editMessage(message);
 
-			sinon.assert.calledOnce(autosaveDialog.open);
-			let dialogSettings: IAutosaveDialogSettings = autosaveDialog.open.firstCall.args[0];
+			sinon.assert.calledOnce(dialog.openForm);
+			let dialogSettings: IAutosaveDialogSettings = dialog.openForm.firstCall.args[0];
 			expect(dialogSettings.save).to.not.be.null;
-			expect(dialogSettings.form).to.equal('noteForm');
 			expect(dialogSettings.data.entry).to.deep.equal(message);
 			expect(dialogSettings.data.originalEntry).to.equal(message);
 			expect(dialogSettings.template).to.not.be.null;

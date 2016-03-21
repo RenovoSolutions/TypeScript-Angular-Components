@@ -2,6 +2,9 @@ import '../../../libraries/bootstrap-touchspin/index';
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
+import { IInputAttributes } from '../input/input';
+import { INgModelValidator } from '../../types/formValidators';
+import { RequiredController } from '../../behaviors/required/required';
 import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare let moduleName: string;
 export declare let directiveName: string;
@@ -32,8 +35,9 @@ export declare class SpinnerController {
     spinnerId: string;
     name: string;
     validator: __validation.IValidationHandler;
-    ngModel: angular.INgModelController;
+    ngModel: INgModelValidator;
+    required: RequiredController;
     spinnerValidator: IComponentValidator;
     static $inject: string[];
-    constructor($scope: angular.IScope, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory);
 }

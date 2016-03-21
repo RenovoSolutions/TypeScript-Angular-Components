@@ -1,5 +1,6 @@
 'use strict';
 
+import * as ngModel from './formValidators';
 import * as viewData from './viewData';
 
-export { viewData };
+export { ngModel, viewData };

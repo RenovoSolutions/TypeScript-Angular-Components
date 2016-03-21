@@ -79,6 +79,7 @@ export interface ICardContainerBuilder {
 	usePermanentFooters(): void;
 	useSelection(): void;
 	renderFilters(): void;
+	saveWhenInvalid(): void;
 }
 
 export interface IDataSourceBuilder {
@@ -115,6 +116,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_searchFilter: IGenericSearchFilter;
 	_pager: IDataPager;
 	_renderFilters: boolean;
+	_saveWhenInvalid: boolean;
 
 	dataSource: IDataSourceBuilder;
 	filters: IFilterBuilder;
@@ -165,6 +167,10 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._renderFilters = true;
 	}
 
+	saveWhenInvalid(): void {
+		this._saveWhenInvalid = true;
+	}
+
 	set disableSelection(value: { (item: any): string }) {
 		if (!this._selectableCards) {
 			this.useSelection();
@@ -190,6 +196,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.selectableCards = this._selectableCards;
 		cardContainer.disableSelection = this._disableSelection;
 		cardContainer.renderFilters = this._renderFilters;
+		cardContainer.saveWhenInvalid = this._saveWhenInvalid;
 
 		if (cardContainer.cardController == null) {
 			cardContainer.cardController = this.cardController;

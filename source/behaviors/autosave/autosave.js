@@ -26,14 +26,6 @@ var AutosaveController = (function () {
                 _this.$element.off('keyup');
             };
         };
-        var hasValidator = this.objectUtility.isNullOrWhitespace(this.$attrs.validate) === false;
-        var validateExpression = this.$parse(this.$attrs.validate);
-        var validate;
-        if (hasValidator) {
-            validate = function () {
-                return validateExpression(_this.$scope);
-            };
-        }
         var saveExpression = this.$parse(this.$attrs.save);
         var save = function () {
             return saveExpression(_this.$scope);
@@ -41,11 +33,11 @@ var AutosaveController = (function () {
         var debounce = this.$parse(this.$attrs.debounceDuration)(this.$scope);
         this.autosave = this.autosaveFactory.getInstance({
             save: save,
-            validate: validate,
             contentForm: this.form,
             debounceDuration: debounce,
             triggers: this.$attrs.triggers,
             setChangeListener: this.keyupListener,
+            saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
         });
         var behavior = {
             autosave: this.autosave.autosave,
@@ -69,10 +61,8 @@ function autosave() {
     'use strict';
     return {
         restrict: 'A',
-        require: {
-            autosaveController: 'rlAutosave',
-            form: '?form',
-        },
+        priority: 1000,
+        require: { form: '?form' },
         controller: exports.controllerName,
         bindToController: true,
     };

@@ -16,7 +16,7 @@ import {
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
 import * as componentServices from '../../services/services.module';
-import __autosaveDialog = componentServices.autosaveDialog;
+import __dialog = componentServices.dialog;
 
 import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
 
@@ -69,8 +69,8 @@ export class MessageLogController implements IMessageLogBindings {
 	loadingInitial: boolean;
 
 
-	static $inject: string[] = [__autosaveDialog.serviceName, '$scope', factoryName];
-	constructor(private autosaveDialog: __autosaveDialog.IAutosaveDialogService, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
+	static $inject: string[] = [__dialog.serviceName, '$scope', factoryName];
+	constructor(private dialog: __dialog.IDialogService<any>, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
 		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
 
 		$scope.$watch((): IMessage[] => { return this.messageLog.visibleMessages; }
@@ -151,9 +151,8 @@ export class MessageLogController implements IMessageLogBindings {
 	editMessage(entry: IMessage): void {
 		let editedEntry: IMessage = _.clone(entry);
 
-		this.autosaveDialog.open({
+		this.dialog.openForm({
 			save: this.updateNote.bind(this),
-			form: 'noteForm',
 			data: {
 				entry: editedEntry,
 				originalEntry: entry,

@@ -46,7 +46,7 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 			options = <any>{};
 		}
 
-		let dialogInstance: IDialogInstance = {
+		let dialogInstance: IDialogInstance = <any>{
 			close(): void {},
 			dismiss(): void {},
 		};
@@ -92,7 +92,7 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 		modalScope.$accept = accept;
 		modalScope.$cancel = cancel;
 
-		return {
+		return <any>{
 			accept: accept,
 			cancel: cancel,
 			close: modalInstance.close,

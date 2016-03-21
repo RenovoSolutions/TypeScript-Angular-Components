@@ -82,6 +82,7 @@ export declare class CardContainerController {
         (item: any): string;
     };
     renderFilters: boolean;
+    saveWhenInvalid: boolean;
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
     numberSelected: number;
