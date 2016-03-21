@@ -37,7 +37,7 @@ interface IMockMessageLogService {
 
 
 interface IDialogMock {
-	openAutosaveForm: Sinon.SinonSpy;
+	openForm: Sinon.SinonSpy;
 }
 
 describe('messageLog', () => {
@@ -51,7 +51,7 @@ describe('messageLog', () => {
 		angular.mock.module(__isEmpty.moduleName);
 
 		dialog = {
-			openAutosaveForm: sinon.spy(),
+			openForm: sinon.spy(),
 		};
 
 		messageLogService = {
@@ -260,8 +260,8 @@ describe('messageLog', () => {
 
 			log.editMessage(message);
 
-			sinon.assert.calledOnce(dialog.openAutosaveForm);
-			let dialogSettings: IAutosaveDialogSettings = dialog.openAutosaveForm.firstCall.args[0];
+			sinon.assert.calledOnce(dialog.openForm);
+			let dialogSettings: IAutosaveDialogSettings = dialog.openForm.firstCall.args[0];
 			expect(dialogSettings.save).to.not.be.null;
 			expect(dialogSettings.data.entry).to.deep.equal(message);
 			expect(dialogSettings.data.originalEntry).to.equal(message);

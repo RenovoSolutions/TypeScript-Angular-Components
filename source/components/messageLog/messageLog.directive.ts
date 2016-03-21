@@ -151,7 +151,7 @@ export class MessageLogController implements IMessageLogBindings {
 	editMessage(entry: IMessage): void {
 		let editedEntry: IMessage = _.clone(entry);
 
-		this.dialog.openAutosaveForm({
+		this.dialog.openForm({
 			save: this.updateNote.bind(this),
 			data: {
 				entry: editedEntry,

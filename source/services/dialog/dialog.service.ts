@@ -27,7 +27,7 @@ export let serviceName: string = 'dialog';
 export interface IDialogService<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
 	prompt(options: types.IPromptSettings): types.IPromptInstance;
-	openAutosaveFormopenForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
+	openForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
@@ -67,8 +67,8 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 		let dialogInstance: types.IAutosaveDialogInstance = {
 			close(): void {},
 			dismiss(): void { },
-			save(): void { },
-			saveAndClose(): void { },
+			save(): any { },
+			saveAndClose(): any { },
 			validateAndNotify(): void { },
 		};
 
