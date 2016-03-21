@@ -45,10 +45,6 @@ export class FormController implements IFormBindings {
 			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
-		this.$element.find('form').on('submit', (): void => {
-			this.autosave.validateAndSave();
-		});
-
 		this.$timeout((): void => {
 			this.form = this.$scope.rlForm;
 			this.autosave = this.autosaveFactory.getInstance({
@@ -73,7 +69,7 @@ export class FormController implements IFormBindings {
 
 let form: angular.IComponentOptions = {
 	transclude: true,
-	template: `<form ng-transclude name="rlForm"></form>`,
+	template: `<form ng-transclude name="rlForm" ng-submit="controller.autosave.validateAndSave()"></form>`,
 	controller: controllerName,
 	controllerAs: 'controller',
 	bindings: {
