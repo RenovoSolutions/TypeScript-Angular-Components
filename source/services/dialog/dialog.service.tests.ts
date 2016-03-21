@@ -96,7 +96,7 @@ describe('dialog', () => {
 		});
 
 		it('should return true if explicitly closed', (): void => {
-			dialog.openAutosaveForm(options);
+			dialog.openForm(options);
 			$rootScope.$digest();
 
 			let canClose: boolean = closeHandler(true);
@@ -105,7 +105,7 @@ describe('dialog', () => {
 		});
 
 		it('should autosave if the dialog wasnt closed explicitly', (): void => {
-			dialog.openAutosaveForm(options);
+			dialog.openForm(options);
 			$rootScope.$digest();
 
 			closeHandler(false);
