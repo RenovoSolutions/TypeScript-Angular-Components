@@ -38,7 +38,9 @@ export class FormController implements IFormBindings {
 	$onInit(): void {
 		this.$element.find('form').on('submit', (): void => {
 			this.autosave.validateAndSave();
-			this.$scope.$apply();
+			if (!this.$scope.$$phase) {
+				this.$scope.$apply();
+			}
 		});
 
 		this.$timeout((): void => {
