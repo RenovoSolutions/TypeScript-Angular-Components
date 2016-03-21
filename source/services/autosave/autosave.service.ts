@@ -22,6 +22,7 @@ export var factoryName: string = 'autosaveFactory';
 
 export interface IAutosaveService {
 	autosave(...data: any[]): boolean;
+	validateAndSave(...data: any[]): angular.IPromise<void> | boolean;
 	contentForm: IFormValidator;
 }
 
@@ -56,19 +57,29 @@ class AutosaveService implements IAutosaveService {
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
+		let result: boolean | angular.IPromise<void> = this.validateAndSave(...data);
+		if (_.isBoolean(result)) {
+			return result;
+		} else {
+			this.autosaveService.trigger(result);
+			return true;
+		}
+	}
+
+	validateAndSave(...data: any[]): angular.IPromise<void> | boolean {
 		if (this.contentForm.$pristine) {
 			return true;
 		}
 
 		if (this.contentForm.$valid || this.saveWhenInvalid) {
-			var promise: angular.IPromise<void> = this.save(...data);
+			let promise: angular.IPromise<void> = this.save(...data);
 
 			if (!_.isUndefined(promise)) {
-				this.autosaveService.trigger(promise.then((): void => {
+				return promise.then((): void => {
 					if (this.contentForm != null) {
 						this.contentForm.$setPristine();
 					}
-				}));
+				});
 			}
 
 			return true;
