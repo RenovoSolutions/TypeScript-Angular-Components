@@ -95,10 +95,7 @@ export function autosave(): angular.IDirective {
 	return {
 		restrict: 'A',
 		priority: 1000,
-		require: {
-			autosaveController: 'rlAutosave',
-			form: '?form',
-		},
+		require: { form: '?form' },
 		controller: controllerName,
 		bindToController: true,
 	};
