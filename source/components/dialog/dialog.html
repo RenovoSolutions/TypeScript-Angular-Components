@@ -1,18 +1,20 @@
-<div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="dialog.close()">
-		<span class="fa-stack">
-			<i class="close-bg fa fa-circle fa-stack-2x"></i>
-			<i class="close-icon fa fa-close fa-stack-1x"></i>
-		</span>
-	</button>
-	<div ng-transclude="headerSlot"></div>
-	<div class="clearfix "></div>
-</div>
-<div class="modal-body" ng-form="dialogForm">
-	<div ng-transclude="contentSlot"></div>
-	<div class="clearfix"></div>
-</div>
-<div class="modal-footer" ng-show="dialog.hasFooter">
-	<div class="footer-template"></div>
-	<div class="clearfix"></div>
-</div>
+<rl-form save="dialog.saveAndClose()" saving="dialog.saving" form="dialog.form">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="dialog.close()">
+			<span class="fa-stack">
+				<i class="close-bg fa fa-circle fa-stack-2x"></i>
+				<i class="close-icon fa fa-close fa-stack-1x"></i>
+			</span>
+		</button>
+		<div ng-transclude="headerSlot"></div>
+		<div class="clearfix "></div>
+	</div>
+	<div class="modal-body">
+		<div ng-transclude="contentSlot"></div>
+		<div class="clearfix"></div>
+	</div>
+	<div class="modal-footer" ng-show="dialog.hasFooter">
+		<div class="footer-template"></div>
+		<div class="clearfix"></div>
+	</div>
+</rl-form>

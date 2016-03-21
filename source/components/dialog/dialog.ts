@@ -32,14 +32,18 @@ export class DialogController implements IDialogBindings {
 	close: { (): void };
 	dismiss: { (): void };
 
+	form: IFormValidator;
+
 	static $inject: string[] = ['$scope', dialogServiceName];
 	constructor(private $scope: IDialogScope
 			, private dialogService: DialogService<any>) {}
 
 	$onInit(): void {
-		let unbind: Function = this.$scope.$watch('dialogForm', (form: IFormValidator): void => {
-			this.dialogService.setForm(form);
-			unbind();
+		let unbind: Function = this.$scope.$watch((): IFormValidator => { return this.form; }, (form: IFormValidator): void => {
+			if (form != null) {
+				this.dialogService.setForm(form);
+				unbind();
+			}
 		});
 	}
 }

@@ -24,6 +24,7 @@ export interface IFormScope extends angular.IScope {
 export class FormController implements IFormBindings {
 	saving: boolean;
 	save: { (): void };
+	form: IFormValidator;
 
 	autosave: IAutosaveService;
 
@@ -41,6 +42,7 @@ export class FormController implements IFormBindings {
 		});
 
 		this.$timeout((): void => {
+			this.form = this.$scope.rlForm;
 			this.autosave = this.autosaveFactory.getInstance({
 				save: this.saveForm.bind(this),
 				contentForm: this.$scope.rlForm,
@@ -65,6 +67,7 @@ let form: angular.IComponentOptions = {
 	bindings: {
 		saving: '=?',
 		save: '&',
+		form: '=?',
 	},
 };
 
