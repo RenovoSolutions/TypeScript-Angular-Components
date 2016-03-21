@@ -6,6 +6,7 @@ export declare var moduleName: string;
 export declare var factoryName: string;
 export interface IAutosaveService {
     autosave(...data: any[]): boolean;
+    validateAndSave(...data: any[]): angular.IPromise<void> | boolean;
     contentForm: IFormValidator;
 }
 export interface IAutosaveServiceOptions {
@@ -15,9 +16,6 @@ export interface IAutosaveServiceOptions {
     contentForm?: IFormValidator;
     debounceDuration?: number;
     setChangeListener?: {
-        (callback: triggers.IListener): triggers.IClearListener;
-    };
-    setSubmitListener?: {
         (callback: triggers.IListener): triggers.IClearListener;
     };
     triggers?: string;

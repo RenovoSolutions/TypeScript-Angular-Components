@@ -26,12 +26,6 @@ var AutosaveController = (function () {
                 _this.$element.off('keyup');
             };
         };
-        this.submitListener = function (callback) {
-            _this.$element.on('submit', function () { _this.$scope.$apply(callback); });
-            return function () {
-                _this.$element.off('submit');
-            };
-        };
         var saveExpression = this.$parse(this.$attrs.save);
         var save = function () {
             return saveExpression(_this.$scope);
@@ -43,7 +37,6 @@ var AutosaveController = (function () {
             debounceDuration: debounce,
             triggers: this.$attrs.triggers,
             setChangeListener: this.keyupListener,
-            setSubmitListener: this.submitListener,
             saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
         });
         var behavior = {
@@ -69,10 +62,7 @@ function autosave() {
     return {
         restrict: 'A',
         priority: 1000,
-        require: {
-            autosaveController: 'rlAutosave',
-            form: '?form',
-        },
+        require: { form: '?form' },
         controller: exports.controllerName,
         bindToController: true,
     };

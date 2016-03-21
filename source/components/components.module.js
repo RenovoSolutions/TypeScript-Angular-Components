@@ -22,6 +22,8 @@ var dateTimeStatic = require('./dateTimeStatic/dateTimeStatic');
 exports.dateTimeStatic = dateTimeStatic;
 var dialog = require('./dialog/dialog');
 exports.dialog = dialog;
+var form = require('./form/form');
+exports.form = form;
 var genericContainer = require('./genericContainer/genericContainer');
 exports.genericContainer = genericContainer;
 var lazyLoad = require('./lazyLoad/lazyLoad');
@@ -79,6 +81,7 @@ angular.module(exports.moduleName, [
     dateTime.moduleName,
     dateTimeStatic.moduleName,
     dialog.moduleName,
+    form.moduleName,
     genericContainer.moduleName,
     lazyLoad.moduleName,
     longClickButton.moduleName,

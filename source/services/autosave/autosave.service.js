@@ -20,23 +20,13 @@ var AutosaveService = (function () {
             for (var _i = 0; _i < arguments.length; _i++) {
                 data[_i - 0] = arguments[_i];
             }
-            if (_this.contentForm.$pristine) {
-                return true;
-            }
-            if (_this.contentForm.$valid || _this.saveWhenInvalid) {
-                var promise = _this.save.apply(_this, data);
-                if (!_.isUndefined(promise)) {
-                    _this.autosaveService.trigger(promise.then(function () {
-                        if (_this.contentForm != null) {
-                            _this.contentForm.$setPristine();
-                        }
-                    }));
-                }
-                return true;
+            var result = _this.validateAndSave.apply(_this, data);
+            if (_.isBoolean(result)) {
+                return result;
             }
             else {
-                _this.notification.warning(_this.formService.getAggregateError(_this.contentForm));
-                return false;
+                _this.autosaveService.trigger(result);
+                return true;
             }
         };
         this.contentForm = options.contentForm || this.nullForm();
@@ -46,15 +36,37 @@ var AutosaveService = (function () {
         this.configureTriggers(options);
         this.triggerService.setTriggers(options.triggers, this.autosave);
     }
+    AutosaveService.prototype.validateAndSave = function () {
+        var _this = this;
+        var data = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            data[_i - 0] = arguments[_i];
+        }
+        if (this.contentForm.$pristine) {
+            return true;
+        }
+        if (this.contentForm.$valid || this.saveWhenInvalid) {
+            var promise = this.save.apply(this, data);
+            if (!_.isUndefined(promise)) {
+                return promise.then(function () {
+                    if (_this.contentForm != null) {
+                        _this.contentForm.$setPristine();
+                    }
+                });
+            }
+            return true;
+        }
+        else {
+            this.notification.warning(this.formService.getAggregateError(this.contentForm));
+            return false;
+        }
+    };
     AutosaveService.prototype.configureTriggers = function (options) {
         this.triggerService.triggers.onChange.configure({
             form: options.contentForm,
             setChangeListener: options.setChangeListener,
             debounceDuration: options.debounceDuration,
             saveWhenInvalid: options.saveWhenInvalid,
-        });
-        this.triggerService.triggers.onSubmit.configure({
-            setSubmitListener: options.setSubmitListener,
         });
     };
     AutosaveService.prototype.nullForm = function () {

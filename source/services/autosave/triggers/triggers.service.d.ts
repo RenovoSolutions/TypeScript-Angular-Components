@@ -1,5 +1,4 @@
 import { OnChangeSettings } from './onChangeTrigger';
-import { OnSubmitSettings } from './onSubmitTrigger';
 import { ITrigger } from './trigger';
 export * from './onChangeTrigger';
 export * from './trigger';
@@ -14,7 +13,6 @@ export interface IClearListener {
 }
 export interface ITriggers {
     onChange: ITrigger<OnChangeSettings>;
-    onSubmit: ITrigger<OnSubmitSettings>;
     none: ITrigger<void>;
 }
 export interface ITriggerService {

@@ -5,7 +5,6 @@ function __export(m) {
 var angular = require('angular');
 var _ = require('lodash');
 var onChangeTrigger_1 = require('./onChangeTrigger');
-var onSubmitTrigger_1 = require('./onSubmitTrigger');
 var trigger_1 = require('./trigger');
 __export(require('./onChangeTrigger'));
 __export(require('./trigger'));
@@ -16,7 +15,6 @@ var TriggerService = (function () {
     function TriggerService($rootScope, $timeout) {
         this.triggers = {
             onChange: new onChangeTrigger_1.OnChangeTrigger($rootScope, $timeout),
-            onSubmit: new onSubmitTrigger_1.OnSubmitTrigger(),
             none: new trigger_1.Trigger('none'),
         };
     }
