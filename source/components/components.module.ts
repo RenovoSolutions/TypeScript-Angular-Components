@@ -13,6 +13,7 @@ import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
+import * as form from './form/form';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as input from './input/input';
 import * as lazyLoad from './lazyLoad/lazyLoad';
@@ -52,6 +53,7 @@ export {
 	dateTime,
 	dateTimeStatic,
 	dialog,
+	form,
 	genericContainer,
 	lazyLoad,
 	longClickButton,
@@ -89,6 +91,7 @@ angular.module(moduleName, [
 	dateTime.moduleName,
 	dateTimeStatic.moduleName,
 	dialog.moduleName,
+	form.moduleName,
 	genericContainer.moduleName,
 	lazyLoad.moduleName,
 	longClickButton.moduleName,
