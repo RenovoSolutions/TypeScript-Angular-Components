@@ -68,6 +68,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			close(): void {},
 			dismiss(): void { },
 			save(): void { },
+			saveAndClose(): void { },
 			validateAndNotify(): void { },
 		};
 
@@ -94,12 +95,22 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 
 			this.data = _.extend(options.data, resolveData);
 			scope.dialog = this.data;
-			scope.$save = (): void => { this.autosave.autosave(this.data); };
 
 			let instance: types.IAutosaveDialogInstance = <any>this.open(<any>options, this.autosaveCloseHandler);
 			dialogInstance.close = instance.close;
 			dialogInstance.dismiss = instance.dismiss;
-			dialogInstance.save = instance.save;
+
+			let $save: {(): any} = (): any => { return this.autosave.validateAndSave(this.data); };
+			scope.$save = $save;
+			scope.$saveAndClose = (): void => {
+				let canClose: boolean = $save();
+				if (canClose) {
+					instance.close();
+				}
+			};
+
+			dialogInstance.save = scope.$save;
+			dialogInstance.saveAndClose = scope.$saveAndClose;
 			dialogInstance.validateAndNotify = instance.validateAndNotify;
 		});
 

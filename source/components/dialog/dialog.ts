@@ -20,6 +20,7 @@ export interface IDialogScope extends angular.IScope {
 export interface IParentScope extends angular.IScope {
 	$close: { (): void };
 	$dismiss: { (): void };
+	$saveAndClose: {(): void};
 }
 
 export interface IDialogBindings {
@@ -31,6 +32,7 @@ export class DialogController implements IDialogBindings {
 	hasFooter: boolean;
 	close: { (): void };
 	dismiss: { (): void };
+	saveAndClose: { (): void };
 
 	form: IFormValidator;
 
@@ -72,6 +74,7 @@ function dialog($compile: angular.ICompileService): angular.IDirective {
 			, transclude: angular.ITranscludeFunction): void {
 			controller.close = scope.$parent.$close;
 			controller.dismiss = scope.$parent.$dismiss;
+			controller.saveAndClose = scope.$parent.$saveAndClose;
 			let footerArea: JQuery = element.find('.footer-template');
 
 			if (transclude.isSlotFilled('footerSlot')) {
