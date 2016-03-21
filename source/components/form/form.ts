@@ -5,10 +5,6 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __object = services.object;
-import __guid = services.guid;
-
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory, factoryName as autosaveFactoryName, moduleName as autosaveModule } from '../../services/autosave/autosave.service';
 
@@ -19,7 +15,6 @@ export let controllerName: string = 'rlFormController';
 export interface IFormBindings {
 	saving: boolean;
 	save(): void;
-	name: string;
 }
 
 export interface IFormScope extends angular.IScope {
@@ -29,7 +24,6 @@ export interface IFormScope extends angular.IScope {
 export class FormController implements IFormBindings {
 	saving: boolean;
 	save: { (): void };
-	name: string;
 
 	autosave: IAutosaveService;
 
@@ -45,10 +39,6 @@ export class FormController implements IFormBindings {
 			this.autosave.validateAndSave();
 			this.$scope.$apply();
 		});
-
-		if (__object.objectUtility.isNullOrEmpty(this.name)) {
-			this.name = 'form-' + __guid.guid.random();
-		}
 
 		this.$timeout((): void => {
 			this.autosave = this.autosaveFactory.getInstance({
@@ -69,13 +59,12 @@ export class FormController implements IFormBindings {
 
 let form: angular.IComponentOptions = {
 	transclude: true,
-	template: `<form ng-transclude name="{{controller.name}}"></form>`,
+	template: `<form ng-transclude name="rlForm"></form>`,
 	controller: controllerName,
 	controllerAs: 'controller',
 	bindings: {
 		saving: '=?',
 		save: '&',
-		name: '@',
 	},
 };
 
