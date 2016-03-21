@@ -27,7 +27,7 @@ export let serviceName: string = 'dialog';
 export interface IDialogService<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
 	prompt(options: types.IPromptSettings): types.IPromptInstance;
-	openAutosaveForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
+	openAutosaveFormopenForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance;
 }
 
 export class DialogService<TDialogSettings> implements IDialogService<TDialogSettings> {
@@ -63,7 +63,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 		return this.dialog.prompt(options, require('./promptDialog.html'));
 	}
 
-	openAutosaveForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance {
+	openForm(options: types.IAutosaveDialogSettings): types.IAutosaveDialogInstance {
 		let dialogInstance: types.IAutosaveDialogInstance = {
 			close(): void {},
 			dismiss(): void { },
