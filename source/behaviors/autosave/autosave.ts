@@ -36,7 +36,6 @@ export interface IAutosaveBehavior {
 export class AutosaveController {
 	autosave: IAutosaveService;
 	keyupListener: { (callback: triggers.IListener): triggers.IClearListener };
-	submitListener: { (callback: triggers.IListener): triggers.IClearListener };
 
 	form: IFormValidator;
 
@@ -65,13 +64,6 @@ export class AutosaveController {
 			};
 		};
 
-		this.submitListener = (callback: triggers.IListener): triggers.IClearListener => {
-			this.$element.on('submit', (): void => { this.$scope.$apply(callback); });
-			return (): void => {
-				this.$element.off('submit');
-			};
-		};
-
 		let saveExpression: angular.ICompiledExpression = this.$parse(this.$attrs.save);
 		let save: { (): angular.IPromise<void> } = (): angular.IPromise<void> => {
 			return saveExpression(this.$scope);
@@ -85,7 +77,6 @@ export class AutosaveController {
 			debounceDuration: debounce,
 			triggers: this.$attrs.triggers,
 			setChangeListener: this.keyupListener,
-			setSubmitListener: this.submitListener,
 			saveWhenInvalid: this.$parse(this.$attrs.saveWhenInvalid)(this.$scope),
 		});
 

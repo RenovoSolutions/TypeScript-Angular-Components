@@ -31,7 +31,6 @@ export interface IAutosaveServiceOptions {
 	contentForm?: IFormValidator;
 	debounceDuration?: number;
 	setChangeListener?: { (callback: triggers.IListener): triggers.IClearListener };
-	setSubmitListener?: { (callback: triggers.IListener): triggers.IClearListener };
 	triggers?: string;
 	saveWhenInvalid?: boolean;
 }
@@ -95,9 +94,6 @@ class AutosaveService implements IAutosaveService {
 			setChangeListener: options.setChangeListener,
 			debounceDuration: options.debounceDuration,
 			saveWhenInvalid: options.saveWhenInvalid,
-		});
-		this.triggerService.triggers.onSubmit.configure({
-			setSubmitListener: options.setSubmitListener,
 		});
 	}
 
