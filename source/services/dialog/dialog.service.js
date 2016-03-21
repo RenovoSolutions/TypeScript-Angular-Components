@@ -47,7 +47,7 @@ var DialogService = (function () {
         options.cancelButton = options.cancelButton || 'Cancel';
         return this.dialog.prompt(options, require('./promptDialog.html'));
     };
-    DialogService.prototype.openAutosaveForm = function (options) {
+    DialogService.prototype.openForm = function (options) {
         var _this = this;
         var dialogInstance = {
             close: function () { },
