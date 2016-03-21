@@ -14,7 +14,7 @@ export interface IFormScope extends angular.IScope {
     rlForm: IFormValidator;
 }
 export interface IFormBehavior {
-    save(): void;
+    save(): angular.IPromise<void> | boolean;
 }
 export declare class FormController implements IFormBindings {
     private $element;
