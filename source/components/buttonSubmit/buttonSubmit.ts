@@ -25,10 +25,6 @@ export class ButtonSubmitController {
 		this.type = this.type != null ? this.type : 'default';
 		this.configuredSize = this.size != null ? 'btn-' + this.size : null;
 	}
-
-	save(): void {
-		this.$element.trigger('submit');
-	}
 }
 
 let buttonSubmit: angular.IComponentOptions = {
