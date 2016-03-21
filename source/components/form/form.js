@@ -17,7 +17,6 @@ var FormController = (function () {
         var _this = this;
         this.$element.find('form').on('submit', function () {
             _this.autosave.validateAndSave();
-            _this.$scope.$apply();
         });
         this.$timeout(function () {
             _this.form = _this.$scope.rlForm;
