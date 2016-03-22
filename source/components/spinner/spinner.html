@@ -1,6 +1,6 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
-		<div ng-class="{ 'error': spinner.ngModel.$invalid }">
+		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid }">
 			<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
 			<span class="error-string" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
 		</div>
