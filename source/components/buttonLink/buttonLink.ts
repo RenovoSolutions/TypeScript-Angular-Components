@@ -35,9 +35,9 @@ export function buttonLink(): angular.IDirective {
 		bindToController: {
 			link: '@',
 			type: '@',
-			ngDisabled: '=',
+			ngDisabled: '<?',
 			size: '@',
-			newTab: '=',
+			newTab: '<?',
 		},
 		controller: controllerName,
 		controllerAs: 'button',

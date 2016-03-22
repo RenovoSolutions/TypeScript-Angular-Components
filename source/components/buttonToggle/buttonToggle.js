@@ -37,7 +37,7 @@ function buttonToggle() {
             type: '@',
             size: '@',
             onToggle: '&',
-            disabled: '=ngDisabled',
+            disabled: '<?ngDisabled',
         },
         link: function (scope, element, attrs, ngModel) {
             scope.ngModel = ngModel;

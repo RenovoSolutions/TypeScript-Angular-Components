@@ -32,7 +32,7 @@ export function button(): angular.IDirective {
 		bindToController: {
 			action: '&',
 			type: '@',
-			ngDisabled: '=',
+			ngDisabled: '<?',
 			size: '@',
 		},
 		controller: controllerName,
