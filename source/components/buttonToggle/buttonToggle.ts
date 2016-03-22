@@ -68,7 +68,7 @@ function buttonToggle(): angular.IDirective {
 			type: '@',
 			size: '@',
 			onToggle: '&',
-			disabled: '=ngDisabled',
+			disabled: '<?ngDisabled',
 		},
 		link(scope: IButtonToggleScope
 			, element: angular.IAugmentedJQuery
