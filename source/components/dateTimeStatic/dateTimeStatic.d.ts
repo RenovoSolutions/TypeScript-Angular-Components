@@ -17,5 +17,6 @@ export declare class DateTimeStaticController implements IDateTimeStaticControll
     includeTime: boolean;
     displayValue: string;
     displayTimeZone: boolean;
+    static $inject: string[];
     constructor(dateUtility: __date.IDateUtility);
 }

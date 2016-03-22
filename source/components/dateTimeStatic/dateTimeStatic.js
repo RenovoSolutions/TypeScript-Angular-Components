@@ -5,6 +5,8 @@ var moment = require('moment');
 exports.moduleName = 'rl.ui.components.dateTimeStatic';
 exports.componentName = 'rlDateTimeStatic';
 exports.controllerName = 'DateTimeStaticController';
+var typescript_angular_utilities_1 = require('typescript-angular-utilities');
+var __date = typescript_angular_utilities_1.services.date;
 var DateTimeStaticController = (function () {
     function DateTimeStaticController(dateUtility) {
         this.dateUtility = dateUtility;
@@ -17,6 +19,7 @@ var DateTimeStaticController = (function () {
             }
         }
     }
+    DateTimeStaticController.$inject = [__date.serviceName];
     return DateTimeStaticController;
 }());
 exports.DateTimeStaticController = DateTimeStaticController;
