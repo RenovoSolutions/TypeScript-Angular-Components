@@ -1,5 +1,5 @@
-<button type="submit" class="btn btn-{{button.type}} {{button.configuredSize}}" ng-disabled="button.saving || button.ngDisabled">
-	<rl-busy ng-show="button.rightAligned" loading="button.saving"></rl-busy>
+<button type="submit" class="btn btn-{{::button.type}} {{::button.configuredSize}}" ng-disabled="button.saving || button.ngDisabled">
+	<rl-busy ng-show="::button.rightAligned" loading="button.saving"></rl-busy>
 	<span ng-transclude></span>
-	<rl-busy ng-hide="button.rightAligned" loading="button.saving"></rl-busy>
+	<rl-busy ng-hide="::button.rightAligned" loading="button.saving"></rl-busy>
 </button>
