@@ -29,6 +29,7 @@ export class DateTimeStaticController implements IDateTimeStaticController {
 	displayValue: string;
 	displayTimeZone: boolean;
 
+	static $inject: string[] = [__date.serviceName];
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
 		if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
