@@ -27,7 +27,7 @@ export function signaturePad(): angular.IDirective {
 			<img ng-src="{{ngModel.$viewValue}}" ng-style="style" ng-if="ngDisabled" />
 		`,
 		scope: {
-			pad: '=',
+			pad: '=?',
 			height: '=',
 			width: '=',
 			ngDisabled: '=',
