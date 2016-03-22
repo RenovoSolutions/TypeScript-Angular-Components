@@ -22,9 +22,9 @@ function buttonLink() {
         bindToController: {
             link: '@',
             type: '@',
-            ngDisabled: '=',
+            ngDisabled: '<?',
             size: '@',
-            newTab: '=',
+            newTab: '<?',
         },
         controller: exports.controllerName,
         controllerAs: 'button',

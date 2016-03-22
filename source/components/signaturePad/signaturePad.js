@@ -10,7 +10,7 @@ function signaturePad() {
         require: 'ngModel',
         template: "\n\t\t\t<canvas class=\"signature-pad\" ng-if=\"!ngDisabled\"></canvas>\n\t\t\t<img ng-src=\"{{ngModel.$viewValue}}\" ng-style=\"style\" ng-if=\"ngDisabled\" />\n\t\t",
         scope: {
-            pad: '=',
+            pad: '=?',
             height: '=',
             width: '=',
             ngDisabled: '=',

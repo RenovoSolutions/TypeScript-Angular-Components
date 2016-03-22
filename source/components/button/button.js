@@ -21,7 +21,7 @@ function button() {
         bindToController: {
             action: '&',
             type: '@',
-            ngDisabled: '=',
+            ngDisabled: '<?',
             size: '@',
         },
         controller: exports.controllerName,
