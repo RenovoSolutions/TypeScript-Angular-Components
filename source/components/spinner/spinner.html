@@ -1,25 +1,25 @@
 <rl-generic-container selector="spinner.ngDisabled">
 	<template default>
 		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid }">
-			<input name="{{spinner.name}}" class="spinner" id="{{spinner.spinnerId}}" type="text" />
-			<span class="error-string" ng-hide="spinner.spinnerValidator.error | isEmpty">{{spinner.spinnerValidator.error}}</span>
+			<input name="{{::spinner.name}}" class="spinner" id="{{::spinner.spinnerId}}" type="text" />
+			<span class="error-string" ng-if="spinner.spinnerValidator.error | isEmpty:false">{{spinner.spinnerValidator.error}}</span>
 		</div>
 	</template>
 	<template when-selector="true">
-		<div class="input-group field" ng-show="spinner.prefix != null && spinner.postfix != null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
+		<div class="input-group field" ng-if="::spinner.prefix != null && spinner.postfix != null">
+			<span class="input-group-addon">{{::spinner.prefix}}</span>
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
+			<span class="input-group-addon">{{::spinner.postfix}}</span>
 		</div>
-		<div class="input-group field" ng-show="spinner.prefix != null && spinner.postfix == null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
+		<div class="input-group field" ng-if="::spinner.prefix != null && spinner.postfix == null">
+			<span class="input-group-addon">{{::spinner.prefix}}</span>
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
 		</div>
-		<div class="input-group field" ng-show="spinner.prefix == null && spinner.postfix != null">
+		<div class="input-group field" ng-if="::spinner.prefix == null && spinner.postfix != null">
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
+			<span class="input-group-addon">{{::spinner.postfix}}</span>
 		</div>
-		<div class="input-group field" ng-show="spinner.prefix == null && spinner.postfix == null">
+		<div class="input-group field" ng-if="::spinner.prefix == null && spinner.postfix == null">
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
 		</div>
 	</template>

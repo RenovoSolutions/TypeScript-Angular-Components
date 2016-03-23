@@ -1,13 +1,13 @@
 <div class="field" ng-class="{ 'has-error': select.ngModel.$invalid }">
 	<label ng-show="select.selection" class="show-hide angular-animate">
-		{{select.label}}
+		{{::select.label}}
 	</label>
 	<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
-		<ui-select-match placeholder="{{select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
+		<ui-select-match placeholder="{{::select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
 		<ui-select-choices repeat="option in select.options">
 			{{select.getDisplayName(option)}}
 		</ui-select-choices>
 	</ui-select>
-	<span class="error-string" ng-show="select.inputValidator.error">{{select.inputValidator.error}}</span>
+	<span class="error-string" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
 	<rl-busy loading="select.loading"></rl-busy>
 </div>
