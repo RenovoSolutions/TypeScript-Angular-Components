@@ -8,6 +8,6 @@
 			{{select.getDisplayName(option)}}
 		</ui-select-choices>
 	</ui-select>
-	<span class="error-string" ng-show="select.inputValidator.error">{{select.inputValidator.error}}</span>
+	<span class="error-string" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
 	<rl-busy loading="select.loading"></rl-busy>
 </div>

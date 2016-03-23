@@ -10,5 +10,5 @@
 			<i class="fa fa-times"></i>
 		</button>
 	</span>
-	<span class="error-string" ng-hide="dateTime.dateTimeValidator.error | isEmpty">{{dateTime.dateTimeValidator.error}}</span>
+	<span class="error-string" ng-if="dateTime.dateTimeValidator.error | isEmpty:false">{{dateTime.dateTimeValidator.error}}</span>
 </div>

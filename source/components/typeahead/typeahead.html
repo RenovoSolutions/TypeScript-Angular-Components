@@ -16,6 +16,6 @@
 		<span>{{typeahead.getDisplayName(typeahead.selection)}}</span>
 		<rl-button type="default flat" action="typeahead.clear()"><i class="fa fa-remove"></i></rl-button>
 	</div>
-	<span class="error-string" ng-show="typeahead.inputValidator.error">{{typeahead.inputValidator.error}}</span>
+	<span class="error-string" ng-if="typeahead.inputValidator.error | isEmpty:false">{{typeahead.inputValidator.error}}</span>
 	<rl-busy loading="typeahead.loading"></rl-busy>
 </div>
