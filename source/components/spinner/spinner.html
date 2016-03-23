@@ -7,17 +7,17 @@
 	</template>
 	<template when-selector="true">
 		<div class="input-group field" ng-if="::spinner.prefix != null && spinner.postfix != null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
+			<span class="input-group-addon">{{::spinner.prefix}}</span>
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
+			<span class="input-group-addon">{{::spinner.postfix}}</span>
 		</div>
 		<div class="input-group field" ng-if="::spinner.prefix != null && spinner.postfix == null">
-			<span class="input-group-addon">{{spinner.prefix}}</span>
+			<span class="input-group-addon">{{::spinner.prefix}}</span>
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
 		</div>
 		<div class="input-group field" ng-if="::spinner.prefix == null && spinner.postfix != null">
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
-			<span class="input-group-addon">{{spinner.postfix}}</span>
+			<span class="input-group-addon">{{::spinner.postfix}}</span>
 		</div>
 		<div class="input-group field" ng-if="::spinner.prefix == null && spinner.postfix == null">
 			<input disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" class="form-control" />
