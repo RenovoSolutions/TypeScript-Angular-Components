@@ -7,11 +7,11 @@
 					<div class="message-content">
 						<div ng-bind-html="entry.message"></div>
 					</div>
-					<span class="message-button" ng-if="log.canDeleteEntry(entry)">
-						<rl-button-async type="message-delete flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rl-button-async>
-					</span>
 					<span class="message-button" ng-if="log.canEditEntry(entry)">
-						<rl-button-async type="message-delete-button flat" action="log.editMessage(entry)" size="xs"><i class="fa fa-edit"></i></rl-button-async>
+						<rl-button-async type="message-default flat" action="log.editMessage(entry)" size="xs"><i class="fa fa-edit"></i></rl-button-async>
+					</span>
+					<span class="message-button" ng-if="log.canDeleteEntry(entry)">
+						<rl-button-async type="message-danger flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rl-button-async>
 					</span>
 				</div>
 				<div class="message-byline">
