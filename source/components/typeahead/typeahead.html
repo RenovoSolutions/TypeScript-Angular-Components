@@ -1,10 +1,10 @@
 <div class="field" ng-class="{ 'has-error': typeahead.ngModel.$invalid }">
 	<label ng-show="typeahead.selection" class="show-hide angular-animate">
-		{{typeahead.label}}
+		{{::typeahead.label}}
 	</label>
 	<div ng-if="!typeahead.collapsed">
 		<ui-select ng-model="typeahead.selection" theme="bootstrap" ng-disabled="typeahead.ngDisabled">
-			<ui-select-match placeholder="{{typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
+			<ui-select-match placeholder="{{::typeahead.placeholder}}">{{typeahead.getDisplayName($select.selected)}}</ui-select-match>
 			<ui-select-choices repeat="item in typeahead.visibleItems"
 								refresh="typeahead.refresh($select.search)"
 								refresh-delay="typeahead.loadDelay">
