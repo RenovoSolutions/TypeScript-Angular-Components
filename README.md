@@ -9,6 +9,7 @@ Angular directives that are applied as attributes to an element in order to modi
 * [alias]()
 * [autosave]()
 * [popover]()
+* [required](/source/components/required/required.md)
 
 ## Components
 Angular components that can be added to an application.
