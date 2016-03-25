@@ -26,6 +26,7 @@ Angular components that can be added to an application.
 * [dateTimeStatic]()
 * [dialog]()
 * [genericContainer]()
+* [form](/source/components/form/form.md)
 * [lazyLoad](/source/components/lazyLoad/lazyLoad.md)
 * [longClickButton]()
 * [messageLog]()
