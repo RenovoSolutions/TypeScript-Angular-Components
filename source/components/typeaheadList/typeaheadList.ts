@@ -70,11 +70,17 @@ export interface ITypeaheadListBindings {
 	 * Link for telling the typeahead list to add or remove an item from outside
 	 */
 	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+
+	/**
+	 * Data that is shared between all list items
+	 */
+	listData: any;
 }
 
 export interface ITypeaheadListScope extends angular.IScope {
 	$remove(item: any): void;
 	$transform(item: any): string;
+	listData: any;
 }
 
 export interface ITypeaheadListBehavior {
@@ -102,13 +108,13 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	ngDisabled: boolean;
 	itemAs: string;
 	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+	listData: any;
 
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
 	ngModel: angular.INgModelController;
 
-	static $inject: string[] = ['$scope', '$element', '$transclude', __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$transclude', __parentChild.serviceName];
 	constructor(private $scope: ITypeaheadListScope
-			, private $element: angular.IAugmentedJQuery
 			, public $transclude: angular.ITranscludeFunction
 			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
@@ -117,6 +123,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		this.$scope.$transform = (item: any): string => {
 			return __transform.getValue(item, this.transform);
 		};
+		this.$scope.listData = this.listData;
 		this.parentChild.registerChildBehavior(this.childLink, {
 			add: this.addItem.bind(this),
 			remove: this.removeItem.bind(this),
@@ -168,6 +175,7 @@ let typeaheadList: angular.IComponentOptions = {
 		ngDisabled: '<?',
         itemAs: '@',
 		childLink: '=?',
+		listData: '<?',
 	},
 };
 

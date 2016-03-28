@@ -11,9 +11,8 @@ exports.moduleName = 'rl.ui.components.typeaheadList';
 exports.componentName = 'rlTypeaheadList';
 exports.controllerName = 'TypeaheadListController';
 var TypeaheadListController = (function () {
-    function TypeaheadListController($scope, $element, $transclude, parentChild) {
+    function TypeaheadListController($scope, $transclude, parentChild) {
         this.$scope = $scope;
-        this.$element = $element;
         this.$transclude = $transclude;
         this.parentChild = parentChild;
     }
@@ -23,6 +22,7 @@ var TypeaheadListController = (function () {
         this.$scope.$transform = function (item) {
             return __transform.getValue(item, _this.transform);
         };
+        this.$scope.listData = this.listData;
         this.parentChild.registerChildBehavior(this.childLink, {
             add: this.addItem.bind(this),
             remove: this.removeItem.bind(this),
@@ -50,7 +50,7 @@ var TypeaheadListController = (function () {
         });
         this.remove({ item: item });
     };
-    TypeaheadListController.$inject = ['$scope', '$element', '$transclude', __parentChild.serviceName];
+    TypeaheadListController.$inject = ['$scope', '$transclude', __parentChild.serviceName];
     return TypeaheadListController;
 }());
 exports.TypeaheadListController = TypeaheadListController;
@@ -74,6 +74,7 @@ var typeaheadList = {
         ngDisabled: '<?',
         itemAs: '@',
         childLink: '=?',
+        listData: '<?',
     },
 };
 angular.module(exports.moduleName, [__parentChild.moduleName])
