@@ -5,8 +5,8 @@
 			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
 		</span>
 	</span>
-	<span class="input-group-btn" ng-if="::dateTime.clearButton" ng-class="::{ 'btn-date-clear':dateTime.clearButton }">
-		<button type="button" class="btn btn-default pull-left"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
+	<span class="datepicker-clear" ng-if="::dateTime.clearButton">
+		<button type="button" class="btn btn-default"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
 			<i class="fa fa-times"></i>
 		</button>
 	</span>
