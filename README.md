@@ -14,7 +14,6 @@ Angular directives that are applied as attributes to an element in order to modi
 ## Components
 Angular components that can be added to an application.
 
-* [autosaveDialogFooter]()
 * [busy]()
 * [button](/source/components/button/button.md)
 * [buttonAsync](/source/components/buttonAsync/buttonAsync.md)
@@ -27,6 +26,7 @@ Angular components that can be added to an application.
 * [dateTimeStatic]()
 * [dialog]()
 * [genericContainer]()
+* [input](/source/components/input/input.md))
 * [form](/source/components/form/form.md)
 * [lazyLoad](/source/components/lazyLoad/lazyLoad.md)
 * [longClickButton]()
