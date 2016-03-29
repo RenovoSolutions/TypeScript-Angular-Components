@@ -4,7 +4,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 exports.moduleName = 'rl.ui.components.multiStepIndicator';
-exports.directiveName = 'rlMultiStepIndicator';
+exports.componentName = 'rlMultiStepIndicator';
 exports.controllerName = 'MultiStepIndicatorController';
 var __object = typescript_angular_utilities_1.services.object;
 var MultiStepIndicatorController = (function () {
@@ -83,21 +83,16 @@ var MultiStepIndicatorController = (function () {
     return MultiStepIndicatorController;
 }());
 exports.MultiStepIndicatorController = MultiStepIndicatorController;
-function multiStepIndicator() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./multiStepIndicator.html'),
-        controller: exports.controllerName,
-        controllerAs: 'breadcrumb',
-        scope: {},
-        bindToController: {
-            steps: '=',
-            numbered: '=',
-        },
-    };
-}
+var multiStepIndicator = {
+    template: require('./multiStepIndicator.html'),
+    controller: exports.controllerName,
+    controllerAs: 'breadcrumb',
+    bindings: {
+        steps: '=',
+        numbered: '=',
+    },
+};
 angular.module(exports.moduleName, [__object.moduleName])
-    .directive(exports.directiveName, multiStepIndicator)
+    .component(exports.componentName, multiStepIndicator)
     .controller(exports.controllerName, MultiStepIndicatorController);
 //# sourceMappingURL=multiStepIndicator.js.map
