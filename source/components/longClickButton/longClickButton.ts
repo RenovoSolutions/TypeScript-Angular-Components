@@ -9,7 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 
 export var moduleName: string = 'rl.ui.components.longClickButton';
-export var directiveName: string = 'rlLongClickButton';
+export var componentName: string = 'rlLongClickButton';
 export var controllerName: string = 'LongClickButtonController';
 
 import __object = services.object;
@@ -105,27 +105,22 @@ export class LongClickButtonController {
 	}
 }
 
-function longClickButton(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./longClickButton.html'),
-		controller: controllerName,
-		controllerAs: 'button',
-		scope: {},
-		bindToController: {
-			action: '&',
-			text: '@',
-			onShortClickText: '@',
-			icon: '@',
-			busy: '=?',
-			rightAligned: '=?',
-			type: '@',
-			ngDisabled: '=?',
-		},
-	};
-}
+let longClickButton: angular.IComponentOptions = {
+	template: require('./longClickButton.html'),
+	controller: controllerName,
+	controllerAs: 'button',
+	bindings: {
+		action: '&',
+		text: '@',
+		onShortClickText: '@',
+		icon: '@',
+		busy: '<?',
+		rightAligned: '<?',
+		type: '@',
+		ngDisabled: '<?',
+	},
+};
 
 angular.module(moduleName, [__object.moduleName])
-	.directive(directiveName, longClickButton)
+	.component(componentName, longClickButton)
 	.controller(controllerName, LongClickButtonController);
