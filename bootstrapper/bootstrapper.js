@@ -96,7 +96,7 @@
 	PopupTestController.$inject = ['dialog'];
 	function PopupTestController(dialog) {
 		var self = this;
-		self.popover = '<div>{{test.content}}</div>';
+		self.popover = '<div>{{popup.content}}</div>';
 		self.content = 'Some content';
 
 		self.prompt = function() {
