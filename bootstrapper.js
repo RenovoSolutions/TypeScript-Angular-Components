@@ -80,7 +80,7 @@
 		self.count = 0;
 		self.save = function () {
 			self.count++;
-			$scope.myForm.$setPristine();
+			return $q.when();
 		};
 
 		self.builder = cardContainerBuilderFactory.getInstance();
