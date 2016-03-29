@@ -54,6 +54,17 @@
 					<rl-radio ng-model="test.radio2" value="{ value: 4 }">4</rl-radio>
 					{{test.radio2}}
 
+					<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
+									label="Test list">
+						<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
+						<rl-list-item>
+								<div class="col-xs-10">{{$item.name}}</div>
+								<div class="col-xs-2">
+									<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
+								</div>
+						</rl-list-item>
+					</rl-typeahead-list>
+
 					<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 				</rl-form>
 				<br/>
@@ -102,17 +113,6 @@
 
 				<rl-busy loading="true" size="2x"></rl-busy>
 				<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
-
-				<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
-								   label="Test list">
-					<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
-					<rl-list-item>
-							<div class="col-xs-10">{{$item.name}}</div>
-							<div class="col-xs-2">
-								<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
-							</div>
-					</rl-list-item>
-				</rl-typeahead-list>
 
 				<ng-form name="myForm" rl-autosave save="test.save()">
 					<rl-textbox ng-model="test.val"></rl-textbox>
