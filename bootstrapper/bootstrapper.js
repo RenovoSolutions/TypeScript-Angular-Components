@@ -6,7 +6,60 @@
 		.controller('CardGroupController', CardGroupController)
 		.controller('TabsController', TabsController)
 		.controller('FormsController', FormsController)
-		.controller('MiscController', MiscController);
+		.controller('MiscController', MiscController)
+		.config(RouteConfig);
+
+	RouteConfig.$inject = ['$urlRouterProvider', '$stateProvider'];
+	function RouteConfig($urlRouterProvider, $stateProvider) {
+		$urlRouterProvider.otherwise('/');
+		$stateProvider
+			.state('/', {
+				url: '/',
+				template: '<h3>Welcome to typescript-angular-components</h3>',
+			})
+			.state('inputs', {
+				url: '/inputs',
+				templateUrl: 'bootstrapper/inputs.html',
+				controller: 'InputController',
+				controllerAs: 'input',
+			})
+			.state('buttons', {
+				url: '/buttons',
+				templateUrl: 'bootstrapper/buttons.html',
+				controller: 'ButtonController',
+				controllerAs: 'button',
+			})
+			.state('popup', {
+				url: '/popup',
+				templateUrl: 'bootstrapper/popup.html',
+				controller: 'PopoverController',
+				controllerAs: 'popup',
+			})
+			.state('cards', {
+				url: '/cards',
+				templateUrl: 'bootstrapper/cards.html',
+				controller: 'CardGroupController',
+				controllerAs: 'cards',
+			})
+			.state('tabs', {
+				url: '/tabs',
+				templateUrl: 'bootstrapper/tabs.html',
+				controller: 'TabsController',
+				controllerAs: 'tabs',
+			})
+			.state('forms', {
+				url: '/forms',
+				templateUrl: 'bootstrapper/forms.html',
+				controller: 'FormsController',
+				controllerAs: 'forms',
+			})
+			.state('misc', {
+				url: '/misc',
+				templateUrl: 'bootstrapper/misc.html',
+				controller: 'MiscController',
+				controllerAs: 'misc',
+			});
+	}
 
 	InputController.$inject = ['$q'];
 	function InputController($q) {

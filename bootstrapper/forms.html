@@ -1,0 +1,13 @@
+<h3>Forms</h3>
+<label>rl-form:</label>
+<rl-form save="forms.submit()" saving="forms.spinner">
+	<rl-textbox ng-model="forms.formValue" rl-required="You must enter a value"></rl-textbox>
+	<rl-button-submit type="primary" saving="forms.spinner">Submit</rl-button-submit>
+</rl-form>
+<label>Autosave form:</label>
+<ng-form name="myForm" rl-autosave save="forms.save()">
+	<rl-textbox ng-model="forms.autosaveValue" rl-required="You must enter a value"></rl-textbox>
+</ng-form>
+<div>
+	{{forms.count}}
+</div>
