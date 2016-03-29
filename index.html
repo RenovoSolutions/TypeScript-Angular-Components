@@ -41,6 +41,14 @@
 					<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 				</rl-form>
 				<br/>
+				<h3>Buttons</h3>
+				<rl-button action="test.action('Simple button')">Simple button</rl-button>
+				<rl-button-async action="test.action('Async button')">Async button</rl-button-async>
+				<rl-button-link link="http://www.google.com">Link button</rl-button-link>
+				<rl-button-toggle ng-model="test.toggled" on-toggle="test.action('Toggle button')">Toggle button</rl-button-toggle>
+				<rl-long-click-button action="test.action('Long click button')" text="Long click button"></rl-long-click-button>
+				<br/>
+
 				<rl-template-renderer template="test.template"></rl-template-renderer>
 
 				<div ng-repeat="value in test.set">

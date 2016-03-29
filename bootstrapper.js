@@ -54,6 +54,10 @@
 			errorMessage: 'String must be valid',
 		};
 
+		self.action = function(name) {
+			console.log('Action: ' + name);
+		}
+
 		self.prompt = function() {
 			dialog.prompt({
 				acceptHandler: function() { alert('Yes'); },
