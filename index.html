@@ -36,6 +36,10 @@
 					<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
 								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
 
+					<div ng-repeat="value in test.set">
+						{{value}}
+					</div>
+
 					<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
 
 					<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
@@ -93,10 +97,6 @@
 				<br/>
 
 				<rl-template-renderer template="test.template"></rl-template-renderer>
-
-				<div ng-repeat="value in test.set">
-					{{value}}
-				</div>
 
 				<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
 
