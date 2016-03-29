@@ -20,7 +20,7 @@ let externalProviderName: string = providerName + 'Provider';
 export { externalProviderName as providerName, IRichTextEditorProvider };
 
 export var moduleName: string = 'rl.ui.components.richTextEditor';
-export var directiveName: string = 'rlRichTextEditor';
+export var componentName: string = 'rlRichTextEditor';
 export var controllerName: string = 'RichTextEditorController';
 
 export interface IRichTextEditorBindings {
@@ -47,24 +47,19 @@ export class RichTextEditorController {
 	}
 }
 
-export function richTextEditor(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./richTextEditor.html'),
-		controller: controllerName,
-		controllerAs: 'editor',
-		scope: {},
-		bindToController: {
-			ngModel: '=',
-			customButtons: '=',
-			ngDisabled: '=',
-		},
-	};
-}
+let richTextEditor: angular.IComponentOptions = {
+	template: require('./richTextEditor.html'),
+	controller: controllerName,
+	controllerAs: 'editor',
+	bindings: {
+		ngModel: '=',
+		customButtons: '=',
+		ngDisabled: '=',
+	},
+};
 
 angular.module(moduleName, ['ngWig', __object.moduleName])
-	.directive(directiveName, richTextEditor)
+	.component(componentName, richTextEditor)
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)
 	.directive(paragraphButtonDirectiveName, paragraphButton)
