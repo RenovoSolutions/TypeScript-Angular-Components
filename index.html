@@ -23,27 +23,27 @@
 			<div ng-controller="TestController as test">
 				<h3>Inputs</h3>
 					<div>
-						Textbox:
+						<label>Textbox:</label>
 						<rl-textbox ng-model="test.otherText" rl-required="Input required"></rl-textbox>
 					</div>
 					<div>
-						Textarea:
+						<label>Textarea:</label>
 						<rl-textarea ng-model="test.textAreaText"></rl-textarea>
 					</div>
 					<div>
-						Spinner:
+						<label>Spinner:</label>
 						<rl-spinner ng-model="test.number"></rl-spinner>
 					</div>
 					<div>
-						Datetime:
+						<label>Datetime:</label>
 						<rl-date-time ng-model="test.date"></rl-date-time>
 					</div>
 					<div>
-						Select:
+						<label>Select:</label>
 						<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
 					</div>
 					<div>
-						Typeahead:
+						<label>Typeahead:</label>
 						<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
 									  create="test.create(value)" label="Test create"></rl-typeahead>
 						<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
@@ -57,18 +57,18 @@
 					</div>
 
 					<div>
-						Rich text editor:
+						<label>Rich text editor:</label>
 						<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
 					</div>
 
 					<div>
-						Checkbox:
+						<label>Checkbox:</label>
 						<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
 						Value: {{test.checked}}
 					</div>
 
 					<div>
-						Radio buttons:
+						<label>Radio buttons:</label>
 						<rl-radio-group ng-model="test.radio1">
 							<rl-radio value="{ value: 1 }">1</rl-radio>
 							<rl-radio value="{ value: 2 }">2</rl-radio>
@@ -80,7 +80,7 @@
 					</div>
 
 					<div>
-						Typeahead list:
+						<label>Typeahead list:</label>
 						<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
 										   label="Test list">
 							<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
@@ -120,7 +120,7 @@
 						</rl-simple-card>
 					</rl-simple-card-list>
 
-					Card container:
+					<label>Card container:</label>
 					<rl-card-container builder="test.builder" card-as="myItem">
 						<rl-container-header>
 							<rl-card-search></rl-card-search>
@@ -146,12 +146,12 @@
 					</rl-tabset>
 				<br/>
 				<h3>Forms</h3>
-					rl-form:
+					<label>rl-form:</label>
 					<rl-form save="test.submit()" saving="test.spinner">
 						<rl-textbox ng-model="test.formValue" rl-required="You must enter a value"></rl-textbox>
 						<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 					</rl-form>
-					Autosave form:
+					<label>Autosave form:</label>
 					<ng-form name="myForm" rl-autosave save="test.save()">
 						<rl-textbox ng-model="test.autosaveValue" rl-required="You must enter a value"></rl-textbox>
 					</ng-form>
@@ -161,7 +161,7 @@
 				<br/>
 				<h3>Misc</h3>
 					<div>
-						Generic container:
+						<label>Generic container:</label>
 						<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
 						<rl-generic-container selector="test.toggle">
 							<template default>
@@ -176,44 +176,44 @@
 					</div>
 
 					<div>
-						Validation group:
+						<label>Validation group:</label>
 						<rl-validation-group validator="test.validator">
 							<rl-textbox ng-model="test.text"></rl-textbox>
 						</rl-validation-group>
 					</div>
 
 					<div>
-						Template renderer:
+						<label>Template renderer:</label>
 						<rl-template-renderer template="test.template"></rl-template-renderer>
 					</div>
 
 					<div>
-						Comma list:
+						<label>Comma list:</label>
 						<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
 					</div>
 
 					<div>
-						Busy:
+						<label>Busy:</label>
 						<rl-busy loading="true" size="2x"></rl-busy>
 					</div>
 
 					<div>
-						Rating Bar:
+						<label>Rating Bar:</label>
 						<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
 					</div>
 
 					<div>
-						String with watermark:
+						<label>String with watermark:</label>
 						<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
 					</div>
 
 					<div>
-						User rating:
+						<label>User rating:</label>
 						<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
 					</div>
 
 					<div>
-						Alias:
+						<label>Alias:</label>
 						<div rl-alias="test.number as val">{{val}}</div>
 					</div>
 				<br/>
