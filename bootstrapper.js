@@ -1,12 +1,12 @@
 (function () {
 	angular.module('app', ['rl.ui'])
-		.controller('TestController', TestController)
 		.controller('InputController', InputController)
 		.controller('ButtonController', ButtonController)
 		.controller('PopoverController', PopoverController)
 		.controller('CardGroupController', CardGroupController)
 		.controller('TabsController', TabsController)
-		.controller('FormsController', FormsController);
+		.controller('FormsController', FormsController)
+		.controller('MiscController', MiscController);
 
 	InputController.$inject = ['$q'];
 	function InputController($q) {
@@ -126,8 +126,8 @@
 		};
 	}
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	MiscController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function MiscController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
 		var self = this;
 		// Misc
 		self.validator = {

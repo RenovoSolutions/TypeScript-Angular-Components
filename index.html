@@ -175,16 +175,12 @@
 					</div>
 				<br/>
 			</div>
-			<div ng-controller="TestController as test">
-
-
-
-
+			<div ng-controller="MiscController as misc">
 				<h3>Misc</h3>
 					<div>
 						<label>Generic container:</label>
-						<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
-						<rl-generic-container selector="test.toggle">
+						<rl-checkbox ng-model="misc.toggle">Toggle</rl-checkbox>
+						<rl-generic-container selector="misc.toggle">
 							<template default>
 								<div ng-repeat="number in [1, 2, 3, 4, 5]">
 									{{number}}
@@ -198,14 +194,14 @@
 
 					<div>
 						<label>Validation group:</label>
-						<rl-validation-group validator="test.validator">
-							<rl-textbox ng-model="test.text"></rl-textbox>
+						<rl-validation-group validator="misc.validator">
+							<rl-textbox ng-model="misc.text"></rl-textbox>
 						</rl-validation-group>
 					</div>
 
 					<div>
 						<label>Template renderer:</label>
-						<rl-template-renderer template="test.template"></rl-template-renderer>
+						<rl-template-renderer template="misc.template"></rl-template-renderer>
 					</div>
 
 					<div>
@@ -225,17 +221,17 @@
 
 					<div>
 						<label>String with watermark:</label>
-						<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
+						<rl-string-with-watermark string="{{misc.text}}" watermark="(empty)"></rl-string-with-watermark>
 					</div>
 
 					<div>
 						<label>User rating:</label>
-						<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
+						<rl-user-rating ng-model="misc.value" range="5"></rl-user-rating>
 					</div>
 
 					<div>
 						<label>Alias:</label>
-						<div rl-alias="test.number as val">{{val}}</div>
+						<div rl-alias="misc.number as val">{{val}}</div>
 					</div>
 				<br/>
 			</div>
