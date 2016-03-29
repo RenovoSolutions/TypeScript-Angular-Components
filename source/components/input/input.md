@@ -37,4 +37,4 @@ Applies a name to the ng-model for the component. If none is specified, defaults
 * [spinner](../spinner/spinner.md)
 * [datetime](../dateTime/dateTime.md)
 * [select](../select/select.md)
-* [typeahead]()
+* [typeahead](../typeahead/typeahead.md)

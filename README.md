@@ -44,7 +44,7 @@ Angular components that can be added to an application.
 * [templateRenderer]()
 * [textarea](/source/components/textarea/textarea.md)
 * [textbox](/source/components/textbox/textbox.md)
-* [typeahead]()
+* [typeahead](/source/components/typeahead/typeahead.md)
 * [typeaheadList]()
 * [userRating]()
 * [validationGroup]()
