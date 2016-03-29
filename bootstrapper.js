@@ -108,7 +108,21 @@
 		});
 	}
 
-	function TabsController() { }
+	function TabsController() {
+		var self = this;
+		self.steps = [
+			{
+				title: 'Step 1',
+				subtitle: 'Do something',
+				onClick: function() { console.log('Visited step 1'); },
+			},
+			{
+				title: 'Step 2',
+				subtitle: 'Do more work',
+				onClick: function() { console.log('Visited step 2'); },
+			},
+		];
+	}
 
 	FormsController.$inject = ['$q', '$timeout'];
 	function FormsController($q, $timeout) {
