@@ -5,27 +5,7 @@
 	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
 	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
 		var self = this;
-		self.popover = '<div>{{test.content}}</div>';
-		self.content = 'Some content';
-
-		var templateScope = $scope.$new();
-		templateScope.text = 'Some text';
-		self.template = {
-			template: '<div>{{text}}</div>',
-			scope: templateScope,
-		};
-
-		$scope.$watch('testForm', function(form) {
-			console.log(form);
-		});
-
-		self.submit = function() {
-			return $timeout(function() {
-				console.log('Submitted');
-			}, 1000);
-		}
-
-		self.text = null;
+		// Inputs
 		self.set = [];
 		self.select = function (value) {
 			self.set.push(value);
@@ -47,16 +27,14 @@
 		}
 		self.typeaheadList = [self.options[0], self.options[4]];
 
-		self.validator = {
-			validate: function () {
-				return self.text === 'valid';
-			},
-			errorMessage: 'String must be valid',
-		};
-
+		// Buttons
 		self.action = function(name) {
 			console.log('Action: ' + name);
-		}
+		};
+
+		// Popup content
+		self.popover = '<div>{{test.content}}</div>';
+		self.content = 'Some content';
 
 		self.prompt = function() {
 			dialog.prompt({
@@ -68,21 +46,7 @@
 			});
 		}
 
-		var items = [
-			{ name: 'Item 1', value: 1 },
-			{ name: 'Item 2', value: 2 },
-			{ name: 'Item 3', value: 1 },
-			{ name: 'Item 4', value: 1 },
-			{ name: 'Item 5', value: 2 },
-			{ name: 'Item 6', value: 2 },
-		];
-
-		self.count = 0;
-		self.save = function () {
-			self.count++;
-			return $q.when();
-		};
-
+		// Cards
 		self.builder = cardContainerBuilderFactory.getInstance();
 		self.builder.dataSource.buildSimpleDataSource(items);
 		self.builder.addColumn({
@@ -120,5 +84,33 @@
 				},
 			],
 		});
+
+		// Forms
+		self.submit = function() {
+			return $timeout(function() {
+				console.log('Submitted');
+			}, 1000);
+		}
+
+		self.count = 0;
+		self.save = function () {
+			self.count++;
+			return $q.when();
+		};
+
+		// Misc
+		self.validator = {
+			validate: function () {
+				return self.text === 'valid';
+			},
+			errorMessage: 'String must be valid',
+		};
+
+		var templateScope = $scope.$new();
+		templateScope.text = 'Some text';
+		self.template = {
+			template: '<div>{{text}}</div>',
+			scope: templateScope,
+		};
 	}
 }());
