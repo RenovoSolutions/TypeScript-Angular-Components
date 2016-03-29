@@ -47,6 +47,15 @@
 		}
 
 		// Cards
+		var items = [
+			{ name: 'Item 1', value: 1 },
+			{ name: 'Item 2', value: 2 },
+			{ name: 'Item 3', value: 1 },
+			{ name: 'Item 4', value: 1 },
+			{ name: 'Item 5', value: 2 },
+			{ name: 'Item 6', value: 2 },
+		];
+
 		self.builder = cardContainerBuilderFactory.getInstance();
 		self.builder.dataSource.buildSimpleDataSource(items);
 		self.builder.addColumn({
