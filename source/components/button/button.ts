@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.button';
-export var directiveName: string = 'rlButton';
+export var componentName: string = 'rlButton';
 export var controllerName: string = 'ButtonController';
 
 export class ButtonController {
@@ -23,23 +23,19 @@ export class ButtonController {
 	}
 }
 
-export function button(): angular.IDirective {
-	return {
-		restrict: 'E',
-		transclude: true,
-		template: require('./button.html'),
-		scope: {},
-		bindToController: {
-			action: '&',
-			type: '@',
-			ngDisabled: '<?',
-			size: '@',
-		},
-		controller: controllerName,
-		controllerAs: 'button',
-	};
-}
+let button: angular.IComponentOptions = {
+	transclude: true,
+	template: require('./button.html'),
+	bindings: {
+		action: '&',
+		type: '@',
+		ngDisabled: '<?',
+		size: '@',
+	},
+	controller: controllerName,
+	controllerAs: 'button',
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, button)
+	.component(componentName, button)
 	.controller(controllerName, ButtonController);
