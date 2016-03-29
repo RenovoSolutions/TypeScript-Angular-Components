@@ -1,12 +1,12 @@
 (function () {
 	angular.module('app', ['rl.ui', 'ui.router'])
-		.controller('InputController', InputController)
-		.controller('ButtonController', ButtonController)
-		.controller('PopoverController', PopoverController)
-		.controller('CardGroupController', CardGroupController)
-		.controller('TabsController', TabsController)
-		.controller('FormsController', FormsController)
-		.controller('MiscController', MiscController)
+		.controller('InputTestController', InputTestController)
+		.controller('ButtonTestController', ButtonTestController)
+		.controller('PopupTestController', PopupTestController)
+		.controller('CardTestController', CardTestController)
+		.controller('TabTestController', TabTestController)
+		.controller('FormTestController', FormTestController)
+		.controller('MiscTestController', MiscTestController)
 		.config(RouteConfig);
 
 	RouteConfig.$inject = ['$urlRouterProvider', '$stateProvider'];
@@ -20,49 +20,49 @@
 			.state('inputs', {
 				url: '/inputs',
 				templateUrl: 'bootstrapper/inputs.html',
-				controller: 'InputController',
+				controller: 'InputTestController',
 				controllerAs: 'input',
 			})
 			.state('buttons', {
 				url: '/buttons',
 				templateUrl: 'bootstrapper/buttons.html',
-				controller: 'ButtonController',
+				controller: 'ButtonTestController',
 				controllerAs: 'button',
 			})
 			.state('popup', {
 				url: '/popup',
 				templateUrl: 'bootstrapper/popup.html',
-				controller: 'PopoverController',
+				controller: 'PopupTestController',
 				controllerAs: 'popup',
 			})
 			.state('cards', {
 				url: '/cards',
 				templateUrl: 'bootstrapper/cards.html',
-				controller: 'CardGroupController',
+				controller: 'CardTestController',
 				controllerAs: 'cards',
 			})
 			.state('tabs', {
 				url: '/tabs',
 				templateUrl: 'bootstrapper/tabs.html',
-				controller: 'TabsController',
+				controller: 'TabTestController',
 				controllerAs: 'tabs',
 			})
 			.state('forms', {
 				url: '/forms',
 				templateUrl: 'bootstrapper/forms.html',
-				controller: 'FormsController',
+				controller: 'FormTestController',
 				controllerAs: 'forms',
 			})
 			.state('misc', {
 				url: '/misc',
 				templateUrl: 'bootstrapper/misc.html',
-				controller: 'MiscController',
+				controller: 'MiscTestController',
 				controllerAs: 'misc',
 			});
 	}
 
-	InputController.$inject = ['$q'];
-	function InputController($q) {
+	InputTestController.$inject = ['$q'];
+	function InputTestController($q) {
 		var self = this;
 		self.set = [];
 		self.select = function (value) {
@@ -86,15 +86,15 @@
 		self.typeaheadList = [self.options[0], self.options[4]];
 	}
 
-	function ButtonController() {
+	function ButtonTestController() {
 		var self = this;
 		self.action = function(name) {
 			console.log('Action: ' + name);
 		};
 	}
 
-	PopoverController.$inject = ['dialog'];
-	function PopoverController(dialog) {
+	PopupTestController.$inject = ['dialog'];
+	function PopupTestController(dialog) {
 		var self = this;
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
@@ -110,8 +110,8 @@
 		};
 	}
 
-	CardGroupController.$inject = ['cardContainerBuilder'];
-	function CardGroupController(cardContainerBuilderFactory) {
+	CardTestController.$inject = ['cardContainerBuilder'];
+	function CardTestController(cardContainerBuilderFactory) {
 		var self = this;
 		var items = [
 			{ name: 'Item 1', value: 1 },
@@ -161,7 +161,7 @@
 		});
 	}
 
-	function TabsController() {
+	function TabTestController() {
 		var self = this;
 		self.steps = [
 			{
@@ -177,8 +177,8 @@
 		];
 	}
 
-	FormsController.$inject = ['$q', '$timeout'];
-	function FormsController($q, $timeout) {
+	FormTestController.$inject = ['$q', '$timeout'];
+	function FormTestController($q, $timeout) {
 		var self = this;
 		self.submit = function() {
 			return $timeout(function() {
@@ -193,8 +193,8 @@
 		};
 	}
 
-	MiscController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function MiscController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	MiscTestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function MiscTestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
 		var self = this;
 		// Misc
 		self.validator = {
