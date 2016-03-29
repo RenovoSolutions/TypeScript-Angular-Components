@@ -14,7 +14,7 @@ Angular directives that are applied as attributes to an element in order to modi
 ## Components
 Angular components that can be added to an application.
 
-* [busy]()
+* [busy](/source/components/busy/busy.md)
 * [button](/source/components/button/button.md)
 * [buttonAsync](/source/components/buttonAsync/buttonAsync.md)
 * [buttonLink]()
