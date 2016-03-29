@@ -6,7 +6,7 @@ Contains various TypeScript Angular controls and components.
 ## Behaviors
 Angular directives that are applied as attributes to an element in order to modify the element's behavior.
 
-* [alias]()
+* [alias](/source/behavior/alias/alias.md)
 * [autosave](/source/behaviors/autosave/autosave.md)
 * [popover]()
 * [required](/source/behaviors/required/required.md)
