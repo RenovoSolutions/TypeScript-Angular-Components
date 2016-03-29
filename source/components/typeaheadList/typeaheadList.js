@@ -15,6 +15,7 @@ var TypeaheadListController = (function () {
         this.$scope = $scope;
         this.$transclude = $transclude;
         this.parentChild = parentChild;
+        this.typeaheadLink = {};
     }
     TypeaheadListController.prototype.$onInit = function () {
         var _this = this;
