@@ -131,49 +131,63 @@
 					</div>
 				<br/>
 				<h3>Misc</h3>
-					<rl-template-renderer template="test.template"></rl-template-renderer>
+					<div>
+						Generic container:
+						<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
+						<rl-generic-container selector="test.toggle">
+							<template default>
+								<div ng-repeat="number in [1, 2, 3, 4, 5]">
+									{{number}}
+								</div>
+							</template>
+							<template when-selector="true">
+								<div>True</div>
+							</template>
+						</rl-generic-container>
+					</div>
 
-					<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
+					<div>
+						Validation group:
+						<rl-validation-group validator="test.validator">
+							<rl-textbox ng-model="test.text"></rl-textbox>
+						</rl-validation-group>
+					</div>
 
-					<rl-busy loading="true" size="2x"></rl-busy>
-					<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
+					<div>
+						Template renderer:
+						<rl-template-renderer template="test.template"></rl-template-renderer>
+					</div>
 
+					<div>
+						Comma list:
+						<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
+					</div>
 
+					<div>
+						Busy:
+						<rl-busy loading="true" size="2x"></rl-busy>
+					</div>
 
-					<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
+					<div>
+						Rating Bar:
+						<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
+					</div>
 
-					<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
+					<div>
+						String with watermark:
+						<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
+					</div>
 
-					<div rl-alias="test.number as val">{{val}}</div>
+					<div>
+						User rating:
+						<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
+					</div>
+
+					<div>
+						Alias:
+						<div rl-alias="test.number as val">{{val}}</div>
+					</div>
 				<br/>
-
-
-				<rl-generic-container selector="test.toggle">
-					<template default>
-						<span>1, 2, 3, 4, 5</span>
-						<div ng-repeat="number in test.options track by number.name">
-							{{number}}
-						</div>
-					</template>
-					<template when-selector="true">
-						True
-					</template>
-				</rl-generic-container>
-				<div ng-repeat="number in [6, 7, 8, 9, 0]">
-					{{number}}
-				</div>
-
-				<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
-				<ng-form name="myTestForm">
-					<i class="fa fa-flash" ng-show="myTestForm.$dirty"></i>
-					<input type="text" ng-model="test.string" />
-					Container 1
-					<rl-generic-container selector="test.toggle">
-						<template default><input type="text" ng-model="test.string" /></template>
-						<template when-selector="true"><div>{{test.string}}</div></template>
-					</rl-generic-container>
-				</ng-form>
-
 			</div>
 		</div>
 	</body>
