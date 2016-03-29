@@ -116,19 +116,22 @@
 						{{test.count}}
 					</div>
 				<br/>
+				<h3>Misc</h3>
+					<rl-template-renderer template="test.template"></rl-template-renderer>
 
-				<rl-template-renderer template="test.template"></rl-template-renderer>
+					<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
 
-				<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
-
-				<rl-busy loading="true" size="2x"></rl-busy>
-				<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
+					<rl-busy loading="true" size="2x"></rl-busy>
+					<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
 
 
 
-				<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
+					<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
 
-				<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
+					<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
+
+					<div rl-alias="test.number as val">{{val}}</div>
+				<br/>
 
 
 				<rl-generic-container selector="test.toggle">
@@ -173,7 +176,6 @@
 						<rl-tab-footer>Footer 2</rl-tab-footer>
 					</rl-tab>
 				</rl-tabset>
-				<div rl-alias="test.number as val">{{val}}</div>
 
 			</div>
 		</div>
