@@ -38,6 +38,18 @@
 
 					<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
 
+					<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
+					Value: {{test.checked}}
+
+					<rl-radio-group ng-model="test.radio1">
+						<rl-radio value="{ value: 1 }">1</rl-radio>
+						<rl-radio value="{ value: 2 }">2</rl-radio>
+						<rl-radio value="{ value: 3 }">3</rl-radio>
+					</rl-radio-group>
+					{{test.radio1}}
+					<rl-radio ng-model="test.radio2" value="{ value: 4 }">4</rl-radio>
+					{{test.radio2}}
+
 					<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 				</rl-form>
 				<br/>
@@ -81,18 +93,6 @@
 				<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
 
 				<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
-
-				<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
-				Value: {{test.checked}}
-
-				<rl-radio-group ng-model="test.radio1">
-					<rl-radio value="{ value: 1 }">1</rl-radio>
-					<rl-radio value="{ value: 2 }">2</rl-radio>
-					<rl-radio value="{ value: 3 }">3</rl-radio>
-				</rl-radio-group>
-				{{test.radio1}}
-				<rl-radio ng-model="test.radio2" value="{ value: 4 }">4</rl-radio>
-				{{test.radio2}}
 
 				<rl-button action="test.prompt()">Open prompt</rl-button>
 
