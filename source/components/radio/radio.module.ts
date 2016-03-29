@@ -12,7 +12,7 @@ import {
 	RadioGroupController
 } from './radioGroup';
 import {
-	directiveName as radioDirectiveName,
+	componentName as radioComponentName,
 	radio,
 	controllerName as radioControllerName,
 	RadioController
@@ -23,7 +23,7 @@ export {
 	radioGroup,
 	radioGroupControllerName,
 	RadioGroupController,
-	radioDirectiveName,
+	radioComponentName,
 	radio,
 	radioControllerName,
 	RadioController,
@@ -34,5 +34,5 @@ export var moduleName: string = 'rl21.components.radio';
 angular.module(moduleName, [__object.moduleName])
 	.directive(radioGroupDirectiveName, radioGroup)
 	.controller(radioGroupControllerName, RadioGroupController)
-	.directive(radioDirectiveName, radio)
+	.component(radioComponentName, radio)
 	.controller(radioControllerName, RadioController);
