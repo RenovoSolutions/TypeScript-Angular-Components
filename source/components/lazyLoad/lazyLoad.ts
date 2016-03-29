@@ -2,9 +2,9 @@
 
 import * as angular from 'angular';
 
-export var moduleName: string = 'rl.ui.components.lazyLoad';
-export var directiveName: string = 'rlLazyLoad';
-export var controllerName: string = 'LazyLoadController';
+export let moduleName: string = 'rl.ui.components.lazyLoad';
+export let componentName: string = 'rlLazyLoad';
+export let controllerName: string = 'LazyLoadController';
 
 export class LazyLoadController {
 	show: boolean;
@@ -12,7 +12,7 @@ export class LazyLoadController {
 
 	static $inject: string[] = ['$scope'];
 	constructor($scope: angular.IScope) {
-		var unbind: Function = $scope.$watch((): boolean => { return this.show; }, (value: boolean): void => {
+		let unbind: Function = $scope.$watch((): boolean => { return this.show; }, (value: boolean): void => {
 			if (value) {
 				this.init = true;
 				unbind();
@@ -21,27 +21,22 @@ export class LazyLoadController {
 	}
 }
 
-function lazyLoad(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: true,
-		template: `
-			<div ng-if="lazyLoad.init">
-				<div ng-show="lazyLoad.show">
-					<div ng-transclude></div>
-				</div>
+let lazyLoad: angular.IComponentOptions = {
+	transclude: true,
+	template: `
+		<div ng-if="lazyLoad.init">
+			<div ng-show="lazyLoad.show">
+				<div ng-transclude></div>
 			</div>
-		`,
-		controller: controllerName,
-		controllerAs: 'lazyLoad',
-		scope: {},
-		bindToController: {
-			show: '=',
-		},
-	};
-}
+		</div>
+	`,
+	controller: controllerName,
+	controllerAs: 'lazyLoad',
+	bindings: {
+		show: '=',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, lazyLoad)
+	.component(componentName, lazyLoad)
 	.controller(controllerName, LazyLoadController);
