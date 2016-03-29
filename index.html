@@ -22,47 +22,76 @@
 		<div ng-app="app">
 			<div ng-controller="TestController as test">
 				<h3>Inputs</h3>
-					<rl-textbox ng-model="test.otherText" rl-required="Input required"></rl-textbox>
-					<rl-textarea ng-model="test.textAreaText"></rl-textarea>
-					<rl-spinner ng-model="test.number"></rl-spinner>
-					<rl-date-time ng-model="test.date"></rl-date-time>
+					<div>
+						Textbox:
+						<rl-textbox ng-model="test.otherText" rl-required="Input required"></rl-textbox>
+					</div>
+					<div>
+						Textarea:
+						<rl-textarea ng-model="test.textAreaText"></rl-textarea>
+					</div>
+					<div>
+						Spinner:
+						<rl-spinner ng-model="test.number"></rl-spinner>
+					</div>
+					<div>
+						Datetime:
+						<rl-date-time ng-model="test.date"></rl-date-time>
+					</div>
+					<div>
+						Select:
+						<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
+					</div>
+					<div>
+						Typeahead:
+						<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
+									  create="test.create(value)" label="Test create"></rl-typeahead>
+						<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
+									  select="test.select(value)" label="Test select"></rl-typeahead>
+						<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
+									  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
 
-					<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
-								  create="test.create(value)" label="Test create"></rl-typeahead>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
-								  select="test.select(value)" label="Test select"></rl-typeahead>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
-								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
-
-					<div ng-repeat="value in test.set">
-						{{value}}
+						<div ng-repeat="value in test.set">
+							{{value}}
+						</div>
 					</div>
 
-					<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
+					<div>
+						Rich text editor:
+						<rl-rich-text-editor ng-model="test.text"></rl-rich-text-editor>
+					</div>
 
-					<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
-					Value: {{test.checked}}
+					<div>
+						Checkbox:
+						<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
+						Value: {{test.checked}}
+					</div>
 
-					<rl-radio-group ng-model="test.radio1">
-						<rl-radio value="{ value: 1 }">1</rl-radio>
-						<rl-radio value="{ value: 2 }">2</rl-radio>
-						<rl-radio value="{ value: 3 }">3</rl-radio>
-					</rl-radio-group>
-					{{test.radio1}}
-					<rl-radio ng-model="test.radio2" value="{ value: 4 }">4</rl-radio>
-					{{test.radio2}}
+					<div>
+						Radio buttons:
+						<rl-radio-group ng-model="test.radio1">
+							<rl-radio value="{ value: 1 }">1</rl-radio>
+							<rl-radio value="{ value: 2 }">2</rl-radio>
+							<rl-radio value="{ value: 3 }">3</rl-radio>
+						</rl-radio-group>
+						{{test.radio1}}
+						<rl-radio ng-model="test.radio2" value="{ value: 4 }">4</rl-radio>
+						{{test.radio2}}
+					</div>
 
-					<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
-									label="Test list">
-						<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
-						<rl-list-item>
-								<div class="col-xs-10">{{$item.name}}</div>
-								<div class="col-xs-2">
-									<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
-								</div>
-						</rl-list-item>
-					</rl-typeahead-list>
+					<div>
+						Typeahead list:
+						<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
+										   label="Test list">
+							<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
+							<rl-list-item>
+									<div class="col-xs-10">{{$item.name}}</div>
+									<div class="col-xs-2">
+										<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
+									</div>
+							</rl-list-item>
+						</rl-typeahead-list>
+					</div>
 				<br/>
 				<h3>Buttons</h3>
 				<rl-button action="test.action('Simple button')">Simple button</rl-button>
