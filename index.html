@@ -103,12 +103,14 @@
 					</rl-card-container>
 				<br/>
 				<h3>Forms</h3>
+					rl-form:
 					<rl-form save="test.submit()" saving="test.spinner">
 						<rl-textbox ng-model="test.formValue" rl-required="You must enter a value"></rl-textbox>
 						<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
 					</rl-form>
+					Autosave form:
 					<ng-form name="myForm" rl-autosave save="test.save()">
-						<rl-textbox ng-model="test.autosaveValue"></rl-textbox>
+						<rl-textbox ng-model="test.autosaveValue" rl-required="You must enter a value"></rl-textbox>
 					</ng-form>
 					<div>
 						{{test.count}}
