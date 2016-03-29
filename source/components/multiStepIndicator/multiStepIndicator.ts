@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 
 export var moduleName: string = 'rl.ui.components.multiStepIndicator';
-export var directiveName: string = 'rlMultiStepIndicator';
+export var componentName: string = 'rlMultiStepIndicator';
 export var controllerName: string = 'MultiStepIndicatorController';
 
 import __object = services.object;
@@ -113,21 +113,16 @@ export class MultiStepIndicatorController {
 	}
 }
 
-function multiStepIndicator(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./multiStepIndicator.html'),
-		controller: controllerName,
-		controllerAs: 'breadcrumb',
-		scope: {},
-		bindToController: {
-			steps: '=',
-			numbered: '=',
-		},
-	};
-}
+let multiStepIndicator: angular.IComponentOptions = {
+	template: require('./multiStepIndicator.html'),
+	controller: controllerName,
+	controllerAs: 'breadcrumb',
+	bindings: {
+		steps: '=',
+		numbered: '=',
+	},
+};
 
 angular.module(moduleName, [__object.moduleName])
-	.directive(directiveName, multiStepIndicator)
+	.component(componentName, multiStepIndicator)
 	.controller(controllerName, MultiStepIndicatorController);
