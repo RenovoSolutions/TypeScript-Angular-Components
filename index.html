@@ -103,13 +103,16 @@
 				<rl-long-click-button action="button.action('Long click button')" text="Long click button"></rl-long-click-button>
 				<br/>
 			</div>
-			<div ng-controller="TestController as test">
+			<div ng-controller="PopoverController as popup">
 				<h3>Popup content</h3>
-					<span class="btn btn-default" rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</span>
-					<span class="btn btn-default" rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</span>
+					<span class="btn btn-default" rl-popover="popup.popover" popover-trigger="mouseenter">Show rl-popover</span>
+					<span class="btn btn-default" rl-popover="A popover {{popup.content}}" text-only="true">Show simple popover</span>
 
-					<rl-button action="test.prompt()">Open prompt</rl-button>
+					<rl-button action="popup.prompt()">Open prompt</rl-button>
 				<br/>
+			</div>
+			<div ng-controller="TestController as test">
+
 				<h3>Cards</h3>
 					<div>
 						<label>Simple card list:</label>

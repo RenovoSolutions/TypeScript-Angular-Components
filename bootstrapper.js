@@ -2,7 +2,8 @@
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController)
 		.controller('InputController', InputController)
-		.controller('ButtonController', ButtonController);
+		.controller('ButtonController', ButtonController)
+		.controller('PopoverController', PopoverController);
 
 	InputController.$inject = ['$q'];
 	function InputController($q) {
@@ -36,11 +37,10 @@
 		};
 	}
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	PopoverController.$inject = ['dialog'];
+	function PopoverController(dialog) {
 		var self = this;
-		// Popup content
-		self.popover = '<div>{{test.content}}</div>';
+		self.dynamic = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
 
 		self.prompt = function() {
@@ -51,8 +51,12 @@
 				cancelButton: 'No',
 				message: 'Do you want to do this?',
 			});
-		}
+		};
+	}
 
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+		var self = this;
 		// Cards
 		var items = [
 			{ name: 'Item 1', value: 1 },
