@@ -4,7 +4,9 @@
 		.controller('InputController', InputController)
 		.controller('ButtonController', ButtonController)
 		.controller('PopoverController', PopoverController)
-		.controller('CardGroupController', CardGroupController);
+		.controller('CardGroupController', CardGroupController)
+		.controller('TabsController', TabsController)
+		.controller('FormsController', FormsController);
 
 	InputController.$inject = ['$q'];
 	function InputController($q) {
@@ -106,10 +108,11 @@
 		});
 	}
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	function TabsController() { }
+
+	FormsController.$inject = ['$q', '$timeout'];
+	function FormsController($q, $timeout) {
 		var self = this;
-		// Forms
 		self.submit = function() {
 			return $timeout(function() {
 				console.log('Submitted');
@@ -121,7 +124,11 @@
 			self.count++;
 			return $q.when();
 		};
+	}
 
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+		var self = this;
 		// Misc
 		self.validator = {
 			validate: function () {

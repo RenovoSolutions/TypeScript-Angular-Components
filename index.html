@@ -143,9 +143,7 @@
 					</div>
 				<br/>
 			</div>
-			<div ng-controller="TestController as test">
-
-
+			<div ng-controller="TabsController as tabs">
 				<h3>Tabs</h3>
 					<rl-tabset>
 						<rl-tab>
@@ -160,20 +158,28 @@
 						</rl-tab>
 					</rl-tabset>
 				<br/>
+			</div>
+			<div ng-controller="FormsController as forms">
 				<h3>Forms</h3>
 					<label>rl-form:</label>
-					<rl-form save="test.submit()" saving="test.spinner">
-						<rl-textbox ng-model="test.formValue" rl-required="You must enter a value"></rl-textbox>
-						<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
+					<rl-form save="forms.submit()" saving="forms.spinner">
+						<rl-textbox ng-model="forms.formValue" rl-required="You must enter a value"></rl-textbox>
+						<rl-button-submit type="primary" saving="forms.spinner">Submit</rl-button-submit>
 					</rl-form>
 					<label>Autosave form:</label>
-					<ng-form name="myForm" rl-autosave save="test.save()">
-						<rl-textbox ng-model="test.autosaveValue" rl-required="You must enter a value"></rl-textbox>
+					<ng-form name="myForm" rl-autosave save="forms.save()">
+						<rl-textbox ng-model="forms.autosaveValue" rl-required="You must enter a value"></rl-textbox>
 					</ng-form>
 					<div>
-						{{test.count}}
+						{{forms.count}}
 					</div>
 				<br/>
+			</div>
+			<div ng-controller="TestController as test">
+
+
+
+
 				<h3>Misc</h3>
 					<div>
 						<label>Generic container:</label>
