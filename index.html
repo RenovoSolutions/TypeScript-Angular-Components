@@ -60,6 +60,12 @@
 				<rl-button-toggle ng-model="test.toggled" on-toggle="test.action('Toggle button')">Toggle button</rl-button-toggle>
 				<rl-long-click-button action="test.action('Long click button')" text="Long click button"></rl-long-click-button>
 				<br/>
+				<h3>Popup content</h3>
+					<span class="btn btn-default" rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</span>
+					<span class="btn btn-default" rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</span>
+
+					<rl-button action="test.prompt()">Open prompt</rl-button>
+				<br/>
 
 				<rl-template-renderer template="test.template"></rl-template-renderer>
 
@@ -93,8 +99,6 @@
 				<rl-string-with-watermark string="{{test.text}}" watermark="(empty)"></rl-string-with-watermark>
 
 				<rl-user-rating ng-model="test.value" range="5"></rl-user-rating>
-
-				<rl-button action="test.prompt()">Open prompt</rl-button>
 
 				<rl-simple-card-list>
 					<rl-simple-card>
@@ -152,9 +156,6 @@
 					</rl-tab>
 				</rl-tabset>
 				<div rl-alias="test.number as val">{{val}}</div>
-
-				<button rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</button>
-				<button rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</button>
 
 				<rl-card-container builder="test.builder" card-as="myItem">
 					<rl-container-header>
