@@ -1,5 +1,5 @@
 (function () {
-	angular.module('app', ['rl.ui'])
+	angular.module('app', ['rl.ui', 'ui.router'])
 		.controller('InputController', InputController)
 		.controller('ButtonController', ButtonController)
 		.controller('PopoverController', PopoverController)
