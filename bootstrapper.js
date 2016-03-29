@@ -1,11 +1,10 @@
 (function () {
 	angular.module('app', ['rl.ui'])
-		.controller('TestController', TestController);
+		.controller('TestController', TestController)
+		.controller('InputController', InputController);
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	function InputController($q) {
 		var self = this;
-		// Inputs
 		self.set = [];
 		self.select = function (value) {
 			self.set.push(value);
@@ -26,7 +25,11 @@
 			return $q.when(_.clone(self.options));
 		}
 		self.typeaheadList = [self.options[0], self.options[4]];
+	}
 
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+		var self = this;
 		// Buttons
 		self.action = function(name) {
 			console.log('Action: ' + name);
