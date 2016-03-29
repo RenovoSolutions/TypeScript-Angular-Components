@@ -42,7 +42,7 @@ Angular components that can be added to an application.
 * [stringWithWatermark]()
 * [tabs]()
 * [templateRenderer]()
-* [textarea]()
+* [textarea](/source/components/textarea/textarea.md)
 * [textbox](/source/components/textbox/textbox.md)
 * [typeahead]()
 * [typeaheadList]()
