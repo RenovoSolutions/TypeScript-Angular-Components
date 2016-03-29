@@ -2,7 +2,7 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.button';
-exports.directiveName = 'rlButton';
+exports.componentName = 'rlButton';
 exports.controllerName = 'ButtonController';
 var ButtonController = (function () {
     function ButtonController() {
@@ -12,24 +12,19 @@ var ButtonController = (function () {
     return ButtonController;
 }());
 exports.ButtonController = ButtonController;
-function button() {
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: require('./button.html'),
-        scope: {},
-        bindToController: {
-            action: '&',
-            type: '@',
-            ngDisabled: '<?',
-            size: '@',
-        },
-        controller: exports.controllerName,
-        controllerAs: 'button',
-    };
-}
-exports.button = button;
+var button = {
+    transclude: true,
+    template: require('./button.html'),
+    bindings: {
+        action: '&',
+        type: '@',
+        ngDisabled: '<?',
+        size: '@',
+    },
+    controller: exports.controllerName,
+    controllerAs: 'button',
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, button)
+    .component(exports.componentName, button)
     .controller(exports.controllerName, ButtonController);
 //# sourceMappingURL=button.js.map

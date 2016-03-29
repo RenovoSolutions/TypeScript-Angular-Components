@@ -3,10 +3,10 @@
 'use strict';
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
-exports.directiveName = 'rlSimpleCard';
+exports.componentName = 'rlSimpleCard';
 exports.controllerName = 'SimpleCardController';
 var SimpleCardController = (function () {
-    function SimpleCardController($scope, $element, parentChild) {
+    function SimpleCardController($scope, parentChild) {
         var _this = this;
         this.$scope = $scope;
         this.parentChild = parentChild;
@@ -18,10 +18,12 @@ var SimpleCardController = (function () {
             }
             return _this.autosave();
         };
+    }
+    SimpleCardController.prototype.$onInit = function () {
+        var _this = this;
         if (this.canOpen == null) {
             this.canOpen = true;
         }
-        this.listController = $element.controller('rlSimpleCardList');
         if (this.listController == null) {
             this.listController = this.noList();
         }
@@ -33,8 +35,8 @@ var SimpleCardController = (function () {
             },
         };
         this.listController.registerCard(behavior);
-        parentChild.registerChildBehavior(this.childLink, behavior);
-        $scope.$watch(function () { return _this.alwaysOpen; }, function (value) {
+        this.parentChild.registerChildBehavior(this.childLink, behavior);
+        this.$scope.$watch(function () { return _this.alwaysOpen; }, function (value) {
             if (value) {
                 _this.showContent = true;
             }
@@ -42,7 +44,7 @@ var SimpleCardController = (function () {
                 _this.close();
             }
         });
-    }
+    };
     SimpleCardController.prototype.toggleContent = function () {
         if (this.showContent) {
             this.close();
@@ -77,34 +79,28 @@ var SimpleCardController = (function () {
             },
         };
     };
-    SimpleCardController.$inject = ['$scope', '$element', __parentChild.serviceName];
+    SimpleCardController.$inject = ['$scope', __parentChild.serviceName];
     return SimpleCardController;
 }());
 exports.SimpleCardController = SimpleCardController;
-function simpleCard() {
-    'use strict';
-    return {
-        restrict: 'E',
-        transclude: {
-            'headerSlot': '?rlCardHeader',
-            'contentSlot': '?rlCardContent',
-            'footerSlot': '?rlCardFooter',
-        },
-        require: '?^^rlSimpleCardList',
-        template: require('./simpleCard.html'),
-        controller: exports.controllerName,
-        controllerAs: 'card',
-        scope: {},
-        bindToController: {
-            onOpen: '&',
-            canOpen: '=?',
-            alwaysOpen: '=?',
-            childLink: '=?',
-            save: '&',
-            saveWhenInvalid: '<?',
-            cardType: '@',
-        },
-    };
-}
-exports.simpleCard = simpleCard;
+exports.simpleCard = {
+    transclude: {
+        'headerSlot': '?rlCardHeader',
+        'contentSlot': '?rlCardContent',
+        'footerSlot': '?rlCardFooter',
+    },
+    require: { listController: '?^^rlSimpleCardList' },
+    template: require('./simpleCard.html'),
+    controller: exports.controllerName,
+    controllerAs: 'card',
+    bindings: {
+        onOpen: '&',
+        canOpen: '=?',
+        alwaysOpen: '=?',
+        childLink: '=?',
+        save: '&',
+        saveWhenInvalid: '<?',
+        cardType: '@',
+    },
+};
 //# sourceMappingURL=simpleCard.js.map

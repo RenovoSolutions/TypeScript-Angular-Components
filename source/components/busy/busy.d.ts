@@ -1,3 +1,3 @@
 import './busy.css';
-export declare var moduleName: string;
-export declare var directiveName: string;
+export declare let moduleName: string;
+export declare let componentName: string;

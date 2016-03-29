@@ -2,14 +2,16 @@
 var angular = require('angular');
 var _ = require('lodash');
 exports.moduleName = 'rl.components.userRating';
-exports.directiveName = 'rlUserRating';
+exports.componentName = 'rlUserRating';
 exports.controllerName = 'UserRatingController';
 var UserRatingController = (function () {
-    function UserRatingController($scope) {
+    function UserRatingController($timeout) {
+        this.$timeout = $timeout;
+    }
+    UserRatingController.prototype.$onInit = function () {
         var _this = this;
-        this.$scope = $scope;
         this.stars = [];
-        var rangeSize = this.$scope.range != null ? this.$scope.range : 5;
+        var rangeSize = this.range != null ? this.range : 5;
         // css style requires the stars to show right to left. Reverse the list so the highest value is first
         var range = _.range(1, rangeSize + 1).reverse();
         _.each(range, function (rating) {
@@ -18,13 +20,12 @@ var UserRatingController = (function () {
                 filled: false,
             });
         });
-        var unbind = this.$scope.$watch('ngModel', function (value) {
-            _this.updateStarView(_this.$scope.ngModel.$viewValue);
-            unbind();
+        this.$timeout(function () {
+            _this.updateStarView(_this.ngModel.$viewValue);
         });
-    }
+    };
     UserRatingController.prototype.setRating = function (rating) {
-        this.$scope.ngModel.$setViewValue(rating);
+        this.ngModel.$setViewValue(rating);
         this.updateStarView(rating);
     };
     UserRatingController.prototype.updateStarView = function (rating) {
@@ -37,28 +38,20 @@ var UserRatingController = (function () {
             }
         });
     };
-    UserRatingController.$inject = ['$scope'];
+    UserRatingController.$inject = ['$timeout'];
     return UserRatingController;
 }());
 exports.UserRatingController = UserRatingController;
-function userRating() {
-    'use strict';
-    return {
-        restrict: 'E',
-        require: 'ngModel',
-        template: "\n\t\t\t<span class=\"rating\">\n\t\t\t\t<span class=\"star\" ng-repeat=\"star in userRating.stars\" ng-class=\"{ 'filled': star.filled }\" ng-click=\"userRating.setRating(star.value)\"></span>\n\t\t\t</span>\n\t\t",
-        controller: exports.controllerName,
-        controllerAs: 'userRating',
-        scope: {
-            range: '=',
-        },
-        link: function (scope, element, attrs, ngModel) {
-            scope.ngModel = ngModel;
-        },
-    };
-}
-exports.userRating = userRating;
+var userRating = {
+    require: { ngModel: 'ngModel' },
+    template: "\n\t\t<span class=\"rating\">\n\t\t\t<span class=\"star\" ng-repeat=\"star in userRating.stars\" ng-class=\"{ 'filled': star.filled }\" ng-click=\"userRating.setRating(star.value)\"></span>\n\t\t</span>\n\t",
+    controller: exports.controllerName,
+    controllerAs: 'userRating',
+    bindings: {
+        range: '=',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, userRating)
+    .component(exports.componentName, userRating)
     .controller(exports.controllerName, UserRatingController);
 //# sourceMappingURL=userRating.js.map

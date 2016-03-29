@@ -2,7 +2,7 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.buttonLink';
-exports.directiveName = 'rlButtonLink';
+exports.componentName = 'rlButtonLink';
 exports.controllerName = 'ButtonLinkController';
 var ButtonLinkController = (function () {
     function ButtonLinkController() {
@@ -13,25 +13,20 @@ var ButtonLinkController = (function () {
     return ButtonLinkController;
 }());
 exports.ButtonLinkController = ButtonLinkController;
-function buttonLink() {
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: require('./buttonLink.html'),
-        scope: {},
-        bindToController: {
-            link: '@',
-            type: '@',
-            ngDisabled: '<?',
-            size: '@',
-            newTab: '<?',
-        },
-        controller: exports.controllerName,
-        controllerAs: 'button',
-    };
-}
-exports.buttonLink = buttonLink;
+var buttonLink = {
+    transclude: true,
+    template: require('./buttonLink.html'),
+    bindings: {
+        link: '@',
+        type: '@',
+        ngDisabled: '<?',
+        size: '@',
+        newTab: '<?',
+    },
+    controller: exports.controllerName,
+    controllerAs: 'button',
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, buttonLink)
+    .component(exports.componentName, buttonLink)
     .controller(exports.controllerName, ButtonLinkController);
 //# sourceMappingURL=buttonLink.js.map

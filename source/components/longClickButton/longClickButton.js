@@ -5,7 +5,7 @@ var $ = require('jquery');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __promise = typescript_angular_utilities_1.services.promise;
 exports.moduleName = 'rl.ui.components.longClickButton';
-exports.directiveName = 'rlLongClickButton';
+exports.componentName = 'rlLongClickButton';
 exports.controllerName = 'LongClickButtonController';
 var __object = typescript_angular_utilities_1.services.object;
 var LongClickButtonController = (function () {
@@ -76,27 +76,22 @@ var LongClickButtonController = (function () {
     return LongClickButtonController;
 }());
 exports.LongClickButtonController = LongClickButtonController;
-function longClickButton() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./longClickButton.html'),
-        controller: exports.controllerName,
-        controllerAs: 'button',
-        scope: {},
-        bindToController: {
-            action: '&',
-            text: '@',
-            onShortClickText: '@',
-            icon: '@',
-            busy: '=?',
-            rightAligned: '=?',
-            type: '@',
-            ngDisabled: '=?',
-        },
-    };
-}
+var longClickButton = {
+    template: require('./longClickButton.html'),
+    controller: exports.controllerName,
+    controllerAs: 'button',
+    bindings: {
+        action: '&',
+        text: '@',
+        onShortClickText: '@',
+        icon: '@',
+        busy: '<?',
+        rightAligned: '<?',
+        type: '@',
+        ngDisabled: '<?',
+    },
+};
 angular.module(exports.moduleName, [__object.moduleName])
-    .directive(exports.directiveName, longClickButton)
+    .component(exports.componentName, longClickButton)
     .controller(exports.controllerName, LongClickButtonController);
 //# sourceMappingURL=longClickButton.js.map

@@ -3,7 +3,7 @@ var angular = require('angular');
 var ratingBarBackgrounds_service_1 = require('./ratingBarBackgrounds.service');
 var ratingBarClass_service_1 = require('./ratingBarClass.service');
 exports.moduleName = 'rl.ui.components.ratingBar';
-exports.directiveName = 'rlRatingBar';
+exports.componentName = 'rlRatingBar';
 exports.controllerName = 'RatingBarController';
 var RatingBarController = (function () {
     function RatingBarController($scope) {
@@ -35,26 +35,20 @@ var RatingBarController = (function () {
     return RatingBarController;
 }());
 exports.RatingBarController = RatingBarController;
-function ratingBar() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: "\n\t\t\t<div class=\"rating-bar\">\n\t\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == min }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
-        controller: exports.controllerName,
-        controllerAs: 'ratingBar',
-        scope: {},
-        bindToController: {
-            totalWidth: '=width',
-            height: '=',
-            value: '=',
-            min: '=',
-            max: '=',
-            background: '=',
-        },
-    };
-}
-exports.ratingBar = ratingBar;
+var ratingBar = {
+    template: "\n\t\t<div class=\"rating-bar\">\n\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == min }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t</div>\n\t\t</div>\n\t",
+    controller: exports.controllerName,
+    controllerAs: 'ratingBar',
+    bindings: {
+        totalWidth: '<width',
+        height: '<',
+        value: '<',
+        min: '<',
+        max: '<',
+        background: '<',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, ratingBar)
+    .component(exports.componentName, ratingBar)
     .controller(exports.controllerName, RatingBarController);
 //# sourceMappingURL=ratingBar.js.map

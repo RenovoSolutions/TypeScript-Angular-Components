@@ -11,6 +11,6 @@ exports.moduleName = 'rl.ui.components.simpleCardList';
 angular.module(exports.moduleName, [__observable.moduleName, __parentChild.moduleName])
     .directive(list.directiveName, list.simpleCardList)
     .controller(list.controllerName, list.SimpleCardListController)
-    .directive(card.directiveName, card.simpleCard)
+    .component(card.componentName, card.simpleCard)
     .controller(card.controllerName, card.SimpleCardController);
 //# sourceMappingURL=simpleCardList.module.js.map

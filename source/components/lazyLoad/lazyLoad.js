@@ -1,7 +1,7 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.lazyLoad';
-exports.directiveName = 'rlLazyLoad';
+exports.componentName = 'rlLazyLoad';
 exports.controllerName = 'LazyLoadController';
 var LazyLoadController = (function () {
     function LazyLoadController($scope) {
@@ -18,21 +18,16 @@ var LazyLoadController = (function () {
     return LazyLoadController;
 }());
 exports.LazyLoadController = LazyLoadController;
-function lazyLoad() {
-    'use strict';
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: "\n\t\t\t<div ng-if=\"lazyLoad.init\">\n\t\t\t\t<div ng-show=\"lazyLoad.show\">\n\t\t\t\t\t<div ng-transclude></div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t",
-        controller: exports.controllerName,
-        controllerAs: 'lazyLoad',
-        scope: {},
-        bindToController: {
-            show: '=',
-        },
-    };
-}
+var lazyLoad = {
+    transclude: true,
+    template: "\n\t\t<div ng-if=\"lazyLoad.init\">\n\t\t\t<div ng-show=\"lazyLoad.show\">\n\t\t\t\t<div ng-transclude></div>\n\t\t\t</div>\n\t\t</div>\n\t",
+    controller: exports.controllerName,
+    controllerAs: 'lazyLoad',
+    bindings: {
+        show: '=',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, lazyLoad)
+    .component(exports.componentName, lazyLoad)
     .controller(exports.controllerName, LazyLoadController);
 //# sourceMappingURL=lazyLoad.js.map

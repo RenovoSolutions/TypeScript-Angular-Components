@@ -4,7 +4,7 @@ var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __promiseUtility = typescript_angular_utilities_1.services.promise;
 exports.moduleName = 'rl.ui.components.buttonAsync';
-exports.directiveName = 'rlButtonAsync';
+exports.componentName = 'rlButtonAsync';
 exports.controllerName = 'ButtonAsyncController';
 var ButtonAsyncController = (function () {
     function ButtonAsyncController(promiseUtility) {
@@ -31,26 +31,21 @@ var ButtonAsyncController = (function () {
     return ButtonAsyncController;
 }());
 exports.ButtonAsyncController = ButtonAsyncController;
-function buttonAsync() {
-    'use strict';
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: require('./buttonAsync.html'),
-        scope: {},
-        bindToController: {
-            busy: '<?',
-            action: '&',
-            type: '@',
-            ngDisabled: '<?',
-            rightAligned: '<?',
-            size: '@',
-        },
-        controller: exports.controllerName,
-        controllerAs: 'button',
-    };
-}
+var buttonAsync = {
+    transclude: true,
+    template: require('./buttonAsync.html'),
+    bindings: {
+        busy: '<?',
+        action: '&',
+        type: '@',
+        ngDisabled: '<?',
+        rightAligned: '<?',
+        size: '@',
+    },
+    controller: exports.controllerName,
+    controllerAs: 'button',
+};
 angular.module(exports.moduleName, [__promiseUtility.moduleName])
-    .directive(exports.directiveName, buttonAsync)
+    .component(exports.componentName, buttonAsync)
     .controller(exports.controllerName, ButtonAsyncController);
 //# sourceMappingURL=buttonAsync.js.map

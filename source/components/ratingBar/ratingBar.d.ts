@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export interface IDimensions {
     width: number;
@@ -31,4 +31,3 @@ export declare class RatingBarController implements IRatingBarScopeBindings {
     constructor($scope: angular.IScope);
     private updateValue(newValue);
 }
-export declare function ratingBar(): angular.IDirective;
