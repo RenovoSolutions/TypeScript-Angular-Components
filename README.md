@@ -22,7 +22,7 @@ Angular components that can be added to an application.
 * [cardContainer]()
 * [checkbox]()
 * [commaList]()
-* [dateTime]()
+* [dateTime](/source/components/dateTime/dateTime.md)
 * [dateTimeStatic]()
 * [dialog]()
 * [genericContainer]()

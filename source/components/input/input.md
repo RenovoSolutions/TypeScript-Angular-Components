@@ -35,6 +35,6 @@ Applies a name to the ng-model for the component. If none is specified, defaults
 * [textbox](../textbox/textbox.md)
 * [textarea](../textarea/textarea.md)
 * [spinner](../spinner/spinner.md)
-* [datetime]()
+* [datetime](../dateTime/dateTime.md)
 * [select]()
 * [typeahead]()
