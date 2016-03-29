@@ -102,6 +102,20 @@
 						</rl-card-content>
 					</rl-card-container>
 				<br/>
+				<h3>Tabs</h3>
+					<rl-tabset>
+						<rl-tab>
+							<rl-tab-header>Header</rl-tab-header>
+							<rl-tab-content>Content 1</rl-tab-content>
+							<rl-tab-footer>Footer 1</rl-tab-footer>
+						</rl-tab>
+						<rl-tab>
+							<rl-tab-header>Header 2</rl-tab-header>
+							<rl-tab-content>Content 2</rl-tab-content>
+							<rl-tab-footer>Footer 2</rl-tab-footer>
+						</rl-tab>
+					</rl-tabset>
+				<br/>
 				<h3>Forms</h3>
 					rl-form:
 					<rl-form save="test.submit()" saving="test.spinner">
@@ -159,23 +173,6 @@
 						<template when-selector="true"><div>{{test.string}}</div></template>
 					</rl-generic-container>
 				</ng-form>
-
-				<rl-tabset>
-					<rl-tab>
-						<rl-tab-header>Header</rl-tab-header>
-						<rl-tab-content>
-							<rl-validation-group validator="test.validator">
-								<rl-textbox ng-model="test.text"></rl-textbox>
-							</rl-validation-group>
-						</rl-tab-content>
-						<rl-tab-footer>Footer</rl-tab-footer>
-					</rl-tab>
-					<rl-tab>
-						<rl-tab-header>Header 2</rl-tab-header>
-						<rl-tab-content>Content 2</rl-tab-content>
-						<rl-tab-footer>Footer 2</rl-tab-footer>
-					</rl-tab>
-				</rl-tabset>
 
 			</div>
 		</div>
