@@ -17,7 +17,7 @@ import {
 } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.validationGroup';
-export var directiveName: string = 'rlValidationGroup';
+export var componentName: string = 'rlValidationGroup';
 export var controllerName: string = 'ValidationGroupController';
 
 export interface IValidationGroupScope extends angular.IScope {
@@ -30,35 +30,34 @@ export class ValidationGroupController {
 
 	groupValidator: IComponentValidator;
 
-	static $inject: string[] = ['$scope', componentValidatorFactoryName];
-	constructor($scope: IValidationGroupScope, componentValidatorFactory: IComponentValidatorFactory) {
-		let unbind: Function = $scope.$watch('validationGroupForm', (form: IFormValidator): void => {
+	static $inject: string[] = ['$scope', '$timeout', componentValidatorFactoryName];
+	constructor(private $scope: IValidationGroupScope
+			, private $timeout: angular.ITimeoutService
+			, private componentValidatorFactory: IComponentValidatorFactory) {}
+
+	$onInit(): void {
+		this.$timeout((): void => {
 			if (!_.isUndefined(this.validator)) {
-				this.groupValidator = componentValidatorFactory.getInstance({
-					form: $scope.validationGroupForm,
-					$scope: $scope,
+				this.groupValidator = this.componentValidatorFactory.getInstance({
+					form: this.$scope.validationGroupForm,
+					$scope: this.$scope,
 					validators: [this.validator],
 				});
 			}
-			unbind();
 		});
 	}
 }
 
-export function validationGroup(): angular.IDirective {
-	return {
-		restrict: 'E',
-		transclude: true,
-		template: require('./validationGroup.html'),
-		controller: controllerName,
-		controllerAs: 'group',
-		scope: {},
-		bindToController: {
-			validator: '=',
-		},
-	};
-}
+let validationGroup: angular.IComponentOptions = {
+	transclude: true,
+	template: require('./validationGroup.html'),
+	controller: controllerName,
+	controllerAs: 'group',
+	bindings: {
+		validator: '=',
+	},
+};
 
 angular.module(moduleName, [componentValidatorModuleName])
-	.directive(directiveName, validationGroup)
+	.component(componentName, validationGroup)
 	.controller(controllerName, ValidationGroupController);
