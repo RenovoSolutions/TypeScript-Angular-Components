@@ -35,7 +35,7 @@ Angular components that can be added to an application.
 * [radio]()
 * [ratingBar]()
 * [richTextEditor]()
-* [select]()
+* [select](/source/components/select/select.md)
 * [signaturePad]()
 * [simpleCardList]()
 * [spinner](/source/components/spinner/spinner.md)
