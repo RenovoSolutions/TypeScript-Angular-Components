@@ -110,7 +110,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
 	listData: any;
 
-	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
+	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior> = <any>{};
 	ngModel: angular.INgModelController;
 
 	static $inject: string[] = ['$scope', '$transclude', __parentChild.serviceName];
