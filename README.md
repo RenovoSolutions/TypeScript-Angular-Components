@@ -38,7 +38,7 @@ Angular components that can be added to an application.
 * [select]()
 * [signaturePad]()
 * [simpleCardList]()
-* [spinner]()
+* [spinner](/source/components/spinner/spinner.md)
 * [stringWithWatermark]()
 * [tabs]()
 * [templateRenderer]()
