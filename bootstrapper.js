@@ -1,8 +1,10 @@
 (function () {
 	angular.module('app', ['rl.ui'])
 		.controller('TestController', TestController)
-		.controller('InputController', InputController);
+		.controller('InputController', InputController)
+		.controller('ButtonController', ButtonController);
 
+	InputController.$inject = ['$q'];
 	function InputController($q) {
 		var self = this;
 		self.set = [];
@@ -27,14 +29,16 @@
 		self.typeaheadList = [self.options[0], self.options[4]];
 	}
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	function ButtonController() {
 		var self = this;
-		// Buttons
 		self.action = function(name) {
 			console.log('Action: ' + name);
 		};
+	}
 
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+		var self = this;
 		// Popup content
 		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
