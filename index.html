@@ -78,11 +78,19 @@
 				{{test.radio2}}
 
 				<rl-button action="test.prompt()">Open prompt</rl-button>
-				<rl-simple-card>
-					<rl-card-header>Header</rl-card-header>
-					<rl-card-content>Content</rl-card-content>
-					<rl-card-footer>Footer</rl-card-footer>
-				</rl-simple-card>
+
+				<rl-simple-card-list>
+					<rl-simple-card>
+						<rl-card-header>Header 1</rl-card-header>
+						<rl-card-content>Content 1</rl-card-content>
+						<rl-card-footer>Footer 1</rl-card-footer>
+					</rl-simple-card>
+					<rl-simple-card>
+						<rl-card-header>Header 2</rl-card-header>
+						<rl-card-content>Content 2</rl-card-content>
+						<rl-card-footer>Footer 2</rl-card-footer>
+					</rl-simple-card>
+				</rl-simple-card-list>
 
 				<rl-generic-container selector="test.toggle">
 					<template default>
