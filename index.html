@@ -111,8 +111,7 @@
 					<rl-button action="popup.prompt()">Open prompt</rl-button>
 				<br/>
 			</div>
-			<div ng-controller="TestController as test">
-
+			<div ng-controller="CardGroupController as cards">
 				<h3>Cards</h3>
 					<div>
 						<label>Simple card list:</label>
@@ -132,7 +131,7 @@
 
 					<div>
 						<label>Card container:</label>
-						<rl-card-container builder="test.builder" card-as="myItem">
+						<rl-card-container builder="cards.builder" card-as="myItem">
 							<rl-container-header>
 								<rl-card-search></rl-card-search>
 							</rl-container-header>
@@ -143,6 +142,10 @@
 						</rl-card-container>
 					</div>
 				<br/>
+			</div>
+			<div ng-controller="TestController as test">
+
+
 				<h3>Tabs</h3>
 					<rl-tabset>
 						<rl-tab>

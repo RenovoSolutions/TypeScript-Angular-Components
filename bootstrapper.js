@@ -3,7 +3,8 @@
 		.controller('TestController', TestController)
 		.controller('InputController', InputController)
 		.controller('ButtonController', ButtonController)
-		.controller('PopoverController', PopoverController);
+		.controller('PopoverController', PopoverController)
+		.controller('CardGroupController', CardGroupController);
 
 	InputController.$inject = ['$q'];
 	function InputController($q) {
@@ -40,7 +41,7 @@
 	PopoverController.$inject = ['dialog'];
 	function PopoverController(dialog) {
 		var self = this;
-		self.dynamic = '<div>{{test.content}}</div>';
+		self.popover = '<div>{{test.content}}</div>';
 		self.content = 'Some content';
 
 		self.prompt = function() {
@@ -54,10 +55,9 @@
 		};
 	}
 
-	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
-	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+	CardGroupController.$inject = ['cardContainerBuilder'];
+	function CardGroupController(cardContainerBuilderFactory) {
 		var self = this;
-		// Cards
 		var items = [
 			{ name: 'Item 1', value: 1 },
 			{ name: 'Item 2', value: 2 },
@@ -104,7 +104,11 @@
 				},
 			],
 		});
+	}
 
+	TestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
+	function TestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
+		var self = this;
 		// Forms
 		self.submit = function() {
 			return $timeout(function() {
