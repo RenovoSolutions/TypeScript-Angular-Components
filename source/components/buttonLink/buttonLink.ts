@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.buttonLink';
-export var directiveName: string = 'rlButtonLink';
+export var componentName: string = 'rlButtonLink';
 export var controllerName: string = 'ButtonLinkController';
 
 export class ButtonLinkController {
@@ -26,24 +26,20 @@ export class ButtonLinkController {
 	}
 }
 
-export function buttonLink(): angular.IDirective {
-	return {
-		restrict: 'E',
-		transclude: true,
-		template: require('./buttonLink.html'),
-		scope: {},
-		bindToController: {
-			link: '@',
-			type: '@',
-			ngDisabled: '<?',
-			size: '@',
-			newTab: '<?',
-		},
-		controller: controllerName,
-		controllerAs: 'button',
-	};
-}
+let buttonLink: angular.IComponentOptions = {
+	transclude: true,
+	template: require('./buttonLink.html'),
+	bindings: {
+		link: '@',
+		type: '@',
+		ngDisabled: '<?',
+		size: '@',
+		newTab: '<?',
+	},
+	controller: controllerName,
+	controllerAs: 'button',
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, buttonLink)
+	.component(componentName, buttonLink)
 	.controller(controllerName, ButtonLinkController);
