@@ -15,9 +15,9 @@ The expression in the **action** will be triggered when the button is clicked. I
 
 This option allows you to show/hide the spinner via a binding. This is useful in cases where simply returning a promise from the action isn't sufficient.
 
-#### `right-aligned`
+#### `right-aligned (default: false)`
 
-Specifies if the button is within a right aligned context. Defaults to `false`. This is used by the button to determine which side the spinner should show on.
+Specifies if the button is within a right aligned context. This is used by the button to determine which side the spinner should show on.
 
 #### `size`
 
