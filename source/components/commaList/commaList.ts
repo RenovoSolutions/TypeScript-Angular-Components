@@ -9,7 +9,7 @@ import __object = services.object;
 import __transform = services.transform.transform;
 
 export var moduleName: string = 'rl.ui.components.commaList';
-export var directiveName: string = 'rlCommaList';
+export var componentName: string = 'rlCommaList';
 export var controllerName: string = 'CommaListController';
 
 export class CommaListController {
@@ -44,29 +44,24 @@ export class CommaListController {
 	}
 }
 
-function commaList(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: `
-			<span>
-				<span ng-repeat="item in commaList.list track by $index">
-					<span>{{item}}</span><span ng-hide="$last">, </span>
-				</span>
-				<span ng-show="commaList.remainingItems > 0">... {{commaList.remainingItems}} more items</span>
+let commaList: angular.IComponentOptions = {
+	template: `
+		<span>
+			<span ng-repeat="item in commaList.list track by $index">
+				<span>{{item}}</span><span ng-hide="$last">, </span>
 			</span>
-		`,
-		controller: controllerName,
-		controllerAs: 'commaList',
-		scope: {},
-		bindToController: {
-			inList: '<list',
-			max: '<?',
-			transform: '<?',
-		},
-	};
-}
+			<span ng-show="commaList.remainingItems > 0">... {{commaList.remainingItems}} more items</span>
+		</span>
+	`,
+	controller: controllerName,
+	controllerAs: 'commaList',
+	bindings: {
+		inList: '<list',
+		max: '<?',
+		transform: '<?',
+	},
+};
 
 angular.module(moduleName, [__object.moduleName])
-	.directive(directiveName, commaList)
+	.component(componentName, commaList)
 	.controller(controllerName, CommaListController);

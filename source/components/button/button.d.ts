@@ -1,6 +1,5 @@
-import * as angular from 'angular';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export declare class ButtonController {
     action: {
@@ -12,4 +11,3 @@ export declare class ButtonController {
     configuredSize: string;
     constructor();
 }
-export declare function button(): angular.IDirective;

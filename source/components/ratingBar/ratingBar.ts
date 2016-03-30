@@ -6,7 +6,7 @@ import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './rati
 import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
 
 export var moduleName: string = 'rl.ui.components.ratingBar';
-export var directiveName: string = 'rlRatingBar';
+export var componentName: string = 'rlRatingBar';
 export var controllerName: string = 'RatingBarController';
 
 export interface IDimensions {
@@ -70,31 +70,26 @@ export class RatingBarController implements IRatingBarScopeBindings {
 	}
 }
 
-export function ratingBar(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: `
-			<div class="rating-bar">
-				<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == min }" ng-style="ratingBar.dimensions">
-					<div ng-class="ratingBar.barClass" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
-				</div>
+let ratingBar: angular.IComponentOptions = {
+	template: `
+		<div class="rating-bar">
+			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == min }" ng-style="ratingBar.dimensions">
+				<div ng-class="ratingBar.barClass" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
 			</div>
-		`,
-		controller: controllerName,
-		controllerAs: 'ratingBar',
-		scope: {},
-		bindToController: {
-			totalWidth: '=width',
-			height: '=',
-			value: '=',
-			min: '=',
-			max: '=',
-			background: '=',
-		},
-	};
-}
+		</div>
+	`,
+	controller: controllerName,
+	controllerAs: 'ratingBar',
+	bindings: {
+		totalWidth: '<width',
+		height: '<',
+		value: '<',
+		min: '<',
+		max: '<',
+		background: '<',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, ratingBar)
+	.component(componentName, ratingBar)
 	.controller(controllerName, RatingBarController);

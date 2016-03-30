@@ -1,0 +1,29 @@
+<h3>Cards</h3>
+<div>
+	<label>Simple card list:</label>
+	<rl-simple-card-list>
+		<rl-simple-card>
+			<rl-card-header>Simple card 1</rl-card-header>
+			<rl-card-content>Content 1</rl-card-content>
+			<rl-card-footer>Footer 1</rl-card-footer>
+		</rl-simple-card>
+		<rl-simple-card>
+			<rl-card-header>Simple card 2</rl-card-header>
+			<rl-card-content>Content 2</rl-card-content>
+			<rl-card-footer>Footer 2</rl-card-footer>
+		</rl-simple-card>
+	</rl-simple-card-list>
+</div>
+
+<div>
+	<label>Card container:</label>
+	<rl-card-container builder="cards.builder" card-as="myItem">
+		<rl-container-header>
+			<rl-card-search></rl-card-search>
+		</rl-container-header>
+		<rl-card-content>
+			Name: {{myItem.name}}
+			Value: {{myItem.value}}
+		</rl-card-content>
+	</rl-card-container>
+</div>

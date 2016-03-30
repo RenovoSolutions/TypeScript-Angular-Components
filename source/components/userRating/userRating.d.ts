@@ -1,25 +1,26 @@
 import * as angular from 'angular';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export interface IStar {
     value: number;
     filled: boolean;
 }
-export interface IUserRatingController {
+export interface IUserRatingBindings {
+    range: number;
+}
+export interface IUserRatingController extends IUserRatingBindings {
     stars: IStar[];
     setRating(rating: number): void;
 }
-export interface IUserRatingScope extends angular.IScope {
-    ngModel: angular.INgModelController;
-    range: number;
-}
 export declare class UserRatingController implements IUserRatingController {
-    private $scope;
+    private $timeout;
+    range: number;
     stars: IStar[];
+    ngModel: angular.INgModelController;
     static $inject: string[];
-    constructor($scope: IUserRatingScope);
+    constructor($timeout: angular.ITimeoutService);
+    $onInit(): void;
     setRating(rating: number): void;
     private updateStarView(rating);
 }
-export declare function userRating(): angular.IDirective;

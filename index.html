@@ -13,125 +13,25 @@
 		<script src="/node_modules/angular/angular.js"></script>
 		<script src="/node_modules/angular-animate/angular-animate.js"></script>
 		<script src="/node_modules/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
+		<script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
 		<script src="/node_modules/lodash/lodash.js"></script>
 		<script src="/node_modules/moment/moment.js"></script>
 		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
 		<script src="/output/components.js"></script>
-		<script src="/bootstrapper.js"></script>
+		<script src="/bootstrapper/bootstrapper.js"></script>
 
-		<div ng-app="app">
-			<div ng-controller="TestController as test">
-				<h3>Inputs</h3>
-				<rl-form save="test.submit()" saving="test.spinner">
-					<rl-textbox ng-model="test.otherText" rl-required="Input required"></rl-textbox>
-					<rl-textarea ng-model="test.textAreaText"></rl-textarea>
-					<rl-spinner ng-model="test.number"></rl-spinner>
-					<rl-date-time ng-model="test.date"></rl-date-time>
-
-					<rl-select ng-model="test.dropdownSelection" get-options="test.getOptions()" selector="'name'"></rl-select>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.selection" transform="'name'"
-								  create="test.create(value)" label="Test create"></rl-typeahead>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.any" transform="'name'"
-								  select="test.select(value)" label="Test select"></rl-typeahead>
-					<rl-typeahead get-items="test.getOptions()" ng-model="test.any2" transform="'name'"
-								  allow-collapse="true" select="test.select(value)" label="Test collapse"></rl-typeahead>
-
-					<rl-rich-text-editor ng-model="test.text" ng-disabled="true"></rl-rich-text-editor>
-
-					<rl-button-submit type="primary" saving="test.spinner">Submit</rl-button-submit>
-				</rl-form>
-				<br/>
-				<rl-template-renderer template="test.template"></rl-template-renderer>
-
-				<div ng-repeat="value in test.set">
-					{{value}}
-				</div>
-
-				<rl-typeahead-list get-items="test.getOptions()" ng-model="test.typeaheadList" transform="'name'"
-								   label="Test list">
-					<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
-					<rl-list-item>
-							<div class="col-xs-10">{{$item.name}}</div>
-							<div class="col-xs-2">
-								<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
-							</div>
-					</rl-list-item>
-				</rl-typeahead-list>
-
-				<ng-form name="myForm" rl-autosave save="test.save()">
-					<rl-textbox ng-model="test.val"></rl-textbox>
-				</ng-form>
-				<div>
-					{{test.count}}
-				</div>
-
-				<rl-checkbox ng-model="test.checked">Checkbox</rl-checkbox>
-				Value: {{test.checked}}
-
-				<rl-button action="test.prompt()">Open prompt</rl-button>
-				<rl-simple-card>
-					<rl-card-header>Header</rl-card-header>
-					<rl-card-content>Content</rl-card-content>
-					<rl-card-footer>Footer</rl-card-footer>
-				</rl-simple-card>
-
-				<rl-generic-container selector="test.toggle">
-					<template default>
-						<span>1, 2, 3, 4, 5</span>
-						<div ng-repeat="number in test.options track by number.name">
-							{{number}}
-						</div>
-					</template>
-					<template when-selector="true">
-						True
-					</template>
-				</rl-generic-container>
-				<div ng-repeat="number in [6, 7, 8, 9, 0]">
-					{{number}}
-				</div>
-
-				<rl-checkbox ng-model="test.toggle">Toggle</rl-checkbox>
-				<ng-form name="myTestForm">
-					<i class="fa fa-flash" ng-show="myTestForm.$dirty"></i>
-					<input type="text" ng-model="test.string" />
-					Container 1
-					<rl-generic-container selector="test.toggle">
-						<template default><input type="text" ng-model="test.string" /></template>
-						<template when-selector="true"><div>{{test.string}}</div></template>
-					</rl-generic-container>
-				</ng-form>
-
-				<rl-tabset>
-					<rl-tab>
-						<rl-tab-header>Header</rl-tab-header>
-						<rl-tab-content>
-							<rl-validation-group validator="test.validator">
-								<rl-textbox ng-model="test.text"></rl-textbox>
-							</rl-validation-group>
-						</rl-tab-content>
-						<rl-tab-footer>Footer</rl-tab-footer>
-					</rl-tab>
-					<rl-tab>
-						<rl-tab-header>Header 2</rl-tab-header>
-						<rl-tab-content>Content 2</rl-tab-content>
-						<rl-tab-footer>Footer 2</rl-tab-footer>
-					</rl-tab>
-				</rl-tabset>
-				<div rl-alias="test.number as val">{{val}}</div>
-
-				<button rl-popover="test.popover" popover-trigger="mouseenter">Show rl-popover</button>
-				<button rl-popover="A popover {{test.content}}" text-only="true">Show simple popover</button>
-
-				<rl-card-container builder="test.builder" card-as="myItem">
-					<rl-container-header>
-						<rl-card-search></rl-card-search>
-					</rl-container-header>
-					<rl-card-content>
-						Name: {{myItem.name}}
-						Value: {{myItem.value}}
-					</rl-card-content>
-				</rl-card-container>
-			</div>
+		<div ng-app="app" class="container-fluid">
+			<ul class="nav nav-tabs">
+				<li role="presentation"><a ui-sref="/">Home</a></li>
+				<li role="presentation"><a ui-sref="inputs">Inputs</a></li>
+				<li role="presentation"><a ui-sref="buttons">Buttons</a></li>
+				<li role="presentation"><a ui-sref="popup">Popup content</a></li>
+				<li role="presentation"><a ui-sref="cards">Cards</a></li>
+				<li role="presentation"><a ui-sref="tabs">Tabs</a></li>
+				<li role="presentation"><a ui-sref="forms">Forms</a></li>
+				<li role="presentation"><a ui-sref="misc">Misc</a></li>
+			</ul>
+			<div ui-view class="view-window"></div>
 		</div>
 	</body>
 </html>

@@ -5,7 +5,7 @@ var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
 var __transform = typescript_angular_utilities_1.services.transform.transform;
 exports.moduleName = 'rl.ui.components.commaList';
-exports.directiveName = 'rlCommaList';
+exports.componentName = 'rlCommaList';
 exports.controllerName = 'CommaListController';
 var CommaListController = (function () {
     function CommaListController(object) {
@@ -34,22 +34,17 @@ var CommaListController = (function () {
     return CommaListController;
 }());
 exports.CommaListController = CommaListController;
-function commaList() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: "\n\t\t\t<span>\n\t\t\t\t<span ng-repeat=\"item in commaList.list track by $index\">\n\t\t\t\t\t<span>{{item}}</span><span ng-hide=\"$last\">, </span>\n\t\t\t\t</span>\n\t\t\t\t<span ng-show=\"commaList.remainingItems > 0\">... {{commaList.remainingItems}} more items</span>\n\t\t\t</span>\n\t\t",
-        controller: exports.controllerName,
-        controllerAs: 'commaList',
-        scope: {},
-        bindToController: {
-            inList: '<list',
-            max: '<?',
-            transform: '<?',
-        },
-    };
-}
+var commaList = {
+    template: "\n\t\t<span>\n\t\t\t<span ng-repeat=\"item in commaList.list track by $index\">\n\t\t\t\t<span>{{item}}</span><span ng-hide=\"$last\">, </span>\n\t\t\t</span>\n\t\t\t<span ng-show=\"commaList.remainingItems > 0\">... {{commaList.remainingItems}} more items</span>\n\t\t</span>\n\t",
+    controller: exports.controllerName,
+    controllerAs: 'commaList',
+    bindings: {
+        inList: '<list',
+        max: '<?',
+        transform: '<?',
+    },
+};
 angular.module(exports.moduleName, [__object.moduleName])
-    .directive(exports.directiveName, commaList)
+    .component(exports.componentName, commaList)
     .controller(exports.controllerName, CommaListController);
 //# sourceMappingURL=commaList.js.map

@@ -9,7 +9,7 @@ import __promiseUtility = services.promise;
 
 export var moduleName: string = 'rl.ui.components.buttonAsync';
 
-export var directiveName: string = 'rlButtonAsync';
+export var componentName: string = 'rlButtonAsync';
 export var controllerName: string = 'ButtonAsyncController';
 
 export interface IButtonBindings {
@@ -54,26 +54,21 @@ export class ButtonAsyncController {
 	sizeClass: string;
 }
 
-function buttonAsync(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: true,
-		template: require('./buttonAsync.html'),
-		scope: {},
-		bindToController: {
-			busy: '<?',
-			action: '&',
-			type: '@',
-			ngDisabled: '<?',
-			rightAligned: '<?',
-			size: '@',
-		},
-		controller: controllerName,
-		controllerAs: 'button',
-	};
-}
+let buttonAsync: angular.IComponentOptions = {
+	transclude: true,
+	template: require('./buttonAsync.html'),
+	bindings: {
+		busy: '<?',
+		action: '&',
+		type: '@',
+		ngDisabled: '<?',
+		rightAligned: '<?',
+		size: '@',
+	},
+	controller: controllerName,
+	controllerAs: 'button',
+};
 
 angular.module(moduleName, [__promiseUtility.moduleName])
-	.directive(directiveName, buttonAsync)
+	.component(componentName, buttonAsync)
 	.controller(controllerName, ButtonAsyncController);

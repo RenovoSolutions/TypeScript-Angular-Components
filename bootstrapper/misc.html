@@ -1,0 +1,57 @@
+<h3>Misc</h3>
+<div>
+	<label>Generic container:</label>
+	<rl-checkbox ng-model="misc.toggle">Toggle</rl-checkbox>
+	<rl-generic-container selector="misc.toggle">
+		<template default>
+			<div ng-repeat="number in [1, 2, 3, 4, 5]">
+				{{number}}
+			</div>
+		</template>
+		<template when-selector="true">
+			<div>True</div>
+		</template>
+	</rl-generic-container>
+</div>
+
+<div>
+	<label>Validation group:</label>
+	<rl-validation-group validator="misc.validator">
+		<rl-textbox ng-model="misc.text"></rl-textbox>
+	</rl-validation-group>
+</div>
+
+<div>
+	<label>Template renderer:</label>
+	<rl-template-renderer template="misc.template"></rl-template-renderer>
+</div>
+
+<div>
+	<label>Comma list:</label>
+	<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
+</div>
+
+<div>
+	<label>Busy:</label>
+	<rl-busy loading="true" size="2x"></rl-busy>
+</div>
+
+<div>
+	<label>Rating Bar:</label>
+	<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
+</div>
+
+<div>
+	<label>String with watermark:</label>
+	<rl-string-with-watermark string="{{misc.text}}" watermark="(empty)"></rl-string-with-watermark>
+</div>
+
+<div>
+	<label>User rating:</label>
+	<rl-user-rating ng-model="misc.value" range="5"></rl-user-rating>
+</div>
+
+<div>
+	<label>Alias:</label>
+	<div rl-alias="misc.number as val">{{val}}</div>
+</div>

@@ -2,7 +2,8 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
-export declare var directiveName: string;
+import { ISimpleCardListController } from './simpleCardList';
+export declare var componentName: string;
 export declare var controllerName: string;
 export interface ISimpleCardBindings {
     onOpen(): void;
@@ -36,9 +37,10 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     cardType: string;
     showContent: boolean;
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
-    private listController;
+    listController: ISimpleCardListController;
     static $inject: string[];
-    constructor($scope: angular.IScope, $element: angular.IAugmentedJQuery, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($scope: angular.IScope, parentChild: __parentChild.IParentChildBehaviorService);
+    $onInit(): void;
     toggleContent(): void;
     open(): void;
     close: {
@@ -47,4 +49,4 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     private autosave();
     private noList();
 }
-export declare function simpleCard(): angular.IDirective;
+export declare let simpleCard: angular.IComponentOptions;

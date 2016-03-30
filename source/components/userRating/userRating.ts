@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 export var moduleName: string = 'rl.components.userRating';
 
-export var directiveName: string = 'rlUserRating';
+export var componentName: string = 'rlUserRating';
 export var controllerName: string = 'UserRatingController';
 
 export interface IStar {
@@ -13,23 +13,27 @@ export interface IStar {
 	filled: boolean;
 }
 
-export interface IUserRatingController {
+export interface IUserRatingBindings {
+	range: number;
+}
+
+export interface IUserRatingController extends IUserRatingBindings {
 	stars: IStar[];
 	setRating(rating: number): void;
 }
 
-export interface IUserRatingScope extends angular.IScope {
-	ngModel: angular.INgModelController;
-	range: number;
-}
-
 export class UserRatingController implements IUserRatingController {
-	stars: IStar[];
+	range: number;
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: IUserRatingScope) {
+	stars: IStar[];
+	ngModel: angular.INgModelController;
+
+	static $inject: string[] = ['$timeout'];
+	constructor(private $timeout: angular.ITimeoutService) { }
+
+	$onInit(): void {
 		this.stars = [];
-		var rangeSize: number = this.$scope.range != null ? this.$scope.range : 5;
+		var rangeSize: number = this.range != null ? this.range : 5;
 		// css style requires the stars to show right to left. Reverse the list so the highest value is first
 		var range: number[] = _.range(1, rangeSize + 1).reverse();
 		_.each(range, (rating: number): void => {
@@ -39,14 +43,13 @@ export class UserRatingController implements IUserRatingController {
 			});
 		});
 
-		var unbind: Function = this.$scope.$watch('ngModel', (value: angular.INgModelController): void => {
-			this.updateStarView(this.$scope.ngModel.$viewValue);
-			unbind();
+		this.$timeout((): void => {
+			this.updateStarView(this.ngModel.$viewValue);
 		});
 	}
 
 	setRating(rating: number): void {
-		this.$scope.ngModel.$setViewValue(rating);
+		this.ngModel.$setViewValue(rating);
 		this.updateStarView(rating);
 	}
 
@@ -61,27 +64,20 @@ export class UserRatingController implements IUserRatingController {
 	}
 }
 
-export function userRating(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: 'ngModel',
-		template: `
-			<span class="rating">
-				<span class="star" ng-repeat="star in userRating.stars" ng-class="{ 'filled': star.filled }" ng-click="userRating.setRating(star.value)"></span>
-			</span>
-		`,
-		controller: controllerName,
-		controllerAs: 'userRating',
-		scope: {
-			range: '=',
-		},
-		link(scope: IUserRatingScope, element: angular.IAugmentedJQuery, attrs: angular.IAttributes, ngModel: angular.INgModelController): void {
-			scope.ngModel = ngModel;
-		},
-	};
-}
+let userRating: angular.IComponentOptions = {
+	require: { ngModel: 'ngModel' },
+	template: `
+		<span class="rating">
+			<span class="star" ng-repeat="star in userRating.stars" ng-class="{ 'filled': star.filled }" ng-click="userRating.setRating(star.value)"></span>
+		</span>
+	`,
+	controller: controllerName,
+	controllerAs: 'userRating',
+	bindings: {
+		range: '=',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, userRating)
+	.component(componentName, userRating)
 	.controller(controllerName, UserRatingController);

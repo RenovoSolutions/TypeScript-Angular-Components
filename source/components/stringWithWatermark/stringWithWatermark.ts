@@ -6,7 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
 export var moduleName: string = 'rl.ui.components.stringWithWatermark';
-export var directiveName: string = 'rlStringWithWatermark';
+export var componentName: string = 'rlStringWithWatermark';
 export var controllerName: string = 'StringWithWatermarkController';
 
 
@@ -30,26 +30,21 @@ export class StringWithWatermarkController implements IStringWithWatermarkBindin
 	}
 }
 
-export function stringWithWatermark(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: `
-			<span>
-				<span ng-show="controller.hasString">{{controller.string}}</span>
-				<span ng-hide="controller.hasString" class="watermark">{{controller.watermark}}</span>
-			</span>
-		`,
-		controller: controllerName,
-		controllerAs: 'controller',
-		scope: {},
-		bindToController: {
-			string: '@',
-			watermark: '@',
-		}
-	};
-}
+let stringWithWatermark: angular.IComponentOptions = {
+	template: `
+		<span>
+			<span ng-show="controller.hasString">{{controller.string}}</span>
+			<span ng-hide="controller.hasString" class="watermark">{{controller.watermark}}</span>
+		</span>
+	`,
+	controller: controllerName,
+	controllerAs: 'controller',
+	bindings: {
+		string: '@',
+		watermark: '@',
+	},
+};
 
 angular.module(moduleName, [__object.moduleName])
-	.directive(directiveName, stringWithWatermark)
+	.component(componentName, stringWithWatermark)
 	.controller(controllerName, StringWithWatermarkController);

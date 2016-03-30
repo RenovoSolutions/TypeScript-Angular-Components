@@ -12,7 +12,7 @@ import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 
 import { ISimpleCardListController } from './simpleCardList';
 
-export var directiveName: string = 'rlSimpleCard';
+export var componentName: string = 'rlSimpleCard';
 export var controllerName: string = 'SimpleCardController';
 
 export interface ISimpleCardBindings {
@@ -46,16 +46,16 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 	showContent: boolean = false;
 	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
-	private listController: ISimpleCardListController;
+	listController: ISimpleCardListController;
 
-	static $inject: string[] = ['$scope', '$element', __parentChild.serviceName];
+	static $inject: string[] = ['$scope', __parentChild.serviceName];
 	constructor(private $scope: angular.IScope
-		, $element: angular.IAugmentedJQuery
-		, private parentChild: __parentChild.IParentChildBehaviorService) {
+			, private parentChild: __parentChild.IParentChildBehaviorService) {}
+
+	$onInit(): void {
 		if (this.canOpen == null) {
 			this.canOpen = true;
 		}
-		this.listController = $element.controller('rlSimpleCardList');
 
 		if (this.listController == null) {
 			this.listController = this.noList();
@@ -71,9 +71,9 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 		this.listController.registerCard(behavior);
 
-		parentChild.registerChildBehavior(this.childLink, behavior);
+		this.parentChild.registerChildBehavior(this.childLink, behavior);
 
-		$scope.$watch((): boolean => { return this.alwaysOpen; }, (value: boolean) => {
+		this.$scope.$watch((): boolean => { return this.alwaysOpen; }, (value: boolean) => {
 			if (value) {
 				this.showContent = true;
 			} else {
@@ -129,28 +129,23 @@ export class SimpleCardController implements ISimpleCardBindings {
 	}
 }
 
-export function simpleCard(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: {
-			'headerSlot': '?rlCardHeader',
-			'contentSlot': '?rlCardContent',
-			'footerSlot': '?rlCardFooter',
-		},
-		require: '?^^rlSimpleCardList',
-		template: require('./simpleCard.html'),
-		controller: controllerName,
-		controllerAs: 'card',
-		scope: {},
-		bindToController: {
-			onOpen: '&',
-			canOpen: '=?',
-			alwaysOpen: '=?',
-			childLink: '=?',
-			save: '&',
-			saveWhenInvalid: '<?',
-			cardType: '@',
-		},
-	};
-}
+export let simpleCard: angular.IComponentOptions = {
+	transclude: <any>{
+		'headerSlot': '?rlCardHeader',
+		'contentSlot': '?rlCardContent',
+		'footerSlot': '?rlCardFooter',
+	},
+	require: { listController: '?^^rlSimpleCardList' },
+	template: require('./simpleCard.html'),
+	controller: controllerName,
+	controllerAs: 'card',
+	bindings: {
+		onOpen: '&',
+		canOpen: '=?',
+		alwaysOpen: '=?',
+		childLink: '=?',
+		save: '&',
+		saveWhenInvalid: '<?',
+		cardType: '@',
+	},
+};

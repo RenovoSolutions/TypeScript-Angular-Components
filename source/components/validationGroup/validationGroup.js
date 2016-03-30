@@ -4,41 +4,40 @@ var angular = require('angular');
 var _ = require('lodash');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.validationGroup';
-exports.directiveName = 'rlValidationGroup';
+exports.componentName = 'rlValidationGroup';
 exports.controllerName = 'ValidationGroupController';
 var ValidationGroupController = (function () {
-    function ValidationGroupController($scope, componentValidatorFactory) {
+    function ValidationGroupController($scope, $timeout, componentValidatorFactory) {
+        this.$scope = $scope;
+        this.$timeout = $timeout;
+        this.componentValidatorFactory = componentValidatorFactory;
+    }
+    ValidationGroupController.prototype.$onInit = function () {
         var _this = this;
-        var unbind = $scope.$watch('validationGroupForm', function (form) {
+        this.$timeout(function () {
             if (!_.isUndefined(_this.validator)) {
-                _this.groupValidator = componentValidatorFactory.getInstance({
-                    form: $scope.validationGroupForm,
-                    $scope: $scope,
+                _this.groupValidator = _this.componentValidatorFactory.getInstance({
+                    form: _this.$scope.validationGroupForm,
+                    $scope: _this.$scope,
                     validators: [_this.validator],
                 });
             }
-            unbind();
         });
-    }
-    ValidationGroupController.$inject = ['$scope', componentValidator_service_1.factoryName];
+    };
+    ValidationGroupController.$inject = ['$scope', '$timeout', componentValidator_service_1.factoryName];
     return ValidationGroupController;
 }());
 exports.ValidationGroupController = ValidationGroupController;
-function validationGroup() {
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: require('./validationGroup.html'),
-        controller: exports.controllerName,
-        controllerAs: 'group',
-        scope: {},
-        bindToController: {
-            validator: '=',
-        },
-    };
-}
-exports.validationGroup = validationGroup;
+var validationGroup = {
+    transclude: true,
+    template: require('./validationGroup.html'),
+    controller: exports.controllerName,
+    controllerAs: 'group',
+    bindings: {
+        validator: '=',
+    },
+};
 angular.module(exports.moduleName, [componentValidator_service_1.moduleName])
-    .directive(exports.directiveName, validationGroup)
+    .component(exports.componentName, validationGroup)
     .controller(exports.controllerName, ValidationGroupController);
 //# sourceMappingURL=validationGroup.js.map

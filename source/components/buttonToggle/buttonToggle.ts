@@ -6,79 +6,73 @@ import { services } from 'typescript-angular-utilities';
 
 import __boolean = services.boolean;
 
-export var moduleName: string = 'rl.ui.components.buttonToggle';
+import { IToggleParams } from '../checkbox/checkbox';
 
-export var directiveName: string = 'rlButtonToggle';
-export var controllerName: string = 'ButtonToggleController';
+export let moduleName: string = 'rl.ui.components.buttonToggle';
+export let componentName: string = 'rlButtonToggle';
+export let controllerName: string = 'ButtonToggleController';
 
-export interface IButtonToggleScope extends angular.IScope {
-	ngModel: angular.INgModelController;
+export interface IButtonToggleBindings {
 	type: string;
 	size: string;
-	onToggle(param: IToggleParam): void;
+	onToggle(param: IToggleParams): void;
 	disabled: boolean;
 }
 
-export interface IToggleParam {
-	value: boolean;
-}
-
-export interface IButtonToggleController {
-	isActive: boolean;
+export interface IButtonToggleController extends IButtonToggleBindings {
 	buttonClass: string;
 	buttonSize: string;
 
 	clicked(): void;
 }
 
-class ButtonToggleController {
-	isActive: boolean;
+class ButtonToggleController implements IButtonToggleController {
+	type: string;
+	size: string;
+	onToggle: { (param: IToggleParams): void };
+	disabled: boolean;
+
 	buttonClass: string;
 	buttonSize: string;
 
+	ngModel: angular.INgModelController;
+
+	get checked(): boolean {
+		return this.ngModel.$viewValue;
+	}
+
+	set checked(value: boolean) {
+		this.ngModel.$setViewValue(value);
+	}
+
 	static $inject: string[] = ['$scope', __boolean.serviceName];
-	constructor(private $scope: IButtonToggleScope, bool: __boolean.IBooleanUtility) {
-		this.buttonClass = $scope.type != null ? $scope.type : 'default';
-		this.buttonSize = $scope.size != null ? 'btn-' + $scope.size : null;
-
-		$scope.$watch('ngModel.$modelValue', (value: boolean): void => {
-			this.isActive = bool.toBool(value);
-
-			if (value != null && _.isFunction($scope.onToggle)) {
-				$scope.onToggle({ value: value });
-			}
-		});
+	constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility) {
+		this.buttonClass = this.type != null ? this.type : 'default';
+		this.buttonSize = this.size != null ? 'btn-' + this.size : null;
 	}
 
 	clicked(): void {
-		this.$scope.ngModel.$setViewValue(!this.$scope.ngModel.$viewValue);
+		if (!this.disabled) {
+			this.checked = !this.checked;
+			this.onToggle({ value: this.checked });
+		}
 	}
 }
 
-function buttonToggle(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: '^ngModel',
-		transclude: true,
-		template: require('./buttonToggle.html'),
-		controller: controllerName,
-		controllerAs: 'buttonToggle',
-		scope: {
-			type: '@',
-			size: '@',
-			onToggle: '&',
-			disabled: '<?ngDisabled',
-		},
-		link(scope: IButtonToggleScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, ngModel: angular.INgModelController): void {
-			scope.ngModel = ngModel;
-		}
-	};
-}
+let buttonToggle: angular.IComponentOptions = {
+	require: { ngModel: '^ngModel' },
+	transclude: true,
+	template: require('./buttonToggle.html'),
+	controller: controllerName,
+	controllerAs: 'buttonToggle',
+	bindings: {
+		type: '@',
+		size: '@',
+		onToggle: '&',
+		disabled: '<?ngDisabled',
+	},
+};
 
 angular.module(moduleName, [__boolean.moduleName])
-	.directive(directiveName, buttonToggle)
+	.component(componentName, buttonToggle)
 	.controller(controllerName, ButtonToggleController);
