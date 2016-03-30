@@ -8,9 +8,9 @@ import * as angular from 'angular';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
 
-export var moduleName: string = 'rl.ui.components.checkbox';
-export var componentName: string = 'rlCheckbox';
-export var controllerName: string = 'CheckboxController';
+export let moduleName: string = 'rl.ui.components.checkbox';
+export let componentName: string = 'rlCheckbox';
+export let controllerName: string = 'CheckboxController';
 
 export interface IToggleParams {
 	value: boolean;

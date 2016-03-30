@@ -6,10 +6,9 @@ import { services } from 'typescript-angular-utilities';
 
 import __boolean = services.boolean;
 
-export var moduleName: string = 'rl.ui.components.buttonToggle';
-
-export var directiveName: string = 'rlButtonToggle';
-export var controllerName: string = 'ButtonToggleController';
+export let moduleName: string = 'rl.ui.components.buttonToggle';
+export let directiveName: string = 'rlButtonToggle';
+export let controllerName: string = 'ButtonToggleController';
 
 export interface IButtonToggleScope extends angular.IScope {
 	ngModel: angular.INgModelController;
