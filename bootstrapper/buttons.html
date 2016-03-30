@@ -4,3 +4,6 @@
 <rl-button-link link="http://www.google.com">Link button</rl-button-link>
 <rl-button-toggle ng-model="button.toggled" on-toggle="button.action('Toggle button')">Toggle button</rl-button-toggle>
 <rl-long-click-button action="button.action('Long click button')" text="Long click button"></rl-long-click-button>
+<form ng-submit="button.action('Submit button')">
+	<rl-button-submit>Submit button</rl-button-submit>
+</form>
