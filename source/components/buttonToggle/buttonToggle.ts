@@ -20,7 +20,6 @@ export interface IButtonToggleBindings {
 }
 
 export interface IButtonToggleController extends IButtonToggleBindings {
-	isActive: boolean;
 	buttonClass: string;
 	buttonSize: string;
 
@@ -33,28 +32,30 @@ class ButtonToggleController implements IButtonToggleController {
 	onToggle: { (param: IToggleParams): void };
 	disabled: boolean;
 
-	isActive: boolean;
 	buttonClass: string;
 	buttonSize: string;
 
 	ngModel: angular.INgModelController;
 
+	get checked(): boolean {
+		return this.ngModel.$viewValue;
+	}
+
+	set checked(value: boolean) {
+		this.ngModel.$setViewValue(value);
+	}
+
 	static $inject: string[] = ['$scope', __boolean.serviceName];
 	constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility) {
 		this.buttonClass = this.type != null ? this.type : 'default';
 		this.buttonSize = this.size != null ? 'btn-' + this.size : null;
-
-		$scope.$watch('buttonToggle.ngModel.$modelValue', (value: boolean): void => {
-			this.isActive = bool.toBool(value);
-
-			if (value != null && _.isFunction(this.onToggle)) {
-				this.onToggle({ value: value });
-			}
-		});
 	}
 
 	clicked(): void {
-		this.ngModel.$setViewValue(!this.ngModel.$viewValue);
+		if (!this.disabled) {
+			this.checked = !this.checked;
+			this.onToggle({ value: this.checked });
+		}
 	}
 }
 
