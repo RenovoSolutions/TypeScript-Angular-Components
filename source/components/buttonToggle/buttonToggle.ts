@@ -6,6 +6,8 @@ import { services } from 'typescript-angular-utilities';
 
 import __boolean = services.boolean;
 
+import { IToggleParams } from '../checkbox/checkbox';
+
 export let moduleName: string = 'rl.ui.components.buttonToggle';
 export let directiveName: string = 'rlButtonToggle';
 export let controllerName: string = 'ButtonToggleController';
@@ -14,12 +16,8 @@ export interface IButtonToggleScope extends angular.IScope {
 	ngModel: angular.INgModelController;
 	type: string;
 	size: string;
-	onToggle(param: IToggleParam): void;
+	onToggle(param: IToggleParams): void;
 	disabled: boolean;
-}
-
-export interface IToggleParam {
-	value: boolean;
 }
 
 export interface IButtonToggleController {
