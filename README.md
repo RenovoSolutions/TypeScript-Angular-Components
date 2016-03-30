@@ -18,6 +18,7 @@ Angular components that can be added to an application.
 * [button](/source/components/button/button.md)
 * [buttonAsync](/source/components/buttonAsync/buttonAsync.md)
 * [buttonLink](/source/components/buttonLink/buttonLink.md)
+* [buttonSubmit](/source/components/buttonSubmit/buttonSubmit.md)
 * [buttonToggle]()
 * [cardContainer]()
 * [checkbox]()
