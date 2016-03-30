@@ -1,8 +1,8 @@
 import './checkbox.css';
 import * as angular from 'angular';
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
 export interface IToggleParams {
     value: boolean;
 }
