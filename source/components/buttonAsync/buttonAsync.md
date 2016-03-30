@@ -15,28 +15,9 @@ The expression in the **action** will be triggered when the button is clicked. I
 
 This option allows you to show/hide the spinner via a binding. This is useful in cases where simply returning a promise from the action isn't sufficient.
 
-#### `right-aligned (default: false)`
+`right-aligned`, `size`, `type`, and `ng-disabled`.
 
-Specifies if the button is within a right aligned context. This is used by the button to determine which side the spinner should show on.
-
-#### `size`
-
-This will set the **size** of the button. We use the following sizes: `xs`, `sm`, `md`, `lg`. This option is applied to the button's class attribute and prefixed with `btn-`.
-
-Example: `size="lg"` will ouput `class="btn-lg"`.
-
-#### `type`
-
-This option sets the button's **visual type**. This option defaults to `default`. We use the following types: `primary`, `success`, `danger`, `info`, `warning`, `link`. This option is applied to the button's class attribute and prefixed with `btn-`.
-
-Example: `type="danger"` will output `class="btn-danger"`.
-
-
-#### [`ng-disabled`](https://docs.angularjs.org/api/ng/directive/ngDisabled)
-
-This option will set `disabled` on the button if the [expression](https://docs.angularjs.org/guide/expression) inside it is truthy.
-
-Example: `ng-disabled="true"` will output `<button disabled> ... </button>`
+See [buttons](./buttons.md) for detail on the base options.
 
 ### Full Example
 An async button with an **action**, **size**, **type**, **right-align** and **busy**.
