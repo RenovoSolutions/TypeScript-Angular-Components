@@ -6,7 +6,6 @@ export let moduleName: string = 'rl.ui.behaviors.preventDefault';
 export let directiveName: string = 'rlPreventDefault';
 export let controllerName: string = 'PreventDefaultController';
 
-
 function required(): angular.IDirective {
 	return {
 		restrict: 'A',
@@ -20,4 +19,4 @@ function required(): angular.IDirective {
 }
 
 angular.module(moduleName, [])
-	.directive(directiveName, required)
+	.directive(directiveName, required);
