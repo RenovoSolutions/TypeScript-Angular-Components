@@ -33,11 +33,11 @@ export class DateTimeStaticController implements IDateTimeStaticController {
 	constructor(private dateUtility: __date.IDateUtility) {
 		this.displayValue = '';
 		if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
-			this.displayValue = moment(this.dateValue).format('MM/DD/YYYY');
+			this.displayValue = moment(this.dateValue).format(__date.defaultFormats.dateFormat);
 
 			if (this.includeTime) {
 				this.displayTimeZone = true;
-				this.displayValue = this.displayValue + moment(this.dateValue).format(' h:mm a');
+				this.displayValue = this.displayValue + ' ' + moment(this.dateValue).format(__date.defaultFormats.timeFormat);
 			}
 		}
 	}
