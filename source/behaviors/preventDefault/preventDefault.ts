@@ -12,7 +12,7 @@ function required(): angular.IDirective {
 		restrict: 'A',
 		priority: 200,
 		link: (scope: angular.IScope, element: angular.IAugmentedJQuery): void => {
-			angular.element(element).on('click', (event: any){
+			angular.element(element).on('click', (event: any) => {
 				event.preventDefault();
 			});
 		}

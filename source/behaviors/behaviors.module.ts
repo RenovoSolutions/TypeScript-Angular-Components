@@ -4,6 +4,7 @@ import * as alias from './alias/alias';
 import * as autosave from './autosave/autosave';
 import * as popover from './popover/popover';
 import * as required from './required/required';
+import * as preventDefault from './preventDefault/preventDefault'
 
 export { alias, autosave, popover, required };
 
@@ -14,4 +15,5 @@ angular.module(moduleName, [
 	autosave.moduleName,
 	popover.moduleName,
 	required.moduleName,
+	preventDefault.moduleName
 ]);
