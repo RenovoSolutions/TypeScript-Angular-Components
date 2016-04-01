@@ -9,7 +9,6 @@ export let controllerName: string = 'PreventDefaultController';
 function required(): angular.IDirective {
 	return {
 		restrict: 'A',
-		priority: 200,
 		link: (scope: angular.IScope, element: angular.IAugmentedJQuery): void => {
 			angular.element(element).on('click', (event: any) => {
 				event.preventDefault();
