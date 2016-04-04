@@ -4,5 +4,6 @@ import __string = services.string;
 export declare var sizeForBreakpointsName: string;
 export interface ISizeForBreapointsAttrs extends angular.IAttributes {
     rlSizeForBreakpoints: string;
+    styling: string;
 }
 export declare function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtilityService): angular.IDirective;
