@@ -10,8 +10,7 @@ import { services } from 'typescript-angular-utilities';
 import {
 	moduleName,
 	controllerName,
-	IButtonToggleScope,
-	IButtonToggleController,
+	ButtonToggleController,
 } from './buttonToggle';
 
 import * as angular from 'angular';
@@ -26,79 +25,52 @@ interface INgModelMock {
 }
 
 describe('ButtonToggleController', () => {
-	var scope: IButtonToggleScope;
-	var buttonToggle: IButtonToggleController;
-	var ngModel: INgModelMock;
+	let buttonToggle: ButtonToggleController;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-
-		ngModel = {
-			$viewValue: null,
-			$modelValue: null,
-			$setViewValue: sinon.spy(),
-		};
 	});
 
 	it('should update isActive with the model value', (): void => {
 		buildController();
-		scope.$digest();
 
 		// convert initial null value to false
-		expect(buttonToggle.isActive).to.be.false;
+		expect(buttonToggle.checked).to.be.undefined;
 
-		ngModel.$modelValue = true;
-		scope.$digest();
+		buttonToggle.clicked();
 
-		expect(buttonToggle.isActive).to.be.true;
+		expect(buttonToggle.checked).to.be.true;
 
-		ngModel.$modelValue = false;
-		scope.$digest();
+		buttonToggle.clicked();
 
-		expect(buttonToggle.isActive).to.be.false;
+		expect(buttonToggle.checked).to.be.false;
 	});
 
 	it('should call toggle on the scope if a toggle function is specified', (): void => {
 		buildController();
-		scope.$digest();
 
-		var toggleSpy: Sinon.SinonSpy = sinon.spy();
-		scope.onToggle = toggleSpy;
+		let toggleSpy: Sinon.SinonSpy = sinon.spy();
+		buttonToggle.onToggle = toggleSpy;
 
-		ngModel.$modelValue = true;
-		scope.$digest();
+		buttonToggle.clicked();
 
 		sinon.assert.calledOnce(toggleSpy);
 		expect(toggleSpy.firstCall.args[0].value).to.be.true;
 	});
 
-	describe('clicked', (): void => {
-		it('should call set view value with the inverse of the view value', (): void => {
-			buildController();
-
-			buttonToggle.clicked();
-
-			sinon.assert.calledOnce(ngModel.$setViewValue);
-			sinon.assert.calledWith(ngModel.$setViewValue, true);
-
-			scope.ngModel.$viewValue = true;
-
-			buttonToggle.clicked();
-
-			sinon.assert.calledTwice(ngModel.$setViewValue);
-			sinon.assert.calledWith(ngModel.$setViewValue, false);
-		});
-	});
-
 	function buildController(): void {
-		var newScope: any = {
-			ngModel: ngModel,
+		let bindings: any = {
+			onToggle: sinon.spy(),
 		};
 
-		var controllerResult: test.IControllerResult<IButtonToggleController>
-			= test.angularFixture.controllerWithBindings<IButtonToggleController>(controllerName, null, null, newScope);
+		let controllerResult: test.IControllerResult<ButtonToggleController>
+			= test.angularFixture.controllerWithBindings<ButtonToggleController>(controllerName, bindings);
 
-		scope = <IButtonToggleScope>controllerResult.scope;
 		buttonToggle = controllerResult.controller;
+		buttonToggle.ngModel = <any>{
+			$setViewValue: (value: boolean): void => {
+				buttonToggle.ngModel.$viewValue = value;
+			},
+		};
 	}
 });
