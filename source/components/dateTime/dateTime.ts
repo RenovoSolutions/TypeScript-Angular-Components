@@ -166,7 +166,7 @@ function dateTime(moment: moment.MomentStatic
 			});
 			element.find('.show-date-picker').datetimepicker({
 				stepping: dateTime.minuteStepping || 1,
-				format: dateTime.format || defaultFormat(hasDate, hasTime),
+				format: getFormatOrDefault(),
 				direction: 'bottom',
 				elementHeight: 2,
 				pickDate: hasDate,
@@ -178,6 +178,10 @@ function dateTime(moment: moment.MomentStatic
 				ngModel.$setViewValue(newValue);
 				scope.$apply();
 			});
+
+			function getFormatOrDefault(): string {
+				return dateTime.format || <string>defaultFormat(hasDate, hasTime);
+			}
 
 			function defaultFormat(hasDate: boolean, hasTime: boolean): string | boolean {
 				if (hasDate && hasTime) {
