@@ -41,7 +41,7 @@ export function sizeForBreakpoints($parse: angular.IParseService, stringUtility:
 	function getColumnClass(columnSizes: IBreakpointSize, attribute: string): string {
 		var value: number | string = columnSizes[attribute];
 		if (attribute === styling) {
-			return value.toString();
+			return columnSizes[attribute];
 		}
 		if (value > 0 && value !== 'hidden') {
 			return stringUtility.substitute('col-{0}-{1}', attribute, <string>value);
