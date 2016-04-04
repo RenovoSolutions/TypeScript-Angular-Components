@@ -8,6 +8,7 @@ export interface IBreakpointSize {
 	sm?: number;
 	md?: number;
 	lg?: number;
+	styling?: string;
 }
 
 export interface ISecondarySorts {
