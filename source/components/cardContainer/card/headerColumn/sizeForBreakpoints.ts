@@ -12,32 +12,22 @@ export var sizeForBreakpointsName: string = 'rlSizeForBreakpoints';
 
 export interface ISizeForBreapointsAttrs extends angular.IAttributes {
 	rlSizeForBreakpoints: string;
-
-
-}
-
-export interface ISizeForBreapointsStyling extends angular.IScope{
 	styling: string;
-	rlSizeForBreakpoints: ISizeForBreapointsAttrs;
 }
 
-sizeForBreakpoints.$inject = [ __string.serviceName];
-export function sizeForBreakpoints(stringUtility: __string.IStringUtilityService): angular.IDirective {
+sizeForBreakpoints.$inject = ['$parse', __string.serviceName];
+export function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtilityService): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',
-		link: linkDirective,
-		scope: {
-			styling: '@',
-			rlSizeForBreakpoints:'='
-		}
+		link: linkDirective
 	};
 
-	function linkDirective(scope: ISizeForBreapointsStyling
+	function linkDirective(scope: angular.IScope
 		, element: angular.IAugmentedJQuery
 		, attributes: ISizeForBreapointsAttrs): void {
-		var sizes: IBreakpointSize = scope.rlSizeForBreakpoints;
-
+		var sizes: IBreakpointSize = $parse(attributes.rlSizeForBreakpoints)(scope);
+		var styling: string = $parse(attributes.styling)(scope);
 		var classes: any[] = [];
 		classes.push(getColumnClass(sizes, xs));
 		classes.push(getColumnClass(sizes, sm));
@@ -45,7 +35,10 @@ export function sizeForBreakpoints(stringUtility: __string.IStringUtilityService
 		classes.push(getColumnClass(sizes, lg));
 
 		element.addClass(classes.join(' '));
-		element.addClass(scope.styling);
+		if (styling != null) {
+			element.addClass(styling);
+		}
+
 	}
 
 	function getColumnClass(columnSizes: IBreakpointSize, attribute: string): string {
