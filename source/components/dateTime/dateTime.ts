@@ -15,6 +15,7 @@ import __dateTimeFormatStrings = services.date;
 import __validation = services.validation;
 import __object = services.object;
 import __guid = services.guid;
+import __timezone = services.timezone;
 
 import { IInputAttributes } from '../input/input';
 import { INgModelValidator } from '../../types/formValidators';
@@ -76,6 +77,7 @@ export class DateTimeController {
 	ngModel: INgModelValidator;
 	dateTimeValidator: IComponentValidator;
 	required: RequiredController;
+	timezone: __timezone.ITimezone;
 
 	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
@@ -160,12 +162,17 @@ function dateTime(moment: moment.MomentStatic
 				= dateTime.max != null ? dateTime.max : defaults.maxDate;
 
 			ngModel.$formatters.push((value: moment.Moment): string => {
+				if (value == null) {
+					dateTime.timezone = __timezone.timezoneService.currentTimezone;
+					return null;
+				}
+
+				dateTime.timezone = __timezone.timezones.get(value.tz());
 				return moment(value).format(getFormatOrDefault());
 			});
 
 			ngModel.$parsers.push((value: string): moment.Moment => {
-				// set the timezone
-				return moment(value);
+				return moment.tz(value, dateTime.timezone.momentName);
 			});
 
 			scope.$watch((): any => { return ngModel.$modelValue; }, (newValue: any): void => {
