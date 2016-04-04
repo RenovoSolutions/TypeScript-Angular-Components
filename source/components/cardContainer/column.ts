@@ -8,7 +8,6 @@ export interface IBreakpointSize {
 	sm?: number;
 	md?: number;
 	lg?: number;
-	styling?: string;
 }
 
 export interface ISecondarySorts {
@@ -29,5 +28,6 @@ export interface IColumn<TItemType> {
 	secondarySorts?: ISecondarySorts;
 	flipSort?: boolean;
 	sortDirection?: SortDirection;
+	styling?: string;
 	fieldName?: string;
 }
