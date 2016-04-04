@@ -211,6 +211,6 @@
 			scope: templateScope,
 		};
 
-		self.date = moment('2016-04-01T12:00:00.000-05:00');
+		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
 	}
 }());
