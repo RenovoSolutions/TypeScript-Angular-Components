@@ -29,6 +29,7 @@ var ButtonToggleController = (function () {
     ButtonToggleController.$inject = ['$scope', __boolean.serviceName];
     return ButtonToggleController;
 }());
+exports.ButtonToggleController = ButtonToggleController;
 var buttonToggle = {
     require: { ngModel: '^ngModel' },
     transclude: true,
