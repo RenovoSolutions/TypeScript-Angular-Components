@@ -84,6 +84,7 @@
 			return $q.when(_.clone(self.options));
 		}
 		self.typeaheadList = [self.options[0], self.options[4]];
+		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
 	}
 
 	function ButtonTestController() {
