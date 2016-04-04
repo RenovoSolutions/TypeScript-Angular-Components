@@ -1,4 +1,6 @@
-(function () {
+(function() {
+	var __timezone = rl_utilities.services.timezone;
+
 	angular.module('app', ['rl.ui', 'ui.router'])
 		.controller('InputTestController', InputTestController)
 		.controller('ButtonTestController', ButtonTestController)
@@ -85,6 +87,13 @@
 		}
 		self.typeaheadList = [self.options[0], self.options[4]];
 		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
+		__timezone.timezoneService.setCurrentTimezone('-08:00');
+
+		self.logDates = function() {
+			var format = 'YYYY-MM-DDTHH:mm:ssZ';
+			console.log(self.date.format(format));
+			console.log(self.date2.format(format));
+		}
 	}
 
 	function ButtonTestController() {
