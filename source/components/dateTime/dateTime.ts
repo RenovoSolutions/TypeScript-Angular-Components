@@ -159,7 +159,16 @@ function dateTime(moment: moment.MomentStatic
 			let max: string | Date | moment.Moment
 				= dateTime.max != null ? dateTime.max : defaults.maxDate;
 
-			scope.$watch((): any => { return ngModel.$viewValue; }, (newValue: any): void => {
+			ngModel.$formatters.push((value: moment.Moment): string => {
+				return moment(value).format(getFormatOrDefault());
+			});
+
+			ngModel.$parsers.push((value: string): moment.Moment => {
+				// set the timezone
+				return moment(value);
+			});
+
+			scope.$watch((): any => { return ngModel.$modelValue; }, (newValue: any): void => {
 				dateTime.validFormat = object.isNullOrEmpty(newValue)
 					? true
 					: moment(newValue).isValid();
