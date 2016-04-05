@@ -11,21 +11,15 @@ import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
-import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
 import __object = services.object;
-import __guid = services.guid;
 
-import { IInputAttributes } from '../input/input';
+import { input, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
 
 export let moduleName: string = 'rl.ui.components.spinner';
 export let directiveName: string = 'rlSpinner';
@@ -44,14 +38,13 @@ export interface ISpinnerBindings {
 	ngDisabled: boolean;
 	spinnerId: string;
 	name: string;
-	validator: __validation.IValidationHandler;
 }
 
 interface ISpinnerScope extends angular.IScope {
 	spinner: SpinnerController;
 }
 
-export class SpinnerController {
+export class SpinnerController extends InputController {
 	min: number;
 	max: number;
 	step: number;
@@ -61,45 +54,14 @@ export class SpinnerController {
 	roundToStep: boolean;
 	ngDisabled: boolean;
 	spinnerId: string;
-	name: string;
-	validator: __validation.IValidationHandler;
-
-	ngModel: INgModelValidator;
-	required: RequiredController;
-	spinnerValidator: IComponentValidator;
 
 	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 			, $attrs: IInputAttributes
 			, componentValidatorFactory: IComponentValidatorFactory) {
-		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
-			$attrs.$set('name', 'spinner-' + __guid.guid.random());
-		}
+		super($scope, $attrs, componentValidatorFactory);
 
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
-			let validators: __validation.IValidationHandler[] = [];
-
-			if (!_.isUndefined(this.validator)) {
-				validators.push(this.validator);
-			}
-
-			if (this.required != null) {
-				validators.push({
-					name: 'rlRequired',
-					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
-					errorMessage: this.required.message,
-				});
-			}
-
-			if (_.some(validators)) {
-				this.spinnerValidator = componentValidatorFactory.getInstance({
-					ngModel: this.ngModel,
-					$scope: $scope,
-					validators: validators,
-				});
-			}
-			unregister();
-		});
+		this.inputType = 'spinner';
 	}
 }
 
@@ -111,31 +73,30 @@ function spinner($timeout: angular.ITimeoutService
 	return {
 		restrict: 'E',
 		template: require('./spinner.html'),
-		require: ['ngModel', '?' + requiredDirectiveName],
+		require: { ngModel: 'ngModel', required: '?' + requiredDirectiveName },
 		controller: controllerName,
 		controllerAs: 'spinner',
 		scope: {},
 		bindToController: {
-			min: '=',
-			max: '=',
-			step: '=',
-			decimals: '=',
+			min: '<?',
+			max: '<?',
+			step: '<?',
+			decimals: '<?',
 			prefix: '@',
 			postfix: '@',
-			roundToStep: '=',
-			ngDisabled: '=',
+			roundToStep: '<?',
+			ngDisabled: '<?',
 			spinnerId: '@',
 			name: '@',
-			validator: '=',
+			validator: '<?',
 		},
 		link(scope: ISpinnerScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, controllers: any[]): void {
+			, controllers: any): void {
 			let spinner: SpinnerController = scope.spinner;
 
-			let ngModel: INgModelValidator = controllers[0];
-			spinner.required = controllers[1];
+			let ngModel: INgModelValidator = controllers.ngModel;
 			spinner.ngModel = ngModel;
 			let unbindWatches: Function;
 			scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {
@@ -196,6 +157,6 @@ function spinner($timeout: angular.ITimeoutService
 	};
 }
 
-angular.module(moduleName, [__string.moduleName, componentValidatorModuleName, __number.moduleName])
+angular.module(moduleName, [__string.moduleName, __number.moduleName, inputModule])
 	.directive(directiveName, spinner)
 	.controller(controllerName, SpinnerController);
