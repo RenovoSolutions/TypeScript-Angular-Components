@@ -8,12 +8,12 @@ import __genericSearchFilter = services.genericSearchFilter;
 import { IDataSource } from '../dataSources/dataSource';
 import { CardContainerController } from '../cardContainer';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
-export var directiveName: string = 'rlCardSearch';
-export var controllerName: string = 'CardSearchController';
+export let moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
+export let componentName: string = 'rlCardSearch';
+export let controllerName: string = 'CardSearchController';
 
-export var defaultSearchPlaceholder: string = 'Search';
-export var defaultSearchDelay: number = 1000;
+export let defaultSearchPlaceholder: string = 'Search';
+export let defaultSearchDelay: number = 1000;
 
 export interface ICardSearchBindings {
 	delay: number;
@@ -55,13 +55,13 @@ export class CardSearchController {
 		if (this.hasSearchFilter) {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
-			var dataSource: IDataSource<any> = this.cardContainer.dataSource;
+			let dataSource: IDataSource<any> = this.cardContainer.dataSource;
 
-			var delay: number = this.delay != null
+			let delay: number = this.delay != null
 				? this.delay
 				: defaultSearchDelay;
 
-			var timer: angular.IPromise<void>;
+			let timer: angular.IPromise<void>;
 
 			this.$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
 				this.searchFilter.searchText = search;
@@ -91,22 +91,17 @@ export class CardSearchController {
 	}
 }
 
-export function cardSearch(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: { cardContainer: '?^^rlCardContainer' },
-		template: require('./cardSearch.html'),
-		controller: controllerName,
-		controllerAs: 'cardSearch',
-		scope: {},
-		bindToController: {
-			delay: '=searchDelay',
-			searchFilter: '=?',
-		},
-	};
-}
+let cardSearch: angular.IComponentOptions = {
+	require: { cardContainer: '?^^rlCardContainer' },
+	template: require('./cardSearch.html'),
+	controller: controllerName,
+	controllerAs: 'cardSearch',
+	bindings: {
+		delay: '<?searchDelay',
+		searchFilter: '<?',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, cardSearch)
+	.component(componentName, cardSearch)
 	.controller(controllerName, CardSearchController);
