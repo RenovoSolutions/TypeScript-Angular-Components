@@ -7,13 +7,14 @@ var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var __object = typescript_angular_utilities_1.services.object;
 var headerColumn_module_1 = require('./headerColumn/headerColumn.module');
 exports.moduleName = 'rl.ui.components.cardContainer.card';
-exports.directiveName = 'rlCard';
+exports.componentName = 'rlCard';
 exports.controllerName = 'CardController';
 var CardController = (function () {
-    function CardController($scope, $controller, $q, parentChild, object) {
+    function CardController($scope, $controller, $q, $element, parentChild, object) {
         var _this = this;
         this.$scope = $scope;
         this.$q = $q;
+        this.$element = $element;
         this.parentChild = parentChild;
         this.showContent = false;
         this.dirty = false;
@@ -54,12 +55,6 @@ var CardController = (function () {
         parentChild.registerChildBehavior(this.item, {
             close: this.autosave,
         });
-        $scope.__setHasBody = function (hasBody) {
-            _this.hasBody = hasBody;
-        };
-        $scope.__setHasFooter = function (hasFooter) {
-            _this.hasFooter = hasFooter;
-        };
     }
     CardController.prototype.toggleContent = function () {
         if (!this.showContent) {
@@ -94,13 +89,28 @@ var CardController = (function () {
             }
         });
     };
+    CardController.prototype.$postLink = function () {
+        var _this = this;
+        this.cardContainer.makeCard(this.$scope, function (content) {
+            var contentArea = _this.$element.find('.content-template');
+            contentArea.append(content);
+            _this.hasBody = content.length > 0;
+        }, null, 'contentSlot');
+        this.cardContainer.makeCard(this.$scope, function (footer) {
+            _this.hasFooter = (footer.length > 0);
+            if (_this.hasFooter) {
+                var footerArea = _this.$element.find('.footer-template');
+                footerArea.append(footer);
+            }
+        }, null, 'footerSlot');
+    };
     CardController.prototype.open = function () {
         this.parentChild.triggerChildBehavior(this.item, function (behavior) {
             if (_.isFunction(behavior.initCard)) {
                 behavior.initCard();
             }
         });
-        if (this.$scope.__rlCardContainer.openCard()) {
+        if (this.cardContainer.openCard()) {
             this.showContent = true;
         }
     };
@@ -111,58 +121,35 @@ var CardController = (function () {
         this.item.viewData.selected = value;
         this.selectionChanged();
     };
-    CardController.$inject = ['$scope', '$controller', '$q', __parentChild.serviceName, __object.serviceName];
+    CardController.$inject = ['$scope', '$controller', '$q', '$element', __parentChild.serviceName, __object.serviceName];
     return CardController;
 }());
 exports.CardController = CardController;
-function card() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./card.html'),
-        require: '^^rlCardContainer',
-        controller: exports.controllerName,
-        controllerAs: '__card',
-        scope: {},
-        bindToController: {
-            columns: '=',
-            item: '=',
-            clickable: '=',
-            source: '=',
-            containerData: '=',
-            cardController: '=',
-            cardControllerAs: '=',
-            cardAs: '=',
-            permanentFooter: '=',
-            selectable: '=',
-            selectionChanged: '&',
-            saveWhenInvalid: '<?',
-        },
-        link: function (scope, element, attrs, rlCardContainer) {
-            scope.__rlCardContainer = rlCardContainer;
-            rlCardContainer.makeCard(scope, function (content) {
-                var contentArea = element.find('.content-template');
-                contentArea.append(content);
-                var hasBody = content.length > 0;
-                scope.__setHasBody(hasBody);
-            }, null, 'contentSlot');
-            rlCardContainer.makeCard(scope, function (footer) {
-                var hasFooter = (footer.length > 0);
-                if (hasFooter) {
-                    var footerArea = element.find('.footer-template');
-                    footerArea.append(footer);
-                }
-                scope.__setHasFooter(hasFooter);
-            }, null, 'footerSlot');
-        },
-    };
-}
-exports.card = card;
+var card = {
+    template: require('./card.html'),
+    require: { cardContainer: '^^rlCardContainer' },
+    controller: exports.controllerName,
+    controllerAs: '__card',
+    bindings: {
+        columns: '<?',
+        item: '=',
+        clickable: '<?',
+        source: '=',
+        containerData: '<?',
+        cardController: '<?',
+        cardControllerAs: '<?',
+        cardAs: '<?',
+        permanentFooter: '<?',
+        selectable: '<?',
+        selectionChanged: '&',
+        saveWhenInvalid: '<?',
+    },
+};
 angular.module(exports.moduleName, [
     __parentChild.moduleName,
     __object.moduleName,
     headerColumn_module_1.moduleName,
 ])
-    .directive(exports.directiveName, card)
+    .component(exports.componentName, card)
     .controller(exports.controllerName, CardController);
 //# sourceMappingURL=card.js.map

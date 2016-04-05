@@ -6,9 +6,9 @@ import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
 import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerController } from '../cardContainer';
-export declare var moduleName: string;
-export declare var directiveName: string;
-export declare var controllerName: string;
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
 export interface ICardBindings {
     columns: IColumn<any>[];
     item: any;
@@ -28,9 +28,6 @@ export interface ICardScope extends angular.IScope {
     refresh(): void;
     remove(): void;
     containerData: any;
-    __rlCardContainer: CardContainerController;
-    __setHasBody(hasBody: boolean): void;
-    __setHasFooter(hasFooter: boolean): void;
 }
 export interface ICardBehavior {
     close(): boolean;
@@ -52,6 +49,7 @@ export interface ICardChildBehavior {
 export declare class CardController {
     private $scope;
     private $q;
+    private $element;
     private parentChild;
     columns: IColumn<any>[];
     item: any;
@@ -72,14 +70,15 @@ export declare class CardController {
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
     hasBody: boolean;
     hasFooter: boolean;
+    cardContainer: CardContainerController;
     static $inject: string[];
-    constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
+    constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, $element: angular.IAugmentedJQuery, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
     toggleContent(): void;
     validateCard(): boolean;
     saveCard(): angular.IPromise<void>;
     clickCard(): void;
+    $postLink(): void;
     private autosave;
     private open();
     private setSelected(value);
 }
-export declare function card(): angular.IDirective;

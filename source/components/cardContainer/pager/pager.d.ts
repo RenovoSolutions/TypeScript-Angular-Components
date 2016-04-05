@@ -1,8 +1,8 @@
 import * as angular from 'angular';
-export declare var moduleName: string;
-export declare var directiveName: string;
-export declare var controllerName: string;
-export declare var defaultVisiblePageCount: number;
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
+export declare let defaultVisiblePageCount: number;
 export interface IPagerBindings {
     pageCount: number;
 }
@@ -30,4 +30,3 @@ export declare class PagerController {
     next(): void;
     last(): void;
 }
-export declare function pager(): angular.IDirective;

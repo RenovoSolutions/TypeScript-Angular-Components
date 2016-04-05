@@ -1,7 +1,7 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.cardContainer.cardSearch';
-exports.directiveName = 'rlCardSearch';
+exports.componentName = 'rlCardSearch';
 exports.controllerName = 'CardSearchController';
 exports.defaultSearchPlaceholder = 'Search';
 exports.defaultSearchDelay = 1000;
@@ -27,19 +27,19 @@ var CardSearchController = (function () {
         }
         if (this.hasSearchFilter) {
             this.searchPlaceholder = exports.defaultSearchPlaceholder;
-            var dataSource = this.cardContainer.dataSource;
-            var delay = this.delay != null
+            var dataSource_1 = this.cardContainer.dataSource;
+            var delay_1 = this.delay != null
                 ? this.delay
                 : exports.defaultSearchDelay;
-            var timer;
+            var timer_1;
             this.$scope.$watch(function () { return _this.searchText; }, function (search) {
                 _this.searchFilter.searchText = search;
                 _this.minSearchLength = _this.searchFilter.minSearchLength;
                 _this.validateSearchLength(search, _this.minSearchLength);
-                if (timer != null) {
-                    _this.$timeout.cancel(timer);
+                if (timer_1 != null) {
+                    _this.$timeout.cancel(timer_1);
                 }
-                timer = _this.$timeout(dataSource.refresh.bind(dataSource), delay);
+                timer_1 = _this.$timeout(dataSource_1.refresh.bind(dataSource_1), delay_1);
             });
             this.$scope.$watch(function () {
                 return _this.searchFilter.searchText;
@@ -58,23 +58,17 @@ var CardSearchController = (function () {
     return CardSearchController;
 }());
 exports.CardSearchController = CardSearchController;
-function cardSearch() {
-    'use strict';
-    return {
-        restrict: 'E',
-        require: { cardContainer: '?^^rlCardContainer' },
-        template: require('./cardSearch.html'),
-        controller: exports.controllerName,
-        controllerAs: 'cardSearch',
-        scope: {},
-        bindToController: {
-            delay: '=searchDelay',
-            searchFilter: '=?',
-        },
-    };
-}
-exports.cardSearch = cardSearch;
+var cardSearch = {
+    require: { cardContainer: '?^^rlCardContainer' },
+    template: require('./cardSearch.html'),
+    controller: exports.controllerName,
+    controllerAs: 'cardSearch',
+    bindings: {
+        delay: '<?searchDelay',
+        searchFilter: '<?',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, cardSearch)
+    .component(exports.componentName, cardSearch)
     .controller(exports.controllerName, CardSearchController);
 //# sourceMappingURL=cardSearch.js.map
