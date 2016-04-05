@@ -77,6 +77,7 @@ describe('TypeaheadListController', () => {
 			typeaheadList.add = addEventSpy;
 
 			typeaheadList.addItem(items[0]);
+			scope.$digest();
 
 			expect(list).to.have.length(1);
 			expect(list[0].id).to.equal(1);
@@ -99,6 +100,7 @@ describe('TypeaheadListController', () => {
 			typeaheadList.remove = removeEventSpy;
 
 			typeaheadList.removeItem(list[0]);
+			scope.$digest();
 
 			expect(list).to.be.empty;
 			sinon.assert.calledOnce(addSpy);
