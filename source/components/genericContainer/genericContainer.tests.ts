@@ -34,6 +34,9 @@ describe('GenericContainerController', () => {
 			templates: templates,
 			default: 'default',
 			swapTemplates: swapSpy,
+		}, {
+			$element: {},
+			$transclude: {},
 		});
 
 		controller = controllerResult.controller;

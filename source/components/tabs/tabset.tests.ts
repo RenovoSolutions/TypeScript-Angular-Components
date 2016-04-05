@@ -56,8 +56,12 @@ describe('TabsetController', () => {
 	});
 
 	function buildController(): void {
+		let locals: any = {
+			$element: {},
+		};
+
 		let controllerResult: test.IControllerResult<TabsetController>
-			= test.angularFixture.controllerWithBindings<TabsetController>(tabsetControllerName);
+			= test.angularFixture.controllerWithBindings<TabsetController>(tabsetControllerName, null, locals);
 
 		scope = controllerResult.scope;
 		tabset = controllerResult.controller;

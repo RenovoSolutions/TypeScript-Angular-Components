@@ -276,13 +276,14 @@ describe('CardController', () => {
 			refresh: sinon.spy(),
 			remove: sinon.spy(),
 		};
+		let locals: any = { $element: {} };
 
-		var controllerResult: test.IControllerResult<CardController>
-			= test.angularFixture.controllerWithBindings<CardController>(controllerName, card);
+		let controllerResult: test.IControllerResult<CardController>
+			= test.angularFixture.controllerWithBindings<CardController>(controllerName, card, locals);
 
 		scope = <ICardScope>controllerResult.scope;
-		scope.__rlCardContainer = <any>cardContainer;
 		card = controllerResult.controller;
+		card.cardContainer = <any>cardContainer;
 
 		let autosaveBehavior: IAutosaveBehaviorMock = {
 			autosave: sinon.spy((): boolean => { return true; }),
