@@ -23,7 +23,7 @@ function headerColumn($compile) {
     'use strict';
     return {
         restrict: 'E',
-        template: "\n\t\t\t<div rl-size-for-breakpoints=\"header.column.size\" title=\"{{::header.column.description}}\">\n\t\t\t\t<div class=\"template-container\"></div>\n\t\t\t</div>\n\t\t",
+        template: "\n\t\t\t<div rl-size-for-breakpoints=\"header.column.size\" styling=\"::header.column.styling\" title=\"{{::header.column.description}}\">\n\t\t\t\t<div class=\"template-container\"></div>\n\t\t\t</div>\n\t\t",
         controller: exports.controllerName,
         controllerAs: 'header',
         scope: {},

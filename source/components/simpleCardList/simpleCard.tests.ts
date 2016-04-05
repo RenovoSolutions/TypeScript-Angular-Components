@@ -29,10 +29,10 @@ interface IAutosaveBehaviorMock {
 }
 
 describe('SimpleCardController', () => {
-	var scope: angular.IScope;
-	var card: simpleCard.SimpleCardController;
-	var list: IListMock;
-	var parentChild: __parentChild.IParentChildBehaviorService;
+	let scope: angular.IScope;
+	let card: simpleCard.SimpleCardController;
+	let list: IListMock;
+	let parentChild: __parentChild.IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -42,7 +42,7 @@ describe('SimpleCardController', () => {
 			registerCard: sinon.spy(),
 		};
 
-		var services: any = test.angularFixture.inject(__parentChild.serviceName);
+		let services: any = test.angularFixture.inject(__parentChild.serviceName);
 		parentChild = services[__parentChild.serviceName];
 	});
 
@@ -51,15 +51,15 @@ describe('SimpleCardController', () => {
 
 		sinon.assert.calledOnce(list.registerCard);
 
-		var behavior: simpleCard.ISimpleCardBehavior = list.registerCard.firstCall.args[0];
+		let behavior: simpleCard.ISimpleCardBehavior = list.registerCard.firstCall.args[0];
 		expect(_.isFunction(behavior.close)).to.be.true;
 	});
 
 	it('should register close behavior with the parent, if a child link is provided', (): void => {
-		var childLink: any = {};
+		let childLink: any = {};
 		buildController(false, childLink);
 
-		var behavior: simpleCard.ISimpleCardBehavior = parentChild.getChildBehavior<simpleCard.ISimpleCardBehavior>(childLink);
+		let behavior: simpleCard.ISimpleCardBehavior = parentChild.getChildBehavior<simpleCard.ISimpleCardBehavior>(childLink);
 		expect(_.isFunction(behavior.close)).to.be.true;
 	});
 
@@ -69,7 +69,7 @@ describe('SimpleCardController', () => {
 	});
 
 	describe('toggleContent', (): void => {
-		var behavior: IAutosaveBehaviorMock;
+		let behavior: IAutosaveBehaviorMock;
 
 		beforeEach((): void => {
 			buildController();
@@ -141,25 +141,17 @@ describe('SimpleCardController', () => {
 	});
 
 	function buildController(useList?: boolean, childLink?: any): void {
-		var bindings: any = {
+		let bindings: any = {
 			onOpen: sinon.spy(),
 			childLink: childLink,
+			listController: useList === false ? null : list,
 		};
 
-		var $element: any = {
-			controller(): any {
-				if (useList === false) {
-					return null;
-				} else {
-					return list;
-				}
-			},
-		};
-
-		var controllerResult: test.IControllerResult<simpleCard.SimpleCardController>
-			= test.angularFixture.controllerWithBindings<simpleCard.SimpleCardController>(simpleCard.controllerName, bindings, { $element: $element });
+		let controllerResult: test.IControllerResult<simpleCard.SimpleCardController>
+			= test.angularFixture.controllerWithBindings<simpleCard.SimpleCardController>(simpleCard.controllerName, bindings);
 
 		scope = controllerResult.scope;
 		card = controllerResult.controller;
+		card.$onInit();
 	}
 });

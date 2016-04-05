@@ -26,7 +26,7 @@ export interface IButtonToggleController extends IButtonToggleBindings {
 	clicked(): void;
 }
 
-class ButtonToggleController implements IButtonToggleController {
+export class ButtonToggleController implements IButtonToggleController {
 	type: string;
 	size: string;
 	onToggle: { (param: IToggleParams): void };

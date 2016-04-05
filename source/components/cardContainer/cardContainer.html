@@ -40,7 +40,7 @@
 				</rl-generic-container>
 
 				<div ng-if="cardContainer.dataSource.dataSet | isEmpty:false">
-					<div ng-repeat="card in cardContainer.dataSource.dataSet">
+					<div class="card-item-repeat" ng-repeat="card in cardContainer.dataSource.dataSet">
 						<rl-card columns="cardContainer.columns" item="card"
 								clickable="cardContainer.clickableCards"
 								selectable="cardContainer.selectableCards"

@@ -12,6 +12,7 @@ export var sizeForBreakpointsName: string = 'rlSizeForBreakpoints';
 
 export interface ISizeForBreapointsAttrs extends angular.IAttributes {
 	rlSizeForBreakpoints: string;
+	styling: string;
 }
 
 sizeForBreakpoints.$inject = ['$parse', __string.serviceName];
@@ -19,14 +20,14 @@ export function sizeForBreakpoints($parse: angular.IParseService, stringUtility:
 	'use strict';
 	return {
 		restrict: 'A',
-		link: linkDirective,
+		link: linkDirective
 	};
 
 	function linkDirective(scope: angular.IScope
-						, element: angular.IAugmentedJQuery
-						, attributes: ISizeForBreapointsAttrs): void {
+		, element: angular.IAugmentedJQuery
+		, attributes: ISizeForBreapointsAttrs): void {
 		var sizes: IBreakpointSize = $parse(attributes.rlSizeForBreakpoints)(scope);
-
+		var styling: string = $parse(attributes.styling)(scope);
 		var classes: any[] = [];
 		classes.push(getColumnClass(sizes, xs));
 		classes.push(getColumnClass(sizes, sm));
@@ -34,14 +35,18 @@ export function sizeForBreakpoints($parse: angular.IParseService, stringUtility:
 		classes.push(getColumnClass(sizes, lg));
 
 		element.addClass(classes.join(' '));
+		if (styling != null) {
+			element.addClass(styling);
+		}
+
 	}
 
-	function getColumnClass(columnSizes: IBreakpointSize, breakpoint: string): string {
-		var value: number | string = columnSizes[breakpoint];
+	function getColumnClass(columnSizes: IBreakpointSize, attribute: string): string {
+		var value: number | string = columnSizes[attribute];
 		if (value > 0 && value !== 'hidden') {
-			return stringUtility.substitute('col-{0}-{1}', breakpoint, <string>value);
+			return stringUtility.substitute('col-{0}-{1}', attribute, <string>value);
 		} else {
-			return 'hidden-' + breakpoint;
+			return 'hidden-' + attribute;
 		}
 	}
 }

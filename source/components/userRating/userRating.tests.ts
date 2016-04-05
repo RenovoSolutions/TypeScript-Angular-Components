@@ -11,8 +11,8 @@ import __parentChild = services.parentChildBehavior;
 import {
 	moduleName,
 	controllerName,
-	IUserRatingScope,
-	IUserRatingController,
+	IUserRatingBindings,
+	UserRatingController,
 } from './userRating';
 
 import * as angular from 'angular';
@@ -24,11 +24,16 @@ interface INgModelMock {
 }
 
 describe('UserRatingController', () => {
-	var scope: IUserRatingScope;
-	var userRating: IUserRatingController;
+	let scope: angular.IScope;
+	let userRating: UserRatingController;
+
+	let $timeout: angular.ITimeoutService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
+
+		let services: any = test.angularFixture.inject('$timeout');
+		$timeout = services['$timeout'];
 
 		buildController();
 	});
@@ -45,7 +50,7 @@ describe('UserRatingController', () => {
 	it('should set all stars less than or equal to the rating to filled', (): void => {
 		userRating.setRating(3);
 
-		expect(scope.ngModel.$viewValue).to.equal(3);
+		expect(userRating.ngModel.$viewValue).to.equal(3);
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;
@@ -55,8 +60,10 @@ describe('UserRatingController', () => {
 	});
 
 	it('should set the initial view state based on the initial view value', (): void => {
-		scope.ngModel.$viewValue = 2;
+		userRating.ngModel.$viewValue = 2;
 		scope.$digest();
+
+		$timeout.flush();
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;
@@ -66,14 +73,15 @@ describe('UserRatingController', () => {
 	});
 
 	function buildController(): void {
-		var ngModel: INgModelMock = {
+		let ngModel: INgModelMock = {
 			$setViewValue: (value: number): void => { ngModel.$viewValue = value; },
 			$viewValue: null,
 		};
-		var controllerResult: test.IControllerResult<IUserRatingController>
-			= test.angularFixture.controllerWithBindings<IUserRatingController>(controllerName, null, null, { ngModel: ngModel });
+		let controllerResult: test.IControllerResult<UserRatingController>
+			= test.angularFixture.controllerWithBindings<UserRatingController>(controllerName, { ngModel: ngModel });
 
-		scope = <IUserRatingScope>controllerResult.scope;
+		scope = controllerResult.scope;
 		userRating = controllerResult.controller;
+		userRating.$onInit();
 	}
 });
