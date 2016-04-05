@@ -1,11 +1,7 @@
 import '../../../libraries/bootstrap-touchspin/index';
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __validation = services.validation;
-import { IInputAttributes } from '../input/input';
-import { INgModelValidator } from '../../types/formValidators';
-import { RequiredController } from '../../behaviors/required/required';
-import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
+import { InputController, IInputAttributes } from '../input/input';
+import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare let moduleName: string;
 export declare let directiveName: string;
 export declare let controllerName: string;
@@ -21,9 +17,8 @@ export interface ISpinnerBindings {
     ngDisabled: boolean;
     spinnerId: string;
     name: string;
-    validator: __validation.IValidationHandler;
 }
-export declare class SpinnerController {
+export declare class SpinnerController extends InputController {
     min: number;
     max: number;
     step: number;
@@ -33,11 +28,6 @@ export declare class SpinnerController {
     roundToStep: boolean;
     ngDisabled: boolean;
     spinnerId: string;
-    name: string;
-    validator: __validation.IValidationHandler;
-    ngModel: INgModelValidator;
-    required: RequiredController;
-    spinnerValidator: IComponentValidator;
     static $inject: string[];
     constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory);
 }
