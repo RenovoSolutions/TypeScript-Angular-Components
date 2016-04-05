@@ -9,7 +9,7 @@ import { DialogService, serviceName as dialogServiceName, moduleName as dialogMo
 import { IFormValidator } from '../../types/formValidators';
 
 export let moduleName: string = 'rl.ui.components.dialog';
-export let directiveName: string = 'rlDialog';
+export let componentName: string = 'rlDialog';
 export let controllerName: string = 'DialogController';
 
 export interface IDialogScope extends angular.IScope {
@@ -36,8 +36,11 @@ export class DialogController implements IDialogBindings {
 
 	form: IFormValidator;
 
-	static $inject: string[] = ['$scope', dialogServiceName];
+	static $inject: string[] = ['$scope', '$element', '$transclude', '$compile', dialogServiceName];
 	constructor(private $scope: IDialogScope
+			, private $element: angular.IAugmentedJQuery
+			, private $transclude: angular.ITranscludeFunction
+			, private $compile: angular.ICompileService
 			, private dialogService: DialogService<any>) {}
 
 	$onInit(): void {
@@ -48,51 +51,42 @@ export class DialogController implements IDialogBindings {
 			}
 		});
 	}
+
+	$postLink(): void {
+		this.close = this.$scope.$parent.$close;
+		this.dismiss = this.$scope.$parent.$dismiss;
+		this.saveAndClose = this.$scope.$parent.$saveAndClose;
+		let footerArea: JQuery = this.$element.find('.footer-template');
+
+		if (this.$transclude.isSlotFilled('footerSlot')) {
+			this.$transclude((footer: JQuery): void => {
+				this.hasFooter = (footer.length > 0);
+				if (this.hasFooter) {
+					footerArea.append(footer);
+				}
+			}, null, 'footerSlot');
+		} else if (this.autosave) {
+			let footer: JQuery = this.$compile(require('./autosaveDialogFooter.html'))(this.$scope);
+			this.hasFooter = true;
+			footerArea.append(footer);
+		}
+	}
 }
 
-dialog.$inject = ['$compile'];
-function dialog($compile: angular.ICompileService): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		transclude: {
-			headerSlot: '?rlDialogHeader',
-			contentSlot: '?rlDialogContent',
-			footerSlot: '?rlDialogFooter',
-		},
-		template: require('./dialog.html'),
-		controller: controllerName,
-		controllerAs: 'dialog',
-		scope: {},
-		bindToController: {
-			autosave: '=',
-		},
-		link(scope: IDialogScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, controller: DialogController
-			, transclude: angular.ITranscludeFunction): void {
-			controller.close = scope.$parent.$close;
-			controller.dismiss = scope.$parent.$dismiss;
-			controller.saveAndClose = scope.$parent.$saveAndClose;
-			let footerArea: JQuery = element.find('.footer-template');
-
-			if (transclude.isSlotFilled('footerSlot')) {
-				transclude((footer: JQuery): void => {
-					controller.hasFooter = (footer.length > 0);
-					if (controller.hasFooter) {
-						footerArea.append(footer);
-					}
-				}, null, 'footerSlot');
-			} else if (controller.autosave) {
-				let footer: JQuery = $compile(require('./autosaveDialogFooter.html'))(scope);
-				controller.hasFooter = true;
-				footerArea.append(footer);
-			}
-		},
-	};
-}
+let dialog: angular.IComponentOptions = {
+	transclude: <any>{
+		headerSlot: '?rlDialogHeader',
+		contentSlot: '?rlDialogContent',
+		footerSlot: '?rlDialogFooter',
+	},
+	template: require('./dialog.html'),
+	controller: controllerName,
+	controllerAs: 'dialog',
+	bindings: {
+		autosave: '=',
+	},
+};
 
 angular.module(moduleName, [dialogModule])
-	.directive(directiveName, dialog)
+	.component(componentName, dialog)
 	.controller(controllerName, DialogController);
