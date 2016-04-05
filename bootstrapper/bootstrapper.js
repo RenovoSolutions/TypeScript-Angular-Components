@@ -118,6 +118,16 @@
 				message: 'Do you want to do this?',
 			});
 		};
+
+		self.openDialog = function() {
+			dialog.open({
+				template: '<rl-dialog>' +
+							'<rl-dialog-header>Header</rl-dialog-header>' +
+							'<rl-dialog-content>Content</rl-dialog-content>' +
+							'<rl-dialog-footer>Footer</rl-dialog-footer>' +
+						'</rl-dialog > ',
+			});
+		};
 	}
 
 	CardTestController.$inject = ['cardContainerBuilder'];
