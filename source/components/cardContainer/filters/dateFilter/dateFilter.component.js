@@ -3,7 +3,7 @@
 var moment = require('moment');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __date = typescript_angular_utilities_1.services.date;
-exports.directiveName = 'rlDateFilter';
+exports.componentName = 'rlDateFilter';
 exports.controllerName = 'rlDateFilterController';
 // Optional interface for bound attributes
 var DateOptions;
@@ -127,23 +127,17 @@ var DateFilterController = (function () {
     return DateFilterController;
 }());
 exports.DateFilterController = DateFilterController;
-function dateFilter() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./dateFilter.html'),
-        controller: exports.controllerName,
-        controllerAs: 'filter',
-        scope: {},
-        bindToController: {
-            filter: '=',
-            source: '=',
-            label: '@',
-            includeTime: '=',
-            includeDateRange: '=',
-            clearButton: '='
-        },
-    };
-}
-exports.dateFilter = dateFilter;
+exports.dateFilter = {
+    template: require('./dateFilter.html'),
+    controller: exports.controllerName,
+    controllerAs: 'filter',
+    bindings: {
+        filter: '<',
+        source: '<?',
+        label: '@',
+        includeTime: '<?',
+        includeDateRange: '<?',
+        clearButton: '<?'
+    },
+};
 //# sourceMappingURL=dateFilter.component.js.map

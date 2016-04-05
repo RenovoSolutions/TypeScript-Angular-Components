@@ -1,6 +1,6 @@
 // /// <reference path='../../../../../typings/commonjs.d.ts' />
 'use strict';
-exports.directiveName = 'rlFilterGroup';
+exports.componentName = 'rlFilterGroup';
 exports.controllerName = 'FilterGroupController';
 var FilterGroupController = (function () {
     function FilterGroupController($scope) {
@@ -25,20 +25,14 @@ var FilterGroupController = (function () {
     return FilterGroupController;
 }());
 exports.FilterGroupController = FilterGroupController;
-function filterGroup() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./filterGroup.directive.html'),
-        controller: exports.controllerName,
-        controllerAs: 'controller',
-        scope: {},
-        bindToController: {
-            icon: '=',
-            filterGroup: '=',
-            source: '=',
-        },
-    };
-}
-exports.filterGroup = filterGroup;
+exports.filterGroup = {
+    template: require('./filterGroup.directive.html'),
+    controller: exports.controllerName,
+    controllerAs: 'controller',
+    bindings: {
+        icon: '=',
+        filterGroup: '=',
+        source: '=',
+    },
+};
 //# sourceMappingURL=filterGroup.directive.js.map

@@ -2,20 +2,15 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.cardContainer.filters.filterGroup.filterOption';
-exports.directiveName = 'rlFilterOption';
-function filterOption() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./filterOption.html'),
-        scope: {
-            activate: '&',
-            isActive: '=active',
-            option: '=',
-        },
-    };
-}
-exports.filterOption = filterOption;
+exports.componentName = 'rlFilterOption';
+var filterOption = {
+    template: require('./filterOption.html'),
+    bindings: {
+        activate: '&',
+        isActive: '=active',
+        option: '=',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, filterOption);
+    .component(exports.componentName, filterOption);
 //# sourceMappingURL=filterOption.js.map

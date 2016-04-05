@@ -22,6 +22,6 @@ angular.module(exports.moduleName, [
     rangeFilterGroup.moduleName,
 ])
     .factory(filterGroup_service_1.factoryName, filterGroup_service_1.filterGroupFactory)
-    .directive(filterGroup_directive_1.directiveName, filterGroup_directive_1.filterGroup)
+    .component(filterGroup_directive_1.componentName, filterGroup_directive_1.filterGroup)
     .controller(filterGroup_directive_1.controllerName, filterGroup_directive_1.FilterGroupController);
 //# sourceMappingURL=filterGroup.module.js.map

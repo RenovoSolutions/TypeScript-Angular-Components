@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import { IDataSource } from '../../dataSources/dataSources.module';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export interface IFilterGroupBindings {
     icon: string;
@@ -20,4 +20,4 @@ export declare class FilterGroupController {
     toggleChildren(): void;
     selectOption(option: IFilterOption): void;
 }
-export declare function filterGroup(): angular.IDirective;
+export declare let filterGroup: angular.IComponentOptions;

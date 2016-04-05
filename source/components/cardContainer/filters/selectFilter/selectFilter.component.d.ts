@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import { ISelectFilter } from './selectFilter.service';
 import { IDataSource } from '../../datasources/dataSource';
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export interface ISelectFilterBindings {
     filter: ISelectFilter<any>;
@@ -36,4 +36,4 @@ export declare class SelectFilterController implements ISelectFilterController {
     constructor($scope: angular.IScope);
     selectedValue: any;
 }
-export declare function selectFilter(): angular.IDirective;
+export declare let selectFilter: angular.IComponentOptions;
