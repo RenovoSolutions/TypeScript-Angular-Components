@@ -113,9 +113,10 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	typeaheadLink: __parentChild.IChild<ITypeaheadBehavior> = <any>{};
 	ngModel: angular.INgModelController;
 
-	static $inject: string[] = ['$scope', '$transclude', __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$transclude', '$q', __parentChild.serviceName];
 	constructor(private $scope: ITypeaheadListScope
 			, public $transclude: angular.ITranscludeFunction
+			, private $q: angular.IQService
 			, private parentChild: __parentChild.IParentChildBehaviorService) { }
 
 	$onInit(): void {
@@ -139,19 +140,22 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 
 	addItem(item: any): void {
-		this.ngModel.$viewValue.push(item);
-		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
-			behavior.remove(item);
+		this.$q.when(this.add({ item: item })).then((newItem: any): void => {
+			newItem = newItem || item;
+			this.ngModel.$viewValue.push(newItem);
+			this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
+				behavior.remove(newItem);
+			});
 		});
-		this.add({ item: item });
 	}
 
 	removeItem(item: any): void {
-		__array.arrayUtility.remove(this.ngModel.$viewValue, item);
-		this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
-			behavior.add(item);
+		this.$q.when(this.remove({ item: item })).then((): void => {
+			__array.arrayUtility.remove(this.ngModel.$viewValue, item);
+			this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
+				behavior.add(item);
+			});
 		});
-		this.remove({ item: item });
 	}
 }
 
