@@ -4,6 +4,7 @@
 		<span class="input-group-btn">
 			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
 		</span>
+		<span class="timezone">{{dateTime.timezone.display}}</span>
 	</span>
 	<span class="datepicker-clear" ng-if="::dateTime.clearButton">
 		<button type="button" class="btn btn-default"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
