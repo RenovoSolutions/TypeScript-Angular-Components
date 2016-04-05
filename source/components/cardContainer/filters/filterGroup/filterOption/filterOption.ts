@@ -4,20 +4,16 @@
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.filterOption';
-export var directiveName: string = 'rlFilterOption';
+export var componentName: string = 'rlFilterOption';
 
-export function filterOption(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./filterOption.html'),
-		scope: {
-			activate: '&',
-			isActive: '=active',
-			option: '=',
-		},
-	};
-}
+let filterOption: angular.IComponentOptions = {
+	template: require('./filterOption.html'),
+	bindings: {
+		activate: '&',
+		isActive: '=active',
+		option: '=',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, filterOption);
+	.component(componentName, filterOption);
