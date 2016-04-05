@@ -11,9 +11,10 @@ exports.moduleName = 'rl.ui.components.typeaheadList';
 exports.componentName = 'rlTypeaheadList';
 exports.controllerName = 'TypeaheadListController';
 var TypeaheadListController = (function () {
-    function TypeaheadListController($scope, $transclude, parentChild) {
+    function TypeaheadListController($scope, $transclude, $q, parentChild) {
         this.$scope = $scope;
         this.$transclude = $transclude;
+        this.$q = $q;
         this.parentChild = parentChild;
         this.typeaheadLink = {};
     }
@@ -38,20 +39,26 @@ var TypeaheadListController = (function () {
         });
     };
     TypeaheadListController.prototype.addItem = function (item) {
-        this.ngModel.$viewValue.push(item);
-        this.parentChild.triggerChildBehavior(this.typeaheadLink, function (behavior) {
-            behavior.remove(item);
+        var _this = this;
+        return this.$q.when(this.add({ item: item })).then(function (newItem) {
+            newItem = newItem || item;
+            _this.ngModel.$viewValue.push(newItem);
+            _this.parentChild.triggerChildBehavior(_this.typeaheadLink, function (behavior) {
+                behavior.remove(newItem);
+            });
+            return newItem;
         });
-        this.add({ item: item });
     };
     TypeaheadListController.prototype.removeItem = function (item) {
-        __array.arrayUtility.remove(this.ngModel.$viewValue, item);
-        this.parentChild.triggerChildBehavior(this.typeaheadLink, function (behavior) {
-            behavior.add(item);
+        var _this = this;
+        return this.$q.when(this.remove({ item: item })).then(function () {
+            __array.arrayUtility.remove(_this.ngModel.$viewValue, item);
+            _this.parentChild.triggerChildBehavior(_this.typeaheadLink, function (behavior) {
+                behavior.add(item);
+            });
         });
-        this.remove({ item: item });
     };
-    TypeaheadListController.$inject = ['$scope', '$transclude', __parentChild.serviceName];
+    TypeaheadListController.$inject = ['$scope', '$transclude', '$q', __parentChild.serviceName];
     return TypeaheadListController;
 }());
 exports.TypeaheadListController = TypeaheadListController;

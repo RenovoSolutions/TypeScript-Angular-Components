@@ -80,6 +80,7 @@ export interface IRemoveParams {
 export declare class TypeaheadListController implements ITypeaheadListBindings {
     private $scope;
     $transclude: angular.ITranscludeFunction;
+    private $q;
     private parentChild;
     getItems: {
         (params?: IGetItemsParams): angular.IPromise<any>;
@@ -103,9 +104,9 @@ export declare class TypeaheadListController implements ITypeaheadListBindings {
     typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
     ngModel: angular.INgModelController;
     static $inject: string[];
-    constructor($scope: ITypeaheadListScope, $transclude: angular.ITranscludeFunction, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($scope: ITypeaheadListScope, $transclude: angular.ITranscludeFunction, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService);
     $onInit(): void;
     loadItems(search?: string): angular.IPromise<any>;
-    addItem(item: any): void;
-    removeItem(item: any): void;
+    addItem(item: any): angular.IPromise<any>;
+    removeItem(item: any): angular.IPromise<void>;
 }
