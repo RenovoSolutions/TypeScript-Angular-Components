@@ -15,9 +15,9 @@ import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerController } from '../cardContainer';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.card';
-export var directiveName: string = 'rlCard';
-export var controllerName: string = 'CardController';
+export let moduleName: string = 'rl.ui.components.cardContainer.card';
+export let componentName: string = 'rlCard';
+export let controllerName: string = 'CardController';
 
 export interface ICardBindings {
 	columns: IColumn<any>[];
@@ -39,10 +39,6 @@ export interface ICardScope extends angular.IScope {
 	refresh(): void;
 	remove(): void;
 	containerData: any;
-
-	__rlCardContainer: CardContainerController;
-	__setHasBody(hasBody: boolean): void;
-	__setHasFooter(hasFooter: boolean): void;
 }
 
 export interface ICardBehavior {
@@ -76,11 +72,13 @@ export class CardController {
 	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
 	hasBody: boolean;
 	hasFooter: boolean;
+	cardContainer: CardContainerController;
 
-	static $inject: string[] = ['$scope', '$controller', '$q', __parentChild.serviceName, __object.serviceName];
+	static $inject: string[] = ['$scope', '$controller', '$q', '$element', __parentChild.serviceName, __object.serviceName];
 	constructor(private $scope: ICardScope
 			, $controller: angular.IControllerService
 			, private $q: angular.IQService
+			, private $element: angular.IAugmentedJQuery
 			, private parentChild: __parentChild.IParentChildBehaviorService
 			, object: __object.IObjectUtility) {
 		if (this.cardAs) {
@@ -99,7 +97,7 @@ export class CardController {
 		$scope.containerData = this.containerData;
 
 		if (object.isNullOrWhitespace(this.cardController) === false) {
-			var controller: any = $controller(this.cardController, { $scope: $scope });
+			let controller: any = $controller(this.cardController, { $scope: $scope });
 
 			if (object.isNullOrWhitespace(this.cardControllerAs) === false) {
 				$scope[this.cardControllerAs] = controller;
@@ -109,13 +107,6 @@ export class CardController {
 		parentChild.registerChildBehavior<ICardBehavior>(this.item, {
 			close: this.autosave,
 		});
-
-		$scope.__setHasBody = (hasBody: boolean): void => {
-			this.hasBody = hasBody;
-		};
-		$scope.__setHasFooter = (hasFooter: boolean): void => {
-			this.hasFooter = hasFooter;
-		};
 	}
 
 	toggleContent(): void {
@@ -127,7 +118,7 @@ export class CardController {
 	}
 
 	validateCard(): boolean {
-		var behavior: ICardChildBehavior = this.parentChild.getChildBehavior<ICardChildBehavior>(this.item);
+		let behavior: ICardChildBehavior = this.parentChild.getChildBehavior<ICardChildBehavior>(this.item);
 		if (_.isFunction(behavior.validateCard)) {
 			return behavior.validateCard();
 		} else {
@@ -136,7 +127,7 @@ export class CardController {
 	}
 
 	saveCard(): angular.IPromise<void> {
-		var behavior: ICardChildBehavior = this.parentChild.getChildBehavior<ICardChildBehavior>(this.item);
+		let behavior: ICardChildBehavior = this.parentChild.getChildBehavior<ICardChildBehavior>(this.item);
 		if (_.isFunction(behavior.saveCard)) {
 			return behavior.saveCard();
 		} else {
@@ -150,6 +141,21 @@ export class CardController {
 				return behavior.clickCard();
 			}
 		});
+	}
+
+	$postLink(): void {
+		this.cardContainer.makeCard(this.$scope, (content: JQuery): void => {
+			let contentArea: JQuery = this.$element.find('.content-template');
+			contentArea.append(content);
+			this.hasBody = content.length > 0;
+		}, null, 'contentSlot');
+		this.cardContainer.makeCard(this.$scope, (footer: JQuery): void => {
+			this.hasFooter = (footer.length > 0);
+			if (this.hasFooter) {
+				let footerArea: JQuery = this.$element.find('.footer-template');
+				footerArea.append(footer);
+			}
+		}, null, 'footerSlot');
 	}
 
 	private autosave: { (): boolean } = (): boolean => {
@@ -174,7 +180,7 @@ export class CardController {
 			}
 		});
 
-		if (this.$scope.__rlCardContainer.openCard()) {
+		if (this.cardContainer.openCard()) {
 			this.showContent = true;
 		}
 	}
@@ -190,51 +196,26 @@ export class CardController {
 	}
 }
 
-export function card(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./card.html'),
-		require: '^^rlCardContainer',
-		controller: controllerName,
-		controllerAs: '__card',
-		scope: {},
-		bindToController: {
-			columns: '=',
-			item: '=',
-			clickable: '=',
-			source: '=',
-			containerData: '=',
-			cardController: '=',
-			cardControllerAs: '=',
-			cardAs: '=',
-			permanentFooter: '=',
-			selectable: '=',
-			selectionChanged: '&',
-			saveWhenInvalid: '<?',
-		},
-		link(scope: ICardScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, rlCardContainer: CardContainerController): void {
-			scope.__rlCardContainer = rlCardContainer;
-			rlCardContainer.makeCard(scope, (content: JQuery): void => {
-				let contentArea: JQuery = element.find('.content-template');
-				contentArea.append(content);
-				let hasBody: boolean = content.length > 0;
-				scope.__setHasBody(hasBody);
-			}, null, 'contentSlot');
-			rlCardContainer.makeCard(scope, (footer: JQuery): void => {
-				let hasFooter: boolean = (footer.length > 0);
-				if (hasFooter) {
-					let footerArea: JQuery = element.find('.footer-template');
-					footerArea.append(footer);
-				}
-				scope.__setHasFooter(hasFooter);
-			}, null, 'footerSlot');
-		},
-	};
-}
+let card: angular.IComponentOptions = {
+	template: require('./card.html'),
+	require: { cardContainer: '^^rlCardContainer' },
+	controller: controllerName,
+	controllerAs: '__card',
+	bindings: {
+		columns: '<?',
+		item: '=',
+		clickable: '<?',
+		source: '=',
+		containerData: '<?',
+		cardController: '<?',
+		cardControllerAs: '<?',
+		cardAs: '<?',
+		permanentFooter: '<?',
+		selectable: '<?',
+		selectionChanged: '&',
+		saveWhenInvalid: '<?',
+	},
+};
 
 angular.module(moduleName, [
 	__parentChild.moduleName,
@@ -242,5 +223,5 @@ angular.module(moduleName, [
 
 	headerColumnModuleName,
 ])
-	.directive(directiveName, card)
+	.component(componentName, card)
 	.controller(controllerName, CardController);
