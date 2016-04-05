@@ -9,7 +9,7 @@ import {
 	TabController,
 } from './tab';
 import {
-	directiveName as tabsetDirectiveName,
+	componentName as tabsetComponentName,
 	tabset,
 	controllerName as tabsetControllerName,
 	TabsetController,
@@ -21,7 +21,7 @@ export {
 	tab,
 	tabControllerName,
 	TabController,
-	tabsetDirectiveName,
+	tabsetComponentName,
 	tabset,
 	tabsetControllerName,
 	TabsetController,
@@ -33,5 +33,5 @@ export let moduleName: string = 'rl.ui.components.tabs';
 angular.module(moduleName, [])
 	.component(tabComponentName, tab)
 	.controller(tabControllerName, TabController)
-	.directive(tabsetDirectiveName, tabset)
+	.component(tabsetComponentName, tabset)
 	.controller(tabsetControllerName, TabsetController);
