@@ -17,9 +17,9 @@ import {
 	moduleName as templateLoaderModule,
 } from '../../services/templateLoader/templateLoader.service';
 
-export var moduleName: string = 'rl.ui.components.genericContainer';
-export var directiveName: string = 'rlGenericContainer';
-export var controllerName: string = 'GenericContainerController';
+export let moduleName: string = 'rl.ui.components.genericContainer';
+export let componentName: string = 'rlGenericContainer';
+export let controllerName: string = 'GenericContainerController';
 
 import __object = services.object;
 
@@ -29,26 +29,37 @@ export class GenericContainerController {
 	configuredTemplates: { [index: string]: string };
 	defaultTemplate: string;
 
-	// Link / controller coupling
+	templateScope: angular.IScope;
+	container: angular.IAugmentedJQuery;
 	templates: { [index: string]: string };
 	default: string;
-	swapTemplates: {(template: string): void};
 
-	static $inject: string[] = ['$scope', __object.serviceName];
-	constructor($scope: angular.IScope,
-				private object: __object.IObjectUtility) {
+	static $inject: string[] = ['$scope'
+							, '$element'
+							, '$transclude'
+							, '$compile'
+							, __object.serviceName
+							, jqueryServiceName
+							, templateLoaderService];
+	constructor($scope: angular.IScope
+			, private $element: angular.IAugmentedJQuery
+			, private $transclude: angular.ITranscludeFunction
+			, private $compile: angular.ICompileService
+			, private object: __object.IObjectUtility
+			, private jquery: IJQueryUtility
+			, private templateLoader: ITemplateLoader) {
 		$scope.$watch((): any => { return this.selector; }, (newType: any, oldType: any): void => {
 			if (this.object.areEqual(newType, oldType)) {
 				return;
 			}
 
-			var template: string = this.resolveTemplate(newType);
+			let template: string = this.resolveTemplate(newType);
 			this.swapTemplates(template);
 		});
 	}
 
 	refresh(): void {
-		var template: string = this.resolveTemplate(this.selector);
+		let template: string = this.resolveTemplate(this.selector);
 		this.swapTemplates(template);
 	}
 
@@ -59,69 +70,48 @@ export class GenericContainerController {
 			return this.default;
 		}
 	}
-}
 
-genericContainer.$inject = [
-	'$compile',
-	'$interpolate',
-	jqueryServiceName,
-	templateLoaderService,
-	__object.serviceName,
-];
-function genericContainer($compile: angular.ICompileService,
-						$interpolate: angular.IInterpolateService,
-						jquery: IJQueryUtility,
-						templateLoader: ITemplateLoader,
-						object: __object.IObjectUtility): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: '<div id="container"></div>',
-		transclude: true,
-		controller: controllerName,
-		controllerAs: 'genericContainer',
-		scope: {},
-		bindToController: {
-			selector: '=',
-			configuredTemplates: '=templates',
-			defaultTemplate: '=',
-		},
-		link: (scope: angular.IScope,
-			element: angular.IAugmentedJQuery,
-			attributes: angular.IAttributes,
-			controller: GenericContainerController,
-			transclude: angular.ITranscludeFunction): void => {
+	$postLink(): void {
+		this.initDefaults();
 
-			initDefaults(controller);
+		this.container = this.$element.find('#container');
+		let templateResult = this.templateLoader.loadTemplates(this.$transclude);
 
-			let container: angular.IAugmentedJQuery = element.find('#container');
-			let templateResult = templateLoader.loadTemplates(transclude);
+		this.templates = <any>_.extend(this.templates, templateResult.templates);
+		this.default = templateResult.default;
+		this.templateScope = templateResult.transclusionScope;
 
-			controller.templates = <any>_.extend(controller.templates, templateResult.templates);
-			controller.default = templateResult.default;
-			let templateScope = templateResult.transclusionScope;
-
-			if (!controller.default) {
-				controller.default = '<div></div>';
-			}
-
-			controller.refresh();
-
-			function initDefaults(controller: GenericContainerController): void {
-				controller.default = controller.defaultTemplate;
-				controller.templates = controller.configuredTemplates ? controller.configuredTemplates : {};
-				controller.swapTemplates = swapTemplates;
-			}
-
-			function swapTemplates(template: string): void {
-				let content: angular.IAugmentedJQuery = angular.element(template);
-				jquery.replaceContent(container, content);
-				$compile(content)(templateScope)
-			}
+		if (!this.default) {
+			this.default = '<div></div>';
 		}
-	};
+
+		this.refresh();
+	}
+
+	private initDefaults(): void {
+		this.default = this.defaultTemplate;
+		this.templates = this.configuredTemplates ? this.configuredTemplates : {};
+	}
+
+	private swapTemplates(template: string): void {
+		let content: angular.IAugmentedJQuery = angular.element(template);
+		this.jquery.replaceContent(this.container, content);
+		this.$compile(content)(this.templateScope)
+	}
 }
+
+let genericContainer: angular.IComponentOptions = {
+	template: '<div id="container"></div>',
+	transclude: true,
+	controller: controllerName,
+	controllerAs: 'genericContainer',
+	bindings: {
+		selector: '<',
+		configuredTemplates: '<templates',
+		defaultTemplate: '<',
+	},
+};
 
 angular.module(moduleName, [jqueryModuleName, __object.moduleName, templateLoaderModule])
-	.directive(directiveName, genericContainer)
+	.component(componentName, genericContainer)
 	.controller(controllerName, GenericContainerController);
