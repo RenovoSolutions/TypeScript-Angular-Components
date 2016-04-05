@@ -139,18 +139,19 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		});
 	}
 
-	addItem(item: any): void {
-		this.$q.when(this.add({ item: item })).then((newItem: any): void => {
+	addItem(item: any): angular.IPromise<any> {
+		return this.$q.when(this.add({ item: item })).then((newItem: any): void => {
 			newItem = newItem || item;
 			this.ngModel.$viewValue.push(newItem);
 			this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
 				behavior.remove(newItem);
 			});
+			return newItem;
 		});
 	}
 
-	removeItem(item: any): void {
-		this.$q.when(this.remove({ item: item })).then((): void => {
+	removeItem(item: any): angular.IPromise<void> {
+		return this.$q.when(this.remove({ item: item })).then((): void => {
 			__array.arrayUtility.remove(this.ngModel.$viewValue, item);
 			this.parentChild.triggerChildBehavior(this.typeaheadLink, (behavior: ITypeaheadBehavior): void => {
 				behavior.add(item);
