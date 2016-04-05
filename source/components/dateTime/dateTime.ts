@@ -12,20 +12,14 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 
 import __dateTimeFormatStrings = services.date;
-import __validation = services.validation;
 import __object = services.object;
-import __guid = services.guid;
 import __timezone = services.timezone;
 
-import { IInputAttributes } from '../input/input';
+import { input, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
-import {
-IComponentValidator,
-IComponentValidatorFactory,
-factoryName as componentValidatorFactoryName,
-moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
 
 export let moduleName: string = 'rl.ui.components.dateTime';
 export let directiveName: string = 'rlDateTime';
@@ -45,8 +39,6 @@ export interface IDateTimeBindings {
 
 	format: string;
 
-	validator: __validation.IValidationHandler;
-
 	onClearEvent(): void;
 
 }
@@ -55,7 +47,7 @@ export interface IDateTimeScope extends angular.IScope {
 	dateTime: DateTimeController;
 }
 
-export class DateTimeController {
+export class DateTimeController extends InputController {
 	minuteStepping: number;
 
 	useDate: boolean;
@@ -72,48 +64,18 @@ export class DateTimeController {
 
 	format: string;
 
-	validator: __validation.IValidationHandler;
-
-	ngModel: INgModelValidator;
-	dateTimeValidator: IComponentValidator;
-	required: RequiredController;
 	timezone: __timezone.ITimezone;
 
 	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 			, $attrs: IInputAttributes
 			, componentValidatorFactory: IComponentValidatorFactory) {
+		super($scope, $attrs, componentValidatorFactory);
+
+		this.inputType = 'date-time';
+
 		this.useDate = _.isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = _.isUndefined(this.useTime) ? true : this.useTime;
-
-		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
-			$attrs.$set('name', 'date-time-' + __guid.guid.random());
-		}
-
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
-			let validators: __validation.IValidationHandler[] = [];
-
-			if (!_.isUndefined(this.validator)) {
-				validators.push(this.validator);
-			}
-
-			if (this.required != null) {
-				validators.push({
-					name: 'rlRequired',
-					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
-					errorMessage: this.required.message,
-				});
-			}
-
-			if (_.some(validators)) {
-				this.dateTimeValidator = componentValidatorFactory.getInstance({
-					ngModel: this.ngModel,
-					$scope: $scope,
-					validators: validators,
-				});
-			}
-			unregister();
-		});
 	}
 
 	onClearClick(): void {
@@ -130,7 +92,7 @@ function dateTime(moment: moment.MomentStatic
 	return {
 		restrict: 'E',
 		template: require('./dateTime.html'),
-		require: ['ngModel', '?' + requiredDirectiveName],
+		require: { ngModel: 'ngModel', required: '?' + requiredDirectiveName },
 		controller: controllerName,
 		controllerAs: 'dateTime',
 		scope: {},
@@ -147,11 +109,10 @@ function dateTime(moment: moment.MomentStatic
 		link: (scope: IDateTimeScope
 			, element: angular.IAugmentedJQuery
 			, attrs: angular.IAttributes
-			, controllers: any[]): void => {
+			, controllers: any): void => {
 			let dateTime: DateTimeController = scope.dateTime;
 
-			let ngModel: INgModelValidator = controllers[0];
-			dateTime.required = controllers[1];
+			let ngModel: INgModelValidator = controllers.ngModel;
 			dateTime.ngModel = ngModel;
 
 			let defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
@@ -214,6 +175,6 @@ function dateTime(moment: moment.MomentStatic
 	};
 }
 
-angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, componentValidatorModuleName, __object.moduleName])
+angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, inputModule, __object.moduleName])
 	.directive(directiveName, dateTime)
 	.controller(controllerName, DateTimeController);
