@@ -2,21 +2,14 @@
 
 import * as angular from 'angular';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.itemCount';
-export var directiveName: string = 'rlItemCount';
+export let moduleName: string = 'rl.ui.components.cardContainer.itemCount';
+export let componentName: string = 'rlItemCount';
 
-export function itemCount(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: { cardContainer: '?^^rlCardContainer' },
-		template: require('./itemCount.html'),
-		controller(): void {},
-		controllerAs: 'itemCount',
-		scope: {},
-		bindToController: true,
-	};
-}
+let itemCount: angular.IComponentOptions = {
+	require: { cardContainer: '?^^rlCardContainer' },
+	template: require('./itemCount.html'),
+	controllerAs: 'itemCount',
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, itemCount);
+	.component(componentName, itemCount);

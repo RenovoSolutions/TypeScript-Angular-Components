@@ -8,11 +8,11 @@ import * as _ from 'lodash';
 import { IDataSource, dataPager } from '../dataSources/dataSources.module';
 import { CardContainerController } from '../cardContainer';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.pager';
-export var directiveName: string = 'rlPager';
-export var controllerName: string = 'PagerController';
+export let moduleName: string = 'rl.ui.components.cardContainer.pager';
+export let componentName: string = 'rlPager';
+export let controllerName: string = 'PagerController';
 
-export var defaultVisiblePageCount: number = 5;
+export let defaultVisiblePageCount: number = 5;
 
 export interface IPagerBindings {
 	pageCount: number;
@@ -63,9 +63,9 @@ export class PagerController {
 	}
 
 	private updatePageCount: {(): void} = (): void => {
-		var totalItems: number = this.dataSource.count;
+		let totalItems: number = this.dataSource.count;
 
-		var newLastPage: number = Math.ceil(totalItems / this.pager.pageSize);
+		let newLastPage: number = Math.ceil(totalItems / this.pager.pageSize);
 
 		if (newLastPage !== this.lastPage) {
 			this.lastPage = newLastPage;
@@ -76,17 +76,17 @@ export class PagerController {
 	}
 
 	private updatePaging(): void {
-		var page: number = this.currentPage;
+		let page: number = this.currentPage;
 		this.canGoBack = page > 1;
 		this.canGoForward = page < this.lastPage;
 
-		var nonCurrentVisiblePages: number = this.visiblePageCount - 1;
+		let nonCurrentVisiblePages: number = this.visiblePageCount - 1;
 
-		var before: number = Math.floor(nonCurrentVisiblePages / 2);
-		var after: number = Math.ceil(nonCurrentVisiblePages / 2);
+		let before: number = Math.floor(nonCurrentVisiblePages / 2);
+		let after: number = Math.ceil(nonCurrentVisiblePages / 2);
 
-		var startPage: number = page - before;
-		var endPage: number = page + after;
+		let startPage: number = page - before;
+		let endPage: number = page + after;
 
 		if (startPage < 1) {
 			startPage = 1;
@@ -126,21 +126,16 @@ export class PagerController {
 	}
 }
 
-export function pager(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: { cardContainer: '?^^rlCardContainer' },
-		template: require('./pager.html'),
-		controller: controllerName,
-		controllerAs: 'pager',
-		scope: {},
-		bindToController: {
-			pageCount: '=visiblePages',
-		},
-	};
-}
+let pager: angular.IComponentOptions = {
+	require: { cardContainer: '?^^rlCardContainer' },
+	template: require('./pager.html'),
+	controller: controllerName,
+	controllerAs: 'pager',
+	bindings: {
+		pageCount: '<?visiblePages',
+	},
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, pager)
+	.component(componentName, pager)
 	.controller(controllerName, PagerController);

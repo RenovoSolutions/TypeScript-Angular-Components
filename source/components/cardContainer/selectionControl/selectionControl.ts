@@ -12,7 +12,7 @@ import { IDataSource } from '../dataSources/dataSources.module';
 import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
-export var directiveName: string = 'rlSelectionControl';
+export var componentName: string = 'rlSelectionControl';
 export var controllerName: string = 'SelectionControlController';
 
 export class SelectionControlController {
@@ -72,19 +72,13 @@ export class SelectionControlController {
 	}
 }
 
-export function selectionControl(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: { cardContainer: '?^^rlCardContainer' },
-		template: require('./selectionControl.html'),
-		controller: controllerName,
-		controllerAs: 'selection',
-		scope: {},
-		bindToController: {},
-	};
-}
+let selectionControl: angular.IComponentOptions = {
+	require: { cardContainer: '?^^rlCardContainer' },
+	template: require('./selectionControl.html'),
+	controller: controllerName,
+	controllerAs: 'selection',
+};
 
 angular.module(moduleName, [__boolean.moduleName])
-	.directive(directiveName, selectionControl)
+	.component(componentName, selectionControl)
 	.controller(controllerName, SelectionControlController);
