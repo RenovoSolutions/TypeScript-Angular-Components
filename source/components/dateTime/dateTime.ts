@@ -172,7 +172,7 @@ function dateTime(moment: moment.MomentStatic
 			});
 
 			ngModel.$parsers.push((value: string): moment.Moment => {
-				return moment.tz(value, dateTime.timezone.momentName);
+				return __timezone.timezoneService.buildMomentWithTimezone(value, dateTime.timezone);
 			});
 
 			scope.$watch((): any => { return ngModel.$modelValue; }, (newValue: any): void => {
