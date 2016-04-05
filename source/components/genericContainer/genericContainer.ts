@@ -24,7 +24,7 @@ export let controllerName: string = 'GenericContainerController';
 import __object = services.object;
 
 export class GenericContainerController {
-	// Attribute bindings:
+	// bindings:
 	selector: any;
 	configuredTemplates: { [index: string]: string };
 	defaultTemplate: string;
