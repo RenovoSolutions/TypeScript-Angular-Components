@@ -83,6 +83,9 @@ export class DateTimeController {
 	constructor($scope: angular.IScope
 			, $attrs: IInputAttributes
 			, componentValidatorFactory: IComponentValidatorFactory) {
+		this.useDate = _.isUndefined(this.useDate) ? true : this.useDate;
+		this.useTime = _.isUndefined(this.useTime) ? true : this.useTime;
+
 		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
 			$attrs.$set('name', 'date-time-' + __guid.guid.random());
 		}
@@ -132,13 +135,13 @@ function dateTime(moment: moment.MomentStatic
 		controllerAs: 'dateTime',
 		scope: {},
 		bindToController: {
-			minuteStepping: '=',
-			useDate: '=',
-			useTime: '=',
-			min: '=',
-			max: '=',
-			validator: '=',
-			clearButton: '=',
+			minuteStepping: '<?',
+			useDate: '<?',
+			useTime: '<?',
+			min: '<?',
+			max: '<?',
+			validator: '<?',
+			clearButton: '<?',
 			onClearEvent: '&'
 		},
 		link: (scope: IDateTimeScope
@@ -150,10 +153,6 @@ function dateTime(moment: moment.MomentStatic
 			let ngModel: INgModelValidator = controllers[0];
 			dateTime.required = controllers[1];
 			dateTime.ngModel = ngModel;
-
-			// defaults to true
-			let hasDate: boolean = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
-			let hasTime: boolean = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;
 
 			let defaults: bootstrapDateTimePicker.IConfiguration = element.datetimepicker.defaults;
 			let min: string | Date | moment.Moment
@@ -172,7 +171,7 @@ function dateTime(moment: moment.MomentStatic
 			});
 
 			ngModel.$parsers.push((value: string): moment.Moment => {
-				return __timezone.timezoneService.buildMomentWithTimezone(value, dateTime.timezone);
+				return __timezone.timezoneService.buildMomentWithTimezone(value, dateTime.timezone, getFormatOrDefault());
 			});
 
 			scope.$watch((): any => { return ngModel.$modelValue; }, (newValue: any): void => {
@@ -185,8 +184,8 @@ function dateTime(moment: moment.MomentStatic
 				format: getFormatOrDefault(),
 				direction: 'bottom',
 				elementHeight: 2,
-				pickDate: hasDate,
-				pickTime: hasTime,
+				pickDate: dateTime.useDate,
+				pickTime: dateTime.useTime,
 				minDate: min,
 				maxDate: max,
 			}).on('change.dp', function(): void {
@@ -196,7 +195,7 @@ function dateTime(moment: moment.MomentStatic
 			});
 
 			function getFormatOrDefault(): string {
-				return dateTime.format || <string>defaultFormat(hasDate, hasTime);
+				return dateTime.format || <string>defaultFormat(dateTime.useDate, dateTime.useTime);
 			}
 
 			function defaultFormat(hasDate: boolean, hasTime: boolean): string | boolean {
