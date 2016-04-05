@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import {ISelectFilter} from './selectFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
 
-export let directiveName: string = 'rlSelectFilter';
+export let componentName: string = 'rlSelectFilter';
 export let controllerName: string = 'SelectFilterController';
 
 
