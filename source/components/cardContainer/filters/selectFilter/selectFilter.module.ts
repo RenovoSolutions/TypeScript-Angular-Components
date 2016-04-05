@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 
 import {selectFilterFactory, factoryName} from './selectFilter.service';
-import {directiveName, selectFilter, controllerName, SelectFilterController }from './selectFilter.component'
+import {componentName, selectFilter, controllerName, SelectFilterController }from './selectFilter.component'
 
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.selectFilter';
 export * from  './selectFilter.service';
@@ -13,5 +13,5 @@ angular.module(moduleName, [
 
 ])
 	.factory(factoryName, selectFilterFactory)
-	.directive(directiveName, selectFilter)
+	.component(componentName, selectFilter)
 	.controller(controllerName, SelectFilterController);

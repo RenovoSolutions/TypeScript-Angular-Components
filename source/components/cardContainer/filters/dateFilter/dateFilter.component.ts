@@ -12,7 +12,7 @@ import __date = services.date;
 import {IDateFilter} from './dateFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
 
-export let directiveName: string = 'rlDateFilter';
+export let componentName: string = 'rlDateFilter';
 export let controllerName: string = 'rlDateFilterController';
 
 // Optional interface for bound attributes
@@ -146,22 +146,16 @@ export class DateFilterController implements IDateFilterBindings {
 
 }
 
-export function dateFilter(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./dateFilter.html'),
-		controller: controllerName,
-		controllerAs: 'filter',
-		scope: {},
-		bindToController: {
-			filter: '=',
-			source: '=',
-			label: '@',
-			includeTime: '=',
-			includeDateRange: '=',
-			clearButton: '='
-		},
-	};
-}
-
+export let dateFilter: angular.IComponentOptions = {
+	template: require('./dateFilter.html'),
+	controller: controllerName,
+	controllerAs: 'filter',
+	bindings: {
+		filter: '<',
+		source: '<?',
+		label: '@',
+		includeTime: '<?',
+		includeDateRange: '<?',
+		clearButton: '<?'
+	},
+};
