@@ -5,7 +5,7 @@ import __timezone = services.timezone;
 import { InputController, IInputAttributes } from '../input/input';
 import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare let moduleName: string;
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export interface IDateTimeBindings {
     minuteStepping: number;
@@ -22,6 +22,7 @@ export interface IDateTimeScope extends angular.IScope {
     dateTime: DateTimeController;
 }
 export declare class DateTimeController extends InputController {
+    private $element;
     minuteStepping: number;
     useDate: boolean;
     useTime: boolean;
@@ -36,6 +37,9 @@ export declare class DateTimeController extends InputController {
     format: string;
     timezone: __timezone.ITimezone;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory, $element: angular.IAugmentedJQuery);
     onClearClick(): void;
+    $postLink(): void;
+    private getFormatOrDefault();
+    private defaultFormat(hasDate, hasTime);
 }
