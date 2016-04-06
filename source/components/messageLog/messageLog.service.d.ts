@@ -9,9 +9,9 @@ export interface IMessage {
     id?: number;
     message: string;
     createdBy?: IUser;
-    createdDate?: Date;
+    createdDate?: moment.Moment;
     isSystemNote?: boolean;
-    lastUpdatedDate?: Date;
+    lastUpdatedDate?: moment.Moment;
     lastUpdatedBy?: IUser;
     edited?: boolean;
 }

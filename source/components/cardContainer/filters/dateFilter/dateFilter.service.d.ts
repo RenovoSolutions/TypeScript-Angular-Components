@@ -4,7 +4,7 @@ export declare let factoryName: string;
 export interface IDateFilterSettings {
     type: string;
     valueSelector: {
-        (item: any): Date;
+        (item: any): moment.Moment;
     } | string;
     clearButton?: boolean;
     includeDateRange?: boolean;
@@ -12,8 +12,8 @@ export interface IDateFilterSettings {
     label?: string;
 }
 export interface IDateFilter extends filters.IFilter {
-    selectedDate1: Date;
-    selectedDate2: Date;
+    selectedDate1: moment.Moment;
+    selectedDate2: moment.Moment;
     includeTime: boolean;
     type: string;
     dateRange: boolean;

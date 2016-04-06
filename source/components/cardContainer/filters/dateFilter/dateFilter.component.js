@@ -31,7 +31,7 @@ var DateFilterController = (function () {
     Object.defineProperty(DateFilterController.prototype, "selectedDate1", {
         get: function () {
             if (this.filter.selectedDate1 != null) {
-                return moment(this.filter.selectedDate1).format('M/D/YYYY');
+                return moment(this.filter.selectedDate1);
             }
             else {
                 //clear input field of date value. and rest past day/week count
@@ -40,9 +40,9 @@ var DateFilterController = (function () {
                 return null;
             }
         },
-        set: function (v) {
-            if (this.dateUtility.isDate(v)) {
-                this.filter.selectedDate1 = moment(v).toDate();
+        set: function (dateString) {
+            if (this.dateUtility.isDate(dateString)) {
+                this.filter.selectedDate1 = moment(dateString);
             }
             else {
                 //clear input field of date value. and rest past day/week count
@@ -59,8 +59,8 @@ var DateFilterController = (function () {
         get: function () {
             return this.filter.selectedDate2;
         },
-        set: function (v) {
-            this.filter.selectedDate2 = v;
+        set: function (date) {
+            this.filter.selectedDate2 = date;
             this.refreshDataSource();
         },
         enumerable: true,
@@ -94,7 +94,7 @@ var DateFilterController = (function () {
         if (this.count > 0) {
             this.filter.dateRange = true;
             // add days has to be a negative number to go backwords.
-            this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type).toDate();
+            this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type);
         }
         else if (this.count == 0) {
             //only change this values the first time.
@@ -111,7 +111,7 @@ var DateFilterController = (function () {
     };
     DateFilterController.prototype.setDateTimeNowIfNull = function () {
         if (this.selectedDate1 == null) {
-            this.selectedDate1 = moment(Date.now()).format('M/D/YYYY');
+            this.selectedDate1 = this.dateUtility.getNow();
         }
     };
     DateFilterController.prototype.toggle = function () {

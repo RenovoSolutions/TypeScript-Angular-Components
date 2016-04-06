@@ -12,8 +12,8 @@ export interface IDateFilterBindings {
     includeTime: boolean;
     includeDateRange: boolean;
     label: string;
-    selectedDate1: string;
-    selectedDate2: Date;
+    selectedDate1: moment.Moment;
+    selectedDate2: moment.Moment;
     source: IDataSource<any>;
     type: string;
 }
@@ -32,8 +32,8 @@ export declare class DateFilterController implements IDateFilterBindings {
     private inputField;
     static $inject: string[];
     constructor($scope: angular.IScope, dateUtility: __date.IDateUtility, $element: angular.IAugmentedJQuery);
-    selectedDate1: string;
-    selectedDate2: Date;
+    selectedDate1: moment.Moment;
+    selectedDate2: moment.Moment;
     refreshDataSource(): void;
     clearCount(): void;
     decreaseCount(): void;

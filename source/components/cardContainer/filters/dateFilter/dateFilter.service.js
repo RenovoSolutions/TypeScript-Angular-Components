@@ -24,11 +24,11 @@ var DateFilter = (function () {
             var selectedDate1 = void 0;
             //have to set the selectedDate1 to a valid Date object for comparisons.
             if (this.includeTime) {
-                selectedDate1 = moment(this.selectedDate1).toDate();
+                selectedDate1 = moment(this.selectedDate1);
             }
             else {
                 //increase it by 1 days. to inlcude the selectec date in the range.
-                selectedDate1 = moment(this.selectedDate1).add(1, 'days').toDate();
+                selectedDate1 = moment(this.selectedDate1).add(1, 'days');
             }
             return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
         }
