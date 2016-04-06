@@ -1,4 +1,4 @@
-import { IDateFilter, moduleName, filterName } from './date';
+import { IDateFilter, moduleName, filterName } from './date.filter';
 
 import { services } from 'typescript-angular-utilities';
 import angularFixture = services.test.angularFixture;
