@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
+import __object = services.object;
 
 export let moduleName: string = 'rl.ui.filters.date';
 export let filterName: string = 'rlDate';
@@ -17,6 +18,10 @@ dateFilter.$inject = [];
 function dateFilter(): IDateFilter {
 	'use strict';
 	return (date?: moment.Moment, includeTime?: boolean): string => {
+		if (__object.objectUtility.isNullOrEmpty(date)) {
+			return '';
+		}
+
 		let momentDate: moment.Moment = moment(date);
 		if (includeTime) {
 			return momentDate.format(__date.defaultFormats.dateTimeFormat) + ' ' + momentDate.zoneAbbr();
