@@ -7,6 +7,7 @@
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
@@ -14,7 +15,7 @@ import __test = services.test;
 import {moduleName, factoryName, IDateFilter, IDateFilterFactory } from './dateFilter.module';
 
 interface ITestObj {
-	value: Date;
+	value: moment.Moment;
 }
 
 describe('dateFilter', (): void => {
@@ -31,16 +32,16 @@ describe('dateFilter', (): void => {
 	});
 
     it('dateFilter should return true', (): void => {
-        let item: ITestObj = { value: new Date(2000, 1, 1, 5, 16, 0) };
-        let item2: ITestObj = { value: new Date(2000, 3, 1,0,0,0) };
-        let item3: ITestObj = { value: new Date(1999, 11, 25, 8, 0, 0) };
+		let item: ITestObj = { value: moment('2000-01-01T05:16:00.000') };
+		let item2: ITestObj = { value: moment('2000-03-01T00:00:00.000') };
+		let item3: ITestObj = { value: moment('1999-11-25T08:00:00.000') };
 
-        dateFilter.selectedDate1 = new Date(2000, 1, 1, 5, 16, 0);
+		dateFilter.selectedDate1 = moment('2000-01-01T05:16:00.000');
 
         expect(dateFilter.filter(item)).to.be.true;
         expect(dateFilter.filter(item2)).to.be.false;
 
-        dateFilter.selectedDate2 = new Date(1999, 11, 15, 5, 16, 0);
+		dateFilter.selectedDate2 = moment('1999-11-15T05:16:00.000');
 		dateFilter.dateRange = true;
 
         expect(dateFilter.filter(item)).to.be.true;
