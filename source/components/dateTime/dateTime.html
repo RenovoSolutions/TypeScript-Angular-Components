@@ -4,11 +4,12 @@
 		<span class="input-group-btn">
 			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
 		</span>
+		<span class="timezone" ng-if="dateTime.useDate">{{dateTime.timezone.display}}</span>
 	</span>
 	<span class="datepicker-clear" ng-if="::dateTime.clearButton">
 		<button type="button" class="btn btn-default"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
 			<i class="fa fa-times"></i>
 		</button>
 	</span>
-	<span class="error-string" ng-if="dateTime.dateTimeValidator.error | isEmpty:false">{{dateTime.dateTimeValidator.error}}</span>
+	<span class="error-string" ng-if="dateTime.inputValidator.error | isEmpty:false">{{dateTime.inputValidator.error}}</span>
 </div>

@@ -37,11 +37,11 @@ interface IAutosaveBehaviorMock {
 }
 
 describe('CardController', () => {
-	var scope: ICardScope;
-	var card: CardController;
-	var cardContainer: ICardContainerMock;
-	var $q: angular.IQService;
-	var parentChild: __parentChild.IParentChildBehaviorService;
+	let scope: ICardScope;
+	let card: CardController;
+	let cardContainer: ICardContainerMock;
+	let $q: angular.IQService;
+	let parentChild: __parentChild.IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -50,7 +50,7 @@ describe('CardController', () => {
 			openCard: sinon.spy((): boolean => { return true; })
 		};
 
-		var services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
+		let services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
 		$q = services.$q;
 		parentChild = services[__parentChild.serviceName];
 
@@ -69,7 +69,7 @@ describe('CardController', () => {
 		});
 
 		it('should provide a function for setting the selected property', (): void => {
-			var selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			buildController();
 			card.selectionChanged = selectSpy;
 
@@ -88,7 +88,7 @@ describe('CardController', () => {
 
 		it('should provide a function for refreshing the data source', (): void => {
 			buildController();
-			var refreshSpy: Sinon.SinonSpy = sinon.spy();
+			let refreshSpy: Sinon.SinonSpy = sinon.spy();
 			scope.$on('card.refresh', refreshSpy);
 
 			scope.refresh();
@@ -129,7 +129,7 @@ describe('CardController', () => {
 		it('should call the opening behavior if specified to give children a chance to perform initialization when the card opens', (): void => {
 			buildController();
 
-			var childBehavior: ICardChildBehaviorMock = {
+			let childBehavior: ICardChildBehaviorMock = {
 				initCard: sinon.spy(),
 			};
 
@@ -145,7 +145,7 @@ describe('CardController', () => {
 		it('should register close behavior with the parentChild service', (): void => {
 			buildController();
 
-			var behavior: ICardBehavior = parentChild.getChildBehavior<ICardBehavior>(card.item);
+			let behavior: ICardBehavior = parentChild.getChildBehavior<ICardBehavior>(card.item);
 
 			expect(behavior).to.exist;
 			expect(_.isFunction(behavior.close)).to.be.true;
@@ -166,12 +166,12 @@ describe('CardController', () => {
 		it('should return true if the card isnt open', (): void => {
 			buildController();
 
-			var autosaveBehavior: IAutosaveBehaviorMock = {
+			let autosaveBehavior: IAutosaveBehaviorMock = {
 				autosave: sinon.spy((): boolean => { return true; }),
 			};
 			parentChild.registerChildBehavior(card.autosaveLink, <any>autosaveBehavior);
 
-			var closed: boolean = parentChild.triggerChildBehavior(card.item, (behavior: ICardBehavior): boolean => {
+			let closed: boolean = parentChild.triggerChildBehavior(card.item, (behavior: ICardBehavior): boolean => {
 				return behavior.close();
 			});
 
@@ -184,12 +184,12 @@ describe('CardController', () => {
 
 			card.showContent = true;
 
-			var autosaveBehavior: IAutosaveBehaviorMock = {
+			let autosaveBehavior: IAutosaveBehaviorMock = {
 				autosave: sinon.spy((): boolean => { return true; }),
 			};
 			parentChild.registerChildBehavior(card.autosaveLink, <any>autosaveBehavior);
 
-			var closed: boolean = parentChild.triggerChildBehavior(card.item, (behavior: ICardBehavior): boolean => {
+			let closed: boolean = parentChild.triggerChildBehavior(card.item, (behavior: ICardBehavior): boolean => {
 				return behavior.close();
 			});
 
@@ -202,12 +202,12 @@ describe('CardController', () => {
 		it('should return the result of validation if validation behavior exists', (): void => {
 			buildController();
 
-			var childBehavior: ICardChildBehaviorMock = {
+			let childBehavior: ICardChildBehaviorMock = {
 				validateCard: sinon.spy((): boolean => { return true; }),
 			};
 			parentChild.registerChildBehavior(card.item, childBehavior);
 
-			var validated: boolean = card.validateCard();
+			let validated: boolean = card.validateCard();
 
 			expect(validated).to.be.true;
 
@@ -217,7 +217,7 @@ describe('CardController', () => {
 		it('should return true if validation behavior isnt specified', (): void => {
 			buildController();
 
-			var validated: boolean = card.validateCard();
+			let validated: boolean = card.validateCard();
 
 			expect(validated).to.be.true;
 		});
@@ -227,12 +227,12 @@ describe('CardController', () => {
 		it('should return the save promise if save behavior exists', (): void => {
 			buildController();
 
-			var childBehavior: ICardChildBehaviorMock = {
+			let childBehavior: ICardChildBehaviorMock = {
 				saveCard: sinon.spy((): angular.IPromise<void> => { return $q.when(); }),
 			};
 			parentChild.registerChildBehavior(card.item, childBehavior);
 
-			var promise: angular.IPromise<void> = card.saveCard();
+			let promise: angular.IPromise<void> = card.saveCard();
 
 			// verify that a promise was returned
 			expect(_.isFunction(promise.then)).to.be.true;
@@ -243,7 +243,7 @@ describe('CardController', () => {
 		it('should return an empty promise if save behavior isnt specified', (): void => {
 			buildController();
 
-			var promise: angular.IPromise<void> = card.saveCard();
+			let promise: angular.IPromise<void> = card.saveCard();
 
 			// verify that a promise was returned
 			expect(_.isFunction(promise.then)).to.be.true;
@@ -254,7 +254,7 @@ describe('CardController', () => {
 		it('should trigger click card behavior', (): void => {
 			buildController();
 
-			var childBehavior: ICardChildBehaviorMock = {
+			let childBehavior: ICardChildBehaviorMock = {
 				clickCard: sinon.spy(),
 			};
 			parentChild.registerChildBehavior(card.item, childBehavior);
@@ -276,15 +276,16 @@ describe('CardController', () => {
 			refresh: sinon.spy(),
 			remove: sinon.spy(),
 		};
+		let locals: any = { $element: {} };
 
-		var controllerResult: test.IControllerResult<CardController>
-			= test.angularFixture.controllerWithBindings<CardController>(controllerName, card);
+		let controllerResult: test.IControllerResult<CardController>
+			= test.angularFixture.controllerWithBindings<CardController>(controllerName, card, locals);
 
 		scope = <ICardScope>controllerResult.scope;
-		scope.__rlCardContainer = <any>cardContainer;
 		card = controllerResult.controller;
+		card.cardContainer = <any>cardContainer;
 
-		var autosaveBehavior: IAutosaveBehaviorMock = {
+		let autosaveBehavior: IAutosaveBehaviorMock = {
 			autosave: sinon.spy((): boolean => { return true; }),
 		};
 		parentChild.registerChildBehavior(card.autosaveLink, <any>autosaveBehavior);

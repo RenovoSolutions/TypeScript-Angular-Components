@@ -27,10 +27,10 @@
       "commit": "46719185c564694c5583c4b7ad94dbb786ecad46"
     },
     "moment/moment.d.ts": {
-      "commit": "7f07bd88d1083e995a0dae317a333c9641320cc8"
+      "commit": "513510a89acc648422c9abb047265116198f99ee"
     },
     "moment/moment-node.d.ts": {
-      "commit": "7f07bd88d1083e995a0dae317a333c9641320cc8"
+      "commit": "513510a89acc648422c9abb047265116198f99ee"
     },
     "angular-ui-router/angular-ui-router.d.ts": {
       "commit": "5f480287834a2615274eea31574b713e64decf17"
@@ -46,6 +46,9 @@
     },
     "angularjs/angular-mocks.d.ts": {
       "commit": "32029fcb4e1a3ef8968711b545d77b584435729d"
+    },
+    "moment-timezone/moment-timezone.d.ts": {
+      "commit": "513510a89acc648422c9abb047265116198f99ee"
     }
   }
 }

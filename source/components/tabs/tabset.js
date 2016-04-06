@@ -3,10 +3,11 @@
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __array = typescript_angular_utilities_1.services.array;
-exports.directiveName = 'rlTabset';
+exports.componentName = 'rlTabset';
 exports.controllerName = 'rlTabsetController';
 var TabsetController = (function () {
-    function TabsetController() {
+    function TabsetController($element) {
+        this.$element = $element;
         this.tabHeaders = [];
     }
     TabsetController.prototype.registerTab = function (element, header) {
@@ -25,34 +26,26 @@ var TabsetController = (function () {
         });
         tab.isVisible = true;
     };
+    TabsetController.prototype.findPosition = function (tabElement) {
+        // find the position of the specified element by iterating over the tabs and finding a matching element
+        var tabs = this.$element.find('rl-tab');
+        var num;
+        _.each(tabs, function (elem, index) {
+            if (tabElement[0] === elem) {
+                num = index;
+                return false;
+            }
+        });
+        return num;
+    };
+    TabsetController.$inject = ['$element'];
     return TabsetController;
 }());
 exports.TabsetController = TabsetController;
-function tabset() {
-    return {
-        restrict: 'E',
-        transclude: true,
-        template: require('./tabset.html'),
-        controller: exports.controllerName,
-        controllerAs: 'tabset',
-        scope: {},
-        link: {
-            pre: function (scope, element, attrs, tabset) {
-                tabset.findPosition = function (tabElement) {
-                    // find the position of the specified element by iterating over the tabs and finding a matching element
-                    var tabs = element.find('rl-tab');
-                    var num;
-                    _.each(tabs, function (elem, index) {
-                        if (tabElement[0] === elem) {
-                            num = index;
-                            return false;
-                        }
-                    });
-                    return num;
-                };
-            },
-        },
-    };
-}
-exports.tabset = tabset;
+exports.tabset = {
+    transclude: true,
+    template: require('./tabset.html'),
+    controller: exports.controllerName,
+    controllerAs: 'tabset',
+};
 //# sourceMappingURL=tabset.js.map

@@ -11,24 +11,18 @@ import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
-import __validation = services.validation;
 import __string = services.string;
 import __number = services.number;
 import __object = services.object;
-import __guid = services.guid;
 
-import { IInputAttributes } from '../input/input';
+import { input, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
 
 export let moduleName: string = 'rl.ui.components.spinner';
-export let directiveName: string = 'rlSpinner';
+export let componentName: string = 'rlSpinner';
 export let controllerName: string = 'SpinnerController';
 
 export let defaultMaxValue: number = 100000000000000000000;
@@ -44,14 +38,13 @@ export interface ISpinnerBindings {
 	ngDisabled: boolean;
 	spinnerId: string;
 	name: string;
-	validator: __validation.IValidationHandler;
 }
 
 interface ISpinnerScope extends angular.IScope {
 	spinner: SpinnerController;
 }
 
-export class SpinnerController {
+export class SpinnerController extends InputController {
 	min: number;
 	max: number;
 	step: number;
@@ -61,141 +54,92 @@ export class SpinnerController {
 	roundToStep: boolean;
 	ngDisabled: boolean;
 	spinnerId: string;
-	name: string;
-	validator: __validation.IValidationHandler;
 
-	ngModel: INgModelValidator;
-	required: RequiredController;
-	spinnerValidator: IComponentValidator;
-
-	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
+	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName, '$element', '$timeout'];
 	constructor($scope: angular.IScope
 			, $attrs: IInputAttributes
-			, componentValidatorFactory: IComponentValidatorFactory) {
-		if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
-			$attrs.$set('name', 'spinner-' + __guid.guid.random());
+			, componentValidatorFactory: IComponentValidatorFactory
+			, private $element: angular.IAugmentedJQuery
+			, private $timeout: angular.ITimeoutService) {
+		super($scope, $attrs, componentValidatorFactory);
+
+		this.inputType = 'spinner';
+	}
+
+	$postLink(): void {
+		let unbindWatches: Function;
+		this.$scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {
+			if (disabled) {
+				if (_.isFunction(unbindWatches)) {
+					unbindWatches();
+				}
+			} else {
+				// Initialize the spinner after $timeout to give angular a chance initialize ngModel
+				this.$timeout((): void => {
+					let touchspin: JQuery = this.$element.find('input.spinner').TouchSpin({
+						min: (this.min != null ? this.min : 0),
+						max: (this.max != null ? this.max : defaultMaxValue),
+						step: this.step,
+						prefix: this.prefix,
+						postfix: this.postfix,
+						decimals: this.decimals,
+						initval: this.ngModel.$viewValue,
+						forcestepdivisibility: this.roundToStep ? 'round' : 'none',
+					});
+
+					touchspin.on('change', (): void => {
+						this.$scope.$apply((): void => {
+							let spinValue: string = touchspin.val();
+							this.ngModel.$setViewValue(__string.stringUtility.toNumber(spinValue));
+						});
+					});
+
+					let unbindViewWatch = this.$scope.$watch((): void => {
+						return this.ngModel.$viewValue;
+					}, (newValue: any): void => {
+						touchspin.val(newValue != null ? newValue.toString() : '');
+					});
+
+					let unbindModelWatch = this.$scope.$watch((): void => {
+						return this.ngModel.$modelValue;
+					}, (newModel: any): void => {
+						this.ngModel.$modelValue = this.round(newModel);
+					});
+
+					unbindWatches = (): void => {
+						unbindViewWatch();
+						unbindModelWatch();
+					}
+				});
+			}
+		});
+	}
+
+	private round(num: number): number {
+		if (num != null && this.roundToStep) {
+			num = __number.numberUtility.roundToStep(num, this.step);
+			num = __number.numberUtility.preciseRound(num, this.decimals);
 		}
 
-		let unregister: Function = $scope.$watch((): any => { return this.ngModel; }, (value: INgModelValidator): void => {
-			let validators: __validation.IValidationHandler[] = [];
-
-			if (!_.isUndefined(this.validator)) {
-				validators.push(this.validator);
-			}
-
-			if (this.required != null) {
-				validators.push({
-					name: 'rlRequired',
-					validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
-					errorMessage: this.required.message,
-				});
-			}
-
-			if (_.some(validators)) {
-				this.spinnerValidator = componentValidatorFactory.getInstance({
-					ngModel: this.ngModel,
-					$scope: $scope,
-					validators: validators,
-				});
-			}
-			unregister();
-		});
+		return num;
 	}
 }
 
-spinner.$inject = ['$timeout', __string.serviceName, __number.serviceName];
-function spinner($timeout: angular.ITimeoutService
-				, stringUtility: __string.IStringUtilityService
-				, numberUtility: __number.INumberUtility): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./spinner.html'),
-		require: ['ngModel', '?' + requiredDirectiveName],
-		controller: controllerName,
-		controllerAs: 'spinner',
-		scope: {},
-		bindToController: {
-			min: '=',
-			max: '=',
-			step: '=',
-			decimals: '=',
-			prefix: '@',
-			postfix: '@',
-			roundToStep: '=',
-			ngDisabled: '=',
-			spinnerId: '@',
-			name: '@',
-			validator: '=',
-		},
-		link(scope: ISpinnerScope
-			, element: angular.IAugmentedJQuery
-			, attrs: angular.IAttributes
-			, controllers: any[]): void {
-			let spinner: SpinnerController = scope.spinner;
+let spinner: angular.IComponentOptions = _.clone(input);
+spinner.template = require('./spinner.html');
+spinner.controller = controllerName;
+spinner.controllerAs = 'spinner';
+let spinnerBindings: any = spinner.bindings;
+spinnerBindings.min = '<?';
+spinnerBindings.max = '<?';
+spinnerBindings.step = '<?';
+spinnerBindings.decimals = '<?';
+spinnerBindings.prefix = '@';
+spinnerBindings.postfix = '@';
+spinnerBindings.roundToStep = '<?';
+spinnerBindings.ngDisabled = '<?';
+spinnerBindings.spinnerId = '@';
 
-			let ngModel: INgModelValidator = controllers[0];
-			spinner.required = controllers[1];
-			spinner.ngModel = ngModel;
-			let unbindWatches: Function;
-			scope.$watch('spinner.ngDisabled', (disabled: boolean): void => {
-				if (disabled) {
-					if (_.isFunction(unbindWatches)) {
-						unbindWatches();
-					}
-				} else {
-					// Initialize the spinner after $timeout to give angular a chance initialize ngModel
-					$timeout((): void => {
-						let touchspin: JQuery = element.find('input.spinner').TouchSpin({
-							min: (spinner.min != null ? spinner.min : 0),
-							max: (spinner.max != null ? spinner.max : defaultMaxValue),
-							step: spinner.step,
-							prefix: spinner.prefix,
-							postfix: spinner.postfix,
-							decimals: spinner.decimals,
-							initval: ngModel.$viewValue,
-							forcestepdivisibility: spinner.roundToStep ? 'round' : 'none',
-						});
-
-						touchspin.on('change', (): void => {
-							scope.$apply((): void => {
-								let spinValue: string = touchspin.val();
-								ngModel.$setViewValue(stringUtility.toNumber(spinValue));
-							});
-						});
-
-						let unbindViewWatch = scope.$watch((): void => {
-							return ngModel.$viewValue;
-						}, (newValue: any): void => {
-							touchspin.val(newValue != null ? newValue.toString() : '');
-						});
-
-						let unbindModelWatch = scope.$watch((): void => {
-							return ngModel.$modelValue;
-						}, (newModel: any): void => {
-							ngModel.$modelValue = round(newModel);
-						});
-
-						unbindWatches = (): void => {
-							unbindViewWatch();
-							unbindModelWatch();
-						}
-					});
-				}
-			});
-
-			function round(num: number): number {
-				if (num != null && spinner.roundToStep) {
-					num = numberUtility.roundToStep(num, spinner.step);
-					num = numberUtility.preciseRound(num, spinner.decimals);
-				}
-
-				return num;
-			}
-		}
-	};
-}
-
-angular.module(moduleName, [__string.moduleName, componentValidatorModuleName, __number.moduleName])
-	.directive(directiveName, spinner)
+angular.module(moduleName, [inputModule])
+	.component(componentName, spinner)
 	.controller(controllerName, SpinnerController);

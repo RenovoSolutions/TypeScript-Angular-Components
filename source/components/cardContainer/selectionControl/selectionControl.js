@@ -5,7 +5,7 @@ var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __boolean = typescript_angular_utilities_1.services.boolean;
 exports.moduleName = 'rl.ui.components.cardContainer.selectionControl';
-exports.directiveName = 'rlSelectionControl';
+exports.componentName = 'rlSelectionControl';
 exports.controllerName = 'SelectionControlController';
 var SelectionControlController = (function () {
     function SelectionControlController($scope, bool) {
@@ -52,20 +52,13 @@ var SelectionControlController = (function () {
     return SelectionControlController;
 }());
 exports.SelectionControlController = SelectionControlController;
-function selectionControl() {
-    'use strict';
-    return {
-        restrict: 'E',
-        require: { cardContainer: '?^^rlCardContainer' },
-        template: require('./selectionControl.html'),
-        controller: exports.controllerName,
-        controllerAs: 'selection',
-        scope: {},
-        bindToController: {},
-    };
-}
-exports.selectionControl = selectionControl;
+var selectionControl = {
+    require: { cardContainer: '?^^rlCardContainer' },
+    template: require('./selectionControl.html'),
+    controller: exports.controllerName,
+    controllerAs: 'selection',
+};
 angular.module(exports.moduleName, [__boolean.moduleName])
-    .directive(exports.directiveName, selectionControl)
+    .component(exports.componentName, selectionControl)
     .controller(exports.controllerName, SelectionControlController);
 //# sourceMappingURL=selectionControl.js.map

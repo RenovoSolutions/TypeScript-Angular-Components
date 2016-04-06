@@ -1,123 +1,107 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 require('../../../libraries/bootstrap-datetimepicker/index');
 var angular = require('angular');
-var $ = require('jquery');
+var moment = require('moment');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __dateTimeFormatStrings = typescript_angular_utilities_1.services.date;
 var __object = typescript_angular_utilities_1.services.object;
-var __guid = typescript_angular_utilities_1.services.guid;
-var required_1 = require('../../behaviors/required/required');
+var __timezone = typescript_angular_utilities_1.services.timezone;
+var input_1 = require('../input/input');
 var componentValidator_service_1 = require('../../services/componentValidator/componentValidator.service');
 exports.moduleName = 'rl.ui.components.dateTime';
-exports.directiveName = 'rlDateTime';
+exports.componentName = 'rlDateTime';
 exports.controllerName = 'DateTimeController';
-var DateTimeController = (function () {
-    function DateTimeController($scope, $attrs, componentValidatorFactory) {
-        var _this = this;
-        if (__object.objectUtility.isNullOrEmpty($attrs.name)) {
-            $attrs.$set('name', 'date-time-' + __guid.guid.random());
-        }
-        var unregister = $scope.$watch(function () { return _this.ngModel; }, function (value) {
-            var validators = [];
-            if (!_.isUndefined(_this.validator)) {
-                validators.push(_this.validator);
-            }
-            if (_this.required != null) {
-                validators.push({
-                    name: 'rlRequired',
-                    validate: function () { return !__object.objectUtility.isNullOrEmpty(_this.ngModel.$viewValue); },
-                    errorMessage: _this.required.message,
-                });
-            }
-            if (_.some(validators)) {
-                _this.dateTimeValidator = componentValidatorFactory.getInstance({
-                    ngModel: _this.ngModel,
-                    $scope: $scope,
-                    validators: validators,
-                });
-            }
-            unregister();
-        });
+var DateTimeController = (function (_super) {
+    __extends(DateTimeController, _super);
+    function DateTimeController($scope, $attrs, componentValidatorFactory, $element) {
+        _super.call(this, $scope, $attrs, componentValidatorFactory);
+        this.$element = $element;
+        this.inputType = 'date-time';
+        this.useDate = _.isUndefined(this.useDate) ? true : this.useDate;
+        this.useTime = _.isUndefined(this.useTime) ? true : this.useTime;
     }
     DateTimeController.prototype.onClearClick = function () {
         this.ngModel.$setViewValue('');
         this.onClearEvent();
     };
-    DateTimeController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName];
-    return DateTimeController;
-}());
-exports.DateTimeController = DateTimeController;
-dateTime.$inject = [typescript_angular_utilities_1.services.moment.serviceName, __dateTimeFormatStrings.dateTimeFormatServiceName, __object.serviceName];
-function dateTime(moment, dateTimeFormatStrings, object) {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./dateTime.html'),
-        require: ['ngModel', '?' + required_1.directiveName],
-        controller: exports.controllerName,
-        controllerAs: 'dateTime',
-        scope: {},
-        bindToController: {
-            minuteStepping: '=',
-            useDate: '=',
-            useTime: '=',
-            min: '=',
-            max: '=',
-            validator: '=',
-            clearButton: '=',
-            onClearEvent: '&'
-        },
-        link: function (scope, element, attrs, controllers) {
-            var dateTime = scope.dateTime;
-            var ngModel = controllers[0];
-            dateTime.required = controllers[1];
-            dateTime.ngModel = ngModel;
-            // defaults to true
-            var hasDate = _.isUndefined(dateTime.useDate) ? true : dateTime.useDate;
-            var hasTime = _.isUndefined(dateTime.useTime) ? true : dateTime.useTime;
-            var defaults = element.datetimepicker.defaults;
-            var min = dateTime.min != null ? dateTime.min : defaults.minDate;
-            var max = dateTime.max != null ? dateTime.max : defaults.maxDate;
-            scope.$watch(function () { return ngModel.$viewValue; }, function (newValue) {
-                dateTime.validFormat = object.isNullOrEmpty(newValue)
-                    ? true
-                    : moment(newValue).isValid();
-            });
-            element.find('.show-date-picker').datetimepicker({
-                stepping: dateTime.minuteStepping || 1,
-                format: dateTime.format || defaultFormat(hasDate, hasTime),
-                direction: 'bottom',
-                elementHeight: 2,
-                pickDate: hasDate,
-                pickTime: hasTime,
-                minDate: min,
-                maxDate: max,
-            }).on('change.dp', function () {
-                var newValue = $(this).find('input').val();
-                ngModel.$setViewValue(newValue);
-                scope.$apply();
-            });
-            function defaultFormat(hasDate, hasTime) {
-                if (hasDate && hasTime) {
-                    return dateTimeFormatStrings.dateTimeFormat;
-                }
-                else if (hasDate) {
-                    return dateTimeFormatStrings.dateFormat;
-                }
-                else if (hasTime) {
-                    return dateTimeFormatStrings.timeFormat;
-                }
-                else {
-                    // revert to default format
-                    return false;
-                }
+    DateTimeController.prototype.$postLink = function () {
+        var _this = this;
+        var defaults = this.$element.datetimepicker.defaults;
+        var min = this.min != null ? this.min : defaults.minDate;
+        var max = this.max != null ? this.max : defaults.maxDate;
+        this.ngModel.$formatters.push(function (value) {
+            if (value == null) {
+                _this.timezone = __timezone.timezoneService.currentTimezone;
+                return null;
             }
-        },
+            _this.timezone = __timezone.timezones.get(value.tz());
+            return moment(value).format(_this.getFormatOrDefault());
+        });
+        this.ngModel.$parsers.push(function (value) {
+            return __timezone.timezoneService.buildMomentWithTimezone(value, _this.timezone, _this.getFormatOrDefault());
+        });
+        this.$scope.$watch(function () { return _this.ngModel.$modelValue; }, function (newValue) {
+            _this.validFormat = __object.objectUtility.isNullOrEmpty(newValue)
+                ? true
+                : moment(newValue).isValid();
+        });
+        this.$element.find('.show-date-picker').datetimepicker({
+            stepping: this.minuteStepping || 1,
+            format: this.getFormatOrDefault(),
+            direction: 'bottom',
+            elementHeight: 2,
+            pickDate: this.useDate,
+            pickTime: this.useTime,
+            minDate: min,
+            maxDate: max,
+        }).on('change.dp', function () {
+            var newValue = _this.$element.find('input').val();
+            _this.ngModel.$setViewValue(newValue);
+            _this.$scope.$apply();
+        });
     };
-}
-angular.module(exports.moduleName, [typescript_angular_utilities_1.services.moment.moduleName, typescript_angular_utilities_1.services.date.moduleName, componentValidator_service_1.moduleName, __object.moduleName])
-    .directive(exports.directiveName, dateTime)
+    DateTimeController.prototype.getFormatOrDefault = function () {
+        return this.format || this.defaultFormat(this.useDate, this.useTime);
+    };
+    DateTimeController.prototype.defaultFormat = function (hasDate, hasTime) {
+        if (hasDate && hasTime) {
+            return __dateTimeFormatStrings.defaultFormats.dateTimeFormat;
+        }
+        else if (hasDate) {
+            return __dateTimeFormatStrings.defaultFormats.dateFormat;
+        }
+        else if (hasTime) {
+            return __dateTimeFormatStrings.defaultFormats.timeFormat;
+        }
+        else {
+            // revert to default format
+            return false;
+        }
+    };
+    DateTimeController.$inject = ['$scope', '$attrs', componentValidator_service_1.factoryName, '$element'];
+    return DateTimeController;
+}(input_1.InputController));
+exports.DateTimeController = DateTimeController;
+var dateTime = _.clone(input_1.input);
+dateTime.template = require('./dateTime.html');
+dateTime.controller = exports.controllerName;
+dateTime.controllerAs = 'dateTime';
+var dateTimeBindings = dateTime.bindings;
+dateTimeBindings.minuteStepping = '<?';
+dateTimeBindings.useDate = '<?';
+dateTimeBindings.useTime = '<?';
+dateTimeBindings.min = '<?';
+dateTimeBindings.max = '<?';
+dateTimeBindings.clearButton = '<?';
+dateTimeBindings.onClearEvent = '<?';
+angular.module(exports.moduleName, [typescript_angular_utilities_1.services.moment.moduleName, typescript_angular_utilities_1.services.date.moduleName, input_1.moduleName, __object.moduleName])
+    .component(exports.componentName, dateTime)
     .controller(exports.controllerName, DateTimeController);
 //# sourceMappingURL=dateTime.js.map

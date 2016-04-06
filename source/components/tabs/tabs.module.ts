@@ -3,13 +3,13 @@
 import * as angular from 'angular';
 
 import {
-	directiveName as tabDirectiveName,
+	componentName as tabComponentName,
 	tab,
 	controllerName as tabControllerName,
 	TabController,
 } from './tab';
 import {
-	directiveName as tabsetDirectiveName,
+	componentName as tabsetComponentName,
 	tabset,
 	controllerName as tabsetControllerName,
 	TabsetController,
@@ -17,11 +17,11 @@ import {
 } from './tabset';
 
 export {
-	tabDirectiveName,
+	tabComponentName,
 	tab,
 	tabControllerName,
 	TabController,
-	tabsetDirectiveName,
+	tabsetComponentName,
 	tabset,
 	tabsetControllerName,
 	TabsetController,
@@ -31,7 +31,7 @@ export {
 export let moduleName: string = 'rl.ui.components.tabs';
 
 angular.module(moduleName, [])
-	.directive(tabDirectiveName, tab)
+	.component(tabComponentName, tab)
 	.controller(tabControllerName, TabController)
-	.directive(tabsetDirectiveName, tabset)
+	.component(tabsetComponentName, tabset)
 	.controller(tabsetControllerName, TabsetController);

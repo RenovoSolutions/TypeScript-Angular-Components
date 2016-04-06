@@ -8,7 +8,7 @@ import { dataPager } from '../dataSources/dataSources.module';
 import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
-export var directiveName: string = 'rlPageSize';
+export var componentName: string = 'rlPageSize';
 export var controllerName: string = 'PageSizeController';
 
 export var availablePageSizes: number[] = [10, 25, 50, 100];
@@ -47,19 +47,13 @@ export class PageSizeController {
 	}
 }
 
-export function pageSize(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		require: { cardContainer: '?^^rlCardContainer' },
-		template: require('./pageSize.html'),
-		controller: controllerName,
-		controllerAs: 'controller',
-		scope: {},
-		bindToController: {},
-	};
-}
+let pageSize: angular.IComponentOptions = {
+	require: { cardContainer: '?^^rlCardContainer' },
+	template: require('./pageSize.html'),
+	controller: controllerName,
+	controllerAs: 'controller',
+};
 
 angular.module(moduleName, [])
-	.directive(directiveName, pageSize)
+	.component(componentName, pageSize)
 	.controller(controllerName, PageSizeController);

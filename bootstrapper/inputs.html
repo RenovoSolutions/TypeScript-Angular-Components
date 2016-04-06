@@ -9,11 +9,15 @@
 </div>
 <div>
 	<label>Spinner:</label>
-	<rl-spinner ng-model="input.number"></rl-spinner>
+	<rl-spinner ng-model="input.number" rl-required="Number is required"></rl-spinner>
 </div>
 <div>
 	<label>Datetime:</label>
+	<rl-date-time ng-model="input.date" use-date="false"></rl-date-time>
+	<rl-date-time ng-model="input.date" use-time="false"></rl-date-time>
 	<rl-date-time ng-model="input.date"></rl-date-time>
+	<rl-date-time ng-model="input.date2" rl-required="You must enter a date"></rl-date-time>
+	<rl-button action="input.logDates()">Log dates</rl-button>
 </div>
 <div>
 	<label>Select:</label>

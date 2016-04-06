@@ -18,9 +18,9 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 describe('GenericContainerController', () => {
-	var controller: GenericContainerController;
-	var scope: angular.IScope;
-	var swapSpy: Sinon.SinonSpy;
+	let controller: GenericContainerController;
+	let scope: angular.IScope;
+	let swapSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -28,12 +28,15 @@ describe('GenericContainerController', () => {
 
 	function buildController(selector: any, templates: any): void {
 		swapSpy = sinon.spy();
-		var controllerResult: test.IControllerResult<GenericContainerController>
+		let controllerResult: test.IControllerResult<GenericContainerController>
 			= test.angularFixture.controllerWithBindings<GenericContainerController>(controllerName, {
 			selector: selector,
 			templates: templates,
 			default: 'default',
 			swapTemplates: swapSpy,
+		}, {
+			$element: {},
+			$transclude: {},
 		});
 
 		controller = controllerResult.controller;
@@ -41,8 +44,8 @@ describe('GenericContainerController', () => {
 	}
 
 	it('should set the default template if no matching template is found', (): void => {
-		var selector: string = 'type2';
-		var templates: any = {
+		let selector: string = 'type2';
+		let templates: any = {
 			'type1': 'template1',
 		};
 
@@ -51,15 +54,15 @@ describe('GenericContainerController', () => {
 		controller.refresh();
 
 		sinon.assert.calledOnce(swapSpy);
-		var result: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let result: Sinon.SinonSpyCall = swapSpy.firstCall;
 
-		var defaultTemplate: string = controller.default;
+		let defaultTemplate: string = controller.default;
 		expect(result.args[0]).to.equal(defaultTemplate);
 	});
 
 	it('should set the designated template', (): void => {
-		var selector: string = 'type1';
-		var templates: any = {
+		let selector: string = 'type1';
+		let templates: any = {
 			'type1': 'template1',
 		};
 
@@ -68,14 +71,14 @@ describe('GenericContainerController', () => {
 		controller.refresh();
 
 		sinon.assert.calledOnce(swapSpy);
-		var result: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let result: Sinon.SinonSpyCall = swapSpy.firstCall;
 
 		expect(result.args[0]).to.equal(templates.type1);
 	});
 
 	it('should swap the template when the selector changes', (): void => {
-		var selector: string = 'type1';
-		var templates: any = {
+		let selector: string = 'type1';
+		let templates: any = {
 			'type1': 'template1',
 			'type2': 'template2',
 		};
@@ -87,7 +90,7 @@ describe('GenericContainerController', () => {
 		scope.$digest();
 
 		sinon.assert.calledOnce(swapSpy);
-		var firstResult: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let firstResult: Sinon.SinonSpyCall = swapSpy.firstCall;
 
 		expect(firstResult.args[0]).to.equal(templates.type1);
 
@@ -96,7 +99,7 @@ describe('GenericContainerController', () => {
 		scope.$digest();
 
 		sinon.assert.calledTwice(swapSpy);
-		var secondResult: Sinon.SinonSpyCall = swapSpy.secondCall;
+		let secondResult: Sinon.SinonSpyCall = swapSpy.secondCall;
 
 		expect(secondResult.args[0]).to.equal(templates.type2);
 	});

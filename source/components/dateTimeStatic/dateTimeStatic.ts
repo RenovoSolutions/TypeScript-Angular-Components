@@ -12,9 +12,10 @@ export let controllerName: string = 'DateTimeStaticController';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
+import __timezone = services.timezone;
 
 export interface IDateTimeStaticBindings {
-	dateValue: string;
+	dateValue: moment.Moment;
 	includeTime: boolean;
 	displayTimeZone: boolean;
 }
@@ -24,21 +25,25 @@ export interface IDateTimeStaticController extends IDateTimeStaticBindings {
 }
 
 export class DateTimeStaticController implements IDateTimeStaticController {
-	dateValue: string;
+	dateValue: moment.Moment;
 	includeTime: boolean;
 	displayValue: string;
 	displayTimeZone: boolean;
+	timezone: string;
 
 	static $inject: string[] = [__date.serviceName];
 	constructor(private dateUtility: __date.IDateUtility) {
-		this.displayValue = '';
 		if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
-			this.displayValue = moment(this.dateValue).format('MM/DD/YYYY');
+			this.dateValue = moment(this.dateValue);
 
 			if (this.includeTime) {
 				this.displayTimeZone = true;
-				this.displayValue = this.displayValue + moment(this.dateValue).format(' h:mm a');
+				this.displayValue = this.dateValue.format(__date.defaultFormats.dateTimeFormat);
+			} else {
+				this.displayValue = this.dateValue.format(__date.defaultFormats.dateFormat);
 			}
+
+			this.timezone = <any>this.dateValue.zoneAbbr();
 		}
 	}
 }

@@ -14,7 +14,7 @@ export {
 };
 
 import { factoryName, filterGroupFactory } from './filterGroup.service';
-import { directiveName, filterGroup, controllerName, FilterGroupController } from './filterGroup.directive';
+import { componentName, filterGroup, controllerName, FilterGroupController } from './filterGroup.directive';
 
 export * from './filterGroup.directive';
 export * from './filterGroup.service';
@@ -29,5 +29,5 @@ angular.module(moduleName, [
 	rangeFilterGroup.moduleName,
 ])
 	.factory(factoryName, filterGroupFactory)
-	.directive(directiveName, filterGroup)
+	.component(componentName, filterGroup)
 	.controller(controllerName, FilterGroupController);

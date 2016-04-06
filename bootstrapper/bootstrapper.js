@@ -1,4 +1,6 @@
-(function () {
+(function() {
+	var __timezone = rl_utilities.services.timezone;
+
 	angular.module('app', ['rl.ui', 'ui.router'])
 		.controller('InputTestController', InputTestController)
 		.controller('ButtonTestController', ButtonTestController)
@@ -84,6 +86,14 @@
 			return $q.when(_.clone(self.options));
 		}
 		self.typeaheadList = [self.options[0], self.options[4]];
+		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
+		__timezone.timezoneService.setCurrentTimezone('-08:00');
+
+		self.logDates = function() {
+			var format = 'YYYY-MM-DDTHH:mm:ssZ';
+			console.log(self.date.format(format));
+			console.log(self.date2.format(format));
+		}
 	}
 
 	function ButtonTestController() {
@@ -106,6 +116,16 @@
 				okButton: 'Yes',
 				cancelButton: 'No',
 				message: 'Do you want to do this?',
+			});
+		};
+
+		self.openDialog = function() {
+			dialog.open({
+				template: '<rl-dialog>' +
+							'<rl-dialog-header>Header</rl-dialog-header>' +
+							'<rl-dialog-content>Content</rl-dialog-content>' +
+							'<rl-dialog-footer>Footer</rl-dialog-footer>' +
+						'</rl-dialog > ',
 			});
 		};
 	}
@@ -210,5 +230,7 @@
 			template: '<div>{{text}}</div>',
 			scope: templateScope,
 		};
+
+		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
 	}
 }());

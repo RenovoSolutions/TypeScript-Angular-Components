@@ -1,13 +1,9 @@
 import '../../../libraries/bootstrap-touchspin/index';
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __validation = services.validation;
-import { IInputAttributes } from '../input/input';
-import { INgModelValidator } from '../../types/formValidators';
-import { RequiredController } from '../../behaviors/required/required';
-import { IComponentValidator, IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
+import { InputController, IInputAttributes } from '../input/input';
+import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare let moduleName: string;
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export declare let defaultMaxValue: number;
 export interface ISpinnerBindings {
@@ -21,9 +17,10 @@ export interface ISpinnerBindings {
     ngDisabled: boolean;
     spinnerId: string;
     name: string;
-    validator: __validation.IValidationHandler;
 }
-export declare class SpinnerController {
+export declare class SpinnerController extends InputController {
+    private $element;
+    private $timeout;
     min: number;
     max: number;
     step: number;
@@ -33,11 +30,8 @@ export declare class SpinnerController {
     roundToStep: boolean;
     ngDisabled: boolean;
     spinnerId: string;
-    name: string;
-    validator: __validation.IValidationHandler;
-    ngModel: INgModelValidator;
-    required: RequiredController;
-    spinnerValidator: IComponentValidator;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory, $element: angular.IAugmentedJQuery, $timeout: angular.ITimeoutService);
+    $postLink(): void;
+    private round(num);
 }

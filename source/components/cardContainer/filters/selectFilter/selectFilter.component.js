@@ -1,6 +1,6 @@
 // /// <reference path='../../../../../typings/commonjs.d.ts' />
 'use strict';
-exports.directiveName = 'rlSelectFilter';
+exports.componentName = 'rlSelectFilter';
 exports.controllerName = 'SelectFilterController';
 var SelectFilterController = (function () {
     function SelectFilterController($scope) {
@@ -26,24 +26,18 @@ var SelectFilterController = (function () {
     return SelectFilterController;
 }());
 exports.SelectFilterController = SelectFilterController;
-function selectFilter() {
-    'use strict';
-    return {
-        restrict: 'E',
-        template: require('./selectFilter.html'),
-        controller: exports.controllerName,
-        controllerAs: 'filter',
-        scope: {},
-        bindToController: {
-            filter: '=',
-            options: '=',
-            getOptions: '&',
-            source: '=',
-            label: '@',
-            selector: '=',
-            nullOption: '@'
-        },
-    };
-}
-exports.selectFilter = selectFilter;
+exports.selectFilter = {
+    template: require('./selectFilter.html'),
+    controller: exports.controllerName,
+    controllerAs: 'filter',
+    bindings: {
+        filter: '<',
+        options: '<?',
+        getOptions: '&',
+        source: '<?',
+        label: '@',
+        selector: '<?',
+        nullOption: '@'
+    },
+};
 //# sourceMappingURL=selectFilter.component.js.map

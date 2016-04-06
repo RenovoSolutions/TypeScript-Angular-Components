@@ -2,7 +2,7 @@
 	<template default>
 		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid }">
 			<input name="{{::spinner.name}}" class="spinner" id="{{::spinner.spinnerId}}" type="text" />
-			<span class="error-string" ng-if="spinner.spinnerValidator.error | isEmpty:false">{{spinner.spinnerValidator.error}}</span>
+			<span class="error-string" ng-if="spinner.inputValidator.error | isEmpty:false">{{spinner.inputValidator.error}}</span>
 		</div>
 	</template>
 	<template when-selector="true">

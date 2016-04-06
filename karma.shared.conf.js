@@ -2,6 +2,7 @@
 
 var webpackRawLoader = require('./webpack.raw-loader');
 var webpackCssLoader = require('./webpack.css-loader');
+var webpackJsonLoader = require('./webpack.json-loader');
 
 module.exports = function (karma, karmaSettings) {
 	var karmaConfig = karmaSettings(karma, [
@@ -11,6 +12,7 @@ module.exports = function (karma, karmaSettings) {
 	]);
 	webpackRawLoader(karmaConfig.webpack);
 	webpackCssLoader(karmaConfig.webpack);
+	webpackJsonLoader(karmaConfig.webpack);
 	karmaConfig.webpack.externals = {
 		'jquery': '$',
 		'angular': 'angular',

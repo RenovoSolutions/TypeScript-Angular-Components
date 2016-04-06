@@ -3,7 +3,7 @@
 var angular = require('angular');
 var _ = require('lodash');
 exports.moduleName = 'rl.ui.components.cardContainer.pager';
-exports.directiveName = 'rlPager';
+exports.componentName = 'rlPager';
 exports.controllerName = 'PagerController';
 exports.defaultVisiblePageCount = 5;
 var PagerController = (function () {
@@ -89,22 +89,16 @@ var PagerController = (function () {
     return PagerController;
 }());
 exports.PagerController = PagerController;
-function pager() {
-    'use strict';
-    return {
-        restrict: 'E',
-        require: { cardContainer: '?^^rlCardContainer' },
-        template: require('./pager.html'),
-        controller: exports.controllerName,
-        controllerAs: 'pager',
-        scope: {},
-        bindToController: {
-            pageCount: '=visiblePages',
-        },
-    };
-}
-exports.pager = pager;
+var pager = {
+    require: { cardContainer: '?^^rlCardContainer' },
+    template: require('./pager.html'),
+    controller: exports.controllerName,
+    controllerAs: 'pager',
+    bindings: {
+        pageCount: '<?visiblePages',
+    },
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, pager)
+    .component(exports.componentName, pager)
     .controller(exports.controllerName, PagerController);
 //# sourceMappingURL=pager.js.map

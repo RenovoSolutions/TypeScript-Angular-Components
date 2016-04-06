@@ -2,7 +2,7 @@
 'use strict';
 var angular = require('angular');
 exports.moduleName = 'rl.ui.components.cardContainer.pageSize';
-exports.directiveName = 'rlPageSize';
+exports.componentName = 'rlPageSize';
 exports.controllerName = 'PageSizeController';
 exports.availablePageSizes = [10, 25, 50, 100];
 exports.defaultPageSize = 10;
@@ -35,20 +35,13 @@ var PageSizeController = (function () {
     return PageSizeController;
 }());
 exports.PageSizeController = PageSizeController;
-function pageSize() {
-    'use strict';
-    return {
-        restrict: 'E',
-        require: { cardContainer: '?^^rlCardContainer' },
-        template: require('./pageSize.html'),
-        controller: exports.controllerName,
-        controllerAs: 'controller',
-        scope: {},
-        bindToController: {},
-    };
-}
-exports.pageSize = pageSize;
+var pageSize = {
+    require: { cardContainer: '?^^rlCardContainer' },
+    template: require('./pageSize.html'),
+    controller: exports.controllerName,
+    controllerAs: 'controller',
+};
 angular.module(exports.moduleName, [])
-    .directive(exports.directiveName, pageSize)
+    .component(exports.componentName, pageSize)
     .controller(exports.controllerName, PageSizeController);
 //# sourceMappingURL=pageSize.js.map

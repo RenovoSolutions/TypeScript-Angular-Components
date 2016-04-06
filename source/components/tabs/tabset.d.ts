@@ -1,5 +1,5 @@
 import * as ng from 'angular';
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export interface ITabHeader {
     template: string;
@@ -7,11 +7,12 @@ export interface ITabHeader {
     isValid?: boolean;
 }
 export declare class TabsetController {
+    private $element;
     tabHeaders: ITabHeader[];
-    findPosition: {
-        (tabElement: ng.IAugmentedJQuery): number;
-    };
     registerTab(element: ng.IAugmentedJQuery, header: ITabHeader): void;
     select(tab: ITabHeader): void;
+    static $inject: string[];
+    constructor($element: angular.IAugmentedJQuery);
+    findPosition(tabElement: ng.IAugmentedJQuery): number;
 }
-export declare function tabset(): ng.IDirective;
+export declare let tabset: ng.IComponentOptions;

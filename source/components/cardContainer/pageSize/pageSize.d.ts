@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export declare var availablePageSizes: number[];
 export declare var defaultPageSize: number;
@@ -14,4 +14,3 @@ export declare class PageSizeController {
     constructor($scope: angular.IScope);
     $onInit(): void;
 }
-export declare function pageSize(): angular.IDirective;

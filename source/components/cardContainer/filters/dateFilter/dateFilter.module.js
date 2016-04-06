@@ -12,6 +12,6 @@ __export(require('./dateFilter.service'));
 __export(require('./dateFilter.component'));
 angular.module(exports.moduleName, [__date.moduleName])
     .factory(dateFilter_service_1.factoryName, dateFilter_service_1.dateFilterFactory)
-    .directive(dateFilter_component_1.directiveName, dateFilter_component_1.dateFilter)
+    .component(dateFilter_component_1.componentName, dateFilter_component_1.dateFilter)
     .controller(dateFilter_component_1.controllerName, dateFilter_component_1.DateFilterController);
 //# sourceMappingURL=dateFilter.module.js.map

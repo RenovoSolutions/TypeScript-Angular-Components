@@ -10,7 +10,7 @@ import { services } from 'typescript-angular-utilities';
 import { IDataSource } from '../../dataSources/dataSources.module';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 
-export var directiveName: string = 'rlFilterGroup';
+export var componentName: string = 'rlFilterGroup';
 export var controllerName: string = 'FilterGroupController';
 
 export interface IFilterGroupBindings {
@@ -50,18 +50,13 @@ export class FilterGroupController {
 	}
 }
 
-export function filterGroup(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./filterGroup.directive.html'),
-		controller: controllerName,
-		controllerAs: 'controller',
-		scope: {},
-		bindToController: {
-			icon: '=',
-			filterGroup: '=',
-			source: '=',
-		},
-	};
-}
+export let filterGroup: angular.IComponentOptions = {
+	template: require('./filterGroup.directive.html'),
+	controller: controllerName,
+	controllerAs: 'controller',
+	bindings: {
+		icon: '=',
+		filterGroup: '=',
+		source: '=',
+	},
+};

@@ -3,7 +3,7 @@ import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 import { IDateFilter } from './dateFilter.service';
 import { IDataSource } from '../../datasources/dataSource';
-export declare let directiveName: string;
+export declare let componentName: string;
 export declare let controllerName: string;
 export interface IDateFilterBindings {
     clearButton: boolean;
@@ -42,4 +42,4 @@ export declare class DateFilterController implements IDateFilterBindings {
     setDateTimeNowIfNull(): void;
     toggle(): void;
 }
-export declare function dateFilter(): angular.IDirective;
+export declare let dateFilter: angular.IComponentOptions;

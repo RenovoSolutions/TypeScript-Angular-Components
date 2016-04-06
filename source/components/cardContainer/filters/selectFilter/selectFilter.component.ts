@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import {ISelectFilter} from './selectFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
 
-export let directiveName: string = 'rlSelectFilter';
+export let componentName: string = 'rlSelectFilter';
 export let controllerName: string = 'SelectFilterController';
 
 
@@ -50,22 +50,17 @@ export class SelectFilterController implements ISelectFilterController {
 	}
 }
 
-export function selectFilter(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: require('./selectFilter.html'),
-		controller: controllerName,
-		controllerAs: 'filter',
-		scope: {},
-		bindToController: {
-			filter: '=',
-			options: '=',
-			getOptions: '&',
-			source: '=',
-			label: '@',
-			selector: '=',
-			nullOption: '@'
-		},
-	};
-}
+export let selectFilter: angular.IComponentOptions = {
+	template: require('./selectFilter.html'),
+	controller: controllerName,
+	controllerAs: 'filter',
+	bindings: {
+		filter: '<',
+		options: '<?',
+		getOptions: '&',
+		source: '<?',
+		label: '@',
+		selector: '<?',
+		nullOption: '@'
+	},
+};

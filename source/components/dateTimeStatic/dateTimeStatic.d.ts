@@ -4,7 +4,7 @@ export declare let controllerName: string;
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 export interface IDateTimeStaticBindings {
-    dateValue: string;
+    dateValue: moment.Moment;
     includeTime: boolean;
     displayTimeZone: boolean;
 }
@@ -13,10 +13,11 @@ export interface IDateTimeStaticController extends IDateTimeStaticBindings {
 }
 export declare class DateTimeStaticController implements IDateTimeStaticController {
     private dateUtility;
-    dateValue: string;
+    dateValue: moment.Moment;
     includeTime: boolean;
     displayValue: string;
     displayTimeZone: boolean;
+    timezone: string;
     static $inject: string[];
     constructor(dateUtility: __date.IDateUtility);
 }

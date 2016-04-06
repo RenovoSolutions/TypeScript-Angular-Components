@@ -1,9 +1,9 @@
 import * as angular from 'angular';
-export declare var moduleName: string;
-export declare var directiveName: string;
-export declare var controllerName: string;
-export declare var defaultSearchPlaceholder: string;
-export declare var defaultSearchDelay: number;
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
+export declare let defaultSearchPlaceholder: string;
+export declare let defaultSearchDelay: number;
 export interface ICardSearchBindings {
     delay: number;
 }
@@ -24,4 +24,3 @@ export declare class CardSearchController {
     $onInit(): void;
     private validateSearchLength(search, minLength);
 }
-export declare function cardSearch(): angular.IDirective;

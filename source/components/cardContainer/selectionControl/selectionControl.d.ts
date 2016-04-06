@@ -3,7 +3,7 @@ import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 import { IDataSource } from '../dataSources/dataSources.module';
 export declare var moduleName: string;
-export declare var directiveName: string;
+export declare var componentName: string;
 export declare var controllerName: string;
 export declare class SelectionControlController {
     private $scope;
@@ -20,4 +20,3 @@ export declare class SelectionControlController {
     clearPage(): void;
     clearAll(): void;
 }
-export declare function selectionControl(): angular.IDirective;

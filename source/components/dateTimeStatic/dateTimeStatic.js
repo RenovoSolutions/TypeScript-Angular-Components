@@ -10,12 +10,13 @@ var __date = typescript_angular_utilities_1.services.date;
 var DateTimeStaticController = (function () {
     function DateTimeStaticController(dateUtility) {
         this.dateUtility = dateUtility;
-        this.displayValue = '';
         if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
-            this.displayValue = moment(this.dateValue).format('MM/DD/YYYY');
+            this.dateValue = moment(this.dateValue);
+            this.displayValue = this.dateValue.format(__date.defaultFormats.dateFormat);
+            this.timezone = this.dateValue.zoneAbbr();
             if (this.includeTime) {
                 this.displayTimeZone = true;
-                this.displayValue = this.displayValue + moment(this.dateValue).format(' h:mm a');
+                this.displayValue = this.displayValue + ' ' + this.dateValue.format(__date.defaultFormats.timeFormat);
             }
         }
     }

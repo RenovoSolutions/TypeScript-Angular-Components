@@ -4,11 +4,14 @@
 var angular = require('angular');
 var dialog_service_1 = require('../../services/dialog/dialog.service');
 exports.moduleName = 'rl.ui.components.dialog';
-exports.directiveName = 'rlDialog';
+exports.componentName = 'rlDialog';
 exports.controllerName = 'DialogController';
 var DialogController = (function () {
-    function DialogController($scope, dialogService) {
+    function DialogController($scope, $element, $transclude, $compile, dialogService) {
         this.$scope = $scope;
+        this.$element = $element;
+        this.$transclude = $transclude;
+        this.$compile = $compile;
         this.dialogService = dialogService;
     }
     DialogController.prototype.$onInit = function () {
@@ -20,49 +23,44 @@ var DialogController = (function () {
             }
         });
     };
-    DialogController.$inject = ['$scope', dialog_service_1.serviceName];
+    DialogController.prototype.$postLink = function () {
+        var _this = this;
+        this.close = this.$scope.$parent.$close;
+        this.dismiss = this.$scope.$parent.$dismiss;
+        this.saveAndClose = this.$scope.$parent.$saveAndClose;
+        var footerArea = this.$element.find('.footer-template');
+        if (this.$transclude.isSlotFilled('footerSlot')) {
+            this.$transclude(function (footer) {
+                _this.hasFooter = (footer.length > 0);
+                if (_this.hasFooter) {
+                    footerArea.append(footer);
+                }
+            }, null, 'footerSlot');
+        }
+        else if (this.autosave) {
+            var footer = this.$compile(require('./autosaveDialogFooter.html'))(this.$scope);
+            this.hasFooter = true;
+            footerArea.append(footer);
+        }
+    };
+    DialogController.$inject = ['$scope', '$element', '$transclude', '$compile', dialog_service_1.serviceName];
     return DialogController;
 }());
 exports.DialogController = DialogController;
-dialog.$inject = ['$compile'];
-function dialog($compile) {
-    'use strict';
-    return {
-        restrict: 'E',
-        transclude: {
-            headerSlot: '?rlDialogHeader',
-            contentSlot: '?rlDialogContent',
-            footerSlot: '?rlDialogFooter',
-        },
-        template: require('./dialog.html'),
-        controller: exports.controllerName,
-        controllerAs: 'dialog',
-        scope: {},
-        bindToController: {
-            autosave: '=',
-        },
-        link: function (scope, element, attrs, controller, transclude) {
-            controller.close = scope.$parent.$close;
-            controller.dismiss = scope.$parent.$dismiss;
-            controller.saveAndClose = scope.$parent.$saveAndClose;
-            var footerArea = element.find('.footer-template');
-            if (transclude.isSlotFilled('footerSlot')) {
-                transclude(function (footer) {
-                    controller.hasFooter = (footer.length > 0);
-                    if (controller.hasFooter) {
-                        footerArea.append(footer);
-                    }
-                }, null, 'footerSlot');
-            }
-            else if (controller.autosave) {
-                var footer = $compile(require('./autosaveDialogFooter.html'))(scope);
-                controller.hasFooter = true;
-                footerArea.append(footer);
-            }
-        },
-    };
-}
+var dialog = {
+    transclude: {
+        headerSlot: '?rlDialogHeader',
+        contentSlot: '?rlDialogContent',
+        footerSlot: '?rlDialogFooter',
+    },
+    template: require('./dialog.html'),
+    controller: exports.controllerName,
+    controllerAs: 'dialog',
+    bindings: {
+        autosave: '=',
+    },
+};
 angular.module(exports.moduleName, [dialog_service_1.moduleName])
-    .directive(exports.directiveName, dialog)
+    .component(exports.componentName, dialog)
     .controller(exports.controllerName, DialogController);
 //# sourceMappingURL=dialog.js.map
