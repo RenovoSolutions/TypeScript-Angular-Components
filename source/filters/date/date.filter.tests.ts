@@ -29,7 +29,7 @@ describe('date filter', () => {
 
 	it('should return the date with a timestamp and timezone if includeTime is specified', (): void => {
 		expect(dateFilter(moment('2016-01-02T12:00:00.000-05:00').tz('US/Eastern'), true)).to.equal('01/02/2016 12:00 PM EST');
-		expect(dateFilter(moment('2016-10-02T12:00:00.000-05:00').tz('US/Eastern'), true)).to.equal('10/02/2016 12:00 PM EST');
+		expect(dateFilter(moment('2016-12-02T12:00:00.000-05:00').tz('US/Eastern'), true)).to.equal('12/02/2016 12:00 PM EST');
 		expect(dateFilter(moment('2015-01-02T12:00:00.000-05:00').tz('US/Eastern'), true)).to.equal('01/02/2015 12:00 PM EST');
 	});
 });
