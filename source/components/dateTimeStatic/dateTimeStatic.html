@@ -1,1 +1,1 @@
-<span class="rl-date-time-static">{{view.displayValue}}&nbsp;<span ng-if="view.displayTimeZone" class="time-zone">{{view.timezone}}</span></span>
+<span class="rl-date-time-static">{{view.dateValue | rlDate:view.includeTime}}</span>
