@@ -24,8 +24,8 @@ export interface IDateFilterBindings {
 	includeTime: boolean;
 	includeDateRange: boolean;
 	label: string;
-	selectedDate1: string;
-	selectedDate2: Date;
+	selectedDate1: moment.Moment;
+	selectedDate2: moment.Moment;
 	source: IDataSource<any>;
 	type: string;
 }
@@ -52,9 +52,9 @@ export class DateFilterController implements IDateFilterBindings {
 			this.clearButton = true;
 	}
 
-	public get selectedDate1(): string {
+	public get selectedDate1(): moment.Moment {
 		if (this.filter.selectedDate1 != null) {
-			return moment(this.filter.selectedDate1).format('M/D/YYYY');
+			return moment(this.filter.selectedDate1);
 		} else {
 			//clear input field of date value. and rest past day/week count
 			this.inputField.val('');
@@ -63,9 +63,9 @@ export class DateFilterController implements IDateFilterBindings {
 		}
 	}
 
-	public set selectedDate1(v: string) {
-		if (this.dateUtility.isDate(v)) {
-			this.filter.selectedDate1 = moment(v).toDate();
+	public set selectedDate1(dateString: moment.Moment) {
+		if (this.dateUtility.isDate(dateString)) {
+			this.filter.selectedDate1 = moment(dateString);
 		} else {
 			//clear input field of date value. and rest past day/week count
 			this.inputField.val('');
@@ -75,12 +75,12 @@ export class DateFilterController implements IDateFilterBindings {
 		this.refreshDataSource();
 	}
 
-	public get selectedDate2(): Date {
+	public get selectedDate2(): moment.Moment {
 		return this.filter.selectedDate2;
 	}
 
-	public set selectedDate2(v: Date) {
-		this.filter.selectedDate2 = v;
+	public set selectedDate2(date: moment.Moment) {
+		this.filter.selectedDate2 = date;
 		this.refreshDataSource();
 	}
 
@@ -113,7 +113,7 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.count > 0) {
 			this.filter.dateRange = true;
 			// add days has to be a negative number to go backwords.
-			this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type).toDate();
+			this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type);
 		} else if (this.count == 0) {
 			//only change this values the first time.
 			if (this.filter.dateRange) {
@@ -131,7 +131,7 @@ export class DateFilterController implements IDateFilterBindings {
 
 	setDateTimeNowIfNull(): void {
 		if (this.selectedDate1 == null) {
-			this.selectedDate1 = moment(Date.now()).format('M/D/YYYY');
+			this.selectedDate1 = this.dateUtility.getNow();
 		}
 	}
 
