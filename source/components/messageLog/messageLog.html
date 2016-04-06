@@ -18,7 +18,7 @@
 					<div class="byline">{{entry.createdBy.name}}</div>
 					<div class="byline">
 						<rl-date-time-static date-value="entry.createdDate" include-time="true"></rl-date-time-static>
-						<span  ng-if="entry.edited" class="edited-note" uib-tooltip="Last edited by: {{entry.lastUpdatedBy.name}} {{entry.lastUpdatedDate | date:'short' }} UTC">(edited)</span></div>
+						<span  ng-if="entry.edited" class="edited-note" rl-popover="log.tooltipTemplate" popover-trigger="mouseenter">(edited)</span></div>
 				</div>
 			</template>
 		</rl-generic-container>
