@@ -57,8 +57,12 @@
 </div>
 
 <div>
-	<label>Date Time Static:</label>
+	<label>Date time static:</label>
 	<div><rl-date-time-static date-value="misc.date"></rl-date-time-static></div>
 	<div><rl-date-time-static date-value="misc.date" include-time="true"></rl-date-time-static></div>
+</div>
+<div>
+	<label>Date filter:</label>
+	<div>{{misc.date | rlDate}}</div>
 	<div>{{misc.date | rlDate:true}}</div>
 </div>
