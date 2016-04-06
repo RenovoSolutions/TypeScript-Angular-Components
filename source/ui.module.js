@@ -9,6 +9,8 @@ var behaviors = require('./behaviors/behaviors.module');
 exports.behaviors = behaviors;
 var components = require('./components/components.module');
 exports.components = components;
+var filters = require('./filters/filters.module');
+exports.filters = filters;
 var services = require('./services/services.module');
 exports.services = services;
 var types = require('./types/types.module');
@@ -21,6 +23,7 @@ angular.module(exports.moduleName, [
     typescript_angular_utilities_1.name,
     behaviors.moduleName,
     components.moduleName,
+    filters.moduleName,
     services.moduleName,
 ]);
 //# sourceMappingURL=ui.module.js.map
