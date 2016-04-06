@@ -36,8 +36,8 @@
 
 		function generateMessage(index) {
 			var millisecondsAgo = index * 5000;
-			var milliseconds = new Date().getTime() - millisecondsAgo;
-			var timestamp = new Date(milliseconds);
+			var milliseconds = moment().milliseconds() - millisecondsAgo;
+			var timestamp = moment(milliseconds).tz('US/Eastern');
 			var message = {
 				message: 'Message ' + index,
 				createdBy: generateAuthor(),
