@@ -1,6 +1,7 @@
 'use strict';
 
 import * as angular from 'angular';
+import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
