@@ -11,7 +11,7 @@ export let factoryName: string = 'rlDateFilterFactory';
 
 export interface IDateFilterSettings{
 	type: string;
-	valueSelector: { (item: any): Date } | string;
+	valueSelector: { (item: any): moment.Moment } | string;
 
 	// component settings
 	clearButton?: boolean;
@@ -21,8 +21,8 @@ export interface IDateFilterSettings{
 }
 
 export interface IDateFilter extends filters.IFilter {
-	selectedDate1: Date;
-	selectedDate2: Date;
+	selectedDate1: moment.Moment;
+	selectedDate2: moment.Moment;
 	includeTime: boolean;
 	type: string;
 	dateRange: boolean;
@@ -31,12 +31,12 @@ export interface IDateFilter extends filters.IFilter {
 }
 
 class DateFilter implements IDateFilter {
-	selectedDate1: Date;
-	selectedDate2: Date;
+	selectedDate1: moment.Moment;
+	selectedDate2: moment.Moment;
 	includeTime: boolean;
 	dateRange: boolean;
 
-	private valueSelector: { (item: any): Date } | string;
+	private valueSelector: { (item: any): moment.Moment } | string;
 	public type: string;
 
 	// component settings
@@ -62,15 +62,15 @@ class DateFilter implements IDateFilter {
 		}
 
 		if (this.dateRange) {
-			let itemDate: Date = this.getValue(item)
-			let selectedDate1: Date;
+			let itemDate: moment.Moment = this.getValue(item)
+			let selectedDate1: moment.Moment;
 
 			//have to set the selectedDate1 to a valid Date object for comparisons.
 			if (this.includeTime) {
-				selectedDate1 = moment(this.selectedDate1).toDate();
+				selectedDate1 = moment(this.selectedDate1);
 			} else {
 				//increase it by 1 days. to inlcude the selectec date in the range.
-				selectedDate1 = moment(this.selectedDate1).add(1, 'days').toDate();
+				selectedDate1 = moment(this.selectedDate1).add(1, 'days');
 			}
 			return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
 
@@ -83,7 +83,7 @@ class DateFilter implements IDateFilter {
 		}
 	}
 
-	private getValue(item: any): Date {
+	private getValue(item: any): moment.Moment {
 		return __transform.getValue(item, this.valueSelector);
 	}
 

@@ -12,12 +12,14 @@ var DateTimeStaticController = (function () {
         this.dateUtility = dateUtility;
         if (this.dateValue != null && this.dateUtility.isDate(this.dateValue)) {
             this.dateValue = moment(this.dateValue);
-            this.displayValue = this.dateValue.format(__date.defaultFormats.dateFormat);
-            this.timezone = this.dateValue.zoneAbbr();
             if (this.includeTime) {
                 this.displayTimeZone = true;
-                this.displayValue = this.displayValue + ' ' + this.dateValue.format(__date.defaultFormats.timeFormat);
+                this.displayValue = this.dateValue.format(__date.defaultFormats.dateTimeFormat);
             }
+            else {
+                this.displayValue = this.dateValue.format(__date.defaultFormats.dateFormat);
+            }
+            this.timezone = this.dateValue.zoneAbbr();
         }
     }
     DateTimeStaticController.$inject = [__date.serviceName];

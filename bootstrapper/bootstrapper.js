@@ -55,6 +55,12 @@
 				controller: 'FormTestController',
 				controllerAs: 'forms',
 			})
+			.state('messageLog', {
+				url: '/messageLog',
+				templateUrl: 'bootstrapper/messageLogTest.html',
+				controller: 'MessageLogTestController',
+				controllerAs: 'messageLog',
+			})
 			.state('misc', {
 				url: '/misc',
 				templateUrl: 'bootstrapper/misc.html',

@@ -49,6 +49,7 @@ var MessageLogController = (function () {
             _this.loadingInitial = true;
         });
         this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
+        this.tooltipTemplate = require('./editedByPopover.html');
     }
     MessageLogController.prototype.getEntrySelector = function (entry) {
         if (_.isString(this.selector)) {

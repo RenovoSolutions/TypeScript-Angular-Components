@@ -1,6 +1,7 @@
 'use strict';
 
 import * as ng from 'angular';
+import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 
@@ -17,10 +18,10 @@ export interface IMessage {
 	id?: number;
 	message: string;
 	createdBy?: IUser;
-	createdDate?: Date;
+	createdDate?: moment.Moment;
 
 	isSystemNote?: boolean;
-	lastUpdatedDate?: Date;
+	lastUpdatedDate?: moment.Moment;
 	lastUpdatedBy?: IUser;
 
 	edited?: boolean;

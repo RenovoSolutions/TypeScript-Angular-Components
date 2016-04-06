@@ -67,6 +67,7 @@ export class MessageLogController implements IMessageLogBindings {
 
 	loading: boolean;
 	loadingInitial: boolean;
+	tooltipTemplate: string;
 
 
 	static $inject: string[] = [__dialog.serviceName, '$scope', factoryName];
@@ -101,6 +102,8 @@ export class MessageLogController implements IMessageLogBindings {
 		});
 
 		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
+
+		this.tooltipTemplate = require('./editedByPopover.html');
 	}
 
 	getEntrySelector(entry: IMessage): any {

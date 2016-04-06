@@ -49,6 +49,7 @@ export declare class MessageLogController implements IMessageLogBindings {
     templates: any;
     loading: boolean;
     loadingInitial: boolean;
+    tooltipTemplate: string;
     static $inject: string[];
     constructor(dialog: __dialog.IDialogService<any>, $scope: ng.IScope, messageLogFactory: IMessageLogFactory);
     getEntrySelector(entry: IMessage): any;
