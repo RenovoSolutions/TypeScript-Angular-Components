@@ -18,7 +18,7 @@ function dateFilter(): IDateFilter {
 	return (date?: moment.Moment, includeTime?: boolean): string => {
 		let momentDate: moment.Moment = moment(date);
 		if (includeTime) {
-			return momentDate.format(__date.defaultFormats.dateTimeFormat) + momentDate.zoneAbbr();
+			return momentDate.format(__date.defaultFormats.dateTimeFormat) + ' ' + momentDate.zoneAbbr();
 		} else {
 			return momentDate.format(__date.defaultFormats.dateFormat);
 		}
