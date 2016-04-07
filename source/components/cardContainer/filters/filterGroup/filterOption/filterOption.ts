@@ -8,6 +8,7 @@ export var componentName: string = 'rlFilterOption';
 
 let filterOption: angular.IComponentOptions = {
 	template: require('./filterOption.html'),
+	controllerAs: 'filter',
 	bindings: {
 		activate: '&',
 		isActive: '=active',

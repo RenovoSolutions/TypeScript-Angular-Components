@@ -5,6 +5,7 @@ exports.moduleName = 'rl.ui.components.cardContainer.filters.filterGroup.filterO
 exports.componentName = 'rlFilterOption';
 var filterOption = {
     template: require('./filterOption.html'),
+    controllerAs: 'filter',
     bindings: {
         activate: '&',
         isActive: '=active',
