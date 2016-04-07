@@ -6,7 +6,7 @@ import { serviceName, BootstrapModalDialogService } from './bootstrapModalDialog
 export var controllerName: string = 'BootstrapModalDialogController';
 
 export interface IBootstrapModalDialogScope extends ng.IScope {
-	modalController: string | Function;
+	modalController: string | Function | (string | Function)[];
 	resolveData: any;
 }
 
