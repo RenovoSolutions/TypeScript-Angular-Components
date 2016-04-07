@@ -8,6 +8,7 @@
 	},
 	"files": [
 		"./typings/tsd.d.ts",
+		"./typings/customTypings.d.ts",
 		"./source/ui.module.ts"
 	]
 }
