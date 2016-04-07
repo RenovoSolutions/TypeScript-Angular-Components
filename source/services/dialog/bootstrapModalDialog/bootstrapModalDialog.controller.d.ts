@@ -2,7 +2,7 @@ import * as ng from 'angular';
 import { BootstrapModalDialogService } from './bootstrapModalDialog.service';
 export declare var controllerName: string;
 export interface IBootstrapModalDialogScope extends ng.IScope {
-    modalController: string | Function;
+    modalController: string | Function | (string | Function)[];
     resolveData: any;
 }
 export declare class BootstrapModalDialogController {
