@@ -41,8 +41,9 @@ var DateTimeController = (function (_super) {
                 _this.timezone = __timezone.timezoneService.currentTimezone;
                 return null;
             }
-            _this.timezone = __timezone.timezones.get(value.tz());
-            return moment(value).format(_this.getFormatOrDefault());
+            var date = moment(value);
+            _this.timezone = __timezone.timezones.get(date.tz());
+            return date.format(_this.getFormatOrDefault());
         });
         this.ngModel.$parsers.push(function (value) {
             return __timezone.timezoneService.buildMomentWithTimezone(value, _this.timezone, _this.getFormatOrDefault());

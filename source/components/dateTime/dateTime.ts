@@ -97,8 +97,10 @@ export class DateTimeController extends InputController {
 				return null;
 			}
 
-			this.timezone = __timezone.timezones.get(value.tz());
-			return moment(value).format(this.getFormatOrDefault());
+			let date: moment.Moment = moment(value);
+
+			this.timezone = __timezone.timezones.get(date.tz());
+			return date.format(this.getFormatOrDefault());
 		});
 
 		this.ngModel.$parsers.push((value: string): moment.Moment => {
