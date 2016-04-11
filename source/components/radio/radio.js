@@ -8,10 +8,10 @@ var RadioController = (function () {
     }
     RadioController.prototype.$onInit = function () {
         if (this.groupController != null) {
-            this.radioGroup = this.groupController.registerButton();
+            this.radioGroup = this.groupController.group;
         }
         else {
-            this.radioGroup = new radioGroup_1.RadioGroup(this.$scope, this.ngModel);
+            this.radioGroup = new radioGroup_1.RadioGroup(this.ngModel);
         }
     };
     RadioController.$inject = ['$scope'];
@@ -28,7 +28,7 @@ exports.radio = {
     controller: exports.controllerName,
     controllerAs: 'radio',
     bindings: {
-        value: '=',
+        value: '<',
     },
 };
 //# sourceMappingURL=radio.js.map
