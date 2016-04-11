@@ -38,3 +38,9 @@ Applies a name to the ng-model for the component. If none is specified, defaults
 * [datetime](../dateTime/dateTime.md)
 * [select](../select/select.md)
 * [typeahead](../typeahead/typeahead.md)
+
+Other inputs:
+* [checkbox](../checkbox/checkbox.md)
+* [radio]()
+* [richTextEditor]()
+* [typeaheadList]()

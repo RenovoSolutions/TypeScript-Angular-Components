@@ -7,17 +7,13 @@ A basic toggle button. Functions similar to a checkbox. Button shows as depresse
 ```
 ### Options
 
-#### [`ng-model`](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjv_PHnouTLAhWFXh4KHScJBmsQFggcMAA&url=https%3A%2F%2Fdocs.angularjs.org%2Fapi%2Fng%2Fdirective%2FngModel&usg=AFQjCNFGX5gYo-4684URATQ4lnqF1DVXPg&bvm=bv.117868183,d.dmo)
+`ng-model`, `on-toggle`
 
-Two-way binds the specified value to the button 'checked' property. See [ng-model](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjv_PHnouTLAhWFXh4KHScJBmsQFggcMAA&url=https%3A%2F%2Fdocs.angularjs.org%2Fapi%2Fng%2Fdirective%2FngModel&usg=AFQjCNFGX5gYo-4684URATQ4lnqF1DVXPg&bvm=bv.117868183,d.dmo).
-
-#### `on-toggle`
-
-This expression is triggered when the button is clicked. The new `value` of the checked property is provided on the expression scope as `value`.
+See [checkbox](../checkbox/checkbox.md) for details on the check behavior options.
 
 `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the base options.
+See [buttons](./buttons.md) for detail on the button options.
 
 ### Full Example
 A toggle button with an **ng-model**, **on-toggle**, **size**, **type**, and **disabling**.
