@@ -223,6 +223,9 @@
 	function MiscTestController($scope, $q, $timeout, dialog, cardContainerBuilderFactory) {
 		var self = this;
 		// Misc
+		self.myNum = 2;
+		self.myValue = 1;
+
 		self.validator = {
 			validate: function () {
 				return self.text === 'valid';
