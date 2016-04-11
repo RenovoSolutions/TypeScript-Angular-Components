@@ -49,15 +49,17 @@
 </div>
 
 <div>
-	<label>Radio buttons:</label>
-	<rl-radio-group ng-model="input.radio1">
-		<rl-radio value="{ value: 1 }">1</rl-radio>
-		<rl-radio value="{ value: 2 }">2</rl-radio>
-		<rl-radio value="{ value: 3 }">3</rl-radio>
-	</rl-radio-group>
-	{{input.radio1}}
-	<rl-radio ng-model="input.radio2" value="{ value: 4 }">4</rl-radio>
-	{{input.radio2}}
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/radio/radio.md">Radio buttons</a>:</label>
+	<div>
+		<rl-radio-group ng-model="input.radio1">
+			<rl-radio value="{ value: 1 }">1</rl-radio>
+			<rl-radio value="{ value: 2 }">2</rl-radio>
+			<rl-radio value="{ value: 3 }">3</rl-radio>
+		</rl-radio-group>
+	</div>
+	<div>{{input.radio1}}</div>
+	<div><rl-radio ng-model="input.radio2" value="{ value: 4 }">4</rl-radio></div>
+	<div>{{input.radio2}}</div>
 </div>
 
 <div>

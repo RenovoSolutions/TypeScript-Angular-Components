@@ -27,7 +27,7 @@ Angular components that can be added to an application.
 
 * [checkbox](/source/components/checkbox/checkbox.md)
 * [dateTime](/source/components/dateTime/dateTime.md)
-* [radio]()
+* [radio](/source/components/radio/radio.md)
 * [richTextEditor]()
 * [select](/source/components/select/select.md)
 * [spinner](/source/components/spinner/spinner.md)
