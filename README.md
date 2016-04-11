@@ -41,7 +41,7 @@ Angular components that can be added to an application.
 * [cardContainer]()
 * [commaList](/source/components/commaList/commaList.md)
 * [dateTimeStatic](/source/components/dateTimeStatic/dateTimeStatic.md)
-* [dialog]()
+* [dialog](/source/components/dialog/dialog.md)
 * [genericContainer]()
 * [form](/source/components/form/form.md)
 * [lazyLoad](/source/components/lazyLoad/lazyLoad.md)
