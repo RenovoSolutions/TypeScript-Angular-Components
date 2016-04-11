@@ -32,7 +32,7 @@ export let radio: ng.IComponentOptions = {
 	transclude: true,
 	template: `
 		<label>
-			<input id="radio" type="radio" name="{{radio.radioGroup.name}}" ng-model="radio.radioGroup.selection" ng-value="radio.value" />
+			<input id="radio" type="radio" name="{{::radio.radioGroup.name}}" ng-model="radio.radioGroup.selection" ng-value="::radio.value" />
 			<span ng-transclude></div>
 		</label>
 	`,
