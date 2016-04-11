@@ -17,7 +17,7 @@ export class RadioController {
 
 	$onInit(): void {
 		if (this.groupController != null) {
-			this.radioGroup = this.groupController.registerButton();
+			this.radioGroup = this.groupController.group;
 		} else {
 			this.radioGroup = new RadioGroup(this.$scope, this.ngModel);
 		}
