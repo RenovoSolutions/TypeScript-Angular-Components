@@ -19,7 +19,7 @@ export class RadioController {
 		if (this.groupController != null) {
 			this.radioGroup = this.groupController.group;
 		} else {
-			this.radioGroup = new RadioGroup(this.$scope, this.ngModel);
+			this.radioGroup = new RadioGroup(this.ngModel);
 		}
 	}
 }

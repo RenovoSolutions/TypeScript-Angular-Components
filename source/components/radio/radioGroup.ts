@@ -14,17 +14,15 @@ export interface IRadioGroupAttributes extends ng.IAttributes {
 }
 
 export class RadioGroup {
-	selection: any;
-
-	constructor($scope: ng.IScope, ngModel: ng.INgModelController, public name?: string) {
-		$scope.$watch((): any => { return ngModel.$viewValue; }, (value: any): void => {
-			this.selection = value;
-		});
-
-		$scope.$watch((): any => { return this.selection; }, (value: any): void => {
-			ngModel.$setViewValue(value);
-		});
+	get selection(): any {
+		return this.ngModel.$viewValue;
 	}
+
+	set selection(value: any) {
+		this.ngModel.$setViewValue(value);
+	}
+
+	constructor(private ngModel: ng.INgModelController, public name?: string) {}
 }
 
 export class RadioGroupController {
