@@ -39,6 +39,6 @@ export let radio: ng.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'radio',
 	bindings: {
-		value: '=',
+		value: '<',
 	},
 };
