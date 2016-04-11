@@ -70,8 +70,9 @@
 
 <div class="form-group">
 	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/alias/alias.md">Alias</a>:</label></div>
-	<div><code>&lt;div&gt;rl-alias="misc.number as val">{{val}}&lt;/div&gt;</code></div>
+	<div><code>&lt;div&gt;rl-alias="misc.number as val">{{val} }&lt;/div&gt;</code></div>
 	<div><code>// where misc.number = 5</code></div>
+	<rl-textbox ng-model="misc.number"></rl-textbox>
 	<div rl-alias="misc.number as val">{{val}}</div>
 </div>
 
