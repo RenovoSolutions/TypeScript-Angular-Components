@@ -1,18 +1,18 @@
-<h3>Inputs</h3>
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Inputs</a></h3>
 <div>
-	<label>Textbox:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
 	<rl-textbox ng-model="input.otherText" rl-required="Input required"></rl-textbox>
 </div>
 <div>
-	<label>Textarea:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textarea/textarea.md">Textarea</a>:</label>
 	<rl-textarea ng-model="input.textAreaText"></rl-textarea>
 </div>
 <div>
-	<label>Spinner:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/spinner/spinner.md">Spinner</a>:</label>
 	<rl-spinner ng-model="input.number" rl-required="Number is required"></rl-spinner>
 </div>
 <div>
-	<label>Datetime:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/dateTime/dateTime.md">Datetime</a>:</label>
 	<rl-date-time ng-model="input.date" use-date="false"></rl-date-time>
 	<rl-date-time ng-model="input.date" use-time="false"></rl-date-time>
 	<rl-date-time ng-model="input.date"></rl-date-time>
@@ -20,11 +20,11 @@
 	<rl-button action="input.logDates()">Log dates</rl-button>
 </div>
 <div>
-	<label>Select:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/select/select.md">Select</a>:</label>
 	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" selector="'name'"></rl-select>
 </div>
 <div>
-	<label>Typeahead:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/typeahead/typeahead.md">Typeahead</a>:</label>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.selection" transform="'name'"
 					create="input.create(value)" label="Test create"></rl-typeahead>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.any" transform="'name'"
@@ -43,9 +43,9 @@
 </div>
 
 <div>
-	<label>Checkbox:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
 	<rl-checkbox ng-model="input.checked">Checkbox</rl-checkbox>
-	Value: {{input.checked}}
+	<div>Value: {{input.checked}}</div>
 </div>
 
 <div>
