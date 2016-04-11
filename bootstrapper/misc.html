@@ -1,6 +1,6 @@
 <h3>Misc</h3>
-<div>
-	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/genericContainer/genericContainer.md">Generic container:</a></label>
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/genericContainer/genericContainer.md">Generic container:</a></label></div>
 	<rl-radio-group ng-model="misc.myValue">
 		<rl-radio value="1">1</rl-radio>
 		<rl-radio value="2">2</rl-radio>
@@ -24,54 +24,54 @@
 	</rl-generic-container>
 </div>
 
-<div>
+<div class="form-group">
 	<label>Validation group:</label>
 	<rl-validation-group validator="misc.validator">
 		<rl-textbox ng-model="misc.text"></rl-textbox>
 	</rl-validation-group>
 </div>
 
-<div>
+<div class="form-group">
 	<label>Template renderer:</label>
 	<rl-template-renderer template="misc.template"></rl-template-renderer>
 </div>
 
-<div>
-	<label>Comma list:</label>
+<div class="form-group">
+	<div><label>Comma list:</label></div>
 	<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
 </div>
 
-<div>
-	<label>Busy:</label>
+<div class="form-group">
+	<div><label>Busy:</label></div>
 	<rl-busy loading="true" size="2x"></rl-busy>
 </div>
 
-<div>
+<div class="form-group">
 	<label>Rating Bar:</label>
 	<rl-rating-bar width="100" height="10" value="50" min="1" max="100"></rl-rating-bar>
 </div>
 
-<div>
-	<label>String with watermark:</label>
+<div class="form-group">
+	<div><label>String with watermark:</label></div>
 	<rl-string-with-watermark string="{{misc.text}}" watermark="(empty)"></rl-string-with-watermark>
 </div>
 
-<div>
-	<label>User rating:</label>
+<div class="form-group">
+	<div><label>User rating:</label></div>
 	<rl-user-rating ng-model="misc.value" range="5"></rl-user-rating>
 </div>
 
-<div>
-	<label>Alias:</label>
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/alias/alias.md">Alias</a>:</label></div>
 	<div rl-alias="misc.number as val">{{val}}</div>
 </div>
 
-<div>
+<div class="form-group">
 	<label>Date time static:</label>
 	<div><rl-date-time-static date-value="misc.date"></rl-date-time-static></div>
 	<div><rl-date-time-static date-value="misc.date" include-time="true"></rl-date-time-static></div>
 </div>
-<div>
+<div class="form-group">
 	<label>Date filter:</label>
 	<div>{{misc.date | rlDate}}</div>
 	<div>{{misc.date | rlDate:true}}</div>

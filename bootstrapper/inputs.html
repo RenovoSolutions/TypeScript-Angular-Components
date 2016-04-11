@@ -1,7 +1,7 @@
 <h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Inputs</a></h3>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
-	<rl-textbox ng-model="input.otherText" rl-required="Input required"></rl-textbox>
+	<rl-textbox ng-model="input.otherText" ></rl-textbox>
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textarea/textarea.md">Textarea</a>:</label>
@@ -9,14 +9,14 @@
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/spinner/spinner.md">Spinner</a>:</label>
-	<rl-spinner ng-model="input.number" rl-required="Number is required"></rl-spinner>
+	<rl-spinner ng-model="input.number"></rl-spinner>
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/dateTime/dateTime.md">Datetime</a>:</label>
 	<rl-date-time ng-model="input.date" use-date="false"></rl-date-time>
 	<rl-date-time ng-model="input.date" use-time="false"></rl-date-time>
 	<rl-date-time ng-model="input.date"></rl-date-time>
-	<rl-date-time ng-model="input.date2" rl-required="You must enter a date"></rl-date-time>
+	<rl-date-time ng-model="input.date2"></rl-date-time>
 	<rl-button action="input.logDates()">Log dates</rl-button>
 </div>
 <div>
@@ -73,3 +73,10 @@
 		</rl-list-item>
 	</rl-typeahead-list>
 </div>
+
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/required/required.md">Required input</a>:</label>
+	<rl-textbox ng-model="input.requiredText" rl-required="Input required"></rl-textbox>
+</div>
+<br/>
+<br/>

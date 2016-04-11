@@ -240,6 +240,8 @@
 			scope: templateScope,
 		};
 
+		self.number = 5;
+
 		self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
 	}
 }());
