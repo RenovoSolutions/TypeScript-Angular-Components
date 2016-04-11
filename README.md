@@ -56,6 +56,11 @@ Angular components that can be added to an application.
 * [userRating]()
 * [validationGroup]()
 
+## Filters
+Angular filters which can be applied to bindings using the Angular pipe operator `<span>{{myMoney | currency}}</span>`
+
+* [date](/source/filters/date/date.filter.md)
+
 ## Services
 Visual utilities and services for open modals and performing other UI tasks.
 
