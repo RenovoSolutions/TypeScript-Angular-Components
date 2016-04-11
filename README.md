@@ -40,7 +40,7 @@ Angular components that can be added to an application.
 * [busy](/source/components/busy/busy.md)
 * [cardContainer]()
 * [commaList](/source/components/commaList/commaList.md)
-* [dateTimeStatic]()
+* [dateTimeStatic](/source/components/dateTimeStatic/dateTimeStatic.md)
 * [dialog]()
 * [genericContainer]()
 * [form](/source/components/form/form.md)
