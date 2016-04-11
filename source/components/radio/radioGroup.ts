@@ -4,6 +4,7 @@ import * as ng from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __guid = services.guid;
 
 export var directiveName: string = 'rlRadioGroup';
 export var controllerName: string = 'RadioGroupController';
@@ -26,7 +27,6 @@ export class RadioGroup {
 }
 
 export class RadioGroupController {
-	private static nextId: number = 1;
 	group: RadioGroup;
 	ngModel: ng.INgModelController;
 
@@ -42,16 +42,10 @@ export class RadioGroupController {
 		} else if (!this.object.isNullOrWhitespace(this.$attrs.name)) {
 			name = this.$attrs.name;
 		} else {
-			name = 'RadioGroup' + this.getNextId();
+			name = 'RadioGroup-' + __guid.guid.random();
 		}
 
 		this.group = new RadioGroup(this.ngModel, name);
-	}
-
-	private getNextId(): string {
-		let nextId: string = RadioGroupController.nextId.toString();
-		RadioGroupController.nextId++;
-		return nextId;
 	}
 }
 
