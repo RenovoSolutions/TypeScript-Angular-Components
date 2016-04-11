@@ -24,7 +24,7 @@ exports.radio = {
         ngModel: '?ngModel',
     },
     transclude: true,
-    template: "\n\t\t<label>\n\t\t\t<input id=\"radio\" type=\"radio\" name=\"{{radio.radioGroup.name}}\" ng-model=\"radio.radioGroup.selection\" ng-value=\"radio.value\" />\n\t\t\t<span ng-transclude></div>\n\t\t</label>\n\t",
+    template: "\n\t\t<label>\n\t\t\t<input id=\"radio\" type=\"radio\" name=\"{{::radio.radioGroup.name}}\" ng-model=\"radio.radioGroup.selection\" ng-value=\"::radio.value\" />\n\t\t\t<span ng-transclude></div>\n\t\t</label>\n\t",
     controller: exports.controllerName,
     controllerAs: 'radio',
     bindings: {

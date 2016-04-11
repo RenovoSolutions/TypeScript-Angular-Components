@@ -17,12 +17,10 @@ export declare class RadioGroupController {
     private $scope;
     private $attrs;
     private object;
-    private static nextId;
     group: RadioGroup;
     ngModel: ng.INgModelController;
     static $inject: string[];
     constructor($scope: ng.IScope, $attrs: IRadioGroupAttributes, object: __object.IObjectUtility);
     $onInit(): void;
-    private getNextId();
 }
 export declare function radioGroup(): ng.IDirective;

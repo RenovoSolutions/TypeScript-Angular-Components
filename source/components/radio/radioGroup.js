@@ -1,6 +1,7 @@
 'use strict';
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __object = typescript_angular_utilities_1.services.object;
+var __guid = typescript_angular_utilities_1.services.guid;
 exports.directiveName = 'rlRadioGroup';
 exports.controllerName = 'RadioGroupController';
 var RadioGroup = (function () {
@@ -36,16 +37,10 @@ var RadioGroupController = (function () {
             name = this.$attrs.name;
         }
         else {
-            name = 'RadioGroup' + this.getNextId();
+            name = 'RadioGroup-' + __guid.guid.random();
         }
         this.group = new RadioGroup(this.ngModel, name);
     };
-    RadioGroupController.prototype.getNextId = function () {
-        var nextId = RadioGroupController.nextId.toString();
-        RadioGroupController.nextId++;
-        return nextId;
-    };
-    RadioGroupController.nextId = 1;
     RadioGroupController.$inject = ['$scope', '$attrs', __object.serviceName];
     return RadioGroupController;
 }());
