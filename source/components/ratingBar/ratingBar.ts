@@ -73,7 +73,7 @@ export class RatingBarController implements IRatingBarScopeBindings {
 let ratingBar: angular.IComponentOptions = {
 	template: `
 		<div class="rating-bar">
-			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == min }" ng-style="ratingBar.dimensions">
+			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == ratingBar.min }" ng-style="ratingBar.dimensions">
 				<div ng-class="ratingBar.barClass" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
 			</div>
 		</div>
