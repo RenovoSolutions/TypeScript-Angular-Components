@@ -1,3 +1,4 @@
+/* rating bar */
 .rating-bar .background {
 	background-color: #fff;
 	border: 1px solid #aaaaaa;
@@ -10,3 +11,34 @@
 .rating-bar .medium { background-color: #007000 }
 .rating-bar .low { background-color: #aa0000 }
 .rating-bar .very-low { background-color: #ff0000 }
+
+/* user rating */
+.rating {
+    unicode-bidi:bidi-override;
+    direction:rtl;
+    font-size:1.5em;
+}
+
+.rating .star {
+	font-family:FontAwesome;
+	font-weight:normal;
+	font-style:normal;
+	display:inline-block;
+}
+
+.rating .star:hover { cursor: pointer; }
+
+.rating .star:before {
+	content:"\f006";
+	padding-right:5px;
+	color:#999999;
+}
+
+.rating .star.filled:before {
+	content:"\f005";
+	color:#eec277;
+}
+
+.rating .star:hover:before, .rating .star:hover~.star:before { color:#ffd288; }
+
+.filled { color:#eec277; }
