@@ -9,8 +9,14 @@ import __transform = services.transform.transform;
 
 import { IColumn } from '../../column';
 
+import { componentName as cardComponent, CardController } from '../card';
+
 export var directiveName: string = 'rlCardHeaderColumn';
 export var controllerName: string = 'CardHeaderColumnController';
+
+export interface IHeaderScope extends angular.IScope {
+	header: HeaderColumnController;
+}
 
 export interface IHeaderColumnBindings {
 	column: IColumn<any>;
@@ -26,11 +32,11 @@ export class HeaderColumnController {
 	value: string | number | boolean;
 
 	renderedTemplate: JQuery;
+	cardController: CardController;
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: angular.IScope) {
+	$onInit(): void {
 		this.update();
-		$scope.$on('card.refresh', this.update); //*event?
+		this.cardController.refresh.subscribe(this.update);
 	}
 
 	private update: { (): void } = (): void => {
@@ -43,6 +49,7 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 	'use strict';
 	return {
 		restrict: 'E',
+		require: { cardController: '^' + cardComponent },
 		template: `
 			<div rl-size-for-breakpoints="header.column.size" styling="::header.column.styling" title="{{::header.column.description}}">
 				<div class="template-container"></div>
@@ -58,10 +65,8 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 		},
 		compile(): angular.IDirectivePrePost {
 			return {
-				pre(scope: angular.IScope
-					, element: angular.IAugmentedJQuery
-					, attrs: angular.IAttributes
-					, header: HeaderColumnController): void {
+				pre(scope: IHeaderScope): void {
+					let header: HeaderColumnController = scope.header;
 					if (header.alias != null) {
 						scope[header.alias] = header.item;
 					}
@@ -75,12 +80,10 @@ export function headerColumn($compile: angular.ICompileService): angular.IDirect
 						header.renderedTemplate = $compile('<span>{{header.value}}</span>')(scope);
 					}
 				},
-				post(scope: angular.IScope
-					, element: angular.IAugmentedJQuery
-					, attrs: angular.IAttributes
-					, header: HeaderColumnController): void {
+				post(scope: IHeaderScope
+					, element: angular.IAugmentedJQuery): void {
 					var container: JQuery = element.find('.template-container');
-					container.append(header.renderedTemplate);
+					container.append(scope.header.renderedTemplate);
 				},
 			};
 		},
