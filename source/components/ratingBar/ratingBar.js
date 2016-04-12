@@ -1,14 +1,17 @@
 'use strict';
+require('./ratingBar.css');
 var angular = require('angular');
+var componentsDefaultTheme_1 = require('../componentsDefaultTheme');
 var ratingBarBackgrounds_service_1 = require('./ratingBarBackgrounds.service');
 var ratingBarClass_service_1 = require('./ratingBarClass.service');
 exports.moduleName = 'rl.ui.components.ratingBar';
 exports.componentName = 'rlRatingBar';
 exports.controllerName = 'RatingBarController';
 var RatingBarController = (function () {
-    function RatingBarController($scope) {
+    function RatingBarController($scope, useDefaultTheme) {
         var _this = this;
         this.$scope = $scope;
+        this.useDefaultTheme = useDefaultTheme;
         var ratingBarBackgrounds = new ratingBarBackgrounds_service_1.RatingBarBackgroundService;
         this.ratingBarClass = new ratingBarClass_service_1.RatingBarClassService;
         this.backgroundClass = ratingBarBackgrounds.getBackground(this.background);
@@ -31,12 +34,12 @@ var RatingBarController = (function () {
         this.barClass = this.ratingBarClass.getClass(confidenceScore);
         this.width = Math.round(confidenceScore * this.totalWidth);
     };
-    RatingBarController.$inject = ['$scope'];
+    RatingBarController.$inject = ['$scope', componentsDefaultTheme_1.defaultThemeValueName];
     return RatingBarController;
 }());
 exports.RatingBarController = RatingBarController;
 var ratingBar = {
-    template: "\n\t\t<div class=\"rating-bar\">\n\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == ratingBar.min }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t</div>\n\t\t</div>\n\t",
+    template: "\n\t\t<div class=\"rating-bar\">\n\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == ratingBar.min, 'default-theme': ratingBar.useDefaultTheme }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t</div>\n\t\t</div>\n\t",
     controller: exports.controllerName,
     controllerAs: 'ratingBar',
     bindings: {

@@ -21,7 +21,7 @@ export interface IButtonToggleController extends IButtonToggleBindings {
 	clicked(): void;
 }
 
-export class ButtonToggleController implements IButtonToggleController extends ButtonController {
+export class ButtonToggleController extends ButtonController implements IButtonToggleController {
 	onToggle: { (param: IToggleParams): void };
 
 	ngModel: angular.INgModelController;

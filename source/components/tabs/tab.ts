@@ -2,6 +2,8 @@
 
 'use strict';
 
+import './tab.css';
+
 import * as ng from 'angular';
 
 import { TabsetController, ITabHeader } from './tabset';

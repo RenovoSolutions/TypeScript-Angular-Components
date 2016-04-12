@@ -1,0 +1,29 @@
+﻿.rating.default-theme {
+    unicode-bidi:bidi-override;
+    direction:rtl;
+    font-size:1.5em;
+}
+
+.rating.default-theme .star {
+	font-family:FontAwesome;
+	font-weight:normal;
+	font-style:normal;
+	display:inline-block;
+}
+
+.rating.default-theme .star:hover { cursor: pointer; }
+
+.rating.default-theme .star:before {
+	content:"\f006";
+	padding-right:5px;
+	color:#999999;
+}
+
+.rating.default-theme .star.filled:before {
+	content:"\f005";
+	color:#eec277;
+}
+
+.rating.default-theme .star:hover:before, .rating.default-theme .star:hover~.star:before { color:#ffd288; }
+
+.filled { color:#eec277; }

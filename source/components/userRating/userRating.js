@@ -1,12 +1,15 @@
 'use strict';
+require('./userRating.css');
 var angular = require('angular');
 var _ = require('lodash');
+var componentsDefaultTheme_1 = require('../componentsDefaultTheme');
 exports.moduleName = 'rl.components.userRating';
 exports.componentName = 'rlUserRating';
 exports.controllerName = 'UserRatingController';
 var UserRatingController = (function () {
-    function UserRatingController($timeout) {
+    function UserRatingController($timeout, useDefaultTheme) {
         this.$timeout = $timeout;
+        this.useDefaultTheme = useDefaultTheme;
     }
     UserRatingController.prototype.$onInit = function () {
         var _this = this;
@@ -38,13 +41,13 @@ var UserRatingController = (function () {
             }
         });
     };
-    UserRatingController.$inject = ['$timeout'];
+    UserRatingController.$inject = ['$timeout', componentsDefaultTheme_1.defaultThemeValueName];
     return UserRatingController;
 }());
 exports.UserRatingController = UserRatingController;
 var userRating = {
     require: { ngModel: 'ngModel' },
-    template: "\n\t\t<span class=\"rating\">\n\t\t\t<span class=\"star\" ng-repeat=\"star in userRating.stars\" ng-class=\"{ 'filled': star.filled }\" ng-click=\"userRating.setRating(star.value)\"></span>\n\t\t</span>\n\t",
+    template: "\n\t\t<span class=\"rating\" ng-class=\"{ 'default-theme': userRating.useDefaultTheme }\">\n\t\t\t<span class=\"star\" ng-repeat=\"star in userRating.stars\" ng-class=\"{ 'filled': star.filled }\" ng-click=\"userRating.setRating(star.value)\"></span>\n\t\t</span>\n\t",
     controller: exports.controllerName,
     controllerAs: 'userRating',
     bindings: {
