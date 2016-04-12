@@ -6,8 +6,6 @@ import './tab.css';
 
 import * as ng from 'angular';
 
-import { defaultThemeValueName } from '../componentsDefaultTheme';
-
 import { TabsetController, ITabHeader } from './tabset';
 
 export let componentName: string = 'rlTab';
@@ -22,11 +20,10 @@ export class TabController {
 
 	tabset: TabsetController;
 
-	static $inject: string[] = ['$scope', '$element', '$transclude', defaultThemeValueName];
+	static $inject: string[] = ['$scope', '$element', '$transclude'];
 	constructor($scope: ng.IScope
 			, private $element: ng.IAugmentedJQuery
-			, private $transclude: ng.ITranscludeFunction
-			, public useDefaultTheme: boolean) {
+			, private $transclude: ng.ITranscludeFunction) {
 		$scope.$watch('tabForm.$valid', (isValid: boolean): void => {
 			this.header.isValid = isValid != null ? isValid : true;
 		});
