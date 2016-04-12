@@ -4,41 +4,34 @@
 
 import * as angular from 'angular';
 
-export var moduleName: string = 'rl.ui.components.buttonLink';
-export var componentName: string = 'rlButtonLink';
-export var controllerName: string = 'ButtonLinkController';
+import { buildButton, ButtonController } from '../button/button';
 
-export class ButtonLinkController {
+export let moduleName: string = 'rl.ui.components.buttonLink';
+export let componentName: string = 'rlButtonLink';
+export let controllerName: string = 'ButtonLinkController';
+
+export class ButtonLinkController extends ButtonController {
 	// bindings
 	link: string;
-	type: string;
-	ngDisabled: boolean;
-	size: string;
 	newTab: boolean;
 
 	target: string;
-	configuredSize: string;
 
 	constructor() {
-		this.type = this.type != null ? this.type : 'default';
-		this.configuredSize = this.size != null ? 'btn-' + this.size : null;
+		super();
 		this.target = this.newTab ? '_blank' : '_self';
 	}
 }
 
-let buttonLink: angular.IComponentOptions = {
-	transclude: true,
+let buttonLink: angular.IComponentOptions = buildButton({
 	template: require('./buttonLink.html'),
 	bindings: {
 		link: '@',
-		type: '@',
-		ngDisabled: '<?',
-		size: '@',
 		newTab: '<?',
+		action: null,
 	},
 	controller: controllerName,
-	controllerAs: 'button',
-};
+});
 
 angular.module(moduleName, [])
 	.component(componentName, buttonLink)
