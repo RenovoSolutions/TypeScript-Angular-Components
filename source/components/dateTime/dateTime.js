@@ -90,18 +90,20 @@ var DateTimeController = (function (_super) {
     return DateTimeController;
 }(input_1.InputController));
 exports.DateTimeController = DateTimeController;
-var dateTime = _.clone(input_1.input);
-dateTime.template = require('./dateTime.html');
-dateTime.controller = exports.controllerName;
-dateTime.controllerAs = 'dateTime';
-var dateTimeBindings = dateTime.bindings;
-dateTimeBindings.minuteStepping = '<?';
-dateTimeBindings.useDate = '<?';
-dateTimeBindings.useTime = '<?';
-dateTimeBindings.min = '<?';
-dateTimeBindings.max = '<?';
-dateTimeBindings.clearButton = '<?';
-dateTimeBindings.onClearEvent = '<?';
+var dateTime = input_1.buildInput({
+    template: require('./dateTime.html'),
+    controller: exports.controllerName,
+    controllerAs: 'dateTime',
+    bindings: {
+        minuteStepping: '<?',
+        useDate: '<?',
+        useTime: '<?',
+        min: '<?',
+        max: '<?',
+        clearButton: '<?',
+        onClearEvent: '&',
+    },
+});
 angular.module(exports.moduleName, [typescript_angular_utilities_1.services.moment.moduleName, typescript_angular_utilities_1.services.date.moduleName, input_1.moduleName, __object.moduleName])
     .component(exports.componentName, dateTime)
     .controller(exports.controllerName, DateTimeController);

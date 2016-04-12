@@ -9,6 +9,12 @@ export declare var controllerName: string;
 export interface IInputAttributes extends angular.IAttributes {
     name: string;
 }
+export interface IInputOptions {
+    template: string;
+    controller?: string | Function;
+    controllerAs?: string;
+    bindings?: any;
+}
 export declare class InputController {
     protected $scope: angular.IScope;
     protected $attrs: IInputAttributes;
@@ -25,4 +31,4 @@ export declare class InputController {
     constructor($scope: angular.IScope, $attrs: IInputAttributes, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
 }
-export declare let input: angular.IComponentOptions;
+export declare function buildInput(options: IInputOptions): angular.IComponentOptions;
