@@ -11,6 +11,13 @@
 		<template when-selector="{{misc.myNum}}"><span>Template 2</span></template>
 		<template default><span>Default</span></template>
 	</rl-generic-container>
+	<div><label>Using ng-switch:</label></div>
+	<div ng-switch="misc.myValue">
+		<span ng-switch-when="1"><span>span 1</span></span>
+		<span ng-switch-when="{{misc.myNum}}"><span>span 2</span></span>
+		<span ng-switch-default><span>Default</span></span>
+	</div>
+	<div><label>Generic-container with toggled contents</label></div>
 	<rl-checkbox ng-model="misc.toggle">Toggle</rl-checkbox>
 	<rl-generic-container selector="misc.toggle">
 		<template default>
