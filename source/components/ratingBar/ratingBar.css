@@ -1,0 +1,12 @@
+.rating-bar .default-theme.background {
+	background-color: #fff;
+	border: 1px solid #aaaaaa;
+}
+.rating-bar .default-theme.background.empty {
+	border: 1px solid red;
+}
+.rating-bar .default-theme .very-high { background-color: #20D000 }
+.rating-bar .default-theme .high { background-color: #00a000 }
+.rating-bar .default-theme .medium { background-color: #007000 }
+.rating-bar .default-theme .low { background-color: #aa0000 }
+.rating-bar .default-theme .very-low { background-color: #ff0000 }

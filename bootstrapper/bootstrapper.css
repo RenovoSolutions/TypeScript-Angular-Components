@@ -1,17 +1,3 @@
-/* rating bar */
-.rating-bar .background {
-	background-color: #fff;
-	border: 1px solid #aaaaaa;
-}
-.rating-bar .background.empty {
-	border: 1px solid red;
-}
-.rating-bar .very-high { background-color: #20D000 }
-.rating-bar .high { background-color: #00a000 }
-.rating-bar .medium { background-color: #007000 }
-.rating-bar .low { background-color: #aa0000 }
-.rating-bar .very-low { background-color: #ff0000 }
-
 /* user rating */
 .rating {
     unicode-bidi:bidi-override;

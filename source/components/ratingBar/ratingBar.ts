@@ -1,6 +1,10 @@
 'use strict';
 
+import './ratingBar.css';
+
 import * as angular from 'angular';
+
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
 import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './ratingBarBackgrounds.service';
 import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
@@ -39,8 +43,8 @@ export class RatingBarController implements IRatingBarScopeBindings {
 
 	private ratingBarClass: IRatingBarClassService;
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: angular.IScope) {
+	static $inject: string[] = ['$scope', defaultThemeValueName];
+	constructor(private $scope: angular.IScope, public useDefaultTheme: boolean) {
 		let ratingBarBackgrounds: IRatingBarBackgroundsService = new RatingBarBackgroundService;
 		this.ratingBarClass = new RatingBarClassService;
 
@@ -73,7 +77,7 @@ export class RatingBarController implements IRatingBarScopeBindings {
 let ratingBar: angular.IComponentOptions = {
 	template: `
 		<div class="rating-bar">
-			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == ratingBar.min }" ng-style="ratingBar.dimensions">
+			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == ratingBar.min, 'default-theme': ratingBar.useDefaultTheme }" ng-style="ratingBar.dimensions">
 				<div ng-class="ratingBar.barClass" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
 			</div>
 		</div>
