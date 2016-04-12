@@ -1,3 +1,4 @@
+import './ratingBar.css';
 import * as angular from 'angular';
 export declare var moduleName: string;
 export declare var componentName: string;
@@ -16,6 +17,7 @@ export interface IRatingBarScopeBindings {
 }
 export declare class RatingBarController implements IRatingBarScopeBindings {
     private $scope;
+    useDefaultTheme: boolean;
     totalWidth: number;
     height: number;
     value: number;
@@ -28,6 +30,6 @@ export declare class RatingBarController implements IRatingBarScopeBindings {
     barClass: string;
     private ratingBarClass;
     static $inject: string[];
-    constructor($scope: angular.IScope);
+    constructor($scope: angular.IScope, useDefaultTheme: boolean);
     private updateValue(newValue);
 }

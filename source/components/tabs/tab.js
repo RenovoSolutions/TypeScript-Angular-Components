@@ -1,5 +1,6 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
+require('./tab.css');
 exports.componentName = 'rlTab';
 exports.controllerName = 'rlTabController';
 var TabController = (function () {
