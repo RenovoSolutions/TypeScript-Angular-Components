@@ -516,12 +516,12 @@ describe('CardContainerController', () => {
 			expect(cardContainer.numberSelected).to.equal(0);
 		});
 
-		it('should fire selectionChanged when selectionChanged is called', (): void => {
+		it('should fire selectionChangedEvent when selectionChanged is called', (): void => {
 			let selectionSpy: Sinon.SinonSpy = sinon.spy();
 			dataSource.watch = sinon.spy();
 			buildController();
 
-			scope.$on('selectionChanged', selectionSpy);
+			cardContainer.selectionChangedEvent = selectionSpy;
 
 			cardContainer.selectionChanged();
 
