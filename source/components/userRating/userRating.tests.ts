@@ -8,6 +8,8 @@ import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import __parentChild = services.parentChildBehavior;
 
+import { defaultThemeValueName } from '../componentsDefaultTheme';
+
 import {
 	moduleName,
 	controllerName,
@@ -31,6 +33,10 @@ describe('UserRatingController', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
+
+		let mocks: any = {};
+		mocks[defaultThemeValueName] = true;
+		test.angularFixture.mock(mocks);
 
 		let services: any = test.angularFixture.inject('$timeout');
 		$timeout = services['$timeout'];
