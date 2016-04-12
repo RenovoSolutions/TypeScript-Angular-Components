@@ -73,7 +73,6 @@ var CardContainerController = (function () {
         this.buildColumnSizes();
         if (this.selectableCards) {
             //*use card container event service?
-            $scope.$on('selectionChanged', this.updateSelected);
             $scope.$on('updateDisabledSelections', this.updateDisabledSelections);
             this.dataSource.watch(this.addViewData, 'changed');
             this.dataSource.watch(this.clearFilteredSelections, 'redrawing');
@@ -151,7 +150,7 @@ var CardContainerController = (function () {
     };
     CardContainerController.prototype.selectionChanged = function () {
         this.updateSelected();
-        this.$scope.$emit('selectionChanged');
+        this.selectionChangedEvent();
     };
     CardContainerController.prototype.syncFilters = function () {
         if (!this.object.isNullOrEmpty(this.filters)) {
@@ -250,6 +249,7 @@ exports.cardContainer = {
         cardController: '@',
         cardControllerAs: '@',
         cardAs: '@',
+        selectionChangedEvent: '&selectionChanged',
     }
 };
 //# sourceMappingURL=cardContainer.js.map

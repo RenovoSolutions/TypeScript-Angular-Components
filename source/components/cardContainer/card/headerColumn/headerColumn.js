@@ -2,19 +2,20 @@
 'use strict';
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __transform = typescript_angular_utilities_1.services.transform.transform;
+var card_1 = require('../card');
 exports.directiveName = 'rlCardHeaderColumn';
 exports.controllerName = 'CardHeaderColumnController';
 var HeaderColumnController = (function () {
-    function HeaderColumnController($scope) {
+    function HeaderColumnController() {
         var _this = this;
-        this.$scope = $scope;
         this.update = function () {
             _this.value = __transform.getValue(_this.item, _this.column.getValue);
         };
-        this.update();
-        $scope.$on('card.refresh', this.update); //*event?
     }
-    HeaderColumnController.$inject = ['$scope'];
+    HeaderColumnController.prototype.$onInit = function () {
+        this.update();
+        this.cardController.refresh.subscribe(this.update);
+    };
     return HeaderColumnController;
 }());
 exports.HeaderColumnController = HeaderColumnController;
@@ -23,6 +24,7 @@ function headerColumn($compile) {
     'use strict';
     return {
         restrict: 'E',
+        require: { cardController: '^' + card_1.componentName },
         template: "\n\t\t\t<div rl-size-for-breakpoints=\"header.column.size\" styling=\"::header.column.styling\" title=\"{{::header.column.description}}\">\n\t\t\t\t<div class=\"template-container\"></div>\n\t\t\t</div>\n\t\t",
         controller: exports.controllerName,
         controllerAs: 'header',
@@ -34,7 +36,8 @@ function headerColumn($compile) {
         },
         compile: function () {
             return {
-                pre: function (scope, element, attrs, header) {
+                pre: function (scope) {
+                    var header = scope.header;
                     if (header.alias != null) {
                         scope[header.alias] = header.item;
                     }
@@ -49,9 +52,9 @@ function headerColumn($compile) {
                         header.renderedTemplate = $compile('<span>{{header.value}}</span>')(scope);
                     }
                 },
-                post: function (scope, element, attrs, header) {
+                post: function (scope, element) {
                     var container = element.find('.template-container');
-                    container.append(header.renderedTemplate);
+                    container.append(scope.header.renderedTemplate);
                 },
             };
         },

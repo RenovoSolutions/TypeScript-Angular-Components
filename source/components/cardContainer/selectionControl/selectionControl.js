@@ -28,25 +28,25 @@ var SelectionControlController = (function () {
         _.each(this.dataSource.dataSet, function (item) {
             item.viewData.selected = true;
         });
-        this.$scope.$emit('selectionChanged'); //*events?
+        this.cardContainer.selectionChanged();
     };
     SelectionControlController.prototype.selectAll = function () {
         _.each(this.dataSource.filteredDataSet, function (item) {
             item.viewData.selected = true;
         });
-        this.$scope.$emit('selectionChanged'); //*events?
+        this.cardContainer.selectionChanged();
     };
     SelectionControlController.prototype.clearPage = function () {
         _.each(this.dataSource.dataSet, function (item) {
             item.viewData.selected = false;
         });
-        this.$scope.$emit('selectionChanged'); //*events?
+        this.cardContainer.selectionChanged();
     };
     SelectionControlController.prototype.clearAll = function () {
         _.each(this.dataSource.filteredDataSet, function (item) {
             item.viewData.selected = false;
         });
-        this.$scope.$emit('selectionChanged'); //*events?
+        this.cardContainer.selectionChanged();
     };
     SelectionControlController.$inject = ['$scope', __boolean.serviceName];
     return SelectionControlController;

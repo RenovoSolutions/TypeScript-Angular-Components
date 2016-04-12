@@ -2,6 +2,7 @@
 'use strict';
 var angular = require('angular');
 var _ = require('lodash');
+var Rx = require('rx');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
 var __object = typescript_angular_utilities_1.services.object;
@@ -38,9 +39,10 @@ var CardController = (function () {
         }
         $scope.collapse = this.autosave;
         $scope.setSelected = this.setSelected.bind(this);
+        this.refresh = new Rx.Subject();
         $scope.refresh = function () {
             _this.source.refresh();
-            $scope.$broadcast('card.refresh');
+            _this.refresh.onNext(null);
         };
         $scope.remove = function () {
             _this.source.remove(_this.item);
