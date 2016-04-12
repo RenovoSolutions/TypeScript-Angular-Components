@@ -138,7 +138,6 @@ export class CardContainerController {
 
 		if (this.selectableCards) {
 			//*use card container event service?
-			$scope.$on('selectionChanged', this.updateSelected);
 			$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
 
 			this.dataSource.watch(this.addViewData, 'changed');
