@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
-import __genericSearch = services.genericSearchFilter;
+import __search = services.search;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
@@ -115,7 +115,6 @@ export class TypeaheadController extends InputController {
 	allowCollapse: boolean;
 
 	private cachedItems: any[];
-	private searchFilter: __genericSearch.IGenericSearchFilter;
 	visibleItems: any[];
 	loading: boolean = false;
 	loadDelay: number;
@@ -153,7 +152,6 @@ export class TypeaheadController extends InputController {
 		, '$attrs'
 		, '$timeout'
 		, __parentChild.serviceName
-		, __genericSearch.factoryName
 		, __objectUtility.serviceName
 		, __arrayUtility.serviceName
 		, componentValidatorFactoryName];
@@ -162,7 +160,6 @@ export class TypeaheadController extends InputController {
 		, $attrs: ITypeaheadAttrs
 		, private $timeout: angular.ITimeoutService
 		, private parentChild: __parentChild.IParentChildBehaviorService
-		, private genericSearchFactory: __genericSearch.IGenericSearchFilterFactory
 		, private object: __objectUtility.IObjectUtility
 		, private array: __arrayUtility.IArrayUtility
 		, componentValidatorFactory: IComponentValidatorFactory) {
@@ -173,7 +170,6 @@ export class TypeaheadController extends InputController {
 	$onInit(): void {
 		super.$onInit();
 
-		this.searchFilter = this.genericSearchFactory.getInstance();
 		this.loadDelay = this.useClientSearching ? 100 : 500;
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
@@ -233,15 +229,13 @@ export class TypeaheadController extends InputController {
 				this.visibleItems = items;
 			});
 		} else {
-			this.searchFilter.searchText = search;
-
 			if (this.cachedItems != null) {
-				this.visibleItems = this.filter(this.cachedItems);
+				this.visibleItems = this.filter(this.cachedItems, search);
 				return this.$q.when();
 			} else {
 				return this.$q.when(this.getItems()).then((items: any[]): void => {
 					this.cachedItems = items;
-					this.visibleItems = this.filter(items);
+					this.visibleItems = this.filter(items, search);
 				});
 			}
 		}
@@ -260,8 +254,8 @@ export class TypeaheadController extends InputController {
 		});
 	}
 
-	private filter(list: any[]): any[] {
-		return _.filter(list, (item: any): boolean => { return this.searchFilter.filter(item); });
+	private filter(list: any[], search: string): any[] {
+		return _.filter(list, (item: any): boolean => { return __search.searchUtility.search(item, search); });
 	}
 
 	private addItem(item: any): void {
@@ -296,7 +290,6 @@ let typeahead: angular.IComponentOptions = buildInput({
 
 angular.module(moduleName, [
 	__parentChild.moduleName
-	, __genericSearch.moduleName
 	, __objectUtility.moduleName
 	, __arrayUtility.moduleName
 	, inputModule
