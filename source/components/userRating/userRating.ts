@@ -1,12 +1,16 @@
 ﻿'use strict';
 
+import './userRating.css';
+
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-export var moduleName: string = 'rl.components.userRating';
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
-export var componentName: string = 'rlUserRating';
-export var controllerName: string = 'UserRatingController';
+export let moduleName: string = 'rl.components.userRating';
+
+export let componentName: string = 'rlUserRating';
+export let controllerName: string = 'UserRatingController';
 
 export interface IStar {
 	value: number;
@@ -28,14 +32,14 @@ export class UserRatingController implements IUserRatingController {
 	stars: IStar[];
 	ngModel: angular.INgModelController;
 
-	static $inject: string[] = ['$timeout'];
-	constructor(private $timeout: angular.ITimeoutService) { }
+	static $inject: string[] = ['$timeout', defaultThemeValueName];
+	constructor(private $timeout: angular.ITimeoutService, public useDefaultTheme: boolean) { }
 
 	$onInit(): void {
 		this.stars = [];
-		var rangeSize: number = this.range != null ? this.range : 5;
+		let rangeSize: number = this.range != null ? this.range : 5;
 		// css style requires the stars to show right to left. Reverse the list so the highest value is first
-		var range: number[] = _.range(1, rangeSize + 1).reverse();
+		let range: number[] = _.range(1, rangeSize + 1).reverse();
 		_.each(range, (rating: number): void => {
 			this.stars.push({
 				value: rating,
@@ -67,7 +71,7 @@ export class UserRatingController implements IUserRatingController {
 let userRating: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	template: `
-		<span class="rating">
+		<span class="rating" ng-class="{ 'default-theme': userRating.useDefaultTheme }">
 			<span class="star" ng-repeat="star in userRating.stars" ng-class="{ 'filled': star.filled }" ng-click="userRating.setRating(star.value)"></span>
 		</span>
 	`,
