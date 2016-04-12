@@ -41,7 +41,8 @@ export interface ICardContainerBuilder {
     disableSelection: {
         (item: any): string;
     };
-    useSearch(): IGenericSearchFilter;
+    useSearch(tokenized?: boolean): IGenericSearchFilter;
+    searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter;
     usePaging(): void;
     addColumn<TItemType>(column: IColumn<TItemType>): void;
     useClickableCards(): void;
@@ -91,7 +92,8 @@ export declare class CardContainerBuilder implements ICardContainerBuilder {
     cardAs: string;
     maxColumnSorts: number;
     constructor($injector: angular.auto.IInjectorService);
-    useSearch(filter?: IGenericSearchFilter): IGenericSearchFilter;
+    useSearch(tokenized?: boolean): IGenericSearchFilter;
+    searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter;
     usePaging(): void;
     addColumn<TItemType>(column: IColumn<TItemType>): void;
     useClickableCards(): void;

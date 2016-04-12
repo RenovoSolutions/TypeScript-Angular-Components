@@ -15,11 +15,12 @@ var CardContainerBuilder = (function () {
         this.filters = new FilterBuilder($injector, this);
         this._columns = [];
     }
-    CardContainerBuilder.prototype.useSearch = function (filter) {
-        if (filter == null) {
-            var factory = this.$injector.get(__genericSearchFilter.factoryName);
-            filter = factory.getInstance();
-        }
+    CardContainerBuilder.prototype.useSearch = function (tokenized) {
+        var factory = this.$injector.get(__genericSearchFilter.factoryName);
+        this._searchFilter = factory.getInstance(tokenized);
+        return this._searchFilter;
+    };
+    CardContainerBuilder.prototype.searchFilter = function (filter) {
         this._searchFilter = filter;
         return this._searchFilter;
     };
