@@ -255,7 +255,7 @@ export class TypeaheadController extends InputController {
 	}
 
 	private filter(list: any[], search: string): any[] {
-		return _.filter(list, (item: any): boolean => { return __search.searchUtility.search(item, search); });
+		return _.filter(list, (item: any): boolean => { return __search.searchUtility.tokenizedSearch(item, search); });
 	}
 
 	private addItem(item: any): void {
