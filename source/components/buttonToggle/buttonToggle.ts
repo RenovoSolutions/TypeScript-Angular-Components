@@ -53,6 +53,7 @@ let buttonToggle: angular.IComponentOptions = buildButton({
 	controllerAs: 'buttonToggle',
 	bindings: {
 		onToggle: '&',
+		action: null,
 	},
 });
 
