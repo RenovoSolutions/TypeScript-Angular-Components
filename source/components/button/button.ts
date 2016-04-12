@@ -9,6 +9,7 @@ export let componentName: string = 'rlButton';
 export let controllerName: string = 'ButtonController';
 
 export interface IButtonOptions {
+	require?: any;
 	template?: string;
 	transclude?: boolean;
 	controller?: string | Function;
@@ -46,6 +47,8 @@ let button: angular.IComponentOptions = {
 
 export function buildButton(options: IButtonOptions): angular.IComponentOptions {
 	let clone: any = _.clone(button);
+	clone.require = options.require;
+	clone.transclude = options.transclude != null ? options.transclude : clone.transclude;
 	clone.template = options.template;
 	clone.controller = options.controller || clone.controller;
 	clone.controllerAs = options.controllerAs || clone.controllerAs;
