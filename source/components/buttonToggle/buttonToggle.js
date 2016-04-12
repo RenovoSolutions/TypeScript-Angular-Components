@@ -40,6 +40,7 @@ var buttonToggle = button_1.buildButton({
     controllerAs: 'buttonToggle',
     bindings: {
         onToggle: '&',
+        action: null,
     },
 });
 angular.module(exports.moduleName, [])
