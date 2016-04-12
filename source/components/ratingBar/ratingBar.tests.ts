@@ -13,6 +13,8 @@ import {
 	RatingBarController,
 } from './ratingBar';
 
+import { defaultThemeValueName } from '../componentsDefaultTheme';
+
 import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './ratingBarBackgrounds.service';
 
 import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
@@ -39,6 +41,10 @@ describe('RatingBarController', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
+
+		let mocks: any = {};
+		mocks[defaultThemeValueName] = true;
+		test.angularFixture.mock(mocks);
 
 		ratingBarBackgrounds = new RatingBarBackgroundService();
 		ratingBarClass = new RatingBarClassService();
