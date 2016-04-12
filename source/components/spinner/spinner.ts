@@ -15,7 +15,7 @@ import __string = services.string;
 import __number = services.number;
 import __object = services.object;
 
-import { input, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 import { INgModelValidator } from '../../types/formValidators';
@@ -125,20 +125,22 @@ export class SpinnerController extends InputController {
 	}
 }
 
-let spinner: angular.IComponentOptions = _.clone(input);
-spinner.template = require('./spinner.html');
-spinner.controller = controllerName;
-spinner.controllerAs = 'spinner';
-let spinnerBindings: any = spinner.bindings;
-spinnerBindings.min = '<?';
-spinnerBindings.max = '<?';
-spinnerBindings.step = '<?';
-spinnerBindings.decimals = '<?';
-spinnerBindings.prefix = '@';
-spinnerBindings.postfix = '@';
-spinnerBindings.roundToStep = '<?';
-spinnerBindings.ngDisabled = '<?';
-spinnerBindings.spinnerId = '@';
+let spinner: angular.IComponentOptions = buildInput({
+	template: require('./spinner.html'),
+	controller: controllerName,
+	controllerAs: 'spinner',
+	bindings: {
+		min: '<?',
+		max: '<?',
+		step: '<?',
+		decimals: '<?',
+		prefix: '@',
+		postfix: '@',
+		roundToStep: '<?',
+		ngDisabled: '<?',
+		spinnerId: '@',
+	},
+});
 
 angular.module(moduleName, [inputModule])
 	.component(componentName, spinner)
