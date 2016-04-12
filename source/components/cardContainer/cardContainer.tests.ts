@@ -511,7 +511,7 @@ describe('CardContainerController', () => {
 
 			expect(cardContainer.numberSelected).to.equal(2);
 
-			scope.$emit('selectionChanged');
+			cardContainer.selectionChanged();
 
 			expect(cardContainer.numberSelected).to.equal(0);
 		});
@@ -630,6 +630,7 @@ describe('CardContainerController', () => {
 
 		scope = <ICardContainerScope>controllerResult.scope;
 		cardContainer = controllerResult.controller;
+		cardContainer.selectionChangedEvent = sinon.spy();
 		mockedDataSource.refresh.reset();
 	}
 
