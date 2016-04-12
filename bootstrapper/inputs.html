@@ -27,7 +27,7 @@
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/typeahead/typeahead.md">Typeahead</a>:</label>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.selection" transform="'name'"
 					create="input.create(value)" label="Test create"></rl-typeahead>
-	<rl-typeahead get-items="input.getOptions()" ng-model="input.any" transform="'name'"
+	<rl-typeahead get-items="input.getOptions()" ng-model="input.any" transform="'name'" use-client-searching="true"
 					select="input.select(value)" label="Test select"></rl-typeahead>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.any2" transform="'name'"
 					allow-collapse="true" select="input.select(value)" label="Test collapse"></rl-typeahead>
