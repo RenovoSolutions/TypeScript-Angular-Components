@@ -7,24 +7,20 @@ import * as $ from 'jquery';
 
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
-
-export var moduleName: string = 'rl.ui.components.longClickButton';
-export var componentName: string = 'rlLongClickButton';
-export var controllerName: string = 'LongClickButtonController';
-
 import __object = services.object;
 
-export class LongClickButtonController {
+import { buildButton } from '../button/button';
+import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
+
+export let moduleName: string = 'rl.ui.components.longClickButton';
+export let componentName: string = 'rlLongClickButton';
+export let controllerName: string = 'LongClickButtonController';
+
+export class LongClickButtonController extends ButtonAsyncController {
 	// bindings
-	action: {(): angular.IPromise<any> | void};
 	text: string;
 	onShortClickText: string;
-	type: string;
-	size: string;
 	icon: string;
-	busy: boolean;
-	rightAligned: boolean;
-	ngDisabled: boolean;
 
 	private interval: number = 25;
 	duration: number = 1500;
@@ -39,10 +35,9 @@ export class LongClickButtonController {
 			, private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility
-			, private promise: __promise.IPromiseUtility) {
+			, promise: __promise.IPromiseUtility) {
+		super(promise);
 		this.buttonText = this.text;
-		this.type = this.type != null ? this.type : 'default';
-		this.size = this.size != null ? 'btn-' + this.size : null;
 
 		$scope.$watch((): string => { return this.buttonText; }, (): void => {
 			$timeout((): void => {
@@ -90,36 +85,19 @@ export class LongClickButtonController {
 			this.buttonText = this.onShortClickText;
 		}
 	}
-
-	private trigger(): void {
-		if (!this.busy) {
-			this.busy = true;
-
-			var result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
-			if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
-				result.finally((): void => {
-					this.busy = false;
-				});
-			}
-		}
-	}
 }
 
-let longClickButton: angular.IComponentOptions = {
+let longClickButton: angular.IComponentOptions = buildButton({
 	template: require('./longClickButton.html'),
 	controller: controllerName,
-	controllerAs: 'button',
 	bindings: {
-		action: '&',
 		text: '@',
 		onShortClickText: '@',
 		icon: '@',
 		busy: '<?',
 		rightAligned: '<?',
-		type: '@',
-		ngDisabled: '<?',
 	},
-};
+});
 
 angular.module(moduleName, [__object.moduleName])
 	.component(componentName, longClickButton)

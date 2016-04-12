@@ -4,9 +4,18 @@
 
 import * as angular from 'angular';
 
-export var moduleName: string = 'rl.ui.components.button';
-export var componentName: string = 'rlButton';
-export var controllerName: string = 'ButtonController';
+export let moduleName: string = 'rl.ui.components.button';
+export let componentName: string = 'rlButton';
+export let controllerName: string = 'ButtonController';
+
+export interface IButtonOptions {
+	require?: any;
+	template?: string;
+	transclude?: boolean;
+	controller?: string | Function;
+	controllerAs?: string;
+	bindings?: any;
+}
 
 export class ButtonController {
 	// bindings
@@ -35,6 +44,22 @@ let button: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'button',
 };
+
+export function buildButton(options: IButtonOptions): angular.IComponentOptions {
+	let clone: any = _.clone(button);
+	clone.require = options.require;
+	clone.transclude = options.transclude != null ? options.transclude : clone.transclude;
+	clone.template = options.template;
+	clone.controller = options.controller || clone.controller;
+	clone.controllerAs = options.controllerAs || clone.controllerAs;
+	clone.bindings = _.assign({}, clone.bindings, options.bindings);
+	_.each(clone.bindings, (binding: any, key: string): any => {
+		if (binding == null) {
+			delete clone.bindings[key];
+		}
+	});
+	return clone;
+}
 
 angular.module(moduleName, [])
 	.component(componentName, button)

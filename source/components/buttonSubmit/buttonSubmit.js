@@ -1,33 +1,17 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
 var angular = require('angular');
+var button_1 = require('../button/button');
 exports.moduleName = 'rl.ui.components.buttonSubmit';
 exports.componentName = 'rlButtonSubmit';
-exports.controllerName = 'ButtonSubmitController';
-var ButtonSubmitController = (function () {
-    function ButtonSubmitController($element) {
-        this.$element = $element;
-        this.type = this.type != null ? this.type : 'default';
-        this.configuredSize = this.size != null ? 'btn-' + this.size : null;
-    }
-    ButtonSubmitController.$inject = ['$element'];
-    return ButtonSubmitController;
-}());
-exports.ButtonSubmitController = ButtonSubmitController;
-var buttonSubmit = {
-    transclude: true,
+var buttonSubmit = button_1.buildButton({
     template: require('./buttonSubmit.html'),
     bindings: {
-        type: '@',
-        ngDisabled: '<?',
-        size: '@',
         rightAligned: '<?',
         saving: '<?',
+        action: null,
     },
-    controller: exports.controllerName,
-    controllerAs: 'button',
-};
+});
 angular.module(exports.moduleName, [])
-    .component(exports.componentName, buttonSubmit)
-    .controller(exports.controllerName, ButtonSubmitController);
+    .component(exports.componentName, buttonSubmit);
 //# sourceMappingURL=buttonSubmit.js.map

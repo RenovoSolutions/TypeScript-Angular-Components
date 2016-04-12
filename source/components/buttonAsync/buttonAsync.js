@@ -1,16 +1,22 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __promiseUtility = typescript_angular_utilities_1.services.promise;
+var button_1 = require('../button/button');
 exports.moduleName = 'rl.ui.components.buttonAsync';
 exports.componentName = 'rlButtonAsync';
 exports.controllerName = 'ButtonAsyncController';
-var ButtonAsyncController = (function () {
+var ButtonAsyncController = (function (_super) {
+    __extends(ButtonAsyncController, _super);
     function ButtonAsyncController(promiseUtility) {
+        _super.call(this);
         this.promiseUtility = promiseUtility;
-        this.type = this.type != null ? this.type : 'default';
-        this.sizeClass = this.size != null ? 'btn-' + this.size : null;
     }
     ButtonAsyncController.prototype.trigger = function () {
         var _this = this;
@@ -29,22 +35,16 @@ var ButtonAsyncController = (function () {
     };
     ButtonAsyncController.$inject = [__promiseUtility.serviceName];
     return ButtonAsyncController;
-}());
+}(button_1.ButtonController));
 exports.ButtonAsyncController = ButtonAsyncController;
-var buttonAsync = {
-    transclude: true,
+var buttonAsync = button_1.buildButton({
     template: require('./buttonAsync.html'),
     bindings: {
         busy: '<?',
-        action: '&',
-        type: '@',
-        ngDisabled: '<?',
         rightAligned: '<?',
-        size: '@',
     },
     controller: exports.controllerName,
-    controllerAs: 'button',
-};
+});
 angular.module(exports.moduleName, [__promiseUtility.moduleName])
     .component(exports.componentName, buttonAsync)
     .controller(exports.controllerName, ButtonAsyncController);

@@ -1,26 +1,18 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
 import __object = services.object;
-export declare class LongClickButtonController {
+import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
+export declare class LongClickButtonController extends ButtonAsyncController {
     private $interval;
     private $timeout;
     private objectUtility;
-    private promise;
-    action: {
-        (): angular.IPromise<any> | void;
-    };
     text: string;
     onShortClickText: string;
-    type: string;
-    size: string;
     icon: string;
-    busy: boolean;
-    rightAligned: boolean;
-    ngDisabled: boolean;
     private interval;
     duration: number;
     buttonText: string;
@@ -34,5 +26,4 @@ export declare class LongClickButtonController {
     stopAction(): void;
     private cleanup();
     private warn();
-    private trigger();
 }

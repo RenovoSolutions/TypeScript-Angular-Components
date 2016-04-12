@@ -101,10 +101,14 @@
 		}
 	}
 
-	function ButtonTestController() {
+	ButtonTestController.$inject = ['$timeout'];
+	function ButtonTestController($timeout) {
 		var self = this;
 		self.action = function(name) {
 			console.log('Action: ' + name);
+		};
+		self.wait = function(callback, name) {
+			return $timeout(function() { callback(name) }, 1000);
 		};
 	}
 

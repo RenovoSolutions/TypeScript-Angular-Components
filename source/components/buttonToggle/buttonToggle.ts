@@ -2,11 +2,9 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-
-import __boolean = services.boolean;
-
 import { IToggleParams } from '../checkbox/checkbox';
+
+import { buildButton, ButtonController } from '../button/button';
 
 export let moduleName: string = 'rl.ui.components.buttonToggle';
 export let componentName: string = 'rlButtonToggle';
@@ -16,24 +14,15 @@ export interface IButtonToggleBindings {
 	type: string;
 	size: string;
 	onToggle(param: IToggleParams): void;
-	disabled: boolean;
+	ngDisabled: boolean;
 }
 
 export interface IButtonToggleController extends IButtonToggleBindings {
-	buttonClass: string;
-	buttonSize: string;
-
 	clicked(): void;
 }
 
-export class ButtonToggleController implements IButtonToggleController {
-	type: string;
-	size: string;
+export class ButtonToggleController implements IButtonToggleController extends ButtonController {
 	onToggle: { (param: IToggleParams): void };
-	disabled: boolean;
-
-	buttonClass: string;
-	buttonSize: string;
 
 	ngModel: angular.INgModelController;
 
@@ -45,34 +34,29 @@ export class ButtonToggleController implements IButtonToggleController {
 		this.ngModel.$setViewValue(value);
 	}
 
-	static $inject: string[] = ['$scope', __boolean.serviceName];
-	constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility) {
-		this.buttonClass = this.type != null ? this.type : 'default';
-		this.buttonSize = this.size != null ? 'btn-' + this.size : null;
+	constructor() {
+		super();
 	}
 
 	clicked(): void {
-		if (!this.disabled) {
+		if (!this.ngDisabled) {
 			this.checked = !this.checked;
 			this.onToggle({ value: this.checked });
 		}
 	}
 }
 
-let buttonToggle: angular.IComponentOptions = {
+let buttonToggle: angular.IComponentOptions = buildButton({
 	require: { ngModel: '^ngModel' },
-	transclude: true,
 	template: require('./buttonToggle.html'),
 	controller: controllerName,
 	controllerAs: 'buttonToggle',
 	bindings: {
-		type: '@',
-		size: '@',
 		onToggle: '&',
-		disabled: '<?ngDisabled',
+		action: null,
 	},
-};
+});
 
-angular.module(moduleName, [__boolean.moduleName])
+angular.module(moduleName, [])
 	.component(componentName, buttonToggle)
 	.controller(controllerName, ButtonToggleController);

@@ -1,6 +1,15 @@
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
+import * as angular from 'angular';
+export declare let moduleName: string;
+export declare let componentName: string;
+export declare let controllerName: string;
+export interface IButtonOptions {
+    require?: any;
+    template?: string;
+    transclude?: boolean;
+    controller?: string | Function;
+    controllerAs?: string;
+    bindings?: any;
+}
 export declare class ButtonController {
     action: {
         (): void;
@@ -11,3 +20,4 @@ export declare class ButtonController {
     configuredSize: string;
     constructor();
 }
+export declare function buildButton(options: IButtonOptions): angular.IComponentOptions;

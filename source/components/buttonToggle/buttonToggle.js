@@ -1,14 +1,18 @@
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var angular = require('angular');
-var typescript_angular_utilities_1 = require('typescript-angular-utilities');
-var __boolean = typescript_angular_utilities_1.services.boolean;
+var button_1 = require('../button/button');
 exports.moduleName = 'rl.ui.components.buttonToggle';
 exports.componentName = 'rlButtonToggle';
 exports.controllerName = 'ButtonToggleController';
-var ButtonToggleController = (function () {
-    function ButtonToggleController($scope, bool) {
-        this.buttonClass = this.type != null ? this.type : 'default';
-        this.buttonSize = this.size != null ? 'btn-' + this.size : null;
+var ButtonToggleController = (function (_super) {
+    __extends(ButtonToggleController, _super);
+    function ButtonToggleController() {
+        _super.call(this);
     }
     Object.defineProperty(ButtonToggleController.prototype, "checked", {
         get: function () {
@@ -21,29 +25,25 @@ var ButtonToggleController = (function () {
         configurable: true
     });
     ButtonToggleController.prototype.clicked = function () {
-        if (!this.disabled) {
+        if (!this.ngDisabled) {
             this.checked = !this.checked;
             this.onToggle({ value: this.checked });
         }
     };
-    ButtonToggleController.$inject = ['$scope', __boolean.serviceName];
     return ButtonToggleController;
-}());
+}(button_1.ButtonController));
 exports.ButtonToggleController = ButtonToggleController;
-var buttonToggle = {
+var buttonToggle = button_1.buildButton({
     require: { ngModel: '^ngModel' },
-    transclude: true,
     template: require('./buttonToggle.html'),
     controller: exports.controllerName,
     controllerAs: 'buttonToggle',
     bindings: {
-        type: '@',
-        size: '@',
         onToggle: '&',
-        disabled: '<?ngDisabled',
+        action: null,
     },
-};
-angular.module(exports.moduleName, [__boolean.moduleName])
+});
+angular.module(exports.moduleName, [])
     .component(exports.componentName, buttonToggle)
     .controller(exports.controllerName, ButtonToggleController);
 //# sourceMappingURL=buttonToggle.js.map

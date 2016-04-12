@@ -1,25 +1,31 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 'use strict';
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var angular = require('angular');
 var $ = require('jquery');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __promise = typescript_angular_utilities_1.services.promise;
+var __object = typescript_angular_utilities_1.services.object;
+var button_1 = require('../button/button');
+var buttonAsync_1 = require('../buttonAsync/buttonAsync');
 exports.moduleName = 'rl.ui.components.longClickButton';
 exports.componentName = 'rlLongClickButton';
 exports.controllerName = 'LongClickButtonController';
-var __object = typescript_angular_utilities_1.services.object;
-var LongClickButtonController = (function () {
+var LongClickButtonController = (function (_super) {
+    __extends(LongClickButtonController, _super);
     function LongClickButtonController($scope, $interval, $timeout, objectUtility, promise) {
         var _this = this;
+        _super.call(this, promise);
         this.$interval = $interval;
         this.$timeout = $timeout;
         this.objectUtility = objectUtility;
-        this.promise = promise;
         this.interval = 25;
         this.duration = 1500;
         this.buttonText = this.text;
-        this.type = this.type != null ? this.type : 'default';
-        this.size = this.size != null ? 'btn-' + this.size : null;
         $scope.$watch(function () { return _this.buttonText; }, function () {
             $timeout(function () {
                 _this.width = $('#actionButton').outerWidth();
@@ -60,37 +66,21 @@ var LongClickButtonController = (function () {
             this.buttonText = this.onShortClickText;
         }
     };
-    LongClickButtonController.prototype.trigger = function () {
-        var _this = this;
-        if (!this.busy) {
-            this.busy = true;
-            var result = this.action();
-            if (this.promise.isPromise(result) && _.isFunction(result.finally)) {
-                result.finally(function () {
-                    _this.busy = false;
-                });
-            }
-        }
-    };
     LongClickButtonController.$inject = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
     return LongClickButtonController;
-}());
+}(buttonAsync_1.ButtonAsyncController));
 exports.LongClickButtonController = LongClickButtonController;
-var longClickButton = {
+var longClickButton = button_1.buildButton({
     template: require('./longClickButton.html'),
     controller: exports.controllerName,
-    controllerAs: 'button',
     bindings: {
-        action: '&',
         text: '@',
         onShortClickText: '@',
         icon: '@',
         busy: '<?',
         rightAligned: '<?',
-        type: '@',
-        ngDisabled: '<?',
     },
-};
+});
 angular.module(exports.moduleName, [__object.moduleName])
     .component(exports.componentName, longClickButton)
     .controller(exports.controllerName, LongClickButtonController);

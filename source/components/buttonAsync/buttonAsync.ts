@@ -7,10 +7,12 @@ import { services } from 'typescript-angular-utilities';
 
 import __promiseUtility = services.promise;
 
-export var moduleName: string = 'rl.ui.components.buttonAsync';
+import { buildButton, ButtonController } from '../button/button';
 
-export var componentName: string = 'rlButtonAsync';
-export var controllerName: string = 'ButtonAsyncController';
+export let moduleName: string = 'rl.ui.components.buttonAsync';
+
+export let componentName: string = 'rlButtonAsync';
+export let controllerName: string = 'ButtonAsyncController';
 
 export interface IButtonBindings {
 	busy: boolean;
@@ -21,26 +23,22 @@ export interface IButtonBindings {
 	rightAligned: boolean;
 }
 
-export class ButtonAsyncController {
+export class ButtonAsyncController extends ButtonController {
 	// bindings
 	busy: boolean;
 	action: { (...params: any[]): angular.IPromise<any> | void };
-	size: string;
-	type: string;
-	ngDisabled: boolean;
 	rightAligned: boolean;
 
 	static $inject: string[] = [__promiseUtility.serviceName];
 	constructor(private promiseUtility: __promiseUtility.IPromiseUtility) {
-		this.type = this.type != null ? this.type : 'default';
-		this.sizeClass = this.size != null ? 'btn-' + this.size : null;
+		super();
 	}
 
 	trigger(): void {
 		if (!this.busy) {
 			this.busy = true;
 
-			var result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
+			let result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
 			if (this.promiseUtility.isPromise(result) && _.isFunction(result.finally)) {
 				result.finally((): void => {
 					this.busy = false;
@@ -50,24 +48,16 @@ export class ButtonAsyncController {
 			}
 		}
 	}
-
-	sizeClass: string;
 }
 
-let buttonAsync: angular.IComponentOptions = {
-	transclude: true,
+let buttonAsync: angular.IComponentOptions = buildButton({
 	template: require('./buttonAsync.html'),
 	bindings: {
 		busy: '<?',
-		action: '&',
-		type: '@',
-		ngDisabled: '<?',
 		rightAligned: '<?',
-		size: '@',
 	},
 	controller: controllerName,
-	controllerAs: 'button',
-};
+});
 
 angular.module(moduleName, [__promiseUtility.moduleName])
 	.component(componentName, buttonAsync)
