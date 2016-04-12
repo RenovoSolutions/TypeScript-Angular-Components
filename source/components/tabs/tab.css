@@ -1,0 +1,2 @@
+.tab-content .tab-pane.default-theme { display: none }
+.tab-content .tab-pane.default-theme.active { display: block }

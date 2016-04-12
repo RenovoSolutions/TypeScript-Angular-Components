@@ -2,7 +2,11 @@
 
 'use strict';
 
+import './tab.css';
+
 import * as ng from 'angular';
+
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
 import { TabsetController, ITabHeader } from './tabset';
 
@@ -18,10 +22,11 @@ export class TabController {
 
 	tabset: TabsetController;
 
-	static $inject: string[] = ['$scope', '$element', '$transclude'];
+	static $inject: string[] = ['$scope', '$element', '$transclude', defaultThemeValueName];
 	constructor($scope: ng.IScope
 			, private $element: ng.IAugmentedJQuery
-			, private $transclude: ng.ITranscludeFunction) {
+			, private $transclude: ng.ITranscludeFunction
+			, public useDefaultTheme: boolean) {
 		$scope.$watch('tabForm.$valid', (isValid: boolean): void => {
 			this.header.isValid = isValid != null ? isValid : true;
 		});

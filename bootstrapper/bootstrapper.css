@@ -42,7 +42,3 @@
 .rating .star:hover:before, .rating .star:hover~.star:before { color:#ffd288; }
 
 .filled { color:#eec277; }
-
-/* Tabs */
-.tab-content .tab-pane { display: none }
-.tab-content .tab-pane.active { display: block }
