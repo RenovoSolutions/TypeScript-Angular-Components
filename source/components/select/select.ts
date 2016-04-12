@@ -12,7 +12,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
-import { input, InputController, moduleName as inputModule } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.select';
@@ -95,16 +95,18 @@ export class SelectController extends InputController {
 	}
 }
 
-let select: angular.IComponentOptions = _.clone(input);
-select.template = require('./select.html');
-select.controller = controllerName;
-select.controllerAs = 'select';
-let selectBindings: any = select.bindings;
-selectBindings.options = '<?';
-selectBindings.getOptions = '&';
-selectBindings.selector = '<?';
-selectBindings.ngDisabled = '<?';
-selectBindings.nullOption = '@';
+let select: angular.IComponentOptions = buildInput({
+	template: require('./select.html'),
+	controller: controllerName,
+	controllerAs: 'select',
+	bindings: {
+		options: '<?',
+		getOptions: '&',
+		selector: '<?',
+		ngDisabled: '<?',
+		nullOption: '@',
+	},
+});
 
 angular.module(moduleName, ['ui.select', __object.moduleName, inputModule])
 	.component(componentName, select)

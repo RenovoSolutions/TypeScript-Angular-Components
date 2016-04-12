@@ -1,30 +1,30 @@
-<h3>Inputs</h3>
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Inputs</a></h3>
 <div>
-	<label>Textbox:</label>
-	<rl-textbox ng-model="input.otherText" rl-required="Input required"></rl-textbox>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
+	<rl-textbox ng-model="input.otherText" ></rl-textbox>
 </div>
 <div>
-	<label>Textarea:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textarea/textarea.md">Textarea</a>:</label>
 	<rl-textarea ng-model="input.textAreaText"></rl-textarea>
 </div>
 <div>
-	<label>Spinner:</label>
-	<rl-spinner ng-model="input.number" rl-required="Number is required"></rl-spinner>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/spinner/spinner.md">Spinner</a>:</label>
+	<rl-spinner ng-model="input.number"></rl-spinner>
 </div>
 <div>
-	<label>Datetime:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/dateTime/dateTime.md">Datetime</a>:</label>
 	<rl-date-time ng-model="input.date" use-date="false"></rl-date-time>
 	<rl-date-time ng-model="input.date" use-time="false"></rl-date-time>
 	<rl-date-time ng-model="input.date"></rl-date-time>
-	<rl-date-time ng-model="input.date2" rl-required="You must enter a date"></rl-date-time>
+	<rl-date-time ng-model="input.date2"></rl-date-time>
 	<rl-button action="input.logDates()">Log dates</rl-button>
 </div>
 <div>
-	<label>Select:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/select/select.md">Select</a>:</label>
 	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" selector="'name'"></rl-select>
 </div>
 <div>
-	<label>Typeahead:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/typeahead/typeahead.md">Typeahead</a>:</label>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.selection" transform="'name'"
 					create="input.create(value)" label="Test create"></rl-typeahead>
 	<rl-typeahead get-items="input.getOptions()" ng-model="input.any" transform="'name'"
@@ -43,21 +43,23 @@
 </div>
 
 <div>
-	<label>Checkbox:</label>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
 	<rl-checkbox ng-model="input.checked">Checkbox</rl-checkbox>
-	Value: {{input.checked}}
+	<div>Value: {{input.checked}}</div>
 </div>
 
 <div>
-	<label>Radio buttons:</label>
-	<rl-radio-group ng-model="input.radio1">
-		<rl-radio value="{ value: 1 }">1</rl-radio>
-		<rl-radio value="{ value: 2 }">2</rl-radio>
-		<rl-radio value="{ value: 3 }">3</rl-radio>
-	</rl-radio-group>
-	{{input.radio1}}
-	<rl-radio ng-model="input.radio2" value="{ value: 4 }">4</rl-radio>
-	{{input.radio2}}
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/radio/radio.md">Radio buttons</a>:</label>
+	<div>
+		<rl-radio-group ng-model="input.radio1">
+			<rl-radio value="{ value: 1 }">1</rl-radio>
+			<rl-radio value="{ value: 2 }">2</rl-radio>
+			<rl-radio value="{ value: 3 }">3</rl-radio>
+		</rl-radio-group>
+	</div>
+	<div>{{input.radio1}}</div>
+	<div><rl-radio ng-model="input.radio2" value="{ value: 4 }">4</rl-radio></div>
+	<div>{{input.radio2}}</div>
 </div>
 
 <div>
@@ -73,3 +75,10 @@
 		</rl-list-item>
 	</rl-typeahead-list>
 </div>
+
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/required/required.md">Required input</a>:</label>
+	<rl-textbox ng-model="input.requiredText" rl-required="Input required"></rl-textbox>
+</div>
+<br/>
+<br/>

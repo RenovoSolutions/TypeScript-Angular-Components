@@ -4,6 +4,7 @@ import * as ng from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __guid = services.guid;
 
 export var directiveName: string = 'rlRadioGroup';
 export var controllerName: string = 'RadioGroupController';
@@ -14,46 +15,37 @@ export interface IRadioGroupAttributes extends ng.IAttributes {
 }
 
 export class RadioGroup {
-	selection: any;
-
-	constructor($scope: ng.IScope, ngModel: ng.INgModelController, public name?: string) {
-		$scope.$watch((): any => { return ngModel.$viewValue; }, (value: any): void => {
-			this.selection = value;
-		});
-
-		$scope.$watch((): any => { return this.selection; }, (value: any): void => {
-			ngModel.$setViewValue(value);
-		});
+	get selection(): any {
+		return this.ngModel.$viewValue;
 	}
+
+	set selection(value: any) {
+		this.ngModel.$setViewValue(value);
+	}
+
+	constructor(private ngModel: ng.INgModelController, public name?: string) {}
 }
 
 export class RadioGroupController {
-	private static nextId: number = 1;
 	group: RadioGroup;
+	ngModel: ng.INgModelController;
 
-	static $inject: string[] = ['$scope', '$attrs', '$element', __object.serviceName];
-	constructor($scope: ng.IScope, $attrs: IRadioGroupAttributes, $element: ng.IAugmentedJQuery, object: __object.IObjectUtility) {
+	static $inject: string[] = ['$scope', '$attrs', __object.serviceName];
+	constructor(private $scope: ng.IScope
+			, private $attrs: IRadioGroupAttributes
+			, private object: __object.IObjectUtility) {}
+
+	$onInit(): void {
 		let name: string;
-		if (!object.isNullOrWhitespace($attrs.rlRadioGroup)) {
-			name = $attrs.rlRadioGroup;
-		} else if (!object.isNullOrWhitespace($attrs.name)) {
-			name = $attrs.name;
+		if (!this.object.isNullOrWhitespace(this.$attrs.rlRadioGroup)) {
+			name = this.$attrs.rlRadioGroup;
+		} else if (!this.object.isNullOrWhitespace(this.$attrs.name)) {
+			name = this.$attrs.name;
 		} else {
-			name = 'RadioGroup' + this.getNextId();
+			name = 'RadioGroup-' + __guid.guid.random();
 		}
 
-		let ngModel: ng.INgModelController = $element.controller('ngModel');
-		this.group = new RadioGroup($scope, ngModel, name);
-	}
-
-	registerButton(): RadioGroup {
-		return this.group;
-	}
-
-	private getNextId(): string {
-		let nextId: string = RadioGroupController.nextId.toString();
-		RadioGroupController.nextId++;
-		return nextId;
+		this.group = new RadioGroup(this.ngModel, name);
 	}
 }
 
@@ -61,7 +53,8 @@ export function radioGroup(): ng.IDirective {
 	'use strict';
 	return {
 		restrict: 'AE',
-		require: 'ngModel',
+		require: { ngModel: 'ngModel' },
 		controller: controllerName,
+		bindToController: true,
 	};
 }

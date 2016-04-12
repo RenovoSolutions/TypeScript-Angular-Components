@@ -8,10 +8,10 @@ var RadioController = (function () {
     }
     RadioController.prototype.$onInit = function () {
         if (this.groupController != null) {
-            this.radioGroup = this.groupController.registerButton();
+            this.radioGroup = this.groupController.group;
         }
         else {
-            this.radioGroup = new radioGroup_1.RadioGroup(this.$scope, this.ngModel);
+            this.radioGroup = new radioGroup_1.RadioGroup(this.ngModel);
         }
     };
     RadioController.$inject = ['$scope'];
@@ -24,11 +24,11 @@ exports.radio = {
         ngModel: '?ngModel',
     },
     transclude: true,
-    template: "\n\t\t<label>\n\t\t\t<input id=\"radio\" type=\"radio\" name=\"{{radio.radioGroup.name}}\" ng-model=\"radio.radioGroup.selection\" ng-value=\"radio.value\" />\n\t\t\t<span ng-transclude></div>\n\t\t</label>\n\t",
+    template: "\n\t\t<label>\n\t\t\t<input id=\"radio\" type=\"radio\" name=\"{{::radio.radioGroup.name}}\" ng-model=\"radio.radioGroup.selection\" ng-value=\"::radio.value\" />\n\t\t\t<span ng-transclude></div>\n\t\t</label>\n\t",
     controller: exports.controllerName,
     controllerAs: 'radio',
     bindings: {
-        value: '=',
+        value: '<',
     },
 };
 //# sourceMappingURL=radio.js.map

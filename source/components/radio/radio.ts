@@ -17,9 +17,9 @@ export class RadioController {
 
 	$onInit(): void {
 		if (this.groupController != null) {
-			this.radioGroup = this.groupController.registerButton();
+			this.radioGroup = this.groupController.group;
 		} else {
-			this.radioGroup = new RadioGroup(this.$scope, this.ngModel);
+			this.radioGroup = new RadioGroup(this.ngModel);
 		}
 	}
 }
@@ -32,13 +32,13 @@ export let radio: ng.IComponentOptions = {
 	transclude: true,
 	template: `
 		<label>
-			<input id="radio" type="radio" name="{{radio.radioGroup.name}}" ng-model="radio.radioGroup.selection" ng-value="radio.value" />
+			<input id="radio" type="radio" name="{{::radio.radioGroup.name}}" ng-model="radio.radioGroup.selection" ng-value="::radio.value" />
 			<span ng-transclude></div>
 		</label>
 	`,
 	controller: controllerName,
 	controllerAs: 'radio',
 	bindings: {
-		value: '=',
+		value: '<',
 	},
 };

@@ -11,7 +11,7 @@ import __arrayUtility = services.array;
 import __validation = services.validation;
 import __transform = services.transform.transform;
 
-import { input, InputController, moduleName as inputModule } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 export var moduleName: string = 'rl.ui.components.typeahead';
@@ -277,20 +277,22 @@ export class TypeaheadController extends InputController {
 	}
 }
 
-let typeahead: angular.IComponentOptions = _.clone(input);
-typeahead.template = require('./typeahead.html');
-typeahead.controller = controllerName;
-typeahead.controllerAs = 'typeahead';
-let typeaheadBindings: any = typeahead.bindings;
-typeaheadBindings.childLink = '=?';
-typeaheadBindings.select = '&';
-typeaheadBindings.create = '&';
-typeaheadBindings.allowCollapse = '<?';
-typeaheadBindings.transform = '<?';
-typeaheadBindings.getItems = '&';
-typeaheadBindings.prefix = '@';
-typeaheadBindings.useClientSearching = '<?';
-typeaheadBindings.ngDisabled = '<?';
+let typeahead: angular.IComponentOptions = buildInput({
+	template: require('./typeahead.html'),
+	controller: controllerName,
+	controllerAs: 'typeahead',
+	bindings: {
+		childLink: '=?',
+		select: '&',
+		create: '&',
+		allowCollapse: '<?',
+		transform: '<?',
+		getItems: '&',
+		prefix: '@',
+		useClientSearching: '<?',
+		ngDisabled: '<?',
+	},
+});
 
 angular.module(moduleName, [
 	__parentChild.moduleName

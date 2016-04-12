@@ -8,16 +8,19 @@ export interface IRadioGroupAttributes extends ng.IAttributes {
     name: string;
 }
 export declare class RadioGroup {
+    private ngModel;
     name: string;
     selection: any;
-    constructor($scope: ng.IScope, ngModel: ng.INgModelController, name?: string);
+    constructor(ngModel: ng.INgModelController, name?: string);
 }
 export declare class RadioGroupController {
-    private static nextId;
+    private $scope;
+    private $attrs;
+    private object;
     group: RadioGroup;
+    ngModel: ng.INgModelController;
     static $inject: string[];
-    constructor($scope: ng.IScope, $attrs: IRadioGroupAttributes, $element: ng.IAugmentedJQuery, object: __object.IObjectUtility);
-    registerButton(): RadioGroup;
-    private getNextId();
+    constructor($scope: ng.IScope, $attrs: IRadioGroupAttributes, object: __object.IObjectUtility);
+    $onInit(): void;
 }
 export declare function radioGroup(): ng.IDirective;

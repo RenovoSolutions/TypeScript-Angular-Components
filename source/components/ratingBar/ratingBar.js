@@ -36,7 +36,7 @@ var RatingBarController = (function () {
 }());
 exports.RatingBarController = RatingBarController;
 var ratingBar = {
-    template: "\n\t\t<div class=\"rating-bar\">\n\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == min }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t</div>\n\t\t</div>\n\t",
+    template: "\n\t\t<div class=\"rating-bar\">\n\t\t\t<div class=\"{{ratingBar.backgroundClass}}\" ng-class=\"{ empty: ratingBar.value == ratingBar.min }\" ng-style=\"ratingBar.dimensions\">\n\t\t\t\t<div ng-class=\"ratingBar.barClass\" ng-style=\"{ width: ratingBar.width, height: ratingBar.height }\"></div>\n\t\t\t</div>\n\t\t</div>\n\t",
     controller: exports.controllerName,
     controllerAs: 'ratingBar',
     bindings: {

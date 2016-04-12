@@ -54,7 +54,7 @@ var InputController = (function () {
     return InputController;
 }());
 exports.InputController = InputController;
-exports.input = {
+var baseInputOptions = {
     require: {
         ngModel: 'ngModel',
         required: '?' + required_1.directiveName,
@@ -68,6 +68,15 @@ exports.input = {
         name: '@',
     },
 };
+function buildInput(options) {
+    var clone = _.clone(baseInputOptions);
+    clone.template = options.template;
+    clone.controller = options.controller || clone.controller;
+    clone.controllerAs = options.controllerAs || clone.controllerAs;
+    clone.bindings = _.assign({}, clone.bindings, options.bindings);
+    return clone;
+}
+exports.buildInput = buildInput;
 angular.module(exports.moduleName, [componentValidator_service_1.moduleName])
     .controller(exports.controllerName, InputController);
 //# sourceMappingURL=input.js.map

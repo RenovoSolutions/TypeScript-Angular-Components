@@ -15,7 +15,7 @@ import __dateTimeFormatStrings = services.date;
 import __object = services.object;
 import __timezone = services.timezone;
 
-import { input, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 import { INgModelValidator } from '../../types/formValidators';
@@ -146,18 +146,20 @@ export class DateTimeController extends InputController {
 	}
 }
 
-let dateTime: angular.IComponentOptions = _.clone(input);
-dateTime.template = require('./dateTime.html');
-dateTime.controller = controllerName;
-dateTime.controllerAs = 'dateTime';
-let dateTimeBindings: any = dateTime.bindings;
-dateTimeBindings.minuteStepping = '<?';
-dateTimeBindings.useDate = '<?';
-dateTimeBindings.useTime = '<?';
-dateTimeBindings.min = '<?';
-dateTimeBindings.max = '<?';
-dateTimeBindings.clearButton = '<?';
-dateTimeBindings.onClearEvent = '<?';
+let dateTime: angular.IComponentOptions = buildInput({
+	template: require('./dateTime.html'),
+	controller: controllerName,
+	controllerAs: 'dateTime',
+	bindings: {
+		minuteStepping: '<?',
+		useDate: '<?',
+		useTime: '<?',
+		min: '<?',
+		max: '<?',
+		clearButton: '<?',
+		onClearEvent: '&',
+	},
+});
 
 angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, inputModule, __object.moduleName])
 	.component(componentName, dateTime)

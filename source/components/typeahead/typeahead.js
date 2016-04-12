@@ -162,20 +162,22 @@ var TypeaheadController = (function (_super) {
     return TypeaheadController;
 }(input_1.InputController));
 exports.TypeaheadController = TypeaheadController;
-var typeahead = _.clone(input_1.input);
-typeahead.template = require('./typeahead.html');
-typeahead.controller = exports.controllerName;
-typeahead.controllerAs = 'typeahead';
-var typeaheadBindings = typeahead.bindings;
-typeaheadBindings.childLink = '=?';
-typeaheadBindings.select = '&';
-typeaheadBindings.create = '&';
-typeaheadBindings.allowCollapse = '<?';
-typeaheadBindings.transform = '<?';
-typeaheadBindings.getItems = '&';
-typeaheadBindings.prefix = '@';
-typeaheadBindings.useClientSearching = '<?';
-typeaheadBindings.ngDisabled = '<?';
+var typeahead = input_1.buildInput({
+    template: require('./typeahead.html'),
+    controller: exports.controllerName,
+    controllerAs: 'typeahead',
+    bindings: {
+        childLink: '=?',
+        select: '&',
+        create: '&',
+        allowCollapse: '<?',
+        transform: '<?',
+        getItems: '&',
+        prefix: '@',
+        useClientSearching: '<?',
+        ngDisabled: '<?',
+    },
+});
 angular.module(exports.moduleName, [
     __parentChild.moduleName,
     __genericSearch.moduleName,

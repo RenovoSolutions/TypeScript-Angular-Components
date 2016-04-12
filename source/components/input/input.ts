@@ -26,6 +26,13 @@ export interface IInputAttributes extends angular.IAttributes {
 	name: string;
 }
 
+export interface IInputOptions {
+	template: string;
+	controller?: string | Function;
+	controllerAs?: string;
+	bindings?: any;
+}
+
 export class InputController {
 	// bindings
 	validator: __validation.IValidationHandler;
@@ -79,7 +86,7 @@ export class InputController {
 	}
 }
 
-export let input: angular.IComponentOptions = {
+let baseInputOptions: angular.IComponentOptions = {
 	require: {
 		ngModel: 'ngModel',
 		required: '?' + requiredDirectiveName,
@@ -93,6 +100,15 @@ export let input: angular.IComponentOptions = {
 		name: '@',
 	},
 };
+
+export function buildInput(options: IInputOptions): angular.IComponentOptions {
+	let clone: any = _.clone(baseInputOptions);
+	clone.template = options.template;
+	clone.controller = options.controller || clone.controller;
+	clone.controllerAs = options.controllerAs || clone.controllerAs;
+	clone.bindings = _.assign({}, clone.bindings, options.bindings);
+	return clone;
+}
 
 angular.module(moduleName, [componentValidatorModuleName])
 	.controller(controllerName, InputController);

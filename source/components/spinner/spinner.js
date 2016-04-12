@@ -83,20 +83,22 @@ var SpinnerController = (function (_super) {
     return SpinnerController;
 }(input_1.InputController));
 exports.SpinnerController = SpinnerController;
-var spinner = _.clone(input_1.input);
-spinner.template = require('./spinner.html');
-spinner.controller = exports.controllerName;
-spinner.controllerAs = 'spinner';
-var spinnerBindings = spinner.bindings;
-spinnerBindings.min = '<?';
-spinnerBindings.max = '<?';
-spinnerBindings.step = '<?';
-spinnerBindings.decimals = '<?';
-spinnerBindings.prefix = '@';
-spinnerBindings.postfix = '@';
-spinnerBindings.roundToStep = '<?';
-spinnerBindings.ngDisabled = '<?';
-spinnerBindings.spinnerId = '@';
+var spinner = input_1.buildInput({
+    template: require('./spinner.html'),
+    controller: exports.controllerName,
+    controllerAs: 'spinner',
+    bindings: {
+        min: '<?',
+        max: '<?',
+        step: '<?',
+        decimals: '<?',
+        prefix: '@',
+        postfix: '@',
+        roundToStep: '<?',
+        ngDisabled: '<?',
+        spinnerId: '@',
+    },
+});
 angular.module(exports.moduleName, [input_1.moduleName])
     .component(exports.componentName, spinner)
     .controller(exports.controllerName, SpinnerController);

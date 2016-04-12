@@ -82,16 +82,18 @@ var SelectController = (function (_super) {
     return SelectController;
 }(input_1.InputController));
 exports.SelectController = SelectController;
-var select = _.clone(input_1.input);
-select.template = require('./select.html');
-select.controller = exports.controllerName;
-select.controllerAs = 'select';
-var selectBindings = select.bindings;
-selectBindings.options = '<?';
-selectBindings.getOptions = '&';
-selectBindings.selector = '<?';
-selectBindings.ngDisabled = '<?';
-selectBindings.nullOption = '@';
+var select = input_1.buildInput({
+    template: require('./select.html'),
+    controller: exports.controllerName,
+    controllerAs: 'select',
+    bindings: {
+        options: '<?',
+        getOptions: '&',
+        selector: '<?',
+        ngDisabled: '<?',
+        nullOption: '@',
+    },
+});
 angular.module(exports.moduleName, ['ui.select', __object.moduleName, input_1.moduleName])
     .component(exports.componentName, select)
     .controller(exports.controllerName, SelectController);
