@@ -9,3 +9,7 @@
 
 # Bower deps
 /bower_components/
+
+# Don't need the built test files
+/source/**/*tests.js
+/source/**/*tests.d.ts
