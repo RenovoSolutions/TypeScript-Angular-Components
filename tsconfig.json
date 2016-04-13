@@ -3,12 +3,14 @@
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"declaration": true,
-		"sourceMap": true,
+		"inlineSourceMap": true,
 		"target": "ES5"
 	},
-	"files": [
-		"./typings/tsd.d.ts",
-		"./typings/customTypings.d.ts",
-		"./source/ui.module.ts"
+	"exclude": [
+		"node_modules",
+		"bower_components",
+		"libraries",
+		".vscode",
+		"output"
 	]
 }
