@@ -24,16 +24,12 @@ class CardTestController {
 		this.builder.addColumn({
 			label: 'Name',
 			size: 6,
-			getValue(item: ICardItem) {
-				return item.name;
-			},
+			getValue: 'name',
 		});
 		this.builder.addColumn({
 			label: 'Value',
 			size: 6,
-			getValue(item: ICardItem) {
-				return item.value;
-			},
+			getValue: 'value',
 			template: '<b>{{myItem.value}}</b>',
 		});
 		this.builder.renderFilters();
