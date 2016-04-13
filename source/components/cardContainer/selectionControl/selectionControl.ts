@@ -44,7 +44,7 @@ export class SelectionControlController {
 			item.viewData.selected = true;
 		});
 
-		this.$scope.$emit('selectionChanged'); //*events?
+		this.cardContainer.selectionChanged();
 	}
 
 	selectAll(): void {
@@ -52,7 +52,7 @@ export class SelectionControlController {
 			item.viewData.selected = true;
 		});
 
-		this.$scope.$emit('selectionChanged'); //*events?
+		this.cardContainer.selectionChanged();
 	}
 
 	clearPage(): void {
@@ -60,7 +60,7 @@ export class SelectionControlController {
 			item.viewData.selected = false;
 		});
 
-		this.$scope.$emit('selectionChanged'); //*events?
+		this.cardContainer.selectionChanged();
 	}
 
 	clearAll(): void {
@@ -68,7 +68,7 @@ export class SelectionControlController {
 			item.viewData.selected = false;
 		});
 
-		this.$scope.$emit('selectionChanged'); //*events?
+		this.cardContainer.selectionChanged();
 	}
 }
 

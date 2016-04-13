@@ -29,6 +29,7 @@ interface ISelectionViewData {
 interface ICardContainerMock {
 	numberSelected: number;
 	dataSource: any;
+	selectionChanged: Sinon.SinonSpy;
 }
 
 describe('selectionControl', () => {
@@ -147,6 +148,7 @@ describe('selectionControl', () => {
 				filteredDataSet: items,
 				pager: hasPager ? {} : null,
 			},
+			selectionChanged: sinon.spy(),
 		};
 
 		var bindings: any = {

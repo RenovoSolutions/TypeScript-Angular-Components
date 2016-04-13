@@ -46,6 +46,12 @@ export interface ICardContainerBindings {
      * Name used to access the card data
      */
     cardAs: string;
+    /**
+     * Event that first when a card is selected or deselected
+     */
+    selectionChangedEvent: {
+        (): void;
+    };
 }
 export interface ICardBehavior {
     close(): boolean;
@@ -83,6 +89,9 @@ export declare class CardContainerController {
     };
     renderFilters: boolean;
     saveWhenInvalid: boolean;
+    selectionChangedEvent: {
+        (): void;
+    };
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
     numberSelected: number;

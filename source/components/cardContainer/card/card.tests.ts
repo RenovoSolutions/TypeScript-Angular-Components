@@ -89,7 +89,7 @@ describe('CardController', () => {
 		it('should provide a function for refreshing the data source', (): void => {
 			buildController();
 			let refreshSpy: Sinon.SinonSpy = sinon.spy();
-			scope.$on('card.refresh', refreshSpy);
+			card.refresh.subscribe(refreshSpy);
 
 			scope.refresh();
 

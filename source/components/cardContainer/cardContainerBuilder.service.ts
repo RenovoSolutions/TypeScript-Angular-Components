@@ -72,7 +72,8 @@ export interface ICardContainerBuilder {
 	maxColumnSorts: number;
 	disableSelection: { (item: any): string };
 
-	useSearch(): IGenericSearchFilter;
+	useSearch(tokenized?: boolean): IGenericSearchFilter;
+	searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter;
 	usePaging(): void;
 	addColumn<TItemType>(column: IColumn<TItemType>): void;
 	useClickableCards(): void;
@@ -133,12 +134,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._columns = [];
 	}
 
-	useSearch(filter?: IGenericSearchFilter): IGenericSearchFilter {
-		if (filter == null) {
-			let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
-			filter = factory.getInstance();
-		}
+	useSearch(tokenized?: boolean): IGenericSearchFilter {
+		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
+		this._searchFilter = factory.getInstance(tokenized);
+		return this._searchFilter;
+	}
 
+	searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter {
 		this._searchFilter = filter;
 		return this._searchFilter;
 	}

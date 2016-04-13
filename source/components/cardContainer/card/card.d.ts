@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as Rx from 'rx';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import __object = services.object;
@@ -71,6 +72,7 @@ export declare class CardController {
     hasBody: boolean;
     hasFooter: boolean;
     cardContainer: CardContainerController;
+    refresh: Rx.Subject<void>;
     static $inject: string[];
     constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, $element: angular.IAugmentedJQuery, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
     toggleContent(): void;

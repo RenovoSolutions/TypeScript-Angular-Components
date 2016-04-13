@@ -1,7 +1,6 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
-import __genericSearch = services.genericSearchFilter;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
@@ -82,7 +81,6 @@ export declare class TypeaheadController extends InputController {
     private $q;
     private $timeout;
     private parentChild;
-    private genericSearchFactory;
     private object;
     private array;
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
@@ -104,7 +102,6 @@ export declare class TypeaheadController extends InputController {
     ngDisabled: boolean;
     allowCollapse: boolean;
     private cachedItems;
-    private searchFilter;
     visibleItems: any[];
     loading: boolean;
     loadDelay: number;
@@ -116,14 +113,14 @@ export declare class TypeaheadController extends InputController {
     selection: any;
     _searchOption: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, genericSearchFactory: __genericSearch.IGenericSearchFilterFactory, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
     getDisplayName(item: any): string;
     refresh(search: string): angular.IPromise<void>;
     loadItems(search: string): angular.IPromise<void>;
     clear(): void;
     private showCustomSearch(search);
-    private filter(list);
+    private filter(list, search);
     private addItem(item);
     private removeItem(item);
 }

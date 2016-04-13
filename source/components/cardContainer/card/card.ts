@@ -4,6 +4,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
+import * as Rx from 'rx';
 
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
@@ -73,6 +74,7 @@ export class CardController {
 	hasBody: boolean;
 	hasFooter: boolean;
 	cardContainer: CardContainerController;
+	refresh: Rx.Subject<void>;
 
 	static $inject: string[] = ['$scope', '$controller', '$q', '$element', __parentChild.serviceName, __object.serviceName];
 	constructor(private $scope: ICardScope
@@ -87,9 +89,10 @@ export class CardController {
 
 		$scope.collapse = this.autosave;
 		$scope.setSelected = this.setSelected.bind(this);
+		this.refresh = new Rx.Subject<void>();
 		$scope.refresh = (): void => {
 			this.source.refresh();
-			$scope.$broadcast('card.refresh');
+			this.refresh.onNext(null);
 		};
 		$scope.remove = (): void => {
 			this.source.remove(this.item);

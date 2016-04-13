@@ -8,7 +8,7 @@ var angular = require('angular');
 var _ = require('lodash');
 var typescript_angular_utilities_1 = require('typescript-angular-utilities');
 var __parentChild = typescript_angular_utilities_1.services.parentChildBehavior;
-var __genericSearch = typescript_angular_utilities_1.services.genericSearchFilter;
+var __search = typescript_angular_utilities_1.services.search;
 var __objectUtility = typescript_angular_utilities_1.services.object;
 var __arrayUtility = typescript_angular_utilities_1.services.array;
 var __transform = typescript_angular_utilities_1.services.transform.transform;
@@ -19,12 +19,11 @@ exports.componentName = 'rlTypeahead';
 exports.controllerName = 'TypeaheadController';
 var TypeaheadController = (function (_super) {
     __extends(TypeaheadController, _super);
-    function TypeaheadController($scope, $q, $attrs, $timeout, parentChild, genericSearchFactory, object, array, componentValidatorFactory) {
+    function TypeaheadController($scope, $q, $attrs, $timeout, parentChild, object, array, componentValidatorFactory) {
         _super.call(this, $scope, $attrs, componentValidatorFactory);
         this.$q = $q;
         this.$timeout = $timeout;
         this.parentChild = parentChild;
-        this.genericSearchFactory = genericSearchFactory;
         this.object = object;
         this.array = array;
         this.loading = false;
@@ -57,7 +56,6 @@ var TypeaheadController = (function (_super) {
     TypeaheadController.prototype.$onInit = function () {
         var _this = this;
         _super.prototype.$onInit.call(this);
-        this.searchFilter = this.genericSearchFactory.getInstance();
         this.loadDelay = this.useClientSearching ? 100 : 500;
         this.prefix = this.prefix || 'Search for';
         this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
@@ -111,15 +109,14 @@ var TypeaheadController = (function (_super) {
             });
         }
         else {
-            this.searchFilter.searchText = search;
             if (this.cachedItems != null) {
-                this.visibleItems = this.filter(this.cachedItems);
+                this.visibleItems = this.filter(this.cachedItems, search);
                 return this.$q.when();
             }
             else {
                 return this.$q.when(this.getItems()).then(function (items) {
                     _this.cachedItems = items;
-                    _this.visibleItems = _this.filter(items);
+                    _this.visibleItems = _this.filter(items, search);
                 });
             }
         }
@@ -136,9 +133,8 @@ var TypeaheadController = (function (_super) {
                 return _this.getDisplayName(item) === search;
             });
     };
-    TypeaheadController.prototype.filter = function (list) {
-        var _this = this;
-        return _.filter(list, function (item) { return _this.searchFilter.filter(item); });
+    TypeaheadController.prototype.filter = function (list, search) {
+        return _.filter(list, function (item) { return __search.searchUtility.tokenizedSearch(item, search); });
     };
     TypeaheadController.prototype.addItem = function (item) {
         if (this.cachedItems != null) {
@@ -155,7 +151,6 @@ var TypeaheadController = (function (_super) {
         '$attrs',
         '$timeout',
         __parentChild.serviceName,
-        __genericSearch.factoryName,
         __objectUtility.serviceName,
         __arrayUtility.serviceName,
         componentValidator_service_1.factoryName];
@@ -180,7 +175,6 @@ var typeahead = input_1.buildInput({
 });
 angular.module(exports.moduleName, [
     __parentChild.moduleName,
-    __genericSearch.moduleName,
     __objectUtility.moduleName,
     __arrayUtility.moduleName,
     input_1.moduleName
