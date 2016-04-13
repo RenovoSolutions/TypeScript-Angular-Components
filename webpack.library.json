@@ -1,5 +1,5 @@
 {
-	"entry": "./source/ui.module.ts",
+	"entry": "./source/ui.module.js",
 	"path": "output",
 	"filename": "components.js",
 	"library": "rl_components",
@@ -8,6 +8,7 @@
 		"angular-ui-bootstrap": "angular-ui",
 		"jquery": "$",
 		"moment": "moment",
+		"moment-timezone": "moment",
 		"lodash": "_",
 		"typescript-angular-utilities": "rl_utilities"
 	}
