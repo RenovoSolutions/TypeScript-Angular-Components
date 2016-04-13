@@ -1,6 +1,15 @@
 import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 
+import * as inputsTemplate from './inputs.html';
+import * as buttonsTemplate from './buttons.html';
+import * as popupTemplate from './popup.html';
+import * as cardsTemplate from './cards.html';
+import * as tabsTemplate from './tabs.html';
+import * as formsTemplate from './forms.html';
+import * as messageLogTemplate from './messageLog/messageLogTest.html';
+import * as miscTemplate from './misc.html';
+
 angular.module('app', ['rl.ui', 'ui.router'])
 	.controller('InputTestController', InputTestController)
 	.controller('ButtonTestController', ButtonTestController)
@@ -20,49 +29,49 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 		})
 		.state('inputs', {
 			url: '/inputs',
-			templateUrl: 'bootstrapper/inputs.html',
+			template: inputsTemplate,
 			controller: 'InputTestController',
 			controllerAs: 'input',
 		})
 		.state('buttons', {
 			url: '/buttons',
-			templateUrl: 'bootstrapper/buttons.html',
+			template: buttonsTemplate,
 			controller: 'ButtonTestController',
 			controllerAs: 'button',
 		})
 		.state('popup', {
 			url: '/popup',
-			templateUrl: 'bootstrapper/popup.html',
+			template: popupTemplate,
 			controller: 'PopupTestController',
 			controllerAs: 'popup',
 		})
 		.state('cards', {
 			url: '/cards',
-			templateUrl: 'bootstrapper/cards.html',
+			template: cardsTemplate,
 			controller: 'CardTestController',
 			controllerAs: 'cards',
 		})
 		.state('tabs', {
 			url: '/tabs',
-			templateUrl: 'bootstrapper/tabs.html',
+			template: tabsTemplate,
 			controller: 'TabTestController',
 			controllerAs: 'tabs',
 		})
 		.state('forms', {
 			url: '/forms',
-			templateUrl: 'bootstrapper/forms.html',
+			template: formsTemplate,
 			controller: 'FormTestController',
 			controllerAs: 'forms',
 		})
 		.state('messageLog', {
 			url: '/messageLog',
-			templateUrl: 'bootstrapper/messageLog/messageLogTest.html',
+			template: messageLogTemplate,
 			controller: 'MessageLogTestController',
 			controllerAs: 'messageLog',
 		})
 		.state('misc', {
 			url: '/misc',
-			templateUrl: 'bootstrapper/misc.html',
+			template: miscTemplate,
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
