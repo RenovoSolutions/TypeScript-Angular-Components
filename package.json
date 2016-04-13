@@ -39,7 +39,12 @@
 
     "full-build": "npm run update && npm run build && npm run bundle",
 
-    "all": "npm run update && npm run build && npm run test.full && npm run bundle"
+    "all": "npm run update && npm run build && npm run test.full && npm run bundle",
+
+    "bootstrap": "webpack --config webpack.bootstrapper.config.js",
+    "bootstrap.watch": "webpack -w --config webpack.bootstrapper.config.js",
+
+    "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"http-server -c-1 -o\""
   },
   "devDependencies": {
     "angular-mocks": "~1.5.0",
