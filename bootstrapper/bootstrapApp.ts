@@ -56,7 +56,7 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 		})
 		.state('messageLog', {
 			url: '/messageLog',
-			templateUrl: 'bootstrapper/messageLogTest.html',
+			templateUrl: 'bootstrapper/messageLog/messageLogTest.html',
 			controller: 'MessageLogTestController',
 			controllerAs: 'messageLog',
 		})
