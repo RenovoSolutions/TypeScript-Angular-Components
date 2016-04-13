@@ -3,5 +3,5 @@ import __timezone = services.timezone;
 
 import './bootstrapApp';
 import './messageLog/messageLogBootstrapper';
-import './cardContainerBootstrapper';
+import './cards/cardContainerBootstrapper';
 import './text';

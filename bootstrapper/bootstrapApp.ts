@@ -4,7 +4,7 @@ import __timezone = services.timezone;
 import * as inputsTemplate from './inputs.html';
 import * as buttonsTemplate from './buttons.html';
 import * as popupTemplate from './popup.html';
-import * as cardsTemplate from './cards.html';
+import * as cardsTemplate from './cards/cards.html';
 import * as tabsTemplate from './tabs.html';
 import * as formsTemplate from './forms.html';
 import * as messageLogTemplate from './messageLog/messageLogTest.html';
