@@ -5,4 +5,6 @@ import './popup/popupBootstrapper';
 import './messageLog/messageLogBootstrapper';
 import './cards/cardContainerBootstrapper';
 import './tabs/tabsBootstrapper';
-import './text';
+import './forms/formsBootstrapper';
+import './misc/miscBootstrapper';
+import './text/text';
