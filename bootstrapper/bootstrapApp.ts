@@ -1,11 +1,11 @@
-import * as inputsTemplate from './inputs/inputs.html';
-import * as buttonsTemplate from './buttons/buttons.html';
-import * as popupTemplate from './popup/popup.html';
-import * as cardsTemplate from './cards/cards.html';
-import * as tabsTemplate from './tabs/tabs.html';
-import * as formsTemplate from './forms/forms.html';
-import * as messageLogTemplate from './messageLog/messageLogTest.html';
-import * as miscTemplate from './misc/misc.html';
+const inputsTemplate = require('./inputs/inputs.html');
+const buttonsTemplate = require('./buttons/buttons.html');
+const popupTemplate = require('./popup/popup.html');
+const cardsTemplate = require('./cards/cards.html');
+const tabsTemplate = require('./tabs/tabs.html');
+const formsTemplate = require('./forms/forms.html');
+const messageLogTemplate = require('./messageLog/messageLogTest.html');
+const miscTemplate = require('./misc/misc.html');
 
 angular.module('app', ['rl.ui', 'ui.router'])
 	.config(RouteConfig);
