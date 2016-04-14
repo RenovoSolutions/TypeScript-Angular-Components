@@ -2,13 +2,12 @@ import * as inputsTemplate from './inputs/inputs.html';
 import * as buttonsTemplate from './buttons/buttons.html';
 import * as popupTemplate from './popup/popup.html';
 import * as cardsTemplate from './cards/cards.html';
-import * as tabsTemplate from './tabs.html';
+import * as tabsTemplate from './tabs/tabs.html';
 import * as formsTemplate from './forms.html';
 import * as messageLogTemplate from './messageLog/messageLogTest.html';
 import * as miscTemplate from './misc.html';
 
 angular.module('app', ['rl.ui', 'ui.router'])
-	.controller('TabTestController', TabTestController)
 	.controller('FormTestController', FormTestController)
 	.controller('MiscTestController', MiscTestController)
 	.config(RouteConfig);
@@ -69,22 +68,6 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
-}
-
-function TabTestController() {
-	var self = this;
-	self.steps = [
-		{
-			title: 'Step 1',
-			subtitle: 'Do something',
-			onClick: function() { console.log('Visited step 1'); },
-		},
-		{
-			title: 'Step 2',
-			subtitle: 'Do more work',
-			onClick: function() { console.log('Visited step 2'); },
-		},
-	];
 }
 
 FormTestController.$inject = ['$q', '$timeout'];
