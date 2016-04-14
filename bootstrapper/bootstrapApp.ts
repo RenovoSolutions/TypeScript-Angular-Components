@@ -1,3 +1,5 @@
+import { moduleName as componentsModule } from '../source/ui.module';
+
 const inputsTemplate = require('./inputs/inputs.html');
 const buttonsTemplate = require('./buttons/buttons.html');
 const popupTemplate = require('./popup/popup.html');
@@ -7,7 +9,7 @@ const formsTemplate = require('./forms/forms.html');
 const messageLogTemplate = require('./messageLog/messageLogTest.html');
 const miscTemplate = require('./misc/misc.html');
 
-angular.module('app', ['rl.ui', 'ui.router'])
+angular.module('app', [componentsModule, 'ui.router'])
 	.config(RouteConfig);
 
 RouteConfig.$inject = ['$urlRouterProvider', '$stateProvider'];
