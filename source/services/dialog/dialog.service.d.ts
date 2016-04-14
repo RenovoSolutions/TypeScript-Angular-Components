@@ -10,8 +10,8 @@ import { IFormValidator } from '../../types/formValidators';
 export { bootstrapModalDialog };
 export { componentName, controllerName, DialogController } from '../../components/dialog/dialog';
 export * from './dialogTypes';
-export declare let moduleName: string;
-export declare let serviceName: string;
+export declare const moduleName: string;
+export declare const serviceName: string;
 export interface IDialogService<TDialogSettings> {
     open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
     prompt(options: types.IPromptSettings): types.IPromptInstance;
