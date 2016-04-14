@@ -1,5 +1,5 @@
 import * as inputsTemplate from './inputs/inputs.html';
-import * as buttonsTemplate from './buttons.html';
+import * as buttonsTemplate from './buttons/buttons.html';
 import * as popupTemplate from './popup.html';
 import * as cardsTemplate from './cards/cards.html';
 import * as tabsTemplate from './tabs.html';
@@ -8,7 +8,6 @@ import * as messageLogTemplate from './messageLog/messageLogTest.html';
 import * as miscTemplate from './misc.html';
 
 angular.module('app', ['rl.ui', 'ui.router'])
-	.controller('ButtonTestController', ButtonTestController)
 	.controller('PopupTestController', PopupTestController)
 	.controller('TabTestController', TabTestController)
 	.controller('FormTestController', FormTestController)
@@ -71,17 +70,6 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
-}
-
-ButtonTestController.$inject = ['$timeout'];
-function ButtonTestController($timeout) {
-	var self = this;
-	self.action = function(name) {
-		console.log('Action: ' + name);
-	};
-	self.wait = function(callback, name) {
-		return $timeout(function() { callback(name) }, 1000);
-	};
 }
 
 PopupTestController.$inject = ['dialog'];
