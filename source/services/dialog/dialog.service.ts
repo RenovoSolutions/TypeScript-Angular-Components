@@ -21,8 +21,8 @@ export { bootstrapModalDialog };
 export { componentName, controllerName, DialogController } from '../../components/dialog/dialog';
 export * from './dialogTypes';
 
-export let moduleName: string = 'rl.ui.services.dialog';
-export let serviceName: string = 'dialog';
+export const moduleName: string = 'rl.ui.services.dialog';
+export const serviceName: string = 'dialog';
 
 export interface IDialogService<TDialogSettings> {
 	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance;
@@ -43,7 +43,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			, private formService: IFormService) { }
 
 	open(options: TDialogSettings, closeHandler?: types.IDialogCloseHandler): types.IDialogInstance {
-		let dialogInstance: types.IDialogInstance = this.dialog.open(options, closeHandler);
+		const dialogInstance: types.IDialogInstance = this.dialog.open(options, closeHandler);
 		dialogInstance.validateAndNotify = (): boolean => {
 			let valid: boolean = this.form.$valid;
 
