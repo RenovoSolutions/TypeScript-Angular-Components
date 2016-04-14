@@ -75,9 +75,7 @@ export class CardSearchController {
 
 				timer = this.$timeout<void>(dataSource.refresh.bind(dataSource), delay);
 			});
-			this.$scope.$watch(():string => {
-				return this.searchFilter.searchText;
-			},():void =>{
+			this.searchFilter.subscribe((): void => {
 				this.searchText = this.searchFilter.searchText;
 			});
 		}
