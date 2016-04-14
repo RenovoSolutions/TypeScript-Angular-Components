@@ -1,6 +1,6 @@
 import * as inputsTemplate from './inputs/inputs.html';
 import * as buttonsTemplate from './buttons/buttons.html';
-import * as popupTemplate from './popup.html';
+import * as popupTemplate from './popup/popup.html';
 import * as cardsTemplate from './cards/cards.html';
 import * as tabsTemplate from './tabs.html';
 import * as formsTemplate from './forms.html';
@@ -8,7 +8,6 @@ import * as messageLogTemplate from './messageLog/messageLogTest.html';
 import * as miscTemplate from './misc.html';
 
 angular.module('app', ['rl.ui', 'ui.router'])
-	.controller('PopupTestController', PopupTestController)
 	.controller('TabTestController', TabTestController)
 	.controller('FormTestController', FormTestController)
 	.controller('MiscTestController', MiscTestController)
@@ -70,33 +69,6 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
-}
-
-PopupTestController.$inject = ['dialog'];
-function PopupTestController(dialog) {
-	var self = this;
-	self.popover = '<div>{{popup.content}}</div>';
-	self.content = 'Some content';
-
-	self.prompt = function() {
-		dialog.prompt({
-			acceptHandler: function() { alert('Yes'); },
-			cancelHandler: function() { alert('No'); },
-			okButton: 'Yes',
-			cancelButton: 'No',
-			message: 'Do you want to do this?',
-		});
-	};
-
-	self.openDialog = function() {
-		dialog.open({
-			template: '<rl-dialog>' +
-						'<rl-dialog-header>Header</rl-dialog-header>' +
-						'<rl-dialog-content>Content</rl-dialog-content>' +
-						'<rl-dialog-footer>Footer</rl-dialog-footer>' +
-					'</rl-dialog > ',
-		});
-	};
 }
 
 function TabTestController() {
