@@ -24,13 +24,31 @@ export class CardSearchController {
 	delay: number;
 
 	searchPlaceholder: string;
-	searchText: string;
 	searchLengthError: boolean = false;
 	minSearchLength: number;
 	hasSearchFilter: boolean = true;
 	minSearchError: string;
+	private _searchText: string;
 	private cardContainer: CardContainerController;
 	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
+	private timer: angular.IPromise<void>;
+
+	get searchText(): string {
+		return this.searchFilter.searchText;
+	}
+
+	set searchText(search: string) {
+		this.searchFilter.searchText = search;
+		this.minSearchLength = this.searchFilter.minSearchLength;
+
+		this.validateSearchLength(search, this.minSearchLength);
+
+		if (this.timer != null) {
+			this.$timeout.cancel(this.timer);
+		}
+
+		this.timer = this.$timeout<void>(this.cardContainer.dataSource.refresh.bind(this.cardContainer.dataSource), this.delay);
+	}
 
 	static $inject: string[] = ['$scope', '$timeout'];
 	constructor(private $scope: angular.IScope
@@ -55,26 +73,10 @@ export class CardSearchController {
 		if (this.hasSearchFilter) {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
-			let dataSource: IDataSource<any> = this.cardContainer.dataSource;
-
-			let delay: number = this.delay != null
+			this.delay = this.delay != null
 				? this.delay
 				: defaultSearchDelay;
 
-			let timer: angular.IPromise<void>;
-
-			this.$scope.$watch((): string => { return this.searchText; }, (search: string): void => {
-				this.searchFilter.searchText = search;
-				this.minSearchLength = this.searchFilter.minSearchLength;
-
-				this.validateSearchLength(search, this.minSearchLength);
-
-				if (timer != null) {
-					this.$timeout.cancel(timer);
-				}
-
-				timer = this.$timeout<void>(dataSource.refresh.bind(dataSource), delay);
-			});
 			this.searchFilter.subscribe((): void => {
 				this.searchText = this.searchFilter.searchText;
 			});
