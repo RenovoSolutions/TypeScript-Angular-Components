@@ -1,7 +1,4 @@
-import { services } from 'typescript-angular-utilities';
-import __timezone = services.timezone;
-
-import * as inputsTemplate from './inputs.html';
+import * as inputsTemplate from './inputs/inputs.html';
 import * as buttonsTemplate from './buttons.html';
 import * as popupTemplate from './popup.html';
 import * as cardsTemplate from './cards/cards.html';
@@ -11,7 +8,6 @@ import * as messageLogTemplate from './messageLog/messageLogTest.html';
 import * as miscTemplate from './misc.html';
 
 angular.module('app', ['rl.ui', 'ui.router'])
-	.controller('InputTestController', InputTestController)
 	.controller('ButtonTestController', ButtonTestController)
 	.controller('PopupTestController', PopupTestController)
 	.controller('TabTestController', TabTestController)
@@ -75,39 +71,6 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
-}
-
-InputTestController.$inject = ['$q'];
-function InputTestController($q) {
-	var self = this;
-	self.set = [];
-	self.select = function (value) {
-		self.set.push(value);
-	}
-	self.create = function (value) {
-		return {
-			name: value,
-		};
-	};
-	self.options = [
-		{ name: 'item1' },
-		{ name: 'item2' },
-		{ name: 'item3' },
-		{ name: 'item4' },
-		{ name: 'item5' },
-	];
-	self.getOptions = function () {
-		return $q.when(_.clone(self.options));
-	}
-	self.typeaheadList = [self.options[0], self.options[4]];
-	self.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
-	__timezone.timezoneService.setCurrentTimezone('-08:00');
-
-	self.logDates = function() {
-		var format = 'YYYY-MM-DDTHH:mm:ssZ';
-		console.log(self.date.format(format));
-		console.log(self.date2.format(format));
-	}
 }
 
 ButtonTestController.$inject = ['$timeout'];
