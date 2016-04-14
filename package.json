@@ -44,6 +44,8 @@
     "bootstrap": "webpack --config webpack.bootstrapper.config.js",
     "bootstrap.watch": "webpack -w --config webpack.bootstrapper.config.js",
 
+    "build-bootstrap.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bootstrap.watch\"",
+
     "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"http-server -c-1 -o\""
   },
   "devDependencies": {
