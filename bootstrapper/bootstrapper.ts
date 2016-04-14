@@ -8,4 +8,5 @@ import './popup/popupBootstrapper';
 import './messageLog/messageLogBootstrapper';
 import './cards/cardContainerBootstrapper';
 import './tabs/tabsBootstrapper';
+import './forms/formsBootstrapper';
 import './text';

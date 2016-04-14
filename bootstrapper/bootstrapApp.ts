@@ -3,12 +3,11 @@ import * as buttonsTemplate from './buttons/buttons.html';
 import * as popupTemplate from './popup/popup.html';
 import * as cardsTemplate from './cards/cards.html';
 import * as tabsTemplate from './tabs/tabs.html';
-import * as formsTemplate from './forms.html';
+import * as formsTemplate from './forms/forms.html';
 import * as messageLogTemplate from './messageLog/messageLogTest.html';
 import * as miscTemplate from './misc.html';
 
 angular.module('app', ['rl.ui', 'ui.router'])
-	.controller('FormTestController', FormTestController)
 	.controller('MiscTestController', MiscTestController)
 	.config(RouteConfig);
 
@@ -68,22 +67,6 @@ function RouteConfig($urlRouterProvider, $stateProvider) {
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});
-}
-
-FormTestController.$inject = ['$q', '$timeout'];
-function FormTestController($q, $timeout) {
-	var self = this;
-	self.submit = function() {
-		return $timeout(function() {
-			console.log('Submitted');
-		}, 1000);
-	}
-
-	self.count = 0;
-	self.save = function () {
-		self.count++;
-		return $q.when();
-	};
 }
 
 MiscTestController.$inject = ['$scope', '$q', '$timeout', 'dialog', 'cardContainerBuilder'];
