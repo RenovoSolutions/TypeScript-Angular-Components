@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import { factoryName as builderService, ICardContainerBuilderFactory, ICardContainerBuilder } from '../../source/components/cardContainer/cardContainerBuilder.service';
 
 interface ICardItem {
