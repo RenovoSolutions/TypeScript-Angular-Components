@@ -41,6 +41,8 @@ export class DateFilterController implements IDateFilterBindings {
 	type: string = "days";
 	private inputField: angular.IAugmentedJQuery;
 
+	selectedDate1: moment.Moment;
+
 	static $inject = ['$scope', __date.serviceName, '$element'];
 	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility, private $element: angular.IAugmentedJQuery) {
 		this.filter.includeTime = this.includeTime
@@ -50,30 +52,36 @@ export class DateFilterController implements IDateFilterBindings {
 		this.filter.dateRange = false;
 		if (this.clearButton == null)
 			this.clearButton = true;
+
+		$scope.$watch('filter.selectedDate1', (date: moment.Moment): void => {
+			if (date == null) {
+				this.inputField.val('');
+				this.clearCount();
+			}
+			this.filter.selectedDate1 = date;
+			this.refreshDataSource();
+		});
 	}
 
-	public get selectedDate1(): moment.Moment {
-		if (this.filter.selectedDate1 != null) {
-			return moment(this.filter.selectedDate1);
-		} else {
-			//clear input field of date value. and rest past day/week count
-			this.inputField.val('');
-			this.clearCount();
-			return null
-		}
-	}
+	// public get selectedDate1(): moment.Moment {
+	// 	if (this.filter.selectedDate1 != null) {
+	// 		return moment(this.filter.selectedDate1);
+	// 	} else {
+	// 		return null;
+	// 	}
+	// }
 
-	public set selectedDate1(dateString: moment.Moment) {
-		if (this.dateUtility.isDate(dateString)) {
-			this.filter.selectedDate1 = moment(dateString);
-		} else {
-			//clear input field of date value. and rest past day/week count
-			this.inputField.val('');
-			this.clearCount();
-			this.filter.selectedDate1 = null;
-		}
-		this.refreshDataSource();
-	}
+	// public set selectedDate1(dateString: moment.Moment) {
+	// 	if (this.dateUtility.isDate(dateString)) {
+	// 		this.filter.selectedDate1 = moment(dateString);
+	// 	} else {
+	// 		//clear input field of date value. and rest past day/week count
+	// 		this.inputField.val('');
+	// 		this.clearCount();
+	// 		this.filter.selectedDate1 = null;
+	// 	}
+	// 	this.refreshDataSource();
+	// }
 
 	public get selectedDate2(): moment.Moment {
 		return this.filter.selectedDate2;
