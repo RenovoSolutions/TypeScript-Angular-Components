@@ -9,4 +9,5 @@ import './messageLog/messageLogBootstrapper';
 import './cards/cardContainerBootstrapper';
 import './tabs/tabsBootstrapper';
 import './forms/formsBootstrapper';
+import './misc/miscBootstrapper';
 import './text';
