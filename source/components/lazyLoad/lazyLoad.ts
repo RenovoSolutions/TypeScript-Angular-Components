@@ -2,29 +2,32 @@
 
 import * as angular from 'angular';
 
-export let moduleName: string = 'rl.ui.components.lazyLoad';
-export let componentName: string = 'rlLazyLoad';
-export let controllerName: string = 'LazyLoadController';
+import { IChangeObject } from '../../types/changes';
+
+export const moduleName: string = 'rl.ui.components.lazyLoad';
+export const componentName: string = 'rlLazyLoad';
+export const controllerName: string = 'LazyLoadController';
+
+export interface ILazyLoadChanges {
+	show: IChangeObject<boolean>;
+}
 
 export class LazyLoadController {
 	show: boolean;
 	init: boolean = false;
 
-	static $inject: string[] = ['$scope'];
-	constructor($scope: angular.IScope) {
-		let unbind: Function = $scope.$watch((): boolean => { return this.show; }, (value: boolean): void => {
-			if (value) {
-				this.init = true;
-				unbind();
-			}
-		});
+	$onChanges(changes: ILazyLoadChanges): void {
+		if (!this.init && changes.show && changes.show.currentValue) {
+			this.init = true;
+		}
 	}
 }
 
-let lazyLoad: angular.IComponentOptions = {
+const lazyLoad: angular.IComponentOptions = {
 	transclude: true,
 	template: `
 		<div ng-if="lazyLoad.init">
+			Initialized
 			<div ng-show="lazyLoad.show">
 				<div ng-transclude></div>
 			</div>
@@ -33,7 +36,7 @@ let lazyLoad: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'lazyLoad',
 	bindings: {
-		show: '=',
+		show: '<',
 	},
 };
 
