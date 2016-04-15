@@ -44,9 +44,6 @@ export class PagerController {
 		this.pager.pageNumber = page;
 	}
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: angular.IScope) {}
-
 	$onInit(): void {
 		if (this.cardContainer == null) {
 			return;
