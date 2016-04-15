@@ -17,6 +17,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import * as Rx from 'rx';
 
 interface IItemMock {
 	viewData: ISelectionViewData;
@@ -28,6 +29,7 @@ interface ISelectionViewData {
 
 interface ICardContainerMock {
 	numberSelected: number;
+	numberSelectedObservable: Rx.Subject<number>;
 	dataSource: any;
 	selectionChanged: Sinon.SinonSpy;
 }
@@ -58,13 +60,11 @@ describe('selectionControl', () => {
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
 		buildController();
 
-		cardContainer.numberSelected = 2;
-		scope.$digest();
+		cardContainer.numberSelectedObservable.onNext(2);
 
 		expect(selection.selectedItems).to.equal(2);
 
-		cardContainer.numberSelected = 4;
-		scope.$digest();
+		cardContainer.numberSelectedObservable.onNext(4);
 
 		expect(selection.selectedItems).to.equal(4);
 	});
@@ -143,6 +143,7 @@ describe('selectionControl', () => {
 	function buildController(items?: IItemMock[], hasPager?: boolean): void {
 		cardContainer = {
 			numberSelected: 0,
+			numberSelectedObservable: new Rx.Subject(),
 			dataSource: {
 				dataSet: _.take(items, 2),
 				filteredDataSet: items,

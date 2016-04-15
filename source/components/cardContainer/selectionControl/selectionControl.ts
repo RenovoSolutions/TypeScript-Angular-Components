@@ -21,9 +21,8 @@ export class SelectionControlController {
 	dataSource: IDataSource<any>;
 	private cardContainer: CardContainerController;
 
-	static $inject: string[] = ['$scope', __boolean.serviceName];
-	constructor(private $scope: angular.IScope
-			, private bool: __boolean.IBooleanUtility) {}
+	static $inject: string[] = [__boolean.serviceName];
+	constructor(private bool: __boolean.IBooleanUtility) {}
 
 	$onInit(): void {
 		if (this.cardContainer == null) {
@@ -34,7 +33,7 @@ export class SelectionControlController {
 		this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
 		this.dataSource = this.cardContainer.dataSource;
 
-		this.$scope.$watch((): number => { return this.cardContainer.numberSelected; }, (value: number): void => {
+		this.cardContainer.numberSelectedObservable.subscribe((value: number): void => {
 			this.selectedItems = value;
 		});
 	}
