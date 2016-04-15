@@ -17,10 +17,12 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import * as Rx from 'rx';
 
 interface IDataPagerMock {
 	pageSize: number;
 	pageNumber: number;
+	pageSizeObservable: Rx.Subject<number>;
 }
 
 interface IDataSourceMock {
@@ -30,10 +32,10 @@ interface IDataSourceMock {
 }
 
 describe('PagerController', () => {
-	var scope: angular.IScope;
-	var pager: PagerController;
-	var dataPager: IDataPagerMock;
-	var dataSource: IDataSourceMock;
+	let scope: angular.IScope;
+	let pager: PagerController;
+	let dataPager: IDataPagerMock;
+	let dataSource: IDataSourceMock;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -177,6 +179,7 @@ describe('PagerController', () => {
 
 			// increasing the page size to 5 decreases the number of pages to 2
 			dataPager.pageSize = 5;
+			dataPager.pageSizeObservable.onNext(5);
 			scope.$digest();
 
 			pager.last();
@@ -309,6 +312,7 @@ describe('PagerController', () => {
 		dataPager = {
 			pageSize: 1,
 			pageNumber: 1,
+			pageSizeObservable: new Rx.Subject<number>(),
 		};
 
 		dataSource = {
@@ -317,14 +321,14 @@ describe('PagerController', () => {
 			pager: dataPager,
 		};
 
-		var bindings: any = {
+		const bindings: any = {
 			pageCount: pageCount,
 			cardContainer: {
 				dataSource: dataSource,
 			},
 		};
 
-		var controllerResult: test.IControllerResult<PagerController>
+		const controllerResult: test.IControllerResult<PagerController>
 			= test.angularFixture.controllerWithBindings<PagerController>(controllerName, bindings);
 
 		scope = controllerResult.scope;
