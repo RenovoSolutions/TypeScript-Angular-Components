@@ -34,7 +34,9 @@ export class CardSearchController {
 	private timer: angular.IPromise<void>;
 
 	get searchText(): string {
-		return this.searchFilter.searchText;
+		return this.searchFilter
+			? this.searchFilter.searchText
+			: null;
 	}
 
 	set searchText(search: string) {
