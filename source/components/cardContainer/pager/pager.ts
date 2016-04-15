@@ -24,14 +24,26 @@ export class PagerController {
 
 	canGoBack: boolean = false;
 	canGoForward: boolean = false;
-	currentPage: number;
 	pages: number[];
 	hasPageFilter: boolean = true;
+	private _currentPage: number;
 	private cardContainer: CardContainerController;
 	private pager: dataPager.IDataPager;
 	private dataSource: IDataSource<any>;
 	private lastPage: number;
 	private visiblePageCount: number;
+
+	get currentPage(): number {
+		return this._currentPage;
+	}
+
+	set currentPage(page: number) {
+		this._currentPage = page;
+
+		this.updatePaging();
+		this.pager.pageNumber = page;
+		this.dataSource.onPagingChange();
+	}
 
 	static $inject: string[] = ['$scope'];
 	constructor(private $scope: angular.IScope) {}
@@ -52,13 +64,6 @@ export class PagerController {
 
 			this.$scope.$watch((): number => { return this.dataSource.count; }, this.updatePageCount);
 			this.pager.pageSizeObservable.subscribe(this.updatePageCount);
-
-			this.$scope.$watch((): number => { return this.currentPage; }, (page: number): void => {
-				this.updatePaging();
-
-				this.pager.pageNumber = page;
-				this.dataSource.onPagingChange();
-			});
 		}
 	}
 

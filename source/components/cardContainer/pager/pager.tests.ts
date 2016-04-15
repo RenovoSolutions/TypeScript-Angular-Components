@@ -135,13 +135,11 @@ describe('PagerController', () => {
 		it('should update the pageNumber on the pager when the currentPage changes', (): void => {
 			buildController(5);
 			pager.currentPage = 2;
-			scope.$digest();
 
 			expect(dataPager.pageNumber).to.equal(2);
 			sinon.assert.calledOnce(dataSource.onPagingChange);
 
 			pager.currentPage = 4;
-			scope.$digest();
 
 			expect(dataPager.pageNumber).to.equal(4);
 			sinon.assert.calledTwice(dataSource.onPagingChange);
@@ -180,7 +178,6 @@ describe('PagerController', () => {
 			// increasing the page size to 5 decreases the number of pages to 2
 			dataPager.pageSize = 5;
 			dataPager.pageSizeObservable.onNext(5);
-			scope.$digest();
 
 			pager.last();
 			expect(pager.currentPage).to.equal(2);
@@ -205,13 +202,11 @@ describe('PagerController', () => {
 
 			it('should be false if on the first page', (): void => {
 				pager.currentPage = 1;
-				scope.$digest();
 				expect(pager.canGoBack).to.be.false;
 			});
 
 			it('should be true if not on the first page', (): void => {
 				pager.currentPage = 5;
-				scope.$digest();
 				expect(pager.canGoBack).to.be.true;
 			});
 		});
@@ -223,13 +218,11 @@ describe('PagerController', () => {
 
 			it('should be false if on the last page', (): void => {
 				pager.currentPage = 5;
-				scope.$digest();
 				expect(pager.canGoForward).to.be.false;
 			});
 
 			it('should be true if not on the last page', (): void => {
 				pager.currentPage = 1;
-				scope.$digest();
 				expect(pager.canGoForward).to.be.true;
 			});
 		});
@@ -238,7 +231,6 @@ describe('PagerController', () => {
 			it('should generate a range of pages equal to the visible page count centered around the current page', (): void => {
 				buildController(5, 5);
 				pager.currentPage = 3;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(5);
 				expect(pager.pages[0]).to.equal(1);
@@ -249,7 +241,6 @@ describe('PagerController', () => {
 
 				buildController(5, 3);
 				pager.currentPage = 3;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(3);
 				expect(pager.pages[0]).to.equal(2);
@@ -260,7 +251,6 @@ describe('PagerController', () => {
 			it('should show more pages after the current page if the current page is too close to the first page', (): void => {
 				buildController(8, 5);
 				pager.currentPage = 2;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(5);
 				expect(pager.pages[0]).to.equal(1);
@@ -273,7 +263,6 @@ describe('PagerController', () => {
 			it('should show more pages before the current page if the current page is too close to the last page', (): void => {
 				buildController(8, 5);
 				pager.currentPage = 7;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(5);
 				expect(pager.pages[0]).to.equal(4);
@@ -286,7 +275,6 @@ describe('PagerController', () => {
 			it('should show all pages if the page count is greater than the number of pages', (): void => {
 				buildController(3, 5);
 				pager.currentPage = 3;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(3);
 				expect(pager.pages[0]).to.equal(1);
@@ -297,7 +285,6 @@ describe('PagerController', () => {
 			it('should show an additional page after the current page if an even number of visible pages is specified', (): void => {
 				buildController(5, 4);
 				pager.currentPage = 3;
-				scope.$digest();
 
 				expect(pager.pages).to.have.length(4);
 				expect(pager.pages[0]).to.equal(2);
