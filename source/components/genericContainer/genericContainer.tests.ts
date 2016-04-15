@@ -87,16 +87,14 @@ describe('GenericContainerController', () => {
 
 		controller.refresh();
 
-		scope.$digest();
-
 		sinon.assert.calledOnce(swapSpy);
 		let firstResult: Sinon.SinonSpyCall = swapSpy.firstCall;
 
 		expect(firstResult.args[0]).to.equal(templates.type1);
 
-		controller.selector = 'type2';
-
-		scope.$digest();
+		controller.$onChanges({
+			selector: <any>{ currentValue: 'type2' },
+		});
 
 		sinon.assert.calledTwice(swapSpy);
 		let secondResult: Sinon.SinonSpyCall = swapSpy.secondCall;

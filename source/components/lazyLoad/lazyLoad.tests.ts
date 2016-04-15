@@ -36,13 +36,15 @@ describe('LazyLoadController', () => {
 
 		expect(lazyLoad.init).to.be.false;
 
-		lazyLoad.show = true;
-		scope.$digest();
+		lazyLoad.$onChanges({
+			show: <any>{ currentValue: true },
+		});
 
 		expect(lazyLoad.init).to.be.true;
 
-		lazyLoad.show = false;
-		scope.$digest();
+		lazyLoad.$onChanges({
+			show: <any>{ currentValue: false },
+		});
 
 		expect(lazyLoad.init).to.be.true;
 	});
