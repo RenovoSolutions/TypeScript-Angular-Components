@@ -7,21 +7,32 @@ import * as angular from 'angular';
 import { dataPager } from '../dataSources/dataSources.module';
 import { CardContainerController } from '../cardContainer';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.pageSize';
-export var componentName: string = 'rlPageSize';
-export var controllerName: string = 'PageSizeController';
+export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
+export const componentName: string = 'rlPageSize';
+export const controllerName: string = 'PageSizeController';
 
-export var availablePageSizes: number[] = [10, 25, 50, 100];
-export var defaultPageSize: number = 10;
+export const availablePageSizes: number[] = [10, 25, 50, 100];
+export const defaultPageSize: number = 10;
 
 export class PageSizeController {
-	selectedPageSize: number;
 	pageSizes: number[];
 	hasPageFilter: boolean;
+	private _selectedPageSize: number;
 	private cardContainer: CardContainerController;
+	private pager: dataPager.IDataPager;
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: angular.IScope) {}
+	get selectedPageSize(): number {
+		return this._selectedPageSize;
+	}
+
+	set selectedPageSize(value: number) {
+		this._selectedPageSize = value;
+
+		if (this.pager != null) {
+			this.pager.pageSize = value;
+			this.cardContainer.dataSource.onPagingChange();
+		}
+	}
 
 	$onInit(): void {
 		if (this.cardContainer == null) {
@@ -32,22 +43,15 @@ export class PageSizeController {
 		this.pageSizes = availablePageSizes;
 		this.hasPageFilter = true;
 
-		var pager: dataPager.IDataPager = this.cardContainer.dataSource.pager;
+		this.pager = this.cardContainer.dataSource.pager;
 
-		if (pager == null) {
+		if (this.pager == null) {
 			this.hasPageFilter = false;
-		} else {
-			this.$scope.$watch((): number => { return this.selectedPageSize; }, (newPageSize: number): void => {
-				if (pager != null) {
-					pager.pageSize = newPageSize;
-					this.cardContainer.dataSource.onPagingChange();
-				}
-			});
 		}
 	}
 }
 
-let pageSize: angular.IComponentOptions = {
+const pageSize: angular.IComponentOptions = {
 	require: { cardContainer: '?^^rlCardContainer' },
 	template: require('./pageSize.html'),
 	controller: controllerName,
