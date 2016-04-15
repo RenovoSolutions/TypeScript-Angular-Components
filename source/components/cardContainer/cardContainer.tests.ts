@@ -34,6 +34,7 @@ interface IDataSourceMock {
 	dataSet?: any[];
 	filteredDataSet?: any[];
 	watch: Sinon.SinonSpy;
+	initPager: Sinon.SinonSpy;
 }
 
 interface IDataPagerMock {
@@ -638,6 +639,7 @@ describe('CardContainerController', () => {
 		return <any>{
 			refresh: sinon.spy(),
 			onSortChange: sinon.spy(),
+			initPager: sinon.spy(),
 		};
 	}
 });

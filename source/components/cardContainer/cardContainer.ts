@@ -263,6 +263,8 @@ export class CardContainerController {
 			// If the paging flag is not set and the dataSource has a pager, save a reference here
 			this.builder._pager = this.dataSource.pager;
 		}
+
+		this.dataSource.initPager();
 	}
 
 	private buildColumnSizes(): void {

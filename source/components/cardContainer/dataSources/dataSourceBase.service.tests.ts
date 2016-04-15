@@ -21,6 +21,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import * as Rx from 'rx';
 
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;
@@ -168,7 +169,7 @@ describe('dataSourceBase', () => {
 
 	describe('onPagingChange', (): void => {
 		it('should reapply paging and signal redrawing', (): void => {
-			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			const redrawSpy: Sinon.SinonSpy = sinon.spy();
 			dataSourceBase.watch(redrawSpy, 'redrawing');
 
 			dataSourceBase.onPagingChange();
@@ -178,7 +179,7 @@ describe('dataSourceBase', () => {
 		});
 
 		it('should not reapply if data is being reloaded', (): void => {
-			var redrawSpy: Sinon.SinonSpy = sinon.spy();
+			const redrawSpy: Sinon.SinonSpy = sinon.spy();
 			dataSourceBase.watch(redrawSpy, 'redrawing');
 
 			dataSourceBase.loadingDataSet = true;
@@ -186,6 +187,24 @@ describe('dataSourceBase', () => {
 
 			sinon.assert.notCalled(redrawSpy);
 			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+		});
+
+		it('should subscribe for changes on the pager', (): void => {
+			const pagingSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.onPagingChange = pagingSpy;
+			dataSourceBase.pager = <any>{
+				pageSizeObservable: new Rx.Subject<number>(),
+				pageNumberObservable: new Rx.Subject<number>(),
+			};
+			dataSourceBase.initPager();
+
+			dataSourceBase.pager.pageSizeObservable.onNext(3);
+
+			sinon.assert.calledOnce(pagingSpy);
+
+			dataSourceBase.pager.pageNumberObservable.onNext(3);
+
+			sinon.assert.calledTwice(pagingSpy);
 		});
 	});
 

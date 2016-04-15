@@ -34,6 +34,11 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		this.observable.allowableEvents = events.all;
 	}
 
+	initPager(): void {
+		this.pager.pageSizeObservable.subscribe(this.onPagingChange);
+		this.pager.pageNumberObservable.subscribe(this.onPagingChange);
+	}
+
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction {
 		return this.observable.register(action, event);
 	}

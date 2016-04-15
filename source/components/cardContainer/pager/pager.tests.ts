@@ -137,12 +137,10 @@ describe('PagerController', () => {
 			pager.currentPage = 2;
 
 			expect(dataPager.pageNumber).to.equal(2);
-			sinon.assert.calledOnce(dataSource.onPagingChange);
 
 			pager.currentPage = 4;
 
 			expect(dataPager.pageNumber).to.equal(4);
-			sinon.assert.calledTwice(dataSource.onPagingChange);
 		});
 	});
 

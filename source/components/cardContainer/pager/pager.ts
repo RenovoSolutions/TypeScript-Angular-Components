@@ -42,7 +42,6 @@ export class PagerController {
 
 		this.updatePaging();
 		this.pager.pageNumber = page;
-		this.dataSource.onPagingChange();
 	}
 
 	static $inject: string[] = ['$scope'];

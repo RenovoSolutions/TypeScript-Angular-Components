@@ -21,6 +21,8 @@ export interface IDataSource<TDataType> {
 	needsRefinedSearch: boolean;
 	isEmpty: boolean;
 
+	initPager(): void;
+
 	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
 
 	onSortChange(): void;
