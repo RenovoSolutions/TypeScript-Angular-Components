@@ -1,10 +1,12 @@
-import * as angular from 'angular';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+import { IChangeObject } from '../../types/changes';
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
+export interface ILazyLoadChanges {
+    show: IChangeObject<boolean>;
+}
 export declare class LazyLoadController {
     show: boolean;
     init: boolean;
-    static $inject: string[];
-    constructor($scope: angular.IScope);
+    $onChanges(changes: ILazyLoadChanges): void;
 }

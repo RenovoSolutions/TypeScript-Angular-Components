@@ -14,13 +14,12 @@ export declare class RadioGroup {
     constructor(ngModel: ng.INgModelController, name?: string);
 }
 export declare class RadioGroupController {
-    private $scope;
     private $attrs;
     private object;
     group: RadioGroup;
     ngModel: ng.INgModelController;
     static $inject: string[];
-    constructor($scope: ng.IScope, $attrs: IRadioGroupAttributes, object: __object.IObjectUtility);
+    constructor($attrs: IRadioGroupAttributes, object: __object.IObjectUtility);
     $onInit(): void;
 }
 export declare function radioGroup(): ng.IDirective;
