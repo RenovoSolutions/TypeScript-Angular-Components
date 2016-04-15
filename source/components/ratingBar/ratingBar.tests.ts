@@ -70,14 +70,14 @@ describe('RatingBarController', () => {
 	describe('dimensions', (): void => {
 		it('should set the dimensions to tne number passed in plus 2 pixels on each size', (): void => {
 			buildController(<any>{ height: 20, totalWidth: 30 });
-			scope.$digest();
 
 			expect(ratingBar.dimensions.height).to.equal(22);
 			expect(ratingBar.dimensions.width).to.equal(32);
 
 			// only the width can be updated dynamically from outside the directive
-			ratingBar.totalWidth = 40;
-			scope.$digest();
+			ratingBar.$onChanges({
+				totalWidth: <any>{ currentValue: 40 },
+			});
 
 			expect(ratingBar.dimensions.width).to.equal(42);
 		});
@@ -103,7 +103,6 @@ describe('RatingBarController', () => {
 			};
 
 			buildController(confidenceData);
-			scope.$digest();
 
 			// confidence = 20 / 40 = 0.5;
 			// width = 0.5 * 20 = 10;
@@ -124,7 +123,6 @@ describe('RatingBarController', () => {
 				confidenceData.value = 80;
 
 				buildController(confidenceData);
-				scope.$digest();
 
 				expect(ratingBar.barClass).to.equal('very-high');
 			});
@@ -133,7 +131,6 @@ describe('RatingBarController', () => {
 				confidenceData.value = 60;
 
 				buildController(confidenceData);
-				scope.$digest();
 
 				expect(ratingBar.barClass).to.equal('high');
 			});
@@ -142,7 +139,6 @@ describe('RatingBarController', () => {
 				confidenceData.value = 40;
 
 				buildController(confidenceData);
-				scope.$digest();
 
 				expect(ratingBar.barClass).to.equal('medium');
 			});
@@ -151,7 +147,6 @@ describe('RatingBarController', () => {
 				confidenceData.value = 20;
 
 				buildController(confidenceData);
-				scope.$digest();
 
 				expect(ratingBar.barClass).to.equal('low');
 			});
@@ -160,7 +155,6 @@ describe('RatingBarController', () => {
 				confidenceData.value = 0;
 
 				buildController(confidenceData);
-				scope.$digest();
 
 				expect(ratingBar.barClass).to.equal('very-low');
 			});
