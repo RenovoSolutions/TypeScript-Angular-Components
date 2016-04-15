@@ -27,7 +27,6 @@ const lazyLoad: angular.IComponentOptions = {
 	transclude: true,
 	template: `
 		<div ng-if="lazyLoad.init">
-			Initialized
 			<div ng-show="lazyLoad.show">
 				<div ng-transclude></div>
 			</div>
