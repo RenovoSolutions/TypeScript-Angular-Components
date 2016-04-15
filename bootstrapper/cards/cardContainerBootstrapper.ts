@@ -13,7 +13,7 @@ class CardTestController {
 
 	static $inject: string[] = [builderService];
 	constructor(cardContainerBuilderFactory: ICardContainerBuilderFactory) {
-		const items: ICardItem[] = _.map(_.range(1, 100), (num: number): ICardItem => {
+		const items: ICardItem[] = _.map(_.range(1, 101), (num: number): ICardItem => {
 			return { name: 'Item' + num, value: Math.floor(Math.random() * 2) + 1 };
 		});
 
