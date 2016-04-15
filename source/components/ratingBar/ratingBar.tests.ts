@@ -158,6 +158,18 @@ describe('RatingBarController', () => {
 
 				expect(ratingBar.barClass).to.equal('very-low');
 			});
+
+			it('should update the confidence when the value changes', (): void => {
+				confidenceData.value = 0;
+
+				buildController(confidenceData);
+
+				ratingBar.$onChanges({
+					value: <any>{ currentValue: 20 },
+				});
+
+				expect(ratingBar.barClass).to.equal('low');
+			});
 		});
 	});
 
