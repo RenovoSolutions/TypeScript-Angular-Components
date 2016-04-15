@@ -30,20 +30,14 @@ export class LongClickButtonController extends ButtonAsyncController {
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
 
-	static $inject: string[] = ['$scope', '$interval', '$timeout', __object.serviceName, __promise.serviceName];
-	constructor($scope: angular.IScope
-			, private $interval: angular.IIntervalService
+	static $inject: string[] = ['$interval', '$timeout', __object.serviceName, __promise.serviceName];
+	constructor(private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility
 			, promise: __promise.IPromiseUtility) {
 		super(promise);
 		this.buttonText = this.text;
-
-		$scope.$watch((): string => { return this.buttonText; }, (): void => {
-			$timeout((): void => {
-				this.width = $('#actionButton').outerWidth();
-			});
-		});
+		this.updateProgressBarWidth();
 	}
 
 	startAction(): void {
@@ -59,6 +53,7 @@ export class LongClickButtonController extends ButtonAsyncController {
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
 				this.buttonText = this.text;
+				this.updateProgressBarWidth();
 				this.trigger();
 			}
 		}, this.interval);
@@ -83,7 +78,14 @@ export class LongClickButtonController extends ButtonAsyncController {
 	private warn(): void {
 		if (this.objectUtility.isNullOrEmpty(this.onShortClickText) === false) {
 			this.buttonText = this.onShortClickText;
+			this.updateProgressBarWidth();
 		}
+	}
+
+	private updateProgressBarWidth(): void {
+		this.$timeout((): void => {
+			this.width = $('#actionButton').outerWidth();
+		});
 	}
 }
 
