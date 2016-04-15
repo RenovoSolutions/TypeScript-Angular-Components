@@ -52,9 +52,8 @@ export class CardSearchController {
 		this.timer = this.$timeout<void>(this.cardContainer.dataSource.refresh.bind(this.cardContainer.dataSource), this.delay);
 	}
 
-	static $inject: string[] = ['$scope', '$timeout'];
-	constructor(private $scope: angular.IScope
-			, private $timeout: angular.ITimeoutService) {}
+	static $inject: string[] = ['$timeout'];
+	constructor(private $timeout: angular.ITimeoutService) {}
 
 	$onInit(): void {
 		if (this.cardContainer == null) {
