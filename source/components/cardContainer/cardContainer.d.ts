@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as Rx from 'rx';
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
@@ -95,6 +96,7 @@ export declare class CardContainerController {
     dataSource: IDataSource<any>;
     sortDirection: ISortDirections;
     numberSelected: number;
+    numberSelectedObservable: Rx.Subject<number>;
     selectionColumn: IColumn<any>;
     private maxColSorts;
     private disablingSelections;

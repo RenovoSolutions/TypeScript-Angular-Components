@@ -3,6 +3,7 @@ import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 import { ISimpleCardListController } from './simpleCardList';
+import { IChangeObject } from '../../types/changes';
 export declare var componentName: string;
 export declare var controllerName: string;
 export interface ISimpleCardBindings {
@@ -21,8 +22,10 @@ export interface ISimpleCardBehavior {
     close(): boolean;
     setAlwaysOpen(value: boolean): void;
 }
+export interface ISimpleCardChanges {
+    alwaysOpen: IChangeObject<boolean>;
+}
 export declare class SimpleCardController implements ISimpleCardBindings {
-    private $scope;
     private parentChild;
     onOpen: {
         (): void;
@@ -39,8 +42,9 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
     listController: ISimpleCardListController;
     static $inject: string[];
-    constructor($scope: angular.IScope, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor(parentChild: __parentChild.IParentChildBehaviorService);
     $onInit(): void;
+    $onChanges(changes: ISimpleCardChanges): void;
     toggleContent(): void;
     open(): void;
     close: {
@@ -48,5 +52,6 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     };
     private autosave();
     private noList();
+    private updateAlwaysOpen(alwaysOpen);
 }
 export declare let simpleCard: angular.IComponentOptions;

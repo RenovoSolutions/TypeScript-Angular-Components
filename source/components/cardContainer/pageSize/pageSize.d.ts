@@ -1,16 +1,13 @@
-import * as angular from 'angular';
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
-export declare var availablePageSizes: number[];
-export declare var defaultPageSize: number;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
+export declare const availablePageSizes: number[];
+export declare const defaultPageSize: number;
 export declare class PageSizeController {
-    private $scope;
-    selectedPageSize: number;
     pageSizes: number[];
     hasPageFilter: boolean;
     private cardContainer;
-    static $inject: string[];
-    constructor($scope: angular.IScope);
+    private pager;
+    selectedPageSize: number;
     $onInit(): void;
 }

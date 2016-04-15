@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 import { IDataSource } from '../dataSources/dataSources.module';
@@ -6,14 +5,13 @@ export declare var moduleName: string;
 export declare var componentName: string;
 export declare var controllerName: string;
 export declare class SelectionControlController {
-    private $scope;
     private bool;
     selectedItems: number;
     pagingEnabled: boolean;
     dataSource: IDataSource<any>;
     private cardContainer;
     static $inject: string[];
-    constructor($scope: angular.IScope, bool: __boolean.IBooleanUtility);
+    constructor(bool: __boolean.IBooleanUtility);
     $onInit(): void;
     selectPage(): void;
     selectAll(): void;

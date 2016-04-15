@@ -8,19 +8,20 @@ export interface ICardSearchBindings {
     delay: number;
 }
 export declare class CardSearchController {
-    private $scope;
     private $timeout;
     delay: number;
     searchPlaceholder: string;
-    searchText: string;
     searchLengthError: boolean;
     minSearchLength: number;
     hasSearchFilter: boolean;
     minSearchError: string;
+    private _searchText;
     private cardContainer;
     private searchFilter;
+    private timer;
+    searchText: string;
     static $inject: string[];
-    constructor($scope: angular.IScope, $timeout: angular.ITimeoutService);
+    constructor($timeout: angular.ITimeoutService);
     $onInit(): void;
     private validateSearchLength(search, minLength);
 }

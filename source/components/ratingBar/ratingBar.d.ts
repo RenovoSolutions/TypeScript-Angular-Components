@@ -1,5 +1,5 @@
 import './ratingBar.css';
-import * as angular from 'angular';
+import { IChangeObject } from '../../types/changes';
 export declare var moduleName: string;
 export declare var componentName: string;
 export declare var controllerName: string;
@@ -15,8 +15,11 @@ export interface IRatingBarScopeBindings {
     max: number;
     background: string;
 }
+export interface IRatingBarChanges {
+    value?: IChangeObject<number>;
+    totalWidth?: IChangeObject<number>;
+}
 export declare class RatingBarController implements IRatingBarScopeBindings {
-    private $scope;
     useDefaultTheme: boolean;
     totalWidth: number;
     height: number;
@@ -30,6 +33,8 @@ export declare class RatingBarController implements IRatingBarScopeBindings {
     barClass: string;
     private ratingBarClass;
     static $inject: string[];
-    constructor($scope: angular.IScope, useDefaultTheme: boolean);
+    constructor(useDefaultTheme: boolean);
+    $onChanges(changes: IRatingBarChanges): void;
     private updateValue(newValue);
+    private updateDimensions(totalWidth);
 }

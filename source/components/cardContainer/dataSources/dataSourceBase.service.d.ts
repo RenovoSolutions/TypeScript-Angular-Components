@@ -1,3 +1,4 @@
+import * as Rx from 'rx';
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
@@ -14,12 +15,15 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     sorts: ISort[];
     filters: filters.IFilter[];
     pager: IDataPager;
-    count: number;
+    private _count;
     countFilterGroups: boolean;
     loadingDataSet: boolean;
     private _isEmpty;
     observable: __observable.IObservableService;
+    countObservable: Rx.Subject<number>;
+    count: number;
     constructor(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
+    initPager(): void;
     watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
     needsRefinedSearch: boolean;
     isEmpty: boolean;

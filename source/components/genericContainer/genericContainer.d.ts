@@ -2,10 +2,14 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import { IJQueryUtility } from '../../services/jquery/jquery.service';
 import { ITemplateLoader } from '../../services/templateLoader/templateLoader.service';
+import { IChangeObject } from '../../types/changes';
 export declare let moduleName: string;
 export declare let componentName: string;
 export declare let controllerName: string;
 import __object = services.object;
+export interface IGenericContainerChanges {
+    selector: IChangeObject<any>;
+}
 export declare class GenericContainerController {
     private $element;
     private $transclude;
@@ -25,7 +29,8 @@ export declare class GenericContainerController {
     };
     default: string;
     static $inject: string[];
-    constructor($scope: angular.IScope, $element: angular.IAugmentedJQuery, $transclude: angular.ITranscludeFunction, $compile: angular.ICompileService, object: __object.IObjectUtility, jquery: IJQueryUtility, templateLoader: ITemplateLoader);
+    constructor($element: angular.IAugmentedJQuery, $transclude: angular.ITranscludeFunction, $compile: angular.ICompileService, object: __object.IObjectUtility, jquery: IJQueryUtility, templateLoader: ITemplateLoader);
+    $onChanges(changes: IGenericContainerChanges): void;
     refresh(): void;
     resolveTemplate(type: string): string;
     $postLink(): void;
