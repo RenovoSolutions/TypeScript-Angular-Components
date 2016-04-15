@@ -495,6 +495,8 @@ describe('CardContainerController', () => {
 			dataSource.filteredDataSet = dataSource.rawDataSet;
 			dataSource.watch = sinon.spy();
 			buildController();
+			const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
+			cardContainer.numberSelectedObservable.subscribe(numberSelectedSpy);
 
 			_.each(dataSource.dataSet, (item: any): void => {
 				item.viewData.selected = true;
@@ -504,6 +506,7 @@ describe('CardContainerController', () => {
 
 			cardContainer.selectionChanged();
 
+			sinon.assert.calledOnce(numberSelectedSpy);
 			expect(cardContainer.numberSelected).to.equal(2);
 
 			_.each(dataSource.dataSet, (item: any): void => {
@@ -514,6 +517,7 @@ describe('CardContainerController', () => {
 
 			cardContainer.selectionChanged();
 
+			sinon.assert.calledTwice(numberSelectedSpy);
 			expect(cardContainer.numberSelected).to.equal(0);
 		});
 
