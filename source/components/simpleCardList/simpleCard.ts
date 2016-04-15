@@ -136,6 +136,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 	private updateAlwaysOpen(alwaysOpen: boolean): void {
 		if (alwaysOpen) {
 			this.showContent = true;
+			this.alwaysOpen = true;
 		} else {
 			this.close();
 		}

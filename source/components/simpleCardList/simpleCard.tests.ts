@@ -132,8 +132,10 @@ describe('SimpleCardController', () => {
 	describe('close', (): void => {
 		it('should return true to indicate that another card can be opened without closing or autosaving if always open is true', (): void => {
 			buildController();
-			card.alwaysOpen = true;
-			scope.$digest();
+
+			card.$onChanges({
+				alwaysOpen: <any>{ currentValue: true },
+			});
 
 			expect(card.close()).to.be.true;
 			expect(card.showContent).to.be.true;
