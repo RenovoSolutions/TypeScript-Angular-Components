@@ -23,11 +23,34 @@ export interface IDataPager {
 }
 
 export class DataPager implements IDataPager {
-	pageNumber: number = 1;
-	pageSize: number = defaultPageSize;
+	private _pageNumber: number = 1;
+	private _pageSize: number = defaultPageSize;
 
 	pageNumberObservable: Rx.Subject<number>;
 	pageSizeObservable: Rx.Subject<number>;
+
+	constructor() {
+		this.pageNumberObservable = new Rx.Subject<number>();
+		this.pageSizeObservable = new Rx.Subject<number>();
+	}
+
+	get pageNumber(): number {
+		return this._pageNumber;
+	}
+
+	set pageNumber(value: number) {
+		this._pageNumber = value;
+		this.pageNumberObservable.onNext(value);
+	}
+
+	get pageSize(): number {
+		return this._pageSize;
+	}
+
+	set pageSize(value: number) {
+		this._pageSize = value;
+		this.pageSizeObservable.onNext(value);
+	}
 
 	get startItem(): number {
 		return (this.pageNumber - 1) * this.pageSize;
