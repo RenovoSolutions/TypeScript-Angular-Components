@@ -12,9 +12,6 @@ export class RadioController {
 	groupController: RadioGroupController;
 	ngModel: ng.INgModelController;
 
-	static $inject: string[] = ['$scope'];
-	constructor(private $scope: ng.IScope) { }
-
 	$onInit(): void {
 		if (this.groupController != null) {
 			this.radioGroup = this.groupController.group;

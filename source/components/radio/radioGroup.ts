@@ -30,9 +30,8 @@ export class RadioGroupController {
 	group: RadioGroup;
 	ngModel: ng.INgModelController;
 
-	static $inject: string[] = ['$scope', '$attrs', __object.serviceName];
-	constructor(private $scope: ng.IScope
-			, private $attrs: IRadioGroupAttributes
+	static $inject: string[] = ['$attrs', __object.serviceName];
+	constructor(private $attrs: IRadioGroupAttributes
 			, private object: __object.IObjectUtility) {}
 
 	$onInit(): void {
