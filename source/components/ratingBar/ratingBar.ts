@@ -9,6 +9,8 @@ import { defaultThemeValueName } from '../componentsDefaultTheme';
 import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './ratingBarBackgrounds.service';
 import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
 
+import { IChangeObject } from '../../types/changes';
+
 export var moduleName: string = 'rl.ui.components.ratingBar';
 export var componentName: string = 'rlRatingBar';
 export var controllerName: string = 'RatingBarController';
@@ -27,6 +29,11 @@ export interface IRatingBarScopeBindings {
 	background: string;
 }
 
+export interface IRatingBarChanges {
+	value?: IChangeObject<number>;
+	totalWidth?: IChangeObject<number>;
+}
+
 export class RatingBarController implements IRatingBarScopeBindings {
 	// bindings
 	totalWidth: number;
@@ -43,8 +50,8 @@ export class RatingBarController implements IRatingBarScopeBindings {
 
 	private ratingBarClass: IRatingBarClassService;
 
-	static $inject: string[] = ['$scope', defaultThemeValueName];
-	constructor(private $scope: angular.IScope, public useDefaultTheme: boolean) {
+	static $inject: string[] = [defaultThemeValueName];
+	constructor(public useDefaultTheme: boolean) {
 		let ratingBarBackgrounds: IRatingBarBackgroundsService = new RatingBarBackgroundService;
 		this.ratingBarClass = new RatingBarClassService;
 
@@ -54,23 +61,32 @@ export class RatingBarController implements IRatingBarScopeBindings {
 			this.value = 0;
 		}
 
-		$scope.$watch((): number => { return this.value; }, (newValue: number): void => {
-			this.updateValue(newValue);
-		});
+		this.updateValue(this.value);
+		this.updateDimensions(this.totalWidth);
+	}
 
-		$scope.$watch((): number => { return this.totalWidth; }, (newWidth: number): void => {
-			this.dimensions = {
-				width: newWidth + 2,
-				height: this.height + 2,
-			};
-			this.updateValue(this.value);
-		});
+	$onChanges(changes: IRatingBarChanges): void {
+		if (changes.value) {
+			this.updateValue(changes.value.currentValue);
+		}
+
+		if (changes.totalWidth) {
+			this.updateDimensions(changes.totalWidth.currentValue);
+		}
 	}
 
 	private updateValue(newValue: number): void {
 		var confidenceScore: number = (newValue - this.min) / (this.max - this.min);
 		this.barClass = this.ratingBarClass.getClass(confidenceScore);
 		this.width = Math.round(confidenceScore * this.totalWidth);
+	}
+
+	private updateDimensions(totalWidth: number): void {
+		this.dimensions = {
+			width: totalWidth + 2,
+			height: this.height + 2,
+		};
+		this.updateValue(this.value);
 	}
 }
 
