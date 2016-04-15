@@ -12,6 +12,8 @@ import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 
 import { ISimpleCardListController } from './simpleCardList';
 
+import { IChangeObject } from '../../types/changes';
+
 export var componentName: string = 'rlSimpleCard';
 export var controllerName: string = 'SimpleCardController';
 
@@ -34,6 +36,10 @@ export interface ISimpleCardBehavior {
 	setAlwaysOpen(value: boolean): void;
 }
 
+export interface ISimpleCardChanges {
+	alwaysOpen: IChangeObject<boolean>;
+}
+
 export class SimpleCardController implements ISimpleCardBindings {
 	// bindings
 	onOpen: { (): void };
@@ -48,9 +54,8 @@ export class SimpleCardController implements ISimpleCardBindings {
 	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
 	listController: ISimpleCardListController;
 
-	static $inject: string[] = ['$scope', __parentChild.serviceName];
-	constructor(private $scope: angular.IScope
-			, private parentChild: __parentChild.IParentChildBehaviorService) {}
+	static $inject: string[] = [__parentChild.serviceName];
+	constructor(private parentChild: __parentChild.IParentChildBehaviorService) {}
 
 	$onInit(): void {
 		if (this.canOpen == null) {
@@ -73,13 +78,13 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 		this.parentChild.registerChildBehavior(this.childLink, behavior);
 
-		this.$scope.$watch((): boolean => { return this.alwaysOpen; }, (value: boolean) => {
-			if (value) {
-				this.showContent = true;
-			} else {
-				this.close();
-			}
-		});
+		this.updateAlwaysOpen(this.alwaysOpen);
+	}
+
+	$onChanges(changes: ISimpleCardChanges): void {
+		if (changes.alwaysOpen) {
+			this.updateAlwaysOpen(changes.alwaysOpen.currentValue);
+		}
 	}
 
 	toggleContent(): void {
@@ -127,6 +132,14 @@ export class SimpleCardController implements ISimpleCardBindings {
 			},
 		};
 	}
+
+	private updateAlwaysOpen(alwaysOpen: boolean): void {
+		if (alwaysOpen) {
+			this.showContent = true;
+		} else {
+			this.close();
+		}
+	}
 }
 
 export let simpleCard: angular.IComponentOptions = {
@@ -141,8 +154,8 @@ export let simpleCard: angular.IComponentOptions = {
 	controllerAs: 'card',
 	bindings: {
 		onOpen: '&',
-		canOpen: '=?',
-		alwaysOpen: '=?',
+		canOpen: '<?',
+		alwaysOpen: '<?',
 		childLink: '=?',
 		save: '&',
 		saveWhenInvalid: '<?',
