@@ -97,21 +97,20 @@ export class DateTimeController extends InputController {
 				return null;
 			}
 
-			let date: moment.Moment = moment(value);
+			const date: moment.Moment = moment(value);
+
+			this.setValidity(date);
 
 			this.timezone = __timezone.timezones.get(date.tz());
 			return date.format(this.getFormatOrDefault());
 		});
 
 		this.ngModel.$parsers.push((value: string): moment.Moment => {
-			return __timezone.timezoneService.buildMomentWithTimezone(value, this.timezone, this.getFormatOrDefault());
+			const newMoment: moment.Moment = __timezone.timezoneService.buildMomentWithTimezone(value, this.timezone, this.getFormatOrDefault());
+			this.setValidity(newMoment);
+			return newMoment;
 		});
 
-		this.$scope.$watch((): any => { return this.ngModel.$modelValue; }, (newValue: any): void => {
-			this.validFormat = __object.objectUtility.isNullOrEmpty(newValue)
-				? true
-				: moment(newValue).isValid();
-		});
 		this.$element.find('.show-date-picker').datetimepicker({
 			stepping: this.minuteStepping || 1,
 			format: this.getFormatOrDefault(),
@@ -143,6 +142,12 @@ export class DateTimeController extends InputController {
 			// revert to default format
 			return false;
 		}
+	}
+
+	private setValidity(date: moment.Moment): void {
+		this.validFormat = __object.objectUtility.isNullOrEmpty(date)
+			? true
+			: moment(date).isValid();
 	}
 }
 
