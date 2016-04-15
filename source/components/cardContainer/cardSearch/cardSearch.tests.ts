@@ -130,6 +130,12 @@ describe('CardSearchController', () => {
 
 			sinon.assert.calledOnce(refreshSpy);
 		});
+
+		it('should subscribe to changes on the filter', (): void => {
+			buildController();
+			filter.trigger('search');
+			expect(cardSearch.searchText).to.equal('search');
+		});
 	});
 
 	function buildController(delay?: number, filter?: any): void {
