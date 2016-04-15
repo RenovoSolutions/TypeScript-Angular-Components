@@ -1,4 +1,4 @@
-<div class="input-group field" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'datepicker-with-clear': dateTime.clearButton }">
+<div class="input-group field date-time" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'datepicker-with-clear': dateTime.clearButton }">
 	<span class="show-date-picker">
 		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" />
 		<span class="input-group-btn">
@@ -11,5 +11,5 @@
 			<i class="fa fa-times"></i>
 		</button>
 	</span>
-	<span class="error-string" ng-if="dateTime.inputValidator.error | isEmpty:false">{{dateTime.inputValidator.error}}</span>
+	<span class="error-string angular-animate" ng-if="dateTime.inputValidator.error | isEmpty:false">{{dateTime.inputValidator.error}}</span>
 </div>
