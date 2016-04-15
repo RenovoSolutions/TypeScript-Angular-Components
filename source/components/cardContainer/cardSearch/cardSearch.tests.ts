@@ -19,25 +19,39 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
+interface ISearchFilterMock {
+	subscribe: Sinon.SinonSpy;
+	trigger: Sinon.SinonSpy;
+	callback?: Sinon.SinonSpy;
+	searchText?: string;
+}
+
 interface ICardContainerMock {
 	searchFilter: any;
 	dataSource: any;
 }
 
 describe('CardSearchController', () => {
-	var scope: angular.IScope;
-	var cardSearch: CardSearchController;
-	var cardContainer: ICardContainerMock;
-	var filter: any;
-	var $timeout: angular.ITimeoutService;
-	var refreshSpy: Sinon.SinonSpy;
+	let scope: angular.IScope;
+	let cardSearch: CardSearchController;
+	let cardContainer: ICardContainerMock;
+	let filter: ISearchFilterMock;
+	let $timeout: angular.ITimeoutService;
+	let refreshSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
 		refreshSpy = sinon.spy();
 
-		filter = {};
+		filter = {
+			callback: null,
+			trigger: sinon.spy((search: string): void => {
+				filter.searchText = search;
+				filter.callback();
+			}),
+			subscribe: sinon.spy((callback: Sinon.SinonSpy): void => { filter.callback = callback; }),
+		};
 
 		cardContainer = {
 			searchFilter: filter,
@@ -46,7 +60,7 @@ describe('CardSearchController', () => {
 			},
 		};
 
-		var services: any = test.angularFixture.inject('$timeout');
+		const services: any = test.angularFixture.inject('$timeout');
 		$timeout = services.$timeout;
 	});
 
@@ -73,12 +87,10 @@ describe('CardSearchController', () => {
 		it('should set the search text on the filter', (): void => {
 			buildController();
 			cardSearch.searchText = '';
-			scope.$digest();
 
 			expect(filter.searchText).to.be.empty;
 
 			cardSearch.searchText = 'search';
-			scope.$digest();
 
 			expect(filter.searchText).to.equal('search');
 		});
@@ -86,7 +98,6 @@ describe('CardSearchController', () => {
 		it('should refresh the data source after a delay of the specified duration', (): void => {
 			buildController(10);
 			cardSearch.searchText = 'search';
-			scope.$digest();
 
 			sinon.assert.notCalled(refreshSpy);
 
@@ -102,7 +113,6 @@ describe('CardSearchController', () => {
 		it('should reset the timer if the search text changes', (): void => {
 			buildController(10);
 			cardSearch.searchText = 'search';
-			scope.$digest();
 
 			sinon.assert.notCalled(refreshSpy);
 
@@ -111,7 +121,6 @@ describe('CardSearchController', () => {
 			sinon.assert.notCalled(refreshSpy);
 
 			cardSearch.searchText = 'search 2';
-			scope.$digest();
 
 			$timeout.flush(5);
 
