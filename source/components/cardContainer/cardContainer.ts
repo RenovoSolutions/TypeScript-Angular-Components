@@ -5,6 +5,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
+import * as Rx from 'rx';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -111,6 +112,7 @@ export class CardContainerController {
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
+	numberSelectedObservable: Rx.Subject<number>;
 	selectionColumn: IColumn<any>;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
@@ -135,6 +137,7 @@ export class CardContainerController {
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
 		this.sortDirection = SortDirection;
+		this.numberSelectedObservable = new Rx.Subject();
 
 		this.syncFilters();
 
@@ -325,6 +328,7 @@ export class CardContainerController {
 		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
 			return item.viewData != null && item.viewData.selected;
 		}).length;
+		this.numberSelectedObservable.onNext(this.numberSelected);
 	}
 
 	private updateDisabledSelections: {(): void} = (): void => {
