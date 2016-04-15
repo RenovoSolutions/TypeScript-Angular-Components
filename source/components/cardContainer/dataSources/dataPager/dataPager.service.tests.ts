@@ -51,4 +51,20 @@ describe('dataPager', () => {
 		var result: number[] = dataPager.filter([1, 2, 3, 4]);
 		expect(result).to.be.empty;
 	});
+
+	it('should push paging changes to consumers', (): void => {
+		const pageNumberSpy: Sinon.SinonSpy = sinon.spy();
+		const pageSizeSpy: Sinon.SinonSpy = sinon.spy();
+
+		dataPager.pageNumberObservable.subscribe(pageNumberSpy);
+		dataPager.pageSizeObservable.subscribe(pageSizeSpy);
+
+		dataPager.pageNumber = 2;
+		dataPager.pageSize = 3;
+
+		sinon.assert.calledOnce(pageNumberSpy);
+		sinon.assert.calledWith(pageNumberSpy, 2);
+		sinon.assert.calledOnce(pageSizeSpy);
+		sinon.assert.calledWith(pageSizeSpy, 3);
+	});
 });
