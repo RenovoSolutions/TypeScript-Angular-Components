@@ -17,11 +17,17 @@ import {
 	moduleName as templateLoaderModule,
 } from '../../services/templateLoader/templateLoader.service';
 
+import { IChangeObject } from '../../types/changes';
+
 export let moduleName: string = 'rl.ui.components.genericContainer';
 export let componentName: string = 'rlGenericContainer';
 export let controllerName: string = 'GenericContainerController';
 
 import __object = services.object;
+
+export interface IGenericContainerChanges {
+	selector: IChangeObject<any>;
+}
 
 export class GenericContainerController {
 	// bindings:
@@ -34,28 +40,24 @@ export class GenericContainerController {
 	templates: { [index: string]: string };
 	default: string;
 
-	static $inject: string[] = ['$scope'
-							, '$element'
+	static $inject: string[] = ['$element'
 							, '$transclude'
 							, '$compile'
 							, __object.serviceName
 							, jqueryServiceName
 							, templateLoaderService];
-	constructor($scope: angular.IScope
-			, private $element: angular.IAugmentedJQuery
+	constructor(private $element: angular.IAugmentedJQuery
 			, private $transclude: angular.ITranscludeFunction
 			, private $compile: angular.ICompileService
 			, private object: __object.IObjectUtility
 			, private jquery: IJQueryUtility
-			, private templateLoader: ITemplateLoader) {
-		$scope.$watch((): any => { return this.selector; }, (newType: any, oldType: any): void => {
-			if (this.object.areEqual(newType, oldType)) {
-				return;
-			}
+			, private templateLoader: ITemplateLoader) {}
 
-			let template: string = this.resolveTemplate(newType);
+	$onChanges(changes: IGenericContainerChanges): void {
+		if (changes.selector) {
+			let template: string = this.resolveTemplate(changes.selector.currentValue);
 			this.swapTemplates(template);
-		});
+		}
 	}
 
 	refresh(): void {
