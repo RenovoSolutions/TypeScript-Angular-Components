@@ -26,8 +26,9 @@ interface IDataPagerMock {
 }
 
 interface IDataSourceMock {
-	onPagingChange: Sinon.SinonSpy;
 	count: number;
+	countObservable: Rx.Subject<number>;
+	setCount(count: number): void;
 	pager: IDataPagerMock;
 }
 
@@ -148,8 +149,7 @@ describe('PagerController', () => {
 		it('should set the last page to the item count divided by the page size rounded up', (): void => {
 			buildController();
 			dataPager.pageSize = 3;
-			dataSource.count = 10;
-			scope.$digest();
+			dataSource.setCount(10);
 
 			// 10 / 3 = 3.3333...
 			pager.last();
@@ -161,8 +161,7 @@ describe('PagerController', () => {
 			pager.last();
 			expect(pager.currentPage).to.equal(1);
 
-			dataSource.count = 5;
-			scope.$digest();
+			dataSource.setCount(5);
 
 			pager.last();
 			expect(pager.currentPage).to.equal(5);
@@ -185,8 +184,7 @@ describe('PagerController', () => {
 			buildController(5);
 			pager.currentPage = 5;
 
-			dataSource.count = 8;
-			scope.$digest();
+			dataSource.setCount(8);
 
 			expect(pager.currentPage).to.equal(1);
 		});
@@ -297,12 +295,16 @@ describe('PagerController', () => {
 		dataPager = {
 			pageSize: 1,
 			pageNumber: 1,
-			pageSizeObservable: new Rx.Subject<number>(),
+			pageSizeObservable: new Rx.Subject(),
 		};
 
 		dataSource = {
 			count: lastPage,
-			onPagingChange: sinon.spy(),
+			countObservable: new Rx.Subject(),
+			setCount(count: number): void {
+				dataSource.count = count;
+				dataSource.countObservable.onNext(count);
+			},
 			pager: dataPager,
 		};
 
@@ -322,7 +324,6 @@ describe('PagerController', () => {
 
 		if (lastPage != null) {
 			scope.$digest();
-			dataSource.onPagingChange.reset();
 		}
 	}
 });

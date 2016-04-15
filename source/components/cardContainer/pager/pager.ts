@@ -61,9 +61,11 @@ export class PagerController {
 			this.lastPage = 1;
 			this.dataSource = this.cardContainer.dataSource;
 
-			this.$scope.$watch((): number => { return this.dataSource.count; }, this.updatePageCount);
+			this.dataSource.countObservable.subscribe(this.updatePageCount);
 			this.pager.pageSizeObservable.subscribe(this.updatePageCount);
 		}
+
+		this.updatePageCount();
 	}
 
 	private updatePageCount: {(): void} = (): void => {
