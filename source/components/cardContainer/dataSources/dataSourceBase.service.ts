@@ -1,5 +1,7 @@
 'use strict';
 
+import * as Rx from 'rx';
+
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 import __array = services.array;
@@ -18,7 +20,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	sorts: ISort[] = [];
 	filters: filters.IFilter[] = [];
 	pager: IDataPager;
-	count: number = 0;
+	private _count: number = 0;
 
 	countFilterGroups: boolean = false;
 
@@ -26,12 +28,23 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	private _isEmpty: boolean;
 
 	observable: __observable.IObservableService;
+	countObservable: Rx.Subject<number>;
+
+	get count(): number {
+		return this._count;
+	}
+
+	set count(value: number) {
+		this._count = value;
+		this.countObservable.onNext(value);
+	}
 
 	constructor(observableFactory: __observable.IObservableServiceFactory
 			, private dataSourceProcessor: IDataSourceProcessor
 			, protected array: __array.IArrayUtility) {
 		this.observable = observableFactory.getInstance();
 		this.observable.allowableEvents = events.all;
+		this.countObservable = new Rx.Subject();
 	}
 
 	initPager(): void {

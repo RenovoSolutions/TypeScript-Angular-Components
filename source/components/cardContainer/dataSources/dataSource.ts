@@ -1,5 +1,7 @@
 'use strict';
 
+import * as Rx from 'rx';
+
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
 
@@ -14,6 +16,8 @@ export interface IDataSource<TDataType> {
 	filters: filters.IFilter[];
 	pager: IDataPager;
 	count: number;
+
+	countObservable: Rx.Subject<number>,
 
 	countFilterGroups: boolean;
 

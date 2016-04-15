@@ -64,6 +64,16 @@ describe('dataSourceBase', () => {
 													, services[__array.serviceName]);
 	});
 
+	describe('count', (): void => {
+		it('should push count changes to consumers', (): void => {
+			const countSpy: Sinon.SinonSpy = sinon.spy();
+			dataSourceBase.countObservable.subscribe(countSpy);
+			dataSourceBase.count = 3;
+			sinon.assert.calledOnce(countSpy);
+			sinon.assert.calledWith(countSpy, 3);
+		});
+	});
+
 	describe('stateFlags', (): void => {
 		it('should need refined search if the data set is empty and the raw data set is smaller than the total count', (): void => {
 			dataSourceBase.dataSet = [];
