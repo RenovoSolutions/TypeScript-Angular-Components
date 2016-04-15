@@ -42,4 +42,5 @@ export declare class DateTimeController extends InputController {
     $postLink(): void;
     private getFormatOrDefault();
     private defaultFormat(hasDate, hasTime);
+    private setValidity(date);
 }

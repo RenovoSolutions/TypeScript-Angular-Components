@@ -21,9 +21,10 @@ export declare class LongClickButtonController extends ButtonAsyncController {
     actionProgress: number;
     private actionInterval;
     static $inject: string[];
-    constructor($scope: angular.IScope, $interval: angular.IIntervalService, $timeout: angular.ITimeoutService, objectUtility: __object.IObjectUtility, promise: __promise.IPromiseUtility);
+    constructor($interval: angular.IIntervalService, $timeout: angular.ITimeoutService, objectUtility: __object.IObjectUtility, promise: __promise.IPromiseUtility);
     startAction(): void;
     stopAction(): void;
     private cleanup();
     private warn();
+    private updateProgressBarWidth();
 }
