@@ -63,8 +63,8 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 	}
 
 	prompt(options: IPromptSettings, template: string): IPromptInstance {
-		let acceptHandler: { (): void } = options.acceptHandler;
-		let cancelHandler: { (): void } = options.cancelHandler;
+		let acceptHandler: { (): void } = options.acceptHandler || function(): void { };
+		let cancelHandler: { (): void } = options.cancelHandler || function(): void { };
 		options.acceptHandler = null;
 		options.cancelHandler = null;
 
