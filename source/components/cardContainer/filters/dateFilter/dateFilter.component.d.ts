@@ -30,9 +30,9 @@ export declare class DateFilterController implements IDateFilterBindings {
     source: IDataSource<any>;
     type: string;
     private inputField;
+    selectedDate1: moment.Moment;
     static $inject: string[];
     constructor($scope: angular.IScope, dateUtility: __date.IDateUtility, $element: angular.IAugmentedJQuery);
-    selectedDate1: moment.Moment;
     selectedDate2: moment.Moment;
     refreshDataSource(): void;
     clearCount(): void;
