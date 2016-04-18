@@ -16,6 +16,10 @@ export class LazyLoadController {
 	show: boolean;
 	init: boolean = false;
 
+	$onInit(): void {
+		this.init = this.show;
+	}
+
 	$onChanges(changes: ILazyLoadChanges): void {
 		if (!this.init && changes.show && changes.show.currentValue) {
 			this.init = true;
