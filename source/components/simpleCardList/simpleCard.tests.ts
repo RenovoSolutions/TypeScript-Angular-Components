@@ -133,6 +133,7 @@ describe('SimpleCardController', () => {
 		it('should return true to indicate that another card can be opened without closing or autosaving if always open is true', (): void => {
 			buildController();
 
+			card.alwaysOpen = true;
 			card.$onChanges({
 				alwaysOpen: <any>{ currentValue: true },
 			});
