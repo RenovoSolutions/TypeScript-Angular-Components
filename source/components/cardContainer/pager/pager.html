@@ -1,4 +1,4 @@
-<nav ng-if="pager.hasPageFilter">
+<nav ng-if="::pager.pager">
 	<ul class="pagination">
 		<li title="Go to first page" ng-click="pager.first()"
 			ng-class="{ 'disabled': !pager.canGoBack }">

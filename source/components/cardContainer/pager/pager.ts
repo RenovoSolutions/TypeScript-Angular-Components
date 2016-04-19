@@ -40,10 +40,6 @@ export class PagerController {
 		this.updatePaging();
 	}
 
-	get hasPageFilter(): boolean {
-		return this.pager != null;
-	}
-
 	$onInit(): void {
 		if (this.cardContainer == null) {
 			return;

@@ -16,7 +16,6 @@ export const defaultPageSize: number = 10;
 
 export class PageSizeController {
 	pageSizes: number[];
-	hasPageFilter: boolean;
 	private cardContainer: CardContainerController;
 	private pager: dataPager.IDataPager;
 
@@ -40,13 +39,8 @@ export class PageSizeController {
 
 		this.selectedPageSize = defaultPageSize;
 		this.pageSizes = availablePageSizes;
-		this.hasPageFilter = true;
 
 		this.pager = this.cardContainer.dataSource.pager;
-
-		if (this.pager == null) {
-			this.hasPageFilter = false;
-		}
 	}
 }
 
