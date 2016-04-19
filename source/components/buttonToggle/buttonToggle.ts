@@ -6,9 +6,9 @@ import { IToggleParams } from '../checkbox/checkbox';
 
 import { buildButton, ButtonController } from '../button/button';
 
-export let moduleName: string = 'rl.ui.components.buttonToggle';
-export let componentName: string = 'rlButtonToggle';
-export let controllerName: string = 'ButtonToggleController';
+export const moduleName: string = 'rl.ui.components.buttonToggle';
+export const componentName: string = 'rlButtonToggle';
+export const controllerName: string = 'ButtonToggleController';
 
 export interface IButtonToggleBindings {
 	type: string;
@@ -46,7 +46,7 @@ export class ButtonToggleController extends ButtonController implements IButtonT
 	}
 }
 
-let buttonToggle: angular.IComponentOptions = buildButton({
+const buttonToggle: angular.IComponentOptions = buildButton({
 	require: { ngModel: '^ngModel' },
 	template: require('./buttonToggle.html'),
 	controller: controllerName,

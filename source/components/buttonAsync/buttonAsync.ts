@@ -9,10 +9,10 @@ import __promiseUtility = services.promise;
 
 import { buildButton, ButtonController } from '../button/button';
 
-export let moduleName: string = 'rl.ui.components.buttonAsync';
+export const moduleName: string = 'rl.ui.components.buttonAsync';
 
-export let componentName: string = 'rlButtonAsync';
-export let controllerName: string = 'ButtonAsyncController';
+export const componentName: string = 'rlButtonAsync';
+export const controllerName: string = 'ButtonAsyncController';
 
 export interface IButtonBindings {
 	busy: boolean;
@@ -50,7 +50,7 @@ export class ButtonAsyncController extends ButtonController {
 	}
 }
 
-let buttonAsync: angular.IComponentOptions = buildButton({
+const buttonAsync: angular.IComponentOptions = buildButton({
 	template: require('./buttonAsync.html'),
 	bindings: {
 		busy: '<?',

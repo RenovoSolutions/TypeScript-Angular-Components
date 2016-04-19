@@ -8,9 +8,9 @@ import * as angular from 'angular';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
 
-export let moduleName: string = 'rl.ui.components.checkbox';
-export let componentName: string = 'rlCheckbox';
-export let controllerName: string = 'CheckboxController';
+export const moduleName: string = 'rl.ui.components.checkbox';
+export const componentName: string = 'rlCheckbox';
+export const controllerName: string = 'CheckboxController';
 
 export interface IToggleParams {
 	value: boolean;
@@ -53,7 +53,7 @@ export class CheckboxController implements ICheckboxBindings {
 	}
 }
 
-export let checkbox: angular.IComponentOptions = {
+const checkbox: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	transclude: true,
 	template: require('./checkbox.html'),
