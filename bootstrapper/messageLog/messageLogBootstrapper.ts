@@ -28,7 +28,7 @@ class MessageLogTestController {
 				this.messages.unshift(message);
 				return this.$q.when();
 			},
-			getMessages: (startFrom, quantity): angular.IPromise<any> {
+			getMessages: (startFrom, quantity): angular.IPromise<any> => {
 				var messageList = _.chain(this.messages).drop(startFrom).take(quantity).value();
 				var result = {
 					hasMoreMessages: startFrom + quantity < this.messages.length,
