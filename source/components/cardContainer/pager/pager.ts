@@ -26,7 +26,6 @@ export class PagerController {
 	canGoForward: boolean = false;
 	pages: number[];
 	hasPageFilter: boolean = true;
-	private _currentPage: number;
 	private cardContainer: CardContainerController;
 	private pager: dataPager.IDataPager;
 	private dataSource: IDataSource<any>;
@@ -34,14 +33,12 @@ export class PagerController {
 	private visiblePageCount: number;
 
 	get currentPage(): number {
-		return this._currentPage;
+		return this.pager.pageNumber;
 	}
 
 	set currentPage(page: number) {
-		this._currentPage = page;
-
-		this.updatePaging();
 		this.pager.pageNumber = page;
+		this.updatePaging();
 	}
 
 	$onInit(): void {
