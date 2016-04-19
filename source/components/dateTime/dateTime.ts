@@ -80,7 +80,7 @@ export class DateTimeController extends InputController {
 	}
 
 	onClearClick(): void {
-		this.ngModel.$setViewValue('');
+		this.ngModel.$setViewValue(null);
 		this.onClearEvent();
 	}
 
