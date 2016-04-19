@@ -23,6 +23,13 @@ import {
 export var moduleName: string = 'rl.ui.components.input';
 export var controllerName: string = 'InputController';
 
+export interface IInputBindings {
+	validator: __validation.IValidationHandler;
+	validators: __validation.IValidationHandler[];
+	label: string;
+	name: string;
+}
+
 export interface IInputAttributes extends angular.IAttributes {
 	name: string;
 }
