@@ -13,7 +13,7 @@ See [checkbox](../checkbox/checkbox.md) for details on the check behavior option
 
 `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the button options.
+See [buttons](../button/buttons.md) for detail on the button options.
 
 ### Full Example
 A toggle button with an **ng-model**, **on-toggle**, **size**, **type**, and **disabling**.

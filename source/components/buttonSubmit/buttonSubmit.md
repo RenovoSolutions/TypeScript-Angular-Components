@@ -15,7 +15,7 @@ Shows a spinner if the expression evaluates to truthy.
 
 `right-aligned`, `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the base options.
+See [buttons](../button/buttons.md) for detail on the base options.
 
 ### Full Example
 A submit button with **saving**, **right-aligned**, **size**, **type**, and **disabling**.
