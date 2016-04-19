@@ -5,7 +5,6 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 
 import __parentChild = services.parentChildBehavior;
-import __objectUtility = services.object;
 
 import {
 	factoryName as autosaveFactoryName,
@@ -42,18 +41,14 @@ export class AutosaveController {
 							, '$attrs'
 							, '$parse'
 							, '$element'
-							, '$timeout'
 							, autosaveFactoryName
-							, __parentChild.serviceName
-							, __objectUtility.serviceName];
+							, __parentChild.serviceName];
 	constructor(private $scope: angular.IScope
 		, private $attrs: IAutosaveAttributes
 		, private $parse: angular.IParseService
 		, private $element: angular.IAugmentedJQuery
-		, private $timeout: angular.ITimeoutService
 		, private autosaveFactory: IAutosaveServiceFactory
-		, private parentChildBehavior: __parentChild.IParentChildBehaviorService
-		, private objectUtility: __objectUtility.IObjectUtility) {}
+		, private parentChildBehavior: __parentChild.IParentChildBehaviorService) {}
 
 	$onInit(): void {
 		this.keyupListener = (callback: triggers.IListener): triggers.IClearListener => {
@@ -102,7 +97,6 @@ export function autosave(): angular.IDirective {
 
 angular.module(moduleName, [
 	autosaveModuleName,
-	__objectUtility.moduleName,
 	__parentChild.moduleName,
 ])
 	.directive(directiveName, autosave)
