@@ -12,10 +12,10 @@ export interface IStringWithWatermarkBindings {
 
 const stringWithWatermark: angular.IComponentOptions = {
 	template: `
-		<span>
-			<span ng-hide="controller.string | isEmpty">{{controller.string}}</span>
-			<span ng-show="controller.string | isEmpty" class="watermark">{{controller.watermark}}</span>
-		</span>
+		<rl-generic-container selector="controller.string | isEmpty">
+			<template when-selector="true"><span class="watermark">{{controller.watermark}}</span></template>
+			<template default><span>{{controller.string}}</span></template>
+		</rl-generic-container>
 	`,
 	controllerAs: 'controller',
 	bindings: {
