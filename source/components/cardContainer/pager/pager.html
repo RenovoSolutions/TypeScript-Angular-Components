@@ -8,7 +8,7 @@
 			ng-class="{ 'disabled': !pager.canGoBack }">
 			<a><i class="fa fa-angle-left"></i></a>
 		</li>
-		<li title="Go to page {{pager.page}}" ng-click="pager.goto(page)"
+		<li title="Go to page {{page}}" ng-click="pager.goto(page)"
 			ng-repeat="page in pager.pages"
 			ng-class="{ 'active': pager.currentPage == page }">
 			<a>{{page}}</a>
