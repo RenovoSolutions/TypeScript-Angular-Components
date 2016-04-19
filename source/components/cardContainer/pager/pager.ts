@@ -25,7 +25,6 @@ export class PagerController {
 	canGoBack: boolean = false;
 	canGoForward: boolean = false;
 	pages: number[];
-	hasPageFilter: boolean = true;
 	private cardContainer: CardContainerController;
 	private pager: dataPager.IDataPager;
 	private dataSource: IDataSource<any>;
@@ -41,6 +40,10 @@ export class PagerController {
 		this.updatePaging();
 	}
 
+	get hasPageFilter(): boolean {
+		return this.pager != null;
+	}
+
 	$onInit(): void {
 		if (this.cardContainer == null) {
 			return;
@@ -48,9 +51,7 @@ export class PagerController {
 
 		this.pager = this.cardContainer.dataSource.pager;
 
-		if (this.pager == null) {
-			this.hasPageFilter = false;
-		} else {
+		if (this.pager) {
 			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;
 			this.lastPage = 1;
 			this.dataSource = this.cardContainer.dataSource;
