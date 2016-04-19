@@ -10,8 +10,6 @@ export declare class PagerController {
     canGoBack: boolean;
     canGoForward: boolean;
     pages: number[];
-    hasPageFilter: boolean;
-    private _currentPage;
     private cardContainer;
     private pager;
     private dataSource;
