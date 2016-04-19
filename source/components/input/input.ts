@@ -9,6 +9,7 @@ import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
 import __guid = services.guid;
+import __array = services.array;
 
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
@@ -36,6 +37,7 @@ export interface IInputOptions {
 export class InputController {
 	// bindings
 	validator: __validation.IValidationHandler;
+	validators: __validation.IValidationHandler[];
 	label: string;
 	name: string;
 
@@ -61,7 +63,11 @@ export class InputController {
 		let validators: __validation.IValidationHandler[] = [];
 
 		if (!_.isUndefined(this.validator)) {
-			validators.push(this.validator);
+			validators = validators.concat(__array.arrayUtility.arrayify(this.validator));
+		}
+
+		if (!_.isUndefined(this.validators)) {
+			validators = validators.concat(__array.arrayUtility.arrayify(this.validators));
 		}
 
 		if (__object.objectUtility.isNullOrEmpty(this.$attrs.name)) {
@@ -96,6 +102,7 @@ let baseInputOptions: angular.IComponentOptions = {
 	controllerAs: 'input',
 	bindings: {
 		validator: '<?',
+		validators: '<?',
 		label: '@',
 		name: '@',
 	},
