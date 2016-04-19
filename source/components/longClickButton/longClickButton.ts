@@ -3,7 +3,6 @@
 'use strict';
 
 import * as angular from 'angular';
-import * as $ from 'jquery';
 
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
@@ -84,7 +83,7 @@ export class LongClickButtonController extends ButtonAsyncController {
 
 	private updateProgressBarWidth(): void {
 		this.$timeout((): void => {
-			this.width = $('#actionButton').outerWidth();
+			this.width = angular.element('#actionButton').outerWidth();
 		});
 	}
 }
