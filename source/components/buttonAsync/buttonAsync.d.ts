@@ -2,9 +2,9 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __promiseUtility = services.promise;
 import { ButtonController } from '../button/button';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export interface IButtonBindings {
     busy: boolean;
     action(...params: any[]): angular.IPromise<any> | void;

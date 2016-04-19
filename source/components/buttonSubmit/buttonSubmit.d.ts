@@ -1,2 +1,2 @@
-export declare let moduleName: string;
-export declare let componentName: string;
+export declare const moduleName: string;
+export declare const componentName: string;

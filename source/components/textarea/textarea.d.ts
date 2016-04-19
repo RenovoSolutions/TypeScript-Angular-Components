@@ -1,2 +1,2 @@
-export declare var moduleName: string;
-export declare var componentName: string;
+export declare const moduleName: string;
+export declare const componentName: string;

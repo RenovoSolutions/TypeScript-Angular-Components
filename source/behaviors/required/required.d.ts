@@ -1,7 +1,7 @@
 import * as angular from 'angular';
-export declare let moduleName: string;
-export declare let directiveName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const directiveName: string;
+export declare const controllerName: string;
 export interface IRequiredAttributes extends angular.IAttributes {
     rlRequired: string;
 }

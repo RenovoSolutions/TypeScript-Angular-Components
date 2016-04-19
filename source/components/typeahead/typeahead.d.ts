@@ -6,9 +6,9 @@ import __arrayUtility = services.array;
 import __validation = services.validation;
 import { InputController } from '../input/input';
 import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export interface ITypeaheadBindings {
     childLink: __parentChild.IChild<ITypeaheadBehavior>;
     /**
