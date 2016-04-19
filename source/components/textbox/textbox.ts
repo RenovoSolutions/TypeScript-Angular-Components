@@ -7,10 +7,10 @@ import * as _ from 'lodash';
 
 import { buildInput, moduleName as inputModule } from '../input/input';
 
-export var moduleName: string = 'rl.ui.components.textbox';
-export var componentName: string = 'rlTextbox';
+export const moduleName: string = 'rl.ui.components.textbox';
+export const componentName: string = 'rlTextbox';
 
-let textbox: angular.IComponentOptions = buildInput({
+const textbox: angular.IComponentOptions = buildInput({
 	template: require('./textbox.html'),
 	bindings: {
 		maxlength: '<?',
