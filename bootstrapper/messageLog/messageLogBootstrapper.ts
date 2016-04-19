@@ -14,18 +14,18 @@ class MessageLogTestController {
 	constructor(private $q: angular.IQService) { }
 
 	$onInit(): void {
-		this.messages = _.times(20, this.generateMessage);
+		this.messages = _.times<IMessage>(20, this.generateMessage.bind(this));
 		this.messageService = {
-			updateMessage: function(message) {
+			updateMessage: (message): angular.IPromise<void> => {
 				console.log('update ' + message.message);
 				return this.$q.when();
 			},
-			saveMessage: function(message) {
+			saveMessage: (message): angular.IPromise<void> => {
 				console.log('save ' + message.message);
 				this.messages.unshift(message);
 				return this.$q.when();
 			},
-			getMessages: function(startFrom, quantity) {
+			getMessages: (startFrom, quantity): angular.IPromise<any> {
 				var messageList = _.chain(this.messages).drop(startFrom).take(quantity).value();
 				var result = {
 					hasMoreMessages: startFrom + quantity < this.messages.length,
@@ -33,7 +33,7 @@ class MessageLogTestController {
 				};
 				return this.$q.when(result);
 			},
-			deleteMessage: function(message) {
+			deleteMessage: (message): angular.IPromise<void> => {
 				console.log('delete ' + message.message);
 				__array.arrayUtility.remove(this.messages, message);
 				return this.$q.when();
