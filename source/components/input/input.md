@@ -12,9 +12,9 @@ See [textbox](../textbox/textbox.md) for options specific to textbox inputs. Als
 
 Two-way binds the specified value to the input value. See [ng-model](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjv_PHnouTLAhWFXh4KHScJBmsQFggcMAA&url=https%3A%2F%2Fdocs.angularjs.org%2Fapi%2Fng%2Fdirective%2FngModel&usg=AFQjCNFGX5gYo-4684URATQ4lnqF1DVXPg&bvm=bv.117868183,d.dmo).
 
-#### `validator`
+#### `validator (alias: validators)`
 
-A handler for applying custom validation logic to an input component.
+A handler for applying custom validation logic to an input component. Validators can be provided as a single or as an array of validators.
 Model:
 ```
 {
@@ -22,6 +22,11 @@ Model:
 	errorMessage: string | { (): string };
 	isActive?: boolean | { (): boolean };
 }
+```
+Examples:
+```
+validator="myValidator"
+validators="[myValidator1, myValidator2]"
 ```
 #### `label`
 
