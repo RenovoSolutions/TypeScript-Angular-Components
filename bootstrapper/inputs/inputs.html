@@ -80,5 +80,13 @@
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/required/required.md">Required input</a>:</label>
 	<rl-textbox ng-model="input.requiredText" rl-required="Input required"></rl-textbox>
 </div>
+<div>
+	<label>One validator:</label>
+	<rl-spinner ng-model="input.validate1" validator="input.greaterThanFive1"></rl-spinner>
+</div>
+<div>
+	<label>Multiple validators:</label>
+	<rl-spinner ng-model="input.validate2" validators="[input.greaterThanFive2, input.lessThanTen]"></rl-spinner>
+</div>
 <br/>
 <br/>
