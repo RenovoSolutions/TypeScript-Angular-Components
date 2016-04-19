@@ -3,6 +3,7 @@ import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
+import __date = services.date;
 
 import { IMessage, IMessageLogDataService, IUser } from '../../source/components/messageLog/messageLog.module';
 
@@ -21,6 +22,8 @@ class MessageLogTestController {
 				return this.$q.when();
 			},
 			saveMessage: (message): angular.IPromise<void> => {
+				message.createdBy = this.generateAuthor();
+				message.createdDate = __date.dateUtility.getNow();
 				console.log('save ' + message.message);
 				this.messages.unshift(message);
 				return this.$q.when();
