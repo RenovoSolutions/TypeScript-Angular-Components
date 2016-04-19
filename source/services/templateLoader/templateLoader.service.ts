@@ -42,7 +42,7 @@ class TemplateLoader implements ITemplateLoader {
 			templates.each((index: number,
 							template: Element): void => {
 				let templateElement: angular.IAugmentedJQuery = angular.element(template);
-				let templateHtml: string = templateElement.html();
+				let templateHtml: string = '<span>' + templateElement.html() + '</span>';
 
 				let triggerAttribute: string = templateElement.attr('when-selector');
 				if (!this.objectUtility.isNullOrWhitespace(triggerAttribute)) {
