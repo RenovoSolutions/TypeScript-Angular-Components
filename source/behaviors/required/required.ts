@@ -31,7 +31,6 @@ export class RequiredController {
 function required(): angular.IDirective {
 	return {
 		restrict: 'A',
-		priority: 200,
 		controller: controllerName,
 	};
 }
