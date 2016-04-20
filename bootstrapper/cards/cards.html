@@ -2,15 +2,10 @@
 <div>
 	<label>Simple card list:</label>
 	<rl-simple-card-list>
-		<rl-simple-card>
-			<rl-card-header>Simple card 1</rl-card-header>
-			<rl-card-content>Content 1</rl-card-content>
-			<rl-card-footer>Footer 1</rl-card-footer>
-		</rl-simple-card>
-		<rl-simple-card>
-			<rl-card-header>Simple card 2</rl-card-header>
-			<rl-card-content>Content 2</rl-card-content>
-			<rl-card-footer>Footer 2</rl-card-footer>
+		<rl-simple-card ng-repeat="num in [1, 2, 3, 4, 5]">
+			<rl-card-header>Simple card {{num}}</rl-card-header>
+			<rl-card-content>Content {{num}}</rl-card-content>
+			<rl-card-footer>Footer {{num}}</rl-card-footer>
 		</rl-simple-card>
 	</rl-simple-card-list>
 </div>

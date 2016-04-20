@@ -35,6 +35,8 @@ export class SimpleCardListController implements ISimpleCardListController {
 			this.alwaysOpen = value;
 			this.observable.fire('alwaysOpen', value);
 		});
+
+		$attrs.$addClass('card-list');
 	}
 
 	registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction {
