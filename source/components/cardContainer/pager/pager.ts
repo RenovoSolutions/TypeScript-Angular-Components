@@ -54,9 +54,8 @@ export class PagerController {
 
 			this.dataSource.countObservable.subscribe(this.updatePageCount);
 			this.pager.pageSizeObservable.subscribe(this.updatePageCount);
+			this.updatePageCount();
 		}
-
-		this.updatePageCount();
 	}
 
 	private updatePageCount: {(): void} = (): void => {
