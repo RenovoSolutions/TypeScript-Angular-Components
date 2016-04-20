@@ -8,5 +8,6 @@ export interface ILazyLoadChanges {
 export declare class LazyLoadController {
     show: boolean;
     init: boolean;
+    $onInit(): void;
     $onChanges(changes: ILazyLoadChanges): void;
 }

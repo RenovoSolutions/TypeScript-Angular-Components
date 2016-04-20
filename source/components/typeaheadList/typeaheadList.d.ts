@@ -2,9 +2,9 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export interface ITypeaheadListBindings {
     /**
      * Event for loading the data set or searching against the server

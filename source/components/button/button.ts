@@ -4,9 +4,9 @@
 
 import * as angular from 'angular';
 
-export let moduleName: string = 'rl.ui.components.button';
-export let componentName: string = 'rlButton';
-export let controllerName: string = 'ButtonController';
+export const moduleName: string = 'rl.ui.components.button';
+export const componentName: string = 'rlButton';
+export const controllerName: string = 'ButtonController';
 
 export interface IButtonOptions {
 	require?: any;
@@ -32,7 +32,7 @@ export class ButtonController {
 	}
 }
 
-let button: angular.IComponentOptions = {
+const button: angular.IComponentOptions = {
 	transclude: true,
 	template: require('./button.html'),
 	bindings: {
@@ -46,7 +46,7 @@ let button: angular.IComponentOptions = {
 };
 
 export function buildButton(options: IButtonOptions): angular.IComponentOptions {
-	let clone: any = _.clone(button);
+	const clone: any = _.clone(button);
 	clone.require = options.require;
 	clone.transclude = options.transclude != null ? options.transclude : clone.transclude;
 	clone.template = options.template;

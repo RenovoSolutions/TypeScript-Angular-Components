@@ -6,10 +6,10 @@ import * as angular from 'angular';
 
 import { buildButton } from '../button/button';
 
-export let moduleName: string = 'rl.ui.components.buttonSubmit';
-export let componentName: string = 'rlButtonSubmit';
+export const moduleName: string = 'rl.ui.components.buttonSubmit';
+export const componentName: string = 'rlButtonSubmit';
 
-let buttonSubmit: angular.IComponentOptions = buildButton({
+const buttonSubmit: angular.IComponentOptions = buildButton({
 		template: require('./buttonSubmit.html'),
 		bindings: {
 			rightAligned: '<?',

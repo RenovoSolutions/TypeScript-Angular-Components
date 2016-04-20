@@ -14,9 +14,9 @@ import __transform = services.transform.transform;
 import { buildInput, InputController, moduleName as inputModule } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
-export var moduleName: string = 'rl.ui.components.typeahead';
-export var componentName: string = 'rlTypeahead';
-export var controllerName: string = 'TypeaheadController';
+export const moduleName: string = 'rl.ui.components.typeahead';
+export const componentName: string = 'rlTypeahead';
+export const controllerName: string = 'TypeaheadController';
 
 export interface ITypeaheadBindings {
 	// summary: IChild object with typeahead behaviors
@@ -271,7 +271,7 @@ export class TypeaheadController extends InputController {
 	}
 }
 
-let typeahead: angular.IComponentOptions = buildInput({
+const typeahead: angular.IComponentOptions = buildInput({
 	template: require('./typeahead.html'),
 	controller: controllerName,
 	controllerAs: 'typeahead',

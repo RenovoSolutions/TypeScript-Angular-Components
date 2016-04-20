@@ -80,7 +80,7 @@ export class DateTimeController extends InputController {
 	}
 
 	onClearClick(): void {
-		this.ngModel.$setViewValue('');
+		this.ngModel.$setViewValue(null);
 		this.onClearEvent();
 	}
 
@@ -91,6 +91,7 @@ export class DateTimeController extends InputController {
 		let max: string | Date | moment.Moment
 			= this.max != null ? this.max : defaults.maxDate;
 
+		this.setValidity(this.ngModel.$viewValue);
 		this.ngModel.$formatters.push((value: moment.Moment): string => {
 			if (value == null) {
 				this.timezone = __timezone.timezoneService.currentTimezone;

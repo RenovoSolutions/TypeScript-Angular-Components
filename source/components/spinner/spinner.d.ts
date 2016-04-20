@@ -3,10 +3,10 @@ import * as angular from 'angular';
 import { InputController, IInputAttributes } from '../input/input';
 import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 import { IChangeObject } from '../../types/changes';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
-export declare let defaultMaxValue: number;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
+export declare const defaultMaxValue: number;
 export interface ISpinnerBindings {
     min: number;
     max: number;

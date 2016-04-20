@@ -1,4 +1,4 @@
-<nav ng-if="pager.hasPageFilter">
+<nav ng-if="::pager.pager">
 	<ul class="pagination">
 		<li title="Go to first page" ng-click="pager.first()"
 			ng-class="{ 'disabled': !pager.canGoBack }">
@@ -8,10 +8,10 @@
 			ng-class="{ 'disabled': !pager.canGoBack }">
 			<a><i class="fa fa-angle-left"></i></a>
 		</li>
-		<li title="Go to page {{pager.page}}" ng-click="pager.goto(page)"
+		<li title="Go to page {{::page}}" ng-click="pager.goto(page)"
 			ng-repeat="page in pager.pages"
 			ng-class="{ 'active': pager.currentPage == page }">
-			<a>{{page}}</a>
+			<a>{{::page}}</a>
 		</li>
 		<li title="Go to next page" ng-click="pager.next()"
 			ng-class="{ 'disabled': !pager.canGoForward }">

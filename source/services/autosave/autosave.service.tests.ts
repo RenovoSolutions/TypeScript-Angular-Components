@@ -76,6 +76,7 @@ describe('autosave', () => {
 		autosave = autosaveFactory.getInstance({
 			save: saveSpy,
 			contentForm: <any>baseContentForm,
+			triggers: 'none',
 		});
 
 		let close: boolean = autosave.autosave();
@@ -92,7 +93,8 @@ describe('autosave', () => {
 	it('should not save if the form is pristine', (): void => {
 		autosave = autosaveFactory.getInstance({
 			save: saveSpy,
-			contentForm: <any > baseContentForm,
+			contentForm: <any>baseContentForm,
+			triggers: 'none',
 		});
 
 		baseContentForm.$pristine = true;
@@ -110,6 +112,7 @@ describe('autosave', () => {
 		autosave = autosaveFactory.getInstance({
 			save: saveSpy,
 			contentForm: <any>baseContentForm,
+			triggers: 'none',
 		});
 
 		let close: boolean = autosave.autosave();
@@ -127,6 +130,7 @@ describe('autosave', () => {
 			save: saveSpy,
 			contentForm: <any>baseContentForm,
 			saveWhenInvalid: true,
+			triggers: 'none',
 		});
 
 		let close: boolean = autosave.autosave();
@@ -140,6 +144,7 @@ describe('autosave', () => {
 	it('should always save if no form is specified', (): void => {
 		autosave = autosaveFactory.getInstance({
 			save: saveSpy,
+			triggers: 'none',
 		});
 
 		let close: boolean = autosave.autosave();

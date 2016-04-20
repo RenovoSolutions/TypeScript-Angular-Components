@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
+import __array = services.array;
 
 import { IFormValidator } from '../../types/formValidators';
 import {
@@ -27,6 +28,7 @@ export interface IValidationGroupScope extends angular.IScope {
 export class ValidationGroupController {
 	// bindings
 	validator: __validation.IValidationHandler;
+	validators: __validation.IValidationHandler[];
 
 	groupValidator: IComponentValidator;
 
@@ -37,11 +39,12 @@ export class ValidationGroupController {
 
 	$onInit(): void {
 		this.$timeout((): void => {
+			this.validators = __array.arrayUtility.arrayify(this.validator).concat(__array.arrayUtility.arrayify(this.validators));
 			if (!_.isUndefined(this.validator)) {
 				this.groupValidator = this.componentValidatorFactory.getInstance({
 					form: this.$scope.validationGroupForm,
 					$scope: this.$scope,
-					validators: [this.validator],
+					validators: this.validators,
 				});
 			}
 		});
@@ -54,7 +57,8 @@ let validationGroup: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'group',
 	bindings: {
-		validator: '=',
+		validator: '<?',
+		validators: '<?',
 	},
 };
 

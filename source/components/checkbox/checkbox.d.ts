@@ -1,8 +1,8 @@
 import './checkbox.css';
 import * as angular from 'angular';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export interface IToggleParams {
     value: boolean;
 }
@@ -27,4 +27,3 @@ export declare class CheckboxController implements ICheckboxBindings {
     constructor(useDefaultTheme: boolean);
     $onInit(): void;
 }
-export declare let checkbox: angular.IComponentOptions;

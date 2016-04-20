@@ -10,7 +10,7 @@ import test = services.test;
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger } from './trigger';
-import { moduleName } from './triggers.service';
+import { moduleName, IListener } from './triggers.service';
 
 import * as ng from 'angular';
 import 'angular-mocks';
@@ -34,6 +34,7 @@ describe('onChangeTrigger', () => {
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
 	let $timeout: ng.ITimeoutService;
+	let emptyChangeListener: { (): IListener };
 
 	beforeEach(() => {
 		ng.mock.module(moduleName);
@@ -50,6 +51,8 @@ describe('onChangeTrigger', () => {
 			$setPristine: setPristineSpy,
 		};
 
+		emptyChangeListener = (): IListener => { return (): void => { return; }; };
+
 		let services: any = test.angularFixture.inject('$q', '$rootScope', '$timeout');
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
@@ -64,7 +67,7 @@ describe('onChangeTrigger', () => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
-			setChangeListener: null,
+			setChangeListener: emptyChangeListener,
 		});
 		trigger.setTrigger(saveSpy);
 
@@ -82,7 +85,7 @@ describe('onChangeTrigger', () => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
-			setChangeListener: null,
+			setChangeListener: emptyChangeListener,
 		});
 		trigger.setTrigger(saveSpy);
 
@@ -99,7 +102,7 @@ describe('onChangeTrigger', () => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
-			setChangeListener: null,
+			setChangeListener: emptyChangeListener,
 		});
 		trigger.setTrigger(saveSpy);
 
@@ -116,7 +119,7 @@ describe('onChangeTrigger', () => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
-			setChangeListener: null,
+			setChangeListener: emptyChangeListener,
 			saveWhenInvalid: true,
 		});
 		trigger.setTrigger(saveSpy);

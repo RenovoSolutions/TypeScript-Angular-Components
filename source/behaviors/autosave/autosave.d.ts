@@ -1,7 +1,6 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
-import __objectUtility = services.object;
 import { IAutosaveService, IAutosaveServiceFactory, triggers } from '../../services/autosave/autosave.service';
 import { IFormValidator } from '../../types/formValidators';
 export declare let moduleName: string;
@@ -22,17 +21,15 @@ export declare class AutosaveController {
     private $attrs;
     private $parse;
     private $element;
-    private $timeout;
     private autosaveFactory;
     private parentChildBehavior;
-    private objectUtility;
     autosave: IAutosaveService;
     keyupListener: {
         (callback: triggers.IListener): triggers.IClearListener;
     };
     form: IFormValidator;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: IAutosaveAttributes, $parse: angular.IParseService, $element: angular.IAugmentedJQuery, $timeout: angular.ITimeoutService, autosaveFactory: IAutosaveServiceFactory, parentChildBehavior: __parentChild.IParentChildBehaviorService, objectUtility: __objectUtility.IObjectUtility);
+    constructor($scope: angular.IScope, $attrs: IAutosaveAttributes, $parse: angular.IParseService, $element: angular.IAugmentedJQuery, autosaveFactory: IAutosaveServiceFactory, parentChildBehavior: __parentChild.IParentChildBehaviorService);
     $onInit(): void;
 }
 export declare function autosave(): angular.IDirective;

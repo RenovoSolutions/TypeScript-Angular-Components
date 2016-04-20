@@ -21,7 +21,7 @@ Angular components that can be added to an application.
 * [buttonLink](/source/components/buttonLink/buttonLink.md)
 * [buttonSubmit](/source/components/buttonSubmit/buttonSubmit.md)
 * [buttonToggle](/source/components/buttonToggle/buttonToggle.md)
-* [longClickButton]()
+* [longClickButton](/source/components/longClickButton/longClickButton.md)
 
 ### [Inputs](/source/components/input/input.md)
 

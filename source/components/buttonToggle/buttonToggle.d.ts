@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 import { IToggleParams } from '../checkbox/checkbox';
 import { ButtonController } from '../button/button';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export interface IButtonToggleBindings {
     type: string;
     size: string;

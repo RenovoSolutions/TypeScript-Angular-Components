@@ -7,15 +7,15 @@
 		<rl-radio value="3">3</rl-radio>
 	</rl-radio-group>
 	<rl-generic-container selector="misc.myValue">
-		<template when-selector="1"><span>Template 1</span></template>
-		<template when-selector="{{misc.myNum}}"><span>Template 2</span></template>
-		<template default><span>Default</span></template>
+		<template when-selector="1">Template 1</template>
+		<template when-selector="{{misc.myNum}}">Template 2</template>
+		<template default>Default</template>
 	</rl-generic-container>
 	<div><label>Using ng-switch:</label></div>
 	<div ng-switch="misc.myValue">
-		<span ng-switch-when="1"><span>span 1</span></span>
-		<span ng-switch-when="{{misc.myNum}}"><span>span 2</span></span>
-		<span ng-switch-default><span>Default</span></span>
+		<span ng-switch-when="1">span 1</span>
+		<span ng-switch-when="{{misc.myNum}}">span 2</span>
+		<span ng-switch-default>Default</span>
 	</div>
 	<div><label>Generic-container with toggled contents</label></div>
 	<rl-checkbox ng-model="misc.toggle">Toggle</rl-checkbox>
@@ -25,9 +25,7 @@
 				{{number}}
 			</div>
 		</template>
-		<template when-selector="true">
-			<div>True</div>
-		</template>
+		<template when-selector="true">True</template>
 	</rl-generic-container>
 </div>
 

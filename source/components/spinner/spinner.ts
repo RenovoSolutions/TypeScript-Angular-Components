@@ -23,11 +23,11 @@ import { directiveName as requiredDirectiveName, RequiredController } from '../.
 
 import { IChangeObject } from '../../types/changes';
 
-export let moduleName: string = 'rl.ui.components.spinner';
-export let componentName: string = 'rlSpinner';
-export let controllerName: string = 'SpinnerController';
+export const moduleName: string = 'rl.ui.components.spinner';
+export const componentName: string = 'rlSpinner';
+export const controllerName: string = 'SpinnerController';
 
-export let defaultMaxValue: number = 100000000000000000000;
+export const defaultMaxValue: number = 100000000000000000000;
 
 export interface ISpinnerBindings {
 	min: number;
@@ -73,7 +73,6 @@ export class SpinnerController extends InputController {
 	}
 
 	$postLink(): void {
-		let unbindWatches: Function;
 		this.setDisabled(this.ngDisabled);
 	}
 
@@ -102,7 +101,7 @@ export class SpinnerController extends InputController {
 		} else {
 			// Initialize the spinner after $timeout to give angular a chance initialize ngModel
 			this.$timeout((): void => {
-				let touchspin: JQuery = this.$element.find('input.spinner').TouchSpin({
+				const touchspin: JQuery = this.$element.find('input.spinner').TouchSpin({
 					min: (this.min != null ? this.min : 0),
 					max: (this.max != null ? this.max : defaultMaxValue),
 					step: this.step,
@@ -141,7 +140,7 @@ export class SpinnerController extends InputController {
 	}
 }
 
-let spinner: angular.IComponentOptions = buildInput({
+const spinner: angular.IComponentOptions = buildInput({
 	template: require('./spinner.html'),
 	controller: controllerName,
 	controllerAs: 'spinner',

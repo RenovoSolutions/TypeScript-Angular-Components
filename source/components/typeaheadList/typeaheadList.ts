@@ -13,9 +13,9 @@ import __transform = services.transform.transform;
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
 import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem';
 
-export let moduleName: string = 'rl.ui.components.typeaheadList';
-export let componentName: string = 'rlTypeaheadList';
-export let controllerName: string = 'TypeaheadListController';
+export const moduleName: string = 'rl.ui.components.typeaheadList';
+export const componentName: string = 'rlTypeaheadList';
+export const controllerName: string = 'TypeaheadListController';
 
 export interface ITypeaheadListBindings {
 	/**
@@ -160,7 +160,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 }
 
-let typeaheadList: angular.IComponentOptions = {
+const typeaheadList: angular.IComponentOptions = {
 	require: { ngModel: 'ngModel' },
 	transclude: <any>{
 		headerSlot: '?rlListHeader',

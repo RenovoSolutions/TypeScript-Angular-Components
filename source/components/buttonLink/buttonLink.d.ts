@@ -1,7 +1,7 @@
 import { ButtonController } from '../button/button';
-export declare let moduleName: string;
-export declare let componentName: string;
-export declare let controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
 export declare class ButtonLinkController extends ButtonController {
     link: string;
     newTab: boolean;

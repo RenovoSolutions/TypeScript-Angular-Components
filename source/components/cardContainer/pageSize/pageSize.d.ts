@@ -5,7 +5,6 @@ export declare const availablePageSizes: number[];
 export declare const defaultPageSize: number;
 export declare class PageSizeController {
     pageSizes: number[];
-    hasPageFilter: boolean;
     private cardContainer;
     private pager;
     selectedPageSize: number;

@@ -17,7 +17,7 @@ This option allows you to show/hide the spinner via a binding. This is useful in
 
 `right-aligned`, `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the base options.
+See [buttons](../button/buttons.md) for detail on the base options.
 
 ### Full Example
 An async button with an **action**, **size**, **type**, **right-align** and **busy**.

@@ -6,10 +6,10 @@ import * as angular from 'angular';
 
 import { buildInput, moduleName as inputModule } from '../input/input';
 
-export var moduleName: string = 'rl.ui.components.textarea';
-export var componentName: string = 'rlTextarea';
+export const moduleName: string = 'rl.ui.components.textarea';
+export const componentName: string = 'rlTextarea';
 
-let textarea: angular.IComponentOptions = buildInput({
+const textarea: angular.IComponentOptions = buildInput({
 	template: require('./textarea.html'),
 	bindings: {
 		rows: '<?',

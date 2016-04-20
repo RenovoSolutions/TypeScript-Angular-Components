@@ -6,19 +6,15 @@ import * as angular from 'angular';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
 
-export let moduleName: string = 'rl.ui.components.busy';
-export let componentName: string = 'rlBusy';
-
-interface IBusyScope extends angular.IScope {
-	useDefaultTheme: boolean;
-}
+export const moduleName: string = 'rl.ui.components.busy';
+export const componentName: string = 'rlBusy';
 
 class BusyController {
 	static $inject: string[] = [defaultThemeValueName];
 	constructor(public useDefaultTheme: boolean) { }
 }
 
-let busy: angular.IComponentOptions = {
+const busy: angular.IComponentOptions = {
 	template: `<i class="busy rl-{{::busy.size}}" ng-class="{ 'default-theme': busy.useDefaultTheme }" ng-show="busy.loading"></i>`,
 	controller: BusyController,
 	controllerAs: 'busy',

@@ -14,6 +14,7 @@ export declare class ValidationGroupController {
     private $timeout;
     private componentValidatorFactory;
     validator: __validation.IValidationHandler;
+    validators: __validation.IValidationHandler[];
     groupValidator: IComponentValidator;
     static $inject: string[];
     constructor($scope: IValidationGroupScope, $timeout: angular.ITimeoutService, componentValidatorFactory: IComponentValidatorFactory);

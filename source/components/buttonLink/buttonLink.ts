@@ -6,9 +6,9 @@ import * as angular from 'angular';
 
 import { buildButton, ButtonController } from '../button/button';
 
-export let moduleName: string = 'rl.ui.components.buttonLink';
-export let componentName: string = 'rlButtonLink';
-export let controllerName: string = 'ButtonLinkController';
+export const moduleName: string = 'rl.ui.components.buttonLink';
+export const componentName: string = 'rlButtonLink';
+export const controllerName: string = 'ButtonLinkController';
 
 export class ButtonLinkController extends ButtonController {
 	// bindings
@@ -23,7 +23,7 @@ export class ButtonLinkController extends ButtonController {
 	}
 }
 
-let buttonLink: angular.IComponentOptions = buildButton({
+const buttonLink: angular.IComponentOptions = buildButton({
 	template: require('./buttonLink.html'),
 	bindings: {
 		link: '@',
