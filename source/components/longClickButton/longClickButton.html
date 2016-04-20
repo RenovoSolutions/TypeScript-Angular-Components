@@ -1,7 +1,9 @@
 <span class="long-click-button">
 	<button id="actionButton" class="btn btn-{{button.type}} {{button.configuredSize}}" ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()" ng-disabled="button.busy || button.ngDisabled">
 		<rl-busy loading="button.busy" ng-if="button.rightAligned"></rl-busy>
-		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.buttonText}}
+		<span ng-transclude>
+			<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.buttonText}}
+		</span>
 		<rl-busy loading="button.busy" ng-if="!button.rightAligned"></rl-busy>
 	</button>
 	<rl-rating-bar ng-if="button.active" width="button.width" height="5" min="0" max="button.duration"
