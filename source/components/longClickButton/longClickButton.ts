@@ -7,6 +7,7 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __promise = services.promise;
 import __object = services.object;
+import __notification = services.notification;
 
 import { buildButton } from '../button/button';
 import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
@@ -17,6 +18,7 @@ export let controllerName: string = 'LongClickButtonController';
 
 export class LongClickButtonController extends ButtonAsyncController {
 	// bindings
+	warning: string;
 	text: string;
 	onShortClickText: string;
 	icon: string;
@@ -29,11 +31,12 @@ export class LongClickButtonController extends ButtonAsyncController {
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
 
-	static $inject: string[] = ['$interval', '$timeout', __object.serviceName, __promise.serviceName];
+	static $inject: string[] = ['$interval', '$timeout', __object.serviceName, __promise.serviceName, __notification.serviceName];
 	constructor(private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility
-			, promise: __promise.IPromiseUtility) {
+			, promise: __promise.IPromiseUtility
+			, private notification: __notification.INotificationService) {
 		super(promise);
 		this.buttonText = this.text;
 		this.updateProgressBarWidth();
@@ -75,10 +78,8 @@ export class LongClickButtonController extends ButtonAsyncController {
 	}
 
 	private warn(): void {
-		if (this.objectUtility.isNullOrEmpty(this.onShortClickText) === false) {
-			this.buttonText = this.onShortClickText;
-			this.updateProgressBarWidth();
-		}
+		const warning: string = this.warning || this.onShortClickText || 'Press and hold to complete this action';
+		this.notification.warning(warning);
 	}
 
 	private updateProgressBarWidth(): void {
@@ -92,11 +93,13 @@ let longClickButton: angular.IComponentOptions = buildButton({
 	template: require('./longClickButton.html'),
 	controller: controllerName,
 	bindings: {
-		text: '@',
-		onShortClickText: '@',
-		icon: '@',
+		warning: '@',
 		busy: '<?',
 		rightAligned: '<?',
+		// deprecated
+		onShortClickText: '@',
+		icon: '@',
+		text: '@',
 	},
 });
 
