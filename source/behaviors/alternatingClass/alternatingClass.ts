@@ -18,6 +18,7 @@ export class AlternatingClassController {
 
 	$onInit(): void {
 		let index: number = this.checkForIndex(this.$scope);
+		// return true for odd items (index is even, since it's 0 based)
 		if (!(index % 2)) {
 			this.$attrs.$addClass(this.$attrs.rlAlternatingClass);
 		}
