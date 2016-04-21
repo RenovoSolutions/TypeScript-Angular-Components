@@ -1,4 +1,4 @@
-<div class="card col-xs-12 {{card.cardType}}">
+<div class="card col-xs-12 {{card.cardType}}" rl-alternating-class="card-odd">
 	<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen, 'error': cardForm.$invalid }" ng-click="card.toggleContent()">
 		<div ng-transclude="headerSlot"></div>
 		<div class="clearfix"></div>
