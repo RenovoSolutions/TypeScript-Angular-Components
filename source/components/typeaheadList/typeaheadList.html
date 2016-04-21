@@ -2,7 +2,7 @@
 			  transform="list.transform" get-items="list.loadItems(search)" label="{{list.label}}"
 			  prefix="{{list.prefix}}" use-client-searching="list.useClientSearching" ng-disabled="list.ngDisabled"></rl-typeahead>
 <div class="table-container col-xs-12">
-	<div class="row table-header">
+	<div class="row table-header" ng-show="list.ngModel.$viewValue | isEmpty:false">
 		<div ng-transclude="headerSlot">
 			<div class="col-xs-12">Name</div>
 		</div>
