@@ -48,7 +48,7 @@ export class SelectController extends InputController {
 		} else {
 			this.ngModel.$setViewValue(value);
 		}
-		this.select(this.ngModel.$viewValue);
+		this.select({ item: this.ngModel.$viewValue });
 	}
 
 	static $inject: string[] = ['$scope', '$attrs', '$q', __object.serviceName, componentValidatorFactoryName];
