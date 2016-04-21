@@ -28,7 +28,7 @@
 		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rl-button-toggle</a>:
 	</div>
 	<div class="col-xs-11">
-		<rl-button-toggle ng-model="button.toggled" on-toggle="button.action('Toggle button')">Toggle button</rl-button-toggle>
+		<rl-button-toggle ng-model="button.toggled" on-toggle="button.action('Toggle button')" >Toggle button</rl-button-toggle>
 	</div>
 </div>
 <div class="row">
@@ -47,6 +47,16 @@
 	<div class="col-xs-11">
 		<form ng-submit="button.action('Submit button')">
 			<rl-button-submit>Submit button</rl-button-submit>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonSubmit/buttonSubmit.md">rl-button-submit with mutiple types.</a>:
+	</div>
+	<div class="col-xs-11">
+		<form ng-submit="button.action('Submit button')">
+			<rl-button-submit type="danger block">Submit button</rl-button-submit>
 		</form>
 	</div>
 </div>
