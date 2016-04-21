@@ -19,16 +19,27 @@ export interface IButtonOptions {
 
 export class ButtonController {
 	// bindings
-	action: {(): void};
+	action: { (): void };
 	type: string;
 	ngDisabled: boolean;
 	size: string;
 
 	configuredSize: string;
 
+	get types() {
+		let typesList: string[] = this.type.split(' ');
+		typesList.forEach((type: string, index: number) => {
+			if (type.indexOf('btn-') === -1) {
+				type = 'btn-' + type;
+			}
+			typesList[index] = type;
+		});
+		return typesList.join(' ');
+	}
+
 	constructor() {
 		this.type = this.type != null ? this.type : 'default';
-		this.configuredSize = this.size != null ? 'btn-' + this.size : null;
+		this.configuredSize = this.size != null && this.size !== '' ? 'btn-' + this.size : null;
 	}
 }
 
@@ -44,6 +55,7 @@ const button: angular.IComponentOptions = {
 	controller: controllerName,
 	controllerAs: 'button',
 };
+
 
 export function buildButton(options: IButtonOptions): angular.IComponentOptions {
 	const clone: any = _.clone(button);
