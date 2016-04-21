@@ -54,7 +54,7 @@ export class GenericContainerController {
 			, private templateLoader: ITemplateLoader) {}
 
 	$onChanges(changes: IGenericContainerChanges): void {
-		if (changes.selector) {
+		if (this.container && changes.selector) {
 			let template: string = this.resolveTemplate(changes.selector.currentValue);
 			this.swapTemplates(template);
 		}
