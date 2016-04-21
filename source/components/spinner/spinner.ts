@@ -125,6 +125,9 @@ export class SpinnerController extends InputController {
 					touchspin.val(newValue != null ? newValue.toString() : '');
 				});
 
+				// round the model value when it gets set
+				// this is different from parsers and formatters because we want to update the actual model value,
+				// not just display a formatted value.
 				let unbindModelWatch = this.$scope.$watch((): void => {
 					return this.ngModel.$modelValue;
 				}, (newModel: any): void => {
