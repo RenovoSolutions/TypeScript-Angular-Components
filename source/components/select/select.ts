@@ -15,9 +15,13 @@ import __transform = services.transform.transform;
 import { buildInput, InputController, moduleName as inputModule } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
-export var moduleName: string = 'rl.ui.components.select';
-export var componentName: string = 'rlSelect';
-export var controllerName: string = 'SelectController';
+export const moduleName: string = 'rl.ui.components.select';
+export const componentName: string = 'rlSelect';
+export const controllerName: string = 'SelectController';
+
+export interface ISelectParams {
+	item: any;
+}
 
 export class SelectController extends InputController {
 	// bindings
@@ -26,6 +30,7 @@ export class SelectController extends InputController {
 	selector: { (item: any): string } | string;
 	ngDisabled: boolean;
 	nullOption: string;
+	select: { (params: ISelectParams): void };
 
 	loading: boolean;
 
@@ -43,6 +48,7 @@ export class SelectController extends InputController {
 		} else {
 			this.ngModel.$setViewValue(value);
 		}
+		this.select(this.ngModel.$viewValue);
 	}
 
 	static $inject: string[] = ['$scope', '$attrs', '$q', __object.serviceName, componentValidatorFactoryName];
@@ -95,7 +101,7 @@ export class SelectController extends InputController {
 	}
 }
 
-let select: angular.IComponentOptions = buildInput({
+const select: angular.IComponentOptions = buildInput({
 	template: require('./select.html'),
 	controller: controllerName,
 	controllerAs: 'select',
@@ -105,6 +111,7 @@ let select: angular.IComponentOptions = buildInput({
 		selector: '<?',
 		ngDisabled: '<?',
 		nullOption: '@',
+		select: '&',
 	},
 });
 
