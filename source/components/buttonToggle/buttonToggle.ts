@@ -34,6 +34,17 @@ export class ButtonToggleController extends ButtonController implements IButtonT
 		this.ngModel.$setViewValue(value);
 	}
 
+	get types() {
+		let typesList: string[] = this.type.split(' ');
+		typesList.forEach((type: string, index: number) => {
+			if (type.indexOf('btn-') === -1) {
+				type = 'btn-' + type;
+			}
+			typesList[index] = type;
+		});
+		return typesList.join(' ');
+	}
+
 	constructor() {
 		super();
 	}
