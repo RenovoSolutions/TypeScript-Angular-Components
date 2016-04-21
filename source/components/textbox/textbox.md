@@ -11,6 +11,8 @@ This component extends the base [input](../input/input.md) with textbox-specific
 
 Sets the maxlength of the textbox.
 
+`ng-model`, `validator`, `validators`, `label`, `name`.
+
 See [input](../input/input.md) for detail on the base options.
 
 ### Full example

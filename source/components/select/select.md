@@ -29,4 +29,6 @@ This option will set `disabled` on the textarea if the [expression](https://docs
 
 Example: `ng-disabled="true"` will output `<textarea disabled> ... </textarea>`
 
+`ng-model`, `validator`, `validators`, `label`, `name`.
+
 See [input](../input/input.md) for detail on the base options.
