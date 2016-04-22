@@ -64,8 +64,9 @@
 
 <div>
 	<label>Typeahead list:</label>
+	<rl-checkbox ng-model="input.useSearch">Toggle search</rl-checkbox>
 	<rl-typeahead-list get-items="input.getOptions()" ng-model="input.typeaheadList" transform="'name'"
-						label="Test list">
+						label="Test list" disable-searching="!input.useSearch">
 		<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
 		<rl-list-item>
 				<div class="col-xs-10">{{$item.name}}</div>

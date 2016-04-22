@@ -14,6 +14,7 @@ class InputTestController {
 	set: ITestItem[];
 	options: ITestItem[];
 	typeaheadList: ITestItem[];
+	useSearch: boolean;
 	date: moment.Moment;
 	date2: moment.Moment;
 	validate1: number;
@@ -35,6 +36,7 @@ class InputTestController {
 		];
 
 		this.typeaheadList = [this.options[0], this.options[4]];
+		this.useSearch = true;
 
 		this.date = moment('2016-04-01T12:00:00.000-08:00').tz('US/Pacific');
 		__timezone.timezoneService.setCurrentTimezone('-08:00');
