@@ -85,9 +85,11 @@ describe('SimpleCardListController', () => {
 			};
 		};
 
+		const $attrs: any = { $addClass: sinon.spy() };
+
 		let controllerResult: test.IControllerResult<simpleCardList.ISimpleCardListController>
 			= test.angularFixture.controllerWithBindings<simpleCardList.ISimpleCardListController>(simpleCardList.controllerName, null
-				, { $parse: $parse, $attrs: {} });
+				, { $parse: $parse, $attrs: $attrs });
 
 		scope = controllerResult.scope;
 		list = controllerResult.controller;
