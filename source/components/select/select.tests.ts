@@ -33,7 +33,7 @@ describe('SelectController', () => {
 		angular.mock.module(moduleName);
 
 		ngModel = {
-			$setViewValue: sinon.spy(),
+			$setViewValue: sinon.spy((value: any) => ngModel.$viewValue = value),
 		};
 
 		selectSpy = sinon.spy();
@@ -55,6 +55,16 @@ describe('SelectController', () => {
 
 		sinon.assert.calledOnce(ngModel.$setViewValue);
 		sinon.assert.calledWith(ngModel.$setViewValue, option);
+	});
+
+	it('should fire a selected event when the selection is changed', (): void => {
+		buildController();
+		let option: ITestOption = { value: 2 };
+
+		dropdown.selection = option;
+
+		sinon.assert.calledOnce(selectSpy);
+		sinon.assert.calledWith(selectSpy, { item: option });
 	});
 
 	it('should get the model view value', (): void => {
