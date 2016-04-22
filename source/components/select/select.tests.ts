@@ -27,6 +27,7 @@ describe('SelectController', () => {
 	let dropdown: SelectController;
 	let ngModel: INgModelMock;
 	let options: ITestOption[];
+	let selectSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -34,6 +35,8 @@ describe('SelectController', () => {
 		ngModel = {
 			$setViewValue: sinon.spy(),
 		};
+
+		selectSpy = sinon.spy();
 
 		options = [
 			{ value: 1 },
@@ -140,6 +143,7 @@ describe('SelectController', () => {
 		scope = controllerResult.scope;
 		dropdown = controllerResult.controller;
 		dropdown.ngModel = <any>ngModel;
+		dropdown.select = selectSpy;
 		dropdown.$onInit();
 	}
 });
