@@ -196,7 +196,6 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 
 	private filter(list: any[], search: string): any[] {
-		search = search || '';
 		const filteredList: any[] = _.filter(list, (item: any): boolean => {
 			return !_.find(this.ngModel.$viewValue, item);
 		});
