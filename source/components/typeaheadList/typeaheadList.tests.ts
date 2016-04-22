@@ -94,6 +94,20 @@ describe('TypeaheadListController', () => {
 
 			expect(typeaheadList.cachedItems).to.not.be.empty;
 		});
+
+		it('should load the items on init if searching is disabled', (): void => {
+			buildControllerWithoutInit();
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+			typeaheadList.getItems = getItemsSpy;
+			typeaheadList.disableSearching = true;
+			typeaheadList.$onInit();
+
+			sinon.assert.calledOnce(getItemsSpy);
+
+			scope.$digest();
+
+			expect(typeaheadList.cachedItems).to.not.be.empty;
+		});
 	});
 
 	describe('add', (): void => {
@@ -167,7 +181,7 @@ describe('TypeaheadListController', () => {
 		});
 	});
 
-	function buildController(list?: ITestObject[]): void {
+	function buildControllerWithoutInit(list?: ITestObject[]): void {
 		let ngModel: any = {
 			$viewValue: list,
 			$setViewValue: (value: any): void => { ngModel.$viewValue = value; },
@@ -193,6 +207,10 @@ describe('TypeaheadListController', () => {
 			return $q.when(items);
 		});
 		typeaheadList.useClientSearching = true;
+	}
+
+	function buildController(list?: ITestObject[]): void {
+		buildControllerWithoutInit(list);
 		typeaheadList.$onInit();
 	}
 });

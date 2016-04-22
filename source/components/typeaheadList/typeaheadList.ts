@@ -144,13 +144,14 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 			add: this.addItem.bind(this),
 			remove: this.removeItem.bind(this),
 		});
+		if (this.disableSearching) {
+			this.loadCachedItems();
+		}
 	}
 
 	$onChanges(changes: ITypeaheadListChanges): void {
 		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems) {
-			this.searchItems().then((items: any[]): void => {
-				this.cachedItems = items;
-			});
+			this.loadCachedItems();
 		}
 	}
 
@@ -206,6 +207,12 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		} else {
 			return filteredList;
 		}
+	}
+
+	private loadCachedItems(): void {
+		this.searchItems().then((items: any[]): void => {
+			this.cachedItems = items;
+		});
 	}
 }
 
