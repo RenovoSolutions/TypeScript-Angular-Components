@@ -48,7 +48,6 @@ describe('smartDataSource', () => {
 	let dataSourceProcessor: IDataSourceProcessorMock;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
-	let mock: test.mock.IMock;
 	let appliedFilter: ITestFilter;
 	let unappliedFilter: ITestFilter;
 	let source: SmartDataSource<number>;
@@ -56,13 +55,13 @@ describe('smartDataSource', () => {
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.mock.moduleName);
+		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
+
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, test.mock.serviceName, '$rootScope');
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
 		smartDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
-		mock = dependencies[test.mock.serviceName];
 		$rootScope = dependencies.$rootScope;
 
 		appliedFilter = <any>{
@@ -96,13 +95,13 @@ describe('smartDataSource', () => {
 
 		data = [1, 2];
 
-		dataService = mock.service();
+		dataService = {
+			get: test.mock.promise({ dataSet: data, count: 2 }),
+		};
 
 		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
 		dataSourceProcessor.sort = sinon.spy();
 		dataSourceProcessor.page = sinon.spy();
-
-		mock.promise(dataService, 'get', { dataSet: data, count: 2 });
 
 		source = <any>smartDataSourceFactory.getInstance<number>(<any>dataService.get);
 		source.filters = <any>[appliedFilter, unappliedFilter];
@@ -128,10 +127,10 @@ describe('smartDataSource', () => {
 		});
 
 		data = [1, 2, 3, 4];
-		mock.promise(dataService, 'get', { dataSet: data, count: serverCount });
+		dataService.get = test.mock.promise({ dataSet: data, count: serverCount });
 		source.getDataSet = dataService.get;
 		source.reload();
-		mock.flush(dataService);
+		test.mock.flushAll(dataService);
 
 		expect(source.count).to.equal(serverCount);
 	});
@@ -139,10 +138,10 @@ describe('smartDataSource', () => {
 	describe('throttled', (): void => {
 		beforeEach((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			mock.promise(dataService, 'get', { dataSet: data, count: 20 });
+			dataService.get = test.mock.promise({ dataSet: data, count: 20 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 			dataService.get.reset();
 
 			expect(source.throttled).to.be.true;
@@ -168,10 +167,10 @@ describe('smartDataSource', () => {
 	describe('not throttled', (): void => {
 		beforeEach((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			mock.promise(dataService, 'get', { dataSet: data, count: 10 });
+			dataService.get = test.mock.promise({ dataSet: data, count: 10 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 			dataService.get.reset();
 			dataSourceProcessor.process.reset();
 

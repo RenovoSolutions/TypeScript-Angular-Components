@@ -40,19 +40,18 @@ describe('serverSideDataSource', () => {
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
-	let mock: test.mock.IMock;
 	let filter: ITestFilter;
 	let source: IServerSideDataSource<number>;
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.mock.moduleName);
+		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
+
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, test.mock.serviceName, '$rootScope');
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
 		serverSideDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
-		mock = dependencies[test.mock.serviceName];
 		$rootScope = dependencies.$rootScope;
 
 		filter = <any>{
@@ -62,11 +61,11 @@ describe('serverSideDataSource', () => {
 			value: 1,
 		};
 
-		dataService = mock.service();
+		dataService = {
+			get: test.mock.promise({ dataSet: [1, 2], count: 2 }),
+		};
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
-
-		mock.promise(dataService, 'get', { dataSet: [1, 2], count: 2 });
 
 		source = <any>serverSideDataSourceFactory.getInstance<number>(<any>dataService.get);
 		source.filters = <any>[filter];
@@ -115,8 +114,7 @@ describe('serverSideDataSource', () => {
 
 	it('should set the data set and count with the response from the server', (): void => {
 		source.refresh();
-		mock.flush(dataService);
-		$rootScope.$digest();
+		test.mock.flushAll(dataService);
 
 		expect(source.dataSet[0]).to.equal(1);
 		expect(source.dataSet[1]).to.equal(2);
