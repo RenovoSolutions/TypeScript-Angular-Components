@@ -30,7 +30,9 @@ export class ButtonController {
 		let typesList: string[] = this.type.split(' ');
 		typesList.forEach((type: string, index: number) => {
 			//the for each for places that used btn-block for example in the type attribute do not break
-			type = 'btn-' + type;
+			if (type.indexOf('btn-') === -1) {
+				type = 'btn-' + type;
+			}
 			typesList[index] = type;
 		});
 		return typesList.join(' ');
