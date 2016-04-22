@@ -54,7 +54,7 @@ describe('TypeaheadListController', () => {
 			let selections: ITestObject[] = [items[0], items[2]];
 			buildController(selections);
 
-			typeaheadList.loadItems().then((data: ITestObject[]): void => {
+			typeaheadList.searchItems().then((data: ITestObject[]): void => {
 				expect(data).to.have.length(3);
 				expect(data[0].id).to.equal(2);
 				expect(data[1].id).to.equal(4);
@@ -63,17 +63,33 @@ describe('TypeaheadListController', () => {
 			});
 			scope.$digest();
 		});
+
+		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
+			, (): void => {
+				buildController();
+
+				let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+				typeaheadList.getItems = getItemsSpy;
+				typeaheadList.searchItems('2');
+				scope.$digest();
+
+				getItemsSpy.reset();
+
+				typeaheadList.searchItems('2');
+
+				scope.$digest();
+
+				sinon.assert.notCalled(getItemsSpy);
+			});
 	});
 
 	describe('add', (): void => {
 		it('should remove the item from the typeahead and add it to the list', (): void => {
 			let list: ITestObject[] = [];
 			buildController(list);
-			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.searchItems('2');
+			scope.$digest();
 			let addEventSpy: Sinon.SinonSpy = sinon.spy();
-			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
-				remove: removeSpy,
-			});
 			typeaheadList.add = addEventSpy;
 
 			typeaheadList.addItem(items[0]);
@@ -81,32 +97,30 @@ describe('TypeaheadListController', () => {
 
 			expect(list).to.have.length(1);
 			expect(list[0].id).to.equal(1);
-			sinon.assert.calledOnce(removeSpy);
-			expect(removeSpy.firstCall.args[0].id).to.equal(1);
+			expect(typeaheadList.cachedItems).to.have.length(4);
 			sinon.assert.calledOnce(addEventSpy);
 			expect(addEventSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(<any>typeaheadList.ngModel.$setDirty);
 		});
 	});
 
 	describe('remove', (): void => {
-		it('should add the item back to the typeahead and remove it from the list', (): void => {
+		it('should add the item back to the cached items and remove it from the list', (): void => {
 			let list: ITestObject[] = [items[0]];
 			buildController(list);
-			let addSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.searchItems('2');
+			scope.$digest();
 			let removeEventSpy: Sinon.SinonSpy = sinon.spy();
-			parentChild.registerChildBehavior(typeaheadList.typeaheadLink, <any>{
-				add: addSpy,
-			});
 			typeaheadList.remove = removeEventSpy;
 
 			typeaheadList.removeItem(list[0]);
 			scope.$digest();
 
 			expect(list).to.be.empty;
-			sinon.assert.calledOnce(addSpy);
-			expect(addSpy.firstCall.args[0].id).to.equal(1);
+			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(removeEventSpy);
 			expect(removeEventSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(<any>typeaheadList.ngModel.$setDirty);
 		});
 	});
 
@@ -144,6 +158,7 @@ describe('TypeaheadListController', () => {
 		let ngModel: any = {
 			$viewValue: list,
 			$setViewValue: (value: any): void => { ngModel.$viewValue = value; },
+			$setDirty: sinon.spy(),
 		};
 
 		let bindings: any = {
@@ -158,13 +173,13 @@ describe('TypeaheadListController', () => {
 
 		scope = controllerResult.scope;
 		typeaheadList = controllerResult.controller;
-		typeaheadList.typeaheadLink = <any>{};
 		(<any>typeaheadList).$transclude = {
 			isSlotFilled(): boolean { return true; },
 		};
 		typeaheadList.getItems = sinon.spy((): angular.IPromise<ITestObject[]> => {
 			return $q.when(items);
 		});
+		typeaheadList.useClientSearching = true;
 		typeaheadList.$onInit();
 	}
 });
