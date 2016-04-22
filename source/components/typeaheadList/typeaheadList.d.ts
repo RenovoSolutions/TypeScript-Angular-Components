@@ -1,7 +1,8 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
-import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
+import { IGetItemsParams } from '../typeahead/typeahead';
+import { IChangeObject } from '../../types/changes';
 export declare const moduleName: string;
 export declare const componentName: string;
 export declare const controllerName: string;
@@ -61,6 +62,10 @@ export interface ITypeaheadListBindings {
      * Data that is shared between all list items
      */
     listData: any;
+    /**
+     * Turn off searching capabilities and use a simple dropdown for selection
+     */
+    disableSearching: boolean;
 }
 export interface ITypeaheadListScope extends angular.IScope {
     $remove(item: any): void;
@@ -76,6 +81,9 @@ export interface IAddParams {
 }
 export interface IRemoveParams {
     item: any;
+}
+export interface ITypeaheadListChanges {
+    disableSearching: IChangeObject<boolean>;
 }
 export declare class TypeaheadListController implements ITypeaheadListBindings {
     private $scope;
@@ -101,12 +109,18 @@ export declare class TypeaheadListController implements ITypeaheadListBindings {
     itemAs: string;
     childLink: __parentChild.IChild<ITypeaheadListBehavior>;
     listData: any;
-    typeaheadLink: __parentChild.IChild<ITypeaheadBehavior>;
+    disableSearching: boolean;
     ngModel: angular.INgModelController;
+    cachedItems: any[];
+    model: any;
     static $inject: string[];
     constructor($scope: ITypeaheadListScope, $transclude: angular.ITranscludeFunction, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService);
     $onInit(): void;
-    loadItems(search?: string): angular.IPromise<any>;
+    $onChanges(changes: ITypeaheadListChanges): void;
+    loadItems(search?: string): angular.IPromise<any[]>;
+    searchItems(search?: string): angular.IPromise<any>;
     addItem(item: any): angular.IPromise<any>;
     removeItem(item: any): angular.IPromise<void>;
+    private filter(list, search);
+    private loadCachedItems();
 }

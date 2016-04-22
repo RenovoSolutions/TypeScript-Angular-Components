@@ -5,9 +5,12 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import { InputController } from '../input/input';
 import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
-export declare var moduleName: string;
-export declare var componentName: string;
-export declare var controllerName: string;
+export declare const moduleName: string;
+export declare const componentName: string;
+export declare const controllerName: string;
+export interface ISelectParams {
+    item: any;
+}
 export declare class SelectController extends InputController {
     private $q;
     private object;
@@ -20,6 +23,9 @@ export declare class SelectController extends InputController {
     } | string;
     ngDisabled: boolean;
     nullOption: string;
+    select: {
+        (params: ISelectParams): void;
+    };
     loading: boolean;
     private _nullOption;
     selection: any;

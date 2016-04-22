@@ -18,6 +18,7 @@ export declare class ButtonController {
     ngDisabled: boolean;
     size: string;
     configuredSize: string;
+    types: string;
     constructor();
 }
 export declare function buildButton(options: IButtonOptions): angular.IComponentOptions;
