@@ -14,6 +14,8 @@ import __search = services.search;
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
 import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem';
 
+import { IChangeObject } from '../../types/changes';
+
 export const moduleName: string = 'rl.ui.components.typeaheadList';
 export const componentName: string = 'rlTypeaheadList';
 export const controllerName: string = 'TypeaheadListController';
@@ -76,6 +78,11 @@ export interface ITypeaheadListBindings {
 	 * Data that is shared between all list items
 	 */
 	listData: any;
+
+	/**
+	 * Turn off searching capabilities and use a simple dropdown for selection
+	 */
+	disableSearching: boolean;
 }
 
 export interface ITypeaheadListScope extends angular.IScope {
@@ -97,6 +104,10 @@ export interface IRemoveParams {
 	item: any;
 }
 
+export interface ITypeaheadListChanges {
+	disableSearching: IChangeObject<boolean>;
+}
+
 export class TypeaheadListController implements ITypeaheadListBindings {
 	// bindings
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
@@ -110,9 +121,12 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	itemAs: string;
 	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
 	listData: any;
+	disableSearching: boolean;
 
 	ngModel: angular.INgModelController;
 	cachedItems: any[];
+	// current selection. Should always be null
+	model: any;
 
 	static $inject: string[] = ['$scope', '$transclude', '$q', __parentChild.serviceName];
 	constructor(private $scope: ITypeaheadListScope
@@ -132,15 +146,23 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 		});
 	}
 
+	$onChanges(changes: ITypeaheadListChanges): void {
+		if (changes.disableSearching && changes.disableSearching.currentValue) {
+			this.searchItems().then((items: any[]): void => {
+				this.cachedItems = items;
+			});
+		}
+	}
+
 	loadItems(search?: string): angular.IPromise<any[]> {
-		if (!this.useClientSearching) {
-			return this.getItems({ search: search });
-		} else {
+		if (this.useClientSearching || this.disableSearching) {
 			if (this.cachedItems != null) {
 				return this.$q.when(this.cachedItems);
 			} else {
 				return this.$q.when(this.getItems());
 			}
+		} else {
+			return this.getItems({ search: search });
 		}
 	}
 
@@ -158,6 +180,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 			if (this.cachedItems != null) {
 				__array.arrayUtility.remove(this.cachedItems, item);
 			}
+			this.model = null;
 			return newItem;
 		});
 	}
@@ -208,6 +231,7 @@ const typeaheadList: angular.IComponentOptions = {
         itemAs: '@',
 		childLink: '=?',
 		listData: '<?',
+		disableSearching: '<?',
 	},
 };
 
