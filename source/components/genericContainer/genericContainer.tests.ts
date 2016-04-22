@@ -41,6 +41,7 @@ describe('GenericContainerController', () => {
 
 		controller = controllerResult.controller;
 		scope = controllerResult.scope;
+		controller.container = <any>{};
 	}
 
 	it('should set the default template if no matching template is found', (): void => {
