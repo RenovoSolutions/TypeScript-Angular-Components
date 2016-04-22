@@ -88,7 +88,7 @@
     "ng-wig": "~2.3.4",
     "rx": "~4.0.8",
     "signature_pad": "~1.5.3",
-    "typescript-angular-utilities": "~2.10.6",
+    "typescript-angular-utilities": "~2.11.2",
     "ui-select": "~0.14.7"
   },
   "license": "GPL-3.0"
