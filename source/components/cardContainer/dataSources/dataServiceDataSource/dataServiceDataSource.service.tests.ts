@@ -34,38 +34,35 @@ describe('dataServiceDataSource', () => {
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
-	let mock: test.mock.IMock;
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
 
 		let services: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName);
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
 		dataServiceDataSourceFactory = services[factoryName];
 		dataSourceProcessor = services[__dataSourceProcessor.processorServiceName];
 		$rootScope = services.$rootScope;
-		mock = services[test.mock.serviceName];
 
-		dataService = mock.service();
+		dataService = <any> {};
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 	});
 
 	describe('loading', (): void => {
 		it('should call data processor to process the data when refreshing', (): void => {
-			mock.promise(dataService, 'get', [1, 2, 3]);
+			dataService.get = test.mock.promise([1, 2, 3]);
 
 			dataServiceDataSourceFactory.getInstance<number>(dataService.get);
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 			$rootScope.$digest();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		});
 
 		it('should make an initial request to the server for data', (): void => {
-			mock.promise(dataService, 'get', [1, 2]);
+			dataService.get = test.mock.promise([1, 2]);
 
 			let source: IAsyncDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
 
@@ -74,7 +71,7 @@ describe('dataServiceDataSource', () => {
 			let changedSpy: Sinon.SinonSpy = sinon.spy();
 			source.watch(changedSpy, 'changed');
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 			$rootScope.$digest();
 
 			expect(source.dataSet).to.have.length(2);

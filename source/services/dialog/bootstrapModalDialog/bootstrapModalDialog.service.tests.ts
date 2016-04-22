@@ -22,15 +22,14 @@ interface IModalMock {
 describe('bootstrapModalDialog', () => {
 	let bootstrapModalDialog: BootstrapModalDialogService;
 	let $uibModal: IModalMock;
-	let mock: test.mock.IMock;
 	let $rootScope: angular.IRootScopeService;
 	let $controller: angular.IControllerService;
 	let dismissSpy: Sinon.SinonSpy;
 	let closeSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
+		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
-		angular.mock.module(test.mock.moduleName);
 
 		closeSpy = sinon.spy();
 		dismissSpy = sinon.spy();
@@ -48,9 +47,8 @@ describe('bootstrapModalDialog', () => {
 			$uibModal: $uibModal,
 		});
 
-		let services: any = test.angularFixture.inject(serviceName, test.mock.serviceName, '$rootScope', '$controller');
+		let services: any = test.angularFixture.inject(serviceName, '$rootScope', '$controller');
 		bootstrapModalDialog = services[serviceName];
-		mock = services[test.mock.serviceName];
 		$rootScope = services.$rootScope;
 		$controller = services.$controller;
 	});
@@ -82,9 +80,10 @@ describe('bootstrapModalDialog', () => {
 	});
 
 	it('should resolve promises and provide the results as locals on the dialog controller', (): void => {
-		let dataService: any = mock.service();
 		let data: any = { prop: 5 };
-		mock.promise(dataService, 'get', data);
+		let dataService: any = {
+			get: test.mock.promise(data),
+		};
 
 		let dataResult: any;
 
@@ -105,7 +104,10 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled($uibModal.open);
 		expect(dataResult).to.not.exist;
 
-		mock.flush(dataService);
+		$rootScope.$apply(() => {
+			test.mock.flushAll(dataService);
+		});
+		$rootScope.$apply();
 
 		sinon.assert.calledOnce($uibModal.open);
 
@@ -115,8 +117,9 @@ describe('bootstrapModalDialog', () => {
 	});
 
 	it('should not open the dialog if resolve fails', (): void => {
-		let dataService: any = mock.service();
-		mock.promise(dataService, 'get', {}, false);
+		let dataService: any = {
+			get: test.mock.rejectedPromise(new Error()),
+		};
 
 		let options: any = {
 			resolve: {
@@ -126,13 +129,19 @@ describe('bootstrapModalDialog', () => {
 
 		bootstrapModalDialog.open(options);
 
-		mock.flush(dataService);
+		test.mock.flushAll(dataService);
 
 		sinon.assert.notCalled($uibModal.open);
 	});
 
 	it('should return an object with functions to dismiss and close the dialog once its open', (): void => {
-		let dialogInstance: IDialogInstance = bootstrapModalDialog.open(null, null);
+		const options: any = {
+			resolve: {
+				data: test.mock.promise<void>(),
+			},
+		};
+
+		let dialogInstance: IDialogInstance = bootstrapModalDialog.open(options);
 
 		dialogInstance.close();
 		dialogInstance.dismiss();
@@ -140,7 +149,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled(closeSpy);
 		sinon.assert.notCalled(dismissSpy);
 
-		$rootScope.$digest();
+		options.resolve.data.flush();
 
 		dialogInstance.close();
 		dialogInstance.dismiss();

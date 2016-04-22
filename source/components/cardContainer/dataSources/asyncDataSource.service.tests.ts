@@ -33,7 +33,6 @@ describe('asyncDataSource', () => {
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
-	let mock: test.mock.IMock;
 	let source: AsyncDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
@@ -41,25 +40,24 @@ describe('asyncDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(__observable.moduleName);
 		angular.mock.module(__array.moduleName);
 		angular.mock.module(__synchronizedRequests.moduleName);
 		angular.mock.module(moduleName);
+		angular.mock.module(test.moduleName);
 
 		var services: any = test.angularFixture.inject('$rootScope'
 													, '$q'
-													, test.mock.serviceName
 													, __observable.factoryName
 													, __array.serviceName
 													, __synchronizedRequests.factoryName);
+
 		$rootScope = services.$rootScope;
-		mock = services[test.mock.serviceName];
 		$q = services.$q;
 
-		dataService = mock.service();
-
-		mock.promise(dataService, 'get', [1, 2]);
+		dataService = {
+			get: test.mock.promise([1, 2]),
+		};
 
 		source = new AsyncDataSource<number>(dataService.get
 											, services[__observable.factoryName]
@@ -81,14 +79,14 @@ describe('asyncDataSource', () => {
 
 		sinon.assert.calledOnce(dataService.get);
 
-		mock.flush(dataService);
+		test.mock.flushAll(dataService);
 
 		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
 	});
 
 	it('should fire changed, reloaded, and redrawing events when the reload completeds', (): void => {
 		source.reload();
-		mock.flush(dataService);
+		test.mock.flushAll(dataService);
 		sinon.assert.calledOnce(changedSpy);
 		sinon.assert.calledOnce(reloadedSpy);
 		sinon.assert.calledOnce(redrawingSpy);

@@ -38,7 +38,6 @@ describe('clientServerDataSource', () => {
 	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let $rootScope: angular.IRootScopeService;
-	let mock: test.mock.IMock;
 	let searchFilter: genericSearchFilter.IGenericSearchFilter;
 	let source: IClientServerDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
@@ -48,22 +47,21 @@ describe('clientServerDataSource', () => {
 	beforeEach(() => {
 		angular.mock.module(genericSearchFilter.moduleName);
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.mock.moduleName);
 		angular.mock.module(moduleName);
+		angular.mock.module(test.moduleName);
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', test.mock.serviceName, genericSearchFilter.factoryName, '$q');
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', genericSearchFilter.factoryName, '$q');
 		clientServerDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		$rootScope = dependencies.$rootScope;
-		mock = dependencies[test.mock.serviceName];
 		$q = dependencies.$q;
 		searchFilter = dependencies[genericSearchFilter.factoryName].getInstance();
 
-		dataService = mock.service();
+		dataService = {
+			get: test.mock.promise([1, 2]),
+		};
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
-
-		mock.promise(dataService, 'get', [1, 2]);
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
@@ -80,7 +78,7 @@ describe('clientServerDataSource', () => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		});
@@ -91,7 +89,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);
@@ -106,7 +104,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);
@@ -185,7 +183,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);
@@ -200,7 +198,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
 
-			mock.flush(dataService);
+			test.mock.flushAll(dataService);
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);
