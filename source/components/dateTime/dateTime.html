@@ -1,6 +1,7 @@
 <div class="input-group field date-time" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'datepicker-with-clear': dateTime.clearButton }">
 	<span class="show-date-picker">
-		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" />
+		<label class="label-slide angular-animate" ng-show="dateTime.ngModel.$viewValue | isEmpty:false && dateTime.label">{{dateTime.label}}</label>
+		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" placeholder="{{dateTime.label}}"/>
 		<span class="input-group-btn">
 			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
 		</span>

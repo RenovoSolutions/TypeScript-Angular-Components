@@ -1,5 +1,5 @@
 <div class="field" ng-class="{ 'has-error': select.ngModel.$invalid }">
-	<label ng-show="select.selection" class="show-hide angular-animate">
+	<label ng-show="select.selection" class="label-slide angular-animate">
 		{{::select.label}}
 	</label>
 	<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
@@ -8,6 +8,6 @@
 			{{select.getDisplayName(option)}}
 		</ui-select-choices>
 	</ui-select>
-	<span class="error-string" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
+	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
 	<rl-busy loading="select.loading"></rl-busy>
 </div>
