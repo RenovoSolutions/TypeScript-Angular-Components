@@ -49,6 +49,9 @@
     },
     "moment-timezone/moment-timezone.d.ts": {
       "commit": "513510a89acc648422c9abb047265116198f99ee"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     }
   }
 }

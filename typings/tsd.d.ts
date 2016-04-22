@@ -11,3 +11,4 @@
 /// <reference path="angularjs/angular-mocks.d.ts" />
 /// <reference path="moment-timezone/moment-timezone.d.ts" />
 /// <reference path="chai/chai.d.ts" />
+/// <reference path="bluebird/bluebird.d.ts" />
