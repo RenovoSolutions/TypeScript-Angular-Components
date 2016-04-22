@@ -35,6 +35,10 @@ If set to true, shows a button for clearing the date-time value.
 
 This expression will be triggered whenever the clear button is clicked, if clear is enabled.
 
+`ng-model`, `validator`, `validators`, `label`, `name`.
+
+See [input](../input/input.md) for detail on the base options.
+
 ### Full example
 A date picker with **clear-button**.
 ```

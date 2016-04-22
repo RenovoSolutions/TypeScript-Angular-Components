@@ -1,3 +1,5 @@
+import * as angular from 'angular';
+
 import { moduleName as componentsModule } from '../source/ui.module';
 
 const inputsTemplate = require('./inputs/inputs.html');
