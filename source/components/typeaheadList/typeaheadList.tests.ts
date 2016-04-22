@@ -77,10 +77,23 @@ describe('TypeaheadListController', () => {
 
 				typeaheadList.searchItems('2');
 
-				scope.$digest();
-
 				sinon.assert.notCalled(getItemsSpy);
 			});
+
+		it('should load the items when searching is disabled', (): void => {
+			buildController();
+			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+			typeaheadList.getItems = getItemsSpy;
+			typeaheadList.$onChanges({
+				disableSearching: <any>{ currentValue: true },
+			});
+
+			sinon.assert.calledOnce(getItemsSpy);
+
+			scope.$digest();
+
+			expect(typeaheadList.cachedItems).to.not.be.empty;
+		});
 	});
 
 	describe('add', (): void => {

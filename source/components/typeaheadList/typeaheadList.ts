@@ -147,7 +147,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	}
 
 	$onChanges(changes: ITypeaheadListChanges): void {
-		if (changes.disableSearching && changes.disableSearching.currentValue) {
+		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems) {
 			this.searchItems().then((items: any[]): void => {
 				this.cachedItems = items;
 			});
