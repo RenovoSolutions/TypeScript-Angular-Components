@@ -6,10 +6,11 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
 import __array = services.array;
 import __transform = services.transform.transform;
 import __search = services.search;
+
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
 
 import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
 import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem';
@@ -72,7 +73,7 @@ export interface ITypeaheadListBindings {
 	/**
 	 * Link for telling the typeahead list to add or remove an item from outside
 	 */
-	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+	childLink: IChild<ITypeaheadListBehavior>;
 
 	/**
 	 * Data that is shared between all list items
@@ -119,7 +120,7 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	useClientSearching: boolean;
 	ngDisabled: boolean;
 	itemAs: string;
-	childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+	childLink: IChild<ITypeaheadListBehavior>;
 	listData: any;
 	disableSearching: boolean;
 
@@ -128,11 +129,11 @@ export class TypeaheadListController implements ITypeaheadListBindings {
 	// current selection. Should always be null
 	model: any;
 
-	static $inject: string[] = ['$scope', '$transclude', '$q', __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$transclude', '$q', parentChildServiceName];
 	constructor(private $scope: ITypeaheadListScope
 			, public $transclude: angular.ITranscludeFunction
 			, private $q: angular.IQService
-			, private parentChild: __parentChild.IParentChildBehaviorService) { }
+			, private parentChild: IParentChildBehaviorService) { }
 
 	$onInit(): void {
 		this.$scope.$remove = this.removeItem.bind(this);
@@ -241,7 +242,7 @@ const typeaheadList: angular.IComponentOptions = {
 	},
 };
 
-angular.module(moduleName, [__parentChild.moduleName])
+angular.module(moduleName, [parentChildModule])
 	.component(componentName, typeaheadList)
 	.controller(controllerName, TypeaheadListController)
 	.component(itemComponentName, typeaheadItem);

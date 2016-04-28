@@ -6,8 +6,7 @@
 import * as angular from 'angular';
 import { Subject } from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import {IChild,IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentchild.service';
 
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 
@@ -22,7 +21,7 @@ export interface ISimpleCardBindings {
 	onOpen(): void;
 	canOpen: boolean;
 	alwaysOpen: boolean;
-	childLink: __parentChild.IChild<ISimpleCardBehavior>;
+	childLink: IChild<ISimpleCardBehavior>;
 	save(): angular.IPromise<void>;
 	saveWhenInvalid?: boolean;
 }
@@ -45,17 +44,17 @@ export class SimpleCardController implements ISimpleCardBindings {
 	onOpen: { (): void };
 	canOpen: boolean;
 	alwaysOpen: boolean;
-	childLink: __parentChild.IChild<ISimpleCardBehavior>;
+	childLink: IChild<ISimpleCardBehavior>;
 	save: { (): angular.IPromise<void> };
 	saveWhenInvalid: boolean;
 	cardType: string;
 
 	showContent: boolean = false;
-	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
+	autosaveLink: IChild<IAutosaveBehavior> = <any>{};
 	listController: ISimpleCardListController;
 
-	static $inject: string[] = [__parentChild.serviceName];
-	constructor(private parentChild: __parentChild.IParentChildBehaviorService) {}
+	static $inject: string[] = [parentChildServiceName];
+	constructor(private parentChild: IParentChildBehaviorService) {}
 
 	$onInit(): void {
 		if (this.canOpen == null) {

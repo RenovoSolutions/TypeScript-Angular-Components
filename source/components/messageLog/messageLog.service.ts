@@ -3,8 +3,6 @@
 import * as ng from 'angular';
 import * as moment from 'moment';
 
-import { services } from 'typescript-angular-utilities';
-
 export var factoryName: string = 'messageLog';
 
 export var defaultPageSize: number = 10;

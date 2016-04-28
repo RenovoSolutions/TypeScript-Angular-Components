@@ -8,7 +8,7 @@ import 'ui-select/dist/select.css';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
@@ -56,7 +56,7 @@ export class SelectController extends InputController {
 		this.select({ item: this.ngModel.$viewValue });
 	}
 
-	static $inject: string[] = ['$scope', '$attrs', '$q', '$transclude', __object.serviceName, componentValidatorFactoryName, jqueryServiceName];
+	static $inject: string[] = ['$scope', '$attrs', '$q', '$transclude', downgrade.objectServiceName, componentValidatorFactoryName, jqueryServiceName];
 	constructor($scope: angular.IScope
 			, $attrs: angular.IAttributes
 			, private $q: angular.IQService
@@ -137,6 +137,6 @@ const select: angular.IComponentOptions = buildInput({
 	},
 });
 
-angular.module(moduleName, ['ui.select', __object.moduleName, inputModule, jqueryModule])
+angular.module(moduleName, ['ui.select', downgrade.moduleName, inputModule, jqueryModule])
 	.component(componentName, select)
 	.controller(controllerName, SelectController);

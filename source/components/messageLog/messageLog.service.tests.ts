@@ -9,6 +9,7 @@
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
+import test = services.test;
 
 import {
 	moduleName,
@@ -21,7 +22,6 @@ import {
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import test = services.test;
 
 interface ITestDataService {
 	saveMessage: Sinon.SinonSpy;

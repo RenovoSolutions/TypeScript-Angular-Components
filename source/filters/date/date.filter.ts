@@ -14,7 +14,6 @@ export interface IDateFilter {
 	(date?: moment.Moment, includeTime?: boolean): string;
 }
 
-dateFilter.$inject = [];
 function dateFilter(): IDateFilter {
 	'use strict';
 	return (date?: moment.Moment, includeTime?: boolean): string => {
