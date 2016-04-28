@@ -14,7 +14,8 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
+
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 interface IAutosaveServiceMock {
 	autosave: Sinon.SinonSpy;
@@ -29,12 +30,12 @@ interface IMockFormController {
 	$setPristine: Sinon.SinonSpy;
 }
 
-interface IChildLinkMock extends __parentChild.IChild<any> {}
+interface IChildLinkMock extends IChild<any> {}
 
 describe('AutosaveController', () => {
 	var scope: IParentScope;
 	var autosave: AutosaveController;
-	var parentChildBehavior: __parentChild.IParentChildBehaviorService;
+	var parentChildBehavior: IParentChildBehaviorService;
 	var $attrs: IAutosaveAttributes;
 	var autosaveSpy: Sinon.SinonSpy;
 	var childLink: IChildLinkMock;
@@ -61,8 +62,8 @@ describe('AutosaveController', () => {
 			autosaveFactory: autosaveFactory,
 		});
 
-		var services: any = test.angularFixture.inject(__parentChild.serviceName);
-		parentChildBehavior = services[__parentChild.serviceName];
+		var services: any = test.angularFixture.inject(parentChildServiceName);
+		parentChildBehavior = services[parentChildServiceName];
 	});
 
 	it('should trigger an autosave when the autosave behavior is called', (): void => {
