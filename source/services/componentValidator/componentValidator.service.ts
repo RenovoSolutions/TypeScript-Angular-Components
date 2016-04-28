@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
 import { INgModelValidator, IFormValidator } from '../../types/formValidators';
@@ -73,7 +73,7 @@ export interface IComponentValidatorFactory {
 	getInstance(options: IComponentValidatorOptions): IComponentValidator;
 }
 
-componentValidatorFactory.$inject = [__validation.serviceName];
+componentValidatorFactory.$inject = [downgrade.validationServiceName];
 export function componentValidatorFactory(validationService: __validation.IValidationService): IComponentValidatorFactory {
 	return {
 		getInstance(options: IComponentValidatorOptions): IComponentValidator {
@@ -82,5 +82,5 @@ export function componentValidatorFactory(validationService: __validation.IValid
 	};
 }
 
-angular.module(moduleName, [__validation.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, componentValidatorFactory);
