@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __string = services.string;
 
 import { xs, sm, md, lg } from '../../../../services/breakpoints/breakpoint';
@@ -15,7 +15,7 @@ export interface ISizeForBreapointsAttrs extends angular.IAttributes {
 	styling: string;
 }
 
-sizeForBreakpoints.$inject = ['$parse', __string.serviceName];
+sizeForBreakpoints.$inject = ['$parse', downgrade.stringServiceName];
 export function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtilityService): angular.IDirective {
 	'use strict';
 	return {

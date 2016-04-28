@@ -8,7 +8,8 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
+
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../../services/parentChild/parentChild.service';
 
 import {
 	ICardScope,
@@ -41,7 +42,7 @@ describe('CardController', () => {
 	let card: CardController;
 	let cardContainer: ICardContainerMock;
 	let $q: angular.IQService;
-	let parentChild: __parentChild.IParentChildBehaviorService;
+	let parentChild: IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -50,9 +51,9 @@ describe('CardController', () => {
 			openCard: sinon.spy((): boolean => { return true; })
 		};
 
-		let services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
+		let services: any = test.angularFixture.inject('$q', parentChildServiceName);
 		$q = services.$q;
-		parentChild = services[__parentChild.serviceName];
+		parentChild = services[parentChildServiceName];
 
 		card = <any>{};
 	});
