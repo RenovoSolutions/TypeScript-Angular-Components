@@ -3,8 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
-import __promiseUtility = services.promise;
+import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
 
 import { buildButton, ButtonController } from '../button/button';
 
@@ -28,8 +27,8 @@ export class ButtonAsyncController extends ButtonController {
 	action: { (...params: any[]): angular.IPromise<any> | void };
 	rightAligned: boolean;
 
-	static $inject: string[] = [downgrade.promiseServiceName];
-	constructor(private promiseUtility: __promiseUtility.IPromiseUtility) {
+	static $inject: string[] = [promiseServiceName];
+	constructor(private promiseUtility: IPromiseUtility) {
 		super();
 	}
 
@@ -58,6 +57,6 @@ const buttonAsync: angular.IComponentOptions = buildButton({
 	controller: controllerName,
 });
 
-angular.module(moduleName, [__promiseUtility.moduleName])
+angular.module(moduleName, [promiseModuleName])
 	.component(componentName, buttonAsync)
 	.controller(controllerName, ButtonAsyncController);

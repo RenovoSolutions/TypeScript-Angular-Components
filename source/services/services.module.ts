@@ -11,6 +11,7 @@ import * as dialog from './dialog/dialog.service';
 import * as documentWrapper from './documentWrapper/documentWrapper.service';
 import * as form from './form/form.service';
 import * as jquery from './jquery/jquery.service';
+import * as promise from './promise/promise.service';
 import * as templateLoader from './templateLoader/templateLoader.service';
 import * as windowWrapper from './windowWrapper/windowWrapper.service';
 
@@ -24,6 +25,7 @@ export {
 	documentWrapper,
 	form,
 	jquery,
+	promise,
 	templateLoader,
 	windowWrapper,
 };
@@ -40,6 +42,7 @@ angular.module(moduleName, [
 	documentWrapper.moduleName,
 	form.moduleName,
 	jquery.moduleName,
+	promise.moduleName,
 	templateLoader.moduleName,
 	windowWrapper.moduleName,
 ]);
