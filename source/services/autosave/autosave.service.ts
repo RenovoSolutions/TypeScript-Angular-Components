@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
 import {
@@ -113,7 +113,7 @@ export interface IAutosaveServiceFactory {
 	getInstance(options: IAutosaveServiceOptions): IAutosaveService;
 }
 
-autosaveServiceFactory.$inject = [__notification.serviceName, autosaveActionServiceName, triggers.factoryName, formServiceName];
+autosaveServiceFactory.$inject = [downgrade.notificationServiceName, autosaveActionServiceName, triggers.factoryName, formServiceName];
 function autosaveServiceFactory(notification: __notification.INotificationService
 							, autosaveService: IAutosaveActionService
 							, triggerServiceFactory: triggers.ITriggerServiceFactory
@@ -126,5 +126,5 @@ function autosaveServiceFactory(notification: __notification.INotificationServic
 	};
 }
 
-angular.module(moduleName, [__notification.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
+angular.module(moduleName, [downgrade.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
 	.factory(factoryName, autosaveServiceFactory);

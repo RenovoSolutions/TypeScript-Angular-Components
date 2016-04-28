@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
 export var moduleName: string = 'rl.utilities.services.templateLoader';
@@ -22,7 +22,7 @@ export interface ITemplateLoader {
 }
 
 class TemplateLoader implements ITemplateLoader {
-	static $inject: string[] = ['$interpolate', 'templateSelectorValue', __object.serviceName];
+	static $inject: string[] = ['$interpolate', 'templateSelectorValue', downgrade.objectServiceName];
 	constructor(private $interpolate: angular.IInterpolateService,
 				private templateSelectorValue,
 				private objectUtility: __object.IObjectUtility) { }
@@ -63,6 +63,6 @@ class TemplateLoader implements ITemplateLoader {
 	}
 }
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.value('templateSelectorValue', 'template')
 	.service(serviceName, TemplateLoader);

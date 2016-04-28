@@ -5,9 +5,8 @@
 
 'use strict';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
-import __notification = services.notification;
 
 import { IAutosaveService, IAutosaveServiceFactory, moduleName, factoryName } from './autosave.service';
 import { Trigger, ITrigger } from './triggers/trigger';
@@ -52,7 +51,7 @@ describe('autosave', () => {
 
 		let mocks: any = {};
 		mocks.autosaveAction = autosaveActionService;
-		mocks[__notification.serviceName] = notification;
+		mocks[downgrade.notificationServiceName] = notification;
 		test.angularFixture.mock(mocks);
 
 		setPristineSpy = sinon.spy();

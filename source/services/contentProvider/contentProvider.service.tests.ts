@@ -6,13 +6,13 @@
 'use strict';
 
 import { services } from 'typescript-angular-utilities';
+import test = services.test;
 
 import { IContentProviderService, IContentProviderServiceFactory, moduleName, serviceName } from './contentProvider.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import test = services.test;
 
 describe('contentProvider', () => {
 	var contentProvider: IContentProviderService;
