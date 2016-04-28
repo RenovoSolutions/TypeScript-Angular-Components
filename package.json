@@ -74,6 +74,7 @@
     "karma-webpack": "~1.7.0",
     "mocha": "~2.4.5",
     "raw-loader": "~0.5.1",
+    "reflect-metadata": "0.1.2",
     "sinon": "~1.17.3",
     "source-map-loader": "~0.1.5",
     "style-loader": "~0.13.1",
@@ -93,10 +94,10 @@
     "moment": "~2.11.2",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "rx": "~4.0.8",
+    "rxjs": "5.0.0-beta.2",
     "rxjs": "^5.0.0-beta.2",
     "signature_pad": "~1.5.3",
-    "typescript-angular-utilities": "~2.11.2",
+    "typescript-angular-utilities": "~3.0.2",
     "ui-select": "~0.14.7"
   },
   "license": "GPL-3.0"
