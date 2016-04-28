@@ -8,7 +8,7 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import {IChild, IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentchild.service';
+import {IChild, IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 import {
 	moduleName,
