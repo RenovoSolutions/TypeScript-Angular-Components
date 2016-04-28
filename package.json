@@ -16,8 +16,6 @@
   "main": "./source/ui.module.js",
   "typings": "./source/ui.module.d.ts",
   "scripts": {
-    "update": "npm install & tsd update",
-
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
@@ -47,8 +45,9 @@
     "build-bootstrap.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bootstrap.watch\"",
 
     "serve": "http-server -c-1 -o",
-
-    "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"npm run serve\""
+    "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"npm run serve\"",
+    
+    "postinstall": "tsd update"
   },
   "devDependencies": {
     "angular-bluebird-promises": "^1.0.1",
