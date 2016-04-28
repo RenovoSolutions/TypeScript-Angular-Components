@@ -1,6 +1,5 @@
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { IChild, IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 import { IGetItemsParams } from '../typeahead/typeahead';
 import { IChangeObject } from '../../types/changes';
 export declare const moduleName: string;
@@ -57,7 +56,7 @@ export interface ITypeaheadListBindings {
     /**
      * Link for telling the typeahead list to add or remove an item from outside
      */
-    childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+    childLink: IChild<ITypeaheadListBehavior>;
     /**
      * Data that is shared between all list items
      */
@@ -107,14 +106,14 @@ export declare class TypeaheadListController implements ITypeaheadListBindings {
     useClientSearching: boolean;
     ngDisabled: boolean;
     itemAs: string;
-    childLink: __parentChild.IChild<ITypeaheadListBehavior>;
+    childLink: IChild<ITypeaheadListBehavior>;
     listData: any;
     disableSearching: boolean;
     ngModel: angular.INgModelController;
     cachedItems: any[];
     model: any;
     static $inject: string[];
-    constructor($scope: ITypeaheadListScope, $transclude: angular.ITranscludeFunction, $q: angular.IQService, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($scope: ITypeaheadListScope, $transclude: angular.ITranscludeFunction, $q: angular.IQService, parentChild: IParentChildBehaviorService);
     $onInit(): void;
     $onChanges(changes: ITypeaheadListChanges): void;
     loadItems(search?: string): angular.IPromise<any[]>;

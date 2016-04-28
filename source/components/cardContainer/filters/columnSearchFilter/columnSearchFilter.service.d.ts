@@ -17,10 +17,10 @@ export declare class ColumnSearchFilter implements IColumnSearchFilter {
     searchText: string;
     caseSensitive: boolean;
     column: IColumn<any>;
-    constructor(object: __object.IObjectUtility, string: __string.IStringUtilityService);
+    constructor(object: __object.IObjectUtility, string: __string.IStringUtility);
     filter<TItemType>(item: TItemType): boolean;
 }
 export interface IColumnSearchFilterFactory {
     getInstance(): IColumnSearchFilter;
 }
-export declare function columnSearchFilterFactory(object: __object.IObjectUtility, string: __string.IStringUtilityService): IColumnSearchFilterFactory;
+export declare function columnSearchFilterFactory(object: __object.IObjectUtility, string: __string.IStringUtility): IColumnSearchFilterFactory;

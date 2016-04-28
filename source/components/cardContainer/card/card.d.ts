@@ -1,8 +1,8 @@
 import * as angular from 'angular';
 import * as Rx from 'rxjs';
 import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
 import __object = services.object;
+import { IChild, IParentChildBehaviorService } from '../../../services/parentChild/parentChild.service';
 import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
 import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
@@ -68,13 +68,13 @@ export declare class CardController {
     saveWhenInvalid: boolean;
     showContent: boolean;
     dirty: boolean;
-    autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
+    autosaveLink: IChild<IAutosaveBehavior>;
     hasBody: boolean;
     hasFooter: boolean;
     cardContainer: CardContainerController;
     refresh: Rx.Subject<void>;
     static $inject: string[];
-    constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, $element: angular.IAugmentedJQuery, parentChild: __parentChild.IParentChildBehaviorService, object: __object.IObjectUtility);
+    constructor($scope: ICardScope, $controller: angular.IControllerService, $q: angular.IQService, $element: angular.IAugmentedJQuery, parentChild: IParentChildBehaviorService, object: __object.IObjectUtility);
     toggleContent(): void;
     validateCard(): boolean;
     saveCard(): angular.IPromise<void>;

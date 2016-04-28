@@ -1,12 +1,12 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
+import __object = services.object;
 import { IJQueryUtility } from '../../services/jquery/jquery.service';
 import { ITemplateLoader } from '../../services/templateLoader/templateLoader.service';
 import { IChangeObject } from '../../types/changes';
 export declare let moduleName: string;
 export declare let componentName: string;
 export declare let controllerName: string;
-import __object = services.object;
 export interface IGenericContainerChanges {
     selector: IChangeObject<any>;
 }

@@ -1,16 +1,16 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
+import { IChild, IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 import { InputController } from '../input/input';
 import { IComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service';
 export declare const moduleName: string;
 export declare const componentName: string;
 export declare const controllerName: string;
 export interface ITypeaheadBindings {
-    childLink: __parentChild.IChild<ITypeaheadBehavior>;
+    childLink: IChild<ITypeaheadBehavior>;
     /**
      * Event that gets fired with updates to the selection - use if selection adds to a list
      * @param {any} value The new selection
@@ -83,7 +83,7 @@ export declare class TypeaheadController extends InputController {
     private parentChild;
     private object;
     private array;
-    childLink: __parentChild.IChild<ITypeaheadBehavior>;
+    childLink: IChild<ITypeaheadBehavior>;
     hasSelection: boolean;
     select: {
         (params: ISelectParams): void;
@@ -113,7 +113,7 @@ export declare class TypeaheadController extends InputController {
     selection: any;
     _searchOption: any;
     static $inject: string[];
-    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: __parentChild.IParentChildBehaviorService, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
+    constructor($scope: angular.IScope, $q: angular.IQService, $attrs: ITypeaheadAttrs, $timeout: angular.ITimeoutService, parentChild: IParentChildBehaviorService, object: __objectUtility.IObjectUtility, array: __arrayUtility.IArrayUtility, componentValidatorFactory: IComponentValidatorFactory);
     $onInit(): void;
     getDisplayName(item: any): string;
     refresh(search: string): angular.IPromise<void>;

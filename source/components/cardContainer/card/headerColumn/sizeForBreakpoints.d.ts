@@ -6,4 +6,4 @@ export interface ISizeForBreapointsAttrs extends angular.IAttributes {
     rlSizeForBreakpoints: string;
     styling: string;
 }
-export declare function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtilityService): angular.IDirective;
+export declare function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtility): angular.IDirective;

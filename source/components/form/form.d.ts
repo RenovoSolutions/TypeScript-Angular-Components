@@ -1,6 +1,5 @@
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { IParentChildBehaviorService, IChild } from '../../services/parentchild/parentChild.service';
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory } from '../../services/autosave/autosave.service';
 export declare let moduleName: string;
@@ -28,10 +27,10 @@ export declare class FormController implements IFormBindings {
         (): void;
     };
     form: IFormValidator;
-    childLink: __parentChild.IChild<IFormBehavior>;
+    childLink: IChild<IFormBehavior>;
     autosave: IAutosaveService;
     static $inject: string[];
-    constructor($element: angular.IAugmentedJQuery, $scope: IFormScope, $timeout: angular.ITimeoutService, $q: angular.IQService, autosaveFactory: IAutosaveServiceFactory, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($element: angular.IAugmentedJQuery, $scope: IFormScope, $timeout: angular.ITimeoutService, $q: angular.IQService, autosaveFactory: IAutosaveServiceFactory, parentChild: IParentChildBehaviorService);
     $onInit(): void;
     saveForm(): angular.IPromise<void>;
 }

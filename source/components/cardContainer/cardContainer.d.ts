@@ -3,8 +3,8 @@ import * as Rx from 'rxjs';
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
-import __parentChild = services.parentChildBehavior;
 import __genericSearchFilter = services.genericSearchFilter;
+import { IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn } from './column';
 import { ISortDirections } from './sorts/sorts.module';
@@ -102,7 +102,7 @@ export declare class CardContainerController {
     private disablingSelections;
     makeCard: angular.ITranscludeFunction;
     static $inject: string[];
-    constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, $transclude: angular.ITranscludeFunction, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: __parentChild.IParentChildBehaviorService);
+    constructor($scope: ICardContainerScope, $attrs: ICardContainerAttrs, $transclude: angular.ITranscludeFunction, object: __object.IObjectUtility, array: __array.IArrayUtility, dataPagerFactory: dataPager.IDataPagerFactory, parentChild: IParentChildBehaviorService);
     sortSelected(): void;
     openCard(): boolean;
     sort(column: IColumn<any>): void;

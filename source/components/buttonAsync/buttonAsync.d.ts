@@ -1,6 +1,5 @@
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __promiseUtility = services.promise;
+import { IPromiseUtility } from '../../services/promise/promise.service';
 import { ButtonController } from '../button/button';
 export declare const moduleName: string;
 export declare const componentName: string;
@@ -21,6 +20,6 @@ export declare class ButtonAsyncController extends ButtonController {
     };
     rightAligned: boolean;
     static $inject: string[];
-    constructor(promiseUtility: __promiseUtility.IPromiseUtility);
+    constructor(promiseUtility: IPromiseUtility);
     trigger(): void;
 }

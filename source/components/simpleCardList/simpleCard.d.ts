@@ -1,6 +1,5 @@
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { IChild, IParentChildBehaviorService } from '../../services/parentChild/parentchild.service';
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 import { ISimpleCardListController } from './simpleCardList';
 import { IChangeObject } from '../../types/changes';
@@ -10,7 +9,7 @@ export interface ISimpleCardBindings {
     onOpen(): void;
     canOpen: boolean;
     alwaysOpen: boolean;
-    childLink: __parentChild.IChild<ISimpleCardBehavior>;
+    childLink: IChild<ISimpleCardBehavior>;
     save(): angular.IPromise<void>;
     saveWhenInvalid?: boolean;
 }
@@ -31,17 +30,17 @@ export declare class SimpleCardController implements ISimpleCardBindings {
     };
     canOpen: boolean;
     alwaysOpen: boolean;
-    childLink: __parentChild.IChild<ISimpleCardBehavior>;
+    childLink: IChild<ISimpleCardBehavior>;
     save: {
         (): angular.IPromise<void>;
     };
     saveWhenInvalid: boolean;
     cardType: string;
     showContent: boolean;
-    autosaveLink: __parentChild.IChild<IAutosaveBehavior>;
+    autosaveLink: IChild<IAutosaveBehavior>;
     listController: ISimpleCardListController;
     static $inject: string[];
-    constructor(parentChild: __parentChild.IParentChildBehaviorService);
+    constructor(parentChild: IParentChildBehaviorService);
     $onInit(): void;
     $onChanges(changes: ISimpleCardChanges): void;
     toggleContent(): void;

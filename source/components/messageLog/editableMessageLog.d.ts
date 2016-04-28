@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
+import __object = services.object;
 import { IMessageLogDataService, IMessageLog, IMessageLogFactory, IUser } from './messageLog.service';
 export declare var directiveName: string;
 export declare var controllerName: string;
-import __object = services.object;
 export interface IEditableMessageLogBindings {
     pageSize: number;
     service: IMessageLogDataService;

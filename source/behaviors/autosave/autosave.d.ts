@@ -1,6 +1,5 @@
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 import { IAutosaveService, IAutosaveServiceFactory, triggers } from '../../services/autosave/autosave.service';
 import { IFormValidator } from '../../types/formValidators';
 export declare let moduleName: string;
@@ -29,7 +28,7 @@ export declare class AutosaveController {
     };
     form: IFormValidator;
     static $inject: string[];
-    constructor($scope: angular.IScope, $attrs: IAutosaveAttributes, $parse: angular.IParseService, $element: angular.IAugmentedJQuery, autosaveFactory: IAutosaveServiceFactory, parentChildBehavior: __parentChild.IParentChildBehaviorService);
+    constructor($scope: angular.IScope, $attrs: IAutosaveAttributes, $parse: angular.IParseService, $element: angular.IAugmentedJQuery, autosaveFactory: IAutosaveServiceFactory, parentChildBehavior: IParentChildBehaviorService);
     $onInit(): void;
 }
 export declare function autosave(): angular.IDirective;
