@@ -4,10 +4,12 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-import __promise = services.promise;
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __notification = services.notification;
+
+import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
+
 
 import { buildButton } from '../button/button';
 import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
@@ -27,11 +29,11 @@ export class LongClickButtonController extends ButtonAsyncController {
 	active: boolean;
 	private actionTimeout: angular.IPromise<void>;
 
-	static $inject: string[] = ['$interval', '$timeout', __object.serviceName, __promise.serviceName, __notification.serviceName];
+	static $inject: string[] = ['$interval', '$timeout', downgrade.objectServiceName, promiseServiceName, downgrade.notificationServiceName];
 	constructor(private $interval: angular.IIntervalService
 			, private $timeout: angular.ITimeoutService
 			, private objectUtility: __object.IObjectUtility
-			, promise: __promise.IPromiseUtility
+			, promise: IPromiseUtility
 			, private notification: __notification.INotificationService) {
 		super(promise);
 	}
@@ -85,6 +87,6 @@ let longClickButton: angular.IComponentOptions = buildButton({
 	},
 });
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName, promiseModuleName])
 	.component(componentName, longClickButton)
 	.controller(controllerName, LongClickButtonController);

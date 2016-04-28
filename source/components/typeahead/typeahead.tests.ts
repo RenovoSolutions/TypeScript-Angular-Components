@@ -7,7 +7,8 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
+
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 import {
 	moduleName,
@@ -36,15 +37,15 @@ describe('TypeaheadController', () => {
 	let typeahead: TypeaheadController;
 	let $q: angular.IQService;
 	let $timeout: angular.ITimeoutService;
-	let parentChild: __parentChild.IParentChildBehaviorService;
+	let parentChild: IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 
-		let services: any = test.angularFixture.inject('$q', '$timeout', __parentChild.serviceName);
+		let services: any = test.angularFixture.inject('$q', '$timeout', parentChildServiceName);
 		$q = services.$q;
 		$timeout = services.$timeout;
-		parentChild = services[__parentChild.serviceName];
+		parentChild = services[parentChildServiceName];
 	});
 
     it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {

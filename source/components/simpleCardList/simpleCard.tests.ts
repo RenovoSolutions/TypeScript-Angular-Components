@@ -8,7 +8,7 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
+import {IChild, IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentchild.service';
 
 import {
 	moduleName,
@@ -34,7 +34,7 @@ describe('SimpleCardController', () => {
 	let scope: angular.IScope;
 	let card: simpleCard.SimpleCardController;
 	let list: IListMock;
-	let parentChild: __parentChild.IParentChildBehaviorService;
+	let parentChild: IParentChildBehaviorService;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -45,8 +45,8 @@ describe('SimpleCardController', () => {
 			alwaysOpenChanges: new Subject<boolean>(),
 		};
 
-		let services: any = test.angularFixture.inject(__parentChild.serviceName);
-		parentChild = services[__parentChild.serviceName];
+		let services: any = test.angularFixture.inject(parentChildServiceName);
+		parentChild = services[parentChildServiceName];
 	});
 
 	it('should register close behavior with the list', (): void => {

@@ -5,9 +5,8 @@
 
 'use strict';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
-import __isEmpty = filters.isEmpty;
 
 import {
 moduleName,
@@ -48,7 +47,7 @@ describe('messageLog', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-		angular.mock.module(__isEmpty.moduleName);
+		angular.mock.module(downgrade.moduleName);
 
 		dialog = {
 			openForm: sinon.spy(),

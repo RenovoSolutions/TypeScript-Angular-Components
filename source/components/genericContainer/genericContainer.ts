@@ -3,7 +3,8 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
+import __object = services.object;
 
 import {
 	moduleName as jqueryModuleName,
@@ -23,7 +24,6 @@ export let moduleName: string = 'rl.ui.components.genericContainer';
 export let componentName: string = 'rlGenericContainer';
 export let controllerName: string = 'GenericContainerController';
 
-import __object = services.object;
 
 export interface IGenericContainerChanges {
 	selector: IChangeObject<any>;
@@ -41,17 +41,17 @@ export class GenericContainerController {
 	default: string;
 
 	static $inject: string[] = ['$element'
-							, '$transclude'
-							, '$compile'
-							, __object.serviceName
-							, jqueryServiceName
-							, templateLoaderService];
+		, '$transclude'
+		, '$compile'
+		, downgrade.objectServiceName
+		, jqueryServiceName
+		, templateLoaderService];
 	constructor(private $element: angular.IAugmentedJQuery
-			, private $transclude: angular.ITranscludeFunction
-			, private $compile: angular.ICompileService
-			, private object: __object.IObjectUtility
-			, private jquery: IJQueryUtility
-			, private templateLoader: ITemplateLoader) {}
+		, private $transclude: angular.ITranscludeFunction
+		, private $compile: angular.ICompileService
+		, private object: __object.IObjectUtility
+		, private jquery: IJQueryUtility
+		, private templateLoader: ITemplateLoader) { }
 
 	$onChanges(changes: IGenericContainerChanges): void {
 		if (this.container && changes.selector) {
@@ -114,6 +114,6 @@ let genericContainer: angular.IComponentOptions = {
 	},
 };
 
-angular.module(moduleName, [jqueryModuleName, __object.moduleName, templateLoaderModule])
+angular.module(moduleName, [jqueryModuleName, downgrade.moduleName, templateLoaderModule])
 	.component(componentName, genericContainer)
 	.controller(controllerName, GenericContainerController);

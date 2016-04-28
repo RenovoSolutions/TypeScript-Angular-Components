@@ -6,7 +6,6 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
 

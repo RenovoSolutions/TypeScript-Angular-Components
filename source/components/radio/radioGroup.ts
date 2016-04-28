@@ -2,7 +2,7 @@
 
 import * as ng from 'angular';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __guid = services.guid;
 
@@ -30,7 +30,7 @@ export class RadioGroupController {
 	group: RadioGroup;
 	ngModel: ng.INgModelController;
 
-	static $inject: string[] = ['$attrs', __object.serviceName];
+	static $inject: string[] = ['$attrs', downgrade.objectServiceName];
 	constructor(private $attrs: IRadioGroupAttributes
 			, private object: __object.IObjectUtility) {}
 

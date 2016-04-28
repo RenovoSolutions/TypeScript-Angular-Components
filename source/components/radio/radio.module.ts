@@ -2,8 +2,7 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-import __object = services.object;
+import { downgrade } from 'typescript-angular-utilities';
 
 import {
 	directiveName as radioGroupDirectiveName,
@@ -31,7 +30,7 @@ export {
 
 export var moduleName: string = 'rl21.components.radio';
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.directive(radioGroupDirectiveName, radioGroup)
 	.controller(radioGroupControllerName, RadioGroupController)
 	.component(radioComponentName, radio)

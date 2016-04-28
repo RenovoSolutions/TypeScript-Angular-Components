@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 
 import __object = services.object;
 import __transform = services.transform.transform;
@@ -19,7 +19,7 @@ export class CommaListController {
 	max: number;
 	remainingItems: number = 0;
 
-	static $inject: string[] = [__object.serviceName];
+	static $inject: string[] = [downgrade.objectServiceName];
 	constructor(object: __object.IObjectUtility) {
 		this.list = this.getFirstItems(this.inList);
 	}
@@ -62,6 +62,6 @@ let commaList: angular.IComponentOptions = {
 	},
 };
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.component(componentName, commaList)
 	.controller(controllerName, CommaListController);

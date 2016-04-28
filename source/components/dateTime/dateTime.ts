@@ -9,7 +9,7 @@ import * as moment from 'moment';
 import * as $ from 'jquery';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 
 import __dateTimeFormatStrings = services.date;
 import __object = services.object;
@@ -171,6 +171,6 @@ let dateTime: angular.IComponentOptions = buildInput({
 	},
 });
 
-angular.module(moduleName, [services.moment.moduleName, services.date.moduleName, inputModule, __object.moduleName])
+angular.module(moduleName, [inputModule])
 	.component(componentName, dateTime)
 	.controller(controllerName, DateTimeController);

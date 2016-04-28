@@ -5,8 +5,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import {IParentChildBehaviorService, IChild, serviceName as parentChildServiceName}  from '../../services/parentchild/parentChild.service';
 
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory, factoryName as autosaveFactoryName, moduleName as autosaveModule } from '../../services/autosave/autosave.service';
@@ -32,17 +31,17 @@ export class FormController implements IFormBindings {
 	saving: boolean;
 	save: { (): void };
 	form: IFormValidator;
-	childLink: __parentChild.IChild<IFormBehavior>;
+	childLink: IChild<IFormBehavior>;
 
 	autosave: IAutosaveService;
 
-	static $inject: string[] = ['$element', '$scope', '$timeout', '$q', autosaveFactoryName, __parentChild.serviceName];
+	static $inject: string[] = ['$element', '$scope', '$timeout', '$q', autosaveFactoryName, parentChildServiceName];
 	constructor(private $element: angular.IAugmentedJQuery
-			, private $scope: IFormScope
-			, private $timeout: angular.ITimeoutService
-			, private $q: angular.IQService
-			, private autosaveFactory: IAutosaveServiceFactory
-			, private parentChild: __parentChild.IParentChildBehaviorService) { }
+		, private $scope: IFormScope
+		, private $timeout: angular.ITimeoutService
+		, private $q: angular.IQService
+		, private autosaveFactory: IAutosaveServiceFactory
+		, private parentChild: IParentChildBehaviorService) { }
 
 	$onInit(): void {
 		this.$timeout((): void => {
