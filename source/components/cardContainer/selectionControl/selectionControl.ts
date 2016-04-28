@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/dataSources.module';
@@ -21,7 +21,7 @@ export class SelectionControlController {
 	dataSource: IDataSource<any>;
 	private cardContainer: CardContainerController;
 
-	static $inject: string[] = [__boolean.serviceName];
+	static $inject: string[] = [downgrade.booleanServiceName];
 	constructor(private bool: __boolean.IBooleanUtility) {}
 
 	$onInit(): void {
@@ -78,6 +78,6 @@ let selectionControl: angular.IComponentOptions = {
 	controllerAs: 'selection',
 };
 
-angular.module(moduleName, [__boolean.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.component(componentName, selectionControl)
 	.controller(controllerName, SelectionControlController);

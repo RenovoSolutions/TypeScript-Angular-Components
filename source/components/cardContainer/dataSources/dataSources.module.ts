@@ -1,7 +1,7 @@
 'use strict';
 
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
+import { downgrade } from 'typescript-angular-utilities';
 
 import { moduleName as sortsModuleName } from '../sorts/sorts.module';
 import * as clientServerDataSource from './clientServerDataSource/clientServerDataSource.service';
@@ -30,7 +30,7 @@ export { IAsyncDataSource, IDataSetFunction } from './asyncDataSource.service';
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
 
 angular.module(moduleName, [
-	services.object.moduleName,
+	downgrade.moduleName,
 	sortsModuleName,
 
 	clientServerDataSource.moduleName,

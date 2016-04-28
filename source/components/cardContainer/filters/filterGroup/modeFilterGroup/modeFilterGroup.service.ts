@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services , downgrade} from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
@@ -71,7 +71,7 @@ export interface IModeFilterGroupFactory {
 	getInstance<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
 }
 
-modeFilterGroupFactory.$inject = [__object.serviceName];
+modeFilterGroupFactory.$inject = [downgrade.objectServiceName];
 export function modeFilterGroupFactory(object: __object.IObjectUtility): IModeFilterGroupFactory {
 	'use strict';
 	return {
@@ -81,5 +81,5 @@ export function modeFilterGroupFactory(object: __object.IObjectUtility): IModeFi
 	};
 }
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, modeFilterGroupFactory);

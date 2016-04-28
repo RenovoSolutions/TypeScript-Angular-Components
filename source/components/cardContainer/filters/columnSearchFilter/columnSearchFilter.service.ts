@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __string = services.string;
 import __transform = services.transform.transform;
@@ -26,7 +26,7 @@ export class ColumnSearchFilter implements IColumnSearchFilter {
 	column: IColumn<any>;
 
 	constructor(private object: __object.IObjectUtility
-			, private string: __string.IStringUtilityService) { }
+			, private string: __string.IStringUtility) { }
 
 	filter<TItemType>(item: TItemType): boolean {
 		if (this.column == null) {
@@ -50,8 +50,8 @@ export interface IColumnSearchFilterFactory {
 	getInstance(): IColumnSearchFilter;
 }
 
-columnSearchFilterFactory.$inject = [__object.serviceName, __string.serviceName];
-export function columnSearchFilterFactory(object: __object.IObjectUtility, string: __string.IStringUtilityService): IColumnSearchFilterFactory {
+columnSearchFilterFactory.$inject = [downgrade.objectServiceName, downgrade.stringServiceName];
+export function columnSearchFilterFactory(object: __object.IObjectUtility, string: __string.IStringUtility): IColumnSearchFilterFactory {
 	'use strict';
 	return {
 		getInstance(): IColumnSearchFilter {
@@ -60,5 +60,5 @@ export function columnSearchFilterFactory(object: __object.IObjectUtility, strin
 	};
 }
 
-angular.module(moduleName, [__object.moduleName, __string.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, columnSearchFilterFactory);

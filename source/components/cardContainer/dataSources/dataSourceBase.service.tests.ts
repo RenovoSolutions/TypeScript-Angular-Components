@@ -5,7 +5,7 @@
 
 'use strict';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
 import __array = services.array;
 
@@ -34,7 +34,7 @@ describe('dataSourceBase', () => {
 	var dataSourceProcessor: IDataSourceProcessorMock;
 
 	beforeEach(() => {
-		angular.mock.module(__array.moduleName);
+		angular.mock.module(downgrade.moduleName);
 		angular.mock.module(moduleName);
 
 		dataSourceProcessor = {
@@ -56,9 +56,9 @@ describe('dataSourceBase', () => {
 			page: sinon.spy((data: any): any => { return data; }),
 		};
 
-		var services: any = test.angularFixture.inject(__array.serviceName);
-		dataSourceBase = new DataSourceBase<number>(<any>dataSourceProcessor
-													, services[__array.serviceName]);
+		var services: any = test.angularFixture.inject(downgrade.arrayServiceName);
+		dataSourceBase = new DataSourceBase<number>(services[downgrade.observableServiceName]
+													, services[downgrade.arrayServiceName]);
 	});
 
 	describe('count', (): void => {

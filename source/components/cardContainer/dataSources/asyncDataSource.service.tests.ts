@@ -5,7 +5,7 @@
 
 'use strict';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -38,15 +38,13 @@ describe('asyncDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(__array.moduleName);
-		angular.mock.module(__synchronizedRequests.moduleName);
 		angular.mock.module(moduleName);
 		angular.mock.module(test.moduleName);
 
 		var services: any = test.angularFixture.inject('$rootScope'
 													, '$q'
-													, __array.serviceName
-													, __synchronizedRequests.factoryName);
+													, downgrade.arrayServiceName
+													, downgrade.synchronizedRequestsServiceName);
 
 		$rootScope = services.$rootScope;
 		$q = services.$q;
@@ -57,8 +55,8 @@ describe('asyncDataSource', () => {
 
 		source = new AsyncDataSource<number>(dataService.get
 											, <any>dataSourceProcessor
-											, services[__array.serviceName]
-											, services[__synchronizedRequests.factoryName]);
+											, services[downgrade.arrayServiceName]
+											, services[downgrade.synchronizedRequestsServiceName]);
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
