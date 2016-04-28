@@ -295,7 +295,7 @@ describe('PagerController', () => {
 		dataPager = {
 			pageSize: 1,
 			pageNumber: 1,
-			pageSizeChanges: new Rx.Subject<number>(),
+			pageSizeObservable: new Rx.Subject<number>(),
 		};
 
 		dataSource = {
