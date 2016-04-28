@@ -5,7 +5,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import {IParentChildBehaviorService, IChild, serviceName as parentChildServiceName}  from '../../services/parentchild/parentChild.service';
+import {IParentChildBehaviorService, IChild, serviceName as parentChildServiceName}  from '../../services/parentChild/parentChild.service';
 
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory, factoryName as autosaveFactoryName, moduleName as autosaveModule } from '../../services/autosave/autosave.service';

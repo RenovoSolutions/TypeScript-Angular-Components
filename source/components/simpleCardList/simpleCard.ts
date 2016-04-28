@@ -6,7 +6,7 @@
 import * as angular from 'angular';
 import { Subject } from 'rxjs';
 
-import {IChild,IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentchild.service';
+import {IChild,IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 
