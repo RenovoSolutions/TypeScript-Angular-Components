@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
 import genericSearchFilter = services.genericSearchFilter;
 
@@ -45,17 +45,16 @@ describe('clientServerDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(genericSearchFilter.moduleName);
 		angular.mock.module(dataSourcesModuleName);
 		angular.mock.module(moduleName);
 		angular.mock.module(test.moduleName);
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', genericSearchFilter.factoryName, '$q');
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', downgrade.genericSearchFilterServiceName, '$q');
 		clientServerDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		$rootScope = dependencies.$rootScope;
 		$q = dependencies.$q;
-		searchFilter = dependencies[genericSearchFilter.factoryName].getInstance();
+		searchFilter = dependencies[downgrade.genericSearchFilterServiceName].getInstance();
 
 		dataService = {
 			get: test.mock.promise([1, 2]),

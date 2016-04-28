@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { filters, services } from 'typescript-angular-utilities';
+import { filters, services, downgrade } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { CardContainerController } from './cardContainer';
@@ -135,7 +135,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	}
 
 	useSearch(tokenized?: boolean): IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(__genericSearchFilter.factoryName);
+		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.$injector.get<any>(downgrade.genericSearchFilterServiceName);
 		this._searchFilter = factory.getInstance(tokenized);
 		return this._searchFilter;
 	}

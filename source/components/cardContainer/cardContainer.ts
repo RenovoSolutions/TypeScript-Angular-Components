@@ -7,12 +7,12 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
-import __parentChild = services.parentChildBehavior;
 import __genericSearchFilter = services.genericSearchFilter;
 
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource, dataPager } from './dataSources/dataSources.module';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
@@ -119,14 +119,14 @@ export class CardContainerController {
 
 	makeCard: angular.ITranscludeFunction;
 
-	static $inject: string[] = ['$scope', '$attrs', '$transclude', __object.serviceName, __array.serviceName, dataPager.factoryName, __parentChild.serviceName];
+	static $inject: string[] = ['$scope', '$attrs', '$transclude', downgrade.objectServiceName, downgrade.arrayServiceName, dataPager.factoryName, parentChildServiceName];
 	constructor(private $scope: ICardContainerScope
 			, $attrs: ICardContainerAttrs
 			, $transclude: angular.ITranscludeFunction
 			, private object: __object.IObjectUtility
 			, private array: __array.IArrayUtility
 			, private dataPagerFactory: dataPager.IDataPagerFactory
-			, private parentChild: __parentChild.IParentChildBehaviorService) {
+			, private parentChild: IParentChildBehaviorService) {
 		if (this.builder != null) {
 			this.builder.setCardContainerProperties(this);
 		}

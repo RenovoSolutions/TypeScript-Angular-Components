@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
@@ -106,7 +106,7 @@ export interface IRangeFilterGroupFactory {
 	getInstance<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 }
 
-rangeFilterGroupFactory.$inject = [__object.serviceName];
+rangeFilterGroupFactory.$inject = [downgrade.objectServiceName];
 export function rangeFilterGroupFactory(object: __object.IObjectUtility): IRangeFilterGroupFactory {
 	'use strict';
 	return {
@@ -116,5 +116,5 @@ export function rangeFilterGroupFactory(object: __object.IObjectUtility): IRange
 	};
 }
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, rangeFilterGroupFactory);

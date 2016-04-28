@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -97,8 +97,8 @@ export interface IServerSideDataSourceFactory {
 	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
 
-serverSideDataSourceFactory.$inject = [processorServiceName, __array.serviceName, __object.serviceName,  __synchronizedRequests.factoryName];
-export function serverSideDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
+serverSideDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName,  downgrade.synchronizedRequestsServiceName];
+export function serverSideDataSourceFactory(observableFactory: downgrade.IObservableFactory
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory {
@@ -110,5 +110,5 @@ export function serverSideDataSourceFactory(dataSourceProcessor: IDataSourceProc
 	};
 }
 
-angular.module(moduleName, [])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, serverSideDataSourceFactory);

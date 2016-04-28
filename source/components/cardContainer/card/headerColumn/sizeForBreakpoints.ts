@@ -16,7 +16,7 @@ export interface ISizeForBreapointsAttrs extends angular.IAttributes {
 }
 
 sizeForBreakpoints.$inject = ['$parse', downgrade.stringServiceName];
-export function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtilityService): angular.IDirective {
+export function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtility): angular.IDirective {
 	'use strict';
 	return {
 		restrict: 'A',

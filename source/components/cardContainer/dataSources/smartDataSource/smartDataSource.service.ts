@@ -4,7 +4,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -147,8 +147,8 @@ export interface ISmartDataSourceFactory {
 	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
 
-smartDataSourceFactory.$inject = [processorServiceName, __array.serviceName, __object.serviceName,  __synchronizedRequests.factoryName];
-export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
+smartDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
+export function smartDataSourceFactory(observableFactory: downgrade.IObservableFactory
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory {
@@ -160,5 +160,5 @@ export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 	};
 }
 
-angular.module(moduleName, [])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, smartDataSourceFactory);

@@ -2,11 +2,9 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-import __object = services.object;
-import __array = services.array;
-import __parentChild = services.parentChildBehavior;
-import __genericSearchFilter = services.genericSearchFilter;
+import { downgrade } from 'typescript-angular-utilities';
+
+import { moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
 
 import * as card from './card/card';
 import * as cardSearch from './cardSearch/cardSearch';
@@ -45,10 +43,8 @@ export var moduleName: string = 'rl.ui.components.cardContainer';
 angular.module(moduleName, [
 	// dependencies
 	dataSources.dataPager.moduleName,
-	__object.moduleName,
-	__array.moduleName,
-	__parentChild.moduleName,
-	__genericSearchFilter.moduleName,
+	downgrade.moduleName,
+	parentChildModule,
 
 	// components
 	card.moduleName,
