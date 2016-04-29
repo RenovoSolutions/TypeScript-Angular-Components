@@ -149,8 +149,8 @@ export class CardContainerController {
 			//*use card container event service?
 			$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
 
-			this.dataSource.watch(this.addViewData, 'changed');
-			this.dataSource.watch(this.clearFilteredSelections, 'redrawing');
+			this.dataSource.changed.subscribe(this.addViewData);
+			this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
 
 			this.addViewData();
 

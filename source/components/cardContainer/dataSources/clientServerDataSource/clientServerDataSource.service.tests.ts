@@ -70,8 +70,8 @@ describe('clientServerDataSource', () => {
 	describe('server search', (): void => {
 		beforeEach((): void => {
 			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
-			source.watch(reloadedSpy, 'reloaded');
-			source.watch(changedSpy, 'changed');
+			source.reloaded.subscribe(reloadedSpy);
+			source.changed.subscribe(changedSpy);
 		});
 
 		it('should call data processor to process the data when refreshing', (): void => {
@@ -173,8 +173,8 @@ describe('clientServerDataSource', () => {
 			let getFilterModel: any = (): ITestFilterModel => { return filterModel; };
 
 			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter, getFilterModel, validateSpy);
-			source.watch(reloadedSpy, 'reloaded');
-			source.watch(changedSpy, 'changed');
+			source.reloaded.subscribe(reloadedSpy);
+			source.changed.subscribe(changedSpy);
 		});
 
 		it('should make a request to reload the data when the filter model changes', (): void => {

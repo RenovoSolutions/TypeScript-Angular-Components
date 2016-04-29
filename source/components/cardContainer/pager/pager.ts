@@ -52,7 +52,7 @@ export class PagerController {
 			this.lastPage = 1;
 			this.dataSource = this.cardContainer.dataSource;
 
-			this.dataSource.countObservable.subscribe(this.updatePageCount);
+			this.dataSource.countChanges.subscribe(this.updatePageCount);
 			this.pager.pageSizeObservable.subscribe(this.updatePageCount);
 			this.updatePageCount();
 		}

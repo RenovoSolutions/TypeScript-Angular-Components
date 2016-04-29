@@ -3,7 +3,6 @@
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
@@ -41,12 +40,11 @@ export class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType
 			, private searchFilter: __genericSearchFilter.IGenericSearchFilter
 			, public getFilterModel: IGetFilterModel<any>
 			, public validateModel: IValidateFilterModel<any>
-			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
+		super(getDataSet, dataSourceProcessor, array, synchronizedRequestsFactory);
 
 		this.getFilterModel = this.getFilterModel || function(): void { return null; };
 		this.validateModel = this.validateModel || function(): boolean { return true; };
@@ -105,9 +103,8 @@ export interface IClientServerDataSourceFactory {
 						, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType>;
 }
 
-clientServerDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
-export function clientServerDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
-												, dataSourceProcessor: IDataSourceProcessor
+clientServerDataSourceFactory.$inject = [processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
+export function clientServerDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory {
@@ -117,10 +114,10 @@ export function clientServerDataSourceFactory(observableFactory: __observable.IO
 							, searchFilter: __genericSearchFilter.IGenericSearchFilter
 							, getFilterModel?: IGetFilterModel<any>
 							, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType> {
-			return new ClientServerDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			return new ClientServerDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
 }
 
-angular.module(moduleName, [__observable.moduleName, __array.moduleName, __object.moduleName, __synchronizedRequests.moduleName])
+angular.module(moduleName, [__array.moduleName, __object.moduleName, __synchronizedRequests.moduleName])
 	.factory(factoryName, clientServerDataSourceFactory);

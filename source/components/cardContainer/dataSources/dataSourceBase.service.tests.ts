@@ -7,7 +7,6 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __observable = services.observable;
 import __array = services.array;
 
 import {
@@ -21,7 +20,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
-import * as Rx from 'rxjs';
+import { Subject } from 'rxjs';
 
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;
@@ -35,7 +34,6 @@ describe('dataSourceBase', () => {
 	var dataSourceProcessor: IDataSourceProcessorMock;
 
 	beforeEach(() => {
-		angular.mock.module(__observable.moduleName);
 		angular.mock.module(__array.moduleName);
 		angular.mock.module(moduleName);
 
@@ -58,16 +56,15 @@ describe('dataSourceBase', () => {
 			page: sinon.spy((data: any): any => { return data; }),
 		};
 
-		var services: any = test.angularFixture.inject(__observable.factoryName, __array.serviceName);
-		dataSourceBase = new DataSourceBase<number>(services[__observable.factoryName]
-													, <any>dataSourceProcessor
+		var services: any = test.angularFixture.inject(__array.serviceName);
+		dataSourceBase = new DataSourceBase<number>(<any>dataSourceProcessor
 													, services[__array.serviceName]);
 	});
 
 	describe('count', (): void => {
 		it('should push count changes to consumers', (): void => {
 			const countSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.countObservable.subscribe(countSpy);
+			dataSourceBase.countChanges.subscribe(countSpy);
 			dataSourceBase.count = 3;
 			sinon.assert.calledOnce(countSpy);
 			sinon.assert.calledWith(countSpy, 3);
@@ -155,7 +152,7 @@ describe('dataSourceBase', () => {
 	describe('onSortChange', (): void => {
 		it('should reapply sorts and paging and signal redrawing', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.onSortChange();
 
@@ -166,7 +163,7 @@ describe('dataSourceBase', () => {
 
 		it('should not reapply if data is being reloaded', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.onSortChange();
@@ -180,7 +177,7 @@ describe('dataSourceBase', () => {
 	describe('onPagingChange', (): void => {
 		it('should reapply paging and signal redrawing', (): void => {
 			const redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.onPagingChange();
 
@@ -190,7 +187,7 @@ describe('dataSourceBase', () => {
 
 		it('should not reapply if data is being reloaded', (): void => {
 			const redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.onPagingChange();
@@ -226,7 +223,7 @@ describe('dataSourceBase', () => {
 
 		it('should process the data and signal redrawing', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.refresh();
 
@@ -236,7 +233,7 @@ describe('dataSourceBase', () => {
 
 		it('should not refresh if data is being reloaded', (): void => {
 			var redrawSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(redrawSpy, 'redrawing');
+			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.refresh();
@@ -253,9 +250,9 @@ describe('dataSourceBase', () => {
 
 		it('should remove an item and signal removed and changed', (): void => {
 			var removeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(removeSpy, 'removed');
+			dataSourceBase.removed.subscribe(removeSpy);
 			var changeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(changeSpy, 'changed');
+			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.remove(2);
@@ -267,9 +264,9 @@ describe('dataSourceBase', () => {
 
 		it('should not signal remvoed or changed if item is not found', (): void => {
 			var removeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(removeSpy, 'removed');
+			dataSourceBase.removed.subscribe(removeSpy);
 			var changeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(changeSpy, 'changed');
+			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.remove(5);
@@ -290,9 +287,9 @@ describe('dataSourceBase', () => {
 		it('should add item and signal added and changed', (): void => {
 			dataSourceBase.refresh = <any>sinon.spy();
 			var addSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(addSpy, 'added');
+			dataSourceBase.added.subscribe(addSpy);
 			var changeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(changeSpy, 'changed');
+			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.push(4);
@@ -307,9 +304,9 @@ describe('dataSourceBase', () => {
 	describe('replace', (): void => {
 		it('should not signal replaced or changed if old item is not found', (): void => {
 			var replaceSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(replaceSpy, 'replaced');
+			dataSourceBase.replaced.subscribe(replaceSpy);
 			var changeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(changeSpy, 'changed');
+			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.replace(4, 5);
@@ -322,9 +319,9 @@ describe('dataSourceBase', () => {
 		it('should replace item and signal replaced and changed', (): void => {
 			dataSourceBase.refresh = sinon.spy();
 			var replaceSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(replaceSpy, 'replaced');
+			dataSourceBase.replaced.subscribe(replaceSpy);
 			var changeSpy: Sinon.SinonSpy = sinon.spy();
-			dataSourceBase.watch(changeSpy, 'changed');
+			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.replace(3, 4);
