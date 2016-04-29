@@ -135,10 +135,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		if (item != null) {
 			this.observable.fire(events.removed);
 			this.observable.fire(events.changed);
-
-			if (this.pager) {
-				this.refresh();
-			}
+			this.refresh();
 		}
 	}
 
