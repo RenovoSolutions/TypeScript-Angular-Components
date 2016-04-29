@@ -279,17 +279,10 @@ describe('dataSourceBase', () => {
 			sinon.assert.notCalled(changeSpy);
 		});
 
-		it('should refresh if paging is enabled', (): void => {
+		it('should refresh after removing an item', (): void => {
 			dataSourceBase.rawDataSet = [1, 2, 3];
-			dataSourceBase.pager = <any>{};
 			dataSourceBase.remove(2);
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceBase.refresh);
-		});
-
-		it('should not refresh if paging is not enabled', (): void => {
-			dataSourceBase.rawDataSet = [1, 2, 3];
-			dataSourceBase.remove(2);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceBase.refresh);
 		});
 	});
 
