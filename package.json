@@ -89,6 +89,7 @@
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
     "rx": "~4.0.8",
+    "rxjs": "^5.0.0-beta.2",
     "signature_pad": "~1.5.3",
     "typescript-angular-utilities": "~2.11.2",
     "ui-select": "~0.14.7"
