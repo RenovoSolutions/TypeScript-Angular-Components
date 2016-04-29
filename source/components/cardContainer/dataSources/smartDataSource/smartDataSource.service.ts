@@ -125,7 +125,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		this.subscriptions = [];
 		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
 			if (_.isFunction(filter.subscribe)) {
-				this.subscriptions.push(filter.subscribe((): void => { this.onFilterChange(filter); }));
+				this.subscriptions.push(<any>filter.subscribe((): void => { this.onFilterChange(filter); }));
 			}
 		});
 	}
