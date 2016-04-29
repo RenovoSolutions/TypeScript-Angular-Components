@@ -12,7 +12,7 @@
 			</ui-select-choices>
 		</ui-select>
 	</div>
-	<div ng-if="typeahead.collapsed">
+	<div class="collapsed" ng-if="typeahead.collapsed">
 		<span>{{typeahead.getDisplayName(typeahead.selection)}}</span>
 		<rl-button type="default flat" action="typeahead.clear()"><i class="fa fa-remove"></i></rl-button>
 	</div>
