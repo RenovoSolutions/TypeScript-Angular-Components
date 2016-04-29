@@ -2,6 +2,8 @@ import * as angular from 'angular';
 
 import { IStep } from '../../source/components/multiStepIndicator/multiStepIndicator';
 
+export const moduleName: string = 'TabTestModule';
+
 class TabTestController {
 	steps: IStep[];
 
@@ -21,5 +23,5 @@ class TabTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('TabTestController', TabTestController);

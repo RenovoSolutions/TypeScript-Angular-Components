@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+export const moduleName: string = 'ButtonTestModule';
+
 class ButtonTestController {
 	static $inject: string[] = ['$timeout'];
 	constructor(private $timeout: angular.ITimeoutService) { }
@@ -13,5 +15,5 @@ class ButtonTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('ButtonTestController', ButtonTestController);

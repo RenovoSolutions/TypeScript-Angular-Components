@@ -6,6 +6,8 @@ import __validation = services.validation;
 
 import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer';
 
+export const moduleName: string = 'MiscTestModule';
+
 interface ITemplateScope extends angular.IScope {
 	text: string;
 }
@@ -52,5 +54,5 @@ class MiscTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('MiscTestController', MiscTestController);

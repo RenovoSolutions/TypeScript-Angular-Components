@@ -7,6 +7,8 @@ import __date = services.date;
 
 import { IMessage, IMessageLogDataService, IUser } from '../../source/components/messageLog/messageLog.module';
 
+export const moduleName: string = 'MessageLogTestModule';
+
 class MessageLogTestController {
 	messages: IMessage[];
 	messageService: IMessageLogDataService;
@@ -76,5 +78,5 @@ class MessageLogTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('MessageLogTestController', MessageLogTestController);

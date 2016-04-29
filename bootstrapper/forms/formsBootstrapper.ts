@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+export const moduleName: string = 'FormTestModule';
+
 class FormTestController {
 	count: number;
 
@@ -16,5 +18,5 @@ class FormTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('FormTestController', FormTestController);

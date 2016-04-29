@@ -2,6 +2,8 @@ import * as angular from 'angular';
 
 import { serviceName as dialogService, bootstrapModalDialog } from '../../source/services/dialog/dialog.service';
 
+export const moduleName: string = 'PopupTestModule';
+
 class PopupTestController {
 	popover: string;
 	content: string;
@@ -35,5 +37,5 @@ class PopupTestController {
 	}
 }
 
-angular.module('app')
+angular.module(moduleName, [])
 	.controller('PopupTestController', PopupTestController);
