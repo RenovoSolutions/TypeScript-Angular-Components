@@ -78,5 +78,17 @@ class MessageLogTestController {
 	}
 }
 
+MessageLogRoute.$inject = ['$stateProvider'];
+function MessageLogRoute($stateProvider) {
+	$stateProvider
+		.state('messageLog', {
+			url: '/messageLog',
+			template: require('./messageLogTest.html'),
+			controller: 'MessageLogTestController',
+			controllerAs: 'messageLog',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('MessageLogTestController', MessageLogTestController);
+	.controller('MessageLogTestController', MessageLogTestController)
+	.config(MessageLogRoute);

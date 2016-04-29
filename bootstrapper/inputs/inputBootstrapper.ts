@@ -78,5 +78,17 @@ class InputTestController {
 	}
 }
 
+InputRoute.$inject = ['$stateProvider'];
+function InputRoute($stateProvider) {
+	$stateProvider
+		.state('inputs', {
+			url: '/inputs',
+			template: require('./inputs.html'),
+			controller: 'InputTestController',
+			controllerAs: 'input',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('InputTestController', InputTestController);
+	.controller('InputTestController', InputTestController)
+	.config(InputRoute);

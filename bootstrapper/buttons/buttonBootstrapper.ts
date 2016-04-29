@@ -15,5 +15,17 @@ class ButtonTestController {
 	}
 }
 
+ButtonRoute.$inject = ['$stateProvider'];
+function ButtonRoute($stateProvider) {
+	$stateProvider
+		.state('buttons', {
+			url: '/buttons',
+			template: require('./buttons.html'),
+			controller: 'ButtonTestController',
+			controllerAs: 'button',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('ButtonTestController', ButtonTestController);
+	.controller('ButtonTestController', ButtonTestController)
+	.config(ButtonRoute);

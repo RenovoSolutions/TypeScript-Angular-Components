@@ -56,5 +56,17 @@ class CardTestController {
 	}
 }
 
+CardRoute.$inject = ['$stateProvider'];
+function CardRoute($stateProvider) {
+	$stateProvider
+		.state('cards', {
+			url: '/cards',
+			template: require('./cards.html'),
+			controller: 'CardTestController',
+			controllerAs: 'card',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('CardTestController', CardTestController);
+	.controller('CardTestController', CardTestController)
+	.config(CardRoute);

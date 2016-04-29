@@ -18,5 +18,17 @@ class FormTestController {
 	}
 }
 
+FormRoute.$inject = ['$stateProvider'];
+function FormRoute($stateProvider) {
+	$stateProvider
+		.state('forms', {
+			url: '/forms',
+			template: require('./forms.html'),
+			controller: 'FormTestController',
+			controllerAs: 'forms',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('FormTestController', FormTestController);
+	.controller('FormTestController', FormTestController)
+	.config(FormRoute);

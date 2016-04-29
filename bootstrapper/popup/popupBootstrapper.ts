@@ -37,5 +37,17 @@ class PopupTestController {
 	}
 }
 
+PopupRoute.$inject = ['$stateProvider'];
+function PopupRoute($stateProvider) {
+	$stateProvider
+		.state('popup', {
+			url: '/popup',
+			template: require('./popup.html'),
+			controller: 'PopupTestController',
+			controllerAs: 'popup',
+		});
+}
+
 angular.module(moduleName, [])
-	.controller('PopupTestController', PopupTestController);
+	.controller('PopupTestController', PopupTestController)
+	.config(PopupRoute);
