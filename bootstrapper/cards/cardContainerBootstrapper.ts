@@ -63,7 +63,7 @@ function CardRoute($stateProvider) {
 			url: '/cards',
 			template: require('./cards.html'),
 			controller: 'CardTestController',
-			controllerAs: 'card',
+			controllerAs: 'cards',
 		});
 }
 
