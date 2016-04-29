@@ -4,7 +4,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
@@ -92,7 +92,7 @@ export class CardController {
 		this.refresh = new Rx.Subject<void>();
 		$scope.refresh = (): void => {
 			this.source.refresh();
-			this.refresh.onNext(null);
+			this.refresh.next(null);
 		};
 		$scope.remove = (): void => {
 			this.source.remove(this.item);

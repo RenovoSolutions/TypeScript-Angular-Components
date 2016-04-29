@@ -1,6 +1,6 @@
 'use strict';
 
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
@@ -36,7 +36,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	set count(value: number) {
 		this._count = value;
-		this.countObservable.onNext(value);
+		this.countObservable.next(value);
 	}
 
 	constructor(observableFactory: __observable.IObservableServiceFactory
@@ -44,7 +44,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 			, protected array: __array.IArrayUtility) {
 		this.observable = observableFactory.getInstance();
 		this.observable.allowableEvents = events.all;
-		this.countObservable = new Rx.Subject();
+		this.countObservable = new Rx.Subject<number>();
 	}
 
 	initPager(): void {

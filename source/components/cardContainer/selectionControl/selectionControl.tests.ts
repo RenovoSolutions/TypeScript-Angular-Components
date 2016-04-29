@@ -17,7 +17,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 interface IItemMock {
 	viewData: ISelectionViewData;
@@ -60,11 +60,11 @@ describe('selectionControl', () => {
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
 		buildController();
 
-		cardContainer.numberSelectedObservable.onNext(2);
+		cardContainer.numberSelectedObservable.next(2);
 
 		expect(selection.selectedItems).to.equal(2);
 
-		cardContainer.numberSelectedObservable.onNext(4);
+		cardContainer.numberSelectedObservable.next(4);
 
 		expect(selection.selectedItems).to.equal(4);
 	});
@@ -143,7 +143,7 @@ describe('selectionControl', () => {
 	function buildController(items?: IItemMock[], hasPager?: boolean): void {
 		cardContainer = {
 			numberSelected: 0,
-			numberSelectedObservable: new Rx.Subject(),
+			numberSelectedObservable: new Rx.Subject<number>(),
 			dataSource: {
 				dataSet: _.take(items, 2),
 				filteredDataSet: items,

@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;
@@ -51,7 +51,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean = true;
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];
-	private subscriptions: Rx.Subscriber[];
+	private subscriptions: Rx.Subscription[];
 	private throttleLimit: number = 200;
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
@@ -119,8 +119,8 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	}
 
 	private setupSubscriptions() {
-		_.each(this.subscriptions, (subscription: Rx.Subscriber): void => {
-			subscription.dispose();
+		_.each(this.subscriptions, (subscription: Rx.Subscription): void => {
+			subscription.unsubscribe();
 		});
 		this.subscriptions = [];
 		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {

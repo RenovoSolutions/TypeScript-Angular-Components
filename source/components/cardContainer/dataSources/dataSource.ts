@@ -1,6 +1,6 @@
 'use strict';
 
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __observable = services.observable;

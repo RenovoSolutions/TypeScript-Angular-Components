@@ -4,7 +4,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.dataPager';
 export var factoryName: string = 'dataPager';
@@ -40,7 +40,7 @@ export class DataPager implements IDataPager {
 
 	set pageNumber(value: number) {
 		this._pageNumber = value;
-		this.pageNumberObservable.onNext(value);
+		this.pageNumberObservable.next(value);
 	}
 
 	get pageSize(): number {
@@ -49,7 +49,7 @@ export class DataPager implements IDataPager {
 
 	set pageSize(value: number) {
 		this._pageSize = value;
-		this.pageSizeObservable.onNext(value);
+		this.pageSizeObservable.next(value);
 	}
 
 	get startItem(): number {

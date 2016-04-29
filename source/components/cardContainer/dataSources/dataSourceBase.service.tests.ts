@@ -21,7 +21,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;
@@ -208,11 +208,11 @@ describe('dataSourceBase', () => {
 			};
 			dataSourceBase.initPager();
 
-			dataSourceBase.pager.pageSizeObservable.onNext(3);
+			dataSourceBase.pager.pageSizeObservable.next(3);
 
 			sinon.assert.calledOnce(pagingSpy);
 
-			dataSourceBase.pager.pageNumberObservable.onNext(3);
+			dataSourceBase.pager.pageNumberObservable.next(3);
 
 			sinon.assert.calledTwice(pagingSpy);
 		});
