@@ -20,19 +20,24 @@
 		<script src="/node_modules/typescript-angular-utilities/output/utilities.js"></script>
 		<script src="/bootstrapper/app.js"></script>
 
-		<div ng-app="app" class="container-fluid">
-			<ul class="nav nav-tabs">
-				<li role="presentation"><a ui-sref="/">Home</a></li>
-				<li role="presentation"><a ui-sref="inputs">Inputs</a></li>
-				<li role="presentation"><a ui-sref="buttons">Buttons</a></li>
-				<li role="presentation"><a ui-sref="popup">Popup content</a></li>
-				<li role="presentation"><a ui-sref="cards">Cards</a></li>
-				<li role="presentation"><a ui-sref="tabs">Tabs</a></li>
-				<li role="presentation"><a ui-sref="forms">Forms</a></li>
-				<li role="presentation"><a ui-sref="messageLog">Message log</a></li>
-				<li role="presentation"><a ui-sref="misc">Misc</a></li>
-			</ul>
-			<div ui-view class="view-window"></div>
+		<div ng-app="app" class="row">
+			<div class="col-xs-2">
+				<ul class="nav nav-pills nav-stacked">
+					<li><a ui-sref="/">Home</a></li>
+					<li><a ui-sref="inputs">Inputs</a></li>
+					<li><a ui-sref="buttons">Buttons</a></li>
+					<li><a ui-sref="popup">Popup content</a></li>
+					<li><a ui-sref="cards">Cards</a></li>
+					<li><a ui-sref="tabs">Tabs</a></li>
+					<li><a ui-sref="forms">Forms</a></li>
+					<li><a ui-sref="messageLog">Message log</a></li>
+					<li><a ui-sref="misc">Misc</a></li>
+				</ul>
+			</div>
+
+			<div class="col-xs-10">
+				<div ui-view class="view-window"></div>
+			</div>
 		</div>
 	</body>
 </html>
