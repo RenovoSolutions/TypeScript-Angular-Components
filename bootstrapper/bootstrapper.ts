@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+import { moduleName as componentsModule } from '../source/ui.module';
+
 import { moduleName as inputModuleName } from './inputs/inputBootstrapper';
 import { moduleName as buttonModuleName } from './buttons/buttonBootstrapper';
 import { moduleName as popupModuleName } from './popup/popupBootstrapper';
@@ -9,8 +11,6 @@ import { moduleName as tabModuleName } from './tabs/tabsBootstrapper';
 import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
-
-import { moduleName as componentsModule } from '../source/ui.module';
 
 angular.module('app', [
 	componentsModule,
