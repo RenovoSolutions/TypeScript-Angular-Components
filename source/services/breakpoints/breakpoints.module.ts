@@ -2,8 +2,6 @@
 
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-
 import { moduleName as windowWrapperModuleName } from '../windowWrapper/windowWrapper.service';
 import { visibleBreakpointServiceName, VisibleBreakpointService } from './visibleBreakpoint.service';
 import { breakpointServiceName, BreakpointService } from './breakpoints.service';
@@ -15,7 +13,6 @@ export * from './breakpoints.service';
 export var moduleName: string = 'rl.ui.services.breakpoints';
 
 angular.module(moduleName, [
-	services.observable.moduleName,
 	windowWrapperModuleName,
 ])
 	.constant('resizeDebounceMilliseconds', 500)
