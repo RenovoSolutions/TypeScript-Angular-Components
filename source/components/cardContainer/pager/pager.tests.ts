@@ -22,12 +22,12 @@ import * as Rx from 'rxjs';
 interface IDataPagerMock {
 	pageSize: number;
 	pageNumber: number;
-	pageSizeObservable: Rx.Subject<number>;
+	pageSizeChanges: Rx.Subject<number>;
 }
 
 interface IDataSourceMock {
 	count: number;
-	countObservable: Rx.Subject<number>;
+	countChanges: Rx.Subject<number>;
 	setCount(count: number): void;
 	pager: IDataPagerMock;
 }
@@ -174,7 +174,7 @@ describe('PagerController', () => {
 
 			// increasing the page size to 5 decreases the number of pages to 2
 			dataPager.pageSize = 5;
-			dataPager.pageSizeObservable.next(5);
+			dataPager.pageSizeChanges.next(5);
 
 			pager.last();
 			expect(pager.currentPage).to.equal(2);
@@ -295,15 +295,15 @@ describe('PagerController', () => {
 		dataPager = {
 			pageSize: 1,
 			pageNumber: 1,
-			pageSizeObservable: new Rx.Subject<number>(),
+			pageSizeChanges: new Rx.Subject<number>(),
 		};
 
 		dataSource = {
 			count: lastPage,
-			countObservable: new Rx.Subject<number>(),
+			countChanges: new Rx.Subject<number>(),
 			setCount(count: number): void {
 				dataSource.count = count;
-				dataSource.countObservable.next(count);
+				dataSource.countChanges.next(count);
 			},
 			pager: dataPager,
 		};

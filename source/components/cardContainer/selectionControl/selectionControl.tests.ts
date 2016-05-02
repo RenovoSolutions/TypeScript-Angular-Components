@@ -29,7 +29,7 @@ interface ISelectionViewData {
 
 interface ICardContainerMock {
 	numberSelected: number;
-	numberSelectedObservable: Rx.Subject<number>;
+	numberSelectedChanges: Rx.Subject<number>;
 	dataSource: any;
 	selectionChanged: Sinon.SinonSpy;
 }
@@ -60,11 +60,11 @@ describe('selectionControl', () => {
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
 		buildController();
 
-		cardContainer.numberSelectedObservable.next(2);
+		cardContainer.numberSelectedChanges.next(2);
 
 		expect(selection.selectedItems).to.equal(2);
 
-		cardContainer.numberSelectedObservable.next(4);
+		cardContainer.numberSelectedChanges.next(4);
 
 		expect(selection.selectedItems).to.equal(4);
 	});
@@ -143,7 +143,7 @@ describe('selectionControl', () => {
 	function buildController(items?: IItemMock[], hasPager?: boolean): void {
 		cardContainer = {
 			numberSelected: 0,
-			numberSelectedObservable: new Rx.Subject<number>(),
+			numberSelectedChanges: new Rx.Subject<number>(),
 			dataSource: {
 				dataSet: _.take(items, 2),
 				filteredDataSet: items,

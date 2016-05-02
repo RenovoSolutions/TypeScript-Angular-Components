@@ -112,7 +112,7 @@ export class CardContainerController {
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
-	numberSelectedObservable: Rx.Subject<number>;
+	numberSelectedChanges: Rx.Subject<number>;
 	selectionColumn: IColumn<any>;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
@@ -137,7 +137,7 @@ export class CardContainerController {
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
 		this.sortDirection = SortDirection;
-		this.numberSelectedObservable = new Rx.Subject<number>();
+		this.numberSelectedChanges = new Rx.Subject<number>();
 
 		this.syncFilters();
 
@@ -328,7 +328,7 @@ export class CardContainerController {
 		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
 			return item.viewData != null && item.viewData.selected;
 		}).length;
-		this.numberSelectedObservable.next(this.numberSelected);
+		this.numberSelectedChanges.next(this.numberSelected);
 	}
 
 	private updateDisabledSelections: {(): void} = (): void => {

@@ -56,8 +56,8 @@ describe('dataPager', () => {
 		const pageNumberSpy: Sinon.SinonSpy = sinon.spy();
 		const pageSizeSpy: Sinon.SinonSpy = sinon.spy();
 
-		dataPager.pageNumberObservable.subscribe(pageNumberSpy);
-		dataPager.pageSizeObservable.subscribe(pageSizeSpy);
+		dataPager.pageNumberChanges.subscribe(pageNumberSpy);
+		dataPager.pageSizeChanges.subscribe(pageSizeSpy);
 
 		dataPager.pageNumber = 2;
 		dataPager.pageSize = 3;

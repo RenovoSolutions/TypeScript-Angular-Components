@@ -496,7 +496,7 @@ describe('CardContainerController', () => {
 			dataSource.watch = sinon.spy();
 			buildController();
 			const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
-			cardContainer.numberSelectedObservable.subscribe(numberSelectedSpy);
+			cardContainer.numberSelectedChanges.subscribe(numberSelectedSpy);
 
 			_.each(dataSource.dataSet, (item: any): void => {
 				item.viewData.selected = true;
