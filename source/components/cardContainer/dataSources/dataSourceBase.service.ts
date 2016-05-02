@@ -53,8 +53,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	initPager(): void {
 		if (this.pager) {
-			this.pager.pageSizeObservable.subscribe(this.onPagingChange.bind(this));
-			this.pager.pageNumberObservable.subscribe(this.onPagingChange.bind(this));
+			this.pager.pageSizeChanges.subscribe(this.onPagingChange.bind(this));
+			this.pager.pageNumberChanges.subscribe(this.onPagingChange.bind(this));
 		}
 	}
 

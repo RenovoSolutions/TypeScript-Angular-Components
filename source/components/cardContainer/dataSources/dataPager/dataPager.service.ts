@@ -15,8 +15,8 @@ export interface IDataPager {
 	pageNumber: number;
 	pageSize: number;
 
-	pageNumberObservable: Rx.Subject<number>;
-	pageSizeObservable: Rx.Subject<number>;
+	pageNumberChanges: Rx.Subject<number>;
+	pageSizeChanges: Rx.Subject<number>;
 
 	startItem: number;
 	filter<T>(dataSet: T[]): T[];
@@ -26,12 +26,12 @@ export class DataPager implements IDataPager {
 	private _pageNumber: number = 1;
 	private _pageSize: number = defaultPageSize;
 
-	pageNumberObservable: Rx.Subject<number>;
-	pageSizeObservable: Rx.Subject<number>;
+	pageNumberChanges: Rx.Subject<number>;
+	pageSizeChanges: Rx.Subject<number>;
 
 	constructor() {
-		this.pageNumberObservable = new Rx.Subject<number>();
-		this.pageSizeObservable = new Rx.Subject<number>();
+		this.pageNumberChanges = new Rx.Subject<number>();
+		this.pageSizeChanges = new Rx.Subject<number>();
 	}
 
 	get pageNumber(): number {
@@ -40,7 +40,7 @@ export class DataPager implements IDataPager {
 
 	set pageNumber(value: number) {
 		this._pageNumber = value;
-		this.pageNumberObservable.next(value);
+		this.pageNumberChanges.next(value);
 	}
 
 	get pageSize(): number {
@@ -49,7 +49,7 @@ export class DataPager implements IDataPager {
 
 	set pageSize(value: number) {
 		this._pageSize = value;
-		this.pageSizeObservable.next(value);
+		this.pageSizeChanges.next(value);
 	}
 
 	get startItem(): number {

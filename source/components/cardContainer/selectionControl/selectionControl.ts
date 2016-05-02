@@ -33,7 +33,7 @@ export class SelectionControlController {
 		this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
 		this.dataSource = this.cardContainer.dataSource;
 
-		this.cardContainer.numberSelectedObservable.subscribe((value: number): void => {
+		this.cardContainer.numberSelectedChanges.subscribe((value: number): void => {
 			this.selectedItems = value;
 		});
 	}
