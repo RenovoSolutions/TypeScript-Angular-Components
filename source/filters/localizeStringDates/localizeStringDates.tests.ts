@@ -23,8 +23,8 @@ describe('localizeDateString', () => {
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 		__timezones.timezoneService.setCurrentTimezone(__timezones.timezones.EST.offset)
-		let services: any = __test.angularFixture.inject(filterName);
-		localizeDateString = services[filterName];
+		let services: any = __test.angularFixture.inject(filterName + 'Filter');
+		localizeDateString = services[filterName + 'Filter'];
 	});
 
 	it('should return an empty string when no string is passed', (): void => {
