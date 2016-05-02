@@ -20,13 +20,14 @@ import * as componentServices from '../../services/services.module';
 import __dialog = componentServices.dialog;
 
 import { moduleName as templateLoaderModule } from '../../services/templateLoader/templateLoader.service';
+import { moduleName as dateFilterModule } from '../../filters/date/date.filter';
 
 export * from './messageLog.service';
 export * from './messageLog.directive';
 
 export var moduleName: string = 'rl.ui.components.messageLog';
 
-angular.module(moduleName, [__object.moduleName, jqueryModuleName, templateLoaderModule, __dialog.moduleName])
+angular.module(moduleName, [__object.moduleName, jqueryModuleName, templateLoaderModule, __dialog.moduleName, dateFilterModule])
 	.factory(factoryName, messageLogFactory)
 	.directive(directiveName, messageLog)
 	.controller(controllerName, MessageLogController)
