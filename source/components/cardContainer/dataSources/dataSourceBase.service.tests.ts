@@ -200,8 +200,8 @@ describe('dataSourceBase', () => {
 			const pagingSpy: Sinon.SinonSpy = sinon.spy();
 			dataSourceBase.onPagingChange = pagingSpy;
 			dataSourceBase.pager = <any>{
-				pageSizeChanges: new Rx.Subject<number>(),
-				pageNumberChanges: new Rx.Subject<number>(),
+				pageSizeChanges: new Subject<number>(),
+				pageNumberChanges: new Subject<number>(),
 			};
 			dataSourceBase.initPager();
 
