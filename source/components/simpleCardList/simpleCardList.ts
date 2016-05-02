@@ -20,9 +20,10 @@ export interface ISimpleCardListAttributes extends angular.IAttributes {
 }
 
 export class SimpleCardListController implements ISimpleCardListController {
-	private alwaysOpen: boolean;
-	closeEvent: Subject<void>;
+	// public
 	alwaysOpenChanges: Subject<boolean>;
+
+	alwaysOpen: boolean;
 	cards: ISimpleCardBehavior[] = [];
 
 	static $inject: string[] = ['$scope', '$attrs', '$parse'];
@@ -30,10 +31,7 @@ export class SimpleCardListController implements ISimpleCardListController {
 		, $attrs: ISimpleCardListAttributes
 		, $parse: angular.IParseService) {
 		this.alwaysOpenChanges = new Subject<boolean>();
-		$scope.$watch((): boolean => { return $parse($attrs.alwaysOpen)($scope); }, (value: boolean) => {
-			this.alwaysOpen = value;
-			this.alwaysOpenChanges.next(value);
-		});
+		$scope.$watch((): boolean => { return $parse($attrs.alwaysOpen)($scope); }, this.alwaysOpenChange.bind(this));
 
 		$attrs.$addClass('card-list');
 	}
@@ -44,6 +42,11 @@ export class SimpleCardListController implements ISimpleCardListController {
 
 	openCard(): boolean {
 		return _.every(this.cards, (card: ISimpleCardBehavior): boolean => card.close());
+	}
+
+	alwaysOpenChange(value: boolean): void {
+		this.alwaysOpen = value;
+		this.alwaysOpenChanges.next(value);
 	}
 }
 
