@@ -6,6 +6,8 @@ import __validation = services.validation;
 
 import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer';
 
+export const moduleName: string = 'MiscTestModule';
+
 interface ITemplateScope extends angular.IScope {
 	text: string;
 }
@@ -52,5 +54,17 @@ class MiscTestController {
 	}
 }
 
-angular.module('app')
-	.controller('MiscTestController', MiscTestController);
+MiscRoute.$inject = ['$stateProvider'];
+function MiscRoute($stateProvider) {
+	$stateProvider
+		.state('misc', {
+			url: '/misc',
+			template: require('./misc.html'),
+			controller: 'MiscTestController',
+			controllerAs: 'misc',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('MiscTestController', MiscTestController)
+	.config(MiscRoute);

@@ -3,6 +3,8 @@ import * as _ from 'lodash';
 
 import { factoryName as builderService, ICardContainerBuilderFactory, ICardContainerBuilder } from '../../source/components/cardContainer/cardContainerBuilder.service';
 
+export const moduleName: string = 'CardTestModule';
+
 interface ICardItem {
 	name: string;
 	value: number;
@@ -54,5 +56,17 @@ class CardTestController {
 	}
 }
 
-angular.module('app')
-	.controller('CardTestController', CardTestController);
+CardRoute.$inject = ['$stateProvider'];
+function CardRoute($stateProvider) {
+	$stateProvider
+		.state('cards', {
+			url: '/cards',
+			template: require('./cards.html'),
+			controller: 'CardTestController',
+			controllerAs: 'cards',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('CardTestController', CardTestController)
+	.config(CardRoute);

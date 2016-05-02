@@ -6,6 +6,8 @@ import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 import __validation = services.validation;
 
+export const moduleName: string = 'InputTestModule';
+
 interface ITestItem {
 	name: string;
 }
@@ -76,5 +78,17 @@ class InputTestController {
 	}
 }
 
-angular.module('app')
-	.controller('InputTestController', InputTestController);
+InputRoute.$inject = ['$stateProvider'];
+function InputRoute($stateProvider) {
+	$stateProvider
+		.state('inputs', {
+			url: '/inputs',
+			template: require('./inputs.html'),
+			controller: 'InputTestController',
+			controllerAs: 'input',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('InputTestController', InputTestController)
+	.config(InputRoute);

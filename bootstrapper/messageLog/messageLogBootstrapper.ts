@@ -7,6 +7,8 @@ import __date = services.date;
 
 import { IMessage, IMessageLogDataService, IUser } from '../../source/components/messageLog/messageLog.module';
 
+export const moduleName: string = 'MessageLogTestModule';
+
 class MessageLogTestController {
 	messages: IMessage[];
 	messageService: IMessageLogDataService;
@@ -76,5 +78,17 @@ class MessageLogTestController {
 	}
 }
 
-angular.module('app')
-	.controller('MessageLogTestController', MessageLogTestController);
+MessageLogRoute.$inject = ['$stateProvider'];
+function MessageLogRoute($stateProvider) {
+	$stateProvider
+		.state('messageLog', {
+			url: '/messageLog',
+			template: require('./messageLogTest.html'),
+			controller: 'MessageLogTestController',
+			controllerAs: 'messageLog',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('MessageLogTestController', MessageLogTestController)
+	.config(MessageLogRoute);

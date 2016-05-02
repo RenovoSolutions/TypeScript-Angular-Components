@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+export const moduleName: string = 'ButtonTestModule';
+
 class ButtonTestController {
 	static $inject: string[] = ['$timeout'];
 	constructor(private $timeout: angular.ITimeoutService) { }
@@ -13,5 +15,17 @@ class ButtonTestController {
 	}
 }
 
-angular.module('app')
-	.controller('ButtonTestController', ButtonTestController);
+ButtonRoute.$inject = ['$stateProvider'];
+function ButtonRoute($stateProvider) {
+	$stateProvider
+		.state('buttons', {
+			url: '/buttons',
+			template: require('./buttons.html'),
+			controller: 'ButtonTestController',
+			controllerAs: 'button',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('ButtonTestController', ButtonTestController)
+	.config(ButtonRoute);

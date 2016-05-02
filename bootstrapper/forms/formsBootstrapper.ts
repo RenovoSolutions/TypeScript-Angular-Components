@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+export const moduleName: string = 'FormTestModule';
+
 class FormTestController {
 	count: number;
 
@@ -16,5 +18,17 @@ class FormTestController {
 	}
 }
 
-angular.module('app')
-	.controller('FormTestController', FormTestController);
+FormRoute.$inject = ['$stateProvider'];
+function FormRoute($stateProvider) {
+	$stateProvider
+		.state('forms', {
+			url: '/forms',
+			template: require('./forms.html'),
+			controller: 'FormTestController',
+			controllerAs: 'forms',
+		});
+}
+
+angular.module(moduleName, [])
+	.controller('FormTestController', FormTestController)
+	.config(FormRoute);
