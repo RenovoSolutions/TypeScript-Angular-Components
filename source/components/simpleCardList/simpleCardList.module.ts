@@ -3,7 +3,6 @@
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __parentChild = services.parentChildBehavior;
 
 import * as card from './simpleCard';
@@ -17,7 +16,7 @@ export {
 export var moduleName: string = 'rl.ui.components.simpleCardList';
 
 
-angular.module(moduleName, [__observable.moduleName, __parentChild.moduleName])
+angular.module(moduleName, [__parentChild.moduleName])
 	.directive(list.directiveName, list.simpleCardList)
 	.controller(list.controllerName, list.SimpleCardListController)
 	.component(card.componentName, card.simpleCard)

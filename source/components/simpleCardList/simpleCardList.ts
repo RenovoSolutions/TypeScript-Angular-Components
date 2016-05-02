@@ -2,9 +2,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
+import { Subject, Subscription } from 'rxjs';
 
 import { ISimpleCardBehavior } from './simpleCard';
 
@@ -12,7 +10,8 @@ export var directiveName: string = 'rlSimpleCardList';
 export var controllerName: string = 'SimpleCardListController';
 
 export interface ISimpleCardListController {
-	registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction;
+	alwaysOpenChanges: Subject<boolean>;
+	registerCard(behavior: ISimpleCardBehavior): void;
 	openCard(): boolean;
 }
 
@@ -21,41 +20,30 @@ export interface ISimpleCardListAttributes extends angular.IAttributes {
 }
 
 export class SimpleCardListController implements ISimpleCardListController {
-	private observable: __observable.IObservableService;
 	private alwaysOpen: boolean;
+	closeEvent: Subject<void>;
+	alwaysOpenChanges: Subject<boolean>;
+	cards: ISimpleCardBehavior[] = [];
 
-	static $inject: string[] = ['$scope', '$attrs', '$parse', __observable.factoryName];
+	static $inject: string[] = ['$scope', '$attrs', '$parse'];
 	constructor($scope: angular.IScope
 		, $attrs: ISimpleCardListAttributes
-		, $parse: angular.IParseService
-		, observableFactory: __observable.IObservableServiceFactory) {
-		this.observable = observableFactory.getInstance();
-
+		, $parse: angular.IParseService) {
+		this.alwaysOpenChanges = new Subject<boolean>();
 		$scope.$watch((): boolean => { return $parse($attrs.alwaysOpen)($scope); }, (value: boolean) => {
 			this.alwaysOpen = value;
-			this.observable.fire('alwaysOpen', value);
+			this.alwaysOpenChanges.next(value);
 		});
 
 		$attrs.$addClass('card-list');
 	}
 
-	registerCard(behavior: ISimpleCardBehavior): __observable.IUnregisterFunction {
-		behavior.setAlwaysOpen(this.alwaysOpen);
-
-		var unregisterFunctions: __observable.IUnregisterFunction[] = [];
-
-		unregisterFunctions.push(this.observable.register(behavior.close, 'close'));
-		unregisterFunctions.push(this.observable.register(behavior.setAlwaysOpen, 'alwaysOpen'));
-
-		return (): void => {
-			_.each(unregisterFunctions, (unregister: __observable.IUnregisterFunction): void => {
-				unregister();
-			});
-		};
+	registerCard(behavior: ISimpleCardBehavior): void {
+		this.cards.push(behavior);
 	}
 
 	openCard(): boolean {
-		return _.every(<boolean[]>this.observable.fire('close'));
+		return _.every(this.cards, (card: ISimpleCardBehavior): boolean => card.close());
 	}
 }
 
