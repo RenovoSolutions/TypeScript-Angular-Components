@@ -29,6 +29,8 @@ export function localizeStringDates(): ILocalizeStringDates {
 
 		//if no timezone is specified then use moment to get the browsers time zone.
 		const timezone: string = __timezones.timezoneService.currentTimezone.momentName;
+
+		// regex to match M/DD/YYYY hh:mm:ss AM|PM with an optional UTC at the end.
 		const regex: RegExp = /([1-9]|1[0-2])\/([1-9]|1\d|2\d|3[01])\/(19|20)\d{2} ([1-9]|1[0-9])\:([0-9])([0-9])(?:\:([0-9])([0-9]))? (AM|PM)(?: UTC)?/g;
 
 		let messageLogText: string = input;
