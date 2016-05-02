@@ -65,7 +65,7 @@ describe('contentProvider', () => {
 		contentProvider.setContent(jqueryClone);
 
 		sinon.assert.calledOnce(actionSpy);
-		sinon.assert.calledWith(actionSpy, jqueryClone);
+		expect(actionSpy.firstCall.args[0].newContent).to.equal(jqueryClone);
 	});
 
 	it('should call the action immediately if there is already content', (): void => {
@@ -76,6 +76,6 @@ describe('contentProvider', () => {
 		contentProvider.subscribe(actionSpy);
 
 		sinon.assert.calledOnce(actionSpy);
-		sinon.assert.calledWith(actionSpy, jqueryClone);
+		expect(actionSpy.firstCall.args[0].newContent).to.equal(jqueryClone);
 	});
 });
