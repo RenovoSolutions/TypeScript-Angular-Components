@@ -8,6 +8,7 @@ export const controllerName: string = 'AlternatingClassController';
 
 export interface IAlternatingClassAttributes extends angular.IAttributes {
 	rlAlternatingClass: string;
+	class: string;
 }
 
 export class AlternatingClassController {
@@ -17,18 +18,18 @@ export class AlternatingClassController {
 	message: string;
 
 	$onInit(): void {
-		let index: number = this.checkForIndex(this.$scope);
-		// return true for odd items (index is even, since it's 0 based)
-		if (!(index % 2)) {
-			this.$attrs.$addClass(this.$attrs.rlAlternatingClass);
+		const odd: boolean = this.checkForOdd(this.$scope);
+		// angular appears to set $odd on the odd indexed items. We want to set the class on the even ones instead.
+		if (odd === false) {
+			this.$attrs.$set('class', this.$attrs.class + ' ' + this.$attrs.rlAlternatingClass);
 		}
 	}
 
-	checkForIndex(scope: any): number {
-		if (scope.$index == null && scope.$parent) {
-			return this.checkForIndex(scope.$parent);
+	checkForOdd(scope: any): boolean {
+		if (scope.$odd == null && scope.$parent) {
+			return this.checkForOdd(scope.$parent);
 		} else {
-			return scope.$index;
+			return scope.$odd;
 		}
 	}
 }
