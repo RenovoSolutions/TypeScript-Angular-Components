@@ -4,8 +4,8 @@
 	</label>
 	<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
 		<ui-select-match placeholder="{{::select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
-		<ui-select-choices repeat="option in select.options">
-			{{select.getDisplayName(option)}}
+		<ui-select-choices repeat="$item in select.options">
+			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
 		</ui-select-choices>
 	</ui-select>
 	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>

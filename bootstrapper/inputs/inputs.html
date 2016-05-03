@@ -22,6 +22,15 @@
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/select/select.md">Select</a>:</label>
 	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" selector="'name'"></rl-select>
+	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" selector="'name'">
+		<div class="row">
+			<div class="col-sm-6">{{$item.name}}</div>
+			<div class="col-sm-6">{{$item.value}}</div>
+		</div>
+	</rl-select>
+	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" selector="'name'" item-as="TestItem">
+		{{TestItem.name}}
+	</rl-select>
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/typeahead/typeahead.md">Typeahead</a>:</label>

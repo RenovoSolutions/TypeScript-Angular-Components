@@ -20,8 +20,16 @@ export interface ITemplateRendererBindings {
 export class TemplateRendererController implements ITemplateRendererBindings {
 	template: ITemplateObject;
 
-	static $inject = ['$compile', '$element'];
-	constructor($compile: angular.ICompileService, $element: angular.IAugmentedJQuery) {
+	static $inject = ['$compile', '$element', '$scope'];
+	constructor($compile: angular.ICompileService, $element: angular.IAugmentedJQuery, $scope: angular.IScope) {
+		if (_.isString(this.template)) {
+			const templateString: string = <any>this.template;
+			this.template = {
+				template: templateString,
+				scope: $scope.$parent.$new(),
+			};
+		}
+
 		let target: JQuery = $element.find('.template-target');
 		let template: JQuery = target.append(this.template.template);
 		$compile(template)(this.template.scope);

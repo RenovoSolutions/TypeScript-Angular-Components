@@ -35,6 +35,7 @@ export interface IInputAttributes extends angular.IAttributes {
 }
 
 export interface IInputOptions {
+	transclude?: boolean;
 	template: string;
 	controller?: string | Function;
 	controllerAs?: string;
@@ -117,6 +118,7 @@ let baseInputOptions: angular.IComponentOptions = {
 
 export function buildInput(options: IInputOptions): angular.IComponentOptions {
 	let clone: any = _.clone(baseInputOptions);
+	clone.transclude = options.transclude;
 	clone.template = options.template;
 	clone.controller = options.controller || clone.controller;
 	clone.controllerAs = options.controllerAs || clone.controllerAs;

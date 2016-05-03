@@ -33,6 +33,12 @@ describe('jqueryUtility', () => {
 		appendSpy = sinon.spy();
 	});
 
+	it('should get the full html content of a jquery object', (): void => {
+		const html: string = '<div>Test</div>';
+		const element: JQuery = angular.element(html);
+		expect(jqueryUtility.getHtml(element)).to.equal(html);
+	});
+
 	it('should empty the existing content and append the new content', (): void => {
 		var existingElement: any = {
 			empty: emptySpy,

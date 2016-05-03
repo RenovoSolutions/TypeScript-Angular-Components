@@ -18,7 +18,6 @@ import {
 	IDataSource,
 	moduleName,
 	dataSourceProcessor as __dataSourceProcessor,
-	events,
 } from './dataSources.module';
 
 import * as angular from 'angular';
