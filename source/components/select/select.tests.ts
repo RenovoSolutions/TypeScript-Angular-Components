@@ -145,6 +145,7 @@ describe('SelectController', () => {
 
 		let locals: any = {
 			$attrs: { $set: sinon.spy() },
+			$transclude: sinon.spy(),
 		};
 
 		let controllerResult: __test.IControllerResult<SelectController>

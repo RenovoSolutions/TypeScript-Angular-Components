@@ -14,6 +14,7 @@ import __transform = services.transform.transform;
 
 import { buildInput, InputController, moduleName as inputModule } from '../input/input';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../services/jquery/jquery.service';
 
 export const moduleName: string = 'rl.ui.components.select';
 export const componentName: string = 'rlSelect';
@@ -33,6 +34,7 @@ export class SelectController extends InputController {
 	select: { (params: ISelectParams): void };
 
 	loading: boolean;
+	template: string;
 
 	private _nullOption: any = {
 		__isNullOption: true,
@@ -51,14 +53,23 @@ export class SelectController extends InputController {
 		this.select({ item: this.ngModel.$viewValue });
 	}
 
-	static $inject: string[] = ['$scope', '$attrs', '$q', __object.serviceName, componentValidatorFactoryName];
+	static $inject: string[] = ['$scope', '$attrs', '$q', '$transclude', __object.serviceName, componentValidatorFactoryName, jqueryServiceName];
 	constructor($scope: angular.IScope
 			, $attrs: angular.IAttributes
 			, private $q: angular.IQService
+			, $transclude: angular.ITranscludeFunction
 			, private object: __object.IObjectUtility
-			, componentValidatorFactory: IComponentValidatorFactory) {
+			, componentValidatorFactory: IComponentValidatorFactory
+			, jqueryUtility: IJQueryUtility) {
 		super($scope, <any>$attrs, componentValidatorFactory);
 		this.inputType = 'select';
+		$transclude((clone: angular.IAugmentedJQuery): void => {
+			if (clone.length) {
+				this.template = jqueryUtility.getHtml(clone);
+			} else {
+				this.template = '{{select.getDisplayName($item)}}';
+			}
+		});
 	}
 
 	$onInit(): void {
@@ -102,6 +113,7 @@ export class SelectController extends InputController {
 }
 
 const select: angular.IComponentOptions = buildInput({
+	transclude: true,
 	template: require('./select.html'),
 	controller: controllerName,
 	controllerAs: 'select',
@@ -115,6 +127,6 @@ const select: angular.IComponentOptions = buildInput({
 	},
 });
 
-angular.module(moduleName, ['ui.select', __object.moduleName, inputModule])
+angular.module(moduleName, ['ui.select', __object.moduleName, inputModule, jqueryModule])
 	.component(componentName, select)
 	.controller(controllerName, SelectController);
