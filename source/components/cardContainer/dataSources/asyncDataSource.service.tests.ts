@@ -7,7 +7,6 @@
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __observable = services.observable;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
@@ -40,7 +39,6 @@ describe('asyncDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(__observable.moduleName);
 		angular.mock.module(__array.moduleName);
 		angular.mock.module(__synchronizedRequests.moduleName);
 		angular.mock.module(moduleName);
@@ -48,7 +46,6 @@ describe('asyncDataSource', () => {
 
 		var services: any = test.angularFixture.inject('$rootScope'
 													, '$q'
-													, __observable.factoryName
 													, __array.serviceName
 													, __synchronizedRequests.factoryName);
 
@@ -60,7 +57,6 @@ describe('asyncDataSource', () => {
 		};
 
 		source = new AsyncDataSource<number>(dataService.get
-											, services[__observable.factoryName]
 											, <any>dataSourceProcessor
 											, services[__array.serviceName]
 											, services[__synchronizedRequests.factoryName]);
@@ -68,9 +64,9 @@ describe('asyncDataSource', () => {
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
 		redrawingSpy = sinon.spy();
-		source.watch(reloadedSpy, events.async.reloaded);
-		source.watch(changedSpy, events.changed);
-		source.watch(redrawingSpy, events.redrawing);
+		source.reloaded.subscribe(reloadedSpy);
+		source.changed.subscribe(changedSpy);
+		source.redrawing.subscribe(redrawingSpy);
 		source.processData = sinon.spy();
 	});
 

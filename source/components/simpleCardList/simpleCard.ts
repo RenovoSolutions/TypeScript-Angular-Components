@@ -4,6 +4,7 @@
 'use strict';
 
 import * as angular from 'angular';
+import { Subject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
@@ -33,7 +34,6 @@ export interface ISimpleCardScope extends angular.IScope {
 export interface ISimpleCardBehavior {
 	autosave(): boolean;
 	close(): boolean;
-	setAlwaysOpen(value: boolean): void;
 }
 
 export interface ISimpleCardChanges {
@@ -69,11 +69,9 @@ export class SimpleCardController implements ISimpleCardBindings {
 		let behavior: ISimpleCardBehavior = {
 			autosave: this.autosave.bind(this),
 			close: this.close,
-			setAlwaysOpen: (value: boolean): void => {
-				this.alwaysOpen = value;
-			},
 		};
 
+		this.listController.alwaysOpenChanges.subscribe(this.updateAlwaysOpen.bind(this));
 		this.listController.registerCard(behavior);
 
 		this.parentChild.registerChildBehavior(this.childLink, behavior);
@@ -124,6 +122,7 @@ export class SimpleCardController implements ISimpleCardBindings {
 
 	private noList(): ISimpleCardListController {
 		return {
+			alwaysOpenChanges: new Subject<boolean>(),
 			openCard(): boolean {
 				return true;
 			},

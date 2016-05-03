@@ -1,9 +1,8 @@
 'use strict';
 
-import * as Rx from 'rx';
+import { Subject } from 'rxjs';
 
-import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
+import { filters } from 'typescript-angular-utilities';
 
 import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
@@ -17,7 +16,12 @@ export interface IDataSource<TDataType> {
 	pager: IDataPager;
 	count: number;
 
-	countObservable: Rx.Subject<number>,
+	countChanges: Subject<number>,
+	redrawing: Subject<void>;
+	changed: Subject<void>;
+	added: Subject<void>;
+	removed: Subject<void>;
+	replaced: Subject<void>;
 
 	countFilterGroups: boolean;
 
@@ -26,8 +30,6 @@ export interface IDataSource<TDataType> {
 	isEmpty: boolean;
 
 	initPager(): void;
-
-	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
 
 	onSortChange(): void;
 	onPagingChange(): void;

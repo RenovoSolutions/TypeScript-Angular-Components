@@ -24,6 +24,7 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import { Subject } from 'rxjs';
 
 interface IDataSourceMock {
 	refresh: Sinon.SinonSpy;
@@ -33,8 +34,9 @@ interface IDataSourceMock {
 	rawDataSet?: any[];
 	dataSet?: any[];
 	filteredDataSet?: any[];
-	watch: Sinon.SinonSpy;
 	initPager: Sinon.SinonSpy;
+	changed: Subject<void>;
+	redrawing: Subject<void>;
 }
 
 interface IDataPagerMock {
@@ -448,30 +450,19 @@ describe('CardContainerController', () => {
 		});
 
 		it('should add view data to all data items', (): void => {
-			dataSource.watch = sinon.spy();
+			dataSource.redrawing.subscribe = sinon.spy();
+			dataSource.changed.subscribe = sinon.spy();
 			buildController();
 
 			expect(dataSource.rawDataSet).to.have.length(2);
 			expect(dataSource.rawDataSet[0].viewData).to.exist;
 			expect(dataSource.rawDataSet[1].viewData).to.exist;
 
-			sinon.assert.calledTwice(dataSource.watch);
-
-			let firstCall: Sinon.SinonSpyCall = dataSource.watch.firstCall;
-			expect(firstCall.args[1]).to.equal('changed');
-
-			let secondCall: Sinon.SinonSpyCall = dataSource.watch.secondCall;
-			expect(secondCall.args[1]).to.equal('redrawing');
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.redrawing.subscribe);
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.changed.subscribe);
 		});
 
 		it('should add view data to new items when changed is fire', (): void => {
-			let changeEvent: Sinon.SinonSpy;
-			dataSource.watch = sinon.spy((listener: Sinon.SinonSpy, event: string): void => {
-				if (event === 'changed') {
-					changeEvent = listener;
-				}
-			});
-
 			buildController();
 
 			dataSource.rawDataSet.push({ id: 3 });
@@ -481,7 +472,7 @@ describe('CardContainerController', () => {
 			expect(dataSource.rawDataSet[1].viewData).to.exist;
 			expect(dataSource.rawDataSet[2].viewData).to.not.exist;
 
-			changeEvent();
+			dataSource.changed.next(null);
 
 			expect(dataSource.rawDataSet[2].viewData).to.exist;
 		});
@@ -493,10 +484,9 @@ describe('CardContainerController', () => {
 			];
 			dataSource.dataSet = dataSource.rawDataSet;
 			dataSource.filteredDataSet = dataSource.rawDataSet;
-			dataSource.watch = sinon.spy();
 			buildController();
 			const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
-			cardContainer.numberSelectedObservable.subscribe(numberSelectedSpy);
+			cardContainer.numberSelectedChanges.subscribe(numberSelectedSpy);
 
 			_.each(dataSource.dataSet, (item: any): void => {
 				item.viewData.selected = true;
@@ -523,7 +513,6 @@ describe('CardContainerController', () => {
 
 		it('should fire selectionChangedEvent when selectionChanged is called', (): void => {
 			let selectionSpy: Sinon.SinonSpy = sinon.spy();
-			dataSource.watch = sinon.spy();
 			buildController();
 
 			cardContainer.selectionChangedEvent = selectionSpy;
@@ -534,12 +523,6 @@ describe('CardContainerController', () => {
 		});
 
 		it('should clear selected items that are not in the filtered data set when collection is redrawn', (): void => {
-			let redrawingEvent: Sinon.SinonSpy;
-			dataSource.watch = sinon.spy((listener: Sinon.SinonSpy, event: string): void => {
-				if (event === 'redrawing') {
-					redrawingEvent = listener;
-				}
-			});
 			dataSource.rawDataSet = [
 				{ id: 0 },
 				{ id: 1 },
@@ -554,7 +537,7 @@ describe('CardContainerController', () => {
 				item.viewData.selected = true;
 			});
 
-			redrawingEvent();
+			dataSource.redrawing.next(null);
 
 			expect(cardContainer.numberSelected).to.equal(4);
 
@@ -562,13 +545,12 @@ describe('CardContainerController', () => {
 			dataSource.dataSet.pop();
 			dataSource.filteredDataSet = dataSource.dataSet;
 
-			redrawingEvent();
+			dataSource.redrawing.next(null);
 
 			expect(cardContainer.numberSelected).to.equal(2);
 		});
 
 		it('should apply a sort in the select column', (): void => {
-			dataSource.watch = sinon.spy();
 			buildController();
 
 			cardContainer.sortSelected();
@@ -579,7 +561,6 @@ describe('CardContainerController', () => {
 		});
 
 		it('should allow individual items to disable selection if a disable selection function is provided', (): void => {
-			dataSource.watch = sinon.spy();
 			$attrs.disableSelection = 'disableSelection';
 			builder.disableSelection = (): string => {
 				return 'disabled';
@@ -599,7 +580,6 @@ describe('CardContainerController', () => {
 		});
 
 		it('should allow items to enable selection via a disable selection function if disable reason is null', (): void => {
-			dataSource.watch = sinon.spy();
 			$attrs.disableSelection = 'disableSelection';
 			builder.disableSelection = (): string => {
 				return null;
@@ -644,6 +624,8 @@ describe('CardContainerController', () => {
 			refresh: sinon.spy(),
 			onSortChange: sinon.spy(),
 			initPager: sinon.spy(),
+			changed: new Subject<void>(),
+			redrawing: new Subject<void>(),
 		};
 	}
 });

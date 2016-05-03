@@ -5,7 +5,7 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -112,7 +112,7 @@ export class CardContainerController {
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
-	numberSelectedObservable: Rx.Subject<number>;
+	numberSelectedChanges: Rx.Subject<number>;
 	selectionColumn: IColumn<any>;
 	private maxColSorts: number;
 	private disablingSelections: boolean;
@@ -137,7 +137,7 @@ export class CardContainerController {
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
 		this.sortDirection = SortDirection;
-		this.numberSelectedObservable = new Rx.Subject();
+		this.numberSelectedChanges = new Rx.Subject<number>();
 
 		this.syncFilters();
 
@@ -149,8 +149,8 @@ export class CardContainerController {
 			//*use card container event service?
 			$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
 
-			this.dataSource.watch(this.addViewData, 'changed');
-			this.dataSource.watch(this.clearFilteredSelections, 'redrawing');
+			this.dataSource.changed.subscribe(this.addViewData);
+			this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
 
 			this.addViewData();
 
@@ -328,7 +328,7 @@ export class CardContainerController {
 		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
 			return item.viewData != null && item.viewData.selected;
 		}).length;
-		this.numberSelectedObservable.onNext(this.numberSelected);
+		this.numberSelectedChanges.next(this.numberSelected);
 	}
 
 	private updateDisabledSelections: {(): void} = (): void => {

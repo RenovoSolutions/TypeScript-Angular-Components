@@ -17,17 +17,17 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 interface IDataPagerMock {
 	pageSize: number;
 	pageNumber: number;
-	pageSizeObservable: Rx.Subject<number>;
+	pageSizeChanges: Rx.Subject<number>;
 }
 
 interface IDataSourceMock {
 	count: number;
-	countObservable: Rx.Subject<number>;
+	countChanges: Rx.Subject<number>;
 	setCount(count: number): void;
 	pager: IDataPagerMock;
 }
@@ -174,7 +174,7 @@ describe('PagerController', () => {
 
 			// increasing the page size to 5 decreases the number of pages to 2
 			dataPager.pageSize = 5;
-			dataPager.pageSizeObservable.onNext(5);
+			dataPager.pageSizeChanges.next(5);
 
 			pager.last();
 			expect(pager.currentPage).to.equal(2);
@@ -295,15 +295,15 @@ describe('PagerController', () => {
 		dataPager = {
 			pageSize: 1,
 			pageNumber: 1,
-			pageSizeObservable: new Rx.Subject(),
+			pageSizeChanges: new Rx.Subject<number>(),
 		};
 
 		dataSource = {
 			count: lastPage,
-			countObservable: new Rx.Subject(),
+			countChanges: new Rx.Subject<number>(),
 			setCount(count: number): void {
 				dataSource.count = count;
-				dataSource.countObservable.onNext(count);
+				dataSource.countChanges.next(count);
 			},
 			pager: dataPager,
 		};

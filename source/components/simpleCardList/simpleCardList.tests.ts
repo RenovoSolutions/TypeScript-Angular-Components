@@ -12,70 +12,55 @@ import { moduleName, simpleCard, simpleCardList } from './simpleCardList.module'
 
 import * as angular from 'angular';
 import 'angular-mocks';
-
-interface IObservableMock {
-	register: Sinon.SinonSpy;
-	fire: Sinon.SinonSpy;
-}
+import { Subject } from 'rxjs';
 
 interface ICardBehaviorMock {
 	close: Sinon.SinonSpy;
-	setAlwaysOpen: Sinon.SinonSpy;
 }
 
 describe('SimpleCardListController', () => {
 	let scope: angular.IScope;
-	let list: simpleCardList.ISimpleCardListController;
-	let observable: IObservableMock;
+	let list: simpleCardList.SimpleCardListController;
 	let alwaysOpen: boolean;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-
-		observable = {
-			register: sinon.spy(),
-			fire: sinon.spy((): boolean => { return true; }),
-		};
-
-		let observableFactory: any = {
-			getInstance(): IObservableMock {
-				return observable;
-			},
-		};
-
-		test.angularFixture.mock({
-			observableFactory: observableFactory,
-		});
 	});
 
-	it('should register close behavior with the observable', (): void => {
+	it('should save a list of card behaviors', (): void => {
 		buildController();
 
-		let behavior: ICardBehaviorMock = {
+		const behavior: ICardBehaviorMock = {
 			close: sinon.spy(),
-			setAlwaysOpen: sinon.spy(),
 		};
 		list.registerCard(<any>behavior);
 
-		sinon.assert.calledTwice(observable.register);
-		sinon.assert.calledWith(observable.register, behavior.close, 'close');
-		sinon.assert.calledWith(observable.register, behavior.setAlwaysOpen, 'alwaysOpen');
+		expect(list.cards).to.have.length(1);
+		expect(list.cards[0]).to.equal(behavior);
 	});
 
 	it('should trigger all cards to close on openCard and return the result', (): void => {
 		buildController();
-		let canOpen: boolean = list.openCard();
-		sinon.assert.calledOnce(observable.fire);
-		sinon.assert.calledWith(observable.fire, 'close');
+		const behavior: ICardBehaviorMock = {
+			close: sinon.spy(() => true),
+		};
+		list.registerCard(<any>behavior);
+
+		const canOpen: boolean = list.openCard();
+		sinon.assert.calledOnce(behavior.close);
 		expect(canOpen).to.be.true;
 	});
 
-	it('should trigger all cards to toggle alwaysOpen when the flag changes on the list', (): void => {
+	it('should expose changes to alwaysOpen as a stream', (): void => {
 		buildController();
-		alwaysOpen = true;
-		scope.$digest();
-		sinon.assert.calledOnce(observable.fire);
-		sinon.assert.calledWith(observable.fire, 'alwaysOpen', true);
+		const alwaysOpenSpy: Sinon.SinonSpy = sinon.spy();
+		list.alwaysOpenChanges.subscribe(alwaysOpenSpy);
+
+		list.alwaysOpenChange(true);
+
+		expect(list.alwaysOpen).to.be.true;
+		sinon.assert.calledOnce(alwaysOpenSpy);
+		sinon.assert.calledWith(alwaysOpenSpy, true);
 	});
 
 	function buildController(): void {

@@ -67,9 +67,9 @@ describe('dataServiceDataSource', () => {
 			let source: IAsyncDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
 
 			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
-			source.watch(reloadedSpy, 'reloaded');
+			source.reloaded.subscribe(reloadedSpy);
 			let changedSpy: Sinon.SinonSpy = sinon.spy();
-			source.watch(changedSpy, 'changed');
+			source.changed.subscribe(changedSpy);
 
 			test.mock.flushAll(dataService);
 			$rootScope.$digest();

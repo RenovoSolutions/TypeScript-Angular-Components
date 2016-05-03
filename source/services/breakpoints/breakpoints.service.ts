@@ -2,8 +2,7 @@
 
 import * as ng from 'angular';
 import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
+import { Subject } from 'rxjs';
 
 import { IWindowService, serviceName as windowWrapperServiceName } from '../windowWrapper/windowWrapper.service';
 import { IVisibleBreakpointService, visibleBreakpointServiceName } from './visibleBreakpoint.service';
@@ -12,24 +11,20 @@ import { xs, sm, md, lg } from './breakpoint';
 
 export var breakpointServiceName: string = 'breakpoints';
 
-import __observable = services.observable;
-
 export interface IBreakpointService {
 	currentBreakpoint: string;
+	breakpointChanges: Subject<string>;
 	isBreakpoint(breakpoint: string): boolean;
-	register(action: {(breakpoint: string): void}): __observable.IUnregisterFunction;
 }
 
 export class BreakpointService implements IBreakpointService {
-	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName, __observable.factoryName]
+	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName]
 	constructor(private $rootScope: ng.IRootScopeService
 			, private visibleBreakpoints: IVisibleBreakpointService
 			, resizeDebounceMilliseconds: number
-			, windowService: IWindowService
-			, observableFactory: __observable.IObservableServiceFactory) {
+			, windowService: IWindowService) {
+		this.breakpointChanges = new Subject<string>();
 		this.currentBreakpoint = this.getBreakpoint();
-
-		this.observable = observableFactory.getInstance();
 
 		var efficientResize: {(): void} = _.debounce(this.updateBreakpoint, resizeDebounceMilliseconds, {
 			leading: true,
@@ -39,8 +34,8 @@ export class BreakpointService implements IBreakpointService {
 		windowService.resize(efficientResize);
 	}
 
-	private observable: __observable.IObservableService;
 	currentBreakpoint: string;
+	breakpointChanges: Subject<string>;
 
 	private getBreakpoint(): string {
 		if (this.visibleBreakpoints.isVisible(lg)) {
@@ -58,17 +53,13 @@ export class BreakpointService implements IBreakpointService {
 		return this.currentBreakpoint === breakpoint;
 	}
 
-	register(action: { (breakpoint: string): void }): __observable.IUnregisterFunction {
-		return this.observable.register(action, 'window.breakpointChanged');
-	}
-
 	private updateBreakpoint: {(): void} = (): void => {
 		var newBreakPoint: string = this.getBreakpoint();
 
 		if (newBreakPoint !== this.currentBreakpoint) {
 			this.$rootScope.$apply((): void => {
 				this.currentBreakpoint = newBreakPoint;
-				this.observable.fire('window.breakpointChanged', this.currentBreakpoint);
+				this.breakpointChanges.next(this.currentBreakpoint);
 			});
 		}
 	}

@@ -4,34 +4,40 @@
 
 import * as ng from 'angular';
 import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
-
-import __observable = services.observable;
+import { Subject, Subscription } from 'rxjs';
 
 export var moduleName: string = 'rl.utilities.services.contentProvider';
 export var serviceName: string = 'contentProviderFactory';
 
+export interface IContentChanges {
+	newContent: JQuery;
+	scope?: ng.IScope;
+}
+
 export interface IContentProviderService {
+	contentChanges: Subject<IContentChanges>;
 	setContent(content: JQuery): void;
 	setTranscludeContent(transcludeFunction: ng.ITranscludeFunction): void;
 	getContent(selector?: string): JQuery;
-	register(action: {(newText: JQuery): void}, selector?: string): __observable.IUnregisterFunction;
+	subscribe(action: {(newText: JQuery): void}, selector?: string): Subscription;
 }
 
 class ContentProviderService implements IContentProviderService {
-	constructor(observableFactory: __observable.IObservableServiceFactory) {
-		this.observable = observableFactory.getInstance();
+	constructor() {
+		this.contentChanges = new Subject<IContentChanges>();
 	}
 
-	private observable: __observable.IObservableService;
 	private content: JQuery;
 	private scope: ng.IScope;
+	contentChanges: Subject<IContentChanges>;
 
 	setContent(content: JQuery, scope?: ng.IScope): void {
 		this.content = content;
 		this.scope = scope;
-		this.observable.fire('contentChanged');
+		this.contentChanges.next({
+			newContent: content,
+			scope: scope,
+		});
 	}
 
 	setTranscludeContent: {(transcludeFunction: ng.ITranscludeFunction): void} = (transcludeFunction: ng.ITranscludeFunction): void => {
@@ -45,14 +51,15 @@ class ContentProviderService implements IContentProviderService {
 		}
 	}
 
-	register(action: {(newContent: JQuery, scope?: angular.IScope): void}, selector?: string): __observable.IUnregisterFunction {
+	subscribe(action: {(IContentChanges): void}): Subscription {
 		if (this.content != null) {
-			action(this.getContent(selector), this.scope);
+			action({
+				newContent: this.getContent(),
+				scope: this.scope,
+			});
 		}
 
-		return this.observable.register((): void => {
-			action(this.getContent(selector), this.scope);
-		}, 'contentChanged');
+		return this.contentChanges.subscribe(action);
 	}
 
 	getContent(selector?: string): JQuery {
@@ -68,16 +75,16 @@ export interface IContentProviderServiceFactory {
 	getInstance(): IContentProviderService;
 }
 
-contentProviderServiceFactory.$inject = [__observable.factoryName];
-function contentProviderServiceFactory(observableFactory: __observable.IObservableServiceFactory): IContentProviderServiceFactory {
+contentProviderServiceFactory.$inject = [];
+function contentProviderServiceFactory(): IContentProviderServiceFactory {
 	'use strict';
 
 	return {
 		getInstance(): IContentProviderService {
-			return new ContentProviderService(observableFactory);
+			return new ContentProviderService();
 		}
 	};
 }
 
-ng.module(moduleName, [__observable.moduleName])
+ng.module(moduleName, [])
 	.factory(serviceName, contentProviderServiceFactory);

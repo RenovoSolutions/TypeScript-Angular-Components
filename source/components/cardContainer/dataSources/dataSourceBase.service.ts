@@ -1,9 +1,8 @@
 'use strict';
 
-import * as Rx from 'rx';
+import { Subject } from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 
@@ -11,7 +10,6 @@ import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
-import * as events from './dataSourceEvents';
 
 export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	dataSet: TDataType[];
@@ -27,8 +25,12 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	loadingDataSet: boolean = false;
 	private _isEmpty: boolean;
 
-	observable: __observable.IObservableService;
-	countObservable: Rx.Subject<number>;
+	countChanges: Subject<number>;
+	redrawing: Subject<void>;
+	changed: Subject<void>;
+	added: Subject<void>;
+	removed: Subject<void>;
+	replaced: Subject<void>;
 
 	get count(): number {
 		return this._count;
@@ -36,26 +38,24 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	set count(value: number) {
 		this._count = value;
-		this.countObservable.onNext(value);
+		this.countChanges.next(value);
 	}
 
-	constructor(observableFactory: __observable.IObservableServiceFactory
-			, private dataSourceProcessor: IDataSourceProcessor
+	constructor(private dataSourceProcessor: IDataSourceProcessor
 			, protected array: __array.IArrayUtility) {
-		this.observable = observableFactory.getInstance();
-		this.observable.allowableEvents = events.all;
-		this.countObservable = new Rx.Subject();
+		this.countChanges = new Subject<number>();
+		this.redrawing = new Subject<void>();
+		this.changed = new Subject<void>();
+		this.added = new Subject<void>();
+		this.removed = new Subject<void>();
+		this.replaced = new Subject<void>();
 	}
 
 	initPager(): void {
 		if (this.pager) {
-			this.pager.pageSizeObservable.subscribe(this.onPagingChange.bind(this));
-			this.pager.pageNumberObservable.subscribe(this.onPagingChange.bind(this));
+			this.pager.pageSizeChanges.subscribe(this.onPagingChange.bind(this));
+			this.pager.pageNumberChanges.subscribe(this.onPagingChange.bind(this));
 		}
-	}
-
-	watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction {
-		return this.observable.register(action, event);
 	}
 
 	get needsRefinedSearch(): boolean {
@@ -111,21 +111,21 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		if (!this.loadingDataSet) {
 			this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
 			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
-			this.observable.fire(events.redrawing);
+			this.redrawing.next(null);
 		}
 	}
 
 	onPagingChange(): void {
 		if (!this.loadingDataSet) {
 			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
-			this.observable.fire(events.redrawing);
+			this.redrawing.next(null);
 		}
 	}
 
 	refresh(): void {
 		if (!this.loadingDataSet) {
 			this.processData();
-			this.observable.fire(events.redrawing);
+			this.redrawing.next(null);
 		}
 	}
 
@@ -133,16 +133,16 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		var item: TDataType = this.array.remove(this.rawDataSet, data);
 
 		if (item != null) {
-			this.observable.fire(events.removed);
-			this.observable.fire(events.changed);
+			this.removed.next(null);
+			this.changed.next(null);
 			this.refresh();
 		}
 	}
 
 	push(data: TDataType): void {
 		this.rawDataSet.push(data);
-		this.observable.fire(events.added);
-		this.observable.fire(events.changed);
+		this.added.next(null);
+		this.changed.next(null);
 		this.refresh();
 	}
 
@@ -151,8 +151,8 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 		if (locationOfOldData >= 0) {
 			this.array.replace(this.rawDataSet, oldData, newData);
-			this.observable.fire(events.replaced);
-			this.observable.fire(events.changed);
+			this.replaced.next(null);
+			this.changed.next(null);
 			this.refresh();
 		}
 	}

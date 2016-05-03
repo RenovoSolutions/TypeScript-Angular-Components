@@ -56,14 +56,14 @@ describe('breakpoints', () => {
 		expect(breakpoints.isBreakpoint(xs)).to.be.false;
 	});
 
-	it('should signal registered listeners when the breakpoint changes', (): void => {
+	it('should signal subscribed listeners when the breakpoint changes', (): void => {
 		var breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
 
 		visibleBreakpoint = sm;
 
 		buildService();
 
-		breakpoints.register(breakpointChangeSpy);
+		breakpoints.breakpointChanges.subscribe(breakpointChangeSpy);
 
 		visibleBreakpoint = md;
 		triggerResize();

@@ -2,10 +2,9 @@
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -51,16 +50,15 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean = true;
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];
-	private subscriptions: Rx.Subscriber[];
+	private subscriptions: Rx.Subscription[];
 	private throttleLimit: number = 200;
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
-			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(<any>getDataSet, observableFactory, dataSourceProcessor, array, synchronizedRequestsFactory);
+		super(<any>getDataSet, dataSourceProcessor, array, synchronizedRequestsFactory);
 	}
 
 	get filters(): filters.IFilter[] {
@@ -119,13 +117,13 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	}
 
 	private setupSubscriptions() {
-		_.each(this.subscriptions, (subscription: Rx.Subscriber): void => {
-			subscription.dispose();
+		_.each(this.subscriptions, (subscription: Rx.Subscription): void => {
+			subscription.unsubscribe();
 		});
 		this.subscriptions = [];
 		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
 			if (_.isFunction(filter.subscribe)) {
-				this.subscriptions.push(filter.subscribe((): void => { this.onFilterChange(filter); }));
+				this.subscriptions.push(<any>filter.subscribe((): void => { this.onFilterChange(filter); }));
 			}
 		});
 	}
@@ -149,16 +147,15 @@ export interface ISmartDataSourceFactory {
 	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
 
-smartDataSourceFactory.$inject = [__observable.factoryName, processorServiceName, __array.serviceName, __object.serviceName,  __synchronizedRequests.factoryName];
-export function smartDataSourceFactory(observableFactory: __observable.IObservableServiceFactory
-												, dataSourceProcessor: IDataSourceProcessor
+smartDataSourceFactory.$inject = [processorServiceName, __array.serviceName, __object.serviceName,  __synchronizedRequests.factoryName];
+export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory {
 	'use strict';
 	return {
 		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-			return new SmartDataSource<TDataType>(getDataSet, observableFactory, dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			return new SmartDataSource<TDataType>(getDataSet, dataSourceProcessor, array, object, synchronizedRequestsFactory);
 		},
 	};
 }

@@ -1,16 +1,15 @@
 'use strict';
 
 import * as angular from 'angular';
+import { Subject } from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { IDataSource } from './dataSource';
 import { DataSourceBase } from './dataSourceBase.service';
 import { IDataSourceProcessor } from './dataSourceProcessor.service';
-import * as events from './dataSourceEvents';
 
 export interface IDataSetFunction<TDataType> {
 	(params: any): angular.IPromise<TDataType[]>;
@@ -19,19 +18,20 @@ export interface IDataSetFunction<TDataType> {
 export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
 	reload();
 	getDataSet: IDataSetFunction<TDataType>;
+	reloaded: Subject<void>;
 }
 
 export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implements IAsyncDataSource<TDataType> {
 	protected synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
+	reloaded: Subject<void>;
 
 	constructor(getDataSet: IDataSetFunction<TDataType>
-			, observableFactory: __observable.IObservableServiceFactory
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
 			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(observableFactory, dataSourceProcessor, array);
-		this.observable.allowableEvents = events.async.all;
+		super(dataSourceProcessor, array);
 		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
+		this.reloaded = new Subject<void>();
 	}
 
 	set getDataSet(value: IDataSetFunction<TDataType>) {
@@ -51,9 +51,9 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 		this.rawDataSet = data;
 
 		this.processData();
-		this.observable.fire(events.async.reloaded);
-		this.observable.fire(events.redrawing);
-		this.observable.fire(events.changed);
+		this.reloaded.next(null);
+		this.redrawing.next(null);
+		this.changed.next(null);
 	}
 
 	// override with params for getDataSet

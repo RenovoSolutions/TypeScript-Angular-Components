@@ -18,10 +18,12 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
+import { Subject } from 'rxjs';
 
 interface IListMock {
 	openCard: Sinon.SinonSpy;
 	registerCard: Sinon.SinonSpy;
+	alwaysOpenChanges: Subject<boolean>;
 }
 
 interface IAutosaveBehaviorMock {
@@ -40,6 +42,7 @@ describe('SimpleCardController', () => {
 		list = {
 			openCard: sinon.spy((): boolean => { return true; }),
 			registerCard: sinon.spy(),
+			alwaysOpenChanges: new Subject<boolean>(),
 		};
 
 		let services: any = test.angularFixture.inject(__parentChild.serviceName);
