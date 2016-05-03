@@ -32,6 +32,7 @@ export class SelectController extends InputController {
 	ngDisabled: boolean;
 	nullOption: string;
 	select: { (params: ISelectParams): void };
+	itemAs: string;
 
 	loading: boolean;
 	template: string;
@@ -124,6 +125,7 @@ const select: angular.IComponentOptions = buildInput({
 		ngDisabled: '<?',
 		nullOption: '@',
 		select: '&',
+		itemAs: '@',
 	},
 });
 
