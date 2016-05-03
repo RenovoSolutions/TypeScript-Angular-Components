@@ -19,7 +19,6 @@ import {
 import {
 	moduleName as dataSourcesModuleName,
 	dataSourceProcessor as __dataSourceProcessor,
-	events,
 } from '../dataSources.module';
 
 import { SortDirection } from '../../sorts/sort';
