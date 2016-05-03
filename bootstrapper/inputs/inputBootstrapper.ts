@@ -10,6 +10,7 @@ export const moduleName: string = 'InputTestModule';
 
 interface ITestItem {
 	name: string;
+	value?: number;
 }
 
 class InputTestController {
@@ -30,11 +31,11 @@ class InputTestController {
 
 	$onInit(): void {
 		this.options = [
-			{ name: 'item1' },
-			{ name: 'item2' },
-			{ name: 'item3' },
-			{ name: 'item4' },
-			{ name: 'item5' },
+			{ name: 'item1', value: 1 },
+			{ name: 'item2', value: 2 },
+			{ name: 'item3', value: 3 },
+			{ name: 'item4', value: 4 },
+			{ name: 'item5', value: 5 },
 		];
 
 		this.typeaheadList = [this.options[0], this.options[4]];
