@@ -60,7 +60,8 @@ describe('contentProvider', () => {
 	it('should call the action with the new content when the content changes', (): void => {
 		var actionSpy: Sinon.SinonSpy = sinon.spy();
 
-		contentProvider.subscribe(actionSpy);
+		contentProvider.contentChanges.subscribe(actionSpy);
+		actionSpy.reset();
 
 		contentProvider.setContent(jqueryClone);
 
@@ -73,7 +74,7 @@ describe('contentProvider', () => {
 
 		contentProvider.setContent(jqueryClone);
 
-		contentProvider.subscribe(actionSpy);
+		contentProvider.contentChanges.subscribe(actionSpy);
 
 		sinon.assert.calledOnce(actionSpy);
 		expect(actionSpy.firstCall.args[0].newContent).to.equal(jqueryClone);
