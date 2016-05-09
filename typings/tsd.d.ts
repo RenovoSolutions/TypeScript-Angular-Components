@@ -12,3 +12,4 @@
 /// <reference path="moment-timezone/moment-timezone.d.ts" />
 /// <reference path="chai/chai.d.ts" />
 /// <reference path="bluebird/bluebird.d.ts" />
+/// <reference path="es6-shim/es6-shim.d.ts" />
