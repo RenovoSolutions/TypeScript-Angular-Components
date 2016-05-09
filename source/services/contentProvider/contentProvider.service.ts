@@ -4,7 +4,7 @@
 
 import * as ng from 'angular';
 import * as _ from 'lodash';
-import { Subject, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export var moduleName: string = 'rl.utilities.services.contentProvider';
 export var serviceName: string = 'contentProviderFactory';
@@ -15,21 +15,20 @@ export interface IContentChanges {
 }
 
 export interface IContentProviderService {
-	contentChanges: Subject<IContentChanges>;
+	contentChanges: Observable<IContentChanges>;
 	setContent(content: JQuery): void;
 	setTranscludeContent(transcludeFunction: ng.ITranscludeFunction): void;
 	getContent(selector?: string): JQuery;
-	subscribe(action: {(newText: JQuery): void}, selector?: string): Subscription;
 }
 
 class ContentProviderService implements IContentProviderService {
 	constructor() {
-		this.contentChanges = new Subject<IContentChanges>();
+		this.contentChanges = new BehaviorSubject<IContentChanges>(<any>{});
 	}
 
 	private content: JQuery;
 	private scope: ng.IScope;
-	contentChanges: Subject<IContentChanges>;
+	contentChanges: BehaviorSubject<IContentChanges>;
 
 	setContent(content: JQuery, scope?: ng.IScope): void {
 		this.content = content;
@@ -49,17 +48,6 @@ class ContentProviderService implements IContentProviderService {
 		} else {
 			this.setContent(null);
 		}
-	}
-
-	subscribe(action: {(IContentChanges): void}): Subscription {
-		if (this.content != null) {
-			action({
-				newContent: this.getContent(),
-				scope: this.scope,
-			});
-		}
-
-		return this.contentChanges.subscribe(action);
 	}
 
 	getContent(selector?: string): JQuery {
