@@ -23,7 +23,7 @@ export interface IContentProviderService {
 
 class ContentProviderService implements IContentProviderService {
 	constructor() {
-		this.contentChanges = new BehaviorSubject<IContentChanges>(<any>{});
+		this.contentChanges = new BehaviorSubject<IContentChanges>(<any>{ newContent: ng.element('') });
 	}
 
 	private content: JQuery;
