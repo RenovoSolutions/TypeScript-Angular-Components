@@ -64,13 +64,16 @@ export class SelectController extends InputController {
 			, jqueryUtility: IJQueryUtility) {
 		super($scope, <any>$attrs, componentValidatorFactory);
 		this.inputType = 'select';
-		$transclude((clone: angular.IAugmentedJQuery): void => {
-			if (clone.length) {
-				this.template = jqueryUtility.getHtml(clone);
-			} else {
-				this.template = '{{select.getDisplayName($item)}}';
-			}
-		});
+
+		if (!this.template) {
+			$transclude((clone: angular.IAugmentedJQuery): void => {
+				if (clone.length) {
+					this.template = jqueryUtility.getHtml(clone);
+				} else {
+					this.template = '{{select.getDisplayName($item)}}';
+				}
+			});
+		}
 	}
 
 	$onInit(): void {
@@ -88,10 +91,6 @@ export class SelectController extends InputController {
 	}
 
 	getDisplayName(item: any): string {
-		if (item != null && item.__isNullOption) {
-			return this.nullOption;
-		}
-
 		return __transform.getValue(item, this.selector);
 	}
 
@@ -126,6 +125,9 @@ const select: angular.IComponentOptions = buildInput({
 		nullOption: '@',
 		select: '&',
 		itemAs: '@',
+
+		// private
+		template: '<?',
 	},
 });
 

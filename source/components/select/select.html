@@ -5,7 +5,12 @@
 	<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
 		<ui-select-match placeholder="{{::select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
 		<ui-select-choices repeat="$item in select.options">
-			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
+			<div ng-switch="$item.__isNullOption">
+				<div ng-switch-when="true">{{select.nullOption}}</div>
+				<div ng-switch-default>
+					<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
+				</div>
+			</div>
 		</ui-select-choices>
 	</ui-select>
 	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
