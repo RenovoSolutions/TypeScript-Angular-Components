@@ -1,6 +1,5 @@
 import * as angular from 'angular';
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -35,7 +34,7 @@ export interface IDataResult<TDataType> {
 }
 export declare class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
     private object;
-    constructor(getDataSet: IServerSearchFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
+    constructor(getDataSet: IServerSearchFunction<TDataType>, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     refresh(): void;
     protected getParams(): IServerSearchParams;
     protected resolveReload(result: any): void;
@@ -43,4 +42,4 @@ export declare class ServerSideDataSource<TDataType> extends AsyncDataSource<TDa
 export interface IServerSideDataSourceFactory {
     getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
-export declare function serverSideDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory;
+export declare function serverSideDataSourceFactory(dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory;

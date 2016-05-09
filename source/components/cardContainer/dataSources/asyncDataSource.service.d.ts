@@ -1,6 +1,6 @@
 import * as angular from 'angular';
+import { Subject } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 import { IDataSource } from './dataSource';
@@ -12,10 +12,12 @@ export interface IDataSetFunction<TDataType> {
 export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
     reload(): any;
     getDataSet: IDataSetFunction<TDataType>;
+    reloaded: Subject<void>;
 }
 export declare class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implements IAsyncDataSource<TDataType> {
     protected synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
-    constructor(getDataSet: IDataSetFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
+    reloaded: Subject<void>;
+    constructor(getDataSet: IDataSetFunction<TDataType>, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     getDataSet: IDataSetFunction<TDataType>;
     reload(): void;
     protected resolveReload(data: TDataType[]): void;

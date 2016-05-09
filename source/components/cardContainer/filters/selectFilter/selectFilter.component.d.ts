@@ -1,6 +1,7 @@
 import * as angular from 'angular';
 import { ISelectFilter } from './selectFilter.service';
 import { IDataSource } from '../../datasources/dataSource';
+import { IJQueryUtility } from '../../../../services/jquery/jquery.service';
 export declare let componentName: string;
 export declare let controllerName: string;
 export interface ISelectFilterBindings {
@@ -32,8 +33,9 @@ export declare class SelectFilterController implements ISelectFilterController {
         (item: any): string;
     };
     nullOption: string;
+    template: string;
     static $inject: string[];
-    constructor($scope: angular.IScope);
+    constructor($scope: angular.IScope, $transclude: angular.ITranscludeFunction, jqueryUtility: IJQueryUtility);
     selectedValue: any;
 }
 export declare let selectFilter: angular.IComponentOptions;

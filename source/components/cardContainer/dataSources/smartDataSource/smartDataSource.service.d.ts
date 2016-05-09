@@ -1,6 +1,5 @@
 import * as angular from 'angular';
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
@@ -43,7 +42,7 @@ export declare class SmartDataSource<TDataType> extends AsyncDataSource<TDataTyp
     private _filters;
     private subscriptions;
     private throttleLimit;
-    constructor(getDataSet: IServerSearchFunction<TDataType>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
+    constructor(getDataSet: IServerSearchFunction<TDataType>, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     filters: filters.IFilter[];
     onSortChange(): void;
     refresh(): void;
@@ -56,4 +55,4 @@ export declare class SmartDataSource<TDataType> extends AsyncDataSource<TDataTyp
 export interface ISmartDataSourceFactory {
     getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
 }
-export declare function smartDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory;
+export declare function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory;

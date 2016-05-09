@@ -1,15 +1,19 @@
 import * as ng from 'angular';
-import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
+import { Subject, Subscription } from 'rxjs';
 export declare var moduleName: string;
 export declare var serviceName: string;
+export interface IContentChanges {
+    newContent: JQuery;
+    scope?: ng.IScope;
+}
 export interface IContentProviderService {
+    contentChanges: Subject<IContentChanges>;
     setContent(content: JQuery): void;
     setTranscludeContent(transcludeFunction: ng.ITranscludeFunction): void;
     getContent(selector?: string): JQuery;
-    register(action: {
+    subscribe(action: {
         (newText: JQuery): void;
-    }, selector?: string): __observable.IUnregisterFunction;
+    }, selector?: string): Subscription;
 }
 export interface IContentProviderServiceFactory {
     getInstance(): IContentProviderService;

@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import * as Rx from 'rx';
+import * as Rx from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __parentChild = services.parentChildBehavior;
 import __object = services.object;

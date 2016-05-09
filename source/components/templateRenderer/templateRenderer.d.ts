@@ -12,5 +12,5 @@ export interface ITemplateRendererBindings {
 export declare class TemplateRendererController implements ITemplateRendererBindings {
     template: ITemplateObject;
     static $inject: string[];
-    constructor($compile: angular.ICompileService, $element: angular.IAugmentedJQuery);
+    constructor($compile: angular.ICompileService, $element: angular.IAugmentedJQuery, $scope: angular.IScope);
 }

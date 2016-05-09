@@ -4,6 +4,7 @@ export declare const directiveName: string;
 export declare const controllerName: string;
 export interface IAlternatingClassAttributes extends angular.IAttributes {
     rlAlternatingClass: string;
+    class: string;
 }
 export declare class AlternatingClassController {
     private $scope;
@@ -12,5 +13,5 @@ export declare class AlternatingClassController {
     constructor($scope: angular.IScope, $attrs: IAlternatingClassAttributes);
     message: string;
     $onInit(): void;
-    checkForIndex(scope: any): number;
+    checkForOdd(scope: any): boolean;
 }

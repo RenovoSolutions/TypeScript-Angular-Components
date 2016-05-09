@@ -1,6 +1,5 @@
 import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
@@ -30,7 +29,7 @@ export declare class ClientServerDataSource<TDataType> extends AsyncDataSource<T
     private minSearchLength;
     private search;
     private filterModel;
-    constructor(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel: IGetFilterModel<any>, validateModel: IValidateFilterModel<any>, observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
+    constructor(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel: IGetFilterModel<any>, validateModel: IValidateFilterModel<any>, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory);
     refresh(): void;
     reload(): void;
     private filterModelChanged();
@@ -39,4 +38,4 @@ export declare class ClientServerDataSource<TDataType> extends AsyncDataSource<T
 export interface IClientServerDataSourceFactory {
     getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>, searchFilter: __genericSearchFilter.IGenericSearchFilter, getFilterModel?: IGetFilterModel<any>, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType>;
 }
-export declare function clientServerDataSourceFactory(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory;
+export declare function clientServerDataSourceFactory(dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility, object: __object.IObjectUtility, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory;

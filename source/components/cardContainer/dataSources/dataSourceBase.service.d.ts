@@ -1,6 +1,5 @@
-import * as Rx from 'rx';
+import { Subject } from 'rxjs';
 import { services, filters } from 'typescript-angular-utilities';
-import __observable = services.observable;
 import __array = services.array;
 import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
@@ -19,12 +18,15 @@ export declare class DataSourceBase<TDataType> implements IDataSource<TDataType>
     countFilterGroups: boolean;
     loadingDataSet: boolean;
     private _isEmpty;
-    observable: __observable.IObservableService;
-    countObservable: Rx.Subject<number>;
+    countChanges: Subject<number>;
+    redrawing: Subject<void>;
+    changed: Subject<void>;
+    added: Subject<void>;
+    removed: Subject<void>;
+    replaced: Subject<void>;
     count: number;
-    constructor(observableFactory: __observable.IObservableServiceFactory, dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
+    constructor(dataSourceProcessor: IDataSourceProcessor, array: __array.IArrayUtility);
     initPager(): void;
-    watch<TReturnType>(action: __observable.IAction<TReturnType>, event?: string): __observable.IUnregisterFunction;
     needsRefinedSearch: boolean;
     isEmpty: boolean;
     processData(): void;

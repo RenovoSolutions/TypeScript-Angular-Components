@@ -20,7 +20,6 @@ export interface ISimpleCardScope extends angular.IScope {
 export interface ISimpleCardBehavior {
     autosave(): boolean;
     close(): boolean;
-    setAlwaysOpen(value: boolean): void;
 }
 export interface ISimpleCardChanges {
     alwaysOpen: IChangeObject<boolean>;
