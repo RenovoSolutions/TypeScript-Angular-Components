@@ -3,8 +3,9 @@
 'use strict';
 
 import * as angular from 'angular';
-import {ISelectFilter} from './selectFilter.service';
-import {IDataSource} from '../../datasources/dataSource';
+import { ISelectFilter } from './selectFilter.service';
+import { IDataSource } from '../../datasources/dataSource';
+import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../../../services/jquery/jquery.service';
 
 export let componentName: string = 'rlSelectFilter';
 export let controllerName: string = 'SelectFilterController';
@@ -33,9 +34,18 @@ export class SelectFilterController implements ISelectFilterController {
 	label: string;
 	selector: string | { (item: any): string };
 	nullOption: string;
+	template: string;
 
-	static $inject = ['$scope'];
-	constructor(private $scope: angular.IScope) { }
+	static $inject = ['$scope', '$transclude', jqueryServiceName];
+	constructor(private $scope: angular.IScope
+		, $transclude: angular.ITranscludeFunction
+		, jqueryUtility: IJQueryUtility) {
+		$transclude((clone: angular.IAugmentedJQuery): void => {
+			if (clone.length) {
+				this.template = jqueryUtility.getHtml(clone);
+			}
+		});
+	}
 
 	public get selectedValue(): any {
 		return this.filter.selectedValue;
@@ -44,13 +54,14 @@ export class SelectFilterController implements ISelectFilterController {
 		this.filter.selectedValue = v;
 		if (this.source != null) {
 			this.source.refresh();
-		}else {
+		} else {
             this.$scope.$emit('dataSource.requestRefresh'); //*event?
         }
 	}
 }
 
 export let selectFilter: angular.IComponentOptions = {
+	transclude: true,
 	template: require('./selectFilter.html'),
 	controller: controllerName,
 	controllerAs: 'filter',
@@ -61,6 +72,7 @@ export let selectFilter: angular.IComponentOptions = {
 		source: '<?',
 		label: '@',
 		selector: '<?',
-		nullOption: '@'
+		nullOption: '@',
+		itemAs: '@',
 	},
 };
