@@ -129,11 +129,6 @@ describe('SelectController', () => {
 			sinon.assert.calledOnce(ngModel.$setViewValue);
 			sinon.assert.calledWith(ngModel.$setViewValue, null);
 		});
-
-		it('should return the null option string for the display name of the null option', (): void => {
-			let nullOptionDisplayName: string = dropdown.getDisplayName(dropdown.options[0]);
-			expect(nullOptionDisplayName).to.equal(nullOption);
-		});
 	});
 
 	function buildController(options?: ITestOption[], nullOption?: string, getOptions?: {(): angular.IPromise<ITestOption[]> }): void {
