@@ -91,10 +91,6 @@ export class SelectController extends InputController {
 	}
 
 	getDisplayName(item: any): string {
-		if (item != null && item.__isNullOption) {
-			return this.nullOption;
-		}
-
 		return __transform.getValue(item, this.selector);
 	}
 
