@@ -13,14 +13,12 @@ export interface IRequiredAttributes extends angular.IAttributes {
 export class RequiredController {
 	static $inject: string[] = ['$scope', '$attrs', '$interpolate'];
 	constructor(private $scope: angular.IScope
-			, private $attrs: IRequiredAttributes
-			, private $interpolate: angular.IInterpolateService) {}
-
-	message: string;
-
-	$onInit(): void {
+				, private $attrs: IRequiredAttributes
+				, private $interpolate: angular.IInterpolateService) {
 		this.message = this.$interpolate(this.$attrs.rlRequired)(this.$scope);
 	}
+
+	message: string;
 }
 
 function required(): angular.IDirective {
