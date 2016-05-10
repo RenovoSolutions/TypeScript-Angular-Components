@@ -12,5 +12,4 @@ export declare class RequiredController {
     static $inject: string[];
     constructor($scope: angular.IScope, $attrs: IRequiredAttributes, $interpolate: angular.IInterpolateService);
     message: string;
-    $onInit(): void;
 }
