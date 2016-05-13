@@ -7,3 +7,6 @@
 # Don't commit the built files
 /source/**/*.js
 /source/**/*.d.ts
+
+# Ignore git conflict / diff files
+*.orig
