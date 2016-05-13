@@ -26,7 +26,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 	private interval: number = 25;
 	duration: number = 2000;
 	buttonText: string;
-	width: number;
 	active: boolean;
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
@@ -39,7 +38,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 			, private notification: __notification.INotificationService) {
 		super(promise);
 		this.buttonText = this.text;
-		this.updateProgressBarWidth();
 	}
 
 	startAction(): void {
@@ -55,7 +53,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
 				this.buttonText = this.text;
-				this.updateProgressBarWidth();
 				this.trigger();
 			}
 		}, this.interval);
@@ -80,12 +77,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 	private warn(): void {
 		const warning: string = this.warning || this.onShortClickText || 'Press and hold to complete this action';
 		this.notification.warning(warning);
-	}
-
-	private updateProgressBarWidth(): void {
-		this.$timeout((): void => {
-			this.width = angular.element('#actionButton').outerWidth();
-		});
 	}
 }
 
