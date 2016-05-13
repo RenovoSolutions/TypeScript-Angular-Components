@@ -1,4 +1,4 @@
-<button id="actionButton" class="btn btn-long-click {{button.types}} {{button.configuredSize}}"
+<button class="btn btn-long-click {{button.types}} {{button.configuredSize}}"
 		ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()"
 		ng-disabled="button.busy || button.ngDisabled">
 	<rl-busy loading="button.busy" ng-if="button.rightAligned"></rl-busy>
