@@ -24,7 +24,7 @@ export class LongClickButtonController extends ButtonAsyncController {
 	icon: string;
 
 	private interval: number = 25;
-	duration: number = 2000;
+	duration: number = 2000; // Should match the CSS animation time
 	buttonText: string;
 	active: boolean;
 	actionProgress: number;
