@@ -24,7 +24,7 @@ export class LongClickButtonController extends ButtonAsyncController {
 	icon: string;
 
 	private interval: number = 25;
-	duration: number = 1500;
+	duration: number = 2000;
 	buttonText: string;
 	width: number;
 	active: boolean;
