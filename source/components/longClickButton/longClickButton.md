@@ -26,9 +26,10 @@ A long click button with **action**, **size**, **type**, **right-align** and **b
 ```
 Output:
 ```
-<button type="button" class="btn btn-lg btn-danger" ng-mousedown="// starts timer" ng-mouseup="// cancels timer" disabled>
+<button class="btn btn-long-click btn-lg btn-danger" ng-mousedown="// starts timer" ng-mouseup="// cancels timer">
 	<rl-busy loading="true"></rl-busy>
-	...
+	<span ng-transclude class="long-click-text"> ... </span>
+	<div class="long-click-progress"></div>
 </button>
 ```
 

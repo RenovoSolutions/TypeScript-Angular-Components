@@ -19,7 +19,6 @@ export declare class LongClickButtonController extends ButtonAsyncController {
     private interval;
     duration: number;
     buttonText: string;
-    width: number;
     active: boolean;
     actionProgress: number;
     private actionInterval;
@@ -29,5 +28,4 @@ export declare class LongClickButtonController extends ButtonAsyncController {
     stopAction(): void;
     private cleanup();
     private warn();
-    private updateProgressBarWidth();
 }
