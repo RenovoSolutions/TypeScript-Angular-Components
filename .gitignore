@@ -13,3 +13,6 @@
 # Don't need the built test files
 /source/**/*tests.js
 /source/**/*tests.d.ts
+
+# Ignore git conflict / diff files
+*.orig
