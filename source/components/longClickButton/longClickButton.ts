@@ -23,12 +23,9 @@ export class LongClickButtonController extends ButtonAsyncController {
 	onShortClickText: string;
 	icon: string;
 
-	private interval: number = 25;
 	duration: number = 2000; // Should match the CSS animation time
-	buttonText: string;
 	active: boolean;
-	actionProgress: number;
-	private actionInterval: angular.IPromise<void>;
+	private actionTimeout: angular.IPromise<void>;
 
 	static $inject: string[] = ['$interval', '$timeout', __object.serviceName, __promise.serviceName, __notification.serviceName];
 	constructor(private $interval: angular.IIntervalService
@@ -37,7 +34,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 			, promise: __promise.IPromiseUtility
 			, private notification: __notification.INotificationService) {
 		super(promise);
-		this.buttonText = this.text;
 	}
 
 	startAction(): void {
@@ -45,22 +41,17 @@ export class LongClickButtonController extends ButtonAsyncController {
 			return;
 		}
 
-		this.actionProgress = 0;
 		this.active = true;
 
-		this.actionInterval = this.$interval((): void => {
-			this.actionProgress += this.interval;
-			if (this.actionProgress >= this.duration) {
-				this.cleanup();
-				this.buttonText = this.text;
-				this.trigger();
-			}
-		}, this.interval);
+		this.actionTimeout = this.$timeout((): void => {
+			this.cleanup();
+			this.trigger();
+		}, this.duration);
 	}
 
 	stopAction(): void {
 		if (this.active) {
-			if (this.actionProgress < this.duration) {
+			if (this.actionTimeout != null) {
 				this.warn();
 			}
 
@@ -69,8 +60,8 @@ export class LongClickButtonController extends ButtonAsyncController {
 	}
 
 	private cleanup(): void {
-		this.$interval.cancel(this.actionInterval);
-		this.actionProgress = 0;
+		this.$timeout.cancel(this.actionTimeout);
+		this.actionTimeout = null;
 		this.active = false;
 	}
 

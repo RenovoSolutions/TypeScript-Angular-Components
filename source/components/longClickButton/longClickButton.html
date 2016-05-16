@@ -3,7 +3,7 @@
 		ng-disabled="button.busy || button.ngDisabled">
 	<rl-busy loading="button.busy" ng-if="button.rightAligned"></rl-busy>
 	<span ng-transclude class="long-click-text">
-		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.buttonText}}
+		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.text}}
 	</span>
 	<rl-busy loading="button.busy" ng-if="!button.rightAligned"></rl-busy>
 	<div class="long-click-progress"></div>
