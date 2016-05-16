@@ -16,12 +16,9 @@ export declare class LongClickButtonController extends ButtonAsyncController {
     text: string;
     onShortClickText: string;
     icon: string;
-    private interval;
     duration: number;
-    buttonText: string;
     active: boolean;
-    actionProgress: number;
-    private actionInterval;
+    private actionTimeout;
     static $inject: string[];
     constructor($interval: angular.IIntervalService, $timeout: angular.ITimeoutService, objectUtility: __object.IObjectUtility, promise: __promise.IPromiseUtility, notification: __notification.INotificationService);
     startAction(): void;
