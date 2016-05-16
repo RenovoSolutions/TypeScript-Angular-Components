@@ -1,4 +1,6 @@
 import * as angular from 'angular';
+import { services } from 'typescript-angular-utilities';
+import __notification = services.notification;
 
 import { moduleName as componentsModule } from '../source/ui.module';
 
@@ -25,7 +27,9 @@ angular.module('app', [
 	formModuleName,
 	miscModuleName,
 	textModuleName,
-]).config(BaseRoute);
+])
+	.config(BaseRoute)
+	.config(notificationConfig);
 
 BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
 function BaseRoute($urlRouterProvider, $stateProvider) {
@@ -35,4 +39,14 @@ function BaseRoute($urlRouterProvider, $stateProvider) {
 			url: '/',
 			template: '<h3>Welcome to typescript-angular-components</h3>',
 		});
+}
+
+notificationConfig.$inject = [__notification.serviceName + 'Provider'];
+function notificationConfig(notificationProvider: __notification.INotificationServiceProvider) {
+	notificationProvider.setNotifier({
+		success: message => console.log(message),
+		info: message => console.log(message),
+		warning: message => console.log(message),
+		error: message => console.error(message),
+	});
 }
