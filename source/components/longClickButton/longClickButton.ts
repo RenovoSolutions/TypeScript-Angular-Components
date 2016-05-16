@@ -25,7 +25,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 
 	private interval: number = 25;
 	duration: number = 2000; // Should match the CSS animation time
-	buttonText: string;
 	active: boolean;
 	actionProgress: number;
 	private actionInterval: angular.IPromise<void>;
@@ -37,7 +36,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 			, promise: __promise.IPromiseUtility
 			, private notification: __notification.INotificationService) {
 		super(promise);
-		this.buttonText = this.text;
 	}
 
 	startAction(): void {
@@ -52,7 +50,6 @@ export class LongClickButtonController extends ButtonAsyncController {
 			this.actionProgress += this.interval;
 			if (this.actionProgress >= this.duration) {
 				this.cleanup();
-				this.buttonText = this.text;
 				this.trigger();
 			}
 		}, this.interval);
