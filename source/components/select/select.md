@@ -3,7 +3,7 @@ This component extends the base [input](../input/input.md) with dropdown-specifi
 
 ### Usage
 ```
-<rl-select options="" get-options="" selector="" null-option="" ng-disabled="" ng-model="" validator="" label="" name=""> ... </rl-select>
+<rl-select options="" get-options="" transform="" null-option="" ng-disabled="" ng-model="" validator="" label="" name=""> ... </rl-select>
 ```
 ### Options
 
@@ -15,7 +15,7 @@ A list of options to display in the dropdown.
 
 Use instead of `options` for loading options asynchronously. Accepts a function that returns a list or a promise that returns a list.
 
-#### `selector`
+#### `transform`
 
 A selector for getting the display name of the options. Can be a property name or a function that returns a string.
 

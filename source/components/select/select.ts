@@ -28,11 +28,13 @@ export class SelectController extends InputController {
 	// bindings
 	options: any[];
 	getOptions: { (): angular.IPromise<any[]> };
-	selector: { (item: any): string } | string;
+	transform: { (item: any): string } | string;
 	ngDisabled: boolean;
 	nullOption: string;
 	select: { (params: ISelectParams): void };
 	itemAs: string;
+
+	selector: { (item: any): string } | string;
 
 	loading: boolean;
 	template: string;
@@ -64,6 +66,7 @@ export class SelectController extends InputController {
 			, jqueryUtility: IJQueryUtility) {
 		super($scope, <any>$attrs, componentValidatorFactory);
 		this.inputType = 'select';
+		this.transform = this.transform || this.selector;
 
 		if (!this.template) {
 			$transclude((clone: angular.IAugmentedJQuery): void => {
@@ -91,7 +94,7 @@ export class SelectController extends InputController {
 	}
 
 	getDisplayName(item: any): string {
-		return __transform.getValue(item, this.selector);
+		return __transform.getValue(item, this.transform);
 	}
 
 	loadItems(): angular.IPromise<any[]> {
@@ -120,11 +123,14 @@ const select: angular.IComponentOptions = buildInput({
 	bindings: {
 		options: '<?',
 		getOptions: '&',
-		selector: '<?',
+		transform: '<?',
 		ngDisabled: '<?',
 		nullOption: '@',
 		select: '&',
 		itemAs: '@',
+
+		// deprecated
+		selector: '<?',
 
 		// private
 		template: '<?',

@@ -17,9 +17,11 @@ export interface ISelectFilterBindings {
 	getOptions?: { (): angular.IPromise<any[]> };
 	source: IDataSource<any>;
 	label: string;
-	selector: string | { (item: any): string };
+	transform: string | { (item: any): string };
 	nullOption: string;
 
+	// deprecated
+	selector: string | { (item: any): string };
 }
 
 export interface ISelectFilterController extends ISelectFilterBindings {
@@ -32,14 +34,18 @@ export class SelectFilterController implements ISelectFilterController {
 	getOptions: { (): angular.IPromise<any[]> };
 	source: IDataSource<any>;
 	label: string;
-	selector: string | { (item: any): string };
+	transform: string | { (item: any): string };
 	nullOption: string;
 	template: string;
+
+	selector: string | { (item: any): string };
 
 	static $inject = ['$scope', '$transclude', jqueryServiceName];
 	constructor(private $scope: angular.IScope
 		, $transclude: angular.ITranscludeFunction
 		, jqueryUtility: IJQueryUtility) {
+		this.transform = this.transform || this.selector;
+
 		$transclude((clone: angular.IAugmentedJQuery): void => {
 			if (clone.length) {
 				this.template = jqueryUtility.getHtml(clone);
@@ -71,8 +77,11 @@ export let selectFilter: angular.IComponentOptions = {
 		getOptions: '&',
 		source: '<?',
 		label: '@',
-		selector: '<?',
+		transform: '<?',
 		nullOption: '@',
 		itemAs: '@',
+
+		// deprecated
+		selector: '<?',
 	},
 };
