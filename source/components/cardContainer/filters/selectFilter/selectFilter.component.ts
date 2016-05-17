@@ -56,8 +56,8 @@ export class SelectFilterController implements ISelectFilterController {
 	public get selectedValue(): any {
 		return this.filter.selectedValue;
 	}
-	public set selectedValue(v: any) {
-		this.filter.selectedValue = v;
+	public set selectedValue(value: any) {
+		this.filter.selectedValue = value;
 		if (this.source != null) {
 			this.source.refresh();
 		} else {
