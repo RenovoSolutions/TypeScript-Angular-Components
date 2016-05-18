@@ -19,7 +19,7 @@ export declare class SelectController extends InputController {
     getOptions: {
         (): angular.IPromise<any[]>;
     };
-    selector: {
+    transform: {
         (item: any): string;
     } | string;
     ngDisabled: boolean;
@@ -28,6 +28,9 @@ export declare class SelectController extends InputController {
         (params: ISelectParams): void;
     };
     itemAs: string;
+    selector: {
+        (item: any): string;
+    } | string;
     loading: boolean;
     template: string;
     private _nullOption;

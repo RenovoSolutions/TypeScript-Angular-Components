@@ -1,6 +1,6 @@
 <rl-generic-container selector="list.disableSearching">
 	<template when-selector="true">
-		<rl-select ng-if="list.cachedItems | isEmpty:false" ng-model="list.model" select="list.addItem(item)" selector="list.transform"
+		<rl-select ng-if="list.cachedItems | isEmpty:false" ng-model="list.model" select="list.addItem(item)" transform="list.transform"
 				   options="list.cachedItems" label="{{list.label}}" ng-disabled="list.ngDisabled"></rl-select>
 	</template>
 	<template default>
