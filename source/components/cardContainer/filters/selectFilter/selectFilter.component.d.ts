@@ -12,10 +12,13 @@ export interface ISelectFilterBindings {
     };
     source: IDataSource<any>;
     label: string;
-    selector: string | {
+    transform: string | {
         (item: any): string;
     };
     nullOption: string;
+    selector: string | {
+        (item: any): string;
+    };
 }
 export interface ISelectFilterController extends ISelectFilterBindings {
     selectedValue: any;
@@ -29,11 +32,14 @@ export declare class SelectFilterController implements ISelectFilterController {
     };
     source: IDataSource<any>;
     label: string;
-    selector: string | {
+    transform: string | {
         (item: any): string;
     };
     nullOption: string;
     template: string;
+    selector: string | {
+        (item: any): string;
+    };
     static $inject: string[];
     constructor($scope: angular.IScope, $transclude: angular.ITranscludeFunction, jqueryUtility: IJQueryUtility);
     selectedValue: any;
