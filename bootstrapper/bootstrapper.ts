@@ -14,6 +14,10 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
+const bootstrapper: angular.IComponentOptions = {
+	template: require('./app.html'),
+}
+
 angular.module('app', [
 	componentsModule,
 	'ui.router',
@@ -28,6 +32,7 @@ angular.module('app', [
 	miscModuleName,
 	textModuleName,
 ])
+	.component('tsBootstrapper', bootstrapper)
 	.config(BaseRoute)
 	.config(notificationConfig);
 
