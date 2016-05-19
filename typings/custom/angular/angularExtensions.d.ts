@@ -1,5 +1,3 @@
-/// <reference path="angularjs/angular.d.ts" />
-
 declare module angular {
 	interface ITranscludeFunction {
 		// If the scope is provided, then the cloneAttachFn must be as well.
