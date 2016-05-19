@@ -46,7 +46,6 @@ describe('smartDataSource', () => {
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
 
 		let dependencies: any = test.angularFixture.inject(
