@@ -1,5 +1,3 @@
-import './busy.css';
-
 import * as angular from 'angular';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
