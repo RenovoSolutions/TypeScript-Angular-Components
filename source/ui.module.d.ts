@@ -1,5 +1,6 @@
 import 'angular-ui-bootstrap';
 import 'angular-sanitize';
+import 'angular-animate';
 import '../libraries/angular-bootstrap-slider/slider';
 import 'signature_pad';
 import * as behaviors from './behaviors/behaviors.module';
