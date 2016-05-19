@@ -1,9 +1,6 @@
 import * as angular from 'angular';
 import * as moment from 'moment';
 
-import { services } from 'typescript-angular-utilities';
-import __validation = services.validation;
-
 import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer';
 
 export const moduleName: string = 'MiscTestModule';
@@ -16,7 +13,6 @@ class MiscTestController {
 	myNum: number;
 	myValue: number;
 	text: string;
-	validator: __validation.IValidationHandler;
 	template: ITemplateObject;
 	number: number;
 	date: moment.Moment;
@@ -28,11 +24,6 @@ class MiscTestController {
 	$onInit(): void {
 		this.myNum = 2;
 		this.myValue = 1;
-
-		this.validator = {
-			validate: () => this.text === 'valid',
-			errorMessage: 'String must be valid',
-		};
 
 		let templateScope: ITemplateScope = <ITemplateScope>this.$scope.$new();
 		templateScope.text = 'Some text';
