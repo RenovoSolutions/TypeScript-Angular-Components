@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
 export let moduleName: string = 'rl.ui.components.templateRenderer';
 export let componentName: string = 'rlTemplateRenderer';

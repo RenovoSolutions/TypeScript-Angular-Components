@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;

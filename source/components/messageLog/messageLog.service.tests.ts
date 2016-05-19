@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
