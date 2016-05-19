@@ -16,3 +16,8 @@
 
 # Ignore git conflict / diff files
 *.orig
+
+# Typings files (resolved via typings)
+/typings/index.d.ts
+/typings/globals/
+/typings/modules/
