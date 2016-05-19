@@ -17,7 +17,7 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "clean": "gulp clean",
-    "build": "gulp clean && tsc && echo Build complete",
+    "build": "gulp clean && tsc && gulp bundle-css && gulp bundle-css.minify && echo Build complete",
     "build.watch": "tsc -w",
 
     "test": "karma start",
@@ -25,27 +25,22 @@
     "test.tc": "karma start karma.tc.conf.js",
     "test.full": "karma start karma.full.conf.js",
 
-    "bundle": "webpack & webpack --config webpack.min.config.js",
-    "bundle.watch": "webpack -w",
-
     "update-build": "npm run update && npm run build",
     "update-build-test": "npm run update && npm run build && npm run test",
-    "build-bundle": "npm run build && npm run bundle",
-    "build-bundle.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bundle.watch\"",
     "build-test": "npm run build && npm run test",
     "build-test.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run test.debug\"",
 
-    "full-build": "npm run update && npm run build && npm run bundle",
+    "full-build": "npm run update && npm run build",
 
-    "all": "npm run update && npm run build && npm run test.full && npm run bundle",
+    "all": "npm run update && npm run build && npm run test.full",
 
-    "bootstrap": "webpack --config webpack.bootstrapper.config.js",
-    "bootstrap.watch": "webpack -w --config webpack.bootstrapper.config.js",
+    "bundle": "gulp bundle-bootstrapper",
+    "bundle.watch": "gulp bundle-bootstrapper.watch",
 
-    "build-bootstrap.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bootstrap.watch\"",
+    "build-bundle.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bundle.watch\"",
 
     "serve": "http-server -c-1 -o",
-    "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"npm run serve\"",
+    "start": "concurrently --kill-others \"npm run bundle.watch\" \"npm run serve\"",
     "postinstall": "typings install"
   },
   "devDependencies": {

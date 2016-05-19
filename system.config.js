@@ -1,28 +1,15 @@
 'use strict';
 
-const externalDeps = [
-	'@angular/*',
-	'angular',
-	'angular-mocks',
-	'angular-sanitize',
-	'angular-ui-bootstrap',
-	'angular-ui-router',
-	'bootstrap',
-	'jquery',
-	'rxjs',
-	'rxjs/*',
-	'lodash',
-	'moment',
-	'moment-timezone',
-	'typescript-angular-utilities',
-];
-
 const map = {
 	'@angular': 'node_modules/@angular',
-	'angular': 'node_modules/angular/angular',
+	// 'angular': 'node_modules/angular',
 	'angular-mocks': 'node_modules/angular-mocks/angular-mocks',
 	'angular-animate': 'node_modules/angular-animate/angular-animate.js',
-	'rxjs': 'node_modules/rxjs/Rx',
+	'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/index.js',
+	'angular-ui-router': 'node_modules/angular-ui-router/release/angular-ui-router.min.js',
+	'angular-sanitize': 'node_modules/angular-sanitize/index.js',
+	'angular2-uuid': 'node_modules/angular2-uuid',
+	'rxjs': 'node_modules/rxjs',
 	'lodash': 'node_modules/lodash/index',
 	'moment': 'node_modules/moment/moment',
 	'moment-timezone': 'node_modules/moment-timezone/builds/moment-timezone-with-data.min',
@@ -31,52 +18,83 @@ const map = {
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',
 	'text': 'node_modules/system-text/text',
-	'jquery': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.js',
-	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/output/utilities',
+	// 'jquery': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js',
+	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
 
-let meta = externalDeps.reduce((curMeta, dep) => {
-	curMeta[dep] = { build: false };
-	return curMeta;
-}, {});
-
-meta['components/*.html'] = {
-	loader: 'text',
+const meta = {
+	'source/*.html': {
+		loader: 'text',
+	},
+	'bootstrapper/*.html': {
+		loader: 'text',
+	},
+	'jquery': {
+		build: false,
+	},
+	'angular': {
+		build: false,
+	},
+	// 'angular': {
+	// 	format: 'global',
+	// 	exports: 'angular',
+	// },
 };
 
 System.config({
+	baseURL: '/',
 	meta,
 	map,
-	// packages: {
-	// 	'libraries': {
-	// 		defaultExtension: 'js',
-	// 	},
-	// 	'bootstrapper': {
-	// 		defaultExtension: 'js',
-	// 	},
-	// 	'source': {
-	// 		defaultExtension: 'js',
-	// 	},
-	// },
-	paths: {
-		// CSS and HTML paths have to be more specific than JS paths to take precidence
-		'components/*.html': 'components/*.html',
-		'*': '*.js',
+	packages: {
+		'libraries': {
+			defaultExtension: 'js',
+		},
+		'bootstrapper': {
+			defaultExtension: 'js',
+		},
+		'source': {
+			defaultExtension: 'js',
+		},
+		'node_modules': {
+			defaultExtension: 'js',
+		},
+		'@angular/http': {
+			main: 'index.js',
+		},
+		'@angular/core': {
+			main: 'index.js',
+		},
+		'@angular/upgrade': {
+			main: 'index.js',
+		},
+		'@angular/platform-browser-dynamic': {
+			main: 'index.js',
+		},
+		'@angular/platform-browser': {
+			main: 'index.js',
+		},
+		'@angular/compiler': {
+			main: 'index.js',
+		},
+		'@angular/common': {
+			main: 'index.js',
+		},
+		'angular2-uuid': {
+			main: 'index.js',
+		},
+		'rxjs': {
+			main: 'Rx.js',
+		},
+		// 'angular': {
+		// 	main: 'angular.js',
+		// }
 	},
 });
 
 System.register('jquery', [], true, function () {
 	return window.$;
-});
+})
 
 System.register('angular', [], true, function () {
 	return window.angular;
-});
-
-System.register('angular-ui-bootstrap', [], true, function () {
-	return window.angular;
-});
-
-System.register('angular-sanitize', [], true, function () {
-	return window.angular;
-});
+})
