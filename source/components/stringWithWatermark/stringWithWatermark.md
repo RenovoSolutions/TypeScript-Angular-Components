@@ -3,7 +3,7 @@ Component for showing a placeholder if the specified string has no value.
 
 ### Usage
 ```
-<rl-string-with-watermark string="" watermark=""> ... </rl-string-with-watermark>
+<rl-string-with-watermark string="" watermark=""></rl-string-with-watermark>
 ```
 ### Options
 
