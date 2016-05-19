@@ -146,7 +146,7 @@ export interface ISmartDataSourceFactory {
 }
 
 smartDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
-export function smartDataSourceFactory(observableFactory: downgrade.IObservableFactory
+export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory {
