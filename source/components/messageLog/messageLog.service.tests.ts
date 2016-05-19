@@ -28,7 +28,6 @@ describe('messageLog', () => {
 	let allMessages: string[];
 
 	beforeEach(() => {
-		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
 
 		allMessages = defaultMessages();

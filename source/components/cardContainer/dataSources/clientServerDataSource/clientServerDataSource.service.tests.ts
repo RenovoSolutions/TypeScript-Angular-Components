@@ -39,7 +39,6 @@ describe('clientServerDataSource', () => {
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
 		angular.mock.module(moduleName);
-		angular.mock.module(test.moduleName);
 		let dependencies: any = test.angularFixture.inject(
 			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', downgrade.genericSearchFilterServiceName, '$q');
 		clientServerDataSourceFactory = dependencies[factoryName];

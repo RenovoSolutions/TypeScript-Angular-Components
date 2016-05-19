@@ -34,7 +34,6 @@ describe('asyncDataSource', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-		angular.mock.module(test.moduleName);
 
 		var services: any = test.angularFixture.inject('$rootScope'
 													, '$q'
