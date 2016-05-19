@@ -96,7 +96,7 @@ export interface IServerSideDataSourceFactory {
 }
 
 serverSideDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName,  downgrade.synchronizedRequestsServiceName];
-export function serverSideDataSourceFactory(observableFactory: downgrade.IObservableFactory
+export function serverSideDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
 												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory {

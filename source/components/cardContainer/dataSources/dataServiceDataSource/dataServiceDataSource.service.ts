@@ -36,7 +36,7 @@ export interface IDataServiceDataSourceFactory {
 }
 
 dataServiceDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.synchronizedRequestsServiceName];
-export function dataServiceDataSourceFactory(observableFactory: downgrade.IObservableFactory
+export function dataServiceDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 										, array: __array.IArrayUtility
 										, synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsFactory): IDataServiceDataSourceFactory {
 	'use strict';

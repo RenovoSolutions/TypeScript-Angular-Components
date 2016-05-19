@@ -26,7 +26,7 @@ export interface ISimpleDataSourceFactory {
 }
 
 simpleDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName];
-export function simpleDataSourceFactory(observableFactory: downgrade.IObservableFactory
+export function simpleDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility): ISimpleDataSourceFactory {
 	'use strict';
 	return {
