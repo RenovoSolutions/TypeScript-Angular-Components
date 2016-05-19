@@ -46,8 +46,7 @@
 
     "serve": "http-server -c-1 -o",
     "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"npm run serve\"",
-    
-    "postinstall": "tsd update"
+    "postinstall": "typings install"
   },
   "devDependencies": {
     "angular-bluebird-promises": "^1.0.1",
@@ -79,6 +78,7 @@
     "tsd": "~0.6.5",
     "typescript": "~1.8.2",
     "webpack": "~1.12.14"
+    "typings": "~1.0.4"
   },
   "dependencies": {
     "angular": "~1.5.3",
