@@ -54,7 +54,7 @@ Angular components that can be added to an application.
 * [tabs]()
 * [templateRenderer]()
 * [userRating]()
-* [validationGroup]()
+* [validationGroup](/source/components/validationGroup/validationGroup.md)
 
 ## Filters
 Angular filters which can be applied to bindings using the Angular pipe operator `<span>{{myMoney | currency}}</span>`
