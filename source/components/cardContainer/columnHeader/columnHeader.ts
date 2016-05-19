@@ -1,7 +1,3 @@
-// /// <reference path='../../../../typings/jquery/jquery.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 
 import { ISortDirections, SortDirection } from '../sorts/sortDirection';

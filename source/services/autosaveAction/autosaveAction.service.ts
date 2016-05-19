@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ng from 'angular';
 
 export var moduleName: string = 'rl.utilities.services.autosaveAction';

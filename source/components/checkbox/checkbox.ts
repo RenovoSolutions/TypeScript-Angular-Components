@@ -1,7 +1,5 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 
-'use strict';
-
 import './checkbox.css';
 
 import * as angular from 'angular';

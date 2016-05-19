@@ -1,9 +1,3 @@
-// /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
-// /// <reference path='../../../typings/jquery/jquery.d.ts' />
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import '../../../libraries/bootstrap-touchspin/index';
 
 

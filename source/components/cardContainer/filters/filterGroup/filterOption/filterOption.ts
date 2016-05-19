@@ -1,6 +1,5 @@
 // /// <reference path='../../../../../../typings/commonjs.d.ts' />
 
-'use strict';
 import * as angular from 'angular';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.filterOption';

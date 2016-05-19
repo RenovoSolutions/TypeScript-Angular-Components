@@ -1,7 +1,5 @@
 // /// <reference path='../../../../../typings/jquery/jquery.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';

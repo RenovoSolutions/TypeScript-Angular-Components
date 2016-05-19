@@ -1,5 +1,3 @@
-'use strict';
-
 import './busy.css';
 
 import * as angular from 'angular';

@@ -1,10 +1,3 @@
-/// <reference path='../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../../typings/lodash/lodash.d.ts' />
-
-'use strict';
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;

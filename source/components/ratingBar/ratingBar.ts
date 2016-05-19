@@ -1,5 +1,3 @@
-'use strict';
-
 import './ratingBar.css';
 
 import * as angular from 'angular';

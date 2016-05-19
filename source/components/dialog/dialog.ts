@@ -1,8 +1,3 @@
-// /// <reference path='../../../typings/node/node.d.ts' />
-// /// <reference path='../../../typings/jquery/jquery.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 
 import { DialogService, serviceName as dialogServiceName, moduleName as dialogModule } from '../../services/dialog/dialog.service';

@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import 'ui-select';
 import 'ui-select/dist/select.css';
 

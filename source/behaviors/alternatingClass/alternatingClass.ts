@@ -1,5 +1,3 @@
-'use strict';
-
 import * as angular from 'angular';
 
 export const moduleName: string = 'rl.ui.behaviors.alternatingClass';

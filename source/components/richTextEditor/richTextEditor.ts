@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import 'ng-wig/dist/css/ng-wig.css';
 import 'ng-wig/dist/ng-wig';
 import './editorButtons.css';

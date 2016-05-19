@@ -1,5 +1,3 @@
-'use strict';
-
 import * as angular from 'angular';
 
 import { moduleName as windowWrapperModuleName } from '../windowWrapper/windowWrapper.service';
