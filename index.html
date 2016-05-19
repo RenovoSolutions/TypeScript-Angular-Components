@@ -8,13 +8,11 @@
 
 		<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/dist/components.css">
 
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular-sanitize.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular-animate.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0-alpha.1/angular-ui-router.min.js"></script>
+		<div>
+			<ts-bootstrapper></ts-bootstrapper>
+		</div>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-shim/0.35.1/es6-shim.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/reflect-metadata/0.1.3/Reflect.min.js"></script>
@@ -22,14 +20,14 @@
 
 		<script src="/node_modules/systemjs/dist/system.js"></script>
 
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.js"></script>
+
 		<script src="/system.config.js"></script>
+		<script src="/bootstrapper/app.bundle.js"></script>
 
 		<script>
 			System.import('bootstrapper/app');
 		</script>
-
-		<div ng-app="app">
-			<ts-bootstrapper></ts-bootstrapper>
-		</div>
 	</body>
 </html>
