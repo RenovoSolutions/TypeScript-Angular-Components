@@ -27,7 +27,7 @@ validators="[myValidator1, myValidator2]"
 ### Full example
 
 ```
-<rl-validation-group validator="myValidator"></rl-validation-group>
+<rl-validation-group validator="myValidator"> ... </rl-validation-group>
 ```
 Output (with validation errors):
 ```
