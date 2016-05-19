@@ -2,6 +2,7 @@ import '../../../libraries/bootstrap-touchspin/index';
 
 
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 

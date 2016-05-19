@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
 export var moduleName: string = 'rl.utilities.services.parentChildBehavior';
 export var serviceName: string = 'parentChildBehavior';

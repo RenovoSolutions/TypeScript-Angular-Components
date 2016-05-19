@@ -1,5 +1,6 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 
+import * as _ from 'lodash';
 import * as angular from 'angular';
 
 export const moduleName: string = 'rl.ui.components.button';
