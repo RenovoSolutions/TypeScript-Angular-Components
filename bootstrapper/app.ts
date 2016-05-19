@@ -1,4 +1,8 @@
+import 'jquery';
 import * as angular from 'angular';
+import 'angular-ui-router';
+
+import { UpgradeAdapter } from '@angular/upgrade';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -15,13 +19,20 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
+var upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
+downgrade.downgradeUtilitiesToAngular1(upgradeAdapter);
+
 const bootstrapper: angular.IComponentOptions = {
 	template: require('./app.html'),
 }
 
-angular.module('app', [
+const moduleName: string = 'bootstrapper-app';
+
+angular.module(moduleName, [
 	componentsModule,
 	'ui.router',
+
+	downgrade.moduleName,
 
 	inputModuleName,
 	buttonModuleName,
@@ -51,3 +62,5 @@ function BaseRoute($urlRouterProvider, $stateProvider) {
 			template: '<h3>Welcome to typescript-angular-components</h3>',
 		});
 }
+
+upgradeAdapter.bootstrap(document.body, [moduleName]);
