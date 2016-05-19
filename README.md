@@ -50,7 +50,7 @@ Angular components that can be added to an application.
 * [ratingBar]()
 * [signaturePad]()
 * [simpleCardList]()
-* [stringWithWatermark]()
+* [stringWithWatermark](/source/components/stringWithWatermark/stringWithWatermark.md)
 * [tabs]()
 * [templateRenderer]()
 * [userRating]()
