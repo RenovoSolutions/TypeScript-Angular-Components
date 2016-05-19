@@ -2,6 +2,7 @@ import * as angular from 'angular';
 
 import 'angular-ui-bootstrap';
 import 'angular-sanitize';
+import 'angular-animate';
 
 import { downgrade } from 'typescript-angular-utilities';
 
