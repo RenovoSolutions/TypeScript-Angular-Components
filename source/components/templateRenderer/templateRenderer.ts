@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/node/node.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 
 export let moduleName: string = 'rl.ui.components.templateRenderer';

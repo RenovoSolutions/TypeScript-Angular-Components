@@ -1,5 +1,3 @@
-'use strict';
-
 // /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
 
 import * as angular from 'angular';

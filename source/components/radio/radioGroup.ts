@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ng from 'angular';
 
 import { services, downgrade } from 'typescript-angular-utilities';

@@ -1,7 +1,5 @@
 // /// <reference path='../../../../typings/jquery/jquery.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';

@@ -1,5 +1,3 @@
-'use strict';
-
 import { IPartialSort } from './sorts/sort';
 import { SortDirection } from './sorts/sortDirection';
 

@@ -1,5 +1,3 @@
-﻿'use strict';
-
 import './userRating.css';
 
 import * as angular from 'angular';

@@ -1,5 +1,3 @@
-'use strict';
-
 import * as _ from 'lodash';
 import {filters, services} from 'typescript-angular-utilities';
 import __object = services.object;

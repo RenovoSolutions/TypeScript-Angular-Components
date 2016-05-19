@@ -1,5 +1,3 @@
-'use strict';
-
 import * as ng from 'angular';
 
 import { RadioGroup, RadioGroupController } from './radioGroup';

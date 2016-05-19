@@ -1,5 +1,3 @@
-'use strict';
-
 import { types } from 'typescript-angular-utilities';
 
 import { IColumn } from '../column';

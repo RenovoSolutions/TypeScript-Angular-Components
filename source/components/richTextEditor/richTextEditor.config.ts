@@ -1,5 +1,3 @@
-'use strict';
-
 export var providerName: string = 'richTextEditor';
 
 export interface IRichTextEditorProvider {

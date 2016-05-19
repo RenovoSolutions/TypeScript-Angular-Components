@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import * as ng from 'angular';
 
 export var headerButtonDirectiveName: string = 'rlHeaderButton';

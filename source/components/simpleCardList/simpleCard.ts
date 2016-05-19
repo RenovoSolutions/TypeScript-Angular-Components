@@ -1,8 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-// /// <reference path='../../../typings/jquery/jquery.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 import { Subject } from 'rxjs';
 

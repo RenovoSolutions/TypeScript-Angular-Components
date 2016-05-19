@@ -1,7 +1,3 @@
-// /// <reference path="../../../typings/jquery/jquery.d.ts" />
-
-'use strict';
-
 import * as ng from 'angular';
 import * as _ from 'lodash';
 import { Observable, BehaviorSubject } from 'rxjs';

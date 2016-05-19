@@ -1,6 +1,4 @@
-﻿'use strict';
-
-import * as angular from 'angular';
+﻿import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';

@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 
 import { services, downgrade } from 'typescript-angular-utilities';
