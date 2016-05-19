@@ -1,7 +1,5 @@
 // /// <reference path='../../../typings/commonjs.d.ts' />
 
-import './checkbox.css';
-
 import * as angular from 'angular';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';

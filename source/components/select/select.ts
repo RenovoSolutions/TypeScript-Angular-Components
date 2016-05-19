@@ -1,5 +1,4 @@
 import 'ui-select';
-import 'ui-select/dist/select.css';
 
 import * as angular from 'angular';
 import * as _ from 'lodash';

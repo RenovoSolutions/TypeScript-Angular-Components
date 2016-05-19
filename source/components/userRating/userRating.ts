@@ -1,6 +1,4 @@
-import './userRating.css';
-
-import * as angular from 'angular';
+﻿import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';

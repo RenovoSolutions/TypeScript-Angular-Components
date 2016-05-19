@@ -1,6 +1,4 @@
-import 'ng-wig/dist/css/ng-wig.css';
 import 'ng-wig/dist/ng-wig';
-import './editorButtons.css';
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
