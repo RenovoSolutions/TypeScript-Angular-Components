@@ -53,7 +53,7 @@ Angular components that can be added to an application.
 * [stringWithWatermark](/source/components/stringWithWatermark/stringWithWatermark.md)
 * [tabs]()
 * [templateRenderer]()
-* [userRating]()
+* [userRating](/source/components/userRating/userRating.md)
 * [validationGroup](/source/components/validationGroup/validationGroup.md)
 
 ## Filters
