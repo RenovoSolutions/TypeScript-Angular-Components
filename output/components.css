@@ -1,0 +1,656 @@
+/* -------- NG-WIG -------- */
+@import url("https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css");
+/**
+ *
+ *  RESET BOX MODEL
+ *
+ */
+.ng-wig,
+[class^="nw-"] {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+
+/**
+ *   main wrapper for the editor
+ *
+ *  .ng-wig
+ *
+ */
+.ng-wig {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+
+/**
+ *  styling for toolbar and its items
+ *
+ *  .nw-toolbar
+ *    &__item
+ *
+ */
+.nw-toolbar {
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+  font-size: 12px;
+  color: #6B7277;
+
+  background: -webkit-linear-gradient(90deg, #ffffff 0%, #f9f9f9 100%);
+  background:    -moz-linear-gradient(90deg, #ffffff 0%, #f9f9f9 100%);
+  background:         linear-gradient(180deg, #ffffff 0%, #f9f9f9 100%);
+  border: 1px solid #CCCCCC;
+  border-radius: 3px 3px 0 0;
+}
+
+.nw-toolbar__item {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0;
+
+  border-right: 1px solid #DEDEDE;
+}
+
+.nw-toolbar label {
+  line-height: 30px;
+  display: inline-block;
+  padding: 0 6px 0 3px;
+}
+
+.nw-toolbar input[type=checkbox] {
+  vertical-align: -3px;
+  margin-right: -1px;
+}
+
+/**
+ *  styling for the editor part: source code (original textarea) and resulting div
+ *
+ *  .nw-editor
+ *    &__src
+ *    &__res
+ *
+ */
+.nw-editor {
+  display: table;
+  /* Default when height is not set */
+  height: 300px;
+  background: #fff;
+  cursor: text;
+  width:100%;
+}
+
+.nw-editor-container {
+  border: 1px solid #CCCCCC;
+  border-top: none;
+  border-radius: 0 0 3px 3px;
+  position: relative;
+}
+
+.nw-editor__res {
+  min-height: 100%;
+  padding: 0 8px;
+  display: table-cell;
+}
+
+.nw-editor__src,
+.nw-editor__res {
+  width: 100%;
+  outline: none;
+  box-sizing: border-box;
+  border: none;
+  margin: 0;
+}
+
+.nw-editor__src-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.nw-editor__src {
+  height: 100%;
+  resize: none;
+  padding: 0 8px;
+}
+
+.nw-editor--fixed .nw-editor {
+  display:block;
+  overflow-y: auto;
+}
+
+.nw-editor--fixed .nw-editor__res {
+  padding: 1px 8px;
+  display:block;
+}
+
+.nw-invisible {
+  visibility: hidden;
+}
+
+.nw-editor--fixed .nw-invisible {
+  display: none;
+}
+
+.nw-editor.nw-disabled {
+	cursor: default;
+}
+
+/**
+ *  styling for toolbar button, has two modifiers: active and type of icon for background
+ *
+ *  .nw-button
+ *    &--active
+ *    &--{button type}
+ *
+ */
+.nw-button {
+  -webkit-appearance: none;
+  -moz-appearance:    none;
+  appearance:         none;
+
+  display: block;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  padding: 0;
+  opacity: 0.5;
+
+  background-color: transparent;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: none;
+  border-radius: 2px;
+
+  font-size: 0;
+
+  cursor: pointer;
+}
+
+.nw-button:before {
+  font-size: 12px;
+  font-family: FontAwesome;
+}
+
+.nw-button.bold:before {
+  content: '\f032';
+}
+
+.nw-button.italic:before {
+  content: '\f033';
+}
+
+.nw-button.list-ul:before {
+  content: '\f0ca';
+}
+
+.nw-button.list-ol:before {
+  content: '\f0cb';
+}
+
+.nw-button.link:before {
+  content: '\f0c1';
+}
+
+.nw-button.font-color:before {
+  content: '\f031';
+}
+
+.nw-button.nw-button--source:before {
+  content: '\f040';
+}
+
+.nw-button:focus {
+  outline: none;
+}
+
+.nw-button:hover,
+.nw-button.nw-button--active {
+  opacity: 1
+}
+
+.nw-button--active {
+  background-color: #EEEEEE;
+}
+
+.nw-button:disabled {
+  cursor: default;
+}
+.nw-button:disabled:hover {
+  opacity: 0.5;
+}
+
+/**
+ *  styling & formatting of content inside contenteditable div
+ *
+ *  .nw-content
+ *
+ */
+.nw-content {
+  padding: 12px;
+  margin: 0;
+
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 24px;
+}
+
+.nw-select {
+  height: 30px;
+  padding: 6px;
+  color: #555;
+  background-color: inherit;
+  border: 0;
+}
+
+.nw-select:disabled {
+	opacity: 0.5;
+}
+
+.nw-select:focus { outline: none; }
+
+
+/*! =======================================================
+                      VERSION  5.1.1
+========================================================= */
+/*! =========================================================
+ * bootstrap-slider.js
+ *
+ * Maintainers:
+ *		Kyle Kemp
+ *			- Twitter: @seiyria
+ *			- Github:  seiyria
+ *		Rohit Kalkur
+ *			- Twitter: @Rovolutionary
+ *			- Github:  rovolution
+ *
+ * =========================================================
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================= */.slider{display:inline-block;vertical-align:middle;position:relative}.slider.slider-horizontal{width:210px;height:20px}.slider.slider-horizontal .slider-track{height:10px;width:100%;margin-top:-5px;top:50%;left:0}.slider.slider-horizontal .slider-selection,.slider.slider-horizontal .slider-track-low,.slider.slider-horizontal .slider-track-high{height:100%;top:0;bottom:0}.slider.slider-horizontal .slider-tick,.slider.slider-horizontal .slider-handle{margin-left:-10px;margin-top:-5px}.slider.slider-horizontal .slider-tick.triangle,.slider.slider-horizontal .slider-handle.triangle{border-width:0 10px 10px 10px;width:0;height:0;border-bottom-color:#0480be;margin-top:0}.slider.slider-horizontal .slider-tick-label-container{white-space:nowrap;margin-top:20px}.slider.slider-horizontal .slider-tick-label-container .slider-tick-label{padding-top:4px;display:inline-block;text-align:center}.slider.slider-vertical{height:210px;width:20px}.slider.slider-vertical .slider-track{width:10px;height:100%;margin-left:-5px;left:50%;top:0}.slider.slider-vertical .slider-selection{width:100%;left:0;top:0;bottom:0}.slider.slider-vertical .slider-track-low,.slider.slider-vertical .slider-track-high{width:100%;left:0;right:0}.slider.slider-vertical .slider-tick,.slider.slider-vertical .slider-handle{margin-left:-5px;margin-top:-10px}.slider.slider-vertical .slider-tick.triangle,.slider.slider-vertical .slider-handle.triangle{border-width:10px 0 10px 10px;width:1px;height:1px;border-left-color:#0480be;margin-left:0}.slider.slider-disabled .slider-handle{background-image:-webkit-linear-gradient(top,#dfdfdf 0,#bebebe 100%);background-image:-o-linear-gradient(top,#dfdfdf 0,#bebebe 100%);background-image:linear-gradient(to bottom,#dfdfdf 0,#bebebe 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffdfdfdf',endColorstr='#ffbebebe',GradientType=0)}.slider.slider-disabled .slider-track{background-image:-webkit-linear-gradient(top,#e5e5e5 0,#e9e9e9 100%);background-image:-o-linear-gradient(top,#e5e5e5 0,#e9e9e9 100%);background-image:linear-gradient(to bottom,#e5e5e5 0,#e9e9e9 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffe5e5e5',endColorstr='#ffe9e9e9',GradientType=0);cursor:not-allowed}.slider input{display:none}.slider .tooltip.top{margin-top:-36px}.slider .tooltip-inner{white-space:nowrap}.slider .hide{display:none}.slider-track{position:absolute;cursor:pointer;background-image:-webkit-linear-gradient(top,#f5f5f5 0,#f9f9f9 100%);background-image:-o-linear-gradient(top,#f5f5f5 0,#f9f9f9 100%);background-image:linear-gradient(to bottom,#f5f5f5 0,#f9f9f9 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff5f5f5',endColorstr='#fff9f9f9',GradientType=0);-webkit-box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);box-shadow:inset 0 1px 2px rgba(0,0,0,0.1);border-radius:4px}.slider-selection{position:absolute;background-image:-webkit-linear-gradient(top,#f9f9f9 0,#f5f5f5 100%);background-image:-o-linear-gradient(top,#f9f9f9 0,#f5f5f5 100%);background-image:linear-gradient(to bottom,#f9f9f9 0,#f5f5f5 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9',endColorstr='#fff5f5f5',GradientType=0);-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border-radius:4px}.slider-selection.tick-slider-selection{background-image:-webkit-linear-gradient(top,#89cdef 0,#81bfde 100%);background-image:-o-linear-gradient(top,#89cdef 0,#81bfde 100%);background-image:linear-gradient(to bottom,#89cdef 0,#81bfde 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff89cdef',endColorstr='#ff81bfde',GradientType=0)}.slider-track-low,.slider-track-high{position:absolute;background:transparent;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;border-radius:4px}.slider-handle{position:absolute;width:20px;height:20px;background-color:#337ab7;background-image:-webkit-linear-gradient(top,#149bdf 0,#0480be 100%);background-image:-o-linear-gradient(top,#149bdf 0,#0480be 100%);background-image:linear-gradient(to bottom,#149bdf 0,#0480be 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff149bdf',endColorstr='#ff0480be',GradientType=0);filter:none;-webkit-box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.05);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 2px rgba(0,0,0,.05);border:0 solid transparent}.slider-handle.round{border-radius:50%}.slider-handle.triangle{background:transparent none}.slider-handle.custom{background:transparent none}.slider-handle.custom::before{line-height:20px;font-size:20px;content:'\2605';color:#726204}.slider-tick{position:absolute;width:20px;height:20px;background-image:-webkit-linear-gradient(top,#f9f9f9 0,#f5f5f5 100%);background-image:-o-linear-gradient(top,#f9f9f9 0,#f5f5f5 100%);background-image:linear-gradient(to bottom,#f9f9f9 0,#f5f5f5 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff9f9f9',endColorstr='#fff5f5f5',GradientType=0);-webkit-box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);box-shadow:inset 0 -1px 0 rgba(0,0,0,0.15);-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;filter:none;opacity:.8;border:0 solid transparent}.slider-tick.round{border-radius:50%}.slider-tick.triangle{background:transparent none}.slider-tick.custom{background:transparent none}.slider-tick.custom::before{line-height:20px;font-size:20px;content:'\2605';color:#726204}.slider-tick.in-selection{background-image:-webkit-linear-gradient(top,#89cdef 0,#81bfde 100%);background-image:-o-linear-gradient(top,#89cdef 0,#81bfde 100%);background-image:linear-gradient(to bottom,#89cdef 0,#81bfde 100%);background-repeat:repeat-x;filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff89cdef',endColorstr='#ff81bfde',GradientType=0);opacity:1}
+/*!
+ * Datetimepicker for Bootstrap v3
+//! version : 3.1.3
+ * https://github.com/Eonasdan/bootstrap-datetimepicker/
+ */
+.bootstrap-datetimepicker-widget {
+  top: 0;
+  left: 0;
+  width: 250px;
+  padding: 4px;
+  margin-top: 1px;
+  z-index: 99999 !important;
+  border-radius: 4px;
+}
+.bootstrap-datetimepicker-widget.timepicker-sbs {
+  width: 600px;
+}
+.bootstrap-datetimepicker-widget.bottom:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -7px;
+  left: 7px;
+}
+.bootstrap-datetimepicker-widget.bottom:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid white;
+  position: absolute;
+  top: -6px;
+  left: 8px;
+}
+.bootstrap-datetimepicker-widget.top:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid #ccc;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: -7px;
+  left: 6px;
+}
+.bootstrap-datetimepicker-widget.top:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid white;
+  position: absolute;
+  bottom: -6px;
+  left: 7px;
+}
+.bootstrap-datetimepicker-widget .dow {
+  width: 14.2857%;
+}
+.bootstrap-datetimepicker-widget.pull-right:before {
+  left: auto;
+  right: 6px;
+}
+.bootstrap-datetimepicker-widget.pull-right:after {
+  left: auto;
+  right: 7px;
+}
+.bootstrap-datetimepicker-widget > ul {
+  list-style-type: none;
+  margin: 0;
+}
+.bootstrap-datetimepicker-widget a[data-action] {
+  padding: 0;
+}
+.bootstrap-datetimepicker-widget a[data-action]:active {
+  box-shadow: none;
+}
+.bootstrap-datetimepicker-widget .timepicker {
+  margin: 0 4px 4px 4px;
+}
+.bootstrap-datetimepicker-widget .timepicker-hour,
+.bootstrap-datetimepicker-widget .timepicker-minute,
+.bootstrap-datetimepicker-widget .timepicker-second {
+  width: 54px;
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-top: 4px;
+}
+.bootstrap-datetimepicker-widget button[data-action] {
+  padding: 6px;
+}
+.bootstrap-datetimepicker-widget table[data-hour-format="12"] .separator {
+  width: 4px;
+  padding: 0;
+  margin: 0;
+}
+.bootstrap-datetimepicker-widget .datepicker > div {
+  display: none;
+}
+.bootstrap-datetimepicker-widget .picker-switch {
+  text-align: center;
+}
+.bootstrap-datetimepicker-widget table {
+  width: 100%;
+  margin: 0;
+}
+.bootstrap-datetimepicker-widget td,
+.bootstrap-datetimepicker-widget th {
+  text-align: center;
+  border-radius: 4px;
+}
+.bootstrap-datetimepicker-widget td {
+  height: 25px;
+  line-height: 25px;
+  width: 54px;
+}
+.bootstrap-datetimepicker-widget td.cw {
+  font-size: 10px;
+  height: 20px;
+  line-height: 20px;
+  color: #777777;
+}
+.bootstrap-datetimepicker-widget td.day {
+  height: 20px;
+  line-height: 20px;
+  width: 20px;
+}
+.bootstrap-datetimepicker-widget td.day:hover,
+.bootstrap-datetimepicker-widget td.hour:hover,
+.bootstrap-datetimepicker-widget td.minute:hover,
+.bootstrap-datetimepicker-widget td.second:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+.bootstrap-datetimepicker-widget td.old,
+.bootstrap-datetimepicker-widget td.new {
+  color: #777777;
+}
+.bootstrap-datetimepicker-widget td.today {
+  position: relative;
+}
+.bootstrap-datetimepicker-widget td.today:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid #428bca;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+.bootstrap-datetimepicker-widget td.active,
+.bootstrap-datetimepicker-widget td.active:hover {
+  background-color: #428bca;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.bootstrap-datetimepicker-widget td.active.today:before {
+  border-bottom-color: #fff;
+}
+.bootstrap-datetimepicker-widget td.disabled,
+.bootstrap-datetimepicker-widget td.disabled:hover {
+  background: none;
+  color: #777777;
+  cursor: not-allowed;
+}
+.bootstrap-datetimepicker-widget td span {
+  display: inline-block;
+  width: 54px;
+  height: 25px;
+  line-height: 25px;
+  margin: 0px 1.5px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.bootstrap-datetimepicker-widget td span:hover {
+  background: #eeeeee;
+}
+.bootstrap-datetimepicker-widget td span.active {
+  background-color: #428bca;
+  color: #ffffff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.bootstrap-datetimepicker-widget td span.old {
+  color: #777777;
+}
+.bootstrap-datetimepicker-widget td span.disabled,
+.bootstrap-datetimepicker-widget td span.disabled:hover {
+  background: none;
+  color: #777777;
+  cursor: not-allowed;
+}
+.bootstrap-datetimepicker-widget th {
+  height: 20px;
+  line-height: 20px;
+  width: 20px;
+}
+.bootstrap-datetimepicker-widget th.picker-switch {
+  width: 145px;
+}
+.bootstrap-datetimepicker-widget th.next,
+.bootstrap-datetimepicker-widget th.prev {
+  font-size: 21px;
+}
+.bootstrap-datetimepicker-widget th.disabled,
+.bootstrap-datetimepicker-widget th.disabled:hover {
+  background: none;
+  color: #777777;
+  cursor: not-allowed;
+}
+.bootstrap-datetimepicker-widget thead tr:first-child th {
+  cursor: pointer;
+}
+.bootstrap-datetimepicker-widget thead tr:first-child th:hover {
+  background: #eeeeee;
+}
+.input-group.date .input-group-addon span {
+  display: block;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+.bootstrap-datetimepicker-widget.left-oriented:before {
+  left: auto;
+  right: 6px;
+}
+.bootstrap-datetimepicker-widget.left-oriented:after {
+  left: auto;
+  right: 7px;
+}
+.bootstrap-datetimepicker-widget ul.list-unstyled li div.timepicker div.timepicker-picker table.table-condensed tbody > tr > td {
+  padding: 0px !important;
+}
+@media screen and (max-width: 767px) {
+  .bootstrap-datetimepicker-widget.timepicker-sbs {
+    width: 283px;
+  }
+}
+
+/*
+ *  Bootstrap TouchSpin - v3.0.1
+ *  A mobile and touch friendly input spinner component for Bootstrap 3.
+ *  http://www.virtuosoft.eu/code/bootstrap-touchspin/
+ *
+ *  Made by István Ujj-Mészáros
+ *  Under Apache License v2.0 License
+ */
+
+.bootstrap-touchspin .input-group-btn-vertical {
+  position: relative;
+  white-space: nowrap;
+  width: 1%;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical > .btn {
+  display: block;
+  float: none;
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 10px;
+  margin-left: -1px;
+  position: relative;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-up {
+  border-radius: 0;
+  border-top-right-radius: 4px;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical .bootstrap-touchspin-down {
+  margin-top: -2px;
+  border-radius: 0;
+  border-bottom-right-radius: 4px;
+}
+
+.bootstrap-touchspin .input-group-btn-vertical i {
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  font-size: 9px;
+  font-weight: normal;
+}
+
+.default-theme.busy {
+	-webkit-animation: fa-spin 2s infinite linear;
+	animation: fa-spin 2s infinite linear;
+	display: inline-block;
+	font-size: inherit;
+	font-style: normal;
+	font-family: FontAwesome;
+}
+
+.default-theme.busy:before {
+	content: "\f110"; /* fa-spinner */
+}
+.rl-checkbox.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f096"; /*fa-square-o*/
+	font-size: 1.5em;
+	position: relative;
+	top: .05em;
+}
+
+.rl-checkbox-checked.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f046"; /*fa-check-square-o*/
+	font-size: 1.4em;
+}
+
+.disabled.default-theme:before {
+	cursor: not-allowed;
+}
+.rating-bar .default-theme.background {
+	background-color: #fff;
+	border: 1px solid #aaaaaa;
+}
+.rating-bar .default-theme.background.empty {
+	border: 1px solid red;
+}
+.rating-bar .default-theme .very-high { background-color: #20D000 }
+.rating-bar .default-theme .high { background-color: #00a000 }
+.rating-bar .default-theme .medium { background-color: #007000 }
+.rating-bar .default-theme .low { background-color: #aa0000 }
+.rating-bar .default-theme .very-low { background-color: #ff0000 }
+
+.nw-button.header:before {
+  content: '\f1dc'; /* fa-header */
+}
+
+.nw-button.paragraph:before {
+  content: '\f1dd'; /* fa-paragraph */
+}
+.tab-content .tab-pane { display: none }
+.tab-content .tab-pane.active { display: block }
+.rating.default-theme {
+    unicode-bidi:bidi-override;
+    direction:rtl;
+    font-size:1.5em;
+}
+
+.rating.default-theme .star {
+	font-family:FontAwesome;
+	font-weight:normal;
+	font-style:normal;
+	display:inline-block;
+}
+
+.rating.default-theme .star:hover { cursor: pointer; }
+
+.rating.default-theme .star:before {
+	content:"\f006";
+	padding-right:5px;
+	color:#999999;
+}
+
+.rating.default-theme .star.filled:before {
+	content:"\f005";
+	color:#eec277;
+}
+
+.rating.default-theme .star:hover:before, .rating.default-theme .star:hover~.star:before { color:#ffd288; }
+
+.filled { color:#eec277; }

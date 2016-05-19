@@ -1,4 +1,3 @@
-import './checkbox.css';
 import * as angular from 'angular';
 export declare const moduleName: string;
 export declare const componentName: string;

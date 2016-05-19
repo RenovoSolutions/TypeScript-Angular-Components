@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import { IChild, IParentChildBehaviorService } from '../../services/parentChild/parentchild.service';
+import { IChild, IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 import { ISimpleCardListController } from './simpleCardList';
 import { IChangeObject } from '../../types/changes';

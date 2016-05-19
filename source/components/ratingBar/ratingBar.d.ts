@@ -1,4 +1,3 @@
-import './ratingBar.css';
 import { IChangeObject } from '../../types/changes';
 export declare var moduleName: string;
 export declare var componentName: string;

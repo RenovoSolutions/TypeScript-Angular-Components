@@ -1,6 +1,4 @@
-import 'ng-wig/dist/css/ng-wig.css';
 import 'ng-wig/dist/ng-wig';
-import './editorButtons.css';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import { IRichTextEditorProvider } from './richTextEditor.config';

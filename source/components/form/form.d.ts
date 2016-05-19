@@ -1,5 +1,5 @@
 import * as angular from 'angular';
-import { IParentChildBehaviorService, IChild } from '../../services/parentchild/parentChild.service';
+import { IParentChildBehaviorService, IChild } from '../../services/parentChild/parentChild.service';
 import { IFormValidator } from '../../types/formValidators';
 import { IAutosaveService, IAutosaveServiceFactory } from '../../services/autosave/autosave.service';
 export declare let moduleName: string;

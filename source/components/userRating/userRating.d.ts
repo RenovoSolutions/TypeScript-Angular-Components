@@ -1,4 +1,3 @@
-import './userRating.css';
 import * as angular from 'angular';
 export declare let moduleName: string;
 export declare let componentName: string;
