@@ -1,3 +1,7 @@
+z# Ignore built files
+/dist/
+/bootstrapper/app.bundle.js
+/bootstrapper/app.bundle.js.map
 # Node deps
 /node_modules/
 
