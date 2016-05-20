@@ -4,7 +4,7 @@ export var moduleName: string = 'rl.utilities.services.autosaveAction';
 export var serviceName: string = 'autosaveAction';
 
 export interface IAutosaveActionService {
-	trigger(promise: ng.IPromise<any>): void;
+	trigger(promise: Promise<any>): void;
 	saving: boolean;
 	complete: boolean;
 	successful: boolean;
@@ -32,7 +32,7 @@ class AutosaveActionService implements IAutosaveActionService {
 		return this._successful;
 	}
 
-	trigger(promise: ng.IPromise<any>): any {
+	trigger(promise: Promise<any>): any {
 		this._saving = true;
 		return promise.then(this.autosaveSuccessful)
 					.catch(this.autosaveFailed);
