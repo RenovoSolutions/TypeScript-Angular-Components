@@ -45,13 +45,7 @@ angular.module(moduleName, [
 	textModuleName,
 ])
 	.component('tsBootstrapper', bootstrapper)
-	.config(BaseRoute)
-	.value(downgrade.notificationServiceName, {
-		success: message => console.log(message),
-		info: message => console.log(message),
-		warning: message => console.log(message),
-		error: message => console.error(message),
-	});
+	.config(BaseRoute);
 
 BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
 function BaseRoute($urlRouterProvider, $stateProvider) {
