@@ -19,7 +19,7 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
-var upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
+const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
 downgrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 
 const bootstrapper: angular.IComponentOptions = {
