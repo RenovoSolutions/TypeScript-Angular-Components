@@ -19,7 +19,7 @@ export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDa
 }
 
 export interface IDataServiceSearchFunction<TDataType> {
-	(search: string | any): angular.IPromise<TDataType[]>;
+	(search: string | any): Promise<TDataType[]>;
 }
 
 export interface IGetFilterModel<TFilterModelType> {
