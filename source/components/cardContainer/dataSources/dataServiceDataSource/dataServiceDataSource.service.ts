@@ -14,7 +14,7 @@ export var factoryName: string = 'dataServiceDataSource';
 export { IAsyncDataSource };
 
 export interface IDataServiceFunction<TDataType> {
-	(): angular.IPromise<TDataType[]>;
+	(): Promise<TDataType[]>;
 }
 
 export class DataServiceDataSource<TDataType> extends AsyncDataSource<TDataType> implements IAsyncDataSource<TDataType> {

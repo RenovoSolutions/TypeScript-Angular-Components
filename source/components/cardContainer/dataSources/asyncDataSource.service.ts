@@ -10,7 +10,7 @@ import { DataSourceBase } from './dataSourceBase.service';
 import { IDataSourceProcessor } from './dataSourceProcessor.service';
 
 export interface IDataSetFunction<TDataType> {
-	(params: any): angular.IPromise<TDataType[]>;
+	(params: any): Promise<TDataType[]>;
 }
 
 export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {

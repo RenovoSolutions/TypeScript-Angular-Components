@@ -92,7 +92,7 @@ describe('asyncDataSource', () => {
 		let firstRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
 		let secondRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
 
-		let get: Sinon.SinonSpy = sinon.spy((): angular.IPromise<number[]> => { return firstRequest.promise; });
+		let get: Sinon.SinonSpy = sinon.spy((): Promise<number[]> => { return firstRequest.promise; });
 
 		source.getDataSet = get;
 
@@ -100,7 +100,7 @@ describe('asyncDataSource', () => {
 
 		sinon.assert.calledOnce(get);
 
-		get = sinon.spy((): angular.IPromise<number[]> => { return secondRequest.promise; });
+		get = sinon.spy((): Promise<number[]> => { return secondRequest.promise; });
 
 		source.getDataSet = get;
 		source.reload();
