@@ -4,8 +4,7 @@ import 'angular-ui-router';
 
 import { UpgradeAdapter } from '@angular/upgrade';
 
-import { services, downgrade } from 'typescript-angular-utilities';
-import __notification = services.notification;
+import { downgrade } from 'typescript-angular-utilities';
 
 import { moduleName as componentsModule } from '../source/ui.module';
 
