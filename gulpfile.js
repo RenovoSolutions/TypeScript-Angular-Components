@@ -6,9 +6,8 @@ const runSequence = require('run-sequence');
 const concat = require('gulp-concat');
 const cleanCss = require('gulp-clean-css');
 
-// const utilities = require('gulp-utilities');
-// utilities.gulp.clean.config();
-gulp.task('clean', () => { console.log('placeholder for now') });
+const utilities = require('gulp-utilities');
+utilities.gulp.clean.config();
 
 const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js'];
 const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css'];

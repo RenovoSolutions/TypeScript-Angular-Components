@@ -69,7 +69,8 @@
     "system-text": "^0.1.0",
     "systemjs-builder": "^0.15.16",
     "typescript": "~1.8.2",
-    "typings": "~1.0.4"
+    "typings": "~1.0.4",
+    "webpack": "~1.12.14"
   },
   "dependencies": {
     "@angular/core": "^2.0.0-rc.1",
