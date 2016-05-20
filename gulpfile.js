@@ -43,7 +43,7 @@ gulp.task('systemjs', (done) => {
 	builder.loadConfig('./system.config.js')
 		.then(() => {
 			return builder.bundle('bootstrapper/app.js', 'bootstrapper/app.bundle.js', {
-				// sourceMaps: true,
+				sourceMaps: true,
 			});
 		})
 		.then(() => {
