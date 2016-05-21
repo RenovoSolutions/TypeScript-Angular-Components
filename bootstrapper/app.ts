@@ -4,9 +4,10 @@ import 'angular-ui-router';
 
 import { UpgradeAdapter } from '@angular/upgrade';
 
-import { downgrade } from 'typescript-angular-utilities';
+import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
 
 import { moduleName as componentsModule } from '../source/ui.module';
+import * as componentsDowngrade from '../source/componentsDowngrade';
 
 import { moduleName as inputModuleName } from './inputs/inputBootstrapper';
 import { moduleName as buttonModuleName } from './buttons/buttonBootstrapper';
@@ -19,7 +20,8 @@ import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
-downgrade.downgradeUtilitiesToAngular1(upgradeAdapter);
+utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
+componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
 
 const bootstrapper: angular.IComponentOptions = {
 	template: require('./app.html'),
@@ -31,7 +33,7 @@ angular.module(moduleName, [
 	componentsModule,
 	'ui.router',
 
-	downgrade.moduleName,
+	utilitiesDowngrade.moduleName,
 
 	inputModuleName,
 	buttonModuleName,
