@@ -86,6 +86,16 @@ function InputRoute($stateProvider) {
 		.state('inputs', {
 			url: '/inputs',
 			template: require('./inputs.html'),
+		})
+		.state('inputs.ng1', {
+			url: '/ng1',
+			template: require('./inputsNg1.html'),
+			controller: 'InputTestController',
+			controllerAs: 'input',
+		})
+		.state('inputs.ng2', {
+			url: '/ng2',
+			template: require('./inputsNg2.html'),
 			controller: 'InputTestController',
 			controllerAs: 'input',
 		});
