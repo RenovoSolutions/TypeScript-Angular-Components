@@ -21,7 +21,6 @@ function ButtonRoute($stateProvider) {
 		.state('buttons', {
 			url: '/buttons',
 			template: require('./buttons.html'),
-			controller: () => null,
 		})
 		.state('buttons.ng1', {
 			url: '/ng1',
