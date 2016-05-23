@@ -36,7 +36,7 @@ import * as typeaheadList from './typeaheadList/typeaheadList';
 import * as userRating from './userRating/userRating';
 import * as validationGroup from './validationGroup/validationGroup';
 
-import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultTheme';
+import { defaultThemeValueName } from './componentsDefaultTheme';
 
 export {
 	defaultThemeValueName,
@@ -114,5 +114,4 @@ angular.module(moduleName, [
 	typeaheadList.moduleName,
 	userRating.moduleName,
 	validationGroup.moduleName,
-])
-	.value(defaultThemeValueName, defaultThemeValue);
+]);
