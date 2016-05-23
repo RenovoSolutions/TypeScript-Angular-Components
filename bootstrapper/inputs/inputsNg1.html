@@ -1,0 +1,102 @@
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Inputs</a></h3>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
+	<rl-textbox ng-model="input.otherText" ></rl-textbox>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textarea/textarea.md">Textarea</a>:</label>
+	<rl-textarea ng-model="input.textAreaText"></rl-textarea>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/spinner/spinner.md">Spinner</a>:</label>
+	<rl-spinner ng-model="input.number"></rl-spinner>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/dateTime/dateTime.md">Datetime</a>:</label>
+	<rl-date-time ng-model="input.date" use-date="false"></rl-date-time>
+	<rl-date-time ng-model="input.date" use-time="false"></rl-date-time>
+	<rl-date-time ng-model="input.date"></rl-date-time>
+	<rl-date-time ng-model="input.date2"></rl-date-time>
+	<rl-button action="input.logDates()">Log dates</rl-button>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/select/select.md">Select</a>:</label>
+	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" transform="'name'" null-option="None"></rl-select>
+	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" transform="'name'">
+		<div class="row">
+			<div class="col-sm-6">{{$item.name}}</div>
+			<div class="col-sm-6">{{$item.value}}</div>
+		</div>
+	</rl-select>
+	<rl-select ng-model="input.dropdownSelection" get-options="input.getOptions()" transform="'name'" item-as="TestItem">
+		{{TestItem.name}}
+	</rl-select>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/typeahead/typeahead.md">Typeahead</a>:</label>
+	<rl-typeahead get-items="input.getOptions()" ng-model="input.selection" transform="'name'"
+					create="input.create(value)" label="Test create"></rl-typeahead>
+	<rl-typeahead get-items="input.getOptions()" ng-model="input.any" transform="'name'" use-client-searching="true"
+					select="input.select(value)" label="Test select"></rl-typeahead>
+	<rl-typeahead get-items="input.getOptions()" ng-model="input.any2" transform="'name'"
+					allow-collapse="true" select="input.select(value)" label="Test collapse"></rl-typeahead>
+
+	<div ng-repeat="value in input.set">
+		{{value}}
+	</div>
+</div>
+
+<div>
+	<label>Rich text editor:</label>
+	<rl-rich-text-editor ng-model="input.text"></rl-rich-text-editor>
+</div>
+
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
+	<rl-checkbox ng-model="input.checked">Checkbox</rl-checkbox>
+	<div>Value: {{input.checked}}</div>
+</div>
+
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/radio/radio.md">Radio buttons</a>:</label>
+	<div>
+		<rl-radio-group ng-model="input.radio1">
+			<rl-radio value="{ value: 1 }">1</rl-radio>
+			<rl-radio value="{ value: 2 }">2</rl-radio>
+			<rl-radio value="{ value: 3 }">3</rl-radio>
+		</rl-radio-group>
+	</div>
+	<div>{{input.radio1}}</div>
+	<div><rl-radio ng-model="input.radio2" value="{ value: 4 }">4</rl-radio></div>
+	<div>{{input.radio2}}</div>
+</div>
+
+<div>
+	<label>Typeahead list:</label>
+	<rl-checkbox ng-model="input.useSearch">Toggle search</rl-checkbox>
+	<rl-typeahead-list get-items="input.getOptions()" ng-model="input.typeaheadList" transform="'name'"
+						label="Test list" disable-searching="!input.useSearch">
+		<rl-list-header><div class="col-xs-12">Test list</div></rl-list-header>
+		<rl-list-item>
+				<div class="col-xs-10">{{$item.name}}</div>
+				<div class="col-xs-2">
+					<rl-button type="danger" action="$remove($item)"><i class="fa fa-remove"></i></rl-button>
+				</div>
+		</rl-list-item>
+	</rl-typeahead-list>
+</div>
+
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/required/required.md">Required input</a>:</label>
+	<rl-textbox ng-model="input.requiredText" rl-required="Input required"></rl-textbox>
+</div>
+<div>
+	<label>One validator:</label>
+	<rl-spinner ng-model="input.validate1" validator="input.greaterThanFive1"></rl-spinner>
+</div>
+<div>
+	<label>Multiple validators:</label>
+	<rl-spinner ng-model="input.validate2" validators="[input.greaterThanFive2, input.lessThanTen]"></rl-spinner>
+</div>
+<br/>
+<br/>
