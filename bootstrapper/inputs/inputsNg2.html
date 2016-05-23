@@ -5,6 +5,10 @@
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
-	<rl-checkbox-ng>Checkbox</rl-checkbox-ng>
+	<div><rl-checkbox-ng [(value)]="input.checked">Two-way bound</rl-checkbox-ng></div>
+	<div><rl-checkbox-ng value="true">Initial value</rl-checkbox-ng></div>
+	<div><rl-checkbox-ng value="false" [active]="false">Inactive</rl-checkbox-ng></div>
+	<div><rl-checkbox-ng disabled="true">Disabled</rl-checkbox-ng></div>
+	<div><rl-checkbox-ng (change)="input.log($event)">Output event</rl-checkbox-ng></div>
 	<div>Value: {{input.checked}}</div>
 </div>

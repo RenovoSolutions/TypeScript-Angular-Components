@@ -78,6 +78,10 @@ class InputTestController {
 		console.log(this.date.format(format));
 		console.log(this.date2.format(format));
 	}
+
+	log(message: string): void {
+		console.log(message);
+	}
 }
 
 InputRoute.$inject = ['$stateProvider'];
