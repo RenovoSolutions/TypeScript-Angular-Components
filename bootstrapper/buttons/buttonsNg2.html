@@ -23,3 +23,15 @@
 <div>
 	<rl-button-link-ng disabled="true" link="http://google.com">Disabled link button</rl-button-link-ng>
 </div>
+<div>
+	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rl-button-toggle</a>:
+</div>
+<div>
+	<rl-button-toggle-ng (change)="button.action('Toggle button: ' + $event)">Toggle button</rl-button-toggle-ng>
+</div>
+<div>
+	<rl-button-toggle-ng type="primary flat" size="lg" (change)="button.action('Large toggle button: ' + $event)">Large primary toggle button</rl-button-toggle-ng>
+</div>
+<div>
+	<rl-button-toggle-ng disabled="true" (change)="button.action('Disabled toggle button: ' + $event)">Disabled toggle button</rl-button-toggle-ng>
+</div>
