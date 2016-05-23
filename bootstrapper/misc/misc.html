@@ -37,13 +37,6 @@
 </div>
 
 <div class="form-group">
-	<label>Validation group:</label>
-	<rl-validation-group validator="misc.validator">
-		<rl-textbox ng-model="misc.text"></rl-textbox>
-	</rl-validation-group>
-</div>
-
-<div class="form-group">
 	<label>Template renderer:</label>
 	<rl-template-renderer template="misc.template"></rl-template-renderer>
 </div>
@@ -71,13 +64,13 @@
 </div>
 
 <div class="form-group">
-	<div><label>String with watermark:</label></div>
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/stringWithWatermark/stringWithWatermark.md">String with watermark</a>:</label></div>
 	<rl-textbox ng-model="misc.text"></rl-textbox>
 	<rl-string-with-watermark string="{{misc.text}}" watermark="(empty)"></rl-string-with-watermark>
 </div>
 
 <div class="form-group">
-	<div><label>User rating:</label></div>
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/userRating/userRating.md">User rating</a>:</label></div>
 	<rl-user-rating ng-model="misc.value" range="5"></rl-user-rating>
 </div>
 

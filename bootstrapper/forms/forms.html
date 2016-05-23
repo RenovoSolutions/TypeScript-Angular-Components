@@ -5,9 +5,18 @@
 	<rl-button-submit type="primary" saving="forms.spinner">Submit</rl-button-submit>
 </rl-form>
 <label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/autosave/autosave.md">Autosave form</a>:</label>
-<ng-form name="myForm" rl-autosave save="forms.save()">
-	<rl-textbox ng-model="forms.autosaveValue" rl-required="You must enter a value"></rl-textbox>
-</ng-form>
-<div>
-	{{forms.count}}
+<div class="form-group">
+	<ng-form name="myForm" rl-autosave save="forms.save()">
+		<rl-textbox ng-model="forms.autosaveValue" rl-required="You must enter a value"></rl-textbox>
+	</ng-form>
+	<div>
+		{{forms.count}}
+	</div>
+</div>
+
+<div class="form-group">
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/validationGroup/validationGroup.md">Validation group</a>:</label>
+	<rl-validation-group validator="forms.validator">
+		<rl-textbox ng-model="forms.text"></rl-textbox>
+	</rl-validation-group>
 </div>

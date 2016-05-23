@@ -50,11 +50,11 @@ Angular components that can be added to an application.
 * [ratingBar]()
 * [signaturePad]()
 * [simpleCardList]()
-* [stringWithWatermark]()
+* [stringWithWatermark](/source/components/stringWithWatermark/stringWithWatermark.md)
 * [tabs]()
 * [templateRenderer]()
-* [userRating]()
-* [validationGroup]()
+* [userRating](/source/components/userRating/userRating.md)
+* [validationGroup](/source/components/validationGroup/validationGroup.md)
 
 ## Filters
 Angular filters which can be applied to bindings using the Angular pipe operator `<span>{{myMoney | currency}}</span>`
