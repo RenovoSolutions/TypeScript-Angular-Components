@@ -1,0 +1,8 @@
+<button type="button"
+		class="btn {{configuredTypes}} {{configuredSize}}"
+		[class.active]="value"
+		(click)="toggle()"
+		[disabled]="disabled">
+	<i class="fa fa-check completed" [hidden]="!value"></i>
+	<ng-content></ng-content>
+</button>
