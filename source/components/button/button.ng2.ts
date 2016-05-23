@@ -1,15 +1,20 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
 import { each } from 'lodash';
+
+export const baseInputs: string[] = ['type', 'disabled', 'size'];
+export const baseOutputs: string[] = ['action'];
 
 @Component({
 	selector: 'rlButton',
 	template: require('./button.ng2.html'),
+	inputs: baseInputs,
+	outputs: baseOutputs,
 })
 export class ButtonComponent {
-	@Input() type: string;
-	@Input() disabled: boolean;
-	@Input() size: string;
-	@Output() action: EventEmitter<any> = new EventEmitter();
+	type: string;
+	disabled: boolean;
+	size: string;
+	action: EventEmitter<any> = new EventEmitter();
 
 	get configuredSize(): string {
 		return this.size != null && this.size !== ''
