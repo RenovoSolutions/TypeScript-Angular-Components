@@ -14,8 +14,4 @@ export class ButtonLinkComponent extends ButtonComponent {
 	get target(): string {
 		return this.newTab ? '_blank' : '_self';
 	}
-
-	constructor() {
-		super();
-	}
 }
