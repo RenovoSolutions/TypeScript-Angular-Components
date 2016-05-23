@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-	selector: 'rl-textbox-ng',
+	selector: 'rlTextbox',
 	template: require('./textbox.ng2.html'),
 })
 export class TextboxComponent {
