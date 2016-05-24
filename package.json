@@ -37,6 +37,7 @@
     "bundle": "gulp bundle-bootstrapper",
     "bundle.watch": "gulp bundle-bootstrapper.watch",
 
+    "build-bundle": "npm run build && npm run bundle",
     "build-bundle.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bundle.watch\"",
 
     "serve": "http-server -c-1 -o",
