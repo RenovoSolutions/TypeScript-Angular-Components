@@ -15,4 +15,12 @@ export class BusyComponent {
 	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean) {
 		this.useDefaultTheme = useDefaultTheme;
 	}
+
+	/*
+	 * Public API for triggering the rlBusy to wait on a promise
+	 */
+	trigger(promise: Promise<any>): void {
+		this.loading = true;
+		Promise.resolve(promise).then(() => this.loading = false);
+	}
 }

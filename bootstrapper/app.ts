@@ -20,6 +20,7 @@ import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
+import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
@@ -49,6 +50,7 @@ angular.module(moduleName, [
 ])
 	.component('tsBootstrapper', bootstrapper)
 	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
+	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper))
 	.config(BaseRoute);
 
 BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
