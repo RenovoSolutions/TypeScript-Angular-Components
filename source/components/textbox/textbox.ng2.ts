@@ -1,5 +1,6 @@
 import { Component, Optional } from '@angular/core';
 
+import { ComponentValidator, ComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service.ng2';
 import { InputComponent, baseInputs } from '../input/input.ng2';
 import { FormComponent } from '../form/form.ng2';
 
@@ -9,7 +10,8 @@ import { FormComponent } from '../form/form.ng2';
 	inputs: baseInputs,
 })
 export class TextboxComponent extends InputComponent {
-	constructor(@Optional() rlForm: FormComponent) {
-		super(rlForm);
+	constructor(@Optional() rlForm: FormComponent
+			, componentValidatorFactory: ComponentValidatorFactory) {
+		super(rlForm, componentValidatorFactory);
 	}
 }
