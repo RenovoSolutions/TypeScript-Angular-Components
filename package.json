@@ -16,6 +16,8 @@
   "main": "./source/ui.module.js",
   "typings": "./source/ui.module.d.ts",
   "scripts": {
+    "prepublish": "npm run build",
+
     "update": "npm install & tsd update",
 
     "clean": "gulp clean",
