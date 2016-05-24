@@ -18,10 +18,10 @@ import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 export class FormsBootstrapper {
 	checked: boolean;
 
-	waitCallback: { (): Promise<void> } = () => {
+	waitCallback: { (data: any): Promise<void> } = (data: any) => {
 		return new Promise<void>((resolve: Function, reject: Function): void => {
 			setTimeout(() => {
-				console.log('Saved');
+				console.log(data);
 				resolve();
 			}, 1000);
 		});
