@@ -1,6 +1,7 @@
 <div class="field"
 	[class.error]="!control.valid">
-	<input type="text" class="form-control" [ngFormControl]="control" />
+	<!-- flower-up label -->
+	<input type="text" class="form-control angular-animate" [ngFormControl]="control" [placeholder]="label" maxlength="maxlength" />
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}
 	</div>

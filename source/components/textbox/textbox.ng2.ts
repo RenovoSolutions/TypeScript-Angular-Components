@@ -1,4 +1,4 @@
-import { Component, Optional, Inject } from '@angular/core';
+import { Component, Optional, Inject, Input } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -16,7 +16,9 @@ import { FormComponent } from '../form/form.ng2';
 	providers: [ComponentValidator],
 })
 export class TextboxComponent extends InputComponent {
-	constructor(@Optional() rlForm: FormComponent
+	@Input() maxlength: number;
+
+	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
