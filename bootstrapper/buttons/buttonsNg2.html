@@ -6,7 +6,12 @@
 <div><rl-button-ng type="primary flat" size="lg" (trigger)="button.action('Large primary button')">Large primary button</rl-button-ng></div>
 <div><rl-button-ng disabled="true" (trigger)="button.action('Disabled button')">Disabled button</rl-button-ng></div>
 <div>
+	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonAsync/buttonAsync.md">rlButtonAsync</a>:
 </div>
+<div><rl-button-async-ng [action]="button.waitCallback">Async button</rl-button-async-ng></div>
+<div><rl-button-async-ng right-aligned="true" [action]="button.waitCallback">Right aligned async button</rl-button-async-ng></div>
+<div><rl-button-async-ng type="primary flat" size="lg" [action]="button.waitCallback">Large primary async button</rl-button-async-ng></div>
+<div><rl-button-async-ng disabled="true" [action]="button.waitCallback">Disabled async button</rl-button-async-ng></div>
 <div>
 	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonLink/buttonLink.md">rlButtonLink</a>:
 </div>
