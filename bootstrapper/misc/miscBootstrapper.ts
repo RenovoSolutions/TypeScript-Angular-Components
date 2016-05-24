@@ -18,7 +18,7 @@ class MiscTestController {
 	date: moment.Moment;
 	initialized: boolean;
 
-	static $inject: string[] = ['$scope'];
+	static $inject: string[] = ['$scope', '$timeout'];
 	constructor(private $scope: angular.IScope) { }
 
 	$onInit(): void {
