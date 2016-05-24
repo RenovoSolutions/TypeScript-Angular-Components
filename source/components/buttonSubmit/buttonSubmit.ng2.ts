@@ -1,5 +1,6 @@
-import { Component, Optional, ExceptionHandler } from '@angular/core';
+import { Component, Input, Optional, ExceptionHandler, ViewChild } from '@angular/core';
 
+import { BusyComponent, IWaitValue } from '../busy/busy.ng2';
 import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
 import { FormComponent } from '../form/form.ng2';
 
@@ -7,9 +8,14 @@ import { FormComponent } from '../form/form.ng2';
 	selector: 'rlButtonSubmit',
 	template: require('./buttonSubmit.ng2.html'),
 	inputs: baseInputs,
+	directives: [BusyComponent],
 })
 export class ButtonSubmitComponent extends BaseButtonComponent {
-	public form: FormComponent;
+	@Input() rightAligned: boolean;
+
+	@ViewChild(BusyComponent) busySpinner: BusyComponent;
+
+	private form: FormComponent;
 
 	constructor( @Optional() form: FormComponent
 			, exceptionHandler: ExceptionHandler) {
@@ -19,5 +25,10 @@ export class ButtonSubmitComponent extends BaseButtonComponent {
 		if (!form) {
 			exceptionHandler.call(new Error('This component must be nested in an rlForm component.'))
 		}
+	}
+
+	submit(): void {
+		const waitValue: IWaitValue<any> = this.form.submit();
+		this.busySpinner.trigger(waitValue);
 	}
 }
