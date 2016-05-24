@@ -18,7 +18,7 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 	@Input() action: IAsyncAction;
 	@Input() rightAligned: boolean;
 
-	@ViewChild(BusyComponent) busySpinners: BusyComponent;
+	@ViewChild(BusyComponent) busySpinner: BusyComponent;
 
 	constructor() {
 		super();
@@ -29,6 +29,6 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 
 	triggerAction($event: any): void {
 		const waitValue: IWaitValue<any> = this.action($event);
-		this.busySpinners.trigger(waitValue);
+		this.busySpinner.trigger(waitValue);
 	}
 }
