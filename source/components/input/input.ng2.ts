@@ -18,44 +18,57 @@ export class InputComponent implements AfterViewInit {
 
 	error: string;
 	control: Control;
+	inputValidator: ComponentValidator;
 	rlForm: FormComponent;
 
 	constructor(@Optional() rlForm: FormComponent) {
 		this.rlForm = rlForm;
-		this.control = new Control('', buildValidator(<any>[{
+		this.inputValidator = new ComponentValidator(<any>[{
 			name: 'rlRequired',
 			validate: (value: any): boolean => { return !__object.objectUtility.isNullOrEmpty(value); },
 			errorMessage: 'Required field',
-		}]));
-		this.control.statusChanges.subscribe((value: any): void => {
-			this.setError();
-		});
+		}]);
+		this.control = new Control('', this.inputValidator.validate.bind(this.inputValidator));
 		this.name = 'test123';
 	}
 
 	ngAfterViewInit(): void {
-		this.setError();
+		this.inputValidator.afterInit(this.control);
 		if (this.rlForm) {
 			this.rlForm.form.addControl(this.name, this.control);
 		}
 	}
-
-	setError(): string {
-		if (!this.control) {
-			return;
-		}
-
-		this.error = <any>first(values(this.control.errors));
-	}
 }
 
-function buildValidator(validators: __validation.IValidationHandler[]): any {
-	return (control: Control): any => {
-		if ((<any>validators[0]).validate(control.value)) {
+export class ComponentValidator {
+	error: string;
+	validators: __validation.IValidationHandler[];
+
+	constructor(validators: __validation.IValidationHandler[]) {
+		this.validators = validators;
+	}
+
+	afterInit(control: Control): void {
+		control.statusChanges.subscribe((value: any): void => {
+			this.setError(control);
+		});
+		this.setError(control);
+	}
+
+	validate(control: Control): any {
+		if ((<any>this.validators[0]).validate(control.value)) {
 			return null;
 		}
 		let errors: any = {};
-		errors[validators[0].name] = validators[0].errorMessage;
+		errors[this.validators[0].name] = this.validators[0].errorMessage;
 		return errors;
-	};
+	}
+
+	setError(control: Control): string {
+		if (!control) {
+			return;
+		}
+
+		this.error = <any>first(values(control.errors));
+	}
 }
