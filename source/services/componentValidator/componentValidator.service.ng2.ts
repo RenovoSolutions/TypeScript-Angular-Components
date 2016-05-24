@@ -1,17 +1,28 @@
 import { Inject, Provider } from '@angular/core';
 import { Control } from '@angular/common';
-import { first, values } from 'lodash';
+import { first, values, each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
 export class ComponentValidator {
+	validator: __validation.ISimpleValidator;
 	error: string;
+	errorType: string;
+
 	validators: __validation.IValidationHandler[];
 
 	constructor(validationService: __validation.IValidationService
 			, validators: __validation.IValidationHandler[]) {
 		this.validators = validators;
+
+		this.validator = validationService.buildCustomValidator((error: string, name: string): void => {
+			this.error = error;
+			this.errorType = name || 'customValidation';
+		});
+		each(validators, (customValidator: __validation.IValidationHandler): void => {
+			this.validator.registerValidationHandler(customValidator);
+		});
 	}
 
 	afterInit(control: Control): void {
@@ -22,11 +33,11 @@ export class ComponentValidator {
 	}
 
 	validate(control: Control): any {
-		if ((<any>this.validators[0]).validate(control.value)) {
+		if (this.validator.validate(control.value)) {
 			return null;
 		}
 		let errors: any = {};
-		errors[this.validators[0].name] = this.validators[0].errorMessage;
+		errors[this.errorType] = this.error;
 		return errors;
 	}
 
