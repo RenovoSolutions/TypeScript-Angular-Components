@@ -17,6 +17,7 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "prepublish": "npm run build",
+    "update": "npm install",
 
     "clean": "gulp clean",
     "build": "gulp clean && tsc && gulp bundle-css && gulp bundle-css.minify && echo Build complete",
@@ -27,14 +28,14 @@
     "test.tc": "karma start karma.tc.conf.js",
     "test.full": "karma start karma.full.conf.js",
 
-    "update-build": "npm run update && npm run build",
-    "update-build-test": "npm run update && npm run build && npm run test",
+    "install-build": "npm install && npm run build",
+    "install-build-test": "npm install && npm run build && npm run test",
     "build-test": "npm run build && npm run test",
     "build-test.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run test.debug\"",
 
-    "full-build": "npm run update && npm run build",
+    "full-build": "npm install && npm run build",
 
-    "all": "npm run update && npm run build && npm run test.full",
+    "all": "npm install && npm run build && npm run test.full",
 
     "bundle": "gulp bundle-bootstrapper",
     "bundle.watch": "gulp bundle-bootstrapper.watch",
