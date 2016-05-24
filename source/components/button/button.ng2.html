@@ -1,6 +1,6 @@
 <button type="button"
 		class="btn {{configuredTypes}} {{configuredSize}}"
-		(click)="action.next($event)"
+		(click)="trigger.emit($event)"
 		[disabled]="disabled">
 	<ng-content></ng-content>
 </button>

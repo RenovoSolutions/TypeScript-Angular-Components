@@ -2,7 +2,7 @@ import { Component, EventEmitter } from '@angular/core';
 import { each } from 'lodash';
 
 export const baseInputs: string[] = ['type', 'disabled', 'size'];
-export const baseOutputs: string[] = ['action'];
+export const baseOutputs: string[] = ['trigger'];
 
 @Component({
 	selector: 'rlButton',
@@ -14,7 +14,7 @@ export class ButtonComponent {
 	type: string;
 	disabled: boolean;
 	size: string;
-	action: EventEmitter<any> = new EventEmitter();
+	trigger: EventEmitter<any> = new EventEmitter();
 
 	get configuredSize(): string {
 		return this.size != null && this.size !== ''
