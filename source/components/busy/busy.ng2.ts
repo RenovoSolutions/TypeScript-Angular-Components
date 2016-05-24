@@ -1,4 +1,5 @@
 import { Component, Inject, Input } from '@angular/core';
+import { isBoolean } from 'lodash';
 
 import { defaultThemeToken } from '../componentsDefaultTheme';
 
@@ -19,8 +20,13 @@ export class BusyComponent {
 	/*
 	 * Public API for triggering the rlBusy to wait on a promise
 	 */
-	trigger(promise: Promise<any>): void {
+	trigger(waitOn: Promise<any> | boolean): void {
+		if (isBoolean(waitOn)) {
+			this.loading = waitOn;
+			return;
+		}
+
 		this.loading = true;
-		Promise.resolve(promise).then(() => this.loading = false);
+		Promise.resolve(waitOn).then(() => this.loading = false);
 	}
 }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 
 import { BusyComponent } from '../../source/components/busy/busy.ng2';
 
@@ -8,9 +8,15 @@ import { BusyComponent } from '../../source/components/busy/busy.ng2';
 	directives: [BusyComponent],
 })
 export class MiscNgContextBootstrapper {
-	wait(): Promise<void> | boolean {
+	@ViewChild('busy2') busy2: BusyComponent;
+
+	wait(): Promise<void> {
 		return new Promise<void>((resolve: Function, reject: Function): void => {
 			setTimeout(() => resolve(), 1000);
 		});
+	}
+
+	toggle(): void {
+		this.busy2.trigger(!this.busy2.loading);
 	}
 }
