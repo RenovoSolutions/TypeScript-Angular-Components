@@ -1,2 +1,0 @@
-'use strict';
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidmlld0RhdGEuanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJ2aWV3RGF0YS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQSxZQUFZLENBQUMifQ==

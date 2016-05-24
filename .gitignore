@@ -10,6 +10,6 @@
 # Bower deps
 /bower_components/
 
-# Don't need the built test files
-/source/**/*tests.js
-/source/**/*tests.d.ts
+# Don't commit the built files
+/source/**/*.js
+/source/**/*.d.ts
