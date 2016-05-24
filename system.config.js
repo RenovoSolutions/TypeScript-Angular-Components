@@ -23,10 +23,10 @@ const map = {
 };
 
 const meta = {
-	'source/*.html': {
+	'*.html': {
 		loader: 'text',
 	},
-	'bootstrapper/*.html': {
+	'*.css': {
 		loader: 'text',
 	},
 	'jquery': {
