@@ -1,0 +1,100 @@
+<h3>Misc</h3>
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/genericContainer/genericContainer.md">Generic container:</a></label></div>
+	<rl-radio-group ng-model="misc.myValue">
+		<rl-radio value="1">1</rl-radio>
+		<rl-radio value="2">2</rl-radio>
+		<rl-radio value="3">3</rl-radio>
+	</rl-radio-group>
+	<rl-generic-container selector="misc.myValue">
+		<template when-selector="1">Template 1</template>
+		<template when-selector="{{misc.myNum}}">Template 2</template>
+		<template default>Default</template>
+	</rl-generic-container>
+	<div><label>Using ng-switch:</label></div>
+	<div ng-switch="misc.myValue">
+		<span ng-switch-when="1">span 1</span>
+		<span ng-switch-when="{{misc.myNum}}">span 2</span>
+		<span ng-switch-default>Default</span>
+	</div>
+	<div><label>Generic-container with toggled contents</label></div>
+	<rl-checkbox ng-model="misc.toggle">Toggle</rl-checkbox>
+	<rl-generic-container selector="misc.toggle">
+		<template default>
+			<div ng-repeat="number in [1, 2, 3, 4, 5]">
+				{{number}}
+			</div>
+		</template>
+		<template when-selector="true">True</template>
+	</rl-generic-container>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/lazyLoad/lazyLoad.md">Lazy load</a>:</label></div>
+	<rl-checkbox ng-model="misc.lazyLoad">Show</rl-checkbox>
+	<div ng-show="misc.initialized">Initialized</div>
+	<rl-lazy-load show="misc.lazyLoad">Can you see me?</rl-lazy-load>
+</div>
+
+<div class="form-group">
+	<label>Template renderer:</label>
+	<rl-template-renderer template="misc.template"></rl-template-renderer>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/commaList/commaList.md">Comma list</a>:</label></div>
+	<rl-comma-list list="[1, 2, 3]"></rl-comma-list>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/busy/busy.md">Busy</a>:</label></div>
+	<rl-checkbox ng-model="misc.loading">Loading</rl-checkbox>
+	<div><rl-busy loading="misc.loading" size="2x"></rl-busy></div>
+</div>
+
+<div class="form-group">
+	<label>Rating Bar:</label>
+	<rl-rating-bar width="100" height="10" value="0" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="10" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="30" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="50" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="70" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="90" min="0" max="100"></rl-rating-bar>
+	<rl-rating-bar width="100" height="10" value="100" min="0" max="100"></rl-rating-bar>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/stringWithWatermark/stringWithWatermark.md">String with watermark</a>:</label></div>
+	<rl-textbox ng-model="misc.text"></rl-textbox>
+	<rl-string-with-watermark string="{{misc.text}}" watermark="(empty)"></rl-string-with-watermark>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/userRating/userRating.md">User rating</a>:</label></div>
+	<rl-user-rating ng-model="misc.value" range="5"></rl-user-rating>
+</div>
+
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/alias/alias.md">Alias</a>:</label></div>
+	<div><code><ts-text><div rl-alias="misc.number as val">{{val}}</div></ts-text></code></div>
+	<div><code>// where misc.number = 5</code></div>
+	<rl-textbox ng-model="misc.number"></rl-textbox>
+	<div rl-alias="misc.number as val">{{val}}</div>
+</div>
+
+<div class="form-group">
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/filters/date/date.filter.md">Date filter</a>:</label>
+	<div>{{misc.date | rlDate}}</div>
+	<div>{{misc.date | rlDate:true}}</div>
+</div>
+
+<div class="form-group">
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/dateTimeStatic/dateTimeStatic.md">Date time static</a>:</label>
+	<div><rl-date-time-static date-value="misc.date"></rl-date-time-static></div>
+	<div><rl-date-time-static date-value="misc.date" include-time="true"></rl-date-time-static></div>
+</div>
+
+<div class="form-group">
+	<label>Signature pad:</label>
+	<div><rl-signature-pad ng-model="misc.signature"></rl-signature-pad></div>
+</div>
