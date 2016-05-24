@@ -5,6 +5,7 @@ import * as angular from 'angular';
 
 import { BusyComponent } from './components/busy/busy.ng2';
 import { ButtonComponent } from './components/button/button.ng2';
+import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync.ng2';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink.ng2';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit.ng2';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle.ng2';
@@ -16,6 +17,7 @@ import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from
 
 export const busyComponentName: string = 'rlBusyNg';
 export const buttonComponentName: string = 'rlButtonNg';
+export const buttonAsyncComponentName: string = 'rlButtonAsyncNg';
 export const buttonLinkComponentName: string = 'rlButtonLinkNg';
 export const buttonSubmitComponentName: string = 'rlButtonSubmitNg';
 export const buttonToggleComponentName: string = 'rlButtonToggleNg';
@@ -34,6 +36,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 
 	componentsDowngradeModule.directive(busyComponentName, <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
 	componentsDowngradeModule.directive(buttonComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonComponent));
+	componentsDowngradeModule.directive(buttonAsyncComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
 	componentsDowngradeModule.directive(buttonLinkComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonLinkComponent));
 	componentsDowngradeModule.directive(buttonSubmitComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonSubmitComponent));
 	componentsDowngradeModule.directive(buttonToggleComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
