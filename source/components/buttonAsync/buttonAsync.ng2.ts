@@ -1,11 +1,11 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { BusyComponent } from '../busy/busy.ng2';
+import { BusyComponent, IWaitValue } from '../busy/busy.ng2';
 import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
 
 export interface IAsyncAction {
-	($event: any): Observable<any> | Promise<any> | boolean;
+	($event: any): IWaitValue<any>;
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 	}
 
 	triggerAction($event: any): void {
-		const result = this.action($event);
-		this.busySpinners.trigger(result);
+		const waitValue: IWaitValue<any> = this.action($event);
+		this.busySpinners.trigger(waitValue);
 	}
 }

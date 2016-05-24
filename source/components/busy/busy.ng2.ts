@@ -4,6 +4,8 @@ import { Observable } from 'rxjs';
 
 import { defaultThemeToken } from '../componentsDefaultTheme';
 
+export type IWaitValue<T> = Observable<T> | Promise<T> | boolean;
+
 @Component({
 	selector: 'rlBusy',
 	template: require('./busy.ng2.html'),
@@ -21,7 +23,7 @@ export class BusyComponent {
 	/*
 	 * Public API for triggering the rlBusy to wait on a promise
 	 */
-	trigger(waitOn: Observable<any> | Promise<any> | boolean): void {
+	trigger(waitOn: IWaitValue<any>): void {
 		if (isBoolean(waitOn)) {
 			this.loading = waitOn;
 			return;
