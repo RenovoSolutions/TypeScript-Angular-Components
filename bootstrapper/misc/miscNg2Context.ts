@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
 import { BusyComponent } from '../../source/components/busy/busy.ng2';
 
@@ -10,10 +11,10 @@ import { BusyComponent } from '../../source/components/busy/busy.ng2';
 export class MiscNgContextBootstrapper {
 	@ViewChild('busy2') busy2: BusyComponent;
 
-	wait(): Promise<void> {
-		return new Promise<void>((resolve: Function, reject: Function): void => {
-			setTimeout(() => resolve(), 1000);
-		});
+	wait(): Observable<void> {
+		const subject: Subject<void> = new Subject<void>();
+		setTimeout(() => subject.next(null), 1000);
+		return subject;
 	}
 
 	toggle(): void {
