@@ -1,9 +1,3 @@
-# Bower file
-/output/bower.json
-/output/.gitignore
-/output/LICENSE
-/output/README.md
-
 # Node deps
 /node_modules/
 
