@@ -19,6 +19,8 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
+import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
+
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
@@ -46,6 +48,7 @@ angular.module(moduleName, [
 	textModuleName,
 ])
 	.component('tsBootstrapper', bootstrapper)
+	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
 	.config(BaseRoute);
 
 BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];

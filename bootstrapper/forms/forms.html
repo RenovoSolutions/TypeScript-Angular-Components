@@ -1,27 +1,5 @@
-<h3>Forms</h3>
-<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rl-form</a>:</label>
-<rl-form save="forms.submit()" saving="forms.spinner">
-	<rl-textbox ng-model="forms.formValue" rl-required="You must enter a value"></rl-textbox>
-	<rl-button-submit type="primary" saving="forms.spinner">Submit</rl-button-submit>
-</rl-form>
-<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/autosave/autosave.md">Autosave form</a>:</label>
-<div class="form-group">
-	<ng-form name="myForm" rl-autosave save="forms.save()">
-		<rl-textbox ng-model="forms.autosaveValue" rl-required="You must enter a value"></rl-textbox>
-	</ng-form>
-	<div>
-		{{forms.count}}
-	</div>
-</div>
-
-<div class="form-group">
-	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/validationGroup/validationGroup.md">Validation group</a>:</label>
-	<rl-validation-group validator="forms.validator">
-		<rl-textbox ng-model="forms.text"></rl-textbox>
-	</rl-validation-group>
-</div>
-
-<rl-form-ng>
-	<rl-textbox-ng></rl-textbox-ng>
-	<rl-button-submit-ng></rl-button-submit-ng>
-</rl-form-ng>
+<ul class="nav nav-tabs">
+	<li role="presentation"><a ui-sref="forms.ng1">Angular 1</a></li>
+	<li role="presentation"><a ui-sref="forms.ng2">Angular 2</a></li>
+</ul>
+<div ui-view></div>
