@@ -2,36 +2,20 @@
 <div>
 	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/button/button.md">rlButton</a>:
 </div>
+<div><rl-button-ng (trigger)="button.action('Simple button')">Simple button</rl-button-ng></div>
+<div><rl-button-ng type="primary flat" size="lg" (trigger)="button.action('Large primary button')">Large primary button</rl-button-ng></div>
+<div><rl-button-ng disabled="true" (trigger)="button.action('Disabled button')">Disabled button</rl-button-ng></div>
 <div>
-	<rl-button-ng (trigger)="button.action('Simple button')">Simple button</rl-button-ng>
-</div>
-<div>
-	<rl-button-ng type="primary flat" size="lg" (trigger)="button.action('Large primary button')">Large primary button</rl-button-ng>
-</div>
-<div>
-	<rl-button-ng disabled="true" (trigger)="button.action('Disabled button')">Disabled button</rl-button-ng>
 </div>
 <div>
 	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonLink/buttonLink.md">rlButtonLink</a>:
 </div>
+<div><rl-button-link-ng link="http://google.com">Link button</rl-button-link-ng></div>
+<div><rl-button-link-ng type="primary flat" size="lg" link="http://google.com">Large primary link button</rl-button-link-ng></div>
+<div><rl-button-link-ng disabled="true" link="http://google.com">Disabled link button</rl-button-link-ng></div>
 <div>
-	<rl-button-link-ng link="http://google.com">Link button</rl-button-link-ng>
+	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rlButtonToggle</a>:
 </div>
-<div>
-	<rl-button-link-ng type="primary flat" size="lg" link="http://google.com">Large primary link button</rl-button-link-ng>
-</div>
-<div>
-	<rl-button-link-ng disabled="true" link="http://google.com">Disabled link button</rl-button-link-ng>
-</div>
-<div>
-	<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rl-button-toggle</a>:
-</div>
-<div>
-	<rl-button-toggle-ng (change)="button.action('Toggle button: ' + $event)">Toggle button</rl-button-toggle-ng>
-</div>
-<div>
-	<rl-button-toggle-ng type="primary flat" size="lg" (change)="button.action('Large toggle button: ' + $event)">Large primary toggle button</rl-button-toggle-ng>
-</div>
-<div>
-	<rl-button-toggle-ng disabled="true" (change)="button.action('Disabled toggle button: ' + $event)">Disabled toggle button</rl-button-toggle-ng>
-</div>
+<div><rl-button-toggle-ng (change)="button.action('Toggle button: ' + $event)">Toggle button</rl-button-toggle-ng></div>
+<div><rl-button-toggle-ng type="primary flat" size="lg" (change)="button.action('Large toggle button: ' + $event)">Large primary toggle button</rl-button-toggle-ng></div>
+<div><rl-button-toggle-ng disabled="true" (change)="button.action('Disabled toggle button: ' + $event)">Disabled toggle button</rl-button-toggle-ng></div>
