@@ -1,16 +1,19 @@
 import { Component, Optional, ExceptionHandler } from '@angular/core';
 
+import { ButtonComponent, baseInputs } from '../button/button.ng2';
 import { FormComponent } from '../form/form.ng2';
 
 @Component({
 	selector: 'rlButtonSubmit',
 	template: require('./buttonSubmit.ng2.html'),
+	inputs: baseInputs,
 })
-export class ButtonSubmitComponent {
+export class ButtonSubmitComponent extends ButtonComponent {
 	public form: FormComponent;
 
 	constructor( @Optional() form: FormComponent
 			, exceptionHandler: ExceptionHandler) {
+		super();
 		this.form = form;
 
 		if (!form) {
