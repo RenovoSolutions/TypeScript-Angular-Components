@@ -2,7 +2,7 @@
 	[class.error]="!control.valid">
 	<input type="text" class="form-control" [ngFormControl]="control" />
 	<div [hidden]="control.valid" class="error-string">
-		{{error}}
+		{{componentValidator.error}}
 	</div>
 </div>
 

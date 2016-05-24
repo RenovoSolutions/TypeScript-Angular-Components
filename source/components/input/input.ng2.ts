@@ -1,39 +1,74 @@
-import { Component, ViewChild, Optional, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, Optional, AfterViewInit, OnInit } from '@angular/core';
 import { Control } from '@angular/common';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
 import { FormComponent } from '../form/form.ng2';
-import { ComponentValidator, ComponentValidatorFactory } from '../../services/componentValidator/componentValidator.service.ng2';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
-export const baseInputs: string[] = ['validator', 'validators', 'label', 'name'];
+export const baseInputs: string[] = ['validator', 'validators', 'label', 'name', 'rlRequired'];
 
-export class InputComponent implements AfterViewInit {
+export class InputComponent implements AfterViewInit, OnInit {
 	validator: __validation.IValidationHandler;
 	validators: __validation.IValidationHandler[];
 	label: string;
 	name: string;
+	rlRequired: string;
 
-	error: string;
 	control: Control;
-	inputValidator: ComponentValidator;
-	rlForm: FormComponent;
+	inputType: string = 'input';
 
-	constructor(rlForm: FormComponent, componentValidatorFactory: ComponentValidatorFactory) {
+	rlForm: FormComponent;
+	protected componentValidator: ComponentValidator;
+	protected object: __object.IObjectUtility;
+	protected array: __array.IArrayUtility;
+	protected guid: __guid.IGuidService;
+
+	constructor(rlForm: FormComponent
+			, componentValidator: ComponentValidator
+			, object: __object.IObjectUtility
+			, array: __array.IArrayUtility
+			, guid: __guid.IGuidService) {
 		this.rlForm = rlForm;
-		this.inputValidator = componentValidatorFactory.getInstance(<any>[{
-			name: 'rlRequired',
-			validate: (value: any): boolean => { return !__object.objectUtility.isNullOrEmpty(value); },
-			errorMessage: 'Required field',
-		}]);
-		this.control = new Control('', this.inputValidator.validate.bind(this.inputValidator));
-		this.name = 'test123';
+		this.object = object;
+		this.array = array;
+		this.guid = guid;
+		this.componentValidator = componentValidator;
+		this.control = new Control('', this.componentValidator.validate.bind(this.componentValidator));
+	}
+
+	ngOnInit(): void {
+		let validators: __validation.IValidationHandler[] = [];
+
+		if (this.validator) {
+			validators = validators.concat(this.array.arrayify(this.validator));
+		}
+
+		if (this.validators) {
+			validators = validators.concat(this.array.arrayify(this.validators));
+		}
+
+		if (this.object.isNullOrEmpty(this.name)) {
+			this.name = this.inputType + '-' + this.guid.random();
+		}
+
+		if (this.rlRequired) {
+			validators.push({
+				name: 'rlRequired',
+				validate: (value: any): boolean => { return !this.object.isNullOrEmpty(value); },
+				errorMessage: this.rlRequired,
+			});
+		}
+
+		this.componentValidator.setValidators(validators);
 	}
 
 	ngAfterViewInit(): void {
-		this.inputValidator.afterInit(this.control);
+		this.componentValidator.afterInit(this.control);
 		if (this.rlForm) {
 			this.rlForm.form.addControl(this.name, this.control);
 		}

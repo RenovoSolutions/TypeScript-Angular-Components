@@ -3,8 +3,6 @@ import { UpgradeAdapter } from '@angular/upgrade';
 
 import * as angular from 'angular';
 
-import { COMPONENT_VALIDATOR_PROVIDER } from './services/componentValidator/componentValidator.service.ng2';
-
 import { BusyComponent } from './components/busy/busy.ng2';
 import { ButtonComponent } from './components/button/button.ng2';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync.ng2';
@@ -33,7 +31,6 @@ const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
-	upgradeAdapter.addProvider(COMPONENT_VALIDATOR_PROVIDER);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
