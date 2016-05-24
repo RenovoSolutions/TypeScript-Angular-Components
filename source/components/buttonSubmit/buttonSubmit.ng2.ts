@@ -1,6 +1,6 @@
 import { Component, Optional, ExceptionHandler } from '@angular/core';
 
-import { ButtonComponent, baseInputs } from '../button/button.ng2';
+import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
 import { FormComponent } from '../form/form.ng2';
 
 @Component({
@@ -8,7 +8,7 @@ import { FormComponent } from '../form/form.ng2';
 	template: require('./buttonSubmit.ng2.html'),
 	inputs: baseInputs,
 })
-export class ButtonSubmitComponent extends ButtonComponent {
+export class ButtonSubmitComponent extends BaseButtonComponent {
 	public form: FormComponent;
 
 	constructor( @Optional() form: FormComponent
