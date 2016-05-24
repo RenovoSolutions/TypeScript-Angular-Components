@@ -1,4 +1,4 @@
-import { Component, Input, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { BusyComponent } from '../busy/busy.ng2';
@@ -18,7 +18,7 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 	@Input() action: IAsyncAction;
 	@Input() rightAligned: boolean;
 
-	@ViewChildren(BusyComponent) busySpinners: QueryList<BusyComponent>;
+	@ViewChild(BusyComponent) busySpinners: BusyComponent;
 
 	constructor() {
 		super();
@@ -29,6 +29,6 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 
 	triggerAction($event: any): void {
 		const result = this.action($event);
-		this.busySpinners.forEach((busy: BusyComponent) => busy.trigger(result));
+		this.busySpinners.trigger(result);
 	}
 }
