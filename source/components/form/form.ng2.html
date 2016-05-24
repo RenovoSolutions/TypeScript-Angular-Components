@@ -1,1 +1,4 @@
-Form
+<form #form="ngForm">
+	<ng-content></ng-content>
+	<button (click)="submit()">Submit</button>
+</form>
