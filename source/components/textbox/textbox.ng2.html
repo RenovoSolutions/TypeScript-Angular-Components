@@ -1,6 +1,15 @@
-<div class="field" [ngClass]="{ 'error': !input.valid, 'required-error': false }">
-	<input type="text" class="form-control" ([ngModel])="text" ngControl="input" required #input="ngForm" />
+<div class="field"
+	[class.error]="!control.valid">
+	<input type="text" class="form-control" [ngFormControl]="control" />
+	<div [hidden]="control.valid" class="error-string">
+		{{error}}
+	</div>
+</div>
+
+<!--<div class="field"
+	[class.error]="!input.valid">
+	<input type="text" class="form-control" ([ngModel])="value" ngControl="input" #input="ngForm" />
 	<div [hidden]="input.valid" class="error-string">
 		{{textboxValidator.error}}
 	</div>
-</div>
+</div>-->
