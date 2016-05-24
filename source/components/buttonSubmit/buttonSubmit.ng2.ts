@@ -1,4 +1,4 @@
-import { Component, Optional } from '@angular/core';
+import { Component, Optional, ExceptionHandler } from '@angular/core';
 
 import { FormComponent } from '../form/form.ng2';
 
@@ -9,7 +9,12 @@ import { FormComponent } from '../form/form.ng2';
 export class ButtonSubmitComponent {
 	public form: FormComponent;
 
-	constructor(@Optional() form: FormComponent) {
+	constructor( @Optional() form: FormComponent
+			, exceptionHandler: ExceptionHandler) {
 		this.form = form;
+
+		if (!form) {
+			exceptionHandler.call(new Error('This component must be nested in an rlForm component.'))
+		}
 	}
 }
