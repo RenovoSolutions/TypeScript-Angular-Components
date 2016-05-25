@@ -12,6 +12,7 @@
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
 	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
+	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
@@ -28,6 +29,7 @@
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
 	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
+	<rlDateTime name="dateTime1" label="DateTime"></rlDateTime>
 	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
@@ -42,6 +44,7 @@
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
 	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
+	<rlDateTime name="dateTime1" label="DateTime" disabled="true"></rlDateTime>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
