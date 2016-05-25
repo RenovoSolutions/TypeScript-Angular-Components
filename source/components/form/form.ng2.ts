@@ -27,6 +27,10 @@ export class FormComponent {
 	}
 
 	submit(): IWaitValue<any> {
-		return this.save(this.form.value);
+		if (this.form.valid) {
+			return this.save(this.form.value);
+		} else {
+			// show validation error
+		}
 	}
 }
