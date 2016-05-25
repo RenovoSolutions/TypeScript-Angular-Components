@@ -21,6 +21,10 @@ export class FormsBootstrapper {
 	checked: boolean;
 	text: string;
 
+	constructor() {
+		this.text = 'Something is already entered';
+	}
+
 	waitCallback: { (data: any): Promise<void> } = (data: any) => {
 		return new Promise<void>((resolve: Function, reject: Function): void => {
 			setTimeout(() => {
