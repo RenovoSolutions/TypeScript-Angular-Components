@@ -5,6 +5,8 @@ import { first, values, each } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 
+import { IControlValidator } from '../../types/formValidators';
+
 @Injectable()
 export class ComponentValidator {
 	validator: __validation.ISimpleValidator;
@@ -43,11 +45,12 @@ export class ComponentValidator {
 		return errors;
 	}
 
-	setError(control: Control): string {
+	setError(control: IControlValidator): string {
 		if (!control) {
 			return;
 		}
 
 		this.error = <any>first(values(control.errors));
+		control.rlErrorMessage = this.error;
 	}
 }
