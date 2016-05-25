@@ -6,6 +6,11 @@
 	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
 	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
 	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
+	<rlRadioGroup [(value)]="selection">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
@@ -16,6 +21,11 @@
 	<rlCheckbox name="checkbox1" label="Checkbox 1"></rlCheckbox>
 	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
 	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlRadioGroup name="radio1">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
 	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
@@ -24,6 +34,11 @@
 	<rlCheckbox name="checkbox1" disabled="true" label="Checkbox 1"></rlCheckbox>
 	<rlTextbox name="textbox1" disabled="true" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
 	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlRadioGroup name="radio1" disabled="true">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
