@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input } from '@angular/core';
+import { Component, Optional, Inject, Input, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -16,7 +16,7 @@ import { FormComponent } from '../form/form.ng2';
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
 })
-export class TextareaComponent extends ValidatedInputComponent<string> {
+export class TextareaComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
 	@Input() rows: number;
 	@Input() disabled: boolean;
@@ -28,5 +28,9 @@ export class TextareaComponent extends ValidatedInputComponent<string> {
 			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'textarea';
+	}
+
+	ngOnInit(): void {
+		this.value = this.value || '';
 	}
 }

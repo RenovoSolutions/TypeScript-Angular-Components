@@ -3,6 +3,7 @@
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<textarea type="text"
 			  class="form-control angular-animate"
+			  [value]="value"
 			  [ngFormControl]="control"
 			  [placeholder]="label"
 			  [attr.maxlength]="maxlength"
