@@ -10,7 +10,7 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form.ng2';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
-export const baseInputs: string[] = ['name', 'label', 'value'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 
 export const validationInputs: string[] = baseInputs.concat(['validator', 'validators', 'rlRequired'])
@@ -23,6 +23,7 @@ export interface IInputChanges {
 export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
 	label: string;
+	disabled: boolean;
 	value: T;
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;

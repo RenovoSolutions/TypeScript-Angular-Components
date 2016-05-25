@@ -19,7 +19,6 @@ import { FormComponent } from '../form/form.ng2';
 export class TextareaComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
 	@Input() rows: number;
-	@Input() disabled: boolean;
 
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator

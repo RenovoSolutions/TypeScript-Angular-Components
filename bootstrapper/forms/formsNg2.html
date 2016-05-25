@@ -17,3 +17,10 @@
 	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
+<h5>Disabled form</h5>
+<rlForm [save]="waitCallback">
+	<rlCheckbox name="checkbox1" disabled="true" label="Checkbox 1"></rlCheckbox>
+	<rlTextbox name="textbox1" disabled="true" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
+	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
+</rlForm>

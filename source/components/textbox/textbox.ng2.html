@@ -6,7 +6,8 @@
 		   [value]="value"
 		   [ngFormControl]="control"
 		   [placeholder]="label"
-		   [attr.maxlength]="maxlength" />
+		   [attr.maxlength]="maxlength"
+		   [disabled]="disabled" />
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}
 	</div>

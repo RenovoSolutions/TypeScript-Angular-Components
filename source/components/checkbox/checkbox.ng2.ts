@@ -17,7 +17,6 @@ import { FormComponent } from '../form/form.ng2';
 	outputs: baseOutputs,
 })
 export class CheckboxComponent extends InputComponent<boolean> {
-	@Input() disabled: boolean;
 	@Input() active: boolean = true;
 
 	useDefaultTheme: boolean;
