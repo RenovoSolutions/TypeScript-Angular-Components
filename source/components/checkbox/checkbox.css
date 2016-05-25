@@ -12,6 +12,7 @@
 	font-size: 1.4em;
 }
 
-.disabled.default-theme:before {
-	cursor: not-allowed;
+.rl-checkbox.default-theme.disabled:before,
+.rl-checkbox-checked.default-theme.disabled:before {
+	opacity: 0.6;
 }
