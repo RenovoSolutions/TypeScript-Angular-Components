@@ -5,6 +5,7 @@
 	<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
 	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
 	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
+	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
 	{{text}}
@@ -13,5 +14,6 @@
 <rlForm [save]="waitCallback">
 	<rlCheckbox name="checkbox1" label="Checkbox 1"></rlCheckbox>
 	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
+	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

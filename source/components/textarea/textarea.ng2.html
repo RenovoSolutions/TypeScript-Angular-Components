@@ -1,0 +1,14 @@
+<div class="field"
+	[class.error]="!control.valid">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<textarea type="text"
+			  class="form-control angular-animate"
+			  [ngFormControl]="control"
+			  [placeholder]="label"
+			  [attr.maxlength]="maxlength"
+			  [attr.rows]="rows"
+			  [disabled]="disabled"></textarea>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>

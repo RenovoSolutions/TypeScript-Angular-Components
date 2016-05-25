@@ -4,6 +4,7 @@ import { FormComponent } from '../../source/components/form/form.ng2';
 import { ButtonSubmitComponent } from '../../source/components/buttonSubmit/buttonSubmit.ng2';
 import { CheckboxComponent } from '../../source/components/checkbox/checkbox.ng2';
 import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
+import { TextareaComponent } from '../../source/components/textarea/textarea.ng2';
 
 @Component({
 	selector: 'tsFormsBootstrapper',
@@ -13,6 +14,7 @@ import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 		ButtonSubmitComponent,
 		CheckboxComponent,
 		TextboxComponent,
+		TextareaComponent,
 	],
 })
 export class FormsBootstrapper {
