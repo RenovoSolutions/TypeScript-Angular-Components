@@ -6,11 +6,12 @@
 	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
 	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
 	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
-	<rlRadioGroup [(value)]="selection">
+	<rlRadioGroup [(value)]="selection" label="Spinner">
 		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
 		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
+	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
@@ -26,6 +27,7 @@
 		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
+	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
 	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
@@ -39,6 +41,7 @@
 		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
 		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
 	</rlRadioGroup>
+	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

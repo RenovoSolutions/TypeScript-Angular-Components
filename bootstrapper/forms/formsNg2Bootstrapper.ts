@@ -6,6 +6,7 @@ import { CheckboxComponent } from '../../source/components/checkbox/checkbox.ng2
 import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 import { TextareaComponent } from '../../source/components/textarea/textarea.ng2';
 import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
+import { SpinnerComponent } from '../../source/components/spinner/spinner.ng2';
 import { UserRatingComponent } from '../../source/components/userRating/userRating.ng2';
 
 export interface ITestItem {
@@ -22,6 +23,7 @@ export interface ITestItem {
 		TextboxComponent,
 		TextareaComponent,
 		RADIO_DIRECTIVES,
+		SpinnerComponent,
 		UserRatingComponent,
 	],
 })
