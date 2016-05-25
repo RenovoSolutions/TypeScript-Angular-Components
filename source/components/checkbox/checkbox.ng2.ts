@@ -32,10 +32,8 @@ export class CheckboxComponent extends InputComponent<boolean> {
 	}
 
 	toggle(): void {
-		if (this.active && !this.disabled) {
-			this.value = !this.value;
-			this.control.updateValue(this.value);
-			this.change.emit(this.value);
+		if (this.active) {
+			this.setValue(!this.value);
 		}
 	}
 }

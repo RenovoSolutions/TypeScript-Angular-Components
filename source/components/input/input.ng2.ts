@@ -64,6 +64,14 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 			this.valueChange.emit(value);
 		});
 	}
+
+	setValue(value: T): void {
+		if (!this.disabled) {
+			this.value = value;
+			this.control.updateValue(this.value);
+			this.change.emit(this.value);
+		}
+	}
 }
 
 export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit, OnChanges {

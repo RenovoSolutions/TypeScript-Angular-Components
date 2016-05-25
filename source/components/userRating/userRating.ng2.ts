@@ -52,12 +52,8 @@ export class UserRatingComponent extends InputComponent<number> implements OnIni
 	}
 
 	setRating(rating: number): void {
-		if (!this.disabled) {
-			this.value = rating;
-			this.control.updateValue(rating);
-			this.change.emit(rating);
-			this.updateStarView(rating);
-		}
+		this.setValue(rating);
+		this.updateStarView(rating);
 	}
 
 	private updateStarView(rating: number): void {
