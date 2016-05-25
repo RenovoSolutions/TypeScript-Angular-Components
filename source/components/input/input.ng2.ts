@@ -1,4 +1,4 @@
-import { Component, ViewChild, Optional, AfterViewInit, OnInit, EventEmitter } from '@angular/core';
+import { Component, ViewChild, Optional, AfterViewInit, OnInit, OnChanges, EventEmitter, SimpleChange } from '@angular/core';
 import { Control } from '@angular/common';
 
 import { services } from 'typescript-angular-utilities';
@@ -14,6 +14,11 @@ export const baseInputs: string[] = ['name', 'label', 'value'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 
 export const validationInputs: string[] = baseInputs.concat(['validator', 'validators', 'rlRequired'])
+
+export interface IInputChanges {
+	[key: string]: SimpleChange;
+	value: SimpleChange;
+}
 
 export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
@@ -60,7 +65,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	}
 }
 
-export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit {
+export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit, OnChanges {
 	validator: __validation.IValidationHandler;
 	validators: __validation.IValidationHandler[];
 	rlRequired: string;
@@ -108,5 +113,11 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 		this.componentValidator.afterInit(this.control);
 
 		super.ngAfterViewInit();
+	}
+
+	ngOnChanges(changes: IInputChanges): void {
+		if (changes.value) {
+			this.control.updateValue(changes.value.currentValue);
+		}
 	}
 }
