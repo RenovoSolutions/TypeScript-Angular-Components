@@ -6,6 +6,7 @@
 	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
 	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
 	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
+	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
 	{{text}}
@@ -15,6 +16,7 @@
 	<rlCheckbox name="checkbox1" label="Checkbox 1"></rlCheckbox>
 	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
 	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
 <h5>Disabled form</h5>
@@ -22,5 +24,6 @@
 	<rlCheckbox name="checkbox1" disabled="true" label="Checkbox 1"></rlCheckbox>
 	<rlTextbox name="textbox1" disabled="true" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
 	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

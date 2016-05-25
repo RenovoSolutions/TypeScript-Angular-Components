@@ -5,6 +5,7 @@ import { ButtonSubmitComponent } from '../../source/components/buttonSubmit/butt
 import { CheckboxComponent } from '../../source/components/checkbox/checkbox.ng2';
 import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 import { TextareaComponent } from '../../source/components/textarea/textarea.ng2';
+import { UserRatingComponent } from '../../source/components/userRating/userRating.ng2';
 
 @Component({
 	selector: 'tsFormsBootstrapper',
@@ -15,11 +16,13 @@ import { TextareaComponent } from '../../source/components/textarea/textarea.ng2
 		CheckboxComponent,
 		TextboxComponent,
 		TextareaComponent,
+		UserRatingComponent,
 	],
 })
 export class FormsBootstrapper {
 	checked: boolean;
 	text: string;
+	rating: number;
 
 	constructor() {
 		this.text = 'Something is already entered';
