@@ -1,38 +1,41 @@
-import { Component, Inject, Input, Output, EventEmitter, forwardRef } from '@angular/core';
+import { Component, Inject, Input, Optional } from '@angular/core';
+
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
 import { defaultThemeToken } from '../componentsDefaultTheme';
 
-import { ValueAccessor, makeValueAccessorProvider } from '../input/valueAccessor';
+import { InputComponent, baseInputs, baseOutputs } from '../input/input.ng2';
+import { FormComponent } from '../form/form.ng2';
 
 @Component({
 	selector: 'rlCheckbox',
 	template: require('./checkbox.ng2.html'),
-	providers: [makeValueAccessorProvider({
-		useExisting: forwardRef(() => CheckboxComponent)
-	})],
+	inputs: baseInputs,
+	outputs: baseOutputs,
 })
-export class CheckboxComponent extends ValueAccessor<boolean> {
-	@Input() value: boolean;
+export class CheckboxComponent extends InputComponent<boolean> {
 	@Input() disabled: boolean;
 	@Input() active: boolean = true;
-	@Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
-	@Output() valueChange: EventEmitter<boolean> = this.change;
 
 	useDefaultTheme: boolean;
 
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean) {
-		super();
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+			, @Optional() rlForm: FormComponent
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, object, guid);
+		this.inputType = 'checkbox';
+		this.initControl();
 		this.useDefaultTheme = useDefaultTheme;
-	}
-
-	writeValue(value: boolean): void {
-		this.value = value;
 	}
 
 	toggle(): void {
 		if (this.active && !this.disabled) {
 			this.value = !this.value;
-			this.triggerChange(this.value);
+			this.control.updateValue(this.value);
 			this.change.emit(this.value);
 		}
 	}

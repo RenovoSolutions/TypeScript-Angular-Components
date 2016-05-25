@@ -17,6 +17,7 @@ import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 })
 export class FormsBootstrapper {
 	checked: boolean;
+	text: string;
 
 	waitCallback: { (data: any): Promise<void> } = (data: any) => {
 		return new Promise<void>((resolve: Function, reject: Function): void => {

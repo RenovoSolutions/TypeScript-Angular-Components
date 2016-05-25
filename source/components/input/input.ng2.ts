@@ -10,46 +10,79 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form.ng2';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
-export const baseInputs: string[] = ['validator', 'validators', 'label', 'name', 'rlRequired', 'value'];
+export const baseInputs: string[] = ['name', 'label', 'value'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 
+export const validationInputs: string[] = baseInputs.concat(['validator', 'validators', 'rlRequired'])
+
 export class InputComponent<T> implements AfterViewInit, OnInit {
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
-	label: string;
 	name: string;
-	rlRequired: string;
+	label: string;
 	value: T;
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
 
-	control: Control;
 	inputType: string = 'input';
-
+	control: Control;
 	rlForm: FormComponent;
-	protected componentValidator: ComponentValidator;
 	protected object: __object.IObjectUtility;
-	protected array: __array.IArrayUtility;
 	protected guid: __guid.IGuidService;
+
+	constructor(rlForm: FormComponent
+			, object: __object.IObjectUtility
+			, guid: __guid.IGuidService) {
+		this.rlForm = rlForm;
+		this.object = object;
+		this.guid = guid;
+	}
+
+	ngOnInit(): void {
+		if (this.object.isNullOrEmpty(this.name)) {
+			this.name = this.inputType + '-' + this.guid.random();
+		}
+	}
+
+	ngAfterViewInit(): void {
+		if (this.rlForm) {
+			this.rlForm.form.addControl(this.name, this.control);
+		}
+	}
+
+	initControl(): void {
+		if (!this.control) {
+			this.control = new Control('');
+		}
+
+		this.control.valueChanges.subscribe(value => {
+			this.value = value;
+			this.valueChange.emit(value);
+		});
+	}
+}
+
+export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit {
+	validator: __validation.IValidationHandler;
+	validators: __validation.IValidationHandler[];
+	rlRequired: string;
+
+	protected componentValidator: ComponentValidator;
+	protected array: __array.IArrayUtility;
 
 	constructor(rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, object: __object.IObjectUtility
 			, array: __array.IArrayUtility
 			, guid: __guid.IGuidService) {
-		this.rlForm = rlForm;
-		this.object = object;
+		super(rlForm, object, guid);
 		this.array = array;
-		this.guid = guid;
 		this.componentValidator = componentValidator;
 		this.control = new Control('', this.componentValidator.validate.bind(this.componentValidator));
-		this.control.valueChanges.subscribe(value => {
-			this.value = value;
-			this.valueChange.emit(value);
-		});
+		this.initControl();
 	}
 
 	ngOnInit(): void {
+		super.ngOnInit();
+
 		let validators: __validation.IValidationHandler[] = [];
 
 		if (this.validator) {
@@ -58,10 +91,6 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 
 		if (this.validators) {
 			validators = validators.concat(this.array.arrayify(this.validators));
-		}
-
-		if (this.object.isNullOrEmpty(this.name)) {
-			this.name = this.inputType + '-' + this.guid.random();
 		}
 
 		if (this.rlRequired) {
@@ -77,8 +106,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 
 	ngAfterViewInit(): void {
 		this.componentValidator.afterInit(this.control);
-		if (this.rlForm) {
-			this.rlForm.form.addControl(this.name, this.control);
-		}
+
+		super.ngAfterViewInit();
 	}
 }

@@ -5,18 +5,18 @@ import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 
-import { InputComponent, baseInputs, baseOutputs } from '../input/input.ng2';
+import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input/input.ng2';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 import { FormComponent } from '../form/form.ng2';
 
 @Component({
 	selector: 'rlTextbox',
 	template: require('./textbox.ng2.html'),
-	inputs: baseInputs,
+	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
 })
-export class TextboxComponent extends InputComponent<string> {
+export class TextboxComponent extends ValidatedInputComponent<string> {
 	@Input() maxlength: number;
 
 	constructor( @Optional() rlForm: FormComponent
@@ -25,5 +25,6 @@ export class TextboxComponent extends InputComponent<string> {
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
 			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
 		super(rlForm, componentValidator, object, array, guid);
+		this.inputType = 'textbox';
 	}
 }

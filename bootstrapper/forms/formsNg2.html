@@ -1,8 +1,11 @@
 <h3>Forms</h3>
 <label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</label>
 <rlForm [save]="waitCallback">
-	<rlCheckbox [(ngModel)]="checked">Checkbox with ngModel</rlCheckbox>
+	<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
+	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
 	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
+	{{checked}}
+	{{text}}
 </rlForm>
