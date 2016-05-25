@@ -30,6 +30,7 @@ export class TextareaComponent extends ValidatedInputComponent<string> implement
 	}
 
 	ngOnInit(): void {
+		super.ngOnInit();
 		this.value = this.value || '';
 	}
 }

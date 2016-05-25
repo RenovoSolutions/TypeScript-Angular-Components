@@ -29,6 +29,7 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 	}
 
 	ngOnInit(): void {
+		super.ngOnInit();
 		this.value = this.value || '';
 	}
 }
