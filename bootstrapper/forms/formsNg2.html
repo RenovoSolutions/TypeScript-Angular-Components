@@ -2,7 +2,7 @@
 <label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</label>
 <rlForm [save]="waitCallback">
 	<rlCheckbox [(ngModel)]="checked">Checkbox with ngModel</rlCheckbox>
-	<rlTextbox rlRequired="This is a required field"></rlTextbox>
+	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

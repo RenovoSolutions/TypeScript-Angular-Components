@@ -1,4 +1,4 @@
-import { Component, ViewChild, Optional, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, Optional, AfterViewInit, OnInit, EventEmitter } from '@angular/core';
 import { Control } from '@angular/common';
 
 import { services } from 'typescript-angular-utilities';
@@ -10,14 +10,18 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form.ng2';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
-export const baseInputs: string[] = ['validator', 'validators', 'label', 'name', 'rlRequired'];
+export const baseInputs: string[] = ['validator', 'validators', 'label', 'name', 'rlRequired', 'value'];
+export const baseOutputs: string[] = ['change', 'valueChange'];
 
-export class InputComponent implements AfterViewInit, OnInit {
+export class InputComponent<T> implements AfterViewInit, OnInit {
 	validator: __validation.IValidationHandler;
 	validators: __validation.IValidationHandler[];
 	label: string;
 	name: string;
 	rlRequired: string;
+	value: T;
+	change: EventEmitter<T> = new EventEmitter<T>();
+	valueChange: EventEmitter<T> = this.change;
 
 	control: Control;
 	inputType: string = 'input';
@@ -39,6 +43,10 @@ export class InputComponent implements AfterViewInit, OnInit {
 		this.guid = guid;
 		this.componentValidator = componentValidator;
 		this.control = new Control('', this.componentValidator.validate.bind(this.componentValidator));
+		this.control.valueChanges.subscribe(value => {
+			this.value = value;
+			this.valueChange.emit(value);
+		});
 	}
 
 	ngOnInit(): void {

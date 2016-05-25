@@ -1,16 +1,8 @@
 <div class="field"
 	[class.error]="!control.valid">
-	<!-- flower-up label -->
-	<input type="text" class="form-control angular-animate" [ngFormControl]="control" [placeholder]="label" maxlength="maxlength" />
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<input type="text" class="form-control angular-animate" [ngFormControl]="control" [placeholder]="label" [attr.maxlength]="maxlength" />
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}
 	</div>
 </div>
-
-<!--<div class="field"
-	[class.error]="!input.valid">
-	<input type="text" class="form-control" ([ngModel])="value" ngControl="input" #input="ngForm" />
-	<div [hidden]="input.valid" class="error-string">
-		{{textboxValidator.error}}
-	</div>
-</div>-->
