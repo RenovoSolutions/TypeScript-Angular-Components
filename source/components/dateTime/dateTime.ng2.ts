@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, EventEmitter, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -26,7 +26,7 @@ import { FormComponent } from '../form/form.ng2';
 	providers: [ComponentValidator],
 	pipes: [filters.isEmpty.IsEmptyPipe],
 })
-export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements AfterViewInit {
+export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements OnInit, AfterViewInit {
 	@Input() useDate: boolean;
 	@Input() useTime: boolean;
 	@Input() min: string | Date | moment.Moment;
