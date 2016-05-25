@@ -13,6 +13,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.ng2';
 import { FormComponent } from './components/form/form.ng2';
 import { TextboxComponent } from './components/textbox/textbox.ng2';
 
+import { FormService } from './services/form/form.service.ng2';
+
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 
 export const busyComponentName: string = 'rlBusyNg';
@@ -31,6 +33,7 @@ const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(FormService);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
