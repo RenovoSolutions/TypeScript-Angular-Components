@@ -24,7 +24,7 @@ export class FormComponent {
 	private notification: __notification.INotificationService;
 	private formService: FormService;
 
-	constructor( @Inject(__notification.notificationServiceToken) notification: __notification.INotificationService
+	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService) {
 		this.notification = notification;
 		this.formService = formService;

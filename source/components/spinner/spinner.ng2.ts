@@ -43,7 +43,7 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 	private touchspin: JQuery;
 
 	constructor(elementRef: ElementRef
-			, @Inject(__number.numberUtilityToken) number: __number.INumberUtility
+			, @Inject(__number.numberToken) number: __number.INumberUtility
 			, @Inject(__string.stringToken) string: __string.IStringUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
