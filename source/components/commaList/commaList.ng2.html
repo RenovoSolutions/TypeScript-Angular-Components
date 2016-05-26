@@ -1,0 +1,4 @@
+<span *ngFor="let item of getFirstItems(); let last = last">
+	<span>{{item}}</span><span [hidden]="last">, </span>
+</span>
+<span [hidden]="remainingItems <= 0">... {{remainingItems}} more items</span>
