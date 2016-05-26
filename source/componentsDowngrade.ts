@@ -3,6 +3,8 @@ import { UpgradeAdapter } from '@angular/upgrade';
 
 import * as angular from 'angular';
 
+import { services, downgrade } from 'typescript-angular-utilities';
+
 import { BusyComponent } from './components/busy/busy.ng2';
 import { ButtonComponent } from './components/button/button.ng2';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync.ng2';
@@ -13,6 +15,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.ng2';
 import { CommaListComponent } from './components/commaList/commaList.ng2';
 import { FormComponent } from './components/form/form.ng2';
 import { TextboxComponent } from './components/textbox/textbox.ng2';
+
+import { DatePipe } from './filters/date/date.filter.ng2';
 
 import { FormService } from './services/form/form.service.ng2';
 
@@ -38,6 +42,8 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(FormService);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
+
+	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
 
 	componentsDowngradeModule.directive(busyComponentName, <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
 	componentsDowngradeModule.directive(buttonComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonComponent));
