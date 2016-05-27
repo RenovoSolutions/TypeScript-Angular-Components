@@ -120,6 +120,7 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 
 	ngAfterViewInit(): void {
 		this.componentValidator.afterInit(this.control);
+		this.control.updateValueAndValidity(this.value || undefined);
 
 		super.ngAfterViewInit();
 	}
