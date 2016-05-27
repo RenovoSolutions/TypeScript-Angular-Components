@@ -4,7 +4,7 @@
 	<textarea type="text"
 			  class="form-control angular-animate"
 			  [value]="value"
-			  [ngFormControl]="control"
+			  (input)="onChange($event.target.value)"
 			  [placeholder]="label"
 			  [attr.maxlength]="maxlength"
 			  [attr.rows]="rows"
