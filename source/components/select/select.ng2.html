@@ -4,7 +4,8 @@
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
 		 (click)="toggle()"
-		 [class.disabled]="disabled">
+		 [class.disabled]="disabled"
+		 [class.rl-select-open]="showOptions">
 		<span class="placeholder" [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
