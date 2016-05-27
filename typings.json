@@ -1,8 +1,7 @@
 {
   "name": "typescript-angular-components",
   "dependencies": {
-    "lodash": "registry:npm/lodash#4.0.0+20160416211519",
-    "typescript-angular-utilities": "npm:typescript-angular-utilities"
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519"
   },
   "globalDependencies": {
     "angular": "registry:dt/angular#1.5.0+20160517064839",
