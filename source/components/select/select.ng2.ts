@@ -12,6 +12,7 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 import { FormComponent } from '../form/form.ng2';
 import { BusyComponent } from '../busy/busy.ng2';
+import { OffClickDirective } from '../../behaviors/offClick/offClick';
 
 @Component({
 	selector: 'rlSelect',
@@ -19,7 +20,7 @@ import { BusyComponent } from '../busy/busy.ng2';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [BusyComponent],
+	directives: [BusyComponent, OffClickDirective],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements OnInit, AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
@@ -47,7 +48,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 
 	ngOnInit(): void {
 		super.ngOnInit();
-		console.log(this.value);
 	}
 
 	ngAfterViewInit(): void {
@@ -60,6 +60,12 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 
 	toggle(): void {
 		this.showOptions = !this.showOptions;
+	}
+
+	close: { (): void } = () => {
+		if (this.showOptions) {
+			this.showOptions = false;
+		}
 	}
 
 	select(value: T): void {
