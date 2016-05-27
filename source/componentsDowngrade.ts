@@ -16,7 +16,7 @@ import { CommaListComponent } from './components/commaList/commaList.ng2';
 import { FormComponent } from './components/form/form.ng2';
 import { TextboxComponent } from './components/textbox/textbox.ng2';
 
-import { DatePipe } from './filters/date/date.filter.ng2';
+import { DatePipe } from './filters/date/date.filter';
 
 import { FormService } from './services/form/form.service.ng2';
 
