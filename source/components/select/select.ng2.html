@@ -5,7 +5,8 @@
 	<div class="form-control rl-select-trigger"
 		 (click)="toggle()"
 		 [class.disabled]="disabled">
-		 {{getDisplayName(value)}}
+		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<ul class="rl-select-list" *ngIf="showOptions">
 		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
