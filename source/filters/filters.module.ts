@@ -8,6 +8,5 @@ export { localizeStringDates};
 export let moduleName: string = 'rl.ui.filters';
 
 angular.module(moduleName, [
-	date.moduleName,
 	localizeStringDates.moduleName
 ]);

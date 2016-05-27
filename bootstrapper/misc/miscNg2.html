@@ -5,3 +5,15 @@
 	<div><rl-busy-ng [loading]="misc.loading" size="2x"></rl-busy-ng></div>
 </div>
 <ts-misc-ng-context></ts-misc-ng-context>
+<div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/commaList/commaList.md">Comma list</a>:</label></div>
+	<div><rl-comma-list-ng [list]="[1, 2, 3, 4, 5]"></rl-comma-list-ng></div>
+	<div><rl-comma-list-ng [list]="[1, 2, 3, 4, 5]" [max]="3"></rl-comma-list-ng></div>
+	<div><rl-comma-list-ng [list]="[{ value: 1 }, { value: 2 }]" transform="value"></rl-comma-list-ng></div>
+</div>
+
+<div class="form-group">
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/filters/date/date.filter.md">Date filter</a>:</label>
+	<div>{{misc.date | rlDate}}</div>
+	<div>{{misc.date | rlDate:true}}</div>
+</div>

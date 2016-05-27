@@ -1,3 +1,7 @@
 [hidden] {
 	display: none !important;
 }
+
+.disabled.default-theme:before {
+	cursor: not-allowed;
+}

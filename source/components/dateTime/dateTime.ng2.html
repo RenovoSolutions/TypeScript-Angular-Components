@@ -1,0 +1,25 @@
+<div class="field date-time"
+	 [class.has-warning]="!validFormat"
+	 [class.error]="!control.valid"
+	 [class.datepicker-with-clear]="showClear">
+	<span class="show-date-picker">
+		<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+		<input type="text"
+			   class="form-control"
+			   [value]="valueAsString"
+			   [placeholder]="label"/>
+		<span class="input-group-btn">
+			<rlButton><i class="fa fa-calendar"></i></rlButton>
+		</span>
+		<span class="timezone" *ngIf="useDate">{{timezone?.display}}</span>
+	</span>
+	<span class="datepicker-clear" *ngIf="showClear">
+		<rlButton [disabled]="value | isEmpty"
+				  (trigger)="onClear()">
+			<i class="fa fa-times"></i>
+		</rlButton>
+	</span>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>

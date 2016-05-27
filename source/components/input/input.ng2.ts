@@ -1,74 +1,132 @@
-import { Component, ViewChild, Optional, AfterViewInit } from '@angular/core';
-import { Control, NgControl, NgFormControl, FORM_DIRECTIVES } from '@angular/common';
-import { first, values } from 'lodash';
+import { Component, ViewChild, Optional, AfterViewInit, OnInit, OnChanges, EventEmitter, SimpleChange } from '@angular/core';
+import { Control } from '@angular/common';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
 import { FormComponent } from '../form/form.ng2';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
-export const baseInputs: string[] = ['validator', 'validators', 'label', 'name'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
+export const baseOutputs: string[] = ['change', 'valueChange'];
 
-export class InputComponent implements AfterViewInit {
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
-	label: string;
+export const validationInputs: string[] = baseInputs.concat(['validator', 'validators', 'rlRequired'])
+
+export interface IInputChanges {
+	[key: string]: SimpleChange;
+	value: SimpleChange;
+}
+
+export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
+	label: string;
+	disabled: boolean;
+	value: T;
+	change: EventEmitter<T> = new EventEmitter<T>();
+	valueChange: EventEmitter<T> = this.change;
 
-	error: string;
+	inputType: string = 'input';
 	control: Control;
-	inputValidator: ComponentValidator;
 	rlForm: FormComponent;
+	protected object: __object.IObjectUtility;
+	protected guid: __guid.IGuidService;
 
-	constructor(@Optional() rlForm: FormComponent) {
+	constructor(rlForm: FormComponent
+			, object: __object.IObjectUtility
+			, guid: __guid.IGuidService) {
 		this.rlForm = rlForm;
-		this.inputValidator = new ComponentValidator(<any>[{
-			name: 'rlRequired',
-			validate: (value: any): boolean => { return !__object.objectUtility.isNullOrEmpty(value); },
-			errorMessage: 'Required field',
-		}]);
-		this.control = new Control('', this.inputValidator.validate.bind(this.inputValidator));
-		this.name = 'test123';
+		this.object = object;
+		this.guid = guid;
+	}
+
+	ngOnInit(): void {
+		if (this.object.isNullOrEmpty(this.name)) {
+			this.name = this.inputType + '-' + this.guid.random();
+		}
 	}
 
 	ngAfterViewInit(): void {
-		this.inputValidator.afterInit(this.control);
 		if (this.rlForm) {
 			this.rlForm.form.addControl(this.name, this.control);
 		}
 	}
+
+	initControl(): void {
+		if (!this.control) {
+			this.control = new Control('');
+		}
+
+		this.control.valueChanges.subscribe(value => {
+			this.value = value;
+			this.valueChange.emit(value);
+		});
+	}
+
+	setValue(value: T): void {
+		if (!this.disabled) {
+			this.value = value;
+			this.control.updateValue(this.value);
+			this.change.emit(this.value);
+		}
+	}
 }
 
-export class ComponentValidator {
-	error: string;
+export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit, OnChanges {
+	validator: __validation.IValidationHandler;
 	validators: __validation.IValidationHandler[];
+	rlRequired: string;
 
-	constructor(validators: __validation.IValidationHandler[]) {
-		this.validators = validators;
+	protected componentValidator: ComponentValidator;
+	protected array: __array.IArrayUtility;
+
+	constructor(rlForm: FormComponent
+			, componentValidator: ComponentValidator
+			, object: __object.IObjectUtility
+			, array: __array.IArrayUtility
+			, guid: __guid.IGuidService) {
+		super(rlForm, object, guid);
+		this.array = array;
+		this.componentValidator = componentValidator;
+		this.control = new Control('', this.componentValidator.validate.bind(this.componentValidator));
+		this.initControl();
 	}
 
-	afterInit(control: Control): void {
-		control.statusChanges.subscribe((value: any): void => {
-			this.setError(control);
-		});
-		this.setError(control);
-	}
+	ngOnInit(): void {
+		super.ngOnInit();
 
-	validate(control: Control): any {
-		if ((<any>this.validators[0]).validate(control.value)) {
-			return null;
+		let validators: __validation.IValidationHandler[] = [];
+
+		if (this.validator) {
+			validators = validators.concat(this.array.arrayify(this.validator));
 		}
-		let errors: any = {};
-		errors[this.validators[0].name] = this.validators[0].errorMessage;
-		return errors;
-	}
 
-	setError(control: Control): string {
-		if (!control) {
-			return;
+		if (this.validators) {
+			validators = validators.concat(this.array.arrayify(this.validators));
 		}
 
-		this.error = <any>first(values(control.errors));
+		if (this.rlRequired) {
+			validators.push({
+				name: 'rlRequired',
+				validate: (value: any): boolean => { return !this.object.isNullOrEmpty(value); },
+				errorMessage: this.rlRequired,
+			});
+		}
+
+		this.componentValidator.setValidators(validators);
+	}
+
+	ngAfterViewInit(): void {
+		this.componentValidator.afterInit(this.control);
+
+		super.ngAfterViewInit();
+	}
+
+	ngOnChanges(changes: IInputChanges): void {
+		if (changes.value) {
+			this.control.updateValue(changes.value.currentValue);
+		}
 	}
 }

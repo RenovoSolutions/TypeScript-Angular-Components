@@ -1,0 +1,26 @@
+<span [ngSwitch]="disabled">
+	<div *ngSwitchDefault
+		 class="field"
+		 [class.error]="!control.valid">
+		 <label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+		 <input type="text"
+		 		class="spinner"
+				[id]="spinnerId"
+				[placeholder]="label" />
+		<div [hidden]="control.valid" class="error-string">
+			{{componentValidator.error}}
+		</div>
+	</div>
+	<div *ngSwitchWhen="'true'">
+		<div class="input-group field">
+			<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+			<span class="input-group-addon" *ngIf="prefix">{{prefix}}</span>
+			<input class="form-control"
+				   disabled="true"
+				   type="text"
+				   [value]="value"
+				   [placeholder]="label" />
+			<span class="input-group-addon" *ngIf="postfix">{{postfix}}</span>
+		</div>
+	</div>
+</span>

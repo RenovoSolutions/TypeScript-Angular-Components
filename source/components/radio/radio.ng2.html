@@ -1,0 +1,7 @@
+<span (click)="radioGroup.select(option)"
+	  [class.rl-radio]="radioGroup.value !== option"
+	  [class.rl-radio-selected]="radioGroup.value === option"
+	  [class.disabled]="radioGroup.disabled"
+	  [class.default-theme]="useDefaultTheme">
+	{{label}}
+</span>

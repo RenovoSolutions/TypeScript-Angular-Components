@@ -1,4 +1,4 @@
-import { Component, Inject, Input, Optional } from '@angular/core';
+import { Component, Inject, Optional, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -11,29 +11,21 @@ import { InputComponent, baseInputs, baseOutputs } from '../input/input.ng2';
 import { FormComponent } from '../form/form.ng2';
 
 @Component({
-	selector: 'rlCheckbox',
-	template: require('./checkbox.ng2.html'),
+	selector: 'rlRadioGroup',
+	template: '<ng-content></ng-content>',
 	inputs: baseInputs,
 	outputs: baseOutputs,
 })
-export class CheckboxComponent extends InputComponent<boolean> {
-	@Input() active: boolean = true;
-
-	useDefaultTheme: boolean;
-
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
-			, @Optional() rlForm: FormComponent
+export class RadioGroupComponent<T> extends InputComponent<T> {
+	constructor(@Optional() rlForm: FormComponent
 			, @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
 		super(rlForm, object, guid);
-		this.inputType = 'checkbox';
+		this.inputType = 'radio';
 		this.initControl();
-		this.useDefaultTheme = useDefaultTheme;
 	}
 
-	toggle(): void {
-		if (this.active) {
-			this.setValue(!this.value);
-		}
+	select(value: T): void {
+		this.setValue(value);
 	}
 }

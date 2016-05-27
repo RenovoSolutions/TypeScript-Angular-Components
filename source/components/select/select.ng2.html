@@ -1,0 +1,21 @@
+<div class="field"
+	 [class.error]="!control.valid">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<div class="form-control rl-select-trigger"
+		 (click)="toggle()"
+		 [class.disabled]="disabled">
+		 {{getDisplayName(value)}}
+	</div>
+	<ul class="rl-select-list" *ngIf="showOptions">
+		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
+		<li class="rl-select-option"
+			*ngFor="let option of wrappedOptions | async"
+			(click)="select(option)">
+			{{getDisplayName(option)}}
+		</li>
+	</ul>
+	<rlBusy></rlBusy>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>

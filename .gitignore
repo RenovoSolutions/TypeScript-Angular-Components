@@ -1,4 +1,4 @@
-z# Ignore built files
+# Ignore built files
 /dist/
 /bootstrapper/app.bundle.js
 /bootstrapper/app.bundle.js.map

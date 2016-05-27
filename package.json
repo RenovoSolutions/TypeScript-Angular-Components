@@ -18,7 +18,6 @@
   "scripts": {
     "prepublish": "npm run build",
     "update": "npm install",
-
     "clean": "gulp clean",
     "build": "gulp clean && tsc && gulp bundle-css && gulp bundle-css.minify && echo Build complete",
     "build.watch": "tsc -w",

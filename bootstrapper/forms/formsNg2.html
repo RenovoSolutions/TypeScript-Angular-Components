@@ -1,8 +1,53 @@
 <h3>Forms</h3>
-<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</label>
+<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</h4>
+<h5>Form with two-way bindings</h5>
 <rlForm [save]="waitCallback">
-	<rlCheckbox [(ngModel)]="checked">Checkbox with ngModel</rlCheckbox>
-	<rlTextbox></rlTextbox>
+	<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
+	<rlRadioGroup [(value)]="selection" label="Spinner">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
+	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
+	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
+	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
+	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
+	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
+	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
+	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
+	{{checked}}
+	{{text}}
+</rlForm>
+<h5>Form with names</h5>
+<rlForm [save]="waitCallback">
+	<rlCheckbox name="checkbox1" label="Checkbox 1"></rlCheckbox>
+	<rlRadioGroup name="radio1">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
+	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="Required textbox"></rlTextbox>
+	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="Required text area"></rlTextarea>
+	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select"></rlSelect>
+	<rlDateTime name="dateTime1" label="DateTime"></rlDateTime>
+	<rlUserRating name="userRating1"></rlUserRating>
+	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
+</rlForm>
+<h5>Disabled form</h5>
+<rlForm [save]="waitCallback">
+	<rlCheckbox name="checkbox1" disabled="true" label="Checkbox 1"></rlCheckbox>
+	<rlRadioGroup name="radio1" disabled="true">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
+	<rlTextbox name="textbox1" disabled="true" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
+	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" disabled="true"></rlSelect>
+	<rlDateTime name="dateTime1" label="DateTime" disabled="true"></rlDateTime>
+	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

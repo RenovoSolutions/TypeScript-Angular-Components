@@ -1,0 +1,8 @@
+<span class="rating"
+	  [class.default-theme]="useDefaultTheme">
+	<span class="star"
+		  *ngFor="let star of stars"
+		  [class.filled]="star.filled"
+		  (click)="setRating(star.value)"
+		  [class.disabled]="disabled"></span>
+</span>

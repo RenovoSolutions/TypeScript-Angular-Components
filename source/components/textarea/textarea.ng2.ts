@@ -10,14 +10,15 @@ import { ComponentValidator } from '../../services/componentValidator/componentV
 import { FormComponent } from '../form/form.ng2';
 
 @Component({
-	selector: 'rlTextbox',
-	template: require('./textbox.ng2.html'),
+	selector: 'rlTextarea',
+	template: require('./textarea.ng2.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
 })
-export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
+export class TextareaComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
+	@Input() rows: number;
 
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -25,7 +26,7 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
 			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
 		super(rlForm, componentValidator, object, array, guid);
-		this.inputType = 'textbox';
+		this.inputType = 'textarea';
 	}
 
 	ngOnInit(): void {
