@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, ViewChild, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isArray } from 'lodash';
 
@@ -22,7 +22,7 @@ import { OffClickDirective } from '../../behaviors/offClick/offClick';
 	providers: [ComponentValidator],
 	directives: [BusyComponent, OffClickDirective],
 })
-export class SelectComponent<T> extends ValidatedInputComponent<T> implements OnInit, AfterViewInit {
+export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
@@ -44,10 +44,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
 		this.inputType = 'select';
-	}
-
-	ngOnInit(): void {
-		super.ngOnInit();
 	}
 
 	ngAfterViewInit(): void {
