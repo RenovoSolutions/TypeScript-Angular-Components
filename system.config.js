@@ -38,7 +38,6 @@ const meta = {
 };
 
 System.config({
-	baseURL: '/',
 	meta,
 	map,
 	packages: {
