@@ -14,7 +14,10 @@
 		<li class="rl-select-option"
 			*ngFor="let option of wrappedOptions | async"
 			(click)="select(option)">
-			{{getDisplayName(option)}}
+			<span *ngIf="template">
+				<rlTemplateRenderer [template]="newTemplate()" [model]="option"></rlTemplateRenderer>
+			</span>
+			<span *ngIf="!template">{{getDisplayName(option)}}</span>
 		</li>
 	</ul>
 	<rlBusy></rlBusy>
