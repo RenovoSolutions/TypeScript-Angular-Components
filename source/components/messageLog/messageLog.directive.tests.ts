@@ -2,18 +2,20 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
 
 import {
-moduleName,
-controllerName,
-MessageLogController,
-DeletePermissions,
-EditPermissions,
-IUser
+	moduleName,
+	factoryName,
+	controllerName,
+	MessageLogController,
+	DeletePermissions,
+	EditPermissions,
+	IUser
 } from './messageLog.module';
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import { IAutosaveDialogSettings } from '../../services/dialog/dialogTypes';
+import { serviceName as dialogServiceName, IAutosaveDialogSettings } from '../../services/dialog/dialog.service';
 
 interface IMockMessageLogService {
 	visibleMessages: number[];
@@ -64,10 +66,11 @@ describe('messageLog', () => {
 			},
 		};
 
-		test.angularFixture.mock({
-			messageLog: messageLogFactory,
-			dialog: dialog,
-		});
+		let mocks = {};
+		mocks[factoryName] = messageLogFactory;
+		mocks[dialogServiceName] = dialog;
+		mocks[defaultThemeValueName] = false;
+		test.angularFixture.mock(mocks);
 	});
 
 	describe('MessageLogController', () => {
