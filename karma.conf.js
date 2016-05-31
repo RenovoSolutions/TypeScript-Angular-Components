@@ -24,11 +24,6 @@ module.exports = function (config) {
 
 			// Make files available
 			{ pattern: 'system.config.js', included: false, watched: true },
-			{ pattern: 'karma-test-setup.js', included: false, watched: true },
-			{ pattern: 'source/**/*.tests.js', included: false, watched: true },
-			// { pattern: 'source/**/*', included: false, watched: true },
-			// { pattern: 'libraries/**/*', included: false, watched: true },
-			// { pattern: 'node_modules/**/*', included: false, watched: true },
 		],
 
 		exclude: [

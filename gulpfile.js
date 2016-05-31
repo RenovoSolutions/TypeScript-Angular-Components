@@ -60,7 +60,7 @@ gulp.task('systemjs-for-tests', (done) => {
 
 	builder.loadConfig('./system.config.js')
 		.then(() => {
-			return builder.bundle('source/ui.module.js', 'tests/tests.bundle.js', {
+			return builder.bundle('source/ui.module.js + karma-test-setup.js + source/**/*.tests.js', 'tests/tests.bundle.js', {
 				sourceMaps: true,
 			});
 		})

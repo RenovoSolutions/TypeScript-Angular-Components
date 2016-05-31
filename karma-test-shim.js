@@ -8,8 +8,8 @@ mocha.setup({
 __karma__.loaded = function () {
 };
 
-var basePath = '/base/';
-var appPath = basePath + 'source/';
+var basePath = '/base';
+var appPath = basePath + '/source/';
 
 function isJsFile(path) {
 	return endsWith(path, '.js');
@@ -27,20 +27,19 @@ function isAppFile(path) {
 	return isJsFile(path) && (path.substr(0, appPath.length) == appPath);
 }
 
+function removeBase(path) {
+	return path.slice(basePath.length);
+}
+
 var allSpecFiles = Object.keys(window.__karma__.files)
 	.filter(isSpecFile)
-	.filter(isAppFile);
+	.filter(isAppFile)
+	.map(function (specPath) { return removeBase(specPath) });
 
 // Load our SystemJS configuration.
 System.config({
-	// baseURL: basePath,
-	map: {
-	// 	'base/*': '*',
-	},
 	paths: {
-		'base/*': '*',
 		'system.config.js': 'base/system.config.js',
-		'karma-test-setup.js': 'base/karma-test-setup.js',
 	},
 });
 
