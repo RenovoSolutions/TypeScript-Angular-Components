@@ -1,5 +1,6 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
+import async = test.async;
 
 import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service';
@@ -70,7 +71,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.calledOnce(event.preventDefault);
 	});
 
-	it('should resolve promises and provide the results as locals on the dialog controller', (): void => {
+	it('should resolve promises and provide the results as locals on the dialog controller', async(() => {
 		let data: any = { prop: 5 };
 		let dataService: any = {
 			get: test.mock.promise(data),
@@ -95,19 +96,17 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled($uibModal.open);
 		expect(dataResult).to.not.exist;
 
-		$rootScope.$apply(() => {
-			test.mock.flushAll(dataService);
+		return test.mock.flushAll(dataService).then(() => {
+			$rootScope.$digest();
+			sinon.assert.calledOnce($uibModal.open);
+
+			$controller(dialogController, options.scope.resolveData);
+
+			expect(dataResult).to.equal(data);
 		});
-		$rootScope.$apply();
+	}));
 
-		sinon.assert.calledOnce($uibModal.open);
-
-		$controller(dialogController, options.scope.resolveData);
-
-		expect(dataResult).to.equal(data);
-	});
-
-	it('should not open the dialog if resolve fails', (): void => {
+	it('should not open the dialog if resolve fails', async(() => {
 		let dataService: any = {
 			get: test.mock.rejectedPromise(new Error()),
 		};
@@ -120,12 +119,12 @@ describe('bootstrapModalDialog', () => {
 
 		bootstrapModalDialog.open(options);
 
-		test.mock.flushAll(dataService);
+		return test.mock.flushAll(dataService).then(() => {
+			sinon.assert.notCalled($uibModal.open);
+		});
+	}));
 
-		sinon.assert.notCalled($uibModal.open);
-	});
-
-	it('should return an object with functions to dismiss and close the dialog once its open', (): void => {
+	it('should return an object with functions to dismiss and close the dialog once its open', async((): void => {
 		const options: any = {
 			resolve: {
 				data: test.mock.promise<void>(),
@@ -140,12 +139,13 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled(closeSpy);
 		sinon.assert.notCalled(dismissSpy);
 
-		options.resolve.data.flush();
+		return options.resolve.data.flush().then(() => {
+			$rootScope.$digest();
+			dialogInstance.close();
+			dialogInstance.dismiss();
 
-		dialogInstance.close();
-		dialogInstance.dismiss();
-
-		sinon.assert.calledOnce(closeSpy);
-		sinon.assert.calledOnce(dismissSpy);
-	});
+			sinon.assert.calledOnce(closeSpy);
+			sinon.assert.calledOnce(dismissSpy);
+		});
+	}));
 });
