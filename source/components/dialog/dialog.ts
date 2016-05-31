@@ -25,6 +25,7 @@ export interface IParentScope extends angular.IScope {
 
 export interface IDialogBindings {
 	autosave: boolean;
+	initializeFormDirty: boolean;
 }
 
 export class DialogController implements IDialogBindings {
@@ -33,6 +34,7 @@ export class DialogController implements IDialogBindings {
 	close: { (): void };
 	dismiss: { (): void };
 	saveAndClose: { (): void };
+	initializeFormDirty: boolean;
 
 	form: IFormValidator;
 
@@ -84,6 +86,7 @@ let dialog: angular.IComponentOptions = {
 	controllerAs: 'dialog',
 	bindings: {
 		autosave: '=',
+		initializeFormDirty: '='
 	},
 };
 

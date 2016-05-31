@@ -18,6 +18,7 @@ export let controllerName: string = 'rlFormController';
 export interface IFormBindings {
 	saving: boolean;
 	save(): void;
+	initializeDirty: boolean;
 }
 
 export interface IFormScope extends angular.IScope {
@@ -33,6 +34,7 @@ export class FormController implements IFormBindings {
 	save: { (): void };
 	form: IFormValidator;
 	childLink: __parentChild.IChild<IFormBehavior>;
+	initializeDirty: boolean;
 
 	autosave: IAutosaveService;
 
@@ -47,6 +49,10 @@ export class FormController implements IFormBindings {
 	$onInit(): void {
 		this.$timeout((): void => {
 			this.form = this.$scope.rlForm;
+			if (this.initializeDirty) {
+				this.form.$setDirty();
+			}
+
 			this.autosave = this.autosaveFactory.getInstance({
 				save: this.saveForm.bind(this),
 				contentForm: this.$scope.rlForm,
@@ -77,6 +83,7 @@ let form: angular.IComponentOptions = {
 		save: '&',
 		form: '=?',
 		childLink: '=?',
+		initializeDirty: '='
 	},
 };
 
