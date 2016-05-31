@@ -1,6 +1,7 @@
 var moduleName = require('source/ui.module').moduleName;
 var UpgradeAdapter = require('@angular/upgrade').UpgradeAdapter;
 var downgrade = require('typescript-angular-utilities').downgrade;
+var downgradeComponents = require('./source/componentsDowngrade');
 
 var upgrade = new UpgradeAdapter();
 
@@ -11,6 +12,7 @@ function setup() {
 
 	return new Promise(function (resolve) {
 		downgrade.downgradeUtilitiesToAngular1(upgrade);
+		downgradeComponents.downgradeComponentsToAngular1(upgrade);
 
 		let ng2Injector = null;
 
