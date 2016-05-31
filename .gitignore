@@ -1,16 +1,15 @@
-# Ignore built files
+# Don't commit the built files
 /dist/
-/bootstrapper/app.bundle.js
-/bootstrapper/app.bundle.js.map
+/source/**/*.js
+/source/**/*.d.ts
+/bootstrapper/**/*.js
+/bootstrapper/**/*.d.ts
+
 # Node deps
 /node_modules/
 
 # Bower deps
 /bower_components/
-
-# Don't commit the built files
-/source/**/*.js
-/source/**/*.d.ts
 
 # Ignore git conflict / diff files
 *.orig
