@@ -5,6 +5,7 @@ import 'angular-sanitize';
 import 'angular-animate';
 
 import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
+import * as componentsDowngrade from './componentsDowngrade';
 
 import '../libraries/angular-bootstrap-slider/slider';
 
@@ -26,6 +27,7 @@ angular.module(moduleName, [
 	'ui.bootstrap-slider',
 	'ngSanitize',
 	utilitiesDowngrade.moduleName,
+	componentsDowngrade.moduleName,
 
 	behaviors.moduleName,
 	components.moduleName,
