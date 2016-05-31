@@ -54,3 +54,22 @@ gulp.task('systemjs', (done) => {
 			console.error(err);
 		});
 });
+
+gulp.task('systemjs-for-tests', (done) => {
+	var builder = new Builder();
+
+	builder.loadConfig('./system.config.js')
+		.then(() => {
+			return builder.bundle('source/ui.module.js', 'tests/tests.bundle.js', {
+				sourceMaps: true,
+			});
+		})
+		.then(() => {
+			console.log('Build complete');
+			done();
+		})
+		.catch((err) => {
+			console.log('Build error');
+			console.error(err);
+		});
+});
