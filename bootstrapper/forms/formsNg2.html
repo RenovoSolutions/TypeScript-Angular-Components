@@ -13,6 +13,9 @@
 	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
 	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
 	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
+	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
+		<template let-option>{{option.value}}</template>
+	</rlSelect>
 	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
@@ -30,7 +33,7 @@
 	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="Required textbox"></rlTextbox>
 	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="Required text area"></rlTextarea>
 	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
-	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select"></rlSelect>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
 	<rlDateTime name="dateTime1" label="DateTime"></rlDateTime>
 	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>

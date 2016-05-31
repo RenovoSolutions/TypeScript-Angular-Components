@@ -1,37 +1,72 @@
-/* rl-select */
-
-.rl-select-trigger { cursor: pointer; }
+.rl-select-trigger {
+  cursor: pointer;
+  padding-right: 2.5em;
+  color: #000;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 
 .rl-select-trigger:after {
-    font-family: FontAwesome;
-    content: '\f0d7'; /* fa-caret-down */
-    position: absolute;
-    right: 1em;
+  font-family: FontAwesome;
+  content: '\f0d7';
+  position: absolute;
+  right: 1em;
+  color: #fff;
+}
+
+.rl-select-choice {
+  overflow: hidden;
 }
 
 .rl-select-list {
-    background-color: #ffffff;
-    position: absolute;
-    width: 100%;
-    padding: .5em 0;
-    z-index: 10;
-    max-height: 15.25em;
-    overflow-y: scroll;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  position: absolute;
+  width: 100%;
+  padding: .5em 0;
+  z-index: 10;
+  max-height: 15.25em;
+  overflow-y: scroll;
 }
-.rl-select-list .rl-select-option:first-child { margin-top: 0; }
-.rl-select-list .rl-select-option:last-child { margin-bottom: 0; }
+
+.rl-select-list .rl-select-option:first-child {
+  margin-top: 0;
+}
+
+.rl-select-list .rl-select-option:last-child {
+  margin-bottom: 0;
+}
+
+.rl-select-group {
+  padding: .5em 1em;
+  margin: .5em 0;
+  font-weight: bold;
+  border-bottom: .1em solid #eee;
+}
+
+.rl-select-group ul {
+  font-weight: normal;
+  padding: 0;
+  margin: 0.5em -1em;
+}
+
+.rl-select-group .rl-select-option {
+  padding-left: 1em;
+}
 
 .rl-select-option {
-    list-style: none;
-    padding: .5em .5em;
-    margin: .5em 0;
+  list-style: none;
+  padding: .5em 1em;
+  margin: .5em 0;
 }
 
 .rl-select-option:hover {
-	cursor: pointer;
-	background-color: #d8f1ff;
+  cursor: pointer;
+  background-color: #eee;
 }
 
+/* Disabled */
 .rl-select-trigger.disabled {
     background-color: #eeeeee;
     cursor: not-allowed;

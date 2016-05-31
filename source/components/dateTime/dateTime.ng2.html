@@ -7,9 +7,10 @@
 		<input type="text"
 			   class="form-control"
 			   [value]="valueAsString"
-			   [placeholder]="label"/>
+			   [placeholder]="label"
+			   [disabled]="disabled" />
 		<span class="input-group-btn">
-			<rlButton><i class="fa fa-calendar"></i></rlButton>
+			<rlButton [disabled]="disabled"><i class="fa fa-calendar"></i></rlButton>
 		</span>
 		<span class="timezone" *ngIf="useDate">{{timezone?.display}}</span>
 	</span>

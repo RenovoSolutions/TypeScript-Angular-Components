@@ -5,3 +5,7 @@
 .disabled.default-theme:before {
 	cursor: not-allowed;
 }
+
+.placeholder {
+    color: #999999;
+}

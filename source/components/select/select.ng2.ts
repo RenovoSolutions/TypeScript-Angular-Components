@@ -1,6 +1,6 @@
-import { Component, Optional, Inject, Input, Output, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { isArray } from 'lodash';
+import { isArray, clone } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -12,6 +12,8 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 import { FormComponent } from '../form/form.ng2';
 import { BusyComponent } from '../busy/busy.ng2';
+import { OffClickDirective } from '../../behaviors/offClick/offClick';
+import { TemplateRenderer } from '../templateRenderer/templateRenderer.ng2';
 
 @Component({
 	selector: 'rlSelect',
@@ -19,16 +21,15 @@ import { BusyComponent } from '../busy/busy.ng2';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [BusyComponent],
+	directives: [BusyComponent, OffClickDirective, TemplateRenderer],
 })
-export class SelectComponent<T> extends ValidatedInputComponent<T> implements OnInit, AfterViewInit {
+export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
-	// TODO: support custom templates for select items
-	// @Input() itemAs: string;
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
+	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
 	wrappedOptions: Observable<T[]>;
 	showOptions: boolean;
@@ -45,11 +46,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 		this.inputType = 'select';
 	}
 
-	ngOnInit(): void {
-		super.ngOnInit();
-		console.log(this.value);
-	}
-
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
 		this.wrappedOptions = isArray(this.options)
@@ -62,6 +58,12 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 		this.showOptions = !this.showOptions;
 	}
 
+	close: { (): void } = () => {
+		if (this.showOptions) {
+			this.showOptions = false;
+		}
+	}
+
 	select(value: T): void {
 		this.setValue(value);
 		this.showOptions = false;
@@ -69,5 +71,9 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 
 	getDisplayName(item: T): string {
 		return this.transformService.getValue(item, this.transform);
+	}
+
+	newTemplate(): TemplateRef<any> {
+		return clone(this.template);
 	}
 }

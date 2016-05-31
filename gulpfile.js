@@ -9,7 +9,7 @@ const cleanCss = require('gulp-clean-css');
 const utilities = require('gulp-utilities');
 utilities.gulp.clean.config();
 
-const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js'];
+const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
 const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css', '!./source/**/*ng2.css'];
 
 gulp.task('bundle-bootstrapper.watch', (done) => {

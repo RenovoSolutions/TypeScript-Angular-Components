@@ -1,17 +1,23 @@
 <div class="field"
-	 [class.error]="!control.valid">
+	 [class.error]="!control.valid"
+	 (offClick)="close()">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
 		 (click)="toggle()"
-		 [class.disabled]="disabled">
-		 {{getDisplayName(value)}}
+		 [class.disabled]="disabled"
+		 [class.rl-select-open]="showOptions">
+		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<ul class="rl-select-list" *ngIf="showOptions">
 		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
 		<li class="rl-select-option"
 			*ngFor="let option of wrappedOptions | async"
 			(click)="select(option)">
-			{{getDisplayName(option)}}
+			<span *ngIf="template">
+				<rlTemplateRenderer [template]="newTemplate()" [model]="option"></rlTemplateRenderer>
+			</span>
+			<span *ngIf="!template">{{getDisplayName(option)}}</span>
 		</li>
 	</ul>
 	<rlBusy></rlBusy>

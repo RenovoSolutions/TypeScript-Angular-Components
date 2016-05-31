@@ -32,4 +32,8 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 		super.ngOnInit();
 		this.value = this.value || '';
 	}
+
+	onChange(text: string): void {
+		this.setValue(text);
+	}
 }
