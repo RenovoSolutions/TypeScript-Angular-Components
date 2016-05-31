@@ -24,6 +24,7 @@ module.exports = function (config) {
 
 			// Make files available
 			{ pattern: 'system.config.js', included: false, watched: true },
+			{ pattern: 'source/**/*.tests.js', included: false, watched: false },
 		],
 
 		exclude: [
