@@ -1,5 +1,6 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
+import async = test.async;
 
 import {
 	IDataServiceDataSourceFactory,
@@ -44,17 +45,16 @@ describe('dataServiceDataSource', () => {
 	});
 
 	describe('loading', (): void => {
-		it('should call data processor to process the data when refreshing', (): void => {
+		it('should call data processor to process the data when refreshing', async((): void => {
 			dataService.get = test.mock.promise([1, 2, 3]);
 
 			dataServiceDataSourceFactory.getInstance<number>(dataService.get);
-			test.mock.flushAll(dataService);
-			$rootScope.$digest();
+			test.mock.flushAll(dataService).then(() => {
+				sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
+			});
+		}));
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
-		});
-
-		it('should make an initial request to the server for data', (): void => {
+		it('should make an initial request to the server for data', async((): void => {
 			dataService.get = test.mock.promise([1, 2]);
 
 			let source: IAsyncDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
@@ -64,16 +64,15 @@ describe('dataServiceDataSource', () => {
 			let changedSpy: Sinon.SinonSpy = sinon.spy();
 			source.changed.subscribe(changedSpy);
 
-			test.mock.flushAll(dataService);
-			$rootScope.$digest();
+			test.mock.flushAll(dataService).then(() => {
+				expect(source.dataSet).to.have.length(2);
+				expect(source.dataSet[0]).to.equal(1);
+				expect(source.dataSet[1]).to.equal(2);
+				expect(source.count).to.equal(2);
 
-			expect(source.dataSet).to.have.length(2);
-			expect(source.dataSet[0]).to.equal(1);
-			expect(source.dataSet[1]).to.equal(2);
-			expect(source.count).to.equal(2);
-
-			sinon.assert.calledOnce(reloadedSpy);
-			sinon.assert.calledOnce(changedSpy);
-		});
+				sinon.assert.calledOnce(reloadedSpy);
+				sinon.assert.calledOnce(changedSpy);
+			});
+		}));
 	});
 });
