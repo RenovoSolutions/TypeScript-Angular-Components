@@ -2,7 +2,7 @@
 
 const map = {
 	'@angular': 'node_modules/@angular',
-	// 'angular': 'node_modules/angular',
+	'angular': 'node_modules/angular',
 	'angular-mocks': 'node_modules/angular-mocks/angular-mocks',
 	'angular-animate': 'node_modules/angular-animate/angular-animate.js',
 	'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/index.js',
@@ -18,7 +18,7 @@ const map = {
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',
 	'text': 'node_modules/system-text/text',
-	// 'jquery': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js',
+	'jquery': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js',
 	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
 
@@ -35,10 +35,6 @@ const meta = {
 	'angular': {
 		build: false,
 	},
-	// 'angular': {
-	// 	format: 'global',
-	// 	exports: 'angular',
-	// },
 };
 
 System.config({
@@ -85,16 +81,16 @@ System.config({
 		'rxjs': {
 			main: 'Rx.js',
 		},
-		// 'angular': {
-		// 	main: 'angular.js',
-		// }
+		'angular': {
+			main: 'index.js',
+		}
 	},
 });
 
-System.register('jquery', [], true, function () {
-	return window.$;
-})
+// System.register('jquery', [], true, function () {
+// 	return window.$;
+// })
 
-System.register('angular', [], true, function () {
-	return window.angular;
-})
+// System.register('angular', [], true, function () {
+// 	return window.angular;
+// })
