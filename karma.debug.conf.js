@@ -1,8 +1,18 @@
-// Karma debug configuration
+var defaultConfig = require('./karma.conf.js');
 
-var karmaSettings = require('gulp-utilities').karma.debug;
-var config = require('./karma.shared.conf');
-
-module.exports = function (karma) {
-	config(karma, karmaSettings);
+module.exports = function (config) {
+	defaultConfig(config);
+	config.set({
+		singleRun: false,
+		autoWatch: true,
+	});
 };
+
+// // Karma debug configuration
+
+// var karmaSettings = require('gulp-utilities').karma.debug;
+// var config = require('./karma.shared.conf');
+
+// module.exports = function (karma) {
+// 	config(karma, karmaSettings);
+// };
