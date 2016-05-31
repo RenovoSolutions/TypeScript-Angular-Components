@@ -50,8 +50,7 @@ describe('dataSourceBase', () => {
 		};
 
 		var services: any = test.angularFixture.inject(downgrade.arrayServiceName);
-		dataSourceBase = new DataSourceBase<number>(services[downgrade.observableServiceName]
-													, services[downgrade.arrayServiceName]);
+		dataSourceBase = new DataSourceBase<number>(dataSourceProcessor, services[downgrade.arrayServiceName]);
 	});
 
 	describe('count', (): void => {
