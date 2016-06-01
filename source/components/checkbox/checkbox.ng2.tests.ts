@@ -22,7 +22,7 @@ describe('CheckboxComponent', () => {
 
 		checkbox.toggle();
 
-		sinon.assert.calledOnce(setValue);
+		sinon.assert.calledTwice(setValue);
 		sinon.assert.calledWith(setValue, false);
 	});
 

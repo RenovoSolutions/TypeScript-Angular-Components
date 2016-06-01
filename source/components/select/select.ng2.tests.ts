@@ -10,19 +10,31 @@ interface ITestOption {
 	value: number;
 }
 
+interface IBusyMock {
+	trigger: Sinon.SinonSpy;
+}
+
 describe('SelectComponent', () => {
 	let dropdown: SelectComponent<ITestOption>;
 	let options: ITestOption[];
 	let setValue: Sinon.SinonSpy;
 	let transformService: ITransformMock;
+	let busy: IBusyMock;
 
 	beforeEach(() => {
 		transformService = { getValue: sinon.spy() };
+		const validator: any = {
+			validate: sinon.spy(),
+			afterInit: sinon.spy(),
+		};
 
-		dropdown = new SelectComponent<ITestOption>(transformService, null, null, null, null, null);
+		dropdown = new SelectComponent<ITestOption>(transformService, null, validator, null, null, null);
 
 		setValue = sinon.spy();
 		dropdown.setValue = setValue;
+
+		busy = { trigger: sinon.spy() };
+		dropdown.busy = <any>busy;
 
 		options = [
 			{ value: 1 },
@@ -34,6 +46,11 @@ describe('SelectComponent', () => {
 	});
 
 	describe('after init', (): void => {
+		afterEach((): void => {
+			sinon.assert.calledOnce(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, dropdown.wrappedOptions);
+		});
+
 		it('should wrap the array in an observable', (): void => {
 			const unwrapper: Sinon.SinonSpy = sinon.spy();
 			dropdown.options = options;

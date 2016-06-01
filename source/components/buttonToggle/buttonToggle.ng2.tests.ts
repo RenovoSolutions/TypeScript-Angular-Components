@@ -10,7 +10,7 @@ describe('ButtonToggleComponent', () => {
 	it('should update the value and emit a change event when the button is toggled', (): void => {
 		const changeSpy: Sinon.SinonSpy = sinon.spy();
 
-		buttonToggle.change.subscribe(changeSpy);
+		buttonToggle.change.emit = changeSpy;
 
 		expect(buttonToggle.value).to.be.undefined;
 
@@ -23,7 +23,7 @@ describe('ButtonToggleComponent', () => {
 		buttonToggle.toggle();
 
 		expect(buttonToggle.value).to.be.false;
-		sinon.assert.calledOnce(changeSpy);
+		sinon.assert.calledTwice(changeSpy);
 		sinon.assert.calledWith(changeSpy, false);
 	});
 });

@@ -1,11 +1,15 @@
-﻿import { UserRatingComponent } from './userRating.ng2';
+﻿import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __guid = services.guid;
+
+import { UserRatingComponent } from './userRating.ng2';
 
 describe('UserRatingComponent', () => {
 	let userRating: UserRatingComponent;
 	let setValue: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		userRating = new UserRatingComponent(true, null, null, null);
+		userRating = new UserRatingComponent(true, null, __object.objectUtility, __guid.guid);
 
 		setValue = sinon.spy();
 		userRating.setValue = setValue;
@@ -29,8 +33,6 @@ describe('UserRatingComponent', () => {
 
 		sinon.assert.calledOnce(setValue);
 		sinon.assert.calledWith(setValue, 3);
-
-		expect(userRating.value).to.equal(3);
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;
