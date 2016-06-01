@@ -61,7 +61,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 
 		this.control.valueChanges.subscribe(value => {
 			this.value = value;
-			this.valueChange.emit(value);
+			this.change.emit(value);
 		});
 	}
 
