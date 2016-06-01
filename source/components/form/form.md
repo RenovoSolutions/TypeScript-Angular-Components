@@ -3,7 +3,7 @@ Component that wraps an angular form with the ability to validate and show an er
 
 ### Usage
 ```
-<rl-form save="" saving="" form="" child-link="" initialize-form-dirty=""> ... </rl-form>
+<rl-form save="" saving="" form="" child-link="" initialize-dirty=""> ... </rl-form>
 ```
 ### Options
 
@@ -23,6 +23,6 @@ Outputs the underlying angular form object.
 
 If specified, the form component will attach child behavior for triggering the form to save programmatically using the [parentChildBehavior](https://github.com/RenovoSolutions/TypeScript-Angular-Utilities/blob/master/source/services/parentChildBehavior/parentChildBehavior.service.ts) service.
 
-#### `initialize-form-dirty`
+#### `initialize-dirty`
 
 If `true`, the form component will default to a dirty state and allow submission even if no values are changed. If `false` (default), the form starts as pristine.
