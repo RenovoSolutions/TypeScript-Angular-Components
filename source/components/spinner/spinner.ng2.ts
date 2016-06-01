@@ -9,7 +9,7 @@ import __guid = services.guid;
 import __number = services.number;
 import __string = services.string;
 
-import { ValidatedInputComponent, validationInputs, baseOutputs, IInputChanges } from '../input/input.ng2';
+import { ValidatedInputComponent, validationInputs, baseOutputs, IInputChanges } from '../input/validationInput';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 import { FormComponent } from '../form/form.ng2';
 

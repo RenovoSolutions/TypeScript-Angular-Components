@@ -13,7 +13,7 @@ import __dateFormats = __date.defaultFormats;
 import __timezone = services.timezone;
 
 import { ButtonComponent } from '../button/button.ng2';
-import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input/input.ng2';
+import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input/validationInput';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 import { FormComponent } from '../form/form.ng2';
 
