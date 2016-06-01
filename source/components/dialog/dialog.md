@@ -3,7 +3,7 @@ Use with the [dialog service]() to specify the contents of the dialog. Wraps boo
 
 ### Usage
 ```
-<rl-dialog autosave="">
+<rl-dialog autosave="" initialize-form-dirty="">
 	<rl-dialog-header> ... </rl-dialog-header>
 	<rl-dialog-content> ... </rl-dialog-content>
 	<rl-dialog-footer> ... </rl-dialog-footer>
@@ -13,6 +13,9 @@ Use with the [dialog service]() to specify the contents of the dialog. Wraps boo
 
 #### `autosave (default: false)`
 If true, the component will set a default dialog footer for handling autosave contents.
+
+#### `initialize-form-dirty (default: false)`
+If true, the component will initialize the created form as dirty. This allows submission even if no values are changed. 
 
 ### Content
 
