@@ -16,13 +16,11 @@ describe('ButtonAsyncComponent', () => {
 			trigger: sinon.spy(),
 		};
 		button.busySpinner = <any>busy;
-
-		action = sinon.spy();
-		button.action = action;
 	});
 
 	it('should trigger the action and pass the result to the spinner', (): void => {
 		action = sinon.spy(() => 5);
+		button.action = action;
 		const event = { value: 2 };
 
 		button.triggerAction(event);
