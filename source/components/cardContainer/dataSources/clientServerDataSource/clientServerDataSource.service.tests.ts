@@ -1,6 +1,6 @@
 import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
-import async = test.async;
+import fakeAsync = test.fakeAsync;
 import genericSearchFilter = services.genericSearchFilter;
 
 import {
@@ -65,7 +65,7 @@ describe('clientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		});
 
-		it('should call data processor to process the data when refreshing', async((): void => {
+		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
@@ -74,7 +74,7 @@ describe('clientServerDataSource', () => {
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
-		it('should make a request to reload the data when the search text changes', async((): void => {
+		it('should make a request to reload the data when the search text changes', fakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.refresh();
 
@@ -136,7 +136,7 @@ describe('clientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		});
 
-		it('should make a request to reload the data when the filter model changes', async((): void => {
+		it('should make a request to reload the data when the filter model changes', fakeAsync((): void => {
 			filterModel = { prop: '123' };
 			source.refresh();
 
