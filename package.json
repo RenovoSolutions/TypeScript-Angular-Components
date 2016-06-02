@@ -29,8 +29,9 @@
 
     "install-build": "npm install && npm run build",
     "install-build-test": "npm install && npm run build && npm run test",
-    "build-test": "npm run build && npm run test",
-    "build-test.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run test.debug\"",
+    "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
+    "build-test": "npm run build && gulp systemjs-for-tests && npm run test",
+    "build-test.watch": "npm run build && gulp systemjs-for-tests && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
 
     "full-build": "npm install && npm run build",
 
@@ -47,7 +48,7 @@
     "postinstall": "typings install"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.1.5",
+    "@renovolive/gulp-utilities": "~2.1.6",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "gulp": "~3.9.1",
