@@ -85,11 +85,3 @@ System.config({
 		}
 	},
 });
-
-// System.register('jquery', [], true, function () {
-// 	return window.$;
-// })
-
-// System.register('angular', [], true, function () {
-// 	return window.angular;
-// })
