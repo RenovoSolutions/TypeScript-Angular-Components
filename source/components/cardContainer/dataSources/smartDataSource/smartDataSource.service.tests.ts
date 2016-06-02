@@ -1,6 +1,6 @@
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
-import async = test.async;
+import fakeAsync = test.fakeAsync;
 
 import {
 	ISmartDataSourceFactory,
@@ -107,7 +107,7 @@ describe('smartDataSource', () => {
 		};
 	});
 
-	it('should use the count returned by the server when a reload resolves', async((): void => {
+	it('should use the count returned by the server when a reload resolves', fakeAsync((): void => {
 		let clientCount: number = 2;
 		let serverCount: number = 4;
 		dataSourceProcessor.process = sinon.spy((data: any): any => {
@@ -121,22 +121,21 @@ describe('smartDataSource', () => {
 		dataService.get = test.mock.promise({ dataSet: data, count: serverCount });
 		source.getDataSet = dataService.get;
 		source.reload();
-		test.mock.flushAll(dataService).then(() => {
-			expect(source.count).to.equal(serverCount);
-		});
+		test.mock.flushAll(dataService);
+
+		expect(source.count).to.equal(serverCount);
 	}));
 
 	describe('throttled', (): void => {
-		beforeEach(async((): void => {
+		beforeEach(fakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 			dataService.get = test.mock.promise({ dataSet: data, count: 20 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService).then(() => {
-				dataService.get.reset();
+			test.mock.flushAll(dataService);
+			dataService.get.reset();
 
-				expect(source.throttled).to.be.true;
-			});
+			expect(source.throttled).to.be.true;
 		}));
 
 		it('should make a request when excecuting a full refresh', (): void => {
@@ -157,17 +156,16 @@ describe('smartDataSource', () => {
 	});
 
 	describe('not throttled', (): void => {
-		beforeEach(async((): void => {
+		beforeEach(fakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 			dataService.get = test.mock.promise({ dataSet: data, count: 10 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService).then(() => {
-				dataService.get.reset();
-				dataSourceProcessor.process.reset();
+			test.mock.flushAll(dataService);
+			dataService.get.reset();
+			dataSourceProcessor.process.reset();
 
-				expect(source.throttled).to.be.false;
-			});
+			expect(source.throttled).to.be.false;
 		}));
 
 		it('should make a request if any applied filter changes', (): void => {

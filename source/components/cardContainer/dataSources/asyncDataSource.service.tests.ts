@@ -2,7 +2,7 @@ import * as _ from 'lodash';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
-import async = test.async;
+import fakeAsync = test.fakeAsync;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
@@ -62,23 +62,22 @@ describe('asyncDataSource', () => {
 		source.processData = sinon.spy();
 	});
 
-	it('should call make a request to get the data when reload is called', async((): void => {
+	it('should call make a request to get the data when reload is called', fakeAsync((): void => {
 		source.reload();
 
 		sinon.assert.calledOnce(dataService.get);
 
-		test.mock.flushAll(dataService).then(() => {
-			sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
-		});
+		test.mock.flushAll(dataService);
+
+		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
 	}));
 
-	it('should fire changed, reloaded, and redrawing events when the reload completeds', async((): void => {
+	it('should fire changed, reloaded, and redrawing events when the reload completeds', fakeAsync((): void => {
 		source.reload();
-		test.mock.flushAll(dataService).then(() => {
-			sinon.assert.calledOnce(changedSpy);
-			sinon.assert.calledOnce(reloadedSpy);
-			sinon.assert.calledOnce(redrawingSpy);
-		});
+		test.mock.flushAll(dataService);
+		sinon.assert.calledOnce(changedSpy);
+		sinon.assert.calledOnce(reloadedSpy);
+		sinon.assert.calledOnce(redrawingSpy);
 	}));
 
 	it('should allow the consumer to specify params for the request', (): void => {

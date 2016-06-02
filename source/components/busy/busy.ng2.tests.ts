@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import IMockedPromise = services.test.IMockedPromise;
 import mock = services.test.mock;
-import async = services.test.async;
+import fakeAsync = services.test.fakeAsync;
 
 import { BusyComponent } from './busy.ng2';
 
@@ -36,17 +36,15 @@ describe('busy', () => {
 			expect(busy.loading).to.be.true;
 		});
 
-		it('should finish after promise completes', async((): void => {
-			mockPromise.flush().then((): void => {
-				expect(busy.loading).to.be.false;
-			});
+		it('should finish after promise completes', fakeAsync((): void => {
+			mockPromise.flush();
+			expect(busy.loading).to.be.false;
 		}));
 
-		it('should finish after promise fails', async((): void => {
+		it('should finish after promise fails', fakeAsync((): void => {
 			mockPromise.reject();
-			mockPromise.flush().then((): void => {
-				expect(busy.loading).to.be.false;
-			});
+			mockPromise.flush();
+			expect(busy.loading).to.be.false;
 		}));
 	});
 

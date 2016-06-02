@@ -1,6 +1,6 @@
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
-import async = test.async;
+import fakeAsync = test.fakeAsync;
 
 import {
 	IServerSideDataSourceFactory,
@@ -103,12 +103,11 @@ describe('serverSideDataSource', () => {
 		expect(filters['clientSideFilter']).to.not.exist;
 	});
 
-	it('should set the data set and count with the response from the server', async((): void => {
+	it('should set the data set and count with the response from the server', fakeAsync((): void => {
 		source.refresh();
-		test.mock.flushAll(dataService).then(() => {
-			expect(source.dataSet[0]).to.equal(1);
-			expect(source.dataSet[1]).to.equal(2);
-			expect(source.count).to.equal(2);
-		});
+		test.mock.flushAll(dataService);
+		expect(source.dataSet[0]).to.equal(1);
+		expect(source.dataSet[1]).to.equal(2);
+		expect(source.count).to.equal(2);
 	}));
 });

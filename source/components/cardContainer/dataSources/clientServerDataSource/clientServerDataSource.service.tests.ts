@@ -69,9 +69,9 @@ describe('clientServerDataSource', () => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
-			test.mock.flushAll(dataService).then(() => {
-				sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
-			});
+			test.mock.flushAll(dataService);
+
+			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
 		it('should make a request to reload the data when the search text changes', async((): void => {
@@ -80,25 +80,25 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService).then(() => {
-				expect(source.dataSet).to.have.length(2);
-				expect(source.dataSet[0]).to.equal(1);
-				expect(source.dataSet[1]).to.equal(2);
-				expect(source.count).to.equal(2);
+			test.mock.flushAll(dataService)
 
-				sinon.assert.calledOnce(reloadedSpy);
-				sinon.assert.calledOnce(changedSpy);
+			expect(source.dataSet).to.have.length(2);
+			expect(source.dataSet[0]).to.equal(1);
+			expect(source.dataSet[1]).to.equal(2);
+			expect(source.count).to.equal(2);
 
-				searchFilter.searchText = 'search 2';
-				source.refresh();
+			sinon.assert.calledOnce(reloadedSpy);
+			sinon.assert.calledOnce(changedSpy);
 
-				sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+			searchFilter.searchText = 'search 2';
+			source.refresh();
 
-				return test.mock.flushAll(dataService);
-			}).then(() => {
-				sinon.assert.calledTwice(reloadedSpy);
-				sinon.assert.calledTwice(changedSpy);
-			});
+			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+
+			test.mock.flushAll(dataService);
+
+			sinon.assert.calledTwice(reloadedSpy);
+			sinon.assert.calledTwice(changedSpy);
 		}));
 
 		it('should clear the data set without making a request if no search is provided', (): void => {
@@ -142,25 +142,25 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService).then(() => {
-				expect(source.dataSet).to.have.length(2);
-				expect(source.dataSet[0]).to.equal(1);
-				expect(source.dataSet[1]).to.equal(2);
-				expect(source.count).to.equal(2);
+			test.mock.flushAll(dataService);
 
-				sinon.assert.calledOnce(reloadedSpy);
-				sinon.assert.calledOnce(changedSpy);
+			expect(source.dataSet).to.have.length(2);
+			expect(source.dataSet[0]).to.equal(1);
+			expect(source.dataSet[1]).to.equal(2);
+			expect(source.count).to.equal(2);
 
-				filterModel.prop = '456';
-				source.refresh();
+			sinon.assert.calledOnce(reloadedSpy);
+			sinon.assert.calledOnce(changedSpy);
 
-				sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+			filterModel.prop = '456';
+			source.refresh();
 
-				return test.mock.flushAll(dataService);
-			}).then(() => {
-				sinon.assert.calledTwice(reloadedSpy);
-				sinon.assert.calledTwice(changedSpy);
-			});
+			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+
+			test.mock.flushAll(dataService);
+
+			sinon.assert.calledTwice(reloadedSpy);
+			sinon.assert.calledTwice(changedSpy);
 		}));
 
 		it('should clear the data set without making a request if filter model is invalid', (): void => {
