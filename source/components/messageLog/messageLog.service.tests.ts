@@ -125,6 +125,7 @@ describe('messageLog', () => {
 
 				messageLog.pageSize = 10;
 				messageLog.getPreviousPage();
+				(<any>dataService.getMessages).flush();
 
 				expect(messageLog.visibleMessages.length).to.equal(10);
 				expect(messageLog.visibleMessages[0]).to.equal('1');
