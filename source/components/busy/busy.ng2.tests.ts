@@ -25,29 +25,6 @@ describe('busy', () => {
 		expect(busy.loading).to.be.false;
 	});
 
-	describe('with promise', (): void => {
-		let mockPromise: IMockedPromise<any>;
-
-		beforeEach((): void => {
-			mockPromise = mock.promise();
-
-			busy.trigger(mockPromise());
-
-			expect(busy.loading).to.be.true;
-		});
-
-		it('should finish after promise completes', fakeAsync((): void => {
-			mockPromise.flush();
-			expect(busy.loading).to.be.false;
-		}));
-
-		it('should finish after promise fails', fakeAsync((): void => {
-			mockPromise.reject();
-			mockPromise.flush();
-			expect(busy.loading).to.be.false;
-		}));
-	});
-
 	describe('with observable', (): void => {
 		let stream: Subject<void>;
 
