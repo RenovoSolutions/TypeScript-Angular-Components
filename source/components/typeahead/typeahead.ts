@@ -115,6 +115,7 @@ export class TypeaheadController extends InputController {
 	allowCollapse: boolean;
 
 	private cachedItems: any[];
+	private getItemsPromise: angular.IPromise<any[]>;
 	visibleItems: any[];
 	loading: boolean = false;
 	loadDelay: number;
@@ -232,8 +233,6 @@ export class TypeaheadController extends InputController {
 				});
 		}
 	}
-
-	private getItemsPromise: angular.IPromise<any[]>;
 
 	private getItemsClient(): angular.IPromise<any[]> {
 		if (this.cachedItems != null) {
