@@ -106,7 +106,7 @@ export class TypeaheadController extends InputController {
 	childLink: __parentChild.IChild<ITypeaheadBehavior>;
 	hasSelection: boolean;
 	select: { (params: ISelectParams): void };
-	create: { (params: ICreateParams): void };
+	create: { (params: ICreateParams): any };
 	transform: { (item: any): string } | string;
 	getItems: { (params?: IGetItemsParams): angular.IPromise<any> };
 	prefix: string;
@@ -115,6 +115,7 @@ export class TypeaheadController extends InputController {
 	allowCollapse: boolean;
 
 	private cachedItems: any[];
+	private getItemsPromise: angular.IPromise<any[]>;
 	visibleItems: any[];
 	loading: boolean = false;
 	loadDelay: number;
@@ -122,7 +123,6 @@ export class TypeaheadController extends InputController {
 	collapseOnSelect: boolean;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
-	hasSearchOption: boolean = false;
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
@@ -215,7 +215,6 @@ export class TypeaheadController extends InputController {
 			this._searchOption.text = search;
 
 			if (this.showCustomSearch(search)) {
-				this.hasSearchOption = true;
 				this.visibleItems.unshift(this._searchOption);
 			}
 		});
@@ -223,21 +222,32 @@ export class TypeaheadController extends InputController {
 
 	loadItems(search: string): angular.IPromise<void> {
 		if (!this.useClientSearching) {
-			return this.$q.when(this.getItems({
-				search: search,
-			})).then((items: any[]): void => {
-				this.visibleItems = items;
-			});
+			return this.getItems({ search: search })
+				.then((items: any[]): void => {
+					this.visibleItems = items;
+				});
 		} else {
-			if (this.cachedItems != null) {
-				this.visibleItems = this.filter(this.cachedItems, search);
-				return this.$q.when();
-			} else {
-				return this.$q.when(this.getItems()).then((items: any[]): void => {
-					this.cachedItems = items;
+			return this.getItemsClient()
+				.then((items: any[]): void => {
 					this.visibleItems = this.filter(items, search);
 				});
-			}
+		}
+	}
+
+	private getItemsClient(): angular.IPromise<any[]> {
+		if (this.cachedItems != null) {
+			return this.$q.when(this.cachedItems);
+		}
+		//when useClientSearching is enabled, the entire list is loaded and then filtered in-memory
+		//caching the promise prevents multiple API calls from being made to load the entire list
+		else if (this.getItemsPromise != null) {
+			return this.getItemsPromise;
+		}
+		else {
+			return this.getItemsPromise = this.getItems()
+				.then((items: any[]): any[] => {
+					return this.cachedItems = items;
+				});
 		}
 	}
 
@@ -248,7 +258,6 @@ export class TypeaheadController extends InputController {
 
 	private showCustomSearch(search: string): boolean {
 		return this.allowCustomOption
-			&& !this.hasSearchOption
 			&& !_.find(this.visibleItems, (item: any): boolean => {
 			return this.getDisplayName(item) === search;
 		});
