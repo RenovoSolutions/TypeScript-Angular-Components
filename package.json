@@ -48,7 +48,7 @@
     "postinstall": "typings install"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.1.6",
+    "@renovolive/gulp-utilities": "~2.1.7",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "gulp": "~3.9.1",

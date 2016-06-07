@@ -18,7 +18,7 @@ const map = {
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',
 	'text': 'node_modules/system-text/text',
-	'jquery': 'https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js',
+	'jquery': 'node_modules/jquery/dist/jquery.js',
 	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
 
@@ -28,12 +28,6 @@ const meta = {
 	},
 	'*.css': {
 		loader: 'text',
-	},
-	'jquery': {
-		build: false,
-	},
-	'angular': {
-		build: false,
 	},
 };
 
