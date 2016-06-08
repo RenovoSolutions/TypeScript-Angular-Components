@@ -9,10 +9,16 @@ const cleanCss = require('gulp-clean-css');
 const utilities = require('@renovolive/gulp-utilities');
 utilities.gulp.clean.config();
 
-const bundleSource = '(source/ui.module.js + karma-test-setup.js + source/**/*.tests.js)';
-utilities.gulp.bundle.config('tests', bundleSource, {
+const testBundleSource = '(source/ui.module.js + karma-test-setup.js + source/**/*.tests.js)';
+utilities.gulp.bundle.config('tests', testBundleSource, {
 	outDir: 'tests',
 	outFile: 'tests.bundle.js',
+});
+
+const appBundleSource = 'bootstrapper/app.js';
+utilities.gulp.bundle.config('bootstrapper', appBundleSource, {
+	outDir: 'bootstrapper',
+	outFile: 'app.bundle.js',
 });
 
 const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
@@ -44,27 +50,4 @@ gulp.task('bundle-css.minify', () => {
 		.pipe(cleanCss())
 		.pipe(concat('components.min.css'))
 		.pipe(gulp.dest('./dist'));
-});
-
-gulp.task('bundle-bootstrapper.watch', (done) => {
-	gulp.watch(scriptFiles, ['bundle-bootstrapper']);
-});
-
-gulp.task('bundle-bootstrapper', (done) => {
-	var builder = new Builder();
-
-	builder.loadConfig('./system.config.js')
-		.then(() => {
-			return builder.bundle('bootstrapper/app.js', 'bootstrapper/app.bundle.js', {
-				sourceMaps: true,
-			});
-		})
-		.then(() => {
-			console.log('Build complete');
-			done();
-		})
-		.catch((err) => {
-			console.log('Build error');
-			done(err);
-		});
 });

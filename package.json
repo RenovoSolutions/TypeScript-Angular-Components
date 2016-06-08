@@ -37,7 +37,8 @@
 
     "all": "npm install && npm run build && npm run test.full",
 
-    "bundle": "gulp bundle-bootstrapper",
+    "bundle": "gulp bundle-bootstrapper.all",
+    "prebundle.watch": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo",
     "bundle.watch": "gulp bundle-bootstrapper.watch",
 
     "build-bundle": "npm run build && npm run bundle",
