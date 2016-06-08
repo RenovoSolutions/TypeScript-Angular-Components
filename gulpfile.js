@@ -15,14 +15,15 @@ utilities.gulp.bundle.config('tests', testBundleSource, {
 	outFile: 'tests.bundle.js',
 });
 
+const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
+const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css', '!./source/**/*ng2.css'];
+
 const appBundleSource = 'bootstrapper/app.js';
 utilities.gulp.bundle.config('bootstrapper', appBundleSource, {
+	mainAppFiles: scriptFiles,
 	outDir: 'bootstrapper',
 	outFile: 'app.bundle.js',
 });
-
-const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
-const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css', '!./source/**/*ng2.css'];
 
 gulp.task('bundle-all.watch', (done) => {
 	gulp.watch(scriptFiles, ['bundle-all']);
