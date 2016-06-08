@@ -5,7 +5,6 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
-import { IDataSource } from '../dataSources/dataSource';
 import { CardContainerController } from '../cardContainer';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
@@ -49,7 +48,9 @@ export class CardSearchController {
 			this.$timeout.cancel(this.timer);
 		}
 
-		this.timer = this.$timeout<void>(this.cardContainer.dataSource.refresh.bind(this.cardContainer.dataSource), this.delay);
+		if (!this.searchLengthError) {
+			this.timer = this.$timeout<void>(this.cardContainer.dataSource.refresh.bind(this.cardContainer.dataSource), this.delay);
+		}
 	}
 
 	static $inject: string[] = ['$timeout'];
