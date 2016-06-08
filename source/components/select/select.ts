@@ -33,21 +33,14 @@ export class SelectController extends InputController {
 
 	loading: boolean;
 	template: string;
-
-	private _nullOption: any = {
-		__isNullOption: true,
-	};
+	showOptions: boolean;
 
 	get selection(): any {
 		return this.ngModel.$viewValue;
 	}
 
 	set selection(value: any) {
-		if (value.__isNullOption) {
-			this.ngModel.$setViewValue(null);
-		} else {
-			this.ngModel.$setViewValue(value);
-		}
+		this.ngModel.$setViewValue(value);
 		this.select({ item: this.ngModel.$viewValue });
 	}
 
@@ -83,8 +76,6 @@ export class SelectController extends InputController {
 				this.options = options;
 				this.loading = false;
 			});
-		} else {
-			this.options = this.configureOptions(this.options);
 		}
 	}
 
@@ -98,15 +89,22 @@ export class SelectController extends InputController {
 		if (promise == null) {
 			promise = this.$q.when(this.options);
 		}
-		return promise.then((options: any[]): any[] => { return this.configureOptions(options); });
+		return promise;
 	}
 
-	configureOptions(options: any[]): any[] {
-		if (!this.object.isNullOrWhitespace(this.nullOption)) {
-			options.unshift(this._nullOption);
-		}
+	toggle(): void {
+		this.showOptions = !this.showOptions;
+	}
 
-		return options;
+	close: { (): void } = () => {
+		if (this.showOptions) {
+			this.showOptions = false;
+		}
+	}
+
+	selectOption(value: any): void {
+		this.selection = value;
+		this.showOptions = false;
 	}
 }
 

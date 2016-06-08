@@ -104,23 +104,39 @@ describe('SelectController', () => {
 		});
 	});
 
-	describe('nullOption', (): void => {
-		let nullOption: string;
+	describe('dropdown', (): void => {
+		it('should toggle the options', (): void => {
+			expect(dropdown.showOptions).to.be.undefined;
 
-		beforeEach((): void => {
-			nullOption = 'None';
-			buildController(options, nullOption);
+			dropdown.toggle();
+
+			expect(dropdown.showOptions).to.be.true;
+
+			dropdown.toggle();
+
+			expect(dropdown.showOptions).to.be.false;
 		});
 
-		it('should add a special null option to the beginning of the options list', (): void => {
-			expect(dropdown.options[0].__isNullOption).to.be.true;
+		it('should close the options', (): void => {
+			dropdown.showOptions = true;
+			dropdown.close();
+			expect(dropdown.showOptions).to.be.false;
 		});
 
-		it('should set the model view value to null if the null option is selected', (): void => {
-			dropdown.selection = dropdown.options[0];
+		it('should do nothing if the options are already closed', (): void => {
+			dropdown.showOptions = false;
+			dropdown.close();
+			expect(dropdown.showOptions).to.be.false;
+		});
 
+		it('should set the value and close the options', (): void => {
+			dropdown.showOptions = true;
+
+			dropdown.selectOption(options[1]);
+
+			expect(dropdown.showOptions).to.be.false;
 			sinon.assert.calledOnce(ngModel.$setViewValue);
-			sinon.assert.calledWith(ngModel.$setViewValue, null);
+			sinon.assert.calledWith(ngModel.$setViewValue, options[1]);
 		});
 	});
 
