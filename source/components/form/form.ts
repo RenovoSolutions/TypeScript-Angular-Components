@@ -6,7 +6,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
 import { IWaitValue } from '../busy/busy';
-import { FormService } from '../../services/form/form.service.ng2';
+import { FormService } from '../../services/form/form.service';
 
 export interface ISaveAction<T> {
 	(data: T): IWaitValue<T>;

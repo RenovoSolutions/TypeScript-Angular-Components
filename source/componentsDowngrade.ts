@@ -18,7 +18,7 @@ import { TextboxComponent } from './components/textbox/textbox';
 
 import { DatePipe } from './filters/date/date.filter';
 
-import { FormService } from './services/form/form.service.ng2';
+import { FormService } from './services/form/form.service';
 
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 

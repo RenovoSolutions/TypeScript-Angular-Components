@@ -4,7 +4,7 @@ import 'angular-mocks';
 import { services as utilityServices } from 'typescript-angular-utilities';
 import __test = utilityServices.test;
 
-import { moduleName, serviceName, IFormService } from './form.service';
+import { moduleName, serviceName, IFormService } from './form.service.ng1';
 
 describe('form service', (): void => {
 	let formService: IFormService;

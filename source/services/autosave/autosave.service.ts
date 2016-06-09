@@ -10,7 +10,7 @@ import {
 	IAutosaveActionService,
 } from '../autosaveAction/autosaveAction.service';
 import * as triggers from './triggers/triggers.service';
-import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
 
 export { triggers };

@@ -14,7 +14,7 @@ import {
 	IAutosaveService,
 	IAutosaveServiceFactory,
 } from '../autosave/autosave.service';
-import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
 
 export { bootstrapModalDialog };
