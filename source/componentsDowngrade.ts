@@ -14,7 +14,7 @@ import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
 import { CheckboxComponent } from './components/checkbox/checkbox';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
-import { TextboxComponent } from './components/textbox/textbox.ng2';
+import { TextboxComponent } from './components/textbox/textbox';
 
 import { DatePipe } from './filters/date/date.filter';
 
