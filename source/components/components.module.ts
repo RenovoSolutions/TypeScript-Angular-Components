@@ -33,7 +33,7 @@ import * as textarea from './textarea/textarea.ng1';
 import * as textbox from './textbox/textbox.ng1';
 import * as typeahead from './typeahead/typeahead';
 import * as typeaheadList from './typeaheadList/typeaheadList';
-import * as userRating from './userRating/userRating';
+import * as userRating from './userRating/userRating.ng1';
 import * as validationGroup from './validationGroup/validationGroup';
 
 import { defaultThemeValueName } from './componentsDefaultTheme';

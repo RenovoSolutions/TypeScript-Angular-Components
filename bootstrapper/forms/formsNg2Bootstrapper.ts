@@ -14,7 +14,7 @@ import { TextareaComponent } from '../../source/components/textarea/textarea';
 import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
 import { SelectComponent } from '../../source/components/select/select';
 import { SpinnerComponent } from '../../source/components/spinner/spinner';
-import { UserRatingComponent } from '../../source/components/userRating/userRating.ng2';
+import { UserRatingComponent } from '../../source/components/userRating/userRating';
 
 export interface ITestItem {
 	value: number;

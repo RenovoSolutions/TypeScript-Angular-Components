@@ -1,60 +1,63 @@
-﻿import * as angular from 'angular';
-import * as _ from 'lodash';
+import { Component, Inject, Input, Optional, OnInit } from '@angular/core';
+import { range, map, each } from 'lodash';
 
-import { defaultThemeValueName } from '../componentsDefaultTheme';
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
-export let moduleName: string = 'rl.components.userRating';
+import { defaultThemeToken } from '../componentsDefaultTheme';
 
-export let componentName: string = 'rlUserRating';
-export let controllerName: string = 'UserRatingController';
+import { InputComponent, baseInputs, baseOutputs } from '../input/input';
+import { FormComponent } from '../form/form';
 
 export interface IStar {
 	value: number;
 	filled: boolean;
 }
 
-export interface IUserRatingBindings {
-	range: number;
-}
-
-export interface IUserRatingController extends IUserRatingBindings {
-	stars: IStar[];
-	setRating(rating: number): void;
-}
-
-export class UserRatingController implements IUserRatingController {
-	range: number;
+@Component({
+	selector: 'rlUserRating',
+	template: require('./userRating.ng2.html'),
+	inputs: baseInputs,
+	outputs: baseOutputs,
+})
+export class UserRatingComponent extends InputComponent<number> implements OnInit {
+	@Input() range: number;
 
 	stars: IStar[];
-	ngModel: angular.INgModelController;
 
-	static $inject: string[] = ['$timeout', defaultThemeValueName];
-	constructor(private $timeout: angular.ITimeoutService, public useDefaultTheme: boolean) { }
+	useDefaultTheme: boolean;
 
-	$onInit(): void {
-		this.stars = [];
-		let rangeSize: number = this.range != null ? this.range : 5;
-		// css style requires the stars to show right to left. Reverse the list so the highest value is first
-		let range: number[] = _.range(1, rangeSize + 1).reverse();
-		_.each(range, (rating: number): void => {
-			this.stars.push({
-				value: rating,
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+			, @Optional() rlForm: FormComponent
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, object, guid);
+		this.inputType = 'userRating';
+		this.initControl();
+		this.useDefaultTheme = useDefaultTheme;
+	}
+
+	ngOnInit(): void {
+		super.ngOnInit();
+		const values: number[] = range(1, (this.range || 5) + 1).reverse();
+		this.stars = map(values, (value: number): IStar => {
+			return {
+				value: value,
 				filled: false,
-			});
+			};
 		});
-
-		this.$timeout((): void => {
-			this.updateStarView(this.ngModel.$viewValue);
-		});
+		this.updateStarView(this.value);
 	}
 
 	setRating(rating: number): void {
-		this.ngModel.$setViewValue(rating);
+		this.setValue(rating);
 		this.updateStarView(rating);
 	}
 
 	private updateStarView(rating: number): void {
-		_.each(this.stars, (star: IStar): void => {
+		each(this.stars, (star: IStar): void => {
 			if (star.value <= rating) {
 				star.filled = true;
 			} else {
@@ -63,21 +66,3 @@ export class UserRatingController implements IUserRatingController {
 		});
 	}
 }
-
-let userRating: angular.IComponentOptions = {
-	require: { ngModel: 'ngModel' },
-	template: `
-		<span class="rating" ng-class="{ 'default-theme': userRating.useDefaultTheme }">
-			<span class="star" ng-repeat="star in userRating.stars" ng-class="{ 'filled': star.filled }" ng-click="userRating.setRating(star.value)"></span>
-		</span>
-	`,
-	controller: controllerName,
-	controllerAs: 'userRating',
-	bindings: {
-		range: '=',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, userRating)
-	.controller(controllerName, UserRatingController);
