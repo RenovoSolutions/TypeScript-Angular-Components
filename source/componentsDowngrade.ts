@@ -11,7 +11,7 @@ import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
-import { CheckboxComponent } from './components/checkbox/checkbox.ng2';
+import { CheckboxComponent } from './components/checkbox/checkbox';
 import { CommaListComponent } from './components/commaList/commaList.ng2';
 import { FormComponent } from './components/form/form.ng2';
 import { TextboxComponent } from './components/textbox/textbox.ng2';

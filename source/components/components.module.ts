@@ -7,7 +7,7 @@ import * as buttonLink from './buttonLink/buttonLink.ng1';
 import * as buttonSubmit from './buttonSubmit/buttonSubmit.ng1';
 import * as buttonToggle from './buttonToggle/buttonToggle.ng1';
 import * as cardContainer from './cardContainer/cardContainer.module';
-import * as checkbox from './checkbox/checkbox';
+import * as checkbox from './checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList';
 import * as dateTime from './dateTime/dateTime';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
