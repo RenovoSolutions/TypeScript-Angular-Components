@@ -19,7 +19,7 @@
     "prepublish": "npm run build",
     "update": "npm install",
     "clean": "gulp clean",
-    "build": "gulp clean && tsc && gulp bundle-css && gulp bundle-css.minify && echo Build complete",
+    "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
 
     "test": "karma start",
@@ -30,8 +30,8 @@
     "install-build": "npm install && npm run build",
     "install-build-test": "npm install && npm run build && npm run test",
     "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
-    "build-test": "npm run build && gulp systemjs-for-tests && npm run test",
-    "build-test.watch": "npm run build && gulp systemjs-for-tests && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
+    "build-test": "npm run build && gulp bundle-tests && npm run test",
+    "build-test.watch": "npm run build && gulp bundle-tests.watch && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
 
     "full-build": "npm install && npm run build",
 
@@ -45,7 +45,8 @@
 
     "serve": "http-server -c-1 -o",
     "start": "concurrently --kill-others \"npm run bundle.watch\" \"npm run serve\"",
-    "postinstall": "typings install && gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo"
+    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo",
+    "postinstall": "typings install && npm run bundle-deps"
   },
   "devDependencies": {
     "@renovolive/gulp-utilities": "~2.1.8",
