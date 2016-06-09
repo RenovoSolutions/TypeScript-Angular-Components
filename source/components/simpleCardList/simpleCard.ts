@@ -1,4 +1,4 @@
-import { Component, Inject, Input, Output, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, Output, Optional, EventEmitter, OnInit, ViewChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
@@ -25,7 +25,7 @@ export class SimpleCardComponent<T> implements OnInit {
 	list: SimpleCardListComponent<T>;
 	private boolean: __boolean.IBooleanUtility;
 
-	constructor(list: SimpleCardListComponent<T>
+	constructor(@Optional() list: SimpleCardListComponent<T>
 			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
 		this.list = list || this.emptyList();
 		this.boolean = boolean;
