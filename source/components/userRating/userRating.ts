@@ -18,7 +18,7 @@ export interface IStar {
 
 @Component({
 	selector: 'rlUserRating',
-	template: require('./userRating.ng2.html'),
+	template: require('./userRating.html'),
 	inputs: baseInputs,
 	outputs: baseOutputs,
 })
