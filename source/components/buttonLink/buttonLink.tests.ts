@@ -1,4 +1,4 @@
-import { ButtonLinkComponent } from './buttonLink.ng2';
+import { ButtonLinkComponent } from './buttonLink';
 
 describe('button link', (): void => {
 	let buttonLink: ButtonLinkComponent;

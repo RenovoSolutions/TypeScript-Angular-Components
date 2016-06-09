@@ -8,7 +8,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import { BusyComponent } from './components/busy/busy';
 import { ButtonComponent } from './components/button/button';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
-import { ButtonLinkComponent } from './components/buttonLink/buttonLink.ng2';
+import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit.ng2';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle.ng2';
 import { CheckboxComponent } from './components/checkbox/checkbox.ng2';

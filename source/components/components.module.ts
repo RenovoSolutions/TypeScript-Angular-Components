@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import * as busy from './busy/busy.ng1';
 import * as button from './button/button.ng1';
 import * as buttonAsync from './buttonAsync/buttonAsync.ng1';
-import * as buttonLink from './buttonLink/buttonLink';
+import * as buttonLink from './buttonLink/buttonLink.ng1';
 import * as buttonSubmit from './buttonSubmit/buttonSubmit';
 import * as buttonToggle from './buttonToggle/buttonToggle';
 import * as cardContainer from './cardContainer/cardContainer.module';
