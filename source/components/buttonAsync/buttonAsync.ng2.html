@@ -1,8 +1,0 @@
-<button type="button"
-		class="btn {{configuredTypes}} {{configuredSize}}"
-		(click)="triggerAction($event)"
-		[disabled]="disabled">
-	<rlBusy *ngIf="rightAligned"></rlBusy>
-	<ng-content></ng-content>
-	<rlBusy *ngIf="!rightAligned"></rlBusy>
-</button>

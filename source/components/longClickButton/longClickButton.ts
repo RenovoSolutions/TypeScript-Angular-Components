@@ -8,7 +8,7 @@ import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promi
 
 
 import { buildButton } from '../button/button.ng1';
-import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
+import { ButtonAsyncController } from '../buttonAsync/buttonAsync.ng1';
 
 export let moduleName: string = 'rl.ui.components.longClickButton';
 export let componentName: string = 'rlLongClickButton';
