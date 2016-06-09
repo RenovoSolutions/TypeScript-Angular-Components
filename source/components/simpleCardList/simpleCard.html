@@ -1,0 +1,40 @@
+<div class="card col-xs-12 {{cardType}}">
+	<div class="header row"
+		 [class.active]="canOpen && !alwaysOpen"
+		 (click)="toggle()">
+		 <ng-content select="[rlCardHeader]"></ng-content>
+	</div>
+
+	<rlForm [save]="save">
+		<div [hidden]="!(showContent || alwaysOpen)">
+			<div class="body row">
+				<ng-content select="[rlCardContent]"></ng-content>
+				<div class="clearfix"></div>
+			</div>
+			<div class="footer row">
+				<ng-content select="[rlCardFooter]"></ng-content>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</rlForm>
+</div>
+
+<!--<div class="card col-xs-12 {{card.cardType}}" rl-alternating-class="card-odd">
+	<div class="header row" ng-class="{ 'active': card.canOpen && !card.alwaysOpen, 'error': cardForm.$invalid }" ng-click="card.toggleContent()">
+		<div ng-transclude="headerSlot"></div>
+		<div class="clearfix"></div>
+	</div>
+
+	<ng-form name="cardForm" rl-autosave="card.autosaveLink" save="card.save()" save-when-invalid="card.saveWhenInvalid">
+		<div ng-show="card.showContent || card.alwaysOpen">
+			<div class="body row">
+				<div ng-transclude="contentSlot"></div>
+				<div class="clearfix"></div>
+			</div>
+			<div class="footer row">
+				<div ng-transclude="footerSlot"></div>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</ng-form>
+</div>-->
