@@ -71,6 +71,8 @@ export class SimpleCardComponent<T> implements OnInit {
 	}
 
 	private emptyList(): SimpleCardListComponent<T> {
-		return new SimpleCardListComponent<T>();
+		const list: SimpleCardListComponent<T> = new SimpleCardListComponent<T>();
+		list.openCard = () => true;
+		return list;
 	}
 }
