@@ -1,133 +1,130 @@
-// /// <reference path='../../../typings/bootstrapDateTimePicker.d.ts' />
-
-import '../../../libraries/bootstrap-datetimepicker/index';
-
-import * as angular from 'angular';
+import { Component, Optional, Inject, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
-import * as _ from 'lodash';
+import '../../../libraries/bootstrap-datetimepicker/index';
 
-import { services, downgrade } from 'typescript-angular-utilities';
-
-import __dateTimeFormatStrings = services.date;
+import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
+import __date = services.date;
+import __dateFormats = __date.defaultFormats;
 import __timezone = services.timezone;
 
-import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+import { ButtonComponent } from '../button/button';
+import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input/validationInput';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
+import { FormComponent } from '../form/form.ng2';
 
-import { INgModelValidator } from '../../types/formValidators';
-import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
+@Component({
+	selector: 'rlDateTime',
+	template: require('./dateTime.html'),
+	inputs: validationInputs,
+	outputs: baseOutputs,
+	directives: [ButtonComponent],
+	providers: [ComponentValidator],
+	pipes: [filters.isEmpty.IsEmptyPipe],
+})
+export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements OnInit, AfterViewInit {
+	@Input() useDate: boolean;
+	@Input() useTime: boolean;
+	@Input() min: string | Date | moment.Moment;
+	@Input() max: string | Date | moment.Moment;
+	@Input() minuteStepping: number;
+	@Input() showClear: boolean;
+	@Output() clear: EventEmitter<any> = new EventEmitter();
 
-export let moduleName: string = 'rl.ui.components.dateTime';
-export let componentName: string = 'rlDateTime';
-export let controllerName: string = 'DateTimeController';
-
-export interface IDateTimeBindings {
-	minuteStepping: number;
-
-	useDate: boolean;
-	useTime: boolean;
-
-	min: string | Date | moment.Moment;
-	max: string | Date | moment.Moment;
-
-	dateTimePickerOpen: boolean;
+	valueAsString: string;
 	validFormat: boolean;
-
 	format: string;
-
-	onClearEvent(): void;
-
-}
-
-export interface IDateTimeScope extends angular.IScope {
-	dateTime: DateTimeController;
-}
-
-export class DateTimeController extends InputController {
-	minuteStepping: number;
-
-	useDate: boolean;
-	useTime: boolean;
-
-	clearButton: boolean;
-	onClearEvent: { (): void } ;
-
-	min: string | Date | moment.Moment;
-	max: string | Date | moment.Moment;
-
-	dateTimePickerOpen: boolean;
-	validFormat: boolean;
-
-	format: string;
-
 	timezone: __timezone.ITimezone;
+	private timezoneService: __timezone.ITimezoneService;
+	private dateService: __date.IDateUtility;
+	private elementRef: ElementRef;
+	private rendering: boolean = false;
+	private touchspin: JQuery;
 
-	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName, '$element'];
-	constructor($scope: angular.IScope
-			, $attrs: IInputAttributes
-			, componentValidatorFactory: IComponentValidatorFactory
-			, private $element: angular.IAugmentedJQuery) {
-		super($scope, $attrs, componentValidatorFactory);
-
-		this.inputType = 'date-time';
-
-		this.useDate = _.isUndefined(this.useDate) ? true : this.useDate;
-		this.useTime = _.isUndefined(this.useTime) ? true : this.useTime;
+	constructor(elementRef: ElementRef
+			, @Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService
+			, @Inject(__date.dateToken) dateService: __date.IDateUtility
+			, @Optional() rlForm: FormComponent
+			, componentValidator: ComponentValidator
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__array.arrayToken) array: __array.IArrayUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, componentValidator, object, array, guid);
+		this.inputType = 'dateTime';
+		this.timezoneService = timezoneService;
+		this.dateService = dateService;
+		this.elementRef = elementRef;
+		this.timezone = this.timezoneService.currentTimezone;
 	}
 
-	onClearClick(): void {
-		this.ngModel.$setViewValue(null);
-		this.onClearEvent();
+	ngOnInit(): void {
+		super.ngOnInit();
+		this.valueAsString = this.value != null
+							? this.formatDate(this.value)
+							: '';
 	}
 
-	$postLink(): void {
-		let defaults: bootstrapDateTimePicker.IConfiguration = this.$element.datetimepicker.defaults;
-		let min: string | Date | moment.Moment
-			= this.min != null ? this.min : defaults.minDate;
-		let max: string | Date | moment.Moment
-			= this.max != null ? this.max : defaults.maxDate;
+	ngAfterViewInit(): void {
+		super.ngAfterViewInit();
 
-		this.setValidity(this.ngModel.$viewValue);
-		this.ngModel.$formatters.push((value: moment.Moment): string => {
-			if (value == null) {
-				this.timezone = __timezone.timezoneService.currentTimezone;
-				return null;
-			}
+		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
+		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
 
-			const date: moment.Moment = moment(value);
+		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.elementRef.nativeElement).datetimepicker.defaults;
+		this.min = this.min != null ? this.min : defaults.minDate;
+		this.max = this.max != null ? this.max : defaults.maxDate;
+		this.setValidity(this.value);
 
-			this.setValidity(date);
-
-			this.timezone = __timezone.timezones.get(date.tz());
-			return date.format(this.getFormatOrDefault());
+		this.control.valueChanges.subscribe(value => {
+			this.valueAsString = this.formatDate(value);
 		});
 
-		this.ngModel.$parsers.push((value: string): moment.Moment => {
-			if (__object.objectUtility.isNullOrEmpty(value)) {
-				return null;
-			}
-
-			const newMoment: moment.Moment = __timezone.timezoneService.buildMomentWithTimezone(value, this.timezone, this.getFormatOrDefault());
-			this.setValidity(newMoment);
-			return newMoment;
-		});
-
-		this.$element.find('.show-date-picker').datetimepicker({
+		$(this.elementRef.nativeElement).find('.show-date-picker').datetimepicker({
 			stepping: this.minuteStepping || 1,
 			format: this.getFormatOrDefault(),
 			direction: 'bottom',
 			elementHeight: 2,
 			pickDate: this.useDate,
 			pickTime: this.useTime,
-			minDate: min,
-			maxDate: max,
+			minDate: this.min,
+			maxDate: this.max,
 		}).on('change.dp', (): void => {
-			let newValue: any = this.$element.find('input').val();
-			this.ngModel.$setViewValue(newValue);
-			this.$scope.$apply();
+			const newValue: string = $(this.elementRef.nativeElement).find('input').val();
+			this.setValue(this.parseDate(newValue));
 		});
+	}
+
+	onClear(): void {
+		this.setValue(null);
+		this.clear.emit(null);
+	}
+
+	private formatDate(value: moment.Moment): string {
+		if (value == null) {
+			this.timezone = this.timezoneService.currentTimezone;
+			return null;
+		}
+
+		const date: moment.Moment = moment(value);
+
+		this.setValidity(date);
+
+		this.timezone = __timezone.timezones.get(date.tz());
+		return date.format(this.getFormatOrDefault());
+	}
+
+	private parseDate(value: string): moment.Moment {
+		if (this.object.isNullOrEmpty(value)) {
+			return null;
+		}
+
+		const newMoment: moment.Moment = this.timezoneService.buildMomentWithTimezone(value, this.timezone, this.getFormatOrDefault());
+		this.setValidity(newMoment);
+		return newMoment;
 	}
 
 	private getFormatOrDefault(): string {
@@ -136,11 +133,11 @@ export class DateTimeController extends InputController {
 
 	private defaultFormat(hasDate: boolean, hasTime: boolean): string | boolean {
 		if (hasDate && hasTime) {
-			return __dateTimeFormatStrings.defaultFormats.dateTimeFormat;
+			return __dateFormats.dateTimeFormat;
 		} else if (hasDate) {
-			return __dateTimeFormatStrings.defaultFormats.dateFormat;
+			return __dateFormats.dateFormat;
 		} else if (hasTime) {
-			return __dateTimeFormatStrings.defaultFormats.timeFormat;
+			return __dateFormats.timeFormat;
 		} else {
 			// revert to default format
 			return false;
@@ -153,22 +150,3 @@ export class DateTimeController extends InputController {
 			: moment(date).isValid();
 	}
 }
-
-let dateTime: angular.IComponentOptions = buildInput({
-	template: require('./dateTime.html'),
-	controller: controllerName,
-	controllerAs: 'dateTime',
-	bindings: {
-		minuteStepping: '<?',
-		useDate: '<?',
-		useTime: '<?',
-		min: '<?',
-		max: '<?',
-		clearButton: '<?',
-		onClearEvent: '&',
-	},
-});
-
-angular.module(moduleName, [inputModule])
-	.component(componentName, dateTime)
-	.controller(controllerName, DateTimeController);

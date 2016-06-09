@@ -9,7 +9,7 @@ import * as buttonToggle from './buttonToggle/buttonToggle.ng1';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList.ng1';
-import * as dateTime from './dateTime/dateTime';
+import * as dateTime from './dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
 import * as form from './form/form';
