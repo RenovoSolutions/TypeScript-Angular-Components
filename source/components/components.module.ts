@@ -12,7 +12,7 @@ import * as commaList from './commaList/commaList.ng1';
 import * as dateTime from './dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
-import * as form from './form/form';
+import * as form from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as input from './input/input';
 import * as lazyLoad from './lazyLoad/lazyLoad';
