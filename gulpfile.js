@@ -15,7 +15,8 @@ utilities.gulp.bundle.config('tests', testBundleSource, {
 	outFile: 'tests.bundle.js',
 });
 
-const scriptFiles = ['./source/**/*.js', './source/**/*.html', './source/**/*.css', '!./source/**/*.tests.js', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
+const scriptFiles = ['./source/**/*.js', './source/**/*.html', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
+const otherFiles = ['./source/**/*.css', '!./source/**/*.tests.js'];
 const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css', '!./source/**/*ng2.css'];
 
 const appBundleSource = 'bootstrapper/app.js';
@@ -26,7 +27,7 @@ utilities.gulp.bundle.config('bootstrapper', appBundleSource, {
 });
 
 gulp.task('bundle-all.watch', (done) => {
-	gulp.watch(scriptFiles, ['bundle-all']);
+	gulp.watch(scriptFiles.concat(otherFiles), ['bundle-all']);
 });
 
 gulp.task('bundle-all', (done) => {
