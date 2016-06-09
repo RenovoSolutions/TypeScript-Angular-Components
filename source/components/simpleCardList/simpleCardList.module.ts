@@ -2,8 +2,8 @@ import * as angular from 'angular';
 
 import {  downgrade } from 'typescript-angular-utilities';
 import {moduleName as parentChildModuleName } from '../../services/parentChild/parentChild.service';
-import * as card from './simpleCard';
-import * as list from './simpleCardList';
+import * as card from './simpleCard.ng1';
+import * as list from './simpleCardList.ng1';
 
 export {
 	card as simpleCard,

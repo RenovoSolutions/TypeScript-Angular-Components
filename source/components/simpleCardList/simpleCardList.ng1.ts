@@ -2,7 +2,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import { Subject, Subscription } from 'rxjs';
 
-import { ISimpleCardBehavior } from './simpleCard';
+import { ISimpleCardBehavior } from './simpleCard.ng1';
 
 export var directiveName: string = 'rlSimpleCardList';
 export var controllerName: string = 'SimpleCardListController';

@@ -5,7 +5,7 @@ import {IChild,IParentChildBehaviorService, serviceName as parentChildServiceNam
 
 import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
 
-import { ISimpleCardListController } from './simpleCardList';
+import { ISimpleCardListController } from './simpleCardList.ng1';
 
 import { IChangeObject } from '../../types/changes';
 
