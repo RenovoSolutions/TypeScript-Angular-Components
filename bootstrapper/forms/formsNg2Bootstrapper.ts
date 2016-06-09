@@ -12,7 +12,7 @@ import { DateTimeComponent } from '../../source/components/dateTime/dateTime';
 import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 import { TextareaComponent } from '../../source/components/textarea/textarea.ng2';
 import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
-import { SelectComponent } from '../../source/components/select/select.ng2';
+import { SelectComponent } from '../../source/components/select/select';
 import { SpinnerComponent } from '../../source/components/spinner/spinner.ng2';
 import { UserRatingComponent } from '../../source/components/userRating/userRating.ng2';
 

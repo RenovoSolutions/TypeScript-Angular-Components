@@ -22,7 +22,7 @@ import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as radio from './radio/radio.module';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as richTextEditor from './richTextEditor/richTextEditor';
-import * as select from './select/select';
+import * as select from './select/select.ng1';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner';

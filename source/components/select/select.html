@@ -1,21 +1,27 @@
-<div class="field" ng-class="{ 'error': select.ngModel.$invalid }" rl-off-click="select.close">
-	<label ng-show="select.selection" class="label-slide angular-animate">
-		{{::select.label}}
-	</label>
+<div class="field"
+	 [class.error]="!control.valid"
+	 (offClick)="close()">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
-		 ng-click="select.toggle()"
-		 ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }">
-		<span class="placeholder" ng-hide="select.selection">{{::select.label}}</span>
-		<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
+		 (click)="toggle()"
+		 [class.disabled]="disabled"
+		 [class.rl-select-open]="showOptions">
+		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
-	<ul class="rl-select-list" ng-if="select.showOptions">
-		<li class="rl-select-option" ng-if="::select.nullOption" ng-click="select.selectOption(null)">{{::select.nullOption}}</li>
+	<ul class="rl-select-list" *ngIf="showOptions">
+		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
 		<li class="rl-select-option"
-			ng-repeat="$item in select.options"
-			ng-click="select.selectOption($item)">
-			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
+			*ngFor="let option of wrappedOptions | async"
+			(click)="select(option)">
+			<span *ngIf="template">
+				<rlTemplateRenderer [template]="newTemplate()" [model]="option"></rlTemplateRenderer>
+			</span>
+			<span *ngIf="!template">{{getDisplayName(option)}}</span>
 		</li>
 	</ul>
-	<rl-busy loading="select.loading"></rl-busy>
-	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
+	<rlBusy></rlBusy>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
 </div>
