@@ -95,16 +95,13 @@ describe('SelectController', () => {
 			buildController();
 			expect(dropdown.options).to.not.exist;
 		});
-
-		it('should still add a null option to the options when loading options asynchronously', (): void => {
-			buildController(undefined, 'None', getOptions);
-			scope.$digest();
-
-			expect(dropdown.options[0].__isNullOption).to.be.true;
-		});
 	});
 
 	describe('dropdown', (): void => {
+		beforeEach(() => {
+			buildController();
+		});
+
 		it('should toggle the options', (): void => {
 			expect(dropdown.showOptions).to.be.undefined;
 
