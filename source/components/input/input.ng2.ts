@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __guid = services.guid;
 
-import { FormComponent } from '../form/form.ng2';
+import { FormComponent } from '../form/form';
 
 export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
 export const baseOutputs: string[] = ['change', 'valueChange'];

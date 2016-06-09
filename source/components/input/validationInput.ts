@@ -8,7 +8,7 @@ import __array = services.array;
 import __guid = services.guid;
 
 import { InputComponent, baseInputs, baseOutputs } from './input.ng2';
-import { FormComponent } from '../form/form.ng2';
+import { FormComponent } from '../form/form';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 
 export const validationInputs: string[] = baseInputs.concat(['validator', 'validators', 'rlRequired'])

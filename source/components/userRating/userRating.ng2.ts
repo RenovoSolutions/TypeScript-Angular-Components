@@ -9,7 +9,7 @@ import __guid = services.guid;
 import { defaultThemeToken } from '../componentsDefaultTheme';
 
 import { InputComponent, baseInputs, baseOutputs } from '../input/input.ng2';
-import { FormComponent } from '../form/form.ng2';
+import { FormComponent } from '../form/form';
 
 export interface IStar {
 	value: number;

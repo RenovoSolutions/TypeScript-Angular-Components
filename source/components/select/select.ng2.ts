@@ -10,7 +10,7 @@ import __transform = services.transform;
 
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../input/validationInput';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
-import { FormComponent } from '../form/form.ng2';
+import { FormComponent } from '../form/form';
 import { BusyComponent } from '../busy/busy';
 import { OffClickDirective } from '../../behaviors/offClick/offClick';
 import { TemplateRenderer } from '../templateRenderer/templateRenderer.ng2';

@@ -13,7 +13,7 @@ import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
 import { CheckboxComponent } from './components/checkbox/checkbox';
 import { CommaListComponent } from './components/commaList/commaList';
-import { FormComponent } from './components/form/form.ng2';
+import { FormComponent } from './components/form/form';
 import { TextboxComponent } from './components/textbox/textbox.ng2';
 
 import { DatePipe } from './filters/date/date.filter';

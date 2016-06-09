@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 
-import { FormComponent } from '../../source/components/form/form.ng2';
+import { FormComponent } from '../../source/components/form/form';
 import { ButtonSubmitComponent } from '../../source/components/buttonSubmit/buttonSubmit';
 import { CheckboxComponent } from '../../source/components/checkbox/checkbox';
 import { DateTimeComponent } from '../../source/components/dateTime/dateTime';
