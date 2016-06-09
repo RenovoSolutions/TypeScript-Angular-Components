@@ -4,7 +4,7 @@ import {
 	moduleName,
 	controllerName,
 	CommaListController,
-} from './commaList';
+} from './commaList.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';
