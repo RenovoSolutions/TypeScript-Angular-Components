@@ -13,7 +13,7 @@ import { TextboxComponent } from '../../source/components/textbox/textbox.ng2';
 import { TextareaComponent } from '../../source/components/textarea/textarea.ng2';
 import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
 import { SelectComponent } from '../../source/components/select/select';
-import { SpinnerComponent } from '../../source/components/spinner/spinner.ng2';
+import { SpinnerComponent } from '../../source/components/spinner/spinner';
 import { UserRatingComponent } from '../../source/components/userRating/userRating.ng2';
 
 export interface ITestItem {

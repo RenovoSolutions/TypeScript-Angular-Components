@@ -25,7 +25,7 @@ import * as richTextEditor from './richTextEditor/richTextEditor';
 import * as select from './select/select.ng1';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
-import * as spinner from './spinner/spinner';
+import * as spinner from './spinner/spinner.ng1';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as tabs from './tabs/tabs.module';
 import * as templateRenderer from './templateRenderer/templateRenderer';
