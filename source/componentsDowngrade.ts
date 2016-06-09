@@ -10,7 +10,7 @@ import { ButtonComponent } from './components/button/button';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
-import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle.ng2';
+import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
 import { CheckboxComponent } from './components/checkbox/checkbox.ng2';
 import { CommaListComponent } from './components/commaList/commaList.ng2';
 import { FormComponent } from './components/form/form.ng2';

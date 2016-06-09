@@ -5,7 +5,7 @@ import * as button from './button/button.ng1';
 import * as buttonAsync from './buttonAsync/buttonAsync.ng1';
 import * as buttonLink from './buttonLink/buttonLink.ng1';
 import * as buttonSubmit from './buttonSubmit/buttonSubmit.ng1';
-import * as buttonToggle from './buttonToggle/buttonToggle';
+import * as buttonToggle from './buttonToggle/buttonToggle.ng1';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox';
 import * as commaList from './commaList/commaList';
