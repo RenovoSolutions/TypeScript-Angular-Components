@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { buildButton, ButtonController } from '../button/button';
+import { buildButton, ButtonController } from '../button/button.ng1';
 
 export const moduleName: string = 'rl.ui.components.buttonLink';
 export const componentName: string = 'rlButtonLink';

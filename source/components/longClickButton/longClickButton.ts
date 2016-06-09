@@ -7,7 +7,7 @@ import __notification = services.notification;
 import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
 
 
-import { buildButton } from '../button/button';
+import { buildButton } from '../button/button.ng1';
 import { ButtonAsyncController } from '../buttonAsync/buttonAsync';
 
 export let moduleName: string = 'rl.ui.components.longClickButton';

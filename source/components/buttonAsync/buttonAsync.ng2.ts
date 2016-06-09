@@ -2,7 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { BusyComponent, IWaitValue } from '../busy/busy';
-import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
+import { BaseButtonComponent, baseInputs } from '../button/baseButton';
 
 export interface IAsyncAction {
 	($event: any): IWaitValue<any>;

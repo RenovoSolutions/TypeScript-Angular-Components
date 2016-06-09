@@ -6,7 +6,7 @@ import * as angular from 'angular';
 import { services, downgrade } from 'typescript-angular-utilities';
 
 import { BusyComponent } from './components/busy/busy';
-import { ButtonComponent } from './components/button/button.ng2';
+import { ButtonComponent } from './components/button/button';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync.ng2';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink.ng2';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit.ng2';

@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 
 import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
 
-import { buildButton, ButtonController } from '../button/button';
+import { buildButton, ButtonController } from '../button/button.ng1';
 
 export const moduleName: string = 'rl.ui.components.buttonAsync';
 

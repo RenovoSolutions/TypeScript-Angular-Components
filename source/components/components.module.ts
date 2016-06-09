@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
 import * as busy from './busy/busy.ng1';
-import * as button from './button/button';
+import * as button from './button/button.ng1';
 import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonLink from './buttonLink/buttonLink';
 import * as buttonSubmit from './buttonSubmit/buttonSubmit';

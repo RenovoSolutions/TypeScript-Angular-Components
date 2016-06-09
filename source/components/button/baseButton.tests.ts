@@ -1,4 +1,4 @@
-import { BaseButtonComponent } from './baseButton.ng2';
+import { BaseButtonComponent } from './baseButton';
 
 describe('base button', (): void => {
 	let button: BaseButtonComponent;
