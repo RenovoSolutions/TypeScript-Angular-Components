@@ -1,7 +1,7 @@
-import { RadioGroupComponent } from './radioGroup.ng2';
-import { RadioComponent } from './radio.ng2';
+import { RadioGroupComponent } from './radioGroup';
+import { RadioComponent } from './radio';
 
 export const RADIO_DIRECTIVES: any[] = [RadioGroupComponent, RadioComponent];
 
-export * from './radioGroup.ng2';
-export * from './radio.ng2';
+export * from './radioGroup';
+export * from './radio';

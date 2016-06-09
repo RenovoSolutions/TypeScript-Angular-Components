@@ -7,13 +7,13 @@ import {
 	radioGroup,
 	controllerName as radioGroupControllerName,
 	RadioGroupController
-} from './radioGroup';
+} from './radioGroup.ng1';
 import {
 	componentName as radioComponentName,
 	radio,
 	controllerName as radioControllerName,
 	RadioController
-} from './radio';
+} from './radio.ng1';
 
 export {
 	radioGroupDirectiveName,
