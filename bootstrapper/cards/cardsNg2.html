@@ -2,6 +2,7 @@
 <div>
 	<label>Simple card list:</label>
 	<rlCheckbox [(value)]="alwaysOpen" label="Always open"></rlCheckbox>
+	<div>List always open:</div>
 	<rlSimpleCardList [alwaysOpen]="alwaysOpen">
 		<rlSimpleCard *ngFor="let num of [1, 2, 3, 4, 5]">
 			<div rlCardHeader>Simple card {{num}}</div>
@@ -9,4 +10,19 @@
 			<div rlCardFooter>Footer {{num}}</div>
 		</rlSimpleCard>
 	</rlSimpleCardList>
+	<div>Cards always open:</div>
+	<rlSimpleCardList>
+		<rlSimpleCard [alwaysOpen]="alwaysOpen" *ngFor="let num of [1, 2, 3, 4, 5]">
+			<div rlCardHeader>Simple card {{num}}</div>
+			<div rlCardContent>Content {{num}}</div>
+			<div rlCardFooter>Footer {{num}}</div>
+		</rlSimpleCard>
+	</rlSimpleCardList>
+	<div>Card form:</div>
+	<rlSimpleCard [save]="submitAsync">
+		<div rlCardHeader>Header</div>
+		<div rlCardContent>
+			<rlTextbox name="field" label="Field"></rlTextbox>
+		</div>
+	</rlSimpleCard>
 </div>
