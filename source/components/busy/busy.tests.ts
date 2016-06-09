@@ -5,7 +5,7 @@ import IMockedPromise = services.test.IMockedPromise;
 import mock = services.test.mock;
 import fakeAsync = services.test.fakeAsync;
 
-import { BusyComponent } from './busy.ng2';
+import { BusyComponent } from './busy';
 
 describe('busy', () => {
 	let busy: BusyComponent;

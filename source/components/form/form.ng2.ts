@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { IWaitValue } from '../busy/busy.ng2';
+import { IWaitValue } from '../busy/busy';
 import { FormService } from '../../services/form/form.service.ng2';
 
 export interface ISaveAction<T> {

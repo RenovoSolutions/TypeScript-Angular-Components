@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { BusyComponent } from '../../source/components/busy/busy.ng2';
+import { BusyComponent } from '../../source/components/busy/busy';
 
 @Component({
 	selector: 'tsMiscNgContext',

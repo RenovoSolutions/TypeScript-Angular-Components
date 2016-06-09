@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { BusyComponent, IWaitValue } from '../busy/busy.ng2';
+import { BusyComponent, IWaitValue } from '../busy/busy';
 import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
 
 export interface IAsyncAction {

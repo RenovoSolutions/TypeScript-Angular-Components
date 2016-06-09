@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import * as busy from './busy/busy';
+import * as busy from './busy/busy.ng1';
 import * as button from './button/button';
 import * as buttonAsync from './buttonAsync/buttonAsync';
 import * as buttonLink from './buttonLink/buttonLink';

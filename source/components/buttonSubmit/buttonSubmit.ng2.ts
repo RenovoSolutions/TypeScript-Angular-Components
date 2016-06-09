@@ -1,6 +1,6 @@
 import { Component, Input, Optional, ExceptionHandler, ViewChild } from '@angular/core';
 
-import { BusyComponent, IWaitValue } from '../busy/busy.ng2';
+import { BusyComponent, IWaitValue } from '../busy/busy';
 import { BaseButtonComponent, baseInputs } from '../button/baseButton.ng2';
 import { FormComponent } from '../form/form.ng2';
 
