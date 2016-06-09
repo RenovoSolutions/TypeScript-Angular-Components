@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import * as moment from 'moment';
 
-import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer';
+import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer.ng1';
 
 export const moduleName: string = 'MiscTestModule';
 

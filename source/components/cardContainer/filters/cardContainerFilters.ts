@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 
 import { filters } from 'typescript-angular-utilities';
 import { IDataSource } from '../dataSources/dataSource';
-import { ITemplateObject } from '../../templateRenderer/templateRenderer';
+import { ITemplateObject } from '../../templateRenderer/templateRenderer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.filters.cardContainerFilters';
 export let componentName: string = 'rlCardContainerFilters';

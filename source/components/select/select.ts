@@ -13,7 +13,7 @@ import { ComponentValidator } from '../../services/componentValidator/componentV
 import { FormComponent } from '../form/form';
 import { BusyComponent } from '../busy/busy';
 import { OffClickDirective } from '../../behaviors/offClick/offClick';
-import { TemplateRenderer } from '../templateRenderer/templateRenderer.ng2';
+import { TemplateRenderer } from '../templateRenderer/templateRenderer';
 
 @Component({
 	selector: 'rlSelect',

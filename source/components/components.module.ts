@@ -28,7 +28,7 @@ import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './spinner/spinner.ng1';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as tabs from './tabs/tabs.module';
-import * as templateRenderer from './templateRenderer/templateRenderer';
+import * as templateRenderer from './templateRenderer/templateRenderer.ng1';
 import * as textarea from './textarea/textarea';
 import * as textbox from './textbox/textbox';
 import * as typeahead from './typeahead/typeahead';
