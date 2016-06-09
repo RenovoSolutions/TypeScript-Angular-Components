@@ -8,7 +8,7 @@ import __object = services.object;
 import __transform = services.transform.transform;
 
 import { buildInput, InputController, moduleName as inputModule } from '../input/input.ng1';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service.ng1';
 import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../services/jquery/jquery.service';
 
 export const moduleName: string = 'rl.ui.components.select';

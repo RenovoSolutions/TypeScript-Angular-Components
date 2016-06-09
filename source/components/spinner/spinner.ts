@@ -10,7 +10,7 @@ import __number = services.number;
 import __string = services.string;
 
 import { ValidatedInputComponent, validationInputs, baseOutputs, IInputChanges } from '../input/validationInput';
-import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../form/form';
 
 export const defaultMaxValue: number = 100000000000000000000;

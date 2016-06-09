@@ -11,7 +11,7 @@ import __number = services.number;
 import __object = services.object;
 
 import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input.ng1';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service.ng1';
 
 import { INgModelValidator } from '../../types/formValidators';
 import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';

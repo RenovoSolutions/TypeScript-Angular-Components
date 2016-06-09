@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import * as autosave from './autosave/autosave.service';
 import * as autosaveAction from './autosaveAction/autosaveAction.service';
 import * as breakpoints from './breakpoints/breakpoints.module';
-import * as componentValidator from './componentValidator/componentValidator.service';
+import * as componentValidator from './componentValidator/componentValidator.service.ng1';
 import * as contentProvider from './contentProvider/contentProvider.service';
 import * as dialog from './dialog/dialog.service';
 import * as documentWrapper from './documentWrapper/documentWrapper.service';

@@ -1,6 +1,6 @@
 import { services } from 'typescript-angular-utilities';
 
-import { IComponentValidator, IComponentValidatorFactory, moduleName, factoryName } from './componentValidator.service';
+import { IComponentValidator, IComponentValidatorFactory, moduleName, factoryName } from './componentValidator.service.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';

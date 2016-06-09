@@ -14,7 +14,7 @@ import {
 	IComponentValidatorFactory,
 	factoryName as componentValidatorFactoryName,
 	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
+} from '../../services/componentValidator/componentValidator.service.ng1';
 
 export var moduleName: string = 'rl.ui.components.input';
 export var controllerName: string = 'InputController';
