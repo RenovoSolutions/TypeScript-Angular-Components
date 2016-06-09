@@ -2,7 +2,7 @@ import { Subject } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { InputComponent } from './input.ng2';
+import { InputComponent } from './input';
 
 interface IFormMock {
 	form: IControlGroupMock;

@@ -10,7 +10,7 @@ import __string = services.string;
 import __number = services.number;
 import __object = services.object;
 
-import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input.ng1';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 import { INgModelValidator } from '../../types/formValidators';

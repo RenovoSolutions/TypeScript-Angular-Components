@@ -10,7 +10,7 @@ import __transform = services.transform.transform;
 
 import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
 
-import { buildInput, InputController, moduleName as inputModule } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule } from '../input/input.ng1';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 export const moduleName: string = 'rl.ui.components.typeahead';

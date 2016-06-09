@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { buildInput, moduleName as inputModule } from '../input/input';
+import { buildInput, moduleName as inputModule } from '../input/input.ng1';
 
 export const moduleName: string = 'rl.ui.components.textarea';
 export const componentName: string = 'rlTextarea';

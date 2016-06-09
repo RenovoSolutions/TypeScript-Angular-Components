@@ -7,7 +7,7 @@ import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 
-import { InputComponent, baseInputs, baseOutputs } from './input.ng2';
+import { InputComponent, baseInputs, baseOutputs } from './input';
 import { FormComponent } from '../form/form';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service.ng2';
 

@@ -7,7 +7,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
-import { buildInput, InputController, moduleName as inputModule } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule } from '../input/input.ng1';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../services/jquery/jquery.service';
 

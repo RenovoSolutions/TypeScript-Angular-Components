@@ -13,7 +13,7 @@ import __dateTimeFormatStrings = services.date;
 import __object = services.object;
 import __timezone = services.timezone;
 
-import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
+import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input.ng1';
 import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
 
 import { INgModelValidator } from '../../types/formValidators';

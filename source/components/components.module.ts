@@ -14,7 +14,7 @@ import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
 import * as form from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
-import * as input from './input/input';
+import * as input from './input/input.ng1';
 import * as lazyLoad from './lazyLoad/lazyLoad';
 import * as longClickButton from './longClickButton/longClickButton';
 import * as messageLog from './messageLog/messageLog.module';

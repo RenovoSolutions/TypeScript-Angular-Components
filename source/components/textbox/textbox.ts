@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { buildInput, moduleName as inputModule } from '../input/input';
+import { buildInput, moduleName as inputModule } from '../input/input.ng1';
 
 export const moduleName: string = 'rl.ui.components.textbox';
 export const componentName: string = 'rlTextbox';
