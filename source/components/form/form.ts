@@ -12,8 +12,6 @@ export interface ISaveAction<T> {
 	(data: T): IWaitValue<T>;
 }
 
-export const defaultSave: ISaveAction<any> = () => Promise.resolve();
-
 @Component({
 	selector: 'rlForm',
 	template: require('./form.html'),
@@ -32,7 +30,7 @@ export class FormComponent {
 		this.formService = formService;
 		this.form = new ControlGroup({});
 		if (!this.save) {
-			this.save = defaultSave;
+			this.save = <ISaveAction>() => Promise.resolve();
 		}
 	}
 

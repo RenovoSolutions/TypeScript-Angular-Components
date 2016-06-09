@@ -1,17 +1,24 @@
-import { Component, Inject, Input, Output, Optional, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, Output, Optional, EventEmitter, OnInit, ViewChild, Provider, forwardRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
+import __notification = services.notification;
 
 import { SimpleCardListComponent } from './simpleCardList';
-import { FormComponent, ISaveAction, defaultSave } from '../form/form';
+import { FormComponent, ISaveAction } from '../form/form';
+import { FormService } from '../../services/form/form.service';
 
 @Component({
 	selector: 'rlSimpleCard',
 	template: require('./simpleCard.html'),
 	directives: [FormComponent],
+	providers: [
+		new Provider(FormComponent, {
+			useExisting: forwardRef(() => SimpleCardComponent),
+		}),
+	],
 })
-export class SimpleCardComponent<T> implements OnInit {
+export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	@Input() save: ISaveAction<T>;
 	@Input() canOpen: boolean;
 	@Input() alwaysOpen: boolean;
@@ -19,20 +26,20 @@ export class SimpleCardComponent<T> implements OnInit {
 	@Input() cardType: string;
 	@Output() onOpen: EventEmitter<void> = new EventEmitter<void>();
 
-	@ViewChild(FormComponent) rlForm: FormComponent;
-
 	showContent: boolean = false;
 	list: SimpleCardListComponent<T>;
 	private boolean: __boolean.IBooleanUtility;
 
-	constructor(@Optional() list: SimpleCardListComponent<T>
-			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
+	constructor(@Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
+			, @Inject(__notification.notificationToken) notification: __notification.INotificationService
+			, formService: FormService
+			, @Optional() list: SimpleCardListComponent<T>) {
+		super(notification, formService);
 		this.list = list || this.emptyList();
 		this.boolean = boolean;
 	}
 
 	ngOnInit(): void {
-		this.save = this.save || defaultSave;
 		this.canOpen = this.canOpen != null ? this.canOpen : true;
 		this.list.registerCard(this);
 	}
@@ -67,7 +74,7 @@ export class SimpleCardComponent<T> implements OnInit {
 	}
 
 	saveForm(): boolean {
-		return this.boolean.toBool(this.rlForm.submit());
+		return this.boolean.toBool(this.submit());
 	}
 
 	private emptyList(): SimpleCardListComponent<T> {
