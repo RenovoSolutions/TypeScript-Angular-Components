@@ -25,7 +25,7 @@ describe('SimpleCardComponent', () => {
 			registerCard: sinon.spy(),
 		};
 
-		card = new SimpleCardComponent(<any>list, new __boolean.BooleanUtility);
+		card = new SimpleCardComponent(new __boolean.BooleanUtility, <any>{}, null, <any>list);
 	});
 
 	it('should register  with the list', (): void => {
@@ -36,16 +36,16 @@ describe('SimpleCardComponent', () => {
 	});
 
 	it('should create an empty list if no list is provided', (): void => {
-		card = new SimpleCardComponent(null, new __boolean.BooleanUtility);
+		card = new SimpleCardComponent(new __boolean.BooleanUtility, null, null, null);
 		expect(card.list).to.exist;
 	});
 
 	describe('open close', (): void => {
-		let form: IFormMock;
+		let submitSpy: Sinon.SinonSpy;
 
 		beforeEach((): void => {
-			form = { submit: sinon.spy(() => true) };
-			card.rlForm = <any>form;
+			submitSpy = sinon.spy(() => true);
+			card.submit = submitSpy;
 			card.ngOnInit();
 		});
 
@@ -55,11 +55,12 @@ describe('SimpleCardComponent', () => {
 			card.toggle();
 
 			expect(card.showContent).to.be.false;
-			sinon.assert.calledOnce(form.submit);
+			sinon.assert.calledOnce(submitSpy);
 		});
 
 		it('should not close if the form submit returns false', (): void => {
-			form.submit = sinon.spy(() => false);
+			submitSpy = sinon.spy(() => false);
+			card.submit = submitSpy;
 			card.showContent = true;
 
 			card.toggle();
@@ -93,7 +94,7 @@ describe('SimpleCardComponent', () => {
 		});
 
 		it('should be able to open with an empty list', (): void => {
-			card = new SimpleCardComponent(null, new __boolean.BooleanUtility);
+			card = new SimpleCardComponent(new __boolean.BooleanUtility, null, null, null);
 			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 			card.ngOnInit();
