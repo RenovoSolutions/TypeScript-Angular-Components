@@ -9,7 +9,7 @@ import { BusyComponent } from './components/busy/busy';
 import { ButtonComponent } from './components/button/button';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
-import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit.ng2';
+import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle.ng2';
 import { CheckboxComponent } from './components/checkbox/checkbox.ng2';
 import { CommaListComponent } from './components/commaList/commaList.ng2';

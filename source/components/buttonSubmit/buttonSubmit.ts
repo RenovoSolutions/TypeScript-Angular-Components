@@ -1,20 +1,34 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
+import { Component, Input, Optional, ExceptionHandler, ViewChild } from '@angular/core';
 
-import * as angular from 'angular';
+import { BusyComponent, IWaitValue } from '../busy/busy';
+import { BaseButtonComponent, baseInputs } from '../button/baseButton';
+import { FormComponent } from '../form/form.ng2';
 
-import { buildButton } from '../button/button.ng1';
+@Component({
+	selector: 'rlButtonSubmit',
+	template: require('./buttonSubmit.html'),
+	inputs: baseInputs,
+	directives: [BusyComponent],
+})
+export class ButtonSubmitComponent extends BaseButtonComponent {
+	@Input() rightAligned: boolean;
 
-export const moduleName: string = 'rl.ui.components.buttonSubmit';
-export const componentName: string = 'rlButtonSubmit';
+	@ViewChild(BusyComponent) busySpinner: BusyComponent;
 
-const buttonSubmit: angular.IComponentOptions = buildButton({
-		template: require('./buttonSubmit.html'),
-		bindings: {
-			rightAligned: '<?',
-			saving: '<?',
-			action: null,
-		},
-	});
+	private form: FormComponent;
 
-angular.module(moduleName, [])
-	.component(componentName, buttonSubmit);
+	constructor( @Optional() form: FormComponent
+			, exceptionHandler: ExceptionHandler) {
+		super();
+		this.form = form;
+
+		if (!form) {
+			exceptionHandler.call(new Error('This component must be nested in an rlForm component.'))
+		}
+	}
+
+	submit(): void {
+		const waitValue: IWaitValue<any> = this.form.submit();
+		this.busySpinner.trigger(waitValue);
+	}
+}

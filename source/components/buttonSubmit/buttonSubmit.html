@@ -1,5 +1,8 @@
-<button type="submit" class="btn {{::button.types}} {{::button.configuredSize}}" ng-disabled="button.saving || button.ngDisabled">
-	<rl-busy ng-if="::button.rightAligned" loading="button.saving"></rl-busy>
-	<span ng-transclude></span>
-	<rl-busy ng-if="::!button.rightAligned" loading="button.saving"></rl-busy>
+<button type="submit"
+		class="btn {{configuredTypes}} {{configuredSize}}"
+		(click)="submit()"
+		[disabled]="saving || disabled">
+	<rlBusy *ngIf="rightAligned"></rlBusy>
+	<ng-content></ng-content>
+	<rlBusy *ngIf="!rightAligned"></rlBusy>
 </button>

@@ -1,4 +1,4 @@
-import { ButtonSubmitComponent } from './buttonSubmit.ng2';
+import { ButtonSubmitComponent } from './buttonSubmit';
 
 interface IMockForm {
 	submit: Sinon.SinonSpy;

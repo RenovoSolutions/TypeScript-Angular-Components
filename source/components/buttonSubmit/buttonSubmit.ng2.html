@@ -1,8 +1,0 @@
-<button type="submit"
-		class="btn {{configuredTypes}} {{configuredSize}}"
-		(click)="submit()"
-		[disabled]="saving || disabled">
-	<rlBusy *ngIf="rightAligned"></rlBusy>
-	<ng-content></ng-content>
-	<rlBusy *ngIf="!rightAligned"></rlBusy>
-</button>
