@@ -142,7 +142,7 @@ export let simpleCard: angular.IComponentOptions = {
 		'footerSlot': '?rlCardFooter',
 	},
 	require: { listController: '?^^rlSimpleCardList' },
-	template: require('./simpleCard.html'),
+	template: require('./simpleCard.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'card',
 	bindings: {
