@@ -21,7 +21,7 @@ describe('button submit', (): void => {
 		form = {
 			submit: sinon.spy(() => 5),
 		};
-		buttonSubmit = new ButtonSubmitComponent(<any>form, <any>{});
+		buttonSubmit = new ButtonSubmitComponent(<any>form);
 
 		busy = {
 			trigger: sinon.spy(),
@@ -41,7 +41,7 @@ describe('button submit', (): void => {
 		const exceptionHandler: IMockExceptionHandler = {
 			call: sinon.spy(),
 		};
-		buttonSubmit = new ButtonSubmitComponent(null, <any>exceptionHandler);
+		buttonSubmit = new ButtonSubmitComponent(null);
 
 		sinon.assert.calledOnce(exceptionHandler.call);
 		sinon.assert.calledWith(exceptionHandler.call, new Error('This component must be nested in an rlForm component.'));
