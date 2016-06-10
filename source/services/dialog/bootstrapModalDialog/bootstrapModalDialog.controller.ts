@@ -1,4 +1,3 @@
-'use strict';
 import * as ng from 'angular';
 
 import { serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.service';

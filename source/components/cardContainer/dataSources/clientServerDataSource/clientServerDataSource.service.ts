@@ -1,8 +1,7 @@
-'use strict';
-
 import * as angular from 'angular';
+import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
@@ -20,7 +19,7 @@ export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDa
 }
 
 export interface IDataServiceSearchFunction<TDataType> {
-	(search: string | any): angular.IPromise<TDataType[]>;
+	(search: string | any): Promise<TDataType[]>;
 }
 
 export interface IGetFilterModel<TFilterModelType> {
@@ -103,7 +102,7 @@ export interface IClientServerDataSourceFactory {
 						, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType>;
 }
 
-clientServerDataSourceFactory.$inject = [processorServiceName, __array.serviceName, __object.serviceName, __synchronizedRequests.factoryName];
+clientServerDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
 export function clientServerDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
 												, array: __array.IArrayUtility
 												, object: __object.IObjectUtility
@@ -119,5 +118,5 @@ export function clientServerDataSourceFactory(dataSourceProcessor: IDataSourcePr
 	};
 }
 
-angular.module(moduleName, [__array.moduleName, __object.moduleName, __synchronizedRequests.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, clientServerDataSourceFactory);

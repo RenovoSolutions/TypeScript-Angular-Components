@@ -1,5 +1,3 @@
-'use strict';
-
 import * as angular from 'angular';
 import * as moment from 'moment';
 
@@ -48,17 +46,10 @@ export function localizeStringDates(): ILocalizeStringDates {
 	};
 	function formatDate(date: string, timezone): string {
 		'use strict';
-
-		const utcString: string = 'UTC';
-
 		if (__object.objectUtility.isNullOrEmpty(date)) {
 			return '';
 		}
-		//the assumtion is all dates in the string are UTC
-		if (date.indexOf(utcString) === -1) {
-			date = date + ' ' + utcString; //could have used leftPad here... lol
-		}
-		let momentDate: moment.Moment = moment(date);
+		let momentDate: moment.Moment = moment.tz(date, __date.defaultFormats.dateTimeFormat, __timezones.UTC.momentName);
 		return momentDate.tz(timezone).format(__date.defaultFormats.dateTimeFormat) + ' ' + momentDate.tz(timezone).zoneAbbr();
 
 	}

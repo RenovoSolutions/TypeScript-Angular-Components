@@ -1,71 +1,39 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
+import { Component, Inject, Input, Optional } from '@angular/core';
 
-'use strict';
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
-import './checkbox.css';
+import { defaultThemeToken } from '../componentsDefaultTheme';
 
-import * as angular from 'angular';
+import { InputComponent, baseInputs, baseOutputs } from '../input/input';
+import { FormComponent } from '../form/form';
 
-import { defaultThemeValueName } from '../componentsDefaultTheme';
+@Component({
+	selector: 'rlCheckbox',
+	template: require('./checkbox.html'),
+	inputs: baseInputs,
+	outputs: baseOutputs,
+})
+export class CheckboxComponent extends InputComponent<boolean> {
+	@Input() active: boolean = true;
 
-export const moduleName: string = 'rl.ui.components.checkbox';
-export const componentName: string = 'rlCheckbox';
-export const controllerName: string = 'CheckboxController';
+	useDefaultTheme: boolean;
 
-export interface IToggleParams {
-	value: boolean;
-}
-
-export interface ICheckboxBindings {
-	ngDisabled?: boolean;
-	active?: boolean;
-	onToggle?: {(params: IToggleParams): void}
-}
-
-export class CheckboxController implements ICheckboxBindings {
-	// bindings
-	ngDisabled: boolean;
-	active: boolean;
-	onToggle: {(params: IToggleParams): void}
-
-	ngModel: angular.INgModelController;
-
-	get checked(): boolean {
-		return this.ngModel.$viewValue;
-	}
-
-	set checked(value: boolean) {
-		this.ngModel.$setViewValue(value);
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+			, @Optional() rlForm: FormComponent
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, object, guid);
+		this.inputType = 'checkbox';
+		this.initControl();
+		this.useDefaultTheme = useDefaultTheme;
 	}
 
 	toggle(): void {
-		if (this.active && !this.ngDisabled) {
-			this.checked = !this.checked;
-			this.onToggle({ value: this.checked });
+		if (this.active) {
+			this.setValue(!this.value);
 		}
 	}
-
-	static $inject: string[] = [defaultThemeValueName];
-	constructor(public useDefaultTheme: boolean) {}
-
-	$onInit(): void {
-		this.active = this.active != null ? this.active : true;
-	}
 }
-
-const checkbox: angular.IComponentOptions = {
-	require: { ngModel: 'ngModel' },
-	transclude: true,
-	template: require('./checkbox.html'),
-	controller: controllerName,
-	controllerAs: 'checkbox',
-	bindings: {
-		ngDisabled: '<?',
-		active: '<?',
-		onToggle: '&',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, checkbox)
-	.controller(controllerName, CheckboxController);

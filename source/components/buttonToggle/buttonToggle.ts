@@ -1,62 +1,21 @@
-'use strict';
+import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 
-import * as angular from 'angular';
+import { BaseButtonComponent, baseInputs } from '../button/baseButton';
 
-import { IToggleParams } from '../checkbox/checkbox';
+@Component({
+	selector: 'rlButtonToggle',
+	template: require('./buttonToggle.html'),
+	inputs: baseInputs,
+})
+export class ButtonToggleComponent extends BaseButtonComponent {
+	@Input() value: boolean;
+	@Output() change: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Output() valueChange: EventEmitter<boolean> = this.change;
 
-import { buildButton, ButtonController } from '../button/button';
-
-export const moduleName: string = 'rl.ui.components.buttonToggle';
-export const componentName: string = 'rlButtonToggle';
-export const controllerName: string = 'ButtonToggleController';
-
-export interface IButtonToggleBindings {
-	type: string;
-	size: string;
-	onToggle(param: IToggleParams): void;
-	ngDisabled: boolean;
-}
-
-export interface IButtonToggleController extends IButtonToggleBindings {
-	clicked(): void;
-}
-
-export class ButtonToggleController extends ButtonController implements IButtonToggleController {
-	onToggle: { (param: IToggleParams): void };
-
-	ngModel: angular.INgModelController;
-
-	get checked(): boolean {
-		return this.ngModel.$viewValue;
-	}
-
-	set checked(value: boolean) {
-		this.ngModel.$setViewValue(value);
-	}
-
-	constructor() {
-		super();
-	}
-
-	clicked(): void {
-		if (!this.ngDisabled) {
-			this.checked = !this.checked;
-			this.onToggle({ value: this.checked });
+	toggle(): void {
+		if (!this.disabled) {
+			this.value = !this.value;
+			this.change.emit(this.value);
 		}
 	}
 }
-
-const buttonToggle: angular.IComponentOptions = buildButton({
-	require: { ngModel: '^ngModel' },
-	template: require('./buttonToggle.html'),
-	controller: controllerName,
-	controllerAs: 'buttonToggle',
-	bindings: {
-		onToggle: '&',
-		action: null,
-	},
-});
-
-angular.module(moduleName, [])
-	.component(componentName, buttonToggle)
-	.controller(controllerName, ButtonToggleController);

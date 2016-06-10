@@ -1,8 +1,6 @@
-'use strict';
-
 import { Subject } from 'rxjs';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 

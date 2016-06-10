@@ -1,0 +1,14 @@
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Angular 2 Inputs</a></h3>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
+	<rl-textbox-ng></rl-textbox-ng>
+</div>
+<div>
+	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
+	<div><rl-checkbox-ng [(value)]="input.checked" label="Two-way bound"></rl-checkbox-ng></div>
+	<div><rl-checkbox-ng value="true" label="Initial value"></rl-checkbox-ng></div>
+	<div><rl-checkbox-ng value="false" [active]="false" label="Inactive"></rl-checkbox-ng></div>
+	<div><rl-checkbox-ng disabled="true" label="Disabled"></rl-checkbox-ng></div>
+	<div><rl-checkbox-ng (change)="input.log($event)" label="Output event"></rl-checkbox-ng></div>
+	<div>Value: {{input.checked}}</div>
+</div>

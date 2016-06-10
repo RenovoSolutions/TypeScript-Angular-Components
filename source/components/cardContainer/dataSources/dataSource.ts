@@ -1,5 +1,3 @@
-'use strict';
-
 import { Subject } from 'rxjs';
 
 import { filters } from 'typescript-angular-utilities';

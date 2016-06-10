@@ -1,0 +1,18 @@
+.rl-radio.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f10c"; /*fa-circle-o*/
+	font-size: 1.5em;
+	position: relative;
+	top: .05em;
+}
+
+.rl-radio-selected.default-theme:before {
+	font-family: FontAwesome;
+	content: "\f192"; /*fa-dot-circle-o*/
+	font-size: 1.4em;
+}
+
+.rl-radio.default-theme.disabled:before,
+.rl-radio-selected.default-theme.disabled:before {
+	opacity: 0.6;
+}

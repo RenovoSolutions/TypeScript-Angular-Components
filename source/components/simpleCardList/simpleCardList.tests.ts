@@ -1,82 +1,72 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
+import { SimpleCardListComponent } from './simpleCardList';
 
-'use strict';
-
-import { services } from 'typescript-angular-utilities';
-import test = services.test;
-
-import { moduleName, simpleCard, simpleCardList } from './simpleCardList.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
-import { Subject } from 'rxjs';
-
-interface ICardBehaviorMock {
-	close: Sinon.SinonSpy;
+interface ICardMock {
+	close?: Sinon.SinonSpy;
+	alwaysOpen?: boolean;
 }
 
-describe('SimpleCardListController', () => {
-	let scope: angular.IScope;
-	let list: simpleCardList.SimpleCardListController;
+describe('SimpleCardListComponent', () => {
+	let list: SimpleCardListComponent<any>;
 	let alwaysOpen: boolean;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
+		list = new SimpleCardListComponent();
 	});
 
-	it('should save a list of card behaviors', (): void => {
-		buildController();
+	it('should save a list of cards and set alwaysOpen on them', (): void => {
+		list.alwaysOpen = true;
+		const card: ICardMock = {};
 
-		const behavior: ICardBehaviorMock = {
-			close: sinon.spy(),
-		};
-		list.registerCard(<any>behavior);
+		list.registerCard(<any>card);
 
 		expect(list.cards).to.have.length(1);
-		expect(list.cards[0]).to.equal(behavior);
+		expect(list.cards[0]).to.equal(card);
+		expect(card.alwaysOpen).to.be.true;
 	});
 
-	it('should trigger all cards to close on openCard and return the result', (): void => {
-		buildController();
-		const behavior: ICardBehaviorMock = {
+	it('should trigger all cards to close on openCard and return true if all are successful', (): void => {
+		const card1: ICardMock = {
 			close: sinon.spy(() => true),
 		};
-		list.registerCard(<any>behavior);
+		const card2: ICardMock = {
+			close: sinon.spy(() => true),
+		};
+		list.registerCard(<any>card1);
+		list.registerCard(<any>card2);
 
 		const canOpen: boolean = list.openCard();
-		sinon.assert.calledOnce(behavior.close);
+
+		sinon.assert.calledOnce(card1.close);
+		sinon.assert.calledOnce(card2.close);
 		expect(canOpen).to.be.true;
 	});
 
-	it('should expose changes to alwaysOpen as a stream', (): void => {
-		buildController();
-		const alwaysOpenSpy: Sinon.SinonSpy = sinon.spy();
-		list.alwaysOpenChanges.subscribe(alwaysOpenSpy);
+	it('should return false if at least one card cant open', (): void => {
+		const card1: ICardMock = {
+			close: sinon.spy(() => true),
+		};
+		const cardCantClose: ICardMock = {
+			close: sinon.spy(() => false),
+		};
+		list.registerCard(<any>card1);
+		list.registerCard(<any>cardCantClose);
 
-		list.alwaysOpenChange(true);
+		const canOpen: boolean = list.openCard();
 
-		expect(list.alwaysOpen).to.be.true;
-		sinon.assert.calledOnce(alwaysOpenSpy);
-		sinon.assert.calledWith(alwaysOpenSpy, true);
+		sinon.assert.calledOnce(card1.close);
+		sinon.assert.calledOnce(cardCantClose.close);
+		expect(canOpen).to.be.false;
 	});
 
-	function buildController(): void {
-		let $parse: any = (): Function => {
-			return (): boolean => {
-				return alwaysOpen;
-			};
-		};
+	it('should update alwaysOpen on each card on changes', (): void => {
+		list.alwaysOpen = true;
+		const card: ICardMock = {};
+		list.registerCard(<any>card);
 
-		const $attrs: any = { $addClass: sinon.spy() };
+		list.ngOnChanges({
+			alwaysOpen: <any>{ currentValue: true },
+		});
 
-		let controllerResult: test.IControllerResult<simpleCardList.SimpleCardListController>
-			= test.angularFixture.controllerWithBindings<simpleCardList.SimpleCardListController>(simpleCardList.controllerName, null
-				, { $parse: $parse, $attrs: $attrs });
-
-		scope = controllerResult.scope;
-		list = controllerResult.controller;
-	}
+		expect(card.alwaysOpen).to.be.true;
+	});
 });

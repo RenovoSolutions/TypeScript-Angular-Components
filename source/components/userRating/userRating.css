@@ -27,3 +27,9 @@
 .rating.default-theme .star:hover:before, .rating.default-theme .star:hover~.star:before { color:#ffd288; }
 
 .filled { color:#eec277; }
+
+.rating.default-theme .star.disabled {
+	pointer-events: none;
+	cursor: not-allowed;
+	color: #bbbbbb;
+}

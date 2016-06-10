@@ -1,10 +1,10 @@
-'use strict';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __promise = services.promise;
+import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
+
+import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
 
 import * as bootstrapModalDialog from './bootstrapModalDialog/bootstrapModalDialog.module';
 import * as types from './dialogTypes';
@@ -14,7 +14,7 @@ import {
 	IAutosaveService,
 	IAutosaveServiceFactory,
 } from '../autosave/autosave.service';
-import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
 
 export { bootstrapModalDialog };
@@ -38,7 +38,7 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 	constructor(private dialog: types.IDialogImplementation<TDialogSettings>
 			, private $rootScope: angular.IRootScopeService
 			, private autosaveFactory: IAutosaveServiceFactory
-			, private promise: __promise.IPromiseUtility
+			, private promise: IPromiseUtility
 			, private notification: __notification.INotificationService
 			, private formService: IFormService) { }
 
@@ -100,8 +100,8 @@ export class DialogService<TDialogSettings> implements IDialogService<TDialogSet
 			dialogInstance.close = instance.close;
 			dialogInstance.dismiss = instance.dismiss;
 
-			scope.$save = (): angular.IPromise<void> | boolean => { return this.autosave.validateAndSave(this.data); };;
-			scope.$saveAndClose = (): angular.IPromise<void> | boolean => {
+			scope.$save = (): Promise<void> | boolean => { return this.autosave.validateAndSave(this.data); };;
+			scope.$saveAndClose = (): Promise<void> | boolean => {
 				let promise: any = scope.$save();
 				if (_.isBoolean(promise) && promise) {
 					instance.close();
@@ -142,7 +142,7 @@ export interface IDialogServiceProvider<TDialogSettings> extends angular.IServic
 	$get(bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
 		, $rootScope: angular.IRootScopeService
 		, autosaveFactory: IAutosaveServiceFactory
-		, promise: __promise.IPromiseUtility
+		, promise: IPromiseUtility
 		, notification: __notification.INotificationService
 		, formService: IFormService): IDialogService<TDialogSettings>;
 }
@@ -157,7 +157,7 @@ export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider
 		$get: (bootstrapModalDialog: bootstrapModalDialog.IBootstrapModalDialogService
 			, $rootScope: angular.IRootScopeService
 			, autosaveFactory: IAutosaveServiceFactory
-			, promise: __promise.IPromiseUtility
+			, promise: IPromiseUtility
 			, notification: __notification.INotificationService
 			, formService: IFormService): IDialogService<TDialogSettings> => {
 			let dialogImplementation: types.IDialogImplementation<TDialogSettings> = this.dialogImplementation != null
@@ -166,9 +166,9 @@ export function dialogServiceProvider<TDialogSettings>(): IDialogServiceProvider
 			return new DialogService<TDialogSettings>(dialogImplementation, $rootScope, autosaveFactory, promise, notification, formService);
 		},
 	};
-	provider.$get.$inject = [bootstrapModalDialog.serviceName, '$rootScope', autosaveFactoryName, __promise.serviceName, __notification.serviceName, formServiceName];
+	provider.$get.$inject = [bootstrapModalDialog.serviceName, '$rootScope', autosaveFactoryName, promiseServiceName, downgrade.notificationServiceName, formServiceName];
 	return provider;
 }
 
-angular.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule, __notification.moduleName, formModule])
+angular.module(moduleName, [bootstrapModalDialog.moduleName, autosaveModule, downgrade.moduleName, promiseModuleName, formModule])
 	.provider(serviceName, dialogServiceProvider);

@@ -1,13 +1,6 @@
-/// <reference path='../../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../../../typings/lodash/lodash.d.ts' />
-
-'use strict';
-
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
+import fakeAsync = test.fakeAsync;
 import genericSearchFilter = services.genericSearchFilter;
 
 import {
@@ -45,17 +38,15 @@ describe('clientServerDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(genericSearchFilter.moduleName);
 		angular.mock.module(dataSourcesModuleName);
 		angular.mock.module(moduleName);
-		angular.mock.module(test.moduleName);
 		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', genericSearchFilter.factoryName, '$q');
+			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', downgrade.genericSearchFilterServiceName, '$q');
 		clientServerDataSourceFactory = dependencies[factoryName];
 		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
 		$rootScope = dependencies.$rootScope;
 		$q = dependencies.$q;
-		searchFilter = dependencies[genericSearchFilter.factoryName].getInstance();
+		searchFilter = dependencies[downgrade.genericSearchFilterServiceName].getInstance();
 
 		dataService = {
 			get: test.mock.promise([1, 2]),
@@ -74,22 +65,22 @@ describe('clientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		});
 
-		it('should call data processor to process the data when refreshing', (): void => {
+		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
 			test.mock.flushAll(dataService);
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
-		});
+		}));
 
-		it('should make a request to reload the data when the search text changes', (): void => {
+		it('should make a request to reload the data when the search text changes', fakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.refresh();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService);
+			test.mock.flushAll(dataService)
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);
@@ -108,7 +99,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);
-		});
+		}));
 
 		it('should clear the data set without making a request if no search is provided', (): void => {
 			searchFilter.searchText = '';
@@ -126,38 +117,6 @@ describe('clientServerDataSource', () => {
 			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
 
 			expect(source.dataSet).to.be.null;
-		});
-
-		it('should accept the results from only the most recent request', (): void => {
-			let firstRequestData: number[] = [1, 2];
-			let secondRequestData: number[] = [3, 4];
-			let firstRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
-			let secondRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
-
-			let get: Sinon.SinonSpy = sinon.spy((): angular.IPromise<number[]> => { return firstRequest.promise; });
-
-			source = <any>clientServerDataSourceFactory.getInstance(get, searchFilter);
-			searchFilter.searchText = 'search';
-			source.reload();
-
-			sinon.assert.calledOnce(get);
-
-			get = sinon.spy((): angular.IPromise<number[]> => { return secondRequest.promise; });
-
-			source.getDataSet = get;
-			source.reload();
-
-			sinon.assert.calledOnce(get);
-
-			firstRequest.resolve(firstRequestData);
-			$rootScope.$digest();
-
-			expect(source.rawDataSet).to.not.exist;
-
-			secondRequest.resolve(secondRequestData);
-			$rootScope.$digest();
-
-			expect(source.rawDataSet).to.equal(secondRequestData);
 		});
 	});
 
@@ -177,7 +136,7 @@ describe('clientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		});
 
-		it('should make a request to reload the data when the filter model changes', (): void => {
+		it('should make a request to reload the data when the filter model changes', fakeAsync((): void => {
 			filterModel = { prop: '123' };
 			source.refresh();
 
@@ -202,7 +161,7 @@ describe('clientServerDataSource', () => {
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);
-		});
+		}));
 
 		it('should clear the data set without making a request if filter model is invalid', (): void => {
 			filterModel = { prop: null };

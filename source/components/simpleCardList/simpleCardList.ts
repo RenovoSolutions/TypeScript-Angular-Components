@@ -1,59 +1,37 @@
-'use strict';
+import { Component, Input, SimpleChange, OnChanges } from '@angular/core';
+import { every, each } from 'lodash';
 
-import * as angular from 'angular';
-import * as _ from 'lodash';
-import { Subject, Subscription } from 'rxjs';
+import { SimpleCardComponent } from './simpleCard';
 
-import { ISimpleCardBehavior } from './simpleCard';
-
-export var directiveName: string = 'rlSimpleCardList';
-export var controllerName: string = 'SimpleCardListController';
-
-export interface ISimpleCardListController {
-	alwaysOpenChanges: Subject<boolean>;
-	registerCard(behavior: ISimpleCardBehavior): void;
-	openCard(): boolean;
+export interface IListChanges {
+	[key: string]: SimpleChange;
+	alwaysOpen: SimpleChange;
 }
 
-export interface ISimpleCardListAttributes extends angular.IAttributes {
-	alwaysOpen: string;
-}
+@Component({
+	selector: 'rlSimpleCardList,[rlSimpleCardList]',
+	template: `
+			<span class="card-list">
+				<ng-content></ng-content>
+			</span>`,
+})
+export class SimpleCardListComponent<T> implements OnChanges {
+	@Input() alwaysOpen: boolean;
 
-export class SimpleCardListController implements ISimpleCardListController {
-	// public
-	alwaysOpenChanges: Subject<boolean>;
+	cards: SimpleCardComponent<T>[] = [];
 
-	alwaysOpen: boolean;
-	cards: ISimpleCardBehavior[] = [];
-
-	static $inject: string[] = ['$scope', '$attrs', '$parse'];
-	constructor($scope: angular.IScope
-		, $attrs: ISimpleCardListAttributes
-		, $parse: angular.IParseService) {
-		this.alwaysOpenChanges = new Subject<boolean>();
-		$scope.$watch((): boolean => { return $parse($attrs.alwaysOpen)($scope); }, this.alwaysOpenChange.bind(this));
-
-		$attrs.$addClass('card-list');
-	}
-
-	registerCard(behavior: ISimpleCardBehavior): void {
-		this.cards.push(behavior);
+	registerCard(card: SimpleCardComponent<T>): void {
+		card.alwaysOpen = this.alwaysOpen;
+		this.cards.push(card);
 	}
 
 	openCard(): boolean {
-		return _.every(this.cards, (card: ISimpleCardBehavior): boolean => card.close());
+		return every(this.cards, card => card.close());
 	}
 
-	alwaysOpenChange(value: boolean): void {
-		this.alwaysOpen = value;
-		this.alwaysOpenChanges.next(value);
+	ngOnChanges(changes: IListChanges): void {
+		if (changes.alwaysOpen) {
+			each(this.cards, card => { card.alwaysOpen = changes.alwaysOpen.currentValue; });
+		}
 	}
-}
-
-export function simpleCardList(): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'AE',
-		controller: controllerName,
-	};
 }

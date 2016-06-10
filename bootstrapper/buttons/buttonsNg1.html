@@ -1,0 +1,62 @@
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/button/buttons.md">Buttons</a></h3>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/button/button.md">rl-button</a>:
+	</div>
+	<div class="col-xs-11">
+		<rl-button action="button.action('Simple button')">Simple button</rl-button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonAsync/buttonAsync.md">rl-button-async</a>:
+	</div>
+	<div class="col-xs-11">
+		<rl-button-async action="button.wait(button.action, 'Async button')">Async button</rl-button-async>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonLink/buttonLink.md">rl-button-link</a>:
+	</div>
+	<div class="col-xs-11">
+		<rl-button-link link="http://www.google.com">Link button</rl-button-link>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rl-button-toggle</a>:
+	</div>
+	<div class="col-xs-11">
+		<rl-button-toggle ng-model="button.toggled" on-toggle="button.action('Toggle button')" >Toggle button</rl-button-toggle>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/longClickButton/longClickButton.md">rl-long-click-button</a>:
+	</div>
+	<div class="col-xs-11">
+		<rl-long-click-button action="button.wait(button.action, 'Long click button')" warning="Warning">Long click button</rl-long-click-button>
+		<rl-long-click-button action="button.wait(button.action, 'Long click button')" text="Old Long click button"></rl-long-click-button>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonSubmit/buttonSubmit.md">rl-button-submit</a>:
+	</div>
+	<div class="col-xs-11">
+		<form ng-submit="button.action('Submit button')">
+			<rl-button-submit>Submit button</rl-button-submit>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-xs-1 form-control-static">
+		<a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonSubmit/buttonSubmit.md">rl-button-submit with mutiple types.</a>:
+	</div>
+	<div class="col-xs-11">
+		<form ng-submit="button.action('Submit button')">
+			<rl-button-submit type="danger block">Submit button</rl-button-submit>
+		</form>
+	</div>
+</div>

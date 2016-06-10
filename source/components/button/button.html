@@ -1,3 +1,6 @@
-<button type="button" class="btn {{::button.types}} {{::button.configuredSize}}" ng-click="button.action()" ng-disabled="button.ngDisabled">
-	<span ng-transclude></span>
+<button type="button"
+		class="btn {{configuredTypes}} {{configuredSize}}"
+		(click)="trigger.emit($event)"
+		[disabled]="disabled">
+	<ng-content></ng-content>
 </button>

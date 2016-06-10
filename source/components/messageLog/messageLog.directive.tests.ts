@@ -1,27 +1,21 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
-
-'use strict';
-
-import { services, filters } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
-import __isEmpty = filters.isEmpty;
 
 import {
-moduleName,
-controllerName,
-MessageLogController,
-DeletePermissions,
-EditPermissions,
-IUser
+	moduleName,
+	factoryName,
+	controllerName,
+	MessageLogController,
+	DeletePermissions,
+	EditPermissions,
+	IUser
 } from './messageLog.module';
+import { defaultThemeValueName } from '../componentsDefaultTheme';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import { IAutosaveDialogSettings } from '../../services/dialog/dialogTypes';
+import { serviceName as dialogServiceName, IAutosaveDialogSettings } from '../../services/dialog/dialog.service';
 
 interface IMockMessageLogService {
 	visibleMessages: number[];
@@ -48,7 +42,7 @@ describe('messageLog', () => {
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-		angular.mock.module(__isEmpty.moduleName);
+		angular.mock.module(downgrade.moduleName);
 
 		dialog = {
 			openForm: sinon.spy(),
@@ -72,10 +66,11 @@ describe('messageLog', () => {
 			},
 		};
 
-		test.angularFixture.mock({
-			messageLog: messageLogFactory,
-			dialog: dialog,
-		});
+		let mocks = {};
+		mocks[factoryName] = messageLogFactory;
+		mocks[dialogServiceName] = dialog;
+		mocks[defaultThemeValueName] = false;
+		test.angularFixture.mock(mocks);
 	});
 
 	describe('MessageLogController', () => {

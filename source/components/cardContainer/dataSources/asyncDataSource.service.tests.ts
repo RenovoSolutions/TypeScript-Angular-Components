@@ -1,12 +1,8 @@
-/// <reference path='../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../typings/chaiAssertions.d.ts' />
+import * as _ from 'lodash';
 
-'use strict';
-
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
+import fakeAsync = test.fakeAsync;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
@@ -38,15 +34,12 @@ describe('asyncDataSource', () => {
 	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(__array.moduleName);
-		angular.mock.module(__synchronizedRequests.moduleName);
 		angular.mock.module(moduleName);
-		angular.mock.module(test.moduleName);
 
 		var services: any = test.angularFixture.inject('$rootScope'
 													, '$q'
-													, __array.serviceName
-													, __synchronizedRequests.factoryName);
+													, downgrade.arrayServiceName
+													, downgrade.synchronizedRequestsServiceName);
 
 		$rootScope = services.$rootScope;
 		$q = services.$q;
@@ -57,8 +50,8 @@ describe('asyncDataSource', () => {
 
 		source = new AsyncDataSource<number>(dataService.get
 											, <any>dataSourceProcessor
-											, services[__array.serviceName]
-											, services[__synchronizedRequests.factoryName]);
+											, services[downgrade.arrayServiceName]
+											, services[downgrade.synchronizedRequestsServiceName]);
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
@@ -69,7 +62,7 @@ describe('asyncDataSource', () => {
 		source.processData = sinon.spy();
 	});
 
-	it('should call make a request to get the data when reload is called', (): void => {
+	it('should call make a request to get the data when reload is called', fakeAsync((): void => {
 		source.reload();
 
 		sinon.assert.calledOnce(dataService.get);
@@ -77,52 +70,20 @@ describe('asyncDataSource', () => {
 		test.mock.flushAll(dataService);
 
 		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
-	});
+	}));
 
-	it('should fire changed, reloaded, and redrawing events when the reload completeds', (): void => {
+	it('should fire changed, reloaded, and redrawing events when the reload completeds', fakeAsync((): void => {
 		source.reload();
 		test.mock.flushAll(dataService);
 		sinon.assert.calledOnce(changedSpy);
 		sinon.assert.calledOnce(reloadedSpy);
 		sinon.assert.calledOnce(redrawingSpy);
-	});
+	}));
 
 	it('should allow the consumer to specify params for the request', (): void => {
 		(<any>source).getParams = sinon.spy((): number => { return 4; });
 		source.reload();
 		sinon.assert.calledOnce(dataService.get);
 		sinon.assert.calledWith(dataService.get, 4);
-	});
-
-	it('should accept the results from only the most recent request', (): void => {
-		let firstRequestData: number[] = [1, 2];
-		let secondRequestData: number[] = [3, 4];
-		let firstRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
-		let secondRequest: angular.IDeferred<number[]> = $q.defer<number[]>();
-
-		let get: Sinon.SinonSpy = sinon.spy((): angular.IPromise<number[]> => { return firstRequest.promise; });
-
-		source.getDataSet = get;
-
-		source.reload();
-
-		sinon.assert.calledOnce(get);
-
-		get = sinon.spy((): angular.IPromise<number[]> => { return secondRequest.promise; });
-
-		source.getDataSet = get;
-		source.reload();
-
-		sinon.assert.calledOnce(get);
-
-		firstRequest.resolve(firstRequestData);
-		$rootScope.$digest();
-
-		expect(source.rawDataSet).to.not.exist;
-
-		secondRequest.resolve(secondRequestData);
-		$rootScope.$digest();
-
-		expect(source.rawDataSet).to.equal(secondRequestData);
 	});
 });

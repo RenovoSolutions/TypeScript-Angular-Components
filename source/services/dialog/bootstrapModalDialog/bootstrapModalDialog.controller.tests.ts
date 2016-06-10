@@ -1,18 +1,10 @@
-/// <reference path='../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../typings/chaiAssertions.d.ts' />
-
-'use strict';
-
 import { services } from 'typescript-angular-utilities';
+import test = services.test;
 
 import { moduleName, controllerName, serviceName } from './bootstrapModalDialog.module';
 
 import * as angular from 'angular';
 import 'angular-mocks';
-
-import test = services.test;
 
 interface IBootstrapModalDialogMock {
 	modalClosing: Sinon.SinonSpy;

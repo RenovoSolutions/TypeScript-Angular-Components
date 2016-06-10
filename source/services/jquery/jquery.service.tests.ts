@@ -1,11 +1,5 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
-
-'use strict';
-
 import { services } from 'typescript-angular-utilities';
+import __test = services.test;
 
 import {
 	moduleName,
@@ -15,8 +9,6 @@ import {
 
 import * as angular from 'angular';
 import 'angular-mocks';
-
-import __test = services.test;
 
 describe('jqueryUtility', () => {
 	var jqueryUtility: IJQueryUtility;

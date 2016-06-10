@@ -1,7 +1,5 @@
-'use strict';
-
 import * as angular from 'angular';
-import { services } from 'typescript-angular-utilities';
+import { downgrade } from 'typescript-angular-utilities';
 
 import * as filterOption from './filterOption/filterOption';
 import * as modeFilterGroup from './modeFilterGroup/modeFilterGroup.service';
@@ -22,7 +20,7 @@ export * from './filterGroup.service';
 export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
 
 angular.module(moduleName, [
-	services.object.moduleName,
+	downgrade.moduleName,
 
 	filterOption.moduleName,
 	modeFilterGroup.moduleName,

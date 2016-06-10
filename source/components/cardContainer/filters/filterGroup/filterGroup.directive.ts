@@ -1,11 +1,7 @@
 // /// <reference path='../../../../../typings/commonjs.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
 
 import { IDataSource } from '../../dataSources/dataSources.module';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';

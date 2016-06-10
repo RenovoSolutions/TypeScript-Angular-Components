@@ -1,9 +1,7 @@
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
 import {
@@ -12,7 +10,7 @@ import {
 	IAutosaveActionService,
 } from '../autosaveAction/autosaveAction.service';
 import * as triggers from './triggers/triggers.service';
-import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service';
+import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
 
 export { triggers };
@@ -22,12 +20,12 @@ export var factoryName: string = 'autosaveFactory';
 
 export interface IAutosaveService {
 	autosave(...data: any[]): boolean;
-	validateAndSave(...data: any[]): angular.IPromise<void> | boolean;
+	validateAndSave(...data: any[]): Promise<void> | boolean;
 	contentForm: IFormValidator;
 }
 
 export interface IAutosaveServiceOptions {
-	save: { (...data: any[]): angular.IPromise<void> };
+	save: { (...data: any[]): Promise<void> };
 	contentForm?: IFormValidator;
 	debounceDuration?: number;
 	setChangeListener?: { (callback: triggers.IListener): triggers.IClearListener };
@@ -38,7 +36,7 @@ export interface IAutosaveServiceOptions {
 class AutosaveService implements IAutosaveService {
 	private triggerService: triggers.ITriggerService;
 	contentForm: IFormValidator;
-	save: { (...data: any[]): angular.IPromise<void> };
+	save: { (...data: any[]): Promise<void> };
 	saveWhenInvalid: boolean;
 
 	constructor(private notification: __notification.INotificationService
@@ -56,7 +54,7 @@ class AutosaveService implements IAutosaveService {
 	}
 
 	autosave: { (...data: any[]): boolean } = (...data: any[]): boolean => {
-		let result: boolean | angular.IPromise<void> = this.validateAndSave(...data);
+		let result: boolean | Promise<void> = this.validateAndSave(...data);
 		if (_.isBoolean(result)) {
 			return result;
 		} else {
@@ -65,13 +63,13 @@ class AutosaveService implements IAutosaveService {
 		}
 	}
 
-	validateAndSave(...data: any[]): angular.IPromise<void> | boolean {
+	validateAndSave(...data: any[]): Promise<void> | boolean {
 		if (this.contentForm.$pristine) {
 			return true;
 		}
 
 		if (this.contentForm.$valid || this.saveWhenInvalid) {
-			let promise: angular.IPromise<void> = this.save(...data);
+			let promise: Promise<void> = this.save(...data);
 
 			if (!_.isUndefined(promise)) {
 				return promise.then((): void => {
@@ -113,7 +111,7 @@ export interface IAutosaveServiceFactory {
 	getInstance(options: IAutosaveServiceOptions): IAutosaveService;
 }
 
-autosaveServiceFactory.$inject = [__notification.serviceName, autosaveActionServiceName, triggers.factoryName, formServiceName];
+autosaveServiceFactory.$inject = [downgrade.notificationServiceName, autosaveActionServiceName, triggers.factoryName, formServiceName];
 function autosaveServiceFactory(notification: __notification.INotificationService
 							, autosaveService: IAutosaveActionService
 							, triggerServiceFactory: triggers.ITriggerServiceFactory
@@ -126,5 +124,5 @@ function autosaveServiceFactory(notification: __notification.INotificationServic
 	};
 }
 
-angular.module(moduleName, [__notification.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
+angular.module(moduleName, [downgrade.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
 	.factory(factoryName, autosaveServiceFactory);

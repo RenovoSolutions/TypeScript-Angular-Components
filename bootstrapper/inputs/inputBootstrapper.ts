@@ -1,4 +1,5 @@
 import * as angular from 'angular';
+import * as _ from 'lodash';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -77,6 +78,10 @@ class InputTestController {
 		console.log(this.date.format(format));
 		console.log(this.date2.format(format));
 	}
+
+	log(message: string): void {
+		console.log(message);
+	}
 }
 
 InputRoute.$inject = ['$stateProvider'];
@@ -85,6 +90,16 @@ function InputRoute($stateProvider) {
 		.state('inputs', {
 			url: '/inputs',
 			template: require('./inputs.html'),
+		})
+		.state('inputs.ng1', {
+			url: '/ng1',
+			template: require('./inputsNg1.html'),
+			controller: 'InputTestController',
+			controllerAs: 'input',
+		})
+		.state('inputs.ng2', {
+			url: '/ng2',
+			template: require('./inputsNg2.html'),
 			controller: 'InputTestController',
 			controllerAs: 'input',
 		});

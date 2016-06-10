@@ -1,10 +1,7 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import * as ng from 'angular';
+import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform.transform;
 
@@ -177,7 +174,7 @@ messageLog.$inject = [
 	'$interpolate',
 	jqueryServiceName,
 	templateLoaderService,
-	__object.serviceName,
+	downgrade.objectServiceName,
 ];
 export function messageLog($interpolate: angular.IInterpolateService,
 	jquery: IJQueryUtility,

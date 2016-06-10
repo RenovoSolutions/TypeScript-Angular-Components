@@ -1,41 +1,23 @@
-'use strict';
+import { Component, Inject, Input } from '@angular/core';
 
-import * as ng from 'angular';
+import { defaultThemeToken } from '../componentsDefaultTheme';
 
-import { RadioGroup, RadioGroupController } from './radioGroup';
+import { RadioGroupComponent } from './radioGroup';
 
-export let componentName: string = 'rlRadio';
-export let controllerName: string = 'RadioController';
+@Component({
+	selector: 'rlRadio',
+	template: require('./radio.html'),
+})
+export class RadioComponent<T> {
+	@Input() label: string;
+	@Input() option: T;
 
-export class RadioController {
-	radioGroup: RadioGroup;
-	groupController: RadioGroupController;
-	ngModel: ng.INgModelController;
+	radioGroup: RadioGroupComponent<T>;
+	useDefaultTheme: boolean;
 
-	$onInit(): void {
-		if (this.groupController != null) {
-			this.radioGroup = this.groupController.group;
-		} else {
-			this.radioGroup = new RadioGroup(this.ngModel);
-		}
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+			, radioGroup: RadioGroupComponent<T>) {
+		this.radioGroup = radioGroup;
+		this.useDefaultTheme = useDefaultTheme;
 	}
 }
-
-export let radio: ng.IComponentOptions = {
-	require: {
-		groupController: '?^^rlRadioGroup',
-		ngModel: '?ngModel',
-	},
-	transclude: true,
-	template: `
-		<label>
-			<input id="radio" type="radio" name="{{::radio.radioGroup.name}}" ng-model="radio.radioGroup.selection" ng-value="::radio.value" />
-			<span ng-transclude></div>
-		</label>
-	`,
-	controller: controllerName,
-	controllerAs: 'radio',
-	bindings: {
-		value: '<',
-	},
-};

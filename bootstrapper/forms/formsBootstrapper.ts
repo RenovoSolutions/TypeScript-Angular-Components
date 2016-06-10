@@ -36,8 +36,16 @@ function FormRoute($stateProvider) {
 		.state('forms', {
 			url: '/forms',
 			template: require('./forms.html'),
+		})
+		.state('forms.ng1', {
+			url: '/ng1',
+			template: require('./formsNg1.html'),
 			controller: 'FormTestController',
 			controllerAs: 'forms',
+		})
+		.state('forms.ng2', {
+			url: '/ng2',
+			template: '<ts-forms-bootstrapper></ts-forms-bootstrapper>',
 		});
 }
 

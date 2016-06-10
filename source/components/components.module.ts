@@ -1,22 +1,20 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import * as busy from './busy/busy';
-import * as button from './button/button';
-import * as buttonAsync from './buttonAsync/buttonAsync';
-import * as buttonLink from './buttonLink/buttonLink';
-import * as buttonSubmit from './buttonSubmit/buttonSubmit';
-import * as buttonToggle from './buttonToggle/buttonToggle';
+import * as busy from './busy/busy.ng1';
+import * as button from './button/button.ng1';
+import * as buttonAsync from './buttonAsync/buttonAsync.ng1';
+import * as buttonLink from './buttonLink/buttonLink.ng1';
+import * as buttonSubmit from './buttonSubmit/buttonSubmit.ng1';
+import * as buttonToggle from './buttonToggle/buttonToggle.ng1';
 import * as cardContainer from './cardContainer/cardContainer.module';
-import * as checkbox from './checkbox/checkbox';
-import * as commaList from './commaList/commaList';
-import * as dateTime from './dateTime/dateTime';
+import * as checkbox from './checkbox/checkbox.ng1';
+import * as commaList from './commaList/commaList.ng1';
+import * as dateTime from './dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog';
-import * as form from './form/form';
+import * as form from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
-import * as input from './input/input';
+import * as input from './input/input.ng1';
 import * as lazyLoad from './lazyLoad/lazyLoad';
 import * as longClickButton from './longClickButton/longClickButton';
 import * as messageLog from './messageLog/messageLog.module';
@@ -24,21 +22,21 @@ import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as radio from './radio/radio.module';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as richTextEditor from './richTextEditor/richTextEditor';
-import * as select from './select/select';
+import * as select from './select/select.ng1';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
-import * as spinner from './spinner/spinner';
+import * as spinner from './spinner/spinner.ng1';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as tabs from './tabs/tabs.module';
-import * as templateRenderer from './templateRenderer/templateRenderer';
-import * as textarea from './textarea/textarea';
-import * as textbox from './textbox/textbox';
+import * as templateRenderer from './templateRenderer/templateRenderer.ng1';
+import * as textarea from './textarea/textarea.ng1';
+import * as textbox from './textbox/textbox.ng1';
 import * as typeahead from './typeahead/typeahead';
 import * as typeaheadList from './typeaheadList/typeaheadList';
-import * as userRating from './userRating/userRating';
+import * as userRating from './userRating/userRating.ng1';
 import * as validationGroup from './validationGroup/validationGroup';
 
-import { defaultThemeValue, defaultThemeValueName } from './componentsDefaultTheme';
+import { defaultThemeValueName } from './componentsDefaultTheme';
 
 export {
 	defaultThemeValueName,
@@ -116,5 +114,4 @@ angular.module(moduleName, [
 	typeaheadList.moduleName,
 	userRating.moduleName,
 	validationGroup.moduleName,
-])
-	.value(defaultThemeValueName, defaultThemeValue);
+]);

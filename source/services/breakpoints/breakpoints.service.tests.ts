@@ -1,14 +1,3 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
-
-/// <reference path='breakpoints.module.ts' />
-/// <reference path='breakpoints.service.ts' />
-/// <reference path='breakpoint.ts' />
-
-'use strict';
-
 import {
 	IBreakpointService,
 	xs,

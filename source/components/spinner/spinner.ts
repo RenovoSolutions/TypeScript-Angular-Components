@@ -1,84 +1,106 @@
-// /// <reference path='../../../typings/bootstrap-touchspin/bootstrap-touchspin.d.ts' />
-// /// <reference path='../../../typings/jquery/jquery.d.ts' />
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
+import { Component, Optional, Inject, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange } from '@angular/core';
+import * as $ from 'jquery';
 import '../../../libraries/bootstrap-touchspin/index';
 
-
-import * as angular from 'angular';
-
 import { services } from 'typescript-angular-utilities';
-
-import __string = services.string;
-import __number = services.number;
 import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
+import __number = services.number;
+import __string = services.string;
 
-import { buildInput, InputController, moduleName as inputModule, IInputAttributes } from '../input/input';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
-
-import { INgModelValidator } from '../../types/formValidators';
-import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
-
-import { IChangeObject } from '../../types/changes';
-
-export const moduleName: string = 'rl.ui.components.spinner';
-export const componentName: string = 'rlSpinner';
-export const controllerName: string = 'SpinnerController';
+import { ValidatedInputComponent, validationInputs, baseOutputs, IInputChanges } from '../input/validationInput';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service';
+import { FormComponent } from '../form/form';
 
 export const defaultMaxValue: number = 100000000000000000000;
 
-export interface ISpinnerBindings {
-	min: number;
-	max: number;
-	step: number;
-	decimals: number;
-	prefix: string;
-	postfix: string;
-	roundToStep: boolean;
-	ngDisabled: boolean;
-	spinnerId: string;
-	name: string;
+export interface ISpinnerChanges extends IInputChanges {
+	disabled: SimpleChange;
 }
 
-export interface ISpinnerChanges {
-	ngDisabled: IChangeObject<boolean>;
-}
+@Component({
+	selector: 'rlSpinner',
+	template: require('./spinner.html'),
+	inputs: validationInputs,
+	outputs: baseOutputs,
+	providers: [ComponentValidator],
+})
+export class SpinnerComponent extends ValidatedInputComponent<number> implements AfterViewInit, OnChanges, AfterViewChecked {
+	@Input() min: number;
+	@Input() max: number;
+	@Input() step: number;
+	@Input() decimals: number;
+	@Input() prefix: string;
+	@Input() postfix: string;
+	@Input() roundToStep: boolean;
+	@Input() spinnerId: string;
 
-interface ISpinnerScope extends angular.IScope {
-	spinner: SpinnerController;
-}
+	private number: __number.INumberUtility;
+	private string: __string.IStringUtility;
+	private elementRef: ElementRef;
+	private rendering: boolean = false;
+	private touchspin: JQuery;
 
-export class SpinnerController extends InputController {
-	min: number;
-	max: number;
-	step: number;
-	decimals: number;
-	prefix: string;
-	postfix: string;
-	roundToStep: boolean;
-	ngDisabled: boolean;
-	spinnerId: string;
-
-	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName, '$element', '$timeout'];
-	constructor($scope: angular.IScope
-			, $attrs: IInputAttributes
-			, componentValidatorFactory: IComponentValidatorFactory
-			, private $element: angular.IAugmentedJQuery
-			, private $timeout: angular.ITimeoutService) {
-		super($scope, $attrs, componentValidatorFactory);
-
+	constructor(elementRef: ElementRef
+			, @Inject(__number.numberToken) number: __number.INumberUtility
+			, @Inject(__string.stringToken) string: __string.IStringUtility
+			, @Optional() rlForm: FormComponent
+			, componentValidator: ComponentValidator
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__array.arrayToken) array: __array.IArrayUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'spinner';
+		this.number = number;
+		this.string = string;
+		this.elementRef = elementRef;
 	}
 
-	$postLink(): void {
-		this.setDisabled(this.ngDisabled);
+	ngAfterViewInit(): void {
+		super.ngAfterViewInit();
+		this.value = this.value || 0;
+		this.setDisabled(this.disabled);
+		this.control.valueChanges.subscribe(value => {
+			const roundedValue: number = this.round(value);
+			if (value !== roundedValue) {
+				this.control.updateValue(roundedValue);
+				this.value = roundedValue;
+			}
+
+			if (this.touchspin) {
+				this.touchspin.val(roundedValue != null ? roundedValue.toString() : '');
+			}
+		});
 	}
 
-	$onChanges(changes: ISpinnerChanges): void {
-		if (changes.ngDisabled) {
-			this.setDisabled(changes.ngDisabled.currentValue);
+	ngOnChanges(changes: ISpinnerChanges): void {
+		super.ngOnChanges(changes);
+		if (changes.disabled) {
+			this.setDisabled(changes.disabled.currentValue);
+		}
+	}
+
+	ngAfterViewChecked(): void {
+		const spinnerInput: JQuery = $(this.elementRef.nativeElement).find('input.spinner');
+		if (this.rendering && spinnerInput.length > 0) {
+			this.touchspin = spinnerInput.TouchSpin({
+				min: (this.min != null ? this.min : 0),
+				max: (this.max != null ? this.max : defaultMaxValue),
+				step: this.step,
+				prefix: this.prefix,
+				postfix: this.postfix,
+				decimals: this.decimals,
+				initval: this.value,
+				forcestepdivisibility: this.roundToStep ? 'round' : 'none',
+			});
+
+			this.touchspin.on('change', (): void => {
+				const spinValue: string = this.touchspin.val();
+				const valueAsNumber: number = this.string.toNumber(spinValue);
+				this.setValue(this.round(valueAsNumber));
+			});
+			this.rendering = false;
 		}
 	}
 
@@ -91,75 +113,11 @@ export class SpinnerController extends InputController {
 		return num;
 	}
 
-	private unbindWatches: Function;
-
-	private setDisabled(disabled: boolean) {
-		if (disabled) {
-			if (_.isFunction(this.unbindWatches)) {
-				this.unbindWatches();
-			}
+	private setDisabled(disabled: boolean): void {
+		if (!disabled) {
+			this.rendering = true;
 		} else {
-			// Initialize the spinner after $timeout to give angular a chance initialize ngModel
-			this.$timeout((): void => {
-				const touchspin: JQuery = this.$element.find('input.spinner').TouchSpin({
-					min: (this.min != null ? this.min : 0),
-					max: (this.max != null ? this.max : defaultMaxValue),
-					step: this.step,
-					prefix: this.prefix,
-					postfix: this.postfix,
-					decimals: this.decimals,
-					initval: this.ngModel.$viewValue,
-					forcestepdivisibility: this.roundToStep ? 'round' : 'none',
-				});
-
-				touchspin.on('change', (): void => {
-					this.$scope.$apply((): void => {
-						let spinValue: string = touchspin.val();
-						this.ngModel.$setViewValue(__string.stringUtility.toNumber(spinValue));
-					});
-				});
-
-				let unbindViewWatch = this.$scope.$watch((): void => {
-					return this.ngModel.$viewValue;
-				}, (newValue: any): void => {
-					touchspin.val(newValue != null ? newValue.toString() : '');
-				});
-
-				// round the model value when it gets set
-				// this is different from parsers and formatters because we want to update the actual model value,
-				// not just display a formatted value.
-				let unbindModelWatch = this.$scope.$watch((): void => {
-					return this.ngModel.$modelValue;
-				}, (newModel: any): void => {
-					this.ngModel.$modelValue = this.round(newModel);
-				});
-
-				this.unbindWatches = (): void => {
-					unbindViewWatch();
-					unbindModelWatch();
-				}
-			});
+			this.touchspin = null;
 		}
 	}
 }
-
-const spinner: angular.IComponentOptions = buildInput({
-	template: require('./spinner.html'),
-	controller: controllerName,
-	controllerAs: 'spinner',
-	bindings: {
-		min: '<?',
-		max: '<?',
-		step: '<?',
-		decimals: '<?',
-		prefix: '@',
-		postfix: '@',
-		roundToStep: '<?',
-		ngDisabled: '<?',
-		spinnerId: '@',
-	},
-});
-
-angular.module(moduleName, [inputModule])
-	.component(componentName, spinner)
-	.controller(controllerName, SpinnerController);

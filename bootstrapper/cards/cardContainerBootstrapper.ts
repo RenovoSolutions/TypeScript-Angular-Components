@@ -92,8 +92,16 @@ function CardRoute($stateProvider) {
 		.state('cards', {
 			url: '/cards',
 			template: require('./cards.html'),
+		})
+		.state('cards.ng1', {
+			url: '/ng1',
+			template: require('./cardsNg1.html'),
 			controller: 'CardTestController',
 			controllerAs: 'cards',
+		})
+		.state('cards.ng2', {
+			url: '/ng2',
+			template: '<ts-cards-bootstrapper></ts-cards-bootstrapper>',
 		});
 }
 

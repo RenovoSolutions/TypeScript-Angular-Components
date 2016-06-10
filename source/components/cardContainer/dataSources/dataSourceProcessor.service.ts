@@ -1,8 +1,6 @@
-'use strict';
-
 import * as _ from 'lodash';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
 import { ISort } from '../sorts/sort';
@@ -39,7 +37,7 @@ export interface IDataSourceProcessor {
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
-	static $inject: string[] = [__object.serviceName, sorterServiceName];
+	static $inject: string[] = [downgrade.objectServiceName, sorterServiceName];
 	constructor(private object: __object.IObjectUtility
 			, private sorter: ISorter) { }
 

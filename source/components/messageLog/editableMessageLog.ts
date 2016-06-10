@@ -1,8 +1,7 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
+import __object = services.object;
 
 import {
 	IMessageLogDataService,
@@ -15,7 +14,6 @@ import {
 export var directiveName: string = 'rlEditableMessageLog';
 export var controllerName: string = 'EditableMessageLogController'
 
-import __object = services.object;;
 
 export interface IEditableMessageLogBindings {
 	pageSize: number;
@@ -36,7 +34,7 @@ export class EditableMessageLogController {
 	busy: boolean;
 	savingMessage: boolean;
 
-	static $inject: string[] = ['$scope', messageLogFactoryName, __object.serviceName];
+	static $inject: string[] = ['$scope', messageLogFactoryName, downgrade.objectServiceName];
 	constructor($scope: angular.IScope
 		, messageLogFactory: IMessageLogFactory
 		, private object: __object.IObjectUtility) {

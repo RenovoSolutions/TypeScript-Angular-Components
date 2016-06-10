@@ -1,9 +1,20 @@
+# Don't commit the built files
+/dist/
+/source/**/*.js
+/source/**/*.d.ts
+/bootstrapper/**/*.js
+/bootstrapper/**/*.d.ts
+
 # Node deps
 /node_modules/
 
 # Bower deps
 /bower_components/
 
-# Don't commit the built files
-/source/**/*.js
-/source/**/*.d.ts
+# Ignore git conflict / diff files
+*.orig
+
+# Typings files (resolved via typings)
+/typings/index.d.ts
+/typings/globals/
+/typings/modules/

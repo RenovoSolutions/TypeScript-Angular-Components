@@ -1,59 +1,31 @@
-'use strict';
-
-import * as ng from 'angular';
+import { Component, Inject, Optional, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __array = services.array;
 import __guid = services.guid;
 
-export var directiveName: string = 'rlRadioGroup';
-export var controllerName: string = 'RadioGroupController';
+import { defaultThemeToken } from '../componentsDefaultTheme';
 
-export interface IRadioGroupAttributes extends ng.IAttributes {
-	rlRadioGroup: string;
-	name: string;
-}
+import { InputComponent, baseInputs, baseOutputs } from '../input/input';
+import { FormComponent } from '../form/form';
 
-export class RadioGroup {
-	get selection(): any {
-		return this.ngModel.$viewValue;
+@Component({
+	selector: 'rlRadioGroup',
+	template: '<ng-content></ng-content>',
+	inputs: baseInputs,
+	outputs: baseOutputs,
+})
+export class RadioGroupComponent<T> extends InputComponent<T> {
+	constructor(@Optional() rlForm: FormComponent
+			, @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, object, guid);
+		this.inputType = 'radio';
+		this.initControl();
 	}
 
-	set selection(value: any) {
-		this.ngModel.$setViewValue(value);
+	select(value: T): void {
+		this.setValue(value);
 	}
-
-	constructor(private ngModel: ng.INgModelController, public name?: string) {}
-}
-
-export class RadioGroupController {
-	group: RadioGroup;
-	ngModel: ng.INgModelController;
-
-	static $inject: string[] = ['$attrs', __object.serviceName];
-	constructor(private $attrs: IRadioGroupAttributes
-			, private object: __object.IObjectUtility) {}
-
-	$onInit(): void {
-		let name: string;
-		if (!this.object.isNullOrWhitespace(this.$attrs.rlRadioGroup)) {
-			name = this.$attrs.rlRadioGroup;
-		} else if (!this.object.isNullOrWhitespace(this.$attrs.name)) {
-			name = this.$attrs.name;
-		} else {
-			name = 'RadioGroup-' + __guid.guid.random();
-		}
-
-		this.group = new RadioGroup(this.ngModel, name);
-	}
-}
-
-export function radioGroup(): ng.IDirective {
-	'use strict';
-	return {
-		restrict: 'AE',
-		require: { ngModel: 'ngModel' },
-		controller: controllerName,
-		bindToController: true,
-	};
 }

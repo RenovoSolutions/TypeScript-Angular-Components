@@ -1,9 +1,6 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import {services} from 'typescript-angular-utilities';
-import __date = services.date;
+import { services, downgrade } from 'typescript-angular-utilities';
 
 import {dateFilterFactory, factoryName} from './dateFilter.service';
 import {componentName, dateFilter, controllerName, DateFilterController }from './dateFilter.component';
@@ -12,7 +9,7 @@ export var moduleName: string = 'rl.ui.components.cardContainer.filters.dateFilt
 export * from  './dateFilter.service';
 export * from './dateFilter.component';
 
-angular.module(moduleName, [__date.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.factory(factoryName, dateFilterFactory)
 	.component(componentName, dateFilter)
 	.controller(controllerName, DateFilterController);

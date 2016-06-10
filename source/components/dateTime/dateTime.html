@@ -1,16 +1,26 @@
-<div class="field date-time" ng-class="{ 'has-warning': !dateTime.validFormat, 'error': dateTime.ngModel.$invalid, 'datepicker-with-clear': dateTime.clearButton }">
+<div class="field date-time"
+	 [class.has-warning]="!validFormat"
+	 [class.error]="!control.valid"
+	 [class.datepicker-with-clear]="showClear">
 	<span class="show-date-picker">
-		<label class="label-slide angular-animate" ng-show="dateTime.ngModel.$viewValue | isEmpty:false && dateTime.label">{{dateTime.label}}</label>
-		<input type="text" class="form-control" ng-model="dateTime.ngModel.$viewValue" placeholder="{{dateTime.label}}"/>
+		<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+		<input type="text"
+			   class="form-control"
+			   [value]="valueAsString"
+			   [placeholder]="label"
+			   [disabled]="disabled" />
 		<span class="input-group-btn">
-			<button class="btn btn-default" ng-click="toggle()"><i class="fa fa-calendar"></i></button>
+			<rlButton [disabled]="disabled"><i class="fa fa-calendar"></i></rlButton>
 		</span>
-		<span class="timezone" ng-if="dateTime.useDate">{{dateTime.timezone.display}}</span>
+		<span class="timezone" *ngIf="useDate">{{timezone?.display}}</span>
 	</span>
-	<span class="datepicker-clear" ng-if="::dateTime.clearButton">
-		<button type="button" class="btn btn-default"  ng-disabled="dateTime.ngModel.$viewValue | isEmpty" ng-click="dateTime.onClearClick()" >
+	<span class="datepicker-clear" *ngIf="showClear">
+		<rlButton [disabled]="value | isEmpty"
+				  (trigger)="onClear()">
 			<i class="fa fa-times"></i>
-		</button>
+		</rlButton>
 	</span>
-	<span class="error-string angular-animate" ng-if="dateTime.inputValidator.error | isEmpty:false">{{dateTime.inputValidator.error}}</span>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
 </div>

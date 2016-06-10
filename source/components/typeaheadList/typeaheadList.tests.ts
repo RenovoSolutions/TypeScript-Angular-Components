@@ -1,13 +1,7 @@
-/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
-
-'use strict';
-
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __parentChild = services.parentChildBehavior;
+
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 import {
 	moduleName,
@@ -30,7 +24,7 @@ describe('TypeaheadListController', () => {
 	let scope: angular.IScope;
 	let typeaheadList: TypeaheadListController;
 	let $q: angular.IQService;
-	let parentChild: __parentChild.IParentChildBehaviorService;
+	let parentChild: IParentChildBehaviorService;
 	let items: ITestObject[];
 
 	beforeEach(() => {
@@ -44,9 +38,9 @@ describe('TypeaheadListController', () => {
 			{ id: 5, prop: 4 },
 		];
 
-		let services: any = test.angularFixture.inject('$q', __parentChild.serviceName);
+		let services: any = test.angularFixture.inject('$q', parentChildServiceName);
 		$q = services.$q;
-		parentChild = services[__parentChild.serviceName];
+		parentChild = services[parentChildServiceName];
 	});
 
 	describe('loadItems', (): void => {

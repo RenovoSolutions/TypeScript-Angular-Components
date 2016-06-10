@@ -1,14 +1,13 @@
 // /// <reference path='../../../../typings/jquery/jquery.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
+
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModuleName } from '../../../services/parentChild/parentChild.service';
 
 import { moduleName as headerColumnModuleName } from './headerColumn/headerColumn.module';
 import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
@@ -70,18 +69,18 @@ export class CardController {
 
 	showContent: boolean = false;
 	dirty: boolean = false;
-	autosaveLink: __parentChild.IChild<IAutosaveBehavior> = <any>{};
+	autosaveLink: IChild<IAutosaveBehavior> = <any>{};
 	hasBody: boolean;
 	hasFooter: boolean;
 	cardContainer: CardContainerController;
 	refresh: Rx.Subject<void>;
 
-	static $inject: string[] = ['$scope', '$controller', '$q', '$element', __parentChild.serviceName, __object.serviceName];
+	static $inject: string[] = ['$scope', '$controller', '$q', '$element', parentChildServiceName, downgrade.objectServiceName];
 	constructor(private $scope: ICardScope
 			, $controller: angular.IControllerService
 			, private $q: angular.IQService
 			, private $element: angular.IAugmentedJQuery
-			, private parentChild: __parentChild.IParentChildBehaviorService
+			, private parentChild: IParentChildBehaviorService
 			, object: __object.IObjectUtility) {
 		if (this.cardAs) {
 			$scope[this.cardAs] = this.item;
@@ -221,8 +220,8 @@ let card: angular.IComponentOptions = {
 };
 
 angular.module(moduleName, [
-	__parentChild.moduleName,
-	__object.moduleName,
+	parentChildModuleName,
+	downgrade.moduleName,
 
 	headerColumnModuleName,
 ])

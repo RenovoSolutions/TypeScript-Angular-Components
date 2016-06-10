@@ -1,64 +1,34 @@
-﻿'use strict';
+import { Component, Input, ViewChild } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 
-import * as angular from 'angular';
-import * as _ from 'lodash';
+import { BusyComponent, IWaitValue } from '../busy/busy';
+import { BaseButtonComponent, baseInputs } from '../button/baseButton';
 
-import { services } from 'typescript-angular-utilities';
-
-import __promiseUtility = services.promise;
-
-import { buildButton, ButtonController } from '../button/button';
-
-export const moduleName: string = 'rl.ui.components.buttonAsync';
-
-export const componentName: string = 'rlButtonAsync';
-export const controllerName: string = 'ButtonAsyncController';
-
-export interface IButtonBindings {
-	busy: boolean;
-	action(...params: any[]): angular.IPromise<any> | void;
-	size: string;
-	type: string;
-	ngDisabled: boolean;
-	rightAligned: boolean;
+export interface IAsyncAction {
+	($event: any): IWaitValue<any>;
 }
 
-export class ButtonAsyncController extends ButtonController {
-	// bindings
-	busy: boolean;
-	action: { (...params: any[]): angular.IPromise<any> | void };
-	rightAligned: boolean;
+@Component({
+	selector: 'rlButtonAsync',
+	template: require('./buttonAsync.html'),
+	inputs: baseInputs,
+	directives: [BusyComponent],
+})
+export class ButtonAsyncComponent extends BaseButtonComponent {
+	@Input() action: IAsyncAction;
+	@Input() rightAligned: boolean;
 
-	static $inject: string[] = [__promiseUtility.serviceName];
-	constructor(private promiseUtility: __promiseUtility.IPromiseUtility) {
+	@ViewChild(BusyComponent) busySpinner: BusyComponent;
+
+	constructor() {
 		super();
-	}
-
-	trigger(): void {
-		if (!this.busy) {
-			this.busy = true;
-
-			let result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
-			if (this.promiseUtility.isPromise(result) && _.isFunction(result.finally)) {
-				result.finally((): void => {
-					this.busy = false;
-				});
-			} else if (<any>result !== true) {
-				this.busy = false;
-			}
+		if (!this.action) {
+			this.action = <IAsyncAction>() => Promise.resolve();
 		}
 	}
+
+	triggerAction($event: any): void {
+		const waitValue: IWaitValue<any> = this.action($event);
+		this.busySpinner.trigger(waitValue);
+	}
 }
-
-const buttonAsync: angular.IComponentOptions = buildButton({
-	template: require('./buttonAsync.html'),
-	bindings: {
-		busy: '<?',
-		rightAligned: '<?',
-	},
-	controller: controllerName,
-});
-
-angular.module(moduleName, [__promiseUtility.moduleName])
-	.component(componentName, buttonAsync)
-	.controller(controllerName, ButtonAsyncController);

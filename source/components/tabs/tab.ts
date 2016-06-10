@@ -1,9 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
-import './tab.css';
-
 import * as ng from 'angular';
 
 import { TabsetController, ITabHeader } from './tabset';
@@ -46,7 +40,7 @@ export let tab: ng.IComponentOptions = {
 		'contentSlot': '?rlTabContent',
 		'footerSlot': '?rlTabFooter',
 	},
-	require: { tabset:'^^rlTabset' },
+	require: { tabset: '^^rlTabset' },
 	template: require('./tab.html'),
 	controller: controllerName,
 	controllerAs: 'tab',

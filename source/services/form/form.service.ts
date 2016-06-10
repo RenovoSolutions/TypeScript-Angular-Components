@@ -1,25 +1,20 @@
-'use strict';
+import { ControlGroup, Control } from '@angular/common';
+import { filter, mapValues, first, every } from 'lodash';
 
-import * as angular from 'angular';
+import { IControlValidator } from '../../types/formValidators';
 
-import { IFormValidator } from '../../types/formValidators';
-
-export let moduleName: string = 'rl.ui.services.form';
-export let serviceName: string = 'formService';
-
-export interface IFormService {
-	getAggregateError(form: IFormValidator): string;
-}
-
-class FormService implements IFormService {
-	getAggregateError(form: IFormValidator): string {
-		let filteredForm: any = _.filter(form, (prop: any): boolean => {
-			return prop != null && prop.rlErrorMessage != null;
+export class FormService {
+	isFormValid(form: ControlGroup): boolean {
+		return every(form.controls, (control: Control): boolean => {
+			return control.valid;
 		});
-		let errors: string[] = <any>_.mapValues(filteredForm, 'rlErrorMessage');
-		return _.first(errors);
+	}
+
+	getAggregateError(form: ControlGroup): string {
+		const filteredForm: any = filter(form.controls, (control: IControlValidator): boolean => {
+			return control != null && control.rlErrorMessage != null;
+		});
+		const errors: string[] = <any>mapValues(filteredForm, 'rlErrorMessage');
+		return first(errors);
 	}
 }
-
-angular.module(moduleName, [])
-	.service(serviceName, FormService);

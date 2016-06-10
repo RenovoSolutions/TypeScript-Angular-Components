@@ -1,30 +1,35 @@
-'use strict';
+import { Component, Inject, Input } from '@angular/core';
+import { isBoolean } from 'lodash';
+import { Observable } from 'rxjs';
 
-import './busy.css';
+import { defaultThemeToken } from '../componentsDefaultTheme';
 
-import * as angular from 'angular';
+export type IWaitValue<T> = Observable<T> | Promise<T> | boolean;
 
-import { defaultThemeValueName } from '../componentsDefaultTheme';
+@Component({
+	selector: 'rlBusy',
+	template: require('./busy.html'),
+})
+export class BusyComponent {
+	@Input() loading: boolean;
+	@Input() size: string;
 
-export const moduleName: string = 'rl.ui.components.busy';
-export const componentName: string = 'rlBusy';
+	useDefaultTheme: boolean;
 
-class BusyController {
-	static $inject: string[] = [defaultThemeValueName];
-	constructor(public useDefaultTheme: boolean) { }
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean) {
+		this.useDefaultTheme = useDefaultTheme;
+	}
+
+	/*
+	 * Public API for triggering the rlBusy to wait on a promise
+	 */
+	trigger(waitOn: IWaitValue<any>): void {
+		if (isBoolean(waitOn)) {
+			this.loading = waitOn;
+			return;
+		}
+
+		this.loading = true;
+		Observable.from(<Observable<any> | Promise<any>>waitOn).subscribe(() => this.loading = false);
+	}
 }
-
-const busy: angular.IComponentOptions = {
-	template: `<i class="busy rl-{{::busy.size}}" ng-class="{ 'default-theme': busy.useDefaultTheme }" ng-show="busy.loading"></i>`,
-	controller: BusyController,
-	controllerAs: 'busy',
-	bindings: {
-		loading: '<',
-		// Valid values are:
-		// `lg`, `2x`, `3x`, `4x`, and `5x`
-		size: '@',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, busy);

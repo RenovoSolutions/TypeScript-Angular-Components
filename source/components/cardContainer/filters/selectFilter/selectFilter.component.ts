@@ -1,7 +1,5 @@
 // /// <reference path='../../../../../typings/commonjs.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 import { ISelectFilter } from './selectFilter.service';
 import { IDataSource } from '../../datasources/dataSource';

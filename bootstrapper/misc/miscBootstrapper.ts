@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 import * as moment from 'moment';
 
-import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer';
+import { ITemplateObject } from '../../source/components/templateRenderer/templateRenderer.ng1';
 
 export const moduleName: string = 'MiscTestModule';
 
@@ -18,7 +18,7 @@ class MiscTestController {
 	date: moment.Moment;
 	initialized: boolean;
 
-	static $inject: string[] = ['$scope'];
+	static $inject: string[] = ['$scope', '$timeout'];
 	constructor(private $scope: angular.IScope) { }
 
 	$onInit(): void {
@@ -51,6 +51,16 @@ function MiscRoute($stateProvider) {
 		.state('misc', {
 			url: '/misc',
 			template: require('./misc.html'),
+		})
+		.state('misc.ng1', {
+			url: '/ng1',
+			template: require('./miscNg1.html'),
+			controller: 'MiscTestController',
+			controllerAs: 'misc',
+		})
+		.state('misc.ng2', {
+			url: '/ng2',
+			template: require('./miscNg2.html'),
 			controller: 'MiscTestController',
 			controllerAs: 'misc',
 		});

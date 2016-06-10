@@ -1,5 +1,3 @@
-'use strict';
-
 export interface ISortDirections {
 	ascending: SortDirection;
 	descending: SortDirection;

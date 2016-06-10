@@ -1,18 +1,17 @@
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
+import { services, downgrade } from 'typescript-angular-utilities';
 import __search = services.search;
 import __objectUtility = services.object;
 import __arrayUtility = services.array;
 import __validation = services.validation;
 import __transform = services.transform.transform;
 
-import { buildInput, InputController, moduleName as inputModule } from '../input/input';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service';
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
+
+import { buildInput, InputController, moduleName as inputModule } from '../input/input.ng1';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service.ng1';
 
 export const moduleName: string = 'rl.ui.components.typeahead';
 export const componentName: string = 'rlTypeahead';
@@ -20,7 +19,7 @@ export const controllerName: string = 'TypeaheadController';
 
 export interface ITypeaheadBindings {
 	// summary: IChild object with typeahead behaviors
-	childLink: __parentChild.IChild<ITypeaheadBehavior>;
+	childLink: IChild<ITypeaheadBehavior>;
 
 	/**
 	 * Event that gets fired with updates to the selection - use if selection adds to a list
@@ -103,7 +102,7 @@ export interface ITypeaheadAttrs extends angular.IAttributes {
 
 export class TypeaheadController extends InputController {
 	// bindings
-	childLink: __parentChild.IChild<ITypeaheadBehavior>;
+	childLink: IChild<ITypeaheadBehavior>;
 	hasSelection: boolean;
 	select: { (params: ISelectParams): void };
 	create: { (params: ICreateParams): any };
@@ -151,15 +150,15 @@ export class TypeaheadController extends InputController {
 		, '$q'
 		, '$attrs'
 		, '$timeout'
-		, __parentChild.serviceName
-		, __objectUtility.serviceName
-		, __arrayUtility.serviceName
+		, parentChildServiceName
+		, downgrade.objectServiceName
+		, downgrade.arrayServiceName
 		, componentValidatorFactoryName];
 	constructor($scope: angular.IScope
 		, private $q: angular.IQService
 		, $attrs: ITypeaheadAttrs
 		, private $timeout: angular.ITimeoutService
-		, private parentChild: __parentChild.IParentChildBehaviorService
+		, private parentChild: IParentChildBehaviorService
 		, private object: __objectUtility.IObjectUtility
 		, private array: __arrayUtility.IArrayUtility
 		, componentValidatorFactory: IComponentValidatorFactory) {
@@ -298,9 +297,8 @@ const typeahead: angular.IComponentOptions = buildInput({
 });
 
 angular.module(moduleName, [
-	__parentChild.moduleName
-	, __objectUtility.moduleName
-	, __arrayUtility.moduleName
+	parentChildModule
+	, downgrade.moduleName
 	, inputModule
 ])
 	.component(componentName, typeahead)

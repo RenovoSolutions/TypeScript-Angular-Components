@@ -1,17 +1,12 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
+import __object = services.object;
 
 export var moduleName: string = 'rl.ui.components.multiStepIndicator';
 export var componentName: string = 'rlMultiStepIndicator';
 export var controllerName: string = 'MultiStepIndicatorController';
-
-import __object = services.object;
 
 export interface IStep {
 	title: string;
@@ -35,7 +30,7 @@ export interface IConfiguredStep extends IStep {
 export class MultiStepIndicatorController {
 	steps: IConfiguredStep[];
 
-	static $inject: string[] = ['$state', '$q', __object.serviceName];
+	static $inject: string[] = ['$state', '$q', downgrade.objectServiceName];
 	constructor(private $state: angular.ui.IStateService
 			, private $q: angular.IQService
 			, private object: __object.IObjectUtility) {
@@ -123,6 +118,6 @@ let multiStepIndicator: angular.IComponentOptions = {
 	},
 };
 
-angular.module(moduleName, [__object.moduleName])
+angular.module(moduleName, [downgrade.moduleName])
 	.component(componentName, multiStepIndicator)
 	.controller(controllerName, MultiStepIndicatorController);

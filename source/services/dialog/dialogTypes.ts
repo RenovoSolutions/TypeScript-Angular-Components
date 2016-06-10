@@ -1,5 +1,3 @@
-'use strict';
-
 import * as angular from 'angular';
 
 export interface IDialogCloseHandler {
@@ -33,7 +31,7 @@ export interface IAutosaveDialogSettings {
 	data?: any;
 	resolve?: any;
 
-	save: { (...data: any[]): angular.IPromise<void> };
+	save: { (...data: any[]): Promise<void> };
 	triggers?: string;
 }
 
@@ -50,13 +48,13 @@ export interface IDialogSettings {
 }
 
 export interface IAutosaveDialogInstance extends IDialogInstance {
-	save(): angular.IPromise<void> | boolean;
-	saveAndClose(): angular.IPromise<void> | boolean;
+	save(): Promise<void> | boolean;
+	saveAndClose(): Promise<void> | boolean;
 }
 
 export interface IAutosaveDialogScope extends IDialogScope {
-	$save(): angular.IPromise<void> | boolean;
-	$saveAndClose(): angular.IPromise<void> | boolean;
+	$save(): Promise<void> | boolean;
+	$saveAndClose(): Promise<void> | boolean;
 	dialog: any;
 }
 

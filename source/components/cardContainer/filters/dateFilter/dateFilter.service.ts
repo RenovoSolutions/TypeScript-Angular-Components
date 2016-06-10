@@ -1,9 +1,7 @@
-'use strict';
-
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import {filters, services} from 'typescript-angular-utilities';
+import {filters, services, downgrade} from 'typescript-angular-utilities';
 import __date = services.date;
 import __transform = services.transform.transform;
 
@@ -93,10 +91,10 @@ export interface IDateFilterFactory {
 	getInstance(settings:IDateFilterSettings): IDateFilter;
 }
 
-dateFilterFactory.$inject = [__date.serviceName];
+dateFilterFactory.$inject = [downgrade.dateServiceName];
 export function dateFilterFactory(dateUtility: __date.IDateUtility): IDateFilterFactory {
 	return {
-		getInstance(settings:IDateFilterSettings): IDateFilter {
+		getInstance(settings: IDateFilterSettings): IDateFilter {
 			return new DateFilter(settings, dateUtility);
 		},
 	};

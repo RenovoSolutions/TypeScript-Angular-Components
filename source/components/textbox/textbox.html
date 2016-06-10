@@ -1,5 +1,14 @@
-<div class="field" ng-class="{ 'error': input.ngModel.$invalid }">
-	<label ng-show="input.inputValue && input.label" class="label-slide angular-animate">{{::input.label}}</label>
-	<input  type="text" class="form-control angular-animate" ng-model="input.inputValue" placeholder="{{::input.label}}" maxlength="{{::input.maxlength}}" />
-	<span class="error-string angular-animate" ng-if="input.inputValidator.error | isEmpty:false">{{input.inputValidator.error}}</span>
+<div class="field"
+	[class.error]="!control.valid">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<input type="text"
+		   class="form-control angular-animate"
+		   [value]="value"
+		   (input)="onChange($event.target.value)"
+		   [placeholder]="label"
+		   [attr.maxlength]="maxlength"
+		   [disabled]="disabled" />
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
 </div>

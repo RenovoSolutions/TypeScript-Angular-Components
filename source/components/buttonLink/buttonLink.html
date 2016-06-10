@@ -1,3 +1,6 @@
-<a class="btn {{::button.types}} {{::button.configuredSize}}" ng-href="{{button.link}}" ng-disabled="button.ngDisabled" target="{{::button.target}}">
-	<span ng-transclude></span>
+<a class="btn {{configuredTypes}} {{configuredSize}}"
+   [href]="link"
+   [target]="target"
+   [class.disabled]="disabled">
+	<ng-content></ng-content>
 </a>

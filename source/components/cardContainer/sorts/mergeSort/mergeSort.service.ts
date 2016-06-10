@@ -1,8 +1,6 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import { services, types } from 'typescript-angular-utilities';
+import { types } from 'typescript-angular-utilities';
 
 import { ICompareFunction } from '../sort';
 

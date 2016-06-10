@@ -1,18 +1,27 @@
-<div class="field" ng-class="{ 'error': select.ngModel.$invalid }">
-	<label ng-show="select.selection" class="label-slide angular-animate">
-		{{::select.label}}
-	</label>
-	<ui-select ng-model="select.selection" search-enabled="false" theme="bootstrap" ng-disabled="select.ngDisabled">
-		<ui-select-match placeholder="{{::select.label}}">{{select.getDisplayName($select.selected)}}</ui-select-match>
-		<ui-select-choices repeat="$item in select.options">
-			<div ng-switch="$item.__isNullOption">
-				<div ng-switch-when="true">{{select.nullOption}}</div>
-				<div ng-switch-default>
-					<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
-				</div>
-			</div>
-		</ui-select-choices>
-	</ui-select>
-	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
-	<rl-busy loading="select.loading"></rl-busy>
+<div class="field"
+	 [class.error]="!control.valid"
+	 (offClick)="close()">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<div class="form-control rl-select-trigger"
+		 (click)="toggle()"
+		 [class.disabled]="disabled"
+		 [class.rl-select-open]="showOptions">
+		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
+	</div>
+	<ul class="rl-select-list" *ngIf="showOptions">
+		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
+		<li class="rl-select-option"
+			*ngFor="let option of wrappedOptions | async"
+			(click)="select(option)">
+			<span *ngIf="template">
+				<rlTemplateRenderer [template]="newTemplate()" [model]="option"></rlTemplateRenderer>
+			</span>
+			<span *ngIf="!template">{{getDisplayName(option)}}</span>
+		</li>
+	</ul>
+	<rlBusy></rlBusy>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
 </div>

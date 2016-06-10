@@ -1,50 +1,23 @@
-﻿/// <reference path='../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../typings/chaiAssertions.d.ts' />
+﻿import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __guid = services.guid;
 
-'use strict';
+import { UserRatingComponent } from './userRating';
 
-import { services } from 'typescript-angular-utilities';
-import test = services.test;
-import __parentChild = services.parentChildBehavior;
-
-import { defaultThemeValueName } from '../componentsDefaultTheme';
-
-import {
-	moduleName,
-	controllerName,
-	IUserRatingBindings,
-	UserRatingController,
-} from './userRating';
-
-import * as angular from 'angular';
-import 'angular-mocks';
-
-interface INgModelMock {
-	$setViewValue(value: number): void;
-	$viewValue: number;
-}
-
-describe('UserRatingController', () => {
-	let scope: angular.IScope;
-	let userRating: UserRatingController;
-
-	let $timeout: angular.ITimeoutService;
+describe('UserRatingComponent', () => {
+	let userRating: UserRatingComponent;
+	let setValue: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
+		userRating = new UserRatingComponent(true, null, __object.objectUtility, __guid.guid);
 
-		let mocks: any = {};
-		mocks[defaultThemeValueName] = true;
-		test.angularFixture.mock(mocks);
-
-		let services: any = test.angularFixture.inject('$timeout');
-		$timeout = services['$timeout'];
-
-		buildController();
+		setValue = sinon.spy();
+		userRating.setValue = setValue;
 	});
 
 	it('should create a list of stars with values 5 to 1', (): void => {
+		userRating.ngOnInit();
+
 		expect(userRating.stars.length).to.equal(5);
 		expect(userRating.stars[0].value).to.equal(5);
 		expect(userRating.stars[1].value).to.equal(4);
@@ -54,9 +27,12 @@ describe('UserRatingController', () => {
 	});
 
 	it('should set all stars less than or equal to the rating to filled', (): void => {
+		userRating.ngOnInit();
+
 		userRating.setRating(3);
 
-		expect(userRating.ngModel.$viewValue).to.equal(3);
+		sinon.assert.calledOnce(setValue);
+		sinon.assert.calledWith(setValue, 3);
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;
@@ -66,10 +42,8 @@ describe('UserRatingController', () => {
 	});
 
 	it('should set the initial view state based on the initial view value', (): void => {
-		userRating.ngModel.$viewValue = 2;
-		scope.$digest();
-
-		$timeout.flush();
+		userRating.value = 2;
+		userRating.ngOnInit();
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;
@@ -77,17 +51,4 @@ describe('UserRatingController', () => {
 		expect(userRating.stars[3].filled).to.be.true;
 		expect(userRating.stars[4].filled).to.be.true;
 	});
-
-	function buildController(): void {
-		let ngModel: INgModelMock = {
-			$setViewValue: (value: number): void => { ngModel.$viewValue = value; },
-			$viewValue: null,
-		};
-		let controllerResult: test.IControllerResult<UserRatingController>
-			= test.angularFixture.controllerWithBindings<UserRatingController>(controllerName, { ngModel: ngModel });
-
-		scope = controllerResult.scope;
-		userRating = controllerResult.controller;
-		userRating.$onInit();
-	}
 });

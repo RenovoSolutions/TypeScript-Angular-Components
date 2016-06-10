@@ -1,9 +1,7 @@
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
 export var factoryName: string = 'filterGroup';
@@ -123,7 +121,7 @@ export interface IFilterGroupFactory {
 	getInstance(settings: IFilterGroupSettings): IFilterGroup;
 }
 
-filterGroupFactory.$inject = [__object.serviceName];
+filterGroupFactory.$inject = [downgrade.objectServiceName];
 export function filterGroupFactory(object: __object.IObjectUtility): IFilterGroupFactory {
 	'use strict';
 	return {

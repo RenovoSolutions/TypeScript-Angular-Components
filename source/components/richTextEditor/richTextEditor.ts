@@ -1,15 +1,9 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
-import 'ng-wig/dist/css/ng-wig.css';
 import 'ng-wig/dist/ng-wig';
-import './editorButtons.css';
 
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
 import { richTextEditorProvider, providerName, IRichTextEditorProvider } from './richTextEditor.config';
@@ -37,7 +31,7 @@ export class RichTextEditorController {
 
 	toolbar: string;
 
-	static $inject: string[] = [__object.serviceName, providerName];
+	static $inject: string[] = [downgrade.objectServiceName, providerName];
 	constructor(object: __object.IObjectUtility, provider: void) {
 		this.toolbar = 'h1, paragraph, bold, italic, underline, list1, list2, indent, outdent';
 
@@ -58,7 +52,7 @@ let richTextEditor: angular.IComponentOptions = {
 	},
 };
 
-angular.module(moduleName, ['ngWig', __object.moduleName])
+angular.module(moduleName, ['ngWig', downgrade.moduleName])
 	.component(componentName, richTextEditor)
 	.controller(controllerName, RichTextEditorController)
 	.directive(headerButtonDirectiveName, headerButton)

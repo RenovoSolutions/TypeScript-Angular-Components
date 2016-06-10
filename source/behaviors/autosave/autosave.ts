@@ -1,10 +1,8 @@
-'use strict';
-
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
 
-import __parentChild = services.parentChildBehavior;
+import { serviceName as parentChildServiceName, moduleName as parentChildModuleName, IParentChildBehaviorService } from '../../services/parentChild/parentChild.service';
 
 import {
 	factoryName as autosaveFactoryName,
@@ -42,13 +40,13 @@ export class AutosaveController {
 							, '$parse'
 							, '$element'
 							, autosaveFactoryName
-							, __parentChild.serviceName];
+							, parentChildServiceName];
 	constructor(private $scope: angular.IScope
 		, private $attrs: IAutosaveAttributes
 		, private $parse: angular.IParseService
 		, private $element: angular.IAugmentedJQuery
 		, private autosaveFactory: IAutosaveServiceFactory
-		, private parentChildBehavior: __parentChild.IParentChildBehaviorService) {}
+		, private parentChildBehavior: IParentChildBehaviorService) {}
 
 	$onInit(): void {
 		this.keyupListener = (callback: triggers.IListener): triggers.IClearListener => {
@@ -97,7 +95,7 @@ export function autosave(): angular.IDirective {
 
 angular.module(moduleName, [
 	autosaveModuleName,
-	__parentChild.moduleName,
+	parentChildModuleName,
 ])
 	.directive(directiveName, autosave)
 	.controller(controllerName, AutosaveController);

@@ -1,7 +1,3 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
@@ -15,7 +11,7 @@ import {
 	IComponentValidatorFactory,
 	factoryName as componentValidatorFactoryName,
 	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
+} from '../../services/componentValidator/componentValidator.service.ng1';
 
 export var moduleName: string = 'rl.ui.components.validationGroup';
 export var componentName: string = 'rlValidationGroup';

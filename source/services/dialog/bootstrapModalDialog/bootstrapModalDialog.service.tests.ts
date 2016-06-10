@@ -1,19 +1,12 @@
-/// <reference path='../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../typings/chaiAssertions.d.ts' />
-
-'use strict';
-
 import { services } from 'typescript-angular-utilities';
+import test = services.test;
+import fakeAsync = test.fakeAsync;
 
 import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
-
-import test = services.test;
 
 interface IModalMock {
 	open: Sinon.SinonSpy;
@@ -28,7 +21,6 @@ describe('bootstrapModalDialog', () => {
 	let closeSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
 
 		closeSpy = sinon.spy();
@@ -79,7 +71,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.calledOnce(event.preventDefault);
 	});
 
-	it('should resolve promises and provide the results as locals on the dialog controller', (): void => {
+	it('should resolve promises and provide the results as locals on the dialog controller', fakeAsync(() => {
 		let data: any = { prop: 5 };
 		let dataService: any = {
 			get: test.mock.promise(data),
@@ -104,19 +96,16 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled($uibModal.open);
 		expect(dataResult).to.not.exist;
 
-		$rootScope.$apply(() => {
-			test.mock.flushAll(dataService);
-		});
-		$rootScope.$apply();
-
+		test.mock.flushAll(dataService);
+		$rootScope.$digest();
 		sinon.assert.calledOnce($uibModal.open);
 
 		$controller(dialogController, options.scope.resolveData);
 
 		expect(dataResult).to.equal(data);
-	});
+	}));
 
-	it('should not open the dialog if resolve fails', (): void => {
+	it('should not open the dialog if resolve fails', fakeAsync(() => {
 		let dataService: any = {
 			get: test.mock.rejectedPromise(new Error()),
 		};
@@ -129,12 +118,12 @@ describe('bootstrapModalDialog', () => {
 
 		bootstrapModalDialog.open(options);
 
-		test.mock.flushAll(dataService);
+		test.mock.flushAll(dataService)
 
 		sinon.assert.notCalled($uibModal.open);
-	});
+	}));
 
-	it('should return an object with functions to dismiss and close the dialog once its open', (): void => {
+	it('should return an object with functions to dismiss and close the dialog once its open', fakeAsync((): void => {
 		const options: any = {
 			resolve: {
 				data: test.mock.promise<void>(),
@@ -149,12 +138,12 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled(closeSpy);
 		sinon.assert.notCalled(dismissSpy);
 
-		options.resolve.data.flush();
-
+		options.resolve.data.flush()
+		$rootScope.$digest();
 		dialogInstance.close();
 		dialogInstance.dismiss();
 
 		sinon.assert.calledOnce(closeSpy);
 		sinon.assert.calledOnce(dismissSpy);
-	});
+	}));
 });

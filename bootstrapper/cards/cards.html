@@ -1,35 +1,5 @@
-<h3>Cards</h3>
-<div>
-	<label>Simple card list:</label>
-	<rl-checkbox ng-model="cards.alwaysOpen">Always open</rl-checkbox>
-	<rl-simple-card-list always-open="cards.alwaysOpen">
-		<rl-simple-card ng-repeat="num in [1, 2, 3, 4, 5]">
-			<rl-card-header>Simple card {{num}}</rl-card-header>
-			<rl-card-content>Content {{num}}</rl-card-content>
-			<rl-card-footer>Footer {{num}}</rl-card-footer>
-		</rl-simple-card>
-	</rl-simple-card-list>
-</div>
-
-<div>
-	<label>Card container:</label>
-	<rl-card-container builder="cards.builder" card-as="myItem">
-		<rl-card-content>
-			Name: {{myItem.name}}
-			Value: {{myItem.value}}
-		</rl-card-content>
-	</rl-card-container>
-</div>
-<div>
-	<label>Card container with select filter:</label>
-	<rl-select-filter filter="cards.selectFilter" options="cards.options"
-					  source="cards.dataSource" label="Value" null-option="None" item-as="num">
-		<b>{{num}}</b>
-	</rl-select-filter>
-	<rl-card-container builder="cards.builderWithSelectFilter" card-as="myItem">
-		<rl-card-content>
-			Name: {{myItem.name}}
-			Value: {{myItem.value}}
-		</rl-card-content>
-	</rl-card-container>
-</div>
+<ul class="nav nav-tabs">
+	<li role="presentation"><a ui-sref="cards.ng1">Angular 1</a></li>
+	<li role="presentation"><a ui-sref="cards.ng2">Angular 2</a></li>
+</ul>
+<div ui-view></div>

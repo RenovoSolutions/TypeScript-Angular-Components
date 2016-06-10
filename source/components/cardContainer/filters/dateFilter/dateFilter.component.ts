@@ -1,13 +1,10 @@
 // /// <reference path='../../../typings/node/node.d.ts' />
 
-'use strict';
-
 import * as angular from 'angular';
 import * as moment from 'moment';
 
-import {services} from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __date = services.date;
-
 
 import {IDateFilter} from './dateFilter.service';
 import {IDataSource} from '../../datasources/dataSource';
@@ -43,7 +40,7 @@ export class DateFilterController implements IDateFilterBindings {
 
 	selectedDate1: moment.Moment;
 
-	static $inject = ['$scope', __date.serviceName, '$element'];
+	static $inject = ['$scope', downgrade.dateServiceName, '$element'];
 	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility, private $element: angular.IAugmentedJQuery) {
 		this.filter.includeTime = this.includeTime
 		//this is added to address an agular quirk on the service event list page.

@@ -1,10 +1,7 @@
-'use strict';
-
 import * as ng from 'angular';
 import * as _ from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __promise = services.promise;
+import { IPromiseUtility, serviceName as promiseServiceName } from '../../promise/promise.service';
 
 import {
 	IDialogCloseHandler,
@@ -36,10 +33,10 @@ export interface IPromptScope extends ng.IScope {
 export class BootstrapModalDialogService implements IDialogImplementation<IBootstrapModalDialogSettings> {
 	closeHandler: IDialogCloseHandler;
 
-	static $inject: string[] = ['$uibModal', '$rootScope', __promise.serviceName];
+	static $inject: string[] = ['$uibModal', '$rootScope', promiseServiceName];
 	constructor(private $modal: ng.ui.bootstrap.IModalService
 			, private $rootScope: ng.IRootScopeService
-			, private promise: __promise.IPromiseUtility) { }
+			, private promise: IPromiseUtility) { }
 
 	open(options: IBootstrapModalDialogSettings, closeHandler?: IDialogCloseHandler): IDialogInstance {
 		if (options == null) {

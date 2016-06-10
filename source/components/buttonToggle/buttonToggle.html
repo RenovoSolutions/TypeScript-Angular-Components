@@ -1,4 +1,8 @@
-<button type="button" class="btn {{::buttonToggle.types}} {{::buttonToggle.configuredSize}}"
-		ng-class="{ active : buttonToggle.checked }" ng-click="buttonToggle.clicked()" ng-disabled="buttonToggle.ngDisabled">
-	<i ng-show="buttonToggle.checked" class="fa fa-check completed"></i> <span ng-transclude></span>
+<button type="button"
+		class="btn {{configuredTypes}} {{configuredSize}}"
+		[class.active]="value"
+		(click)="toggle()"
+		[disabled]="disabled">
+	<i class="fa fa-check completed" [hidden]="!value"></i>
+	<ng-content></ng-content>
 </button>

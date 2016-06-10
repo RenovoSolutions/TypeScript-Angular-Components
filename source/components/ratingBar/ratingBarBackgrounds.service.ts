@@ -1,5 +1,3 @@
-'use strict';
-
 export interface IRatingBarBackgroundsService {
 	standard: IBackgroundType;
 	dark: IBackgroundType;

@@ -1,8 +1,6 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __guid = services.guid;
 
 export var moduleName: string = 'rl.ui.behaviors.popover';
@@ -21,7 +19,7 @@ export class PopoverController {
 							, '$scope'
 							, '$parse'
 							, '$templateCache'
-							, __guid.serviceName];
+							, downgrade.guidServiceName];
 	constructor(private $attrs: IPopoverAttributes
 			, private $element: angular.IAugmentedJQuery
 			, private $compile: angular.ICompileService

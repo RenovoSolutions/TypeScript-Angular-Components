@@ -1,5 +1,3 @@
-'use strict';
-
 export interface IRatingBarClassService {
 	getClass(confidence: number): string;
 }

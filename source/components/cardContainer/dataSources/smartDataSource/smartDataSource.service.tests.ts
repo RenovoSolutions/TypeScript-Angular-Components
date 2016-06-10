@@ -1,13 +1,6 @@
-/// <reference path='../../../../../typings/chai/chai.d.ts' />
-/// <reference path='../../../../../typings/mocha/mocha.d.ts' />
-/// <reference path='../../../../../typings/sinon/sinon.d.ts' />
-/// <reference path='../../../../../typings/chaiAssertions.d.ts' />
-/// <reference path='../../../../../typings/lodash/lodash.d.ts' />
-
-'use strict';
-
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
+import fakeAsync = test.fakeAsync;
 
 import {
 	ISmartDataSourceFactory,
@@ -54,7 +47,6 @@ describe('smartDataSource', () => {
 
 	beforeEach(() => {
 		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(test.moduleName);
 		angular.mock.module(moduleName);
 
 		let dependencies: any = test.angularFixture.inject(
@@ -115,7 +107,7 @@ describe('smartDataSource', () => {
 		};
 	});
 
-	it('should use the count returned by the server when a reload resolves', (): void => {
+	it('should use the count returned by the server when a reload resolves', fakeAsync((): void => {
 		let clientCount: number = 2;
 		let serverCount: number = 4;
 		dataSourceProcessor.process = sinon.spy((data: any): any => {
@@ -132,10 +124,10 @@ describe('smartDataSource', () => {
 		test.mock.flushAll(dataService);
 
 		expect(source.count).to.equal(serverCount);
-	});
+	}));
 
 	describe('throttled', (): void => {
-		beforeEach((): void => {
+		beforeEach(fakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 			dataService.get = test.mock.promise({ dataSet: data, count: 20 });
 			source.getDataSet = dataService.get;
@@ -144,7 +136,7 @@ describe('smartDataSource', () => {
 			dataService.get.reset();
 
 			expect(source.throttled).to.be.true;
-		});
+		}));
 
 		it('should make a request when excecuting a full refresh', (): void => {
 			source.refresh();
@@ -164,7 +156,7 @@ describe('smartDataSource', () => {
 	});
 
 	describe('not throttled', (): void => {
-		beforeEach((): void => {
+		beforeEach(fakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 			dataService.get = test.mock.promise({ dataSet: data, count: 10 });
 			source.getDataSet = dataService.get;
@@ -174,7 +166,7 @@ describe('smartDataSource', () => {
 			dataSourceProcessor.process.reset();
 
 			expect(source.throttled).to.be.false;
-		});
+		}));
 
 		it('should make a request if any applied filter changes', (): void => {
 			appliedFilter.trigger();

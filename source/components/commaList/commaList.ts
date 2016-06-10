@@ -1,67 +1,38 @@
-'use strict';
-
-import * as angular from 'angular';
-import * as _ from 'lodash';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { take, map } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-
 import __object = services.object;
-import __transform = services.transform.transform;
+import __transform = services.transform;
 
-export var moduleName: string = 'rl.ui.components.commaList';
-export var componentName: string = 'rlCommaList';
-export var controllerName: string = 'CommaListController';
+const defaultMaxValue: number = 1000000;
 
-export class CommaListController {
-	inList: any[];
-	list: any[];
-	transform: {(item: any): string} | string;
-	max: number;
+@Component({
+	selector: 'rlCommaList',
+	template: require('./commaList.html'),
+})
+export class CommaListComponent<T> implements OnInit {
+	@Input() list: T[] = [];
+	@Input() transform: __transform.ITransform<T, string>;
+	@Input() max: number;
+
 	remainingItems: number = 0;
+	private object: __object.IObjectUtility;
+	private transformService: __transform.ITransformService;
 
-	static $inject: string[] = [__object.serviceName];
-	constructor(object: __object.IObjectUtility) {
-		this.list = this.getFirstItems(this.inList);
+	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+		this.object = object;
+		this.transformService = transformService;
 	}
 
-	private getFirstItems(list: any[]): any[] {
-		if (this.transform != null) {
-			list = _.map(list, (item: any): string => {
-				return __transform.getValue(item, this.transform);
-			});
-		};
+	ngOnInit(): void {
+		this.max = this.max || defaultMaxValue;
+	}
 
-		var newList: any[];
-
-		if (this.max != null) {
-			newList = _.take(list, this.max);
-
-			this.remainingItems = list.length - this.max;
-		} else {
-			newList = _.clone(list);
-		}
-		return newList;
+	getFirstItems(): string[] {
+		this.remainingItems = this.list.length - this.max;
+		const top: T[] = take(this.list, this.max);
+		return map(top, (item: T): string => this.transformService.getValue(item, this.transform));
 	}
 }
-
-let commaList: angular.IComponentOptions = {
-	template: `
-		<span>
-			<span ng-repeat="item in commaList.list track by $index">
-				<span>{{item}}</span><span ng-hide="$last">, </span>
-			</span>
-			<span ng-show="commaList.remainingItems > 0">... {{commaList.remainingItems}} more items</span>
-		</span>
-	`,
-	controller: controllerName,
-	controllerAs: 'commaList',
-	bindings: {
-		inList: '<list',
-		max: '<?',
-		transform: '<?',
-	},
-};
-
-angular.module(moduleName, [__object.moduleName])
-	.component(componentName, commaList)
-	.controller(controllerName, CommaListController);

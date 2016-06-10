@@ -17,9 +17,7 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-
-    "update": "npm install & tsd update",
-
+    "update": "npm install",
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
@@ -29,40 +27,35 @@
     "test.tc": "karma start karma.tc.conf.js",
     "test.full": "karma start karma.full.conf.js",
 
-    "bundle": "webpack & webpack --config webpack.min.config.js",
-    "bundle.watch": "webpack -w",
+    "install-build": "npm install && npm run build",
+    "install-build-test": "npm install && npm run build && npm run test",
+    "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
+    "build-test": "npm run build && gulp bundle-tests && npm run test",
+    "build-test.watch": "npm run build && gulp bundle-tests.watch && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
 
-    "update-build": "npm run update && npm run build",
-    "update-build-test": "npm run update && npm run build && npm run test",
+    "full-build": "npm install && npm run build",
+
+    "all": "npm install && npm run build && npm run test.full",
+
+    "bundle": "gulp bundle-bootstrapper",
+    "bundle.watch": "gulp bundle-bootstrapper.watch",
+
     "build-bundle": "npm run build && npm run bundle",
     "build-bundle.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bundle.watch\"",
-    "build-test": "npm run build && npm run test",
-    "build-test.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run test.debug\"",
-
-    "full-build": "npm run update && npm run build && npm run bundle",
-
-    "all": "npm run update && npm run build && npm run test.full && npm run bundle",
-
-    "bootstrap": "webpack --config webpack.bootstrapper.config.js",
-    "bootstrap.watch": "webpack -w --config webpack.bootstrapper.config.js",
-
-    "build-bootstrap.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bootstrap.watch\"",
 
     "serve": "http-server -c-1 -o",
-
-    "start": "concurrently --kill-others \"npm run bootstrap.watch\" \"npm run serve\""
+    "start": "concurrently --kill-others \"npm run bundle.watch\" \"npm run serve\"",
+    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo",
+    "postinstall": "typings install && npm run bundle-deps"
   },
   "devDependencies": {
-    "angular-bluebird-promises": "^1.0.1",
-    "angular-mocks": "~1.5.0",
-    "bluebird": "^3.3.5",
+    "@renovolive/gulp-utilities": "~2.1.8",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
-    "css-loader": "~0.23.1",
     "gulp": "~3.9.1",
-    "gulp-utilities": "https://github.com/RenovoSolutions/Gulp-Typescript-Utilities/archive/2.0.5.tar.gz",
+    "gulp-clean-css": "^2.0.7",
+    "gulp-concat": "^2.6.0",
     "http-server": "^0.9.0",
-    "json-loader": "^0.5.4",
     "karma": "~0.13.21",
     "karma-chai": "~0.1.0",
     "karma-chrome-launcher": "~0.2.2",
@@ -73,31 +66,42 @@
     "karma-teamcity-reporter": "~0.2.1",
     "karma-webpack": "~1.7.0",
     "mocha": "~2.4.5",
-    "raw-loader": "~0.5.1",
+    "reflect-metadata": "0.1.2",
+    "run-sequence": "^1.1.5",
     "sinon": "~1.17.3",
-    "source-map-loader": "~0.1.5",
-    "style-loader": "~0.13.1",
-    "ts-loader": "~0.8.1",
-    "tsd": "~0.6.5",
+    "system-css": "^0.1.0",
+    "system-text": "^0.1.0",
+    "systemjs-builder": "^0.15.16",
     "typescript": "~1.8.2",
+    "typings": "~1.0.4",
     "webpack": "~1.12.14"
   },
   "dependencies": {
-    "angular": "~1.5.3",
+    "@angular/core": "^2.0.0-rc.1",
+    "@angular/http": "^2.0.0-rc.1",
+    "@angular/upgrade": "^2.0.0-rc.1",
+    "@angular/common": "^2.0.0-rc.1",
+    "@angular/compiler": "^2.0.0-rc.1",
+    "@angular/platform-browser": "^2.0.0-rc.1",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "angular-animate": "~1.5.3",
     "angular-sanitize": "~1.5.0",
     "angular-ui-bootstrap": "~0.14.3",
     "angular-ui-router": "^1.0.0-alpha.1",
+    "angular": "~1.5.3",
+    "angular-mocks": "~1.5.0",
     "bootstrap": "~3.3.6",
     "jquery": "~2.2.1",
+    "rxjs": "5.0.0-beta.6",
     "lodash": "~4.5.1",
     "moment": "~2.11.2",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "rx": "~4.0.8",
-    "rxjs": "^5.0.0-beta.2",
     "signature_pad": "~1.5.3",
-    "typescript-angular-utilities": "~2.11.2",
-    "ui-select": "~0.14.7"
+    "systemjs": "^0.19.28",
+    "typescript-angular-utilities": "~3.1.0",
+    "ui-select": "~0.14.7",
+    "zone.js": "^0.6.12"
   },
   "license": "GPL-3.0"
 }

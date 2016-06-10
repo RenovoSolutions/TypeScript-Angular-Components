@@ -1,12 +1,9 @@
-'use strict';
-
 import * as angular from 'angular';
 
-import { services } from 'typescript-angular-utilities';
-import __parentChild = services.parentChildBehavior;
-
-import * as card from './simpleCard';
-import * as list from './simpleCardList';
+import {  downgrade } from 'typescript-angular-utilities';
+import {moduleName as parentChildModuleName } from '../../services/parentChild/parentChild.service';
+import * as card from './simpleCard.ng1';
+import * as list from './simpleCardList.ng1';
 
 export {
 	card as simpleCard,
@@ -16,7 +13,7 @@ export {
 export var moduleName: string = 'rl.ui.components.simpleCardList';
 
 
-angular.module(moduleName, [__parentChild.moduleName])
+angular.module(moduleName, [downgrade.moduleName, parentChildModuleName])
 	.directive(list.directiveName, list.simpleCardList)
 	.controller(list.controllerName, list.SimpleCardListController)
 	.component(card.componentName, card.simpleCard)

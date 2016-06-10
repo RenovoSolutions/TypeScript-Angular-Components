@@ -1,130 +1,65 @@
-// /// <reference path='../../../typings/commonjs.d.ts' />
-
-'use strict';
-
-import * as angular from 'angular';
-import * as _ from 'lodash';
+import { AfterViewInit, OnInit, EventEmitter } from '@angular/core';
+import { Control } from '@angular/common';
 
 import { services } from 'typescript-angular-utilities';
-import __validation = services.validation;
 import __object = services.object;
 import __guid = services.guid;
-import __array = services.array;
 
-import { INgModelValidator } from '../../types/formValidators';
-import { directiveName as requiredDirectiveName, RequiredController } from '../../behaviors/required/required';
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service';
+import { FormComponent } from '../form/form';
 
-export var moduleName: string = 'rl.ui.components.input';
-export var controllerName: string = 'InputController';
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
+export const baseOutputs: string[] = ['change', 'valueChange'];
 
-export interface IInputBindings {
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
+export class InputComponent<T> implements AfterViewInit, OnInit {
+	name: string;
 	label: string;
-	name: string;
-}
+	disabled: boolean;
+	value: T;
+	change: EventEmitter<T> = new EventEmitter<T>();
+	valueChange: EventEmitter<T> = this.change;
 
-export interface IInputAttributes extends angular.IAttributes {
-	name: string;
-}
-
-export interface IInputOptions {
-	transclude?: boolean;
-	template: string;
-	controller?: string | Function;
-	controllerAs?: string;
-	bindings?: any;
-}
-
-export class InputController {
-	// bindings
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
-	label: string;
-	name: string;
-
-	ngModel: INgModelValidator;
-	required: RequiredController;
-	inputValidator: IComponentValidator;
 	inputType: string = 'input';
+	control: Control;
+	rlForm: FormComponent;
+	protected object: __object.IObjectUtility;
+	protected guid: __guid.IGuidService;
 
-	get inputValue(): string {
-		return this.ngModel.$viewValue;
+	constructor(rlForm: FormComponent
+			, object: __object.IObjectUtility
+			, guid: __guid.IGuidService) {
+		this.rlForm = rlForm;
+		this.object = object;
+		this.guid = guid;
 	}
 
-	set inputValue(value: string) {
-		this.ngModel.$setViewValue(value);
+	ngOnInit(): void {
+		if (this.object.isNullOrEmpty(this.name)) {
+			this.name = this.inputType + '-' + this.guid.random();
+		}
 	}
 
-	static $inject: string[] = ['$scope', '$attrs', componentValidatorFactoryName];
-	constructor(protected $scope: angular.IScope
-			, protected $attrs: IInputAttributes
-			, private componentValidatorFactory: IComponentValidatorFactory) { }
+	ngAfterViewInit(): void {
+		if (this.rlForm) {
+			this.rlForm.form.addControl(this.name, this.control);
+		}
+	}
 
-	$onInit(): void {
-		let validators: __validation.IValidationHandler[] = [];
-
-		if (!_.isUndefined(this.validator)) {
-			validators = validators.concat(__array.arrayUtility.arrayify(this.validator));
+	initControl(): void {
+		if (!this.control) {
+			this.control = new Control('');
 		}
 
-		if (!_.isUndefined(this.validators)) {
-			validators = validators.concat(__array.arrayUtility.arrayify(this.validators));
-		}
+		this.control.valueChanges.subscribe(value => {
+			this.value = value;
+			this.change.emit(value);
+		});
+	}
 
-		if (__object.objectUtility.isNullOrEmpty(this.$attrs.name)) {
-			this.$attrs.$set('name', this.inputType + '-' + __guid.guid.random());
-		}
-
-		if (this.required != null) {
-			validators.push({
-				name: 'rlRequired',
-				validate: (): boolean => { return !__object.objectUtility.isNullOrEmpty(this.ngModel.$viewValue); },
-				errorMessage: this.required.message,
-			});
-		}
-
-		if (_.some(validators)) {
-			this.inputValidator = this.componentValidatorFactory.getInstance({
-				ngModel: this.ngModel,
-				$scope: this.$scope,
-				validators: validators,
-			});
+	setValue(value: T): void {
+		if (!this.disabled) {
+			this.value = value;
+			this.control.updateValue(this.value);
+			this.change.emit(this.value);
 		}
 	}
 }
-
-let baseInputOptions: angular.IComponentOptions = {
-	require: {
-		ngModel: 'ngModel',
-		required: '?' + requiredDirectiveName,
-	},
-	template: '',
-	controller: controllerName,
-	controllerAs: 'input',
-	bindings: {
-		validator: '<?',
-		validators: '<?',
-		label: '@',
-		name: '@',
-	},
-};
-
-export function buildInput(options: IInputOptions): angular.IComponentOptions {
-	let clone: any = _.clone(baseInputOptions);
-	clone.transclude = options.transclude;
-	clone.template = options.template;
-	clone.controller = options.controller || clone.controller;
-	clone.controllerAs = options.controllerAs || clone.controllerAs;
-	clone.bindings = _.assign({}, clone.bindings, options.bindings);
-	return clone;
-}
-
-angular.module(moduleName, [componentValidatorModuleName])
-	.controller(controllerName, InputController);

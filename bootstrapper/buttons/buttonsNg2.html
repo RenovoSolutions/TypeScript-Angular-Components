@@ -1,0 +1,26 @@
+<h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/button/buttons.md">Angular 2 Buttons</a></h3>
+<div>
+	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/button/button.md">rlButton</a>:</h4>
+</div>
+<div><rl-button-ng (trigger)="button.action('Simple button')">Simple button</rl-button-ng></div>
+<div><rl-button-ng type="primary flat" size="lg" (trigger)="button.action('Large primary button')">Large primary button</rl-button-ng></div>
+<div><rl-button-ng disabled="true" (trigger)="button.action('Disabled button')">Disabled button</rl-button-ng></div>
+<div>
+	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonAsync/buttonAsync.md">rlButtonAsync</a>:</h4>
+</div>
+<div><rl-button-async-ng [action]="button.waitCallback">Async button</rl-button-async-ng></div>
+<div><rl-button-async-ng right-aligned="true" [action]="button.waitCallback">Right aligned async button</rl-button-async-ng></div>
+<div><rl-button-async-ng type="primary flat" size="lg" [action]="button.waitCallback">Large primary async button</rl-button-async-ng></div>
+<div><rl-button-async-ng disabled="true" [action]="button.waitCallback">Disabled async button</rl-button-async-ng></div>
+<div>
+	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonLink/buttonLink.md">rlButtonLink</a>:</h4>
+</div>
+<div><rl-button-link-ng link="http://google.com">Link button</rl-button-link-ng></div>
+<div><rl-button-link-ng type="primary flat" size="lg" link="http://google.com">Large primary link button</rl-button-link-ng></div>
+<div><rl-button-link-ng disabled="true" link="http://google.com">Disabled link button</rl-button-link-ng></div>
+<div>
+	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rlButtonToggle</a>:</h4>
+</div>
+<div><rl-button-toggle-ng (change)="button.action('Toggle button: ' + $event)">Toggle button</rl-button-toggle-ng></div>
+<div><rl-button-toggle-ng type="primary flat" size="lg" (change)="button.action('Large toggle button: ' + $event)">Large primary toggle button</rl-button-toggle-ng></div>
+<div><rl-button-toggle-ng disabled="true" (change)="button.action('Disabled toggle button: ' + $event)">Disabled toggle button</rl-button-toggle-ng></div>

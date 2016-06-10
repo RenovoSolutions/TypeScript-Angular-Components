@@ -1,9 +1,7 @@
-'use strict';
-
 import * as angular from 'angular';
 import { Subject } from 'rxjs';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
@@ -12,7 +10,7 @@ import { DataSourceBase } from './dataSourceBase.service';
 import { IDataSourceProcessor } from './dataSourceProcessor.service';
 
 export interface IDataSetFunction<TDataType> {
-	(params: any): angular.IPromise<TDataType[]>;
+	(params: any): Promise<TDataType[]>;
 }
 
 export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {

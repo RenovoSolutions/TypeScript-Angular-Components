@@ -19,8 +19,6 @@ declare module bootstrapDateTimePicker {
 	}
 }
 
-declare module angular {
-	interface IAugmentedJQuery {
-		datetimepicker: bootstrapDateTimePicker.IDateTimePicker;
-	}
+interface JQuery {
+	datetimepicker: bootstrapDateTimePicker.IDateTimePicker;
 }

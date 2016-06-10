@@ -1,35 +1,29 @@
-'use strict';
-
-import * as angular from 'angular';
+import { Pipe, PipeTransform, Inject } from '@angular/core';
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
-import __date = services.date;
+import __dateFormats = services.date.defaultFormats;
 import __object = services.object;
 
-export let moduleName: string = 'rl.ui.filters.date';
-export let filterName: string = 'rlDate';
 
-export interface IDateFilter {
-	(date?: moment.Moment, includeTime?: boolean): string;
-}
+@Pipe({ name: 'rlDate' })
+export class DatePipe implements PipeTransform {
+	private object: __object.IObjectUtility;
 
-dateFilter.$inject = [];
-function dateFilter(): IDateFilter {
-	'use strict';
-	return (date?: moment.Moment, includeTime?: boolean): string => {
-		if (__object.objectUtility.isNullOrEmpty(date)) {
+	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility) {
+		this.object = object;
+	}
+
+	transform(date?: moment.Moment, includeTime?: boolean): string {
+		if (this.object.isNullOrEmpty(date)) {
 			return '';
 		}
 
-		let momentDate: moment.Moment = moment(date);
+		const momentDate: moment.Moment = moment(date);
 		if (includeTime) {
-			return momentDate.format(__date.defaultFormats.dateTimeFormat) + ' ' + momentDate.zoneAbbr();
+			return momentDate.format(__dateFormats.dateTimeFormat) + ' ' + momentDate.zoneAbbr();
 		} else {
-			return momentDate.format(__date.defaultFormats.dateFormat);
+			return momentDate.format(__dateFormats.dateFormat);
 		}
-	};
+	}
 }
-
-angular.module(moduleName, [])
-	.filter(filterName, dateFilter);
