@@ -1,8 +1,11 @@
 # Ignore test files
 source/**/*.tests.js
-source/*.tests.d.ts
-karma.*
-test-bootstrapper.js
+*.tests.d.ts
+karma*
+/tests/
+
+# Bundles
+/bootstrapper/*.bundle*
 
 # NPM
 /node_modules/
@@ -13,6 +16,9 @@ webpack.*
 
 # Git
 *.orig
+
+# Nuget bootstrap files
+/bootstrapper/nuget/*/
 
 # Don't need external typings on npm
 /typings/
