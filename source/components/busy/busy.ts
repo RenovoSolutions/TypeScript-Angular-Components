@@ -7,8 +7,9 @@ import { defaultThemeToken } from '../componentsDefaultTheme';
 export type IWaitValue<T> = Observable<T> | Promise<T> | boolean;
 
 @Component({
+	moduleId: module.id,
 	selector: 'rlBusy',
-	template: require('./busy.html'),
+	templateUrl: 'busy.html',
 })
 export class BusyComponent {
 	@Input() loading: boolean;
