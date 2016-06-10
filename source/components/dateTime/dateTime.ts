@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -35,18 +35,19 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	@Input() showClear: boolean;
 	@Output() clear: EventEmitter<any> = new EventEmitter();
 
+	@ViewChild('datepicker') datepicker: ElementRef;
+	@ViewChild('dateinput') dateinput: ElementRef;
+
 	valueAsString: string;
 	validFormat: boolean;
 	format: string;
 	timezone: __timezone.ITimezone;
 	private timezoneService: __timezone.ITimezoneService;
 	private dateService: __date.IDateUtility;
-	private elementRef: ElementRef;
 	private rendering: boolean = false;
 	private touchspin: JQuery;
 
-	constructor(elementRef: ElementRef
-			, @Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService
+	constructor(@Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService
 			, @Inject(__date.dateToken) dateService: __date.IDateUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -57,7 +58,6 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.inputType = 'dateTime';
 		this.timezoneService = timezoneService;
 		this.dateService = dateService;
-		this.elementRef = elementRef;
 		this.timezone = this.timezoneService.currentTimezone;
 	}
 
@@ -74,7 +74,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
 
-		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.elementRef.nativeElement).datetimepicker.defaults;
+		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.datepicker).datetimepicker.defaults;
 		this.min = this.min != null ? this.min : defaults.minDate;
 		this.max = this.max != null ? this.max : defaults.maxDate;
 		this.setValidity(this.value);
@@ -83,7 +83,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 			this.valueAsString = this.formatDate(value);
 		});
 
-		$(this.elementRef.nativeElement).find('.show-date-picker').datetimepicker({
+		$(this.datepicker.nativeElement).datetimepicker({
 			stepping: this.minuteStepping || 1,
 			format: this.getFormatOrDefault(),
 			direction: 'bottom',
@@ -93,7 +93,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 			minDate: this.min,
 			maxDate: this.max,
 		}).on('change.dp', (): void => {
-			const newValue: string = $(this.elementRef.nativeElement).find('input').val();
+			const newValue: string = $(this.dateinput.nativeElement).val();
 			this.setValue(this.parseDate(newValue));
 		});
 	}
