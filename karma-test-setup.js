@@ -14,7 +14,7 @@ function setup() {
 		downgrade.downgradeUtilitiesToAngular1(upgrade);
 		downgradeComponents.downgradeComponentsToAngular1(upgrade);
 
-		let ng2Injector = null;
+		var ng2Injector = null;
 
 		angular.module(moduleName)
 			.factory('ng2.Injector', function () {
