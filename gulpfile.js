@@ -16,7 +16,14 @@ utilities.gulp.bundle.config('tests', testBundleSource, {
 	outFile: 'tests.bundle.js',
 });
 
-const scriptFiles = ['./source/**/*.js', './source/**/*.html', './bootstrapper/**/*.js', './bootstrapper/**/*.html'];
+const scriptFiles = [
+	'./source/**/*.js',
+	'./source/**/*.html',
+	'./bootstrapper/**/*.js',
+	'./bootstrapper/**/*.html',
+	'./bootstrapper/*.js',
+	'./bootstrapper/*.html',
+];
 const otherFiles = ['./source/**/*.css', '!./source/**/*.tests.js'];
 const cssFiles = ['./node_modules/ng-wig/dist/**/*.css', './libraries/**/*.css', './source/**/*.css', '!./source/**/*ng2.css'];
 
