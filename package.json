@@ -16,7 +16,7 @@
   "main": "./source/ui.module.js",
   "typings": "./source/ui.module.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepublish": " typings install && npm run build",
     "update": "npm install && typings install && npm run bundle-deps",
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
