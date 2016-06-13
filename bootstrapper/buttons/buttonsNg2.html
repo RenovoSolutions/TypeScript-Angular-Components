@@ -19,6 +19,13 @@
 <div><rl-button-link-ng type="primary flat" size="lg" link="http://google.com">Large primary link button</rl-button-link-ng></div>
 <div><rl-button-link-ng disabled="true" link="http://google.com">Disabled link button</rl-button-link-ng></div>
 <div>
+	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonLongClick/buttonLongClick.md">rlButtonLongClick</a>:</h4>
+</div>
+<div><rl-button-long-click-ng [action]="button.waitCallback">Long click button</rl-button-long-click-ng></div>
+<div><rl-button-long-click-ng right-aligned="true" [action]="button.waitCallback">Right aligned long click button</rl-button-long-click-ng></div>
+<div><rl-button-long-click-ng type="primary flat" size="lg" [action]="button.waitCallback">Large primary long click button</rl-button-long-click-ng></div>
+<div><rl-button-long-click-ng disabled="true" [action]="button.waitCallback">Disabled long click button</rl-button-long-click-ng></div>
+<div>
 	<h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/buttonToggle/buttonToggle.md">rlButtonToggle</a>:</h4>
 </div>
 <div><rl-button-toggle-ng (change)="button.action('Toggle button: ' + $event)">Toggle button</rl-button-toggle-ng></div>

@@ -4,6 +4,8 @@ import { Observable, Subject } from 'rxjs';
 import { BusyComponent, IWaitValue } from '../busy/busy';
 import { BaseButtonComponent, baseInputs } from '../button/baseButton';
 
+export const asyncInputs = baseInputs.concat(['action', 'rightAligned']);
+
 export interface IAsyncAction {
 	($event: any): IWaitValue<any>;
 }
@@ -11,12 +13,12 @@ export interface IAsyncAction {
 @Component({
 	selector: 'rlButtonAsync',
 	template: require('./buttonAsync.html'),
-	inputs: baseInputs,
+	inputs: asyncInputs,
 	directives: [BusyComponent],
 })
 export class ButtonAsyncComponent extends BaseButtonComponent {
-	@Input() action: IAsyncAction;
-	@Input() rightAligned: boolean;
+	action: IAsyncAction;
+	rightAligned: boolean;
 
 	@ViewChild(BusyComponent) busySpinner: BusyComponent;
 

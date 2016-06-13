@@ -9,6 +9,7 @@ import { BusyComponent } from './components/busy/busy';
 import { ButtonComponent } from './components/button/button';
 import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
 import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
+import { ButtonLongClickComponent } from './components/buttonLongClick/buttonLongClick';
 import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
 import { CheckboxComponent } from './components/checkbox/checkbox';
@@ -49,6 +50,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive(buttonComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonComponent));
 	componentsDowngradeModule.directive(buttonAsyncComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
 	componentsDowngradeModule.directive(buttonLinkComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonLinkComponent));
+	componentsDowngradeModule.directive('rlButtonLongClickNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLongClickComponent));
 	componentsDowngradeModule.directive(buttonSubmitComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonSubmitComponent));
 	componentsDowngradeModule.directive(buttonToggleComponentName, <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
 	componentsDowngradeModule.directive(checkboxComponentName, <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));
