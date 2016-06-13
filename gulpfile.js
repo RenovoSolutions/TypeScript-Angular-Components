@@ -1,6 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
+const del = require('del');
 const Builder = require('systemjs-builder');
 const runSequence = require('run-sequence');
 const concat = require('gulp-concat');
@@ -52,4 +53,8 @@ gulp.task('bundle-css.minify', () => {
 		.pipe(cleanCss())
 		.pipe(concat('components.min.css'))
 		.pipe(gulp.dest('./dist'));
+});
+
+gulp.task('wipe-npm', () => {
+	del('node_modules');
 });
