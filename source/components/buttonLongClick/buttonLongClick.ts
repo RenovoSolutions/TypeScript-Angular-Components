@@ -36,11 +36,11 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 
 		this.active = true;
 
-		this.actionTimeout = new Promise<void>((resolve, reject): void => {
+		this.actionTimeout = new Promise<void>((resolve): void => {
 			let pending: boolean = true;
 			this.cancel = () => {
 				if (pending) {
-					reject();
+					resolve();
 					pending = false;
 				}
 			};
