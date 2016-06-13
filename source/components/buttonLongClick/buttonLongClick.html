@@ -1,0 +1,12 @@
+<button class="btn btn-long-click {{configuredTypes}} {{configuredSize}}"
+		(mousedown)="startAction()"
+		(mouseleave)="stopAction()"
+		(mouseup)="stopAction()"
+		[disabled]="busySpinner?.loading || disabled">
+	<rlBusy *ngIf="rightAligned"></rlBusy>
+	<span class="long-click-text">
+		<ng-content></ng-content>
+	</span>
+	<rlBusy *ngIf="!rightAligned"></rlBusy>
+	<div class="long-click-progress"></div>
+</button>

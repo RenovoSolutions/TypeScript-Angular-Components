@@ -17,7 +17,7 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "update": "npm install && npm run bundle-deps",
+    "update": "npm install && typings install && npm run bundle-deps",
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
@@ -46,8 +46,7 @@
 
     "serve": "http-server -c-1 -o",
     "start": "concurrently --kill-others \"npm run bundle.watch\" \"npm run serve\"",
-    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo",
-    "postinstall": "typings install"
+    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
     "@renovolive/gulp-utilities": "~2.1.9",
@@ -101,7 +100,7 @@
     "ng-wig": "~2.3.4",
     "signature_pad": "~1.5.3",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.1.1",
+    "typescript-angular-utilities": "~3.1.2",
     "ui-select": "~0.14.7",
     "zone.js": "^0.6.12"
   },

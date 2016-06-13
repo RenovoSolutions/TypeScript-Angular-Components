@@ -21,7 +21,7 @@ describe('button submit', (): void => {
 		form = {
 			submit: sinon.spy(() => 5),
 		};
-		buttonSubmit = new ButtonSubmitComponent(<any>form, <any>{});
+		buttonSubmit = new ButtonSubmitComponent(<any>form);
 
 		busy = {
 			trigger: sinon.spy(),
@@ -35,15 +35,5 @@ describe('button submit', (): void => {
 		sinon.assert.calledOnce(form.submit);
 		sinon.assert.calledOnce(busy.trigger);
 		sinon.assert.calledWith(busy.trigger, 5);
-	});
-
-	it('should throw an error if no form is specified', (): void => {
-		const exceptionHandler: IMockExceptionHandler = {
-			call: sinon.spy(),
-		};
-		buttonSubmit = new ButtonSubmitComponent(null, <any>exceptionHandler);
-
-		sinon.assert.calledOnce(exceptionHandler.call);
-		sinon.assert.calledWith(exceptionHandler.call, new Error('This component must be nested in an rlForm component.'));
 	});
 });

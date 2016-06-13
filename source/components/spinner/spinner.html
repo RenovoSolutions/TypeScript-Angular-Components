@@ -4,7 +4,7 @@
 		 [class.error]="!control.valid">
 		 <label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 		 <input type="text"
-		 		class="spinner"
+		 		#spinner
 				[id]="spinnerId"
 				[placeholder]="label" />
 		<div [hidden]="control.valid" class="error-string">

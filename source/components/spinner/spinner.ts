@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange } from '@angular/core';
+import { Component, Optional, Inject, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
 import '../../../libraries/bootstrap-touchspin/index';
 
@@ -36,14 +36,14 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 	@Input() roundToStep: boolean;
 	@Input() spinnerId: string;
 
+	@ViewChild('spinner') spinner: ElementRef;
+
 	private number: __number.INumberUtility;
 	private string: __string.IStringUtility;
-	private elementRef: ElementRef;
 	private rendering: boolean = false;
 	private touchspin: JQuery;
 
-	constructor(elementRef: ElementRef
-			, @Inject(__number.numberToken) number: __number.INumberUtility
+	constructor(@Inject(__number.numberToken) number: __number.INumberUtility
 			, @Inject(__string.stringToken) string: __string.IStringUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -54,7 +54,6 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		this.inputType = 'spinner';
 		this.number = number;
 		this.string = string;
-		this.elementRef = elementRef;
 	}
 
 	ngAfterViewInit(): void {
@@ -82,9 +81,8 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 	}
 
 	ngAfterViewChecked(): void {
-		const spinnerInput: JQuery = $(this.elementRef.nativeElement).find('input.spinner');
-		if (this.rendering && spinnerInput.length > 0) {
-			this.touchspin = spinnerInput.TouchSpin({
+		if (this.rendering && this.spinner) {
+			this.touchspin = $(this.spinner.nativeElement).TouchSpin({
 				min: (this.min != null ? this.min : 0),
 				max: (this.max != null ? this.max : defaultMaxValue),
 				step: this.step,

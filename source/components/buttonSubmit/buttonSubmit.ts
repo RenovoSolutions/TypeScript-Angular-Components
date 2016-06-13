@@ -17,14 +17,9 @@ export class ButtonSubmitComponent extends BaseButtonComponent {
 
 	private form: FormComponent;
 
-	constructor( @Optional() form: FormComponent
-			, exceptionHandler: ExceptionHandler) {
+	constructor(form: FormComponent) {
 		super();
 		this.form = form;
-
-		if (!form) {
-			exceptionHandler.call(new Error('This component must be nested in an rlForm component.'))
-		}
 	}
 
 	submit(): void {
