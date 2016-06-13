@@ -17,7 +17,7 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "prepublish": "npm run build",
-    "update": "npm install && npm run bundle-deps",
+    "update": "npm install && typings install && npm run bundle-deps",
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
@@ -45,8 +45,7 @@
 
     "serve": "http-server -c-1 -o",
     "start": "concurrently --kill-others \"npm run bundle.watch\" \"npm run serve\"",
-    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo",
-    "postinstall": "typings install"
+    "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
     "@renovolive/gulp-utilities": "~2.1.9",
