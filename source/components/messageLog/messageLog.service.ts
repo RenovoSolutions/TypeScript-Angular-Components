@@ -1,7 +1,7 @@
 import * as ng from 'angular';
 import * as moment from 'moment';
 
-import { services } from 'typescript-angular-utilities';
+import { services, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 
 export var factoryName: string = 'messageLog';
@@ -176,7 +176,7 @@ export interface IMessageLogFactory {
 	getInstance(): IMessageLog;
 }
 
-messageLogFactory.$inject = [__array.serviceName];
+messageLogFactory.$inject = [downgrade.arrayServiceName];
 
 export function messageLogFactory(arrayUtility: __array.IArrayUtility): IMessageLogFactory {
 	'use strict';
