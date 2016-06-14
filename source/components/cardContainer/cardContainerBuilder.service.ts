@@ -294,9 +294,11 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildDateFilter(settings:dateFilter.IDateFilterSettings): IDateFilter {
-		let factory: dateFilter.IDateFilterFactory = this.$injector.get<any>(dateFilter.factoryName);
-		let filter: IDateFilter = factory.getInstance(settings);
+	buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter {
+		let date: services.date.IDateUtility = this.$injector.get<any>(downgrade.dateServiceName);
+		let transform: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+
+		let filter: IDateFilter = new dateFilter.DateFilter(settings, date, transform);
 		this.parent._filters.push(filter);
 		return filter;
 	}
