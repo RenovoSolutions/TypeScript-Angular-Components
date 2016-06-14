@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { IToggleParams } from '../../checkbox/checkbox.ng1';
+import { IToggleParams } from '../../inputs/checkbox/checkbox.ng1';
 
 import { buildButton, ButtonController } from '../button/button.ng1';
 

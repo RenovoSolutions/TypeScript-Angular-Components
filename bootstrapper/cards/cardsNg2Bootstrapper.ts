@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
-import { CheckboxComponent } from '../../source/components/checkbox/checkbox';
-import { TextboxComponent } from '../../source/components/textbox/textbox';
+import { CheckboxComponent } from '../../source/components/inputs/checkbox/checkbox';
+import { TextboxComponent } from '../../source/components/inputs/textbox/textbox';
 
 @Component({
 	selector: 'tsCardsBootstrapper',

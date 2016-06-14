@@ -7,14 +7,14 @@ import __timezone = services.timezone;
 
 import { FormComponent } from '../../source/components/form/form';
 import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
-import { CheckboxComponent } from '../../source/components/checkbox/checkbox';
-import { DateTimeComponent } from '../../source/components/dateTime/dateTime';
-import { TextboxComponent } from '../../source/components/textbox/textbox';
-import { TextareaComponent } from '../../source/components/textarea/textarea';
-import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
-import { SelectComponent } from '../../source/components/select/select';
-import { SpinnerComponent } from '../../source/components/spinner/spinner';
-import { UserRatingComponent } from '../../source/components/userRating/userRating';
+import { CheckboxComponent } from '../../source/components/inputs/checkbox/checkbox';
+import { DateTimeComponent } from '../../source/components/inputs/dateTime/dateTime';
+import { TextboxComponent } from '../../source/components/inputs/textbox/textbox';
+import { TextareaComponent } from '../../source/components/inputs/textarea/textarea';
+import { RADIO_DIRECTIVES } from '../../source/components/inputs/radio/index';
+import { SelectComponent } from '../../source/components/inputs/select/select';
+import { SpinnerComponent } from '../../source/components/inputs/spinner/spinner';
+import { UserRatingComponent } from '../../source/components/inputs/userRating/userRating';
 
 export interface ITestItem {
 	value: number;

@@ -12,10 +12,10 @@ import { ButtonLinkComponent } from './components/buttons/buttonLink/buttonLink'
 import { ButtonLongClickComponent } from './components/buttons/buttonLongClick/buttonLongClick';
 import { ButtonSubmitComponent } from './components/buttons/buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './components/buttons/buttonToggle/buttonToggle';
-import { CheckboxComponent } from './components/checkbox/checkbox';
+import { CheckboxComponent } from './components/inputs/checkbox/checkbox';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
-import { TextboxComponent } from './components/textbox/textbox';
+import { TextboxComponent } from './components/inputs/textbox/textbox';
 
 import { DatePipe } from './filters/date/date.filter';
 
