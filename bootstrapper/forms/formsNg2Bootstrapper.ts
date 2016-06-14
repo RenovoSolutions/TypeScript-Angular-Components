@@ -7,7 +7,7 @@ import __timezone = services.timezone;
 
 import { FormComponent } from '../../source/components/form/form';
 import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
-import { INPUT_DIRECTIVES } from '../../source/components/inputs';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 
 export interface ITestItem {
 	value: number;

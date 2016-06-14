@@ -13,8 +13,8 @@ import {
 	ButtonLongClickComponent,
 	ButtonSubmitComponent,
 	ButtonToggleComponent,
-} from './components/buttons';
-import { CheckboxComponent, TextboxComponent } from './components/inputs';
+} from './components/buttons/index';
+import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
 
