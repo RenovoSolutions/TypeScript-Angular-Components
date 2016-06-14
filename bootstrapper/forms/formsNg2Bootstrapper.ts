@@ -7,14 +7,7 @@ import __timezone = services.timezone;
 
 import { FormComponent } from '../../source/components/form/form';
 import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
-import { CheckboxComponent } from '../../source/components/inputs/checkbox/checkbox';
-import { DateTimeComponent } from '../../source/components/inputs/dateTime/dateTime';
-import { TextboxComponent } from '../../source/components/inputs/textbox/textbox';
-import { TextareaComponent } from '../../source/components/inputs/textarea/textarea';
-import { RADIO_DIRECTIVES } from '../../source/components/inputs/radio/index';
-import { SelectComponent } from '../../source/components/inputs/select/select';
-import { SpinnerComponent } from '../../source/components/inputs/spinner/spinner';
-import { UserRatingComponent } from '../../source/components/inputs/userRating/userRating';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs';
 
 export interface ITestItem {
 	value: number;
@@ -26,14 +19,7 @@ export interface ITestItem {
 	directives: [
 		FormComponent,
 		ButtonSubmitComponent,
-		CheckboxComponent,
-		DateTimeComponent,
-		TextboxComponent,
-		TextareaComponent,
-		RADIO_DIRECTIVES,
-		SelectComponent,
-		SpinnerComponent,
-		UserRatingComponent,
+		INPUT_DIRECTIVES,
 	],
 })
 export class FormsBootstrapper {
