@@ -1,6 +1,6 @@
 import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 
-import { BaseButtonComponent, baseInputs } from '../button/baseButton';
+import { BaseButtonComponent, baseInputs } from '../baseButton';
 
 @Component({
 	selector: 'rlButtonToggle',

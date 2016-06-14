@@ -1,8 +1,8 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { BusyComponent, IWaitValue } from '../busy/busy';
-import { BaseButtonComponent, baseInputs } from '../button/baseButton';
+import { BusyComponent, IWaitValue } from '../../busy/busy';
+import { BaseButtonComponent, baseInputs } from '../baseButton';
 
 export const asyncInputs = baseInputs.concat(['action', 'rightAligned']);
 

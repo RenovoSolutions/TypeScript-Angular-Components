@@ -4,7 +4,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __notification = services.notification;
 
-import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../services/promise/promise.service';
+import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../../services/promise/promise.service';
 
 
 import { buildButton } from '../button/button.ng1';

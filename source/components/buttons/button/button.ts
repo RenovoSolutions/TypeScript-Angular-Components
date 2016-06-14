@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 
-import { BaseButtonComponent, baseInputs } from './baseButton';
+import { BaseButtonComponent, baseInputs } from '../baseButton';
 
 @Component({
 	selector: 'rlButton',

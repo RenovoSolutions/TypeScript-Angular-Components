@@ -1,8 +1,8 @@
 import { Component, Input, Optional, ExceptionHandler, ViewChild } from '@angular/core';
 
-import { BusyComponent, IWaitValue } from '../busy/busy';
-import { BaseButtonComponent, baseInputs } from '../button/baseButton';
-import { FormComponent } from '../form/form';
+import { BusyComponent, IWaitValue } from '../../busy/busy';
+import { BaseButtonComponent, baseInputs } from '../baseButton';
+import { FormComponent } from '../../form/form';
 
 @Component({
 	selector: 'rlButtonSubmit',

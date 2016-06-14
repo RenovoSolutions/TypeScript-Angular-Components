@@ -1,11 +1,11 @@
 import * as angular from 'angular';
 
 import * as busy from './busy/busy.ng1';
-import * as button from './button/button.ng1';
-import * as buttonAsync from './buttonAsync/buttonAsync.ng1';
-import * as buttonLink from './buttonLink/buttonLink.ng1';
-import * as buttonSubmit from './buttonSubmit/buttonSubmit.ng1';
-import * as buttonToggle from './buttonToggle/buttonToggle.ng1';
+import * as button from './buttons/button/button.ng1';
+import * as buttonAsync from './buttons/buttonAsync/buttonAsync.ng1';
+import * as buttonLink from './buttons/buttonLink/buttonLink.ng1';
+import * as buttonSubmit from './buttons/buttonSubmit/buttonSubmit.ng1';
+import * as buttonToggle from './buttons/buttonToggle/buttonToggle.ng1';
 import * as cardContainer from './cardContainer/cardContainer.module';
 import * as checkbox from './checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList.ng1';
@@ -16,7 +16,7 @@ import * as form from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as input from './input/input.ng1';
 import * as lazyLoad from './lazyLoad/lazyLoad';
-import * as longClickButton from './buttonLongClick/buttonLongClick.ng1';
+import * as longClickButton from './buttons/buttonLongClick/buttonLongClick.ng1';
 import * as messageLog from './messageLog/messageLog.module';
 import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as radio from './radio/radio.module';

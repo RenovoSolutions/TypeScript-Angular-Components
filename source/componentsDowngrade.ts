@@ -6,12 +6,12 @@ import * as angular from 'angular';
 import { services, downgrade } from 'typescript-angular-utilities';
 
 import { BusyComponent } from './components/busy/busy';
-import { ButtonComponent } from './components/button/button';
-import { ButtonAsyncComponent } from './components/buttonAsync/buttonAsync';
-import { ButtonLinkComponent } from './components/buttonLink/buttonLink';
-import { ButtonLongClickComponent } from './components/buttonLongClick/buttonLongClick';
-import { ButtonSubmitComponent } from './components/buttonSubmit/buttonSubmit';
-import { ButtonToggleComponent } from './components/buttonToggle/buttonToggle';
+import { ButtonComponent } from './components/buttons/button/button';
+import { ButtonAsyncComponent } from './components/buttons/buttonAsync/buttonAsync';
+import { ButtonLinkComponent } from './components/buttons/buttonLink/buttonLink';
+import { ButtonLongClickComponent } from './components/buttons/buttonLongClick/buttonLongClick';
+import { ButtonSubmitComponent } from './components/buttons/buttonSubmit/buttonSubmit';
+import { ButtonToggleComponent } from './components/buttons/buttonToggle/buttonToggle';
 import { CheckboxComponent } from './components/checkbox/checkbox';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';

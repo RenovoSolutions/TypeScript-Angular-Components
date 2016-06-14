@@ -3,7 +3,7 @@ import { Component, Input, ViewChild, Inject } from '@angular/core';
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { BusyComponent } from '../busy/busy';
+import { BusyComponent } from '../../busy/busy';
 import { ButtonAsyncComponent, asyncInputs } from '../buttonAsync/buttonAsync';
 
 @Component({

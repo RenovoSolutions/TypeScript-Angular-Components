@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { BaseButtonComponent, baseInputs } from '../button/baseButton';
+import { BaseButtonComponent, baseInputs } from '../baseButton';
 
 @Component({
 	selector: 'rlButtonLink',

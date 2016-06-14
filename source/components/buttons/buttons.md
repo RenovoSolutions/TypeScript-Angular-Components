@@ -11,7 +11,7 @@ These components wrap various kinds of buttons in order to hide the concerns of 
 
 The expression in the **action** will be triggered when the button is clicked.
 
-Available in [button](../button/button.md), [buttonAsync](../buttonAsync/buttonAsync.md), and [buttonLongClick](../buttonLongClick/buttonLongClick.md)
+Available in [button](./button/button.md), [buttonAsync](./buttonAsync/buttonAsync.md), and [buttonLongClick](./buttonLongClick/buttonLongClick.md)
 
 #### `size`
 
@@ -19,7 +19,7 @@ This will set the **size** of the button. We use the following sizes: `xs`, `sm`
 
 Example: `size="lg"` will ouput `class="btn-lg"`.
 
-Available in [button](../button/button.md), [buttonAsync](../buttonAsync/buttonAsync.md), [buttonLink](../buttonLink/buttonLink.md), [buttonSubmit](../buttonSubmit/buttonSubmit.md), and[buttonToggle](../buttonToggle/buttonToggle.md).
+Available in [button](./button/button.md), [buttonAsync](./buttonAsync/buttonAsync.md), [buttonLink](./buttonLink/buttonLink.md), [buttonSubmit](./buttonSubmit/buttonSubmit.md), and[buttonToggle](./buttonToggle/buttonToggle.md).
 
 #### `type`
 
@@ -41,7 +41,7 @@ Available in all buttons
 
 For buttons that have the ability to show a spinner, specifies whether the spinner should show up on the left or right side of the button. In this context, a right-aligned button will have the spinner on the left, and visa versa. (It's preferrable to avoid having the text jump when the spinner appears)
 
-Available in [buttonAsync](../buttonAsync/buttonAsync.md), [buttonSubmit](../buttonSubmit/buttonSubmit.md), and [buttonLongClick](../buttonLongClick/buttonLongClick.md)
+Available in [buttonAsync](./buttonAsync/buttonAsync.md), [buttonSubmit](./buttonSubmit/buttonSubmit.md), and [buttonLongClick](./buttonLongClick/buttonLongClick.md)
 
 ### Full Example
 A button with an **action**, **size**, **type**, and **disabling**.
@@ -54,9 +54,9 @@ Output:
 ```
 
 ### Button components
-* [button](../button/button.md)
-* [buttonAsync](../buttonAsync/buttonAsync.md)
-* [buttonLink](../buttonLink/buttonLink.md)
-* [buttonSubmit](../buttonSubmit/buttonSubmit.md)
-* [buttonToggle](../buttonToggle/buttonToggle.md)
-* [buttonLongClick](../buttonLongClick/buttonLongClick.md)
+* [button](./button/button.md)
+* [buttonAsync](./buttonAsync/buttonAsync.md)
+* [buttonLink](./buttonLink/buttonLink.md)
+* [buttonSubmit](./buttonSubmit/buttonSubmit.md)
+* [buttonToggle](./buttonToggle/buttonToggle.md)
+* [buttonLongClick](./buttonLongClick/buttonLongClick.md)
