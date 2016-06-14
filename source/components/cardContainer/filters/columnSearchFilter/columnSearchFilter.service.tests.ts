@@ -1,18 +1,11 @@
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
+import __string = services.string;
+import __transform = services.transform;
 
-import {
-	IColumnSearchFilter,
-	IColumnSearchFilterFactory,
-	moduleName,
-	factoryName,
-} from './columnSearchFilter.service';
+import { ColumnSearchFilter } from './columnSearchFilter.service';
 
 import { ISort, SortDirection } from '../../sorts/sorts.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
-
 
 interface ITestObject {
 	prop1?: string;
@@ -21,15 +14,11 @@ interface ITestObject {
 	prop4?: string;
 }
 
-describe('columnSearchFilter', () => {
-	var columnSearchFilter: IColumnSearchFilter;
+describe('ColumnSearchFilter', () => {
+	let columnSearchFilter: ColumnSearchFilter;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject(factoryName);
-		var columnSearchFilterFactory: IColumnSearchFilterFactory = services[factoryName];
-		columnSearchFilter = columnSearchFilterFactory.getInstance();
+		columnSearchFilter = new ColumnSearchFilter(__object.objectUtility, __string.stringUtility, __transform.transform);
 	});
 
 	it('should match objects containing the search within the designated column', (): void => {
@@ -41,25 +30,25 @@ describe('columnSearchFilter', () => {
 		columnSearchFilter.searchText = 'value';
 		columnSearchFilter.caseSensitive = true;
 
-		var matchingObject: ITestObject = {
+		let matchingObject: ITestObject = {
 			prop1: 'some value',
 			prop2: 5,
 		};
 
-		var objectWithoutMatch: ITestObject = {
+		let objectWithoutMatch: ITestObject = {
 			prop1: 'nope',
 			prop2: 2.2,
 		};
 
-		var objectWithDifferentCase: ITestObject = {
+		let objectWithDifferentCase: ITestObject = {
 			prop1: 'A VALUE',
 		};
 
-		var objectMissingValue: ITestObject = {
+		let objectMissingValue: ITestObject = {
 			prop3: false,
 		};
 
-		var objectWithValueInWrongColumn: ITestObject = {
+		let objectWithValueInWrongColumn: ITestObject = {
 			prop1: 'doesnt match',
 			prop4: 'matching value',
 		};
@@ -80,12 +69,12 @@ describe('columnSearchFilter', () => {
 		columnSearchFilter.searchText = 'value';
 		columnSearchFilter.caseSensitive = false;
 
-		var lowercaseMatch: ITestObject = {
+		let lowercaseMatch: ITestObject = {
 			prop1: 'some value',
 			prop2: 5,
 		};
 
-		var uppercaseMatch: ITestObject = {
+		let uppercaseMatch: ITestObject = {
 			prop1: 'A VALUE',
 		};
 

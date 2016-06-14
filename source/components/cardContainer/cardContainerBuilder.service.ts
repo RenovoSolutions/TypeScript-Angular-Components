@@ -10,7 +10,8 @@ import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import * as selectFilter from './filters/selectFilter/selectFilter.module';
 import * as dateFilter from './filters/dateFilter/dateFilter.module';
-import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
+import { ColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
+import { columnSearchFilterName } from '../../componentsDowngrade';
 
 import IDataSource = dataSources.IDataSource;
 import IAsyncDataSource = dataSources.IAsyncDataSource;
@@ -48,7 +49,7 @@ export {
 	IValidateFilterModel,
 	IFilter,
 	IGenericSearchFilter,
-	IColumnSearchFilter,
+	ColumnSearchFilter,
 	IFilterGroup,
 	IFilterGroupSettings,
 	IModeFilterGroup,
@@ -98,7 +99,7 @@ export interface IFilterBuilder {
 	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
-	buildColumnSearchFilter(): IColumnSearchFilter;
+	buildColumnSearchFilter(): ColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
 
 }
@@ -300,9 +301,9 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildColumnSearchFilter(): IColumnSearchFilter {
-		let factory: IColumnSearchFilterFactory = this.$injector.get<any>(columnSearchFactoryName);
-		let filter: IColumnSearchFilter = factory.getInstance();
+	buildColumnSearchFilter(): ColumnSearchFilter {
+		let factory: any = this.$injector.get<any>(columnSearchFilterName);
+		let filter: ColumnSearchFilter = factory.getInstance();
 		this.parent._filters.push(filter);
 		return filter;
 	}
