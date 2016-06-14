@@ -1,7 +1,7 @@
 <div class="filter-group spinner-container">
 	<div class="content-group">
 		<label>{{::filter.label}}</label>
-		<rl-date-time ng-model="filter.selectedDate1" use-time="filter.includeTime" clear-button="filter.clearButton" on-clear-event="filter.clearCount()"
+		<rl-date-time ng-model="filter.dateFrom" use-time="filter.includeTime" clear-button="filter.clearButton" on-clear-event="filter.clearCount()"
 		class="pull-left"></rl-date-time>
 	</div>
 	<div ng-if="filter.includeDateRange" class="content-group">

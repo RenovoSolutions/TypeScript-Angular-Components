@@ -25,20 +25,20 @@ describe('DateFilter', (): void => {
 		let item2: ITestObj = { value: moment('2000-03-01T00:00:00.000') };
 		let item3: ITestObj = { value: moment('1999-11-25T08:00:00.000') };
 
-		dateFilter.selectedDate1 = moment('2000-01-01T05:16:00.000');
+		dateFilter.dateFrom = moment('2000-01-01T05:16:00.000');
 
 		expect(dateFilter.filter(item)).to.be.true;
 		expect(dateFilter.filter(item2)).to.be.false;
 
-		dateFilter.selectedDate2 = moment('1999-11-15T05:16:00.000');
+		dateFilter.dateTo = moment('1999-11-15T05:16:00.000');
 		dateFilter.dateRange = true;
 
 		expect(dateFilter.filter(item)).to.be.true;
 		expect(dateFilter.filter(item2)).to.be.false;
 		expect(dateFilter.filter(item3)).to.be.true;
 
-		//checking selectedDate1 null;
-		dateFilter.selectedDate1 = null;
+		//checking dateFrom null;
+		dateFilter.dateFrom = null;
 		expect(dateFilter.filter(item)).to.be.true;
 	});
 });

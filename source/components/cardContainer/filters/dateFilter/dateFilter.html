@@ -1,0 +1,18 @@
+<div class="filter-group">
+	<div class="content-group">
+		<rlDateTime class="pull-left"
+					[label]="label"
+					[value]="filter?.dateFrom"
+					(change)="setDate($event)"
+					[useTime]="useTime"
+					[showClear]="showClear"
+					(clear)="clear()"></rlDateTime>
+	</div>
+	<div class="content-group" *ngIf="useDateRange">
+		<rlSpinner label="Add previous"
+				   min="0"
+				   postfix="days"
+				   [value]="count"
+				   (change)="setCount($event)"></rlSpinner>
+	</div>
+</div>

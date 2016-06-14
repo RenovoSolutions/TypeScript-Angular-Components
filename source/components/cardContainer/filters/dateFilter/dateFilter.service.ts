@@ -10,16 +10,16 @@ export interface IDateFilterSettings{
 	valueSelector: { (item: any): moment.Moment } | string;
 
 	// component settings
-	clearButton?: boolean;
-	includeDateRange?: boolean;
-	includeTime?: boolean;
+	showClear?: boolean;
+	useDateRange?: boolean;
+	useTime?: boolean;
 	label?: string;
 }
 
 export interface IDateFilter extends filters.IFilter {
-	selectedDate1: moment.Moment;
-	selectedDate2: moment.Moment;
-	includeTime: boolean;
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
+	useTime: boolean;
 	type: string;
 	dateRange: boolean;
 
@@ -27,17 +27,17 @@ export interface IDateFilter extends filters.IFilter {
 }
 
 export class DateFilter implements IDateFilter {
-	selectedDate1: moment.Moment;
-	selectedDate2: moment.Moment;
-	includeTime: boolean;
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
+	useTime: boolean;
 	dateRange: boolean;
 
 	private valueSelector: { (item: any): moment.Moment } | string;
 	public type: string;
 
 	// component settings
-	clearButton: boolean;
-	includeDateRange: boolean;
+	showClear: boolean;
+	useDateRange: boolean;
 	label: string;
 	template: string;
 
@@ -52,37 +52,37 @@ export class DateFilter implements IDateFilter {
 
 		this.valueSelector = settings.valueSelector;
 		this.type = settings.type;
-		this.clearButton = settings.clearButton;
-		this.includeDateRange = settings.includeDateRange;
-		this.includeTime = settings.includeTime != null ? settings.includeTime : false;
+		this.showClear = settings.showClear;
+		this.useDateRange = settings.useDateRange;
+		this.useTime = settings.useTime != null ? settings.useTime : false;
 		this.label = settings.label;
-		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.includeTime"
-									     include-date-range="filter.includeDateRange" clear-button="filter.clearButton"></rl-date-filter>`;
+		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.useTime"
+									     include-date-range="filter.useDateRange" clear-button="filter.showClear"></rl-date-filter>`;
 	}
 
 	filter(item: any): boolean {
-		if (!this.date.isDate(this.selectedDate1)) {
+		if (!this.date.isDate(this.dateFrom)) {
 			return true;
 		}
 
 		if (this.dateRange) {
 			let itemDate: moment.Moment = this.getValue(item)
-			let selectedDate1: moment.Moment;
+			let dateFrom: moment.Moment;
 
-			//have to set the selectedDate1 to a valid Date object for comparisons.
-			if (this.includeTime) {
-				selectedDate1 = moment(this.selectedDate1);
+			//have to set the dateFrom to a valid Date object for comparisons.
+			if (this.useTime) {
+				dateFrom = moment(this.dateFrom);
 			} else {
 				//increase it by 1 days. to inlcude the selectec date in the range.
-				selectedDate1 = moment(this.selectedDate1).add(1, 'days');
+				dateFrom = moment(this.dateFrom).add(1, 'days');
 			}
-			return this.date.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
+			return this.date.dateInRange(itemDate, this.dateTo, this.dateFrom);
 
 		} else {
-			if (this.includeTime) {
-				return this.date.sameDateTime(this.getValue(item), this.selectedDate1);
+			if (this.useTime) {
+				return this.date.sameDateTime(this.getValue(item), this.dateFrom);
 			} else {
-				return this.date.sameDate(this.getValue(item), this.selectedDate1);
+				return this.date.sameDate(this.getValue(item), this.dateFrom);
 			}
 		}
 	}

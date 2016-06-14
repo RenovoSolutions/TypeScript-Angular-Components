@@ -21,8 +21,8 @@ export interface IDateFilterBindings {
 	includeTime: boolean;
 	includeDateRange: boolean;
 	label: string;
-	selectedDate1: moment.Moment;
-	selectedDate2: moment.Moment;
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
 	source: IDataSource<any>;
 	type: string;
 }
@@ -38,54 +38,54 @@ export class DateFilterController implements IDateFilterBindings {
 	type: string = "days";
 	private inputField: angular.IAugmentedJQuery;
 
-	selectedDate1: moment.Moment;
+	dateFrom: moment.Moment;
 
 	static $inject = ['$scope', downgrade.dateServiceName, '$element'];
 	constructor(private $scope: angular.IScope, private dateUtility: __date.IDateUtility, private $element: angular.IAugmentedJQuery) {
-		this.filter.includeTime = this.includeTime
+		this.filter.useTime = this.includeTime
 		//this is added to address an agular quirk on the service event list page.
-		//the input field was not clearing correclty when the selectedDate1 value is null.
+		//the input field was not clearing correclty when the dateFrom value is null.
 		this.inputField = this.$element.find('rl-date-time input');
 		this.filter.dateRange = false;
 		if (this.clearButton == null)
 			this.clearButton = true;
 
-		$scope.$watch('filter.selectedDate1', (date: moment.Moment): void => {
+		$scope.$watch('filter.dateFrom', (date: moment.Moment): void => {
 			if (date == null) {
 				this.inputField.val('');
 				this.clearCount();
 			}
-			this.filter.selectedDate1 = date;
+			this.filter.dateFrom = date;
 			this.refreshDataSource();
 		});
 	}
 
-	// public get selectedDate1(): moment.Moment {
-	// 	if (this.filter.selectedDate1 != null) {
-	// 		return moment(this.filter.selectedDate1);
+	// public get dateFrom(): moment.Moment {
+	// 	if (this.filter.dateFrom != null) {
+	// 		return moment(this.filter.dateFrom);
 	// 	} else {
 	// 		return null;
 	// 	}
 	// }
 
-	// public set selectedDate1(dateString: moment.Moment) {
+	// public set dateFrom(dateString: moment.Moment) {
 	// 	if (this.dateUtility.isDate(dateString)) {
-	// 		this.filter.selectedDate1 = moment(dateString);
+	// 		this.filter.dateFrom = moment(dateString);
 	// 	} else {
 	// 		//clear input field of date value. and rest past day/week count
 	// 		this.inputField.val('');
 	// 		this.clearCount();
-	// 		this.filter.selectedDate1 = null;
+	// 		this.filter.dateFrom = null;
 	// 	}
 	// 	this.refreshDataSource();
 	// }
 
-	public get selectedDate2(): moment.Moment {
-		return this.filter.selectedDate2;
+	public get dateTo(): moment.Moment {
+		return this.filter.dateTo;
 	}
 
-	public set selectedDate2(date: moment.Moment) {
-		this.filter.selectedDate2 = date;
+	public set dateTo(date: moment.Moment) {
+		this.filter.dateTo = date;
 		this.refreshDataSource();
 	}
 
@@ -118,12 +118,12 @@ export class DateFilterController implements IDateFilterBindings {
 		if (this.count > 0) {
 			this.filter.dateRange = true;
 			// add days has to be a negative number to go backwords.
-			this.selectedDate2 = moment(this.selectedDate1).add((this.count * -1), this.type);
+			this.dateTo = moment(this.dateFrom).add((this.count * -1), this.type);
 		} else if (this.count == 0) {
 			//only change this values the first time.
 			if (this.filter.dateRange) {
 				this.filter.dateRange = false;
-				this.selectedDate2 = null;
+				this.dateTo = null;
 			}
 		}
 	}
@@ -135,8 +135,8 @@ export class DateFilterController implements IDateFilterBindings {
 	}
 
 	setDateTimeNowIfNull(): void {
-		if (this.selectedDate1 == null) {
-			this.selectedDate1 = this.dateUtility.getNow();
+		if (this.dateFrom == null) {
+			this.dateFrom = this.dateUtility.getNow();
 		}
 	}
 
