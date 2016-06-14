@@ -1,4 +1,4 @@
-import '../../../libraries/bootstrap-touchspin/index';
+import '../../../../libraries/bootstrap-touchspin/index';
 
 
 import * as angular from 'angular';

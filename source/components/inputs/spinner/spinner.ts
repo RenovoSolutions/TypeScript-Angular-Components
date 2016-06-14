@@ -1,6 +1,6 @@
 import { Component, Optional, Inject, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
-import '../../../libraries/bootstrap-touchspin/index';
+import '../../../../libraries/bootstrap-touchspin/index';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
