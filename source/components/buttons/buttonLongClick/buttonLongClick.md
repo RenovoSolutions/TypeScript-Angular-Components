@@ -17,7 +17,7 @@ See [buttonAsync](../buttonAsync/buttonAsync.md) for detail on the button async 
 
 `right-aligned`, `size`, `type`, and `ng-disabled`.
 
-See [buttons](../button/buttons.md) for detail on the base options.
+See [buttons](../buttons.md) for detail on the base options.
 
 ### Full Example
 A long click button with **action**, **size**, **type**, **right-align** and **busy**.

@@ -17,7 +17,7 @@ If true, the link opens in another tab. (Equivalent to `target="_blank"`)
 
 `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the base options.
+See [buttons](../buttons.md) for detail on the base options.
 
 ### Full Example
 A button link with a **link**, **new-tab**, **size**, **type**, and **disabling**.

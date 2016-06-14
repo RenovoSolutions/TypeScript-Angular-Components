@@ -9,7 +9,7 @@ Basic button with configurable options for **action**, **size**, **type**, and *
 
 `action`, `size`, `type`, and `ng-disabled`.
 
-See [buttons](./buttons.md) for detail on the base options.
+See [buttons](../buttons.md) for detail on the base options.
 
 ### Full Example
 A button with an **action**, **size**, **type**, and **disabling**.
