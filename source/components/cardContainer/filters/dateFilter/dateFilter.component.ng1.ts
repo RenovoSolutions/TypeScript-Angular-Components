@@ -7,7 +7,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __date = services.date;
 
 import {IDateFilter} from './dateFilter.service';
-import {IDataSource} from '../../datasources/dataSource';
+import {IDataSource} from '../../dataSources/dataSource';
 
 export let componentName: string = 'rlDateFilter';
 export let controllerName: string = 'rlDateFilterController';
@@ -152,7 +152,7 @@ export class DateFilterController implements IDateFilterBindings {
 }
 
 export let dateFilter: angular.IComponentOptions = {
-	template: require('./dateFilter.html'),
+	template: require('./dateFilter.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'filter',
 	bindings: {
