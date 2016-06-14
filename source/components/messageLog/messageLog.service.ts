@@ -1,6 +1,9 @@
 import * as ng from 'angular';
 import * as moment from 'moment';
 
+import { services } from 'typescript-angular-utilities';
+import __array = services.array;
+
 export var factoryName: string = 'messageLog';
 
 export var defaultPageSize: number = 10;
@@ -63,6 +66,8 @@ export class MessageLog {
 	busy: boolean;
 	visibleMessages: IMessage[];
 
+	constructor(private arrayUtility: __array.IArrayUtility) { }
+
 	get pageSize(): number {
 		return this._pageSize;
 	}
@@ -98,8 +103,12 @@ export class MessageLog {
 	/* tslint:enable */
 
 	addMessage(message: IMessage): ng.IPromise<void> {
+		this.visibleMessages.unshift(message);
+
 		return this.dataService.saveMessage(message).then((): void => {
 			this.getTopPage();
+		}).catch((error): void => {
+			this.arrayUtility.remove(this.visibleMessages, message);
 		});
 	}
 
@@ -167,11 +176,13 @@ export interface IMessageLogFactory {
 	getInstance(): IMessageLog;
 }
 
-export function messageLogFactory(): IMessageLogFactory {
+messageLogFactory.$inject = [__array.serviceName];
+
+export function messageLogFactory(arrayUtility: __array.IArrayUtility): IMessageLogFactory {
 	'use strict';
 	return {
 		getInstance(): IMessageLog {
-			return new MessageLog();
+			return new MessageLog(arrayUtility);
 		},
 	};
 }
