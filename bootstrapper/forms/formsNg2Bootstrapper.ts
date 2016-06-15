@@ -6,15 +6,8 @@ import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 
 import { FormComponent } from '../../source/components/form/form';
-import { ButtonSubmitComponent } from '../../source/components/buttonSubmit/buttonSubmit';
-import { CheckboxComponent } from '../../source/components/checkbox/checkbox';
-import { DateTimeComponent } from '../../source/components/dateTime/dateTime';
-import { TextboxComponent } from '../../source/components/textbox/textbox';
-import { TextareaComponent } from '../../source/components/textarea/textarea';
-import { RADIO_DIRECTIVES } from '../../source/components/radio/index';
-import { SelectComponent } from '../../source/components/select/select';
-import { SpinnerComponent } from '../../source/components/spinner/spinner';
-import { UserRatingComponent } from '../../source/components/userRating/userRating';
+import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 
 export interface ITestItem {
 	value: number;
@@ -26,14 +19,7 @@ export interface ITestItem {
 	directives: [
 		FormComponent,
 		ButtonSubmitComponent,
-		CheckboxComponent,
-		DateTimeComponent,
-		TextboxComponent,
-		TextareaComponent,
-		RADIO_DIRECTIVES,
-		SelectComponent,
-		SpinnerComponent,
-		UserRatingComponent,
+		INPUT_DIRECTIVES,
 	],
 })
 export class FormsBootstrapper {
