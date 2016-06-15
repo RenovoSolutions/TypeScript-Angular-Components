@@ -3,6 +3,7 @@ import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
+import __logger = services.logger;
 
 import { INPUT_DIRECTIVES } from '../../../inputs/index';
 import { IDateFilter } from './dateFilter.service';
@@ -26,9 +27,12 @@ export class DateFilterComponent implements OnInit {
 	count: number = 0;
 
 	private date: __date.IDateUtility;
+	private logger: __logger.ILogger;
 
-	constructor(@Inject(__date.dateToken) dateUtility: __date.IDateUtility) {
+	constructor( @Inject(__date.dateToken) dateUtility: __date.IDateUtility
+			, @Inject(__logger.loggerToken) logger: __logger.ILogger) {
 		this.date = dateUtility;
+		this.logger = logger;
 	}
 
 	setDate(date: moment.Moment): void {
@@ -61,8 +65,7 @@ export class DateFilterComponent implements OnInit {
 		if (this.source != null) {
 			this.source.refresh();
 		} else {
-			// logger?
-			console.log('No source registered');
+			this.logger.log('No source registered');
 		}
 	}
 

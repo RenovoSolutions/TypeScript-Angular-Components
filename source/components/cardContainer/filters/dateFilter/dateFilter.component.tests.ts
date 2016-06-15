@@ -13,7 +13,7 @@ describe('DateFilterComponent', (): void => {
 	let dateFilter: DateFilterComponent;
 
 	beforeEach(() => {
-		dateFilter = new DateFilterComponent(__date.dateUtility);
+		dateFilter = new DateFilterComponent(__date.dateUtility, { log: sinon.spy() });
 		dateFilter.filter = <any>{};
 	});
 
