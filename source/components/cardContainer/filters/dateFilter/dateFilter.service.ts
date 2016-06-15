@@ -5,6 +5,11 @@ import {filters, services, downgrade} from 'typescript-angular-utilities';
 import __date = services.date;
 import __transform = services.transform;
 
+export interface IDateFilterValue {
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
+}
+
 export interface IDateFilterSettings{
 	type: string;
 	valueSelector: { (item: any): moment.Moment } | string;
@@ -16,7 +21,7 @@ export interface IDateFilterSettings{
 	label?: string;
 }
 
-export interface IDateFilter extends filters.IFilter {
+export interface IDateFilter extends filters.ISerializableFilter<IDateFilterValue> {
 	dateFrom: moment.Moment;
 	dateTo: moment.Moment;
 	useTime: boolean;
@@ -26,12 +31,12 @@ export interface IDateFilter extends filters.IFilter {
 	filter(item: any): boolean;
 }
 
-export class DateFilter implements IDateFilter {
-	dateFrom: moment.Moment;
-	dateTo: moment.Moment;
+export class DateFilter extends filters.SerializableFilter<IDateFilterValue> implements IDateFilter {
 	useTime: boolean;
 	dateRange: boolean;
 
+	private _dateFrom: moment.Moment;
+	private _dateTo: moment.Moment;
 	private valueSelector: { (item: any): moment.Moment } | string;
 	public type: string;
 
@@ -44,9 +49,33 @@ export class DateFilter implements IDateFilter {
 	private date: __date.IDateUtility;
 	private transformService: __transform.ITransformService;
 
+	get dateFrom(): moment.Moment {
+		return this._dateFrom;
+	}
+
+	set dateFrom(value: moment.Moment) {
+		if (this._dateFrom != value) {
+			this._dateFrom = value;
+			this.onChange();
+		}
+	}
+
+	get dateTo(): moment.Moment {
+		return this._dateTo;
+	}
+
+	set dateTo(value: moment.Moment) {
+		if (this._dateTo != value) {
+			this._dateTo = value;
+			this.onChange();
+		}
+	}
+
 	constructor(settings: IDateFilterSettings
 			, dateUtility: __date.IDateUtility
 			, transformService: __transform.ITransformService) {
+		super();
+
 		this.date = dateUtility;
 		this.transformService = transformService;
 
@@ -73,7 +102,7 @@ export class DateFilter implements IDateFilter {
 			if (this.useTime) {
 				dateFrom = moment(this.dateFrom);
 			} else {
-				//increase it by 1 days. to inlcude the selectec date in the range.
+				//increase it by 1 days. to inlcude the selected date in the range.
 				dateFrom = moment(this.dateFrom).add(1, 'days');
 			}
 			return this.date.dateInRange(itemDate, this.dateTo, this.dateFrom);
@@ -85,6 +114,13 @@ export class DateFilter implements IDateFilter {
 				return this.date.sameDate(this.getValue(item), this.dateFrom);
 			}
 		}
+	}
+
+	serialize(): IDateFilterValue {
+		return {
+			dateFrom: this.dateFrom,
+			dateTo: this.dateTo,
+		};
 	}
 
 	private getValue(item: any): moment.Moment {

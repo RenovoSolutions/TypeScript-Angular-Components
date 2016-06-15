@@ -1,4 +1,5 @@
 import { Component, Inject } from '@angular/core';
+import { mapValues } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -30,7 +31,8 @@ export class CardsBootstrapper {
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',
 			valueSelector: 'date',
-		}, __date.dateUtility, __transform.transform)
+		}, __date.dateUtility, __transform.transform);
+		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {
