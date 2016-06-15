@@ -1,19 +1,13 @@
-// /// <reference path='../../../../../../typings/commonjs.d.ts' />
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import * as angular from 'angular';
+import { IFilterGroup, IFilterOption } from '../filterGroup.service';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.filterOption';
-export var componentName: string = 'rlFilterOption';
-
-let filterOption: angular.IComponentOptions = {
+@Component({
+	selector: 'rlFilterOption',
 	template: require('./filterOption.html'),
-	controllerAs: 'filter',
-	bindings: {
-		activate: '&',
-		isActive: '=active',
-		option: '=',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, filterOption);
+})
+export class FilterOptionComponent {
+	@Input() option: IFilterOption;
+	@Input() isActive: boolean;
+	@Output() activate: EventEmitter<void> = new EventEmitter<void>();
+}

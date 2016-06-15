@@ -47,7 +47,7 @@ export class FilterGroupController {
 }
 
 export let filterGroup: angular.IComponentOptions = {
-	template: require('./filterGroup.directive.html'),
+	template: require('./filterGroup.directive.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'controller',
 	bindings: {

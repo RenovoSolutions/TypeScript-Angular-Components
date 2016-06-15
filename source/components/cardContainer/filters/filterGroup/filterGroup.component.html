@@ -1,0 +1,17 @@
+<div class="filter-group">
+	<div class="row filter-header" (click)="toggleChildren()">
+		<div class="col-sm-12">
+			<i class="collapse-icon fa fa-caret-down fa-2x" [hidden]="!showChildren" title="Hide filter list"></i>
+			<i class="collapse-icon fa fa-caret-right fa-2x" [hidden]="showChildren" title="Show filter list"></i>
+			<div class="filter-option">
+				<div style="display: inline-block" [hidden]="!icon" [innerHTML]="icon"></div>
+				<h4 style="display: inline-block">{{filterGroup.label}}: {{filterGroup.activeOption.label}}</h4>
+			</div>
+		</div>
+	</div>
+	<div [hidden]="!showChildren" *ngFor="let filterOption of filterGroup?.options">
+		<rlFilterOption [option]="filterOption"
+						[isActive]="filterGroup.activeOption === filterOption"
+						(activate)="selectOption(filterOption)"></rlFilterOption>
+	</div>
+</div>
