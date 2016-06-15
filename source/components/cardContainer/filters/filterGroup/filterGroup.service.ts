@@ -45,6 +45,8 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 
 	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
 		super();
+		this.object = object;
+
 		this.settings = settings;
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
