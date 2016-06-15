@@ -1,15 +1,8 @@
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
+import __transform = services.transform;
 
-import {
-	IRangeFilterGroupFactory,
-	IRangeFilterGroup,
-	factoryName,
-	moduleName,
-} from './rangeFilterGroup.service';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { RangeFilterGroup } from './rangeFilterGroup.service';
 
 interface IRangeFilterOptionMock {
 	highInclusive?: number;
@@ -24,15 +17,9 @@ interface ITestObject {
 }
 
 describe('rangeFilterGroup', () => {
-	let rangeFilterGroupFactory: IRangeFilterGroupFactory;
-	let rangeFilterGroup: IRangeFilterGroup;
+	let rangeFilterGroup: RangeFilterGroup;
 
-	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		let services: any = test.angularFixture.inject(factoryName);
-		rangeFilterGroupFactory = services[factoryName];
-	});
+	const buildFilter = settings => new RangeFilterGroup(settings, __object.objectUtility, __transform.transform);
 
 	it('should build an option filter functin that filters out items that arent in the range', (): void => {
 		let lowAndHighInclusiveOption: IRangeFilterOptionMock = {
@@ -56,7 +43,7 @@ describe('rangeFilterGroup', () => {
 			highExclusive: 10,
 		};
 
-		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+		rangeFilterGroup = buildFilter({
 			options: [
 				lowAndHighInclusiveOption,
 				lowAndHighExclusiveOption,
@@ -120,7 +107,7 @@ describe('rangeFilterGroup', () => {
 			active: true,
 		};
 
-		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+		rangeFilterGroup = buildFilter({
 			options: [
 				inactiveOption,
 				activeOption,
@@ -137,7 +124,7 @@ describe('rangeFilterGroup', () => {
 			active: true,
 		};
 
-		rangeFilterGroup = rangeFilterGroupFactory.getInstance(<any>{
+		rangeFilterGroup = buildFilter({
 			options: [
 				defaultOption,
 			],

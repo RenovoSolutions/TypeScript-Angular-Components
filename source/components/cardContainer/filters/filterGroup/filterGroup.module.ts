@@ -11,21 +11,17 @@ export {
 	rangeFilterGroup,
 };
 
-import { factoryName, filterGroupFactory } from './filterGroup.service';
 import { componentName, filterGroup, controllerName, FilterGroupController } from './filterGroup.directive';
 
 export * from './filterGroup.directive';
 export * from './filterGroup.service';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
+export const moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
 
 angular.module(moduleName, [
 	downgrade.moduleName,
 
 	filterOption.moduleName,
-	modeFilterGroup.moduleName,
-	rangeFilterGroup.moduleName,
 ])
-	.factory(factoryName, filterGroupFactory)
 	.component(componentName, filterGroup)
 	.controller(controllerName, FilterGroupController);

@@ -267,22 +267,24 @@ export class FilterBuilder implements IFilterBuilder {
 	}
 
 	buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup {
-		let factory: filterGroup.IFilterGroupFactory = this.$injector.get<any>(filterGroup.factoryName);
-		let filter: filterGroup.IFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let filter: filterGroup.IFilterGroup = new filterGroup.FilterGroup(settings, object);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup {
-		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get<any>(filterGroup.modeFilterGroup.factoryName);
-		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = new filterGroup.modeFilterGroup.ModeFilterGroup(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup {
-		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
-		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = new filterGroup.rangeFilterGroup.RangeFilterGroup(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

@@ -1,18 +1,7 @@
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
 
-import {
-	IFilterGroupFactory,
-	FilterGroup,
-	factoryName,
-} from './filterGroup.service';
-
-import {
-	moduleName,
-} from './filterGroup.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { FilterGroup } from './filterGroup.service';
 
 import * as _ from 'lodash';
 
@@ -27,20 +16,14 @@ interface IFilterOptionMock {
 }
 
 describe('filterGroup', () => {
-	let filterGroupFactory: IFilterGroupFactory;
 	let filterGroup: FilterGroup;
 
-	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		let services: any = test.angularFixture.inject(factoryName);
-		filterGroupFactory = services[factoryName];
-	});
+	const buildFilter = settings => new FilterGroup(settings, __object.objectUtility);
 
 	it('should filter on the active option', (): void => {
 		let option1: IFilterOptionMock = { filter: sinon.spy() };
 		let option2: IFilterOptionMock = { filter: sinon.spy() };
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			options: [option1, option2],
 		});
 		filterGroup.initOptions();
@@ -68,7 +51,7 @@ describe('filterGroup', () => {
 			filter: sinon.spy(),
 		};
 
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			options: [optionWithExplicitType, optionWithImplicitType],
 		});
 		filterGroup.initOptions();
@@ -95,7 +78,7 @@ describe('filterGroup', () => {
 				}),
 			};
 
-			filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+			filterGroup = buildFilter({
 				options: [option1, option2],
 			});
 			filterGroup.initOptions();
@@ -114,7 +97,7 @@ describe('filterGroup', () => {
 			active: true
 		};
 
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			options: [option1, option2],
 		});
 		filterGroup.initOptions();
@@ -133,7 +116,7 @@ describe('filterGroup', () => {
 			serialize: (): number => { return 4; },
 		};
 
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			options: [inactiveOption, activeOption],
 		});
 		filterGroup.initOptions();
@@ -142,7 +125,7 @@ describe('filterGroup', () => {
 	});
 
 	it('should use the custom serializer provided by the consumer', (): void => {
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			serialize: (): number => { return 4; },
 			options: [],
 		});
@@ -160,7 +143,7 @@ describe('filterGroup', () => {
 			value: 4,
 		};
 
-		filterGroup = <FilterGroup> filterGroupFactory.getInstance(<any>{
+		filterGroup = buildFilter({
 			options: [inactiveOption, activeOption],
 		});
 		filterGroup.initOptions();

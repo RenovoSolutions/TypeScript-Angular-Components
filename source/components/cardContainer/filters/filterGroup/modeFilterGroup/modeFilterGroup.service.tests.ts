@@ -1,15 +1,8 @@
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
+import __transform = services.transform;
 
-import {
-	IModeFilterGroupFactory,
-	IModeFilterGroup,
-	factoryName,
-	moduleName,
-} from './modeFilterGroup.service';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { ModeFilterGroup } from './modeFilterGroup.service';
 
 interface IModeFilterOptionMock {
 	value: boolean;
@@ -26,34 +19,28 @@ interface ITestObject {
 }
 
 describe('modeFilterGroup', () => {
-	var modeFilterGroupFactory: IModeFilterGroupFactory;
-	var modeFilterGroup: IModeFilterGroup;
+	let modeFilterGroup: ModeFilterGroup;
 
-	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject(factoryName);
-		modeFilterGroupFactory = services[factoryName];
-	});
+	const buildFilter = settings => new ModeFilterGroup(settings, __object.objectUtility, __transform.transform);
 
 	it('should build an option filter function that filters out items with a value not matching the mode', (): void => {
-		var trueModeOption: IModeFilterOptionMock = {
+		let trueModeOption: IModeFilterOptionMock = {
 			value: true,
 		};
-		var falseModeOption: IModeFilterOptionMock = {
+		let falseModeOption: IModeFilterOptionMock = {
 			value: false,
 		};
 
-		modeFilterGroup = modeFilterGroupFactory.getInstance(<any>{
+		modeFilterGroup = buildFilter({
 			options: [trueModeOption, falseModeOption],
 			getValue(item: ITestObject): boolean {
 				return item.flag;
 			},
 		});
 
-		var trueObj: ITestObject = { flag: true };
-		var falseObj: ITestObject = { flag: false };
-		var emptyObj: ITestObject = {};
+		let trueObj: ITestObject = { flag: true };
+		let falseObj: ITestObject = { flag: false };
+		let emptyObj: ITestObject = {};
 
 		modeFilterGroup.activeOption = <any>trueModeOption;
 		expect(modeFilterGroup.filter(trueObj)).to.be.true;
@@ -67,15 +54,15 @@ describe('modeFilterGroup', () => {
 	});
 
 	it('should serialize to the value of the active option', (): void => {
-		var inactiveOption: IModeFilterOptionMock2 = {
+		let inactiveOption: IModeFilterOptionMock2 = {
 			value: 1,
 		};
-		var activeOption: IModeFilterOptionMock2 = {
+		let activeOption: IModeFilterOptionMock2 = {
 			value: 2,
 			active: true,
 		};
 
-		modeFilterGroup = modeFilterGroupFactory.getInstance(<any>{
+		modeFilterGroup = buildFilter({
 			options: [inactiveOption, activeOption],
 		});
 
@@ -83,12 +70,12 @@ describe('modeFilterGroup', () => {
 	});
 
 	it('should return null if the default option is selected', (): void => {
-		var defaultOption: IModeFilterOptionMock2 = {
+		let defaultOption: IModeFilterOptionMock2 = {
 			displayAll: true,
 			active: true,
 		};
 
-		modeFilterGroup = modeFilterGroupFactory.getInstance(<any>{
+		modeFilterGroup = buildFilter({
 			options: [defaultOption],
 		});
 
