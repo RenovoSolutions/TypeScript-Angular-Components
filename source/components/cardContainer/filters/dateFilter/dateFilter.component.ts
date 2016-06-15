@@ -65,7 +65,7 @@ export class DateFilterComponent implements OnInit {
 		if (this.source != null) {
 			this.source.refresh();
 		} else {
-			this.logger.log('No source registered');
+			this.logger.log('No source specified');
 		}
 	}
 
