@@ -49,6 +49,7 @@ export class DateFilterComponent implements OnInit {
 				this.filter.dateTo = null;
 			}
 		}
+		this.refreshDataSource();
 	}
 
 	clear(): void {
