@@ -1,13 +1,14 @@
-import * as angular from 'angular';
 import { Subject } from 'rxjs';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { IDataSource } from './dataSource';
 import { DataSourceBase } from './dataSourceBase.service';
 import { IDataSourceProcessor } from './dataSourceProcessor.service';
+
+export { IDataSource };
 
 export interface IDataSetFunction<TDataType> {
 	(params: any): Promise<TDataType[]>;
