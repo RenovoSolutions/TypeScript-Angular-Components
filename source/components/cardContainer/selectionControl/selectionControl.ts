@@ -9,7 +9,7 @@ import { CardContainerComponent } from '../cardContainer';
 import { BUTTON_DIRECTIVES } from '../../buttons/index';
 
 @Component({
-	selector: 'rlSelectionControl',
+	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
 	directives: [BUTTON_DIRECTIVES],
 })
