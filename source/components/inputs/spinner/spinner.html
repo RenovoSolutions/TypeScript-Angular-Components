@@ -11,7 +11,7 @@
 			{{componentValidator.error}}
 		</div>
 	</div>
-	<div *ngSwitchWhen="'true'">
+	<div *ngSwitchCase="'true'">
 		<div class="input-group field">
 			<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 			<span class="input-group-addon" *ngIf="prefix">{{prefix}}</span>
