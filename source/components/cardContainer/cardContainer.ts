@@ -34,7 +34,9 @@ export class CardContainerComponent {
 	dataSource: any = {
 		dataSet: items,
 		filteredDataSet: [items[0], items[1]],
-		pager: {},
+		pager: {
+			pageSize: 5,
+		},
 	};
 	selectionChanged = () => console.log('changed');
 }

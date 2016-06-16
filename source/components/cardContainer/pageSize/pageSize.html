@@ -1,4 +1,5 @@
-<div ng-if="::controller.pager">
-	<select class="form-control" title="Cards per page" ng-model="controller.selectedPageSize"
-			ng-options="pageSize for pageSize in controller.pageSizes"></select>
+<div *ngIf="pager">
+	<rlSelect title="Cards per page"
+			  [(value)]="pager.pageSize"
+			  [options]="pageSizes"></rlSelect>
 </div>

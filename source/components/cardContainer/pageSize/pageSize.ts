@@ -1,54 +1,32 @@
-// /// <reference path='../../../../typings/commonjs.d.ts' />
-
-import * as angular from 'angular';
+import { Component } from '@angular/core';
 
 import { IDataPager } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer.ng1';
-
-export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
-export const componentName: string = 'rlPageSize';
-export const controllerName: string = 'PageSizeController';
+import { CardContainerComponent } from '../cardContainer';
+import { SelectComponent } from '../../inputs/index';
 
 export const availablePageSizes: number[] = [10, 25, 50, 100];
 export const defaultPageSize: number = 10;
 
-export class PageSizeController {
+@Component({
+	selector: 'rlPageSize',
+	template: require('./pageSize.html'),
+	directives: [SelectComponent],
+})
+export class PageSizeComponent {
 	pageSizes: number[];
-	private cardContainer: CardContainerController;
-	private pager: IDataPager;
 
-	get selectedPageSize(): number {
-		if (this.pager != null) {
-			return this.pager.pageSize;
-		}
-		return null;
-	}
+	cardContainer: CardContainerComponent;
+	pager: IDataPager;
 
-	set selectedPageSize(value: number) {
-		if (this.pager != null) {
-			this.pager.pageSize = value;
-		}
-	}
-
-	$onInit(): void {
-		if (this.cardContainer == null) {
-			return;
-		}
-
-		this.selectedPageSize = defaultPageSize;
-		this.pageSizes = availablePageSizes;
+	constructor(cardContainer: CardContainerComponent) {
+		this.cardContainer = cardContainer;
 
 		this.pager = this.cardContainer.dataSource.pager;
+
+		this.pageSizes = availablePageSizes;
+
+		if (this.pager) {
+			this.pager.pageSize = defaultPageSize;
+		}
 	}
 }
-
-const pageSize: angular.IComponentOptions = {
-	require: { cardContainer: '?^^rlCardContainer' },
-	template: require('./pageSize.html'),
-	controller: controllerName,
-	controllerAs: 'controller',
-};
-
-angular.module(moduleName, [])
-	.component(componentName, pageSize)
-	.controller(controllerName, PageSizeController);

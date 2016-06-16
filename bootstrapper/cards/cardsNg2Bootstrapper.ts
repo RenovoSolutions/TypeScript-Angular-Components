@@ -18,6 +18,7 @@ import {
 	FILTER_DIRECTIVES,
 } from '../../source/components/cardContainer/filters/index';
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
+import { PageSizeComponent } from '../../source/components/cardContainer/pageSize/pageSize';
 import { SelectionComponent } from '../../source/components/cardContainer/selectionControl/selectionControl';
 
 @Component({
@@ -28,6 +29,7 @@ import { SelectionComponent } from '../../source/components/cardContainer/select
 		INPUT_DIRECTIVES,
 		FILTER_DIRECTIVES,
 		CardContainerComponent,
+		PageSizeComponent,
 		SelectionComponent,
 	],
 })
