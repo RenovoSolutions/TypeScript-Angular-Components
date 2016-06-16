@@ -5,6 +5,7 @@ describe('FilterGroupComponent', (): void => {
 
 	beforeEach(() => {
 		filterGroup = new FilterGroupComponent({ log: sinon.spy() });
+		filterGroup.filterGroup = <any>{};
 	});
 
 	it('should toggle the children', (): void => {
