@@ -9,5 +9,7 @@ import { CardContainerComponent } from '../cardContainer';
 export class ItemCountComponent {
 	cardContainer: CardContainerComponent;
 
-	constructor(cardContainer: CardContainerComponent) { }
+	constructor(cardContainer: CardContainerComponent) {
+		this.cardContainer = cardContainer;
+	}
 }
