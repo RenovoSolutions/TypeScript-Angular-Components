@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource } from '../../dataSources/dataSources.module';
+import { IDataSource } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 
 export var componentName: string = 'rlFilterGroup';

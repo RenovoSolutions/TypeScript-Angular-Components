@@ -5,13 +5,8 @@ import __object = services.object;
 import __transform = services.transform;
 
 import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
-
-import { Sorter } from '../sorts/sorter/sorter.service';
-import { MergeSort } from '../sorts/mergeSort/mergeSort.service';
-
 import { DataPager } from './dataPager/dataPager.service';
-
-import { ISort, SortDirection } from '../sorts/sorts.module';
+import { ISort, SortDirection, Sorter, MergeSort } from '../sorts/index';
 
 interface ITestObject {
 	value: number;

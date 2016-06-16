@@ -9,10 +9,10 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSource } from './dataSources/dataSources.module';
+import { IDataSource } from './dataSources/index';
 import { DataPager } from './dataSources/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
-import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sorts.module';
+import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';

@@ -2,9 +2,7 @@ import { services, types } from 'typescript-angular-utilities';
 import __transform = services.transform;
 
 import { ISorter, Sorter } from './sorter.service';
-
-import { SortDirection,	ISort } from '../sorts.module';
-import { IMergeSort, MergeSort } from '../mergeSort/mergeSort.service';
+import { SortDirection,	ISort, IMergeSort, MergeSort } from '../index';
 
 interface ITestObject {
 	value: number;
