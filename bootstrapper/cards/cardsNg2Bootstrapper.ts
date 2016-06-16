@@ -108,6 +108,7 @@ export class CardsBootstrapper {
 		this.filterGroup.subscribe(value => console.log(value));
 		this.modeFilterGroup.subscribe(value => console.log(value));
 		this.rangeFilterGroup.subscribe(value => console.log(value));
+		this.selectFilter.subscribe(value => console.log(value));
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {

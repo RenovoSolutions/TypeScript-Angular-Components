@@ -14,7 +14,7 @@ export interface ISelectFilterSettings<TDataType, TFilterType> {
 	nullOption?: string;
 }
 
-export interface ISelectFilter<T> extends filters.IFilter {
+export interface ISelectFilter<T> extends filters.ISerializableFilter<any> {
 	selectedValue: any;
 }
 
@@ -22,10 +22,10 @@ export interface IEqualityFunction<TFilterType> {
 	(item1: TFilterType, item2: TFilterType): boolean;
 }
 
-export class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
-	selectedValue: any;
+export class SelectFilter<TDataType, TFilterType> extends filters.SerializableFilter<TFilterType> implements ISelectFilter<TDataType> {
 	type: string = 'selectFilter';
 
+	private _selectedValue: TFilterType;
 	private valueSelector: string | { (item: TDataType): any };
 	private comparer: IEqualityFunction<TFilterType>;
 
@@ -40,9 +40,22 @@ export class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TData
 	object: __object.IObjectUtility;
 	transformService: __transform.ITransformService;
 
+	get selectedValue(): TFilterType {
+		return this._selectedValue;
+	}
+
+	set selectedValue(value: TFilterType) {
+		if (this._selectedValue !== value) {
+			this._selectedValue = value;
+			this.onChange();
+		}
+	}
+
 	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>
 			, object: __object.IObjectUtility
 			, transformService: __transform.ITransformService) {
+		super();
+
 		this.object = object;
 		this.transformService = transformService;
 
@@ -69,8 +82,11 @@ export class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TData
 		return this.object.areEqual(this.getValue(item), this.selectedValue);
 	}
 
+	serialize(): TFilterType {
+		return this.selectedValue;
+	}
+
 	private getValue(item: TDataType): any {
 		return this.transformService.getValue(item, this.valueSelector);
 	}
-
 }
