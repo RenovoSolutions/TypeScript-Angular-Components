@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, OnInit, AfterViewInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isArray, clone } from 'lodash';
 
@@ -23,10 +23,13 @@ import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 	providers: [ComponentValidator],
 	directives: [BusyComponent, OffClickDirective, TemplateRenderer],
 })
-export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
+export class SelectComponent<T> extends ValidatedInputComponent<T> implements OnInit, AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
+
+	// used for select filter only
+	@Input() externalTemplate: TemplateRef<any>;
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
@@ -44,6 +47,11 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
 		this.inputType = 'select';
+	}
+
+	ngOnInit(): void {
+		super.ngOnInit();
+		this.template = this.template || this.externalTemplate;
 	}
 
 	ngAfterViewInit(): void {
