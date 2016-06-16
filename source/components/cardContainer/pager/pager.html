@@ -1,24 +1,29 @@
-<nav ng-if="::pager.pager">
+<nav *ngIf="pager">
 	<ul class="pagination">
-		<li title="Go to first page" ng-click="pager.first()"
-			ng-class="{ 'disabled': !pager.canGoBack }">
+		<li title="Go to first page"
+			(click)="first()"
+			[class.disabled]="!canGoBack">
 			<a><i class="fa fa-angle-double-left"></i></a>
 		</li>
-		<li title="Go to previous page" ng-click="pager.previous()"
-			ng-class="{ 'disabled': !pager.canGoBack }">
+		<li title="Go to previous page"
+			(click)="previous()"
+			[class.disabled]="!canGoBack">
 			<a><i class="fa fa-angle-left"></i></a>
 		</li>
-		<li title="Go to page {{::page}}" ng-click="pager.goto(page)"
-			ng-repeat="page in pager.pages"
-			ng-class="{ 'active': pager.currentPage == page }">
-			<a>{{::page}}</a>
+		<li *ngFor="let page of pages"
+			title="Go to page {{page}}"
+			(click)="goto(page)"
+			[class.active]="pager.pageNumber == page">
+			<a>{{page}}</a>
 		</li>
-		<li title="Go to next page" ng-click="pager.next()"
-			ng-class="{ 'disabled': !pager.canGoForward }">
+		<li title="Go to next page"
+			(click)="next()"
+			[class.disabled]="!canGoForward">
 			<a><i class="fa fa-angle-right"></i></a>
 		</li>
-		<li title="Go to last page" ng-click="pager.last()"
-			ng-class="{ 'disabled': !pager.canGoForward }">
+		<li title="Go to last page"
+			(click)="last()"
+			[class.disabled]="!canGoForward">
 			<a><i class="fa fa-angle-double-right"></i></a>
 		</li>
 	</ul>

@@ -1,50 +1,40 @@
-// /// <reference path='../../../../typings/commonjs.d.ts' />
+import { Component, Input, OnInit } from '@angular/core';
+import { range } from 'lodash';
 
-import * as angular from 'angular';
-import * as _ from 'lodash';
+import { IDataPager, IDataSource } from '../dataSources/index';
+import { CardContainerComponent } from '../cardContainer';
 
-import { IDataSource, IDataPager } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer.ng1';
+export const defaultVisiblePageCount: number = 5;
 
-export let moduleName: string = 'rl.ui.components.cardContainer.pager';
-export let componentName: string = 'rlPager';
-export let controllerName: string = 'PagerController';
+@Component({
+	selector: 'rlPager',
+	template: require('./pager.html'),
+})
+export class PagerComponent implements OnInit {
+	@Input() pageCount: number;
 
-export let defaultVisiblePageCount: number = 5;
-
-export interface IPagerBindings {
-	pageCount: number;
-}
-
-export class PagerController {
-	// bindings
-	pageCount: number;
-
-	canGoBack: boolean = false;
-	canGoForward: boolean = false;
 	pages: number[];
-	private cardContainer: CardContainerController;
-	private pager: IDataPager;
-	private dataSource: IDataSource<any>;
-	private lastPage: number;
-	private visiblePageCount: number;
+	lastPage: number;
+	visiblePageCount: number;
 
-	get currentPage(): number {
-		return this.pager.pageNumber;
+	cardContainer: CardContainerComponent;
+	pager: IDataPager;
+	dataSource: IDataSource<any>;
+
+	get canGoBack(): boolean {
+		return this.pager.pageNumber > 1;
 	}
 
-	set currentPage(page: number) {
-		this.pager.pageNumber = page;
-		this.updatePaging();
+	get canGoForward(): boolean {
+		return this.pager.pageNumber < this.lastPage;
 	}
 
-	$onInit(): void {
-		if (this.cardContainer == null) {
-			return;
-		}
-
+	constructor(cardContainer: CardContainerComponent) {
+		this.cardContainer = cardContainer;
 		this.pager = this.cardContainer.dataSource.pager;
+	}
 
+	ngOnInit(): void {
 		if (this.pager) {
 			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;
 			this.lastPage = 1;
@@ -56,28 +46,57 @@ export class PagerController {
 		}
 	}
 
-	private updatePageCount: {(): void} = (): void => {
-		let totalItems: number = this.dataSource.count;
+	setPage(page: number): void {
+		this.pager.pageNumber = page;
+		this.updatePaging();
+	}
 
-		let newLastPage: number = Math.ceil(totalItems / this.pager.pageSize);
+	first(): void {
+		this.setPage(1);
+	}
+
+	previous(): void {
+		if (this.pager.pageNumber > 1) {
+			this.setPage(this.pager.pageNumber - 1);
+		}
+	}
+
+	goto(page: number): void {
+		if (page >= 1 && page <= this.lastPage) {
+			this.setPage(page);
+		}
+	}
+
+	next(): void {
+		if (this.pager.pageNumber < this.lastPage) {
+			this.setPage(this.pager.pageNumber + 1);
+		}
+	}
+
+	last(): void {
+		this.setPage(this.lastPage);
+	}
+
+	private updatePageCount: {(): void} = (): void => {
+		const totalItems: number = this.dataSource.count;
+
+		const newLastPage: number = Math.ceil(totalItems / this.pager.pageSize);
 
 		if (newLastPage !== this.lastPage) {
 			this.lastPage = newLastPage;
-			this.currentPage = 1;
+			this.setPage(1);
 		}
 
 		this.updatePaging();
 	}
 
 	private updatePaging(): void {
-		let page: number = this.currentPage;
-		this.canGoBack = page > 1;
-		this.canGoForward = page < this.lastPage;
+		const page: number = this.pager.pageNumber;
 
-		let nonCurrentVisiblePages: number = this.visiblePageCount - 1;
+		const nonCurrentVisiblePages: number = this.visiblePageCount - 1;
 
-		let before: number = Math.floor(nonCurrentVisiblePages / 2);
-		let after: number = Math.ceil(nonCurrentVisiblePages / 2);
+		const before: number = Math.floor(nonCurrentVisiblePages / 2);
+		const after: number = Math.ceil(nonCurrentVisiblePages / 2);
 
 		let startPage: number = page - before;
 		let endPage: number = page + after;
@@ -90,46 +109,6 @@ export class PagerController {
 			startPage = Math.max(this.lastPage - nonCurrentVisiblePages, 1);
 		}
 
-		this.pages = _.range(startPage, endPage + 1);
-	}
-
-	first(): void {
-		this.currentPage = 1;
-	}
-
-	previous(): void {
-		if (this.currentPage > 1) {
-			this.currentPage--;
-		}
-	}
-
-	goto(page: number): void {
-		if (page >= 1 && page <= this.lastPage) {
-			this.currentPage = page;
-		}
-	}
-
-	next(): void {
-		if (this.currentPage < this.lastPage) {
-			this.currentPage++;
-		}
-	}
-
-	last(): void {
-		this.currentPage = this.lastPage;
+		this.pages = range(startPage, endPage + 1);
 	}
 }
-
-let pager: angular.IComponentOptions = {
-	require: { cardContainer: '?^^rlCardContainer' },
-	template: require('./pager.html'),
-	controller: controllerName,
-	controllerAs: 'pager',
-	bindings: {
-		pageCount: '<?visiblePages',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, pager)
-	.controller(controllerName, PagerController);

@@ -34,8 +34,12 @@ export class CardContainerComponent {
 	dataSource: any = {
 		dataSet: items,
 		filteredDataSet: [items[0], items[1]],
+		count: 100,
+		countChanges: new Subject<number>(),
 		pager: {
 			pageSize: 5,
+			pageSizeChanges: new Subject<number>(),
+			pageNumber: 1,
 		},
 	};
 	selectionChanged = () => console.log('changed');
