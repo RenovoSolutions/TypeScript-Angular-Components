@@ -9,9 +9,11 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSource, dataPager } from './dataSources/dataSources.module';
+import { IDataSource } from './dataSources/dataSources.module';
+import { DataPager } from './dataSources/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/sorts.module';
+import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
@@ -114,13 +116,13 @@ export class CardContainerController {
 
 	makeCard: angular.ITranscludeFunction;
 
-	static $inject: string[] = ['$scope', '$attrs', '$transclude', downgrade.objectServiceName, downgrade.arrayServiceName, dataPager.factoryName, parentChildServiceName];
+	static $inject: string[] = ['$scope', '$attrs', '$transclude', dataPagerFactoryName, downgrade.objectServiceName, downgrade.arrayServiceName, parentChildServiceName];
 	constructor(private $scope: ICardContainerScope
 			, $attrs: ICardContainerAttrs
 			, $transclude: angular.ITranscludeFunction
+			, private dataPagerFactory: any
 			, private object: __object.IObjectUtility
 			, private array: __array.IArrayUtility
-			, private dataPagerFactory: dataPager.IDataPagerFactory
 			, private parentChild: IParentChildBehaviorService) {
 		if (this.builder != null) {
 			this.builder.setCardContainerProperties(this);

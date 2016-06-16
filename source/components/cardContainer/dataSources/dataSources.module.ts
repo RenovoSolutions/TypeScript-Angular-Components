@@ -30,7 +30,5 @@ export var moduleName: string = 'rl.ui.components.cardContainer.dataSources';
 angular.module(moduleName, [
 	downgrade.moduleName,
 	sortsModuleName,
-
-	dataPager.moduleName,
 ])
 	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);

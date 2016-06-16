@@ -40,7 +40,6 @@ export var moduleName: string = 'rl.ui.components.cardContainer';
 
 angular.module(moduleName, [
 	// dependencies
-	dataSources.dataPager.moduleName,
 	downgrade.moduleName,
 	parentChildModule,
 
