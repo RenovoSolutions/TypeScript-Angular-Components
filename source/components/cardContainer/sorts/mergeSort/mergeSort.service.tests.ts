@@ -1,32 +1,21 @@
-import { services, types } from 'typescript-angular-utilities';
-import test = services.test;
+import { types } from 'typescript-angular-utilities';
 
-import {
-	IMergeSort,
-	serviceName,
-	moduleName,
-} from './mergeSort.service';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { IMergeSort, MergeSort } from './mergeSort.service';
 
 interface ITestObject {
 	value: number;
 }
 
-describe('mergeSort', () => {
-	var mergeSort: IMergeSort;
+describe('MergeSort', () => {
+	let mergeSort: IMergeSort;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject(serviceName);
-		mergeSort = services[serviceName];
+		mergeSort = new MergeSort();
 	});
 
 	it('should sort a set of items using the default comparer', (): void => {
-		var data: number[] = [1, 4, 6, 5, 2, 7, 3];
-		var result: number[] = mergeSort.sort(data);
+		let data: number[] = [1, 4, 6, 5, 2, 7, 3];
+		let result: number[] = mergeSort.sort(data);
 		expect(result[0]).to.equal(1);
 		expect(result[1]).to.equal(2);
 		expect(result[2]).to.equal(3);
@@ -37,25 +26,25 @@ describe('mergeSort', () => {
 	});
 
 	it('should sort a set of items using a custom comparer', (): void => {
-		var object1: ITestObject = {
+		let object1: ITestObject = {
 			value: 2,
 		};
 
-		var object2: ITestObject = {
+		let object2: ITestObject = {
 			value: 3,
 		};
 
-		var object3: ITestObject = {
+		let object3: ITestObject = {
 			value: 4,
 		};
 
-		var object4: ITestObject = {
+		let object4: ITestObject = {
 			value: 12,
 		};
 
-		var data: ITestObject[] = [object2, object4, object1, object3];
+		let data: ITestObject[] = [object2, object4, object1, object3];
 
-		var result: ITestObject[] = mergeSort.sort(data, (a: ITestObject, b: ITestObject): types.CompareResult => {
+		let result: ITestObject[] = mergeSort.sort(data, (a: ITestObject, b: ITestObject): types.CompareResult => {
 			return a.value > b.value
 				? types.CompareResult.greater
 				: (a.value < b.value ? types.CompareResult.less : types.CompareResult.equal);
