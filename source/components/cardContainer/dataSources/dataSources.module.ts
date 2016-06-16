@@ -32,7 +32,6 @@ angular.module(moduleName, [
 	sortsModuleName,
 
 	dataPager.moduleName,
-	simpleDataSource.moduleName,
 	smartDataSource.moduleName,
 ])
 	.service(dataSourceProcessor.processorServiceName, dataSourceProcessor.DataSourceProcessor);

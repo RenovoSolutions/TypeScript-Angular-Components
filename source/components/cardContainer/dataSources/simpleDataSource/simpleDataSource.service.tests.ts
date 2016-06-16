@@ -1,35 +1,24 @@
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
+import __array = services.array;
 
-import {
-	ISimpleDataSourceFactory,
-	moduleName,
-	factoryName,
-} from './simpleDataSource.service';
+import { SimpleDataSource, IDataSource } from './simpleDataSource.service';
 
-import {
-	IDataSource,
-	moduleName as dataSourcesModuleName,
-} from '../dataSources.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { Sorter } from '../../sorts/sorter/sorter.service';
+import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 describe('simpleDataSource', () => {
-	var simpleDataSourceFactory: ISimpleDataSourceFactory;
+	let processor: DataSourceProcessor;
 
-	beforeEach(() => {
-		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject(factoryName);
-		simpleDataSourceFactory = services[factoryName];
+	beforeEach((): void => {
+		processor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
 	});
 
 	it('should set data set and filter count settings on base', (): void => {
-		var source: IDataSource<number> = simpleDataSourceFactory.getInstance([1, 2, 3]);
+		const source: IDataSource<number> = new SimpleDataSource([1, 2, 3], processor, __array.arrayUtility);
 
 		// inherit functionality from the dataSourceBase
 		expect(_.isFunction(source.refresh)).to.be.true;

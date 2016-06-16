@@ -214,13 +214,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 export class DataSourceBuilder implements IDataSourceBuilder {
 	constructor(private $injector: angular.auto.IInjectorService
 			, private parent: CardContainerBuilder) {
-		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get<any>(dataSources.simpleDataSource.factoryName);
-		parent._dataSource = factory.getInstance([]);
+		parent._dataSource = this.buildSimpleDataSource([]);
 	}
 
 	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType> {
-		let factory: dataSources.simpleDataSource.ISimpleDataSourceFactory = this.$injector.get<any>(dataSources.simpleDataSource.factoryName);
-		this.parent._dataSource = factory.getInstance(data);
+		let processor: dataSources.dataSourceProcessor.IDataSourceProcessor = this.$injector.get<any>(dataSources.dataSourceProcessor.processorServiceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
+		this.parent._dataSource = new dataSources.simpleDataSource.SimpleDataSource(data, processor, array);
 		return this.parent._dataSource;
 	}
 
