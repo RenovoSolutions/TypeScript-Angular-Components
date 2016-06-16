@@ -10,7 +10,7 @@ import { DataSourceProcessor } from '../dataSourceProcessor.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
-describe('simpleDataSource', () => {
+describe('SimpleDataSource', () => {
 	let processor: DataSourceProcessor;
 
 	beforeEach((): void => {

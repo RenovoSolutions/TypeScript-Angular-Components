@@ -21,7 +21,7 @@ interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
 }
 
-describe('serverSideDataSource', () => {
+describe('ServerSideDataSource', () => {
 	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let filter: ITestFilter;
