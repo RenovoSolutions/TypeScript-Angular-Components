@@ -19,7 +19,7 @@ import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
 
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
-import { DataPager, DataSourceProcessor } from './components/cardContainer/dataSources/index';
+import { DataPager } from './components/cardContainer/dataSources/index';
 
 import { DatePipe } from './filters/date/date.filter';
 
@@ -29,7 +29,6 @@ import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from
 
 export const moduleName: string = 'rl.components.downgrade';
 
-export const dataSourceProcessorServiceName: string = 'rlDataSourceProcessor';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 
@@ -50,7 +49,6 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
-	upgradeAdapter.addProvider(DataSourceProcessor);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
@@ -70,6 +68,5 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
 
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
-	componentsDowngradeModule.factory(dataSourceProcessorServiceName, upgradeAdapter.downgradeNg2Provider(DataSourceProcessor));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 }

@@ -11,7 +11,8 @@ import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import * as selectFilter from './filters/selectFilter/selectFilter.module';
 import * as dateFilter from './filters/dateFilter/dateFilter.module';
 import { ColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
-import { columnSearchFilterName, dataSourceProcessorServiceName } from '../../componentsDowngrade';
+import { columnSearchFilterName } from '../../componentsDowngrade';
+import { sorter as __sorter } from './sorts/sorts.module';
 
 import IDataSource = dataSources.IDataSource;
 import IAsyncDataSource = dataSources.IAsyncDataSource;
@@ -218,16 +219,20 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	}
 
 	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = this.$injector.get<any>(dataSourceProcessorServiceName);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let sorter: __sorter.ISorter = this.$injector.get<any>(__sorter.serviceName);
 		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
+		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(object, sorter);
 		this.parent._dataSource = new dataSources.SimpleDataSource(data, processor, array);
 		return this.parent._dataSource;
 	}
 
 	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = this.$injector.get<any>(dataSourceProcessorServiceName);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let sorter: __sorter.ISorter = this.$injector.get<any>(__sorter.serviceName);
 		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(object, sorter);
 		this.parent._dataSource = new dataSources.DataServiceDataSource(getDataSet, processor, array, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
@@ -239,28 +244,31 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 			this.parent.useSearch();
 		}
 
-		let processor: dataSources.IDataSourceProcessor = this.$injector.get<any>(dataSourceProcessorServiceName);
-		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let sorter: __sorter.ISorter = this.$injector.get<any>(__sorter.serviceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(object, sorter);
 		this.parent._dataSource = new dataSources.ClientServerDataSource(getDataSet, this.parent._searchFilter, getFilterModel, validateModel, processor, array, object, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
 	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = this.$injector.get<any>(dataSourceProcessorServiceName);
-		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let sorter: __sorter.ISorter = this.$injector.get<any>(__sorter.serviceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(object, sorter);
 		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, array, object, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
 	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = this.$injector.get<any>(dataSourceProcessorServiceName);
-		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let sorter: __sorter.ISorter = this.$injector.get<any>(__sorter.serviceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
 		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(object, sorter);
 		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, array, object, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
