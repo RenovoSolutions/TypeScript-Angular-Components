@@ -1,3 +1,3 @@
-<p *ngIf="!cardContainer?.dataSource?.loadingDataSet">
-	Showing <strong>{{cardContainer?.dataSource?.dataSet?.length}} of {{itemCount.cardContainer.dataSource.count}}</strong> total items
+<p [hidden]="cardContainer?.dataSource?.loadingDataSet">
+	Showing <strong>{{cardContainer?.dataSource?.dataSet?.length}} of {{cardContainer?.dataSource?.count}}</strong> total items
 </p>
