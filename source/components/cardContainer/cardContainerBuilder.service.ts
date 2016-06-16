@@ -290,8 +290,9 @@ export class FilterBuilder implements IFilterBuilder {
 	}
 
 	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
-		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
-		let filter: ISelectFilter<TDataType> = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: ISelectFilter<TDataType> = new selectFilter.SelectFilter(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

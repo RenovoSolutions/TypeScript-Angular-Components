@@ -1,9 +1,6 @@
-import * as _ from 'lodash';
-import {filters, services} from 'typescript-angular-utilities';
+import { filters, services } from 'typescript-angular-utilities';
 import __object = services.object;
-import __transform = services.transform.transform;
-
-export let factoryName: string = 'rlSelectFilterFactory';
+import __transform = services.transform;
 
 export interface ISelectFilterSettings<TDataType, TFilterType> {
 	valueSelector: string | { (item: TDataType): any };
@@ -25,7 +22,7 @@ export interface IEqualityFunction<TFilterType> {
 	(item1: TFilterType, item2: TFilterType): boolean;
 }
 
-class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
+export class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	selectedValue: any;
 	type: string = 'selectFilter';
 
@@ -40,7 +37,15 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	nullOption: string;
 	template: string;
 
-	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>) {
+	object: __object.IObjectUtility;
+	transformService: __transform.ITransformService;
+
+	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>
+			, object: __object.IObjectUtility
+			, transformService: __transform.ITransformService) {
+		this.object = object;
+		this.transformService = transformService;
+
 		this.valueSelector = settings.valueSelector;
 		this.comparer = settings.comparer;
 		this.options = settings.options;
@@ -61,23 +66,11 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 			return this.comparer(this.getValue(item), this.selectedValue);
 		}
 
-		return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
+		return this.object.areEqual(this.getValue(item), this.selectedValue);
 	}
 
 	private getValue(item: TDataType): any {
-		return __transform.getValue(item, this.valueSelector);
+		return this.transformService.getValue(item, this.valueSelector);
 	}
 
-}
-
-export interface ISelectFilterFactory  {
-	getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
-}
-
-export function selectFilterFactory(): ISelectFilterFactory {
-	return {
-		getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
-			return new SelectFilter<TDataType, TFilterType>(settings);
-		},
-	};
 }
