@@ -38,7 +38,7 @@ export const sorterServiceName: string = 'rlSorterService';
 const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
-	const dataPagerFactoryProvider: Provider = new Provider(ColumnSearchFilter, {
+	const dataPagerFactoryProvider: Provider = new Provider(DataPager, {
 		useValue: {
 			getInstance: () => new DataPager(),
 		},
