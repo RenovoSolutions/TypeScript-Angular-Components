@@ -5,7 +5,7 @@ import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 
 export { IAsyncDataSource };
 

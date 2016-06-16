@@ -8,7 +8,7 @@ import __synchronizedRequests = services.synchronizedRequests;
 
 import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {

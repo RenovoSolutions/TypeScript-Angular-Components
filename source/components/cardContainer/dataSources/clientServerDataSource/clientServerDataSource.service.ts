@@ -7,7 +7,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 
 export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	getFilterModel: IGetFilterModel<any>;

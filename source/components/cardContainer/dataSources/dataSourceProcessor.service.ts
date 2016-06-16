@@ -10,8 +10,6 @@ import {
 	ISorter,
 } from '../sorts/sorter/sorter.service';
 
-export var processorServiceName: string = 'dataSourceProcessor';
-
 export interface IProcessResult<TDataType> {
 	count: number;
 	filteredDataSet: TDataType[];

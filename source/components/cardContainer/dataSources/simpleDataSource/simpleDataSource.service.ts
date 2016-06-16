@@ -3,7 +3,7 @@ import __array = services.array;
 
 import { IDataSource } from '../dataSource';
 import { DataSourceBase } from '../dataSourceBase.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 
 export { IDataSource };
 
