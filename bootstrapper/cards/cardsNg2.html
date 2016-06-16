@@ -38,3 +38,11 @@
 	<rlFilterGroup [filterGroup]="modeFilterGroup"></rlFilterGroup>
 	<rlFilterGroup [filterGroup]="rangeFilterGroup"></rlFilterGroup>
 </div>
+<div>
+	<rlSelectFilter [filter]="selectFilter"
+					label="Select filter"
+					[options]="options"
+					nullOption="All">
+		<template let-option>#{{option}}</template>
+	</rlSelectFilter>
+</div>

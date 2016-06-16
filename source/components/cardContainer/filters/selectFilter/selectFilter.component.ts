@@ -1,85 +1,42 @@
-// /// <reference path='../../../../../typings/commonjs.d.ts' />
+import { Component, Input, Inject, ContentChild, TemplateRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
-import * as angular from 'angular';
+import { services } from 'typescript-angular-utilities';
+import __transform = services.transform;
+import __logger = services.logger;
+
 import { ISelectFilter } from './selectFilter.service';
 import { IDataSource } from '../../datasources/dataSource';
-import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../../../services/jquery/jquery.service';
+import { SelectComponent } from '../../../inputs/select/select';
 
-export let componentName: string = 'rlSelectFilter';
-export let controllerName: string = 'SelectFilterController';
+@Component({
+	selector: 'rlSelectFilter',
+	template: require('./selectFilter.html'),
+	directives: [SelectComponent],
+})
+export class SelectFilterComponent<T> {
+	@Input() filter: ISelectFilter<T>;
+	@Input() source: IDataSource<T>;
+	@Input() label: string;
+	@Input() options: T[] | Observable<T[]>;
+	@Input() transform: __transform.ITransform<T, string>;
+	@Input() nullOption: string;
 
+	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
-export interface ISelectFilterBindings {
-	filter: ISelectFilter<any>;
-	options?: any[];
-	getOptions?: { (): angular.IPromise<any[]> };
-	source: IDataSource<any>;
-	label: string;
-	transform: string | { (item: any): string };
-	nullOption: string;
+	logger: __logger.ILogger;
 
-	// deprecated
-	selector: string | { (item: any): string };
-}
-
-export interface ISelectFilterController extends ISelectFilterBindings {
-	selectedValue: any;
-}
-
-export class SelectFilterController implements ISelectFilterController {
-	filter: ISelectFilter<any>;
-	options: any[];
-	getOptions: { (): angular.IPromise<any[]> };
-	source: IDataSource<any>;
-	label: string;
-	transform: string | { (item: any): string };
-	nullOption: string;
-	template: string;
-
-	selector: string | { (item: any): string };
-
-	static $inject = ['$scope', '$transclude', jqueryServiceName];
-	constructor(private $scope: angular.IScope
-		, $transclude: angular.ITranscludeFunction
-		, jqueryUtility: IJQueryUtility) {
-		this.transform = this.transform || this.selector;
-
-		$transclude((clone: angular.IAugmentedJQuery): void => {
-			if (clone.length) {
-				this.template = jqueryUtility.getHtml(clone);
-			}
-		});
+	constructor( @Inject(__logger.loggerToken) logger: __logger.ILogger) {
+		this.logger = logger;
 	}
 
-	public get selectedValue(): any {
-		return this.filter.selectedValue;
-	}
-	public set selectedValue(value: any) {
+	setValue(value: T): void {
 		this.filter.selectedValue = value;
+
 		if (this.source != null) {
 			this.source.refresh();
 		} else {
-            this.$scope.$emit('dataSource.requestRefresh'); //*event?
-        }
+			this.logger.log('No source specified');
+		}
 	}
 }
-
-export let selectFilter: angular.IComponentOptions = {
-	transclude: true,
-	template: require('./selectFilter.html'),
-	controller: controllerName,
-	controllerAs: 'filter',
-	bindings: {
-		filter: '<',
-		options: '<?',
-		getOptions: '&',
-		source: '<?',
-		label: '@',
-		transform: '<?',
-		nullOption: '@',
-		itemAs: '@',
-
-		// deprecated
-		selector: '<?',
-	},
-};

@@ -16,6 +16,8 @@ import { FilterGroup } from '../../source/components/cardContainer/filters/filte
 import { ModeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/modeFilterGroup/modeFilterGroup.service';
 import { RangeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/rangeFilterGroup/rangeFilterGroup.service';
 import { FilterGroupComponent } from '../../source/components/cardContainer/filters/filterGroup/filterGroup.component';
+import { SelectFilter } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.service';
+import { SelectFilterComponent } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.component';
 
 @Component({
 	selector: 'tsCardsBootstrapper',
@@ -26,17 +28,23 @@ import { FilterGroupComponent } from '../../source/components/cardContainer/filt
 		TextboxComponent,
 		DateFilterComponent,
 		FilterGroupComponent,
+		SelectFilterComponent,
 	],
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
+	options: number[];
 	dateFilter: DateFilter;
 	filterGroup: FilterGroup;
 	modeFilterGroup: ModeFilterGroup;
 	rangeFilterGroup: RangeFilterGroup;
+	selectFilter: SelectFilter<any, any>;
 
 	constructor(@Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService) {
 		timezone.setCurrentTimezone('-05:00');
+
+		this.options = [1, 2, 3, 4, 5];
+
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',
 			valueSelector: 'date',
@@ -90,6 +98,10 @@ export class CardsBootstrapper {
 					highExclusive: 5,
 				},
 			],
+		}, __object.objectUtility, __transform.transform);
+
+		this.selectFilter = new SelectFilter({
+			valueSelector: 'value',
 		}, __object.objectUtility, __transform.transform);
 
 		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
