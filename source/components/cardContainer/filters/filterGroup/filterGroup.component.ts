@@ -14,7 +14,7 @@ import { FilterOptionComponent } from './filterOption/filterOption';
 })
 export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup;
-	@Input() source: IDataSource<T>;
+	@Input() dataSource: IDataSource<T>;
 	@Input() icon: string;
 
 	showChildren: boolean = true;
@@ -32,8 +32,8 @@ export class FilterGroupComponent<T> {
 		this.filterGroup.activeOption = option;
 		this.showChildren = false;
 
-		if (this.source != null) {
-			this.source.refresh();
+		if (this.dataSource != null) {
+			this.dataSource.refresh();
 		} else {
 			this.logger.log('No source specified');
 		}

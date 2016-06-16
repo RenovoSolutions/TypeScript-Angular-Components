@@ -16,7 +16,7 @@ import { SelectComponent } from '../../../inputs/select/select';
 })
 export class SelectFilterComponent<T> {
 	@Input() filter: ISelectFilter<T>;
-	@Input() source: IDataSource<T>;
+	@Input() dataSource: IDataSource<T>;
 	@Input() label: string;
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;
@@ -33,8 +33,8 @@ export class SelectFilterComponent<T> {
 	setValue(value: T): void {
 		this.filter.selectedValue = value;
 
-		if (this.source != null) {
-			this.source.refresh();
+		if (this.dataSource != null) {
+			this.dataSource.refresh();
 		} else {
 			this.logger.log('No source specified');
 		}

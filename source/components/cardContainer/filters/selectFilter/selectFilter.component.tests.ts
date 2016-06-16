@@ -14,7 +14,7 @@ describe('SelectFilterComponent', (): void => {
 
 	it('should set the selected value and refresh the data source', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		selectFilter.source = dataSource;
+		selectFilter.dataSource = dataSource;
 		const value: ITestObj = { value: 5 };
 
 		selectFilter.setValue(value);

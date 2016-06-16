@@ -51,7 +51,7 @@ describe('DateFilterComponent', (): void => {
 
 	it('should set the date on the filter and refresh the data source', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.source = dataSource;
+		dateFilter.dataSource = dataSource;
 		const date: moment.Moment = moment('2000-01-01T05:16:00.000');
 
 		dateFilter.setDate(date);
@@ -62,7 +62,7 @@ describe('DateFilterComponent', (): void => {
 
 	it('should set the dateTo to a number days equal to the count before the dateFrom', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.source = dataSource;
+		dateFilter.dataSource = dataSource;
 		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
 		dateFilter.filter.dateFrom = dateFrom;
 
@@ -75,7 +75,7 @@ describe('DateFilterComponent', (): void => {
 
 	it('should clear the dateTo and set dateRange to false if the count is 0', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.source = dataSource;
+		dateFilter.dataSource = dataSource;
 		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
 		const dateTo: moment.Moment = moment('2000-01-01T05:16:00.000');
 		dateFilter.filter.dateFrom = dateFrom;

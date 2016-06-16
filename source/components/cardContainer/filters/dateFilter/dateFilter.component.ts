@@ -18,7 +18,7 @@ const type: string = 'days';
 })
 export class DateFilterComponent implements OnInit {
 	@Input() filter: IDateFilter;
-	@Input() source: IDataSource<any>;
+	@Input() dataSource: IDataSource<any>;
 	@Input() label: string;
 	@Input() showClear: boolean;
 	@Input() useDateRange: boolean;
@@ -62,8 +62,8 @@ export class DateFilterComponent implements OnInit {
 	}
 
 	refreshDataSource(): void {
-		if (this.source != null) {
-			this.source.refresh();
+		if (this.dataSource != null) {
+			this.dataSource.refresh();
 		} else {
 			this.logger.log('No source specified');
 		}

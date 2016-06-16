@@ -22,7 +22,7 @@ describe('FilterGroupComponent', (): void => {
 
 	it('should set the active option and refresh the data source', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		filterGroup.source = dataSource;
+		filterGroup.dataSource = dataSource;
 		const option: any = { prop: 4 };
 
 		filterGroup.selectOption(option);
