@@ -15,7 +15,7 @@ import * as pageSize from './pageSize/pageSize';
 import * as selectionControl from './selectionControl/selectionControl.ng1';
 import * as sorts from './sorts/index';
 
-import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer';
+import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer.ng1';
 import * as builder from './cardContainerBuilder.service';
 import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './defaultComponents';
 
@@ -33,7 +33,7 @@ export {
 	sorts,
 };
 
-export * from './cardContainer';
+export * from './cardContainer.ng1';
 export * from './column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer';

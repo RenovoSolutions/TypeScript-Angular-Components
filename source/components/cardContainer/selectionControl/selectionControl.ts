@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer';
+import { CardContainerComponent } from '../cardContainer';
 import { BUTTON_DIRECTIVES } from '../../buttons/index';
 
 @Component({
@@ -18,10 +18,10 @@ export class SelectionComponent implements OnInit {
 	pagingEnabled: boolean;
 	dataSource: IDataSource<any>;
 
-	cardContainer: CardContainerController;
+	cardContainer: CardContainerComponent;
 	boolean: __boolean.IBooleanUtility;
 
-	constructor(cardContainer: CardContainerController
+	constructor(cardContainer: CardContainerComponent
 			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
 		this.cardContainer = cardContainer;
 		this.boolean = boolean;

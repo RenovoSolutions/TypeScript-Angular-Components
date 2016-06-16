@@ -13,7 +13,7 @@ import { moduleName as headerColumnModuleName } from './headerColumn/headerColum
 import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
 import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
-import { CardContainerController } from '../cardContainer';
+import { CardContainerController } from '../cardContainer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.card';
 export let componentName: string = 'rlCard';

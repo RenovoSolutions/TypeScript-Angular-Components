@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { filters, services, downgrade } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
-import { CardContainerController } from './cardContainer';
+import { CardContainerController } from './cardContainer.ng1';
 import { IColumn } from './column';
 import * as dataSources from './dataSources/index';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';

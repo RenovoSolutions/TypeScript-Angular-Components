@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 
 import { IDataPager } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer';
+import { CardContainerController } from '../cardContainer.ng1';
 
 export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export const componentName: string = 'rlPageSize';

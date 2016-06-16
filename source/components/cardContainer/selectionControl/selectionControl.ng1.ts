@@ -7,7 +7,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer';
+import { CardContainerController } from '../cardContainer.ng1';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
 export var componentName: string = 'rlSelectionControl';
