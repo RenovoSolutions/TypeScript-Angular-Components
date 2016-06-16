@@ -5,6 +5,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 import __object = services.object;
 import __string = services.string;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { ClientServerDataSource } from './clientServerDataSource.service';
@@ -33,7 +34,7 @@ describe('ClientServerDataSource', () => {
 	let changedSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort()));
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 		searchFilter = new __genericSearchFilter.GenericSearchFilter(__object.objectUtility, __string.stringUtility, false);
 
 		dataService = {

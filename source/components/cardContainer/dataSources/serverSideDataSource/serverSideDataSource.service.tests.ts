@@ -3,6 +3,7 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
@@ -28,7 +29,7 @@ describe('ServerSideDataSource', () => {
 	let source: IServerSideDataSource<number>;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		filter = <any>{
 			type: 'myFilter',

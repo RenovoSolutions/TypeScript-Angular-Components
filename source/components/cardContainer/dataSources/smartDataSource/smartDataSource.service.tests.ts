@@ -3,6 +3,7 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { SmartDataSource } from './smartDataSource.service';
@@ -38,7 +39,7 @@ describe('SmartDataSource', () => {
 	let data: number[];
 
 	beforeEach(() => {
-		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
+		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		appliedFilter = <any>{
 			type: 'filter1',

@@ -3,6 +3,7 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { DataServiceDataSource, IAsyncDataSource } from './dataServiceDataSource.service';
@@ -22,7 +23,7 @@ describe('DataServiceDataSource', () => {
 	let dataService: IDataServiceMock;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		dataService = <any> {};
 

@@ -20,6 +20,8 @@ import { FormComponent } from './components/form/form';
 
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPager } from './components/cardContainer/dataSources/index';
+import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
+import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
 import { DatePipe } from './filters/date/date.filter';
 
@@ -31,6 +33,7 @@ export const moduleName: string = 'rl.components.downgrade';
 
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
 export const columnSearchFilterName: string = 'columnSearchFilter';
+export const sorterServiceName: string = 'rlSorterService';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
@@ -50,6 +53,8 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
+	upgradeAdapter.addProvider(Sorter);
+	upgradeAdapter.addProvider(MergeSort);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
@@ -69,4 +74,5 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
+	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
 }

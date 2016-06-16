@@ -5,6 +5,7 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
@@ -26,7 +27,7 @@ describe('AsyncDataSource', () => {
 	let redrawingSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort()));
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		dataService = {
 			get: test.mock.promise([1, 2]),

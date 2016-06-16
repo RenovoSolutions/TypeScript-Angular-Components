@@ -13,7 +13,4 @@ export {
 
 export var moduleName: string = 'rl.ui.components.cardContainer.sorts';
 
-angular.module(moduleName, [
-	mergeSort.moduleName,
-	sorter.moduleName,
-]);
+angular.module(moduleName, []);
