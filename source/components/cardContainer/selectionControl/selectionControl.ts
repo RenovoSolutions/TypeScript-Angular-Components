@@ -6,12 +6,12 @@ import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/index';
 import { CardContainerComponent } from '../cardContainer';
-import { BUTTON_DIRECTIVES } from '../../buttons/index';
+import { ButtonComponent } from '../../buttons/index';
 
 @Component({
 	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
-	directives: [BUTTON_DIRECTIVES],
+	directives: [ButtonComponent],
 })
 export class SelectionComponent implements OnInit {
 	selectedItems: number;
