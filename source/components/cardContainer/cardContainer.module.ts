@@ -53,7 +53,6 @@ angular.module(moduleName, [
 	selectionControl.moduleName,
 
 	// submodules
-	dataSources.moduleName,
 	filters.moduleName,
 	sorts.moduleName,
 ])
