@@ -9,7 +9,7 @@ import * as cardSearch from './cardSearch/cardSearch';
 import * as columnHeader from './columnHeader/columnHeader';
 import * as dataSources from './dataSources/index';
 import * as filters from './filters/filters.module';
-import * as itemCount from './itemCount/itemCount';
+import * as itemCount from './itemCount/itemCount.ng1';
 import * as pager from './pager/pager.ng1';
 import * as pageSize from './pageSize/pageSize.ng1';
 import * as selectionControl from './selectionControl/selectionControl.ng1';

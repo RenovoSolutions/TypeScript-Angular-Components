@@ -1,13 +1,13 @@
-import * as angular from 'angular';
+import { Component } from '@angular/core';
 
-export let moduleName: string = 'rl.ui.components.cardContainer.itemCount';
-export let componentName: string = 'rlItemCount';
+import { CardContainerComponent } from '../cardContainer';
 
-let itemCount: angular.IComponentOptions = {
-	require: { cardContainer: '?^^rlCardContainer' },
+@Component({
+	selector: 'rlItemCount',
 	template: require('./itemCount.html'),
-	controllerAs: 'itemCount',
-};
+})
+export class ItemCountComponent {
+	cardContainer: CardContainerComponent;
 
-angular.module(moduleName, [])
-	.component(componentName, itemCount);
+	constructor(cardContainer: CardContainerComponent) { }
+}
