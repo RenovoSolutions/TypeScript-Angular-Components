@@ -225,8 +225,10 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	}
 
 	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType> {
-		let factory: dataSources.dataServiceDataSource.IDataServiceDataSourceFactory = this.$injector.get<any>(dataSources.dataServiceDataSource.factoryName);
-		this.parent._dataSource = factory.getInstance(getDataSet);
+		let processor: dataSources.dataSourceProcessor.IDataSourceProcessor = this.$injector.get<any>(dataSources.dataSourceProcessor.processorServiceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
+		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		this.parent._dataSource = new dataSources.dataServiceDataSource.DataServiceDataSource(getDataSet, processor, array, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
@@ -237,8 +239,11 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 			this.parent.useSearch();
 		}
 
-		let factory: dataSources.clientServerDataSource.IClientServerDataSourceFactory = this.$injector.get<any>(dataSources.clientServerDataSource.factoryName);
-		this.parent._dataSource = factory.getInstance(getDataSet, this.parent._searchFilter, getFilterModel, validateModel);
+		let processor: dataSources.dataSourceProcessor.IDataSourceProcessor = this.$injector.get<any>(dataSources.dataSourceProcessor.processorServiceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		this.parent._dataSource = new dataSources.clientServerDataSource.ClientServerDataSource(getDataSet, this.parent._searchFilter, getFilterModel, validateModel, processor, array, object, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 

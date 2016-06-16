@@ -31,9 +31,7 @@ angular.module(moduleName, [
 	downgrade.moduleName,
 	sortsModuleName,
 
-	clientServerDataSource.moduleName,
 	dataPager.moduleName,
-	dataServiceDataSource.moduleName,
 	serverSideDataSource.moduleName,
 	simpleDataSource.moduleName,
 	smartDataSource.moduleName,

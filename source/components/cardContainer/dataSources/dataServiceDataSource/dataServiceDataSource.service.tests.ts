@@ -1,21 +1,15 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
+import __object = services.object;
+import __array = services.array;
+import __synchronizedRequests = services.synchronizedRequests;
 
-import {
-	IDataServiceDataSourceFactory,
-	IAsyncDataSource,
-	moduleName,
-	factoryName,
-} from './dataServiceDataSource.service';
+import { DataServiceDataSource, IAsyncDataSource } from './dataServiceDataSource.service';
 
-import {
-	moduleName as dataSourcesModuleName,
-	dataSourceProcessor as __dataSourceProcessor,
-} from '../dataSources.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { Sorter } from '../../sorts/sorter/sorter.service';
+import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 import * as _ from 'lodash';
 
@@ -23,21 +17,12 @@ interface IDataServiceMock {
 	get<TDataType>(): angular.IPromise<TDataType[]>;
 }
 
-describe('dataServiceDataSource', () => {
-	let dataServiceDataSourceFactory: IDataServiceDataSourceFactory;
-	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+describe('DataServiceDataSource', () => {
+	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
-	let $rootScope: angular.IRootScopeService;
 
 	beforeEach(() => {
-		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(moduleName);
-
-		let services: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
-		dataServiceDataSourceFactory = services[factoryName];
-		dataSourceProcessor = services[__dataSourceProcessor.processorServiceName];
-		$rootScope = services.$rootScope;
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
 
 		dataService = <any> {};
 
@@ -48,7 +33,7 @@ describe('dataServiceDataSource', () => {
 		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2, 3]);
 
-			dataServiceDataSourceFactory.getInstance<number>(dataService.get);
+			new DataServiceDataSource(dataService.get, dataSourceProcessor, __array.arrayUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
 			test.mock.flushAll(dataService)
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
@@ -57,7 +42,7 @@ describe('dataServiceDataSource', () => {
 		it('should make an initial request to the server for data', fakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2]);
 
-			let source: IAsyncDataSource<number> = dataServiceDataSourceFactory.getInstance<number>(dataService.get);
+			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, __array.arrayUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
 
 			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
 			source.reloaded.subscribe(reloadedSpy);
