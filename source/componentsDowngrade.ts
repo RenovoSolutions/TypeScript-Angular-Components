@@ -34,7 +34,9 @@ const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	const columnSearchFactoryProvider: Provider = new Provider(ColumnSearchFilter, {
-		useValue: new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
+		useValue: {
+			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
+		},
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
