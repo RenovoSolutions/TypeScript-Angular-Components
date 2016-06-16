@@ -6,38 +6,13 @@ import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
 
+import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
-}
-
-export interface IServerSearchFunction<TDataType> {
-	(searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
-}
-
-export interface IServerSearchParams {
-	filters: {[index: string]: any};
-	sorts: ISortParams[];
-	paging: IPagingParams;
-}
-
-export interface ISortParams {
-	column: string;
-	direction: string;
-}
-
-export interface IPagingParams {
-	pageNumber: number;
-	pageSize: number;
-}
-
-export interface IDataResult<TDataType> {
-	dataSet: TDataType[];
-	count: number;
-	isEmpty?: boolean;
 }
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
