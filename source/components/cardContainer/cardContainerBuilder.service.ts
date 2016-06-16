@@ -248,8 +248,11 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	}
 
 	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-		let factory: dataSources.serverSideDataSource.IServerSideDataSourceFactory = this.$injector.get<any>(dataSources.serverSideDataSource.factoryName);
-		this.parent._dataSource = factory.getInstance(getDataSet);
+		let processor: dataSources.dataSourceProcessor.IDataSourceProcessor = this.$injector.get<any>(dataSources.dataSourceProcessor.processorServiceName);
+		let array: services.array.IArrayUtility = this.$injector.get<any>(downgrade.arrayServiceName);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let synchronizedRequestsFactory: services.synchronizedRequests.ISynchronizedRequestsFactory = this.$injector.get<any>(downgrade.synchronizedRequestsServiceName);
+		this.parent._dataSource = new dataSources.serverSideDataSource.ServerSideDataSource(getDataSet, processor, array, object, synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 

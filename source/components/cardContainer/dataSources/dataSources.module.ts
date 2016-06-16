@@ -32,7 +32,6 @@ angular.module(moduleName, [
 	sortsModuleName,
 
 	dataPager.moduleName,
-	serverSideDataSource.moduleName,
 	simpleDataSource.moduleName,
 	smartDataSource.moduleName,
 ])
