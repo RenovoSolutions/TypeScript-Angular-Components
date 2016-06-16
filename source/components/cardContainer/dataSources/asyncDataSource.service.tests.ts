@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
@@ -35,8 +35,8 @@ describe('AsyncDataSource', () => {
 
 		source = new AsyncDataSource<number>(dataService.get
 											, <any>dataSourceProcessor
-											, services[downgrade.arrayServiceName]
-											, services[downgrade.synchronizedRequestsServiceName]);
+											, __array.arrayUtility
+											, new __synchronizedRequests.SynchronizedRequestsFactory());
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
