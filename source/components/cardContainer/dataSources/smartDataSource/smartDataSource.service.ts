@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
@@ -10,9 +9,6 @@ import __synchronizedRequests = services.synchronizedRequests;
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.smartDataSource';
-export var factoryName: string = 'smartDataSource';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
@@ -140,23 +136,3 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		this.isEmpty = data.isEmpty;
 	}
 }
-
-export interface ISmartDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
-}
-
-smartDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
-export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
-												, array: __array.IArrayUtility
-												, object: __object.IObjectUtility
-												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory {
-	'use strict';
-	return {
-		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-			return new SmartDataSource<TDataType>(getDataSet, dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		},
-	};
-}
-
-angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, smartDataSourceFactory);

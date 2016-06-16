@@ -1,23 +1,17 @@
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
+import __object = services.object;
+import __array = services.array;
+import __synchronizedRequests = services.synchronizedRequests;
 
-import {
-	ISmartDataSourceFactory,
-	SmartDataSource,
-	moduleName,
-	factoryName,
-} from './smartDataSource.service';
+import { SmartDataSource } from './smartDataSource.service';
 
-import {
-	moduleName as dataSourcesModuleName,
-	dataSourceProcessor as __dataSourceProcessor,
-} from '../dataSources.module';
+import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { Sorter } from '../../sorts/sorter/sorter.service';
+import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 import { SortDirection } from '../../sorts/sort';
-
-import * as angular from 'angular';
-import 'angular-mocks';
 
 interface IDataServiceMock {
 	get: Sinon.SinonSpy;
@@ -35,25 +29,16 @@ interface IDataSourceProcessorMock {
 	page: Sinon.SinonSpy;
 }
 
-describe('smartDataSource', () => {
-	let smartDataSourceFactory: ISmartDataSourceFactory;
+describe('SmartDataSource', () => {
 	let dataSourceProcessor: IDataSourceProcessorMock;
 	let dataService: IDataServiceMock;
-	let $rootScope: angular.IRootScopeService;
 	let appliedFilter: ITestFilter;
 	let unappliedFilter: ITestFilter;
 	let source: SmartDataSource<number>;
 	let data: number[];
 
 	beforeEach(() => {
-		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(moduleName);
-
-		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
-		smartDataSourceFactory = dependencies[factoryName];
-		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
-		$rootScope = dependencies.$rootScope;
+		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort));
 
 		appliedFilter = <any>{
 			type: 'filter1',
@@ -94,7 +79,7 @@ describe('smartDataSource', () => {
 		dataSourceProcessor.sort = sinon.spy();
 		dataSourceProcessor.page = sinon.spy();
 
-		source = <any>smartDataSourceFactory.getInstance<number>(<any>dataService.get);
+		source = <any>new SmartDataSource<number>(<any>dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
 		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },
