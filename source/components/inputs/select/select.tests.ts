@@ -1,9 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __object = services.object;
-import __guid = services.guid;
-
 import { SelectComponent } from './select';
 
 interface ITransformMock {
@@ -29,11 +25,10 @@ describe('SelectComponent', () => {
 		transformService = { getValue: sinon.spy() };
 		const validator: any = {
 			validate: sinon.spy(),
-			setValidators: sinon.spy(),
 			afterInit: sinon.spy(),
 		};
 
-		dropdown = new SelectComponent<ITestOption>(transformService, null, validator, __object.objectUtility, null, __guid.guid);
+		dropdown = new SelectComponent<ITestOption>(transformService, null, validator, null, null, null);
 
 		setValue = sinon.spy();
 		dropdown.setValue = setValue;
@@ -141,7 +136,7 @@ describe('SelectComponent', () => {
 		const template: any = {};
 		dropdown.externalTemplate = template;
 
-		dropdown.ngOnInit();
+		dropdown.ngAfterViewInit();
 
 		expect(dropdown.template).to.equal(template);
 	});

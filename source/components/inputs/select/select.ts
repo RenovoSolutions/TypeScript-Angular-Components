@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, OnInit, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isArray, clone } from 'lodash';
 
@@ -23,7 +23,7 @@ import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 	providers: [ComponentValidator],
 	directives: [BusyComponent, OffClickDirective, TemplateRenderer],
 })
-export class SelectComponent<T> extends ValidatedInputComponent<T> implements OnInit, AfterViewInit {
+export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
@@ -49,13 +49,9 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements On
 		this.inputType = 'select';
 	}
 
-	ngOnInit(): void {
-		super.ngOnInit();
-		this.template = this.template || this.externalTemplate;
-	}
-
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
+		this.template = this.template || this.externalTemplate;
 		this.wrappedOptions = isArray(this.options)
 							? Observable.of(<T[]>this.options)
 							: <Observable<T[]>>this.options;
