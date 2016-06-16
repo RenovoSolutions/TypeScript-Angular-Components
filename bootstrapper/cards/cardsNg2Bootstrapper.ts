@@ -8,27 +8,27 @@ import __timezone = services.timezone;
 import __object = services.object;
 
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
-import { CheckboxComponent } from '../../source/components/inputs/checkbox/checkbox';
-import { TextboxComponent } from '../../source/components/inputs/textbox/textbox';
-import { DateFilter } from '../../source/components/cardContainer/filters/dateFilter/dateFilter.service';
-import { DateFilterComponent } from '../../source/components/cardContainer/filters/dateFilter/dateFilter.component';
-import { FilterGroup } from '../../source/components/cardContainer/filters/filterGroup/filterGroup.service';
-import { ModeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/modeFilterGroup/modeFilterGroup.service';
-import { RangeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/rangeFilterGroup/rangeFilterGroup.service';
-import { FilterGroupComponent } from '../../source/components/cardContainer/filters/filterGroup/filterGroup.component';
-import { SelectFilter } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.service';
-import { SelectFilterComponent } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.component';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
+import {
+	DateFilter,
+	FilterGroup,
+	ModeFilterGroup,
+	RangeFilterGroup,
+	SelectFilter,
+	FILTER_DIRECTIVES,
+} from '../../source/components/cardContainer/filters/index';
+import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
+import { SelectionComponent } from '../../source/components/cardContainer/selectionControl/selectionControl';
 
 @Component({
 	selector: 'tsCardsBootstrapper',
 	template: require('./cardsNg2.html'),
 	directives: [
 		SIMPLE_CARD_DIRECTIVES,
-		CheckboxComponent,
-		TextboxComponent,
-		DateFilterComponent,
-		FilterGroupComponent,
-		SelectFilterComponent,
+		INPUT_DIRECTIVES,
+		FILTER_DIRECTIVES,
+		CardContainerComponent,
+		SelectionComponent,
 	],
 })
 export class CardsBootstrapper {
