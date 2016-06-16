@@ -1,10 +1,17 @@
-import { Subject } from 'rxjs';
-import { each, take } from 'lodash';
+import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
+import test = services.test;
 
-import { SelectionComponent } from './selectionControl';
+import {
+	SelectionControlController,
+	controllerName,
+	moduleName,
+} from './selectionControl.ng1';
+
+import * as angular from 'angular';
+import 'angular-mocks';
+import * as Rx from 'rxjs';
 
 interface IItemMock {
 	viewData: ISelectionViewData;
@@ -16,46 +23,36 @@ interface ISelectionViewData {
 
 interface ICardContainerMock {
 	numberSelected: number;
-	numberSelectedChanges: Subject<number>;
+	numberSelectedChanges: Rx.Subject<number>;
 	dataSource: any;
 	selectionChanged: Sinon.SinonSpy;
 }
 
-describe('SelectionComponent', () => {
-	let selection: SelectionComponent;
-	let cardContainer: ICardContainerMock;
-	let items: IItemMock[];
+describe('selectionControl', () => {
+	var scope: angular.IScope;
+	var selection: SelectionControlController;
+	var cardContainer: ICardContainerMock;
 
 	beforeEach(() => {
-		cardContainer = {
-			numberSelected: 0,
-			numberSelectedChanges: new Subject<number>(),
-			dataSource: {
-				pager: null,
-			},
-			selectionChanged: sinon.spy(),
-		};
-
-		selection = new SelectionComponent(<any>cardContainer, new __boolean.BooleanUtility());
+		angular.mock.module(moduleName);
 	});
 
 	describe('pagingEnabled', (): void => {
 		it('should set pagingEnabled to true if a pager exists on the card container', (): void => {
-			cardContainer.dataSource.pager = {};
-			selection.ngOnInit();
+			buildController(null, true);
 			expect(cardContainer.dataSource.pager).to.exist;
 			expect(selection.pagingEnabled).to.be.true;
 		});
 
 		it('should set pagingEnabled to false if a pager does not exist on the card container', (): void => {
-			selection.ngOnInit();
+			buildController(null, false);
 			expect(cardContainer.dataSource.pager).to.not.exist;
 			expect(selection.pagingEnabled).to.be.false;
 		});
 	});
 
 	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
-		selection.ngOnInit();
+		buildController();
 
 		cardContainer.numberSelectedChanges.next(2);
 
@@ -67,6 +64,8 @@ describe('SelectionComponent', () => {
 	});
 
 	describe('selection', (): void => {
+		var items: IItemMock[];
+
 		beforeEach(() => {
 			items = [
 				{
@@ -91,12 +90,7 @@ describe('SelectionComponent', () => {
 				},
 			];
 
-			cardContainer.dataSource = {
-				dataSet: take(items, 2),
-				filteredDataSet: items,
-			};
-
-			selection.ngOnInit();
+			buildController(items);
 		});
 
 		it('should select all items on the page', (): void => {
@@ -140,7 +134,31 @@ describe('SelectionComponent', () => {
 		});
 	});
 
+	function buildController(items?: IItemMock[], hasPager?: boolean): void {
+		cardContainer = {
+			numberSelected: 0,
+			numberSelectedChanges: new Rx.Subject<number>(),
+			dataSource: {
+				dataSet: _.take(items, 2),
+				filteredDataSet: items,
+				pager: hasPager ? {} : null,
+			},
+			selectionChanged: sinon.spy(),
+		};
+
+		var bindings: any = {
+			cardContainer: cardContainer,
+		};
+
+		var controllerResult: test.IControllerResult<SelectionControlController> =
+			test.angularFixture.controllerWithBindings<SelectionControlController>(controllerName, bindings);
+
+		scope = controllerResult.scope;
+		selection = controllerResult.controller;
+		selection.$onInit();
+	}
+
 	function setAllSelected(items: IItemMock[]): void {
-		each(items, (item: IItemMock): void => { item.viewData.selected = true; });
+		_.each(items, (item: IItemMock): void => { item.viewData.selected = true; });
 	}
 });

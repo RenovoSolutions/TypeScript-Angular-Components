@@ -1,13 +1,13 @@
-<div>
-	<div style="margin-bottom: 5px">
-		<span><strong>{{selection.selectedItems}}</strong> items selected</span>
+<div class="selection-control">
+	<div class="selection-control-count">
+		<span><strong>{{selectedItems}}</strong> items selected</span>
 	</div>
-	<div style="margin-bottom: 5px" ng-if="selection.pagingEnabled">
-		<button type="button" class="btn btn-default" ng-click="selection.selectPage()">Select page</button>
-		<button type="button" class="btn btn-default" ng-click="selection.clearPage()">Clear page</button>
+	<div class="selection-control-buttons" *ngIf="pagingEnabled">
+		<rlButton (trigger)="selectPage()">Select page</rlButton>
+		<rlButton (trigger)="clearPage()">Clear page</rlButton>
 	</div>
 	<div>
-		<button type="button" class="btn btn-default" ng-click="selection.selectAll()">Select all</button>
-		<button type="button" class="btn btn-default" ng-click="selection.clearAll()">Clear all</button>
+		<rlButton (trigger)="selectAll()">Select all</rlButton>
+		<rlButton (trigger)="clearAll()">Clear all</rlButton>
 	</div>
 </div>

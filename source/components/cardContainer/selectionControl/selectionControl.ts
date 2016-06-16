@@ -1,34 +1,35 @@
-// /// <reference path='../../../../typings/commonjs.d.ts' />
+import { Component, Inject, OnInit } from '@angular/core';
+import { each } from 'lodash';
 
-import * as angular from 'angular';
-import * as _ from 'lodash';
-
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
 import { IDataSource } from '../dataSources/index';
 import { CardContainerController } from '../cardContainer';
+import { BUTTON_DIRECTIVES } from '../../buttons/index';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
-export var componentName: string = 'rlSelectionControl';
-export var controllerName: string = 'SelectionControlController';
-
-export class SelectionControlController {
+@Component({
+	selector: 'rlSelectionControl',
+	template: require('./selectionControl.html'),
+	directives: [BUTTON_DIRECTIVES],
+})
+export class SelectionComponent implements OnInit {
 	selectedItems: number;
 	pagingEnabled: boolean;
 	dataSource: IDataSource<any>;
-	private cardContainer: CardContainerController;
 
-	static $inject: string[] = [downgrade.booleanServiceName];
-	constructor(private bool: __boolean.IBooleanUtility) {}
+	cardContainer: CardContainerController;
+	boolean: __boolean.IBooleanUtility;
 
-	$onInit(): void {
-		if (this.cardContainer == null) {
-			return;
-		}
+	constructor(cardContainer: CardContainerController
+			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
+		this.cardContainer = cardContainer;
+		this.boolean = boolean;
+	}
 
+	ngOnInit(): void {
 		this.selectedItems = this.cardContainer.numberSelected;
-		this.pagingEnabled = this.bool.toBool(this.cardContainer.dataSource.pager);
+		this.pagingEnabled = this.boolean.toBool(this.cardContainer.dataSource.pager);
 		this.dataSource = this.cardContainer.dataSource;
 
 		this.cardContainer.numberSelectedChanges.subscribe((value: number): void => {
@@ -37,23 +38,21 @@ export class SelectionControlController {
 	}
 
 	selectPage(): void {
-		_.each(this.dataSource.dataSet, (item: any): void => {
+		each(this.dataSource.dataSet, item => {
 			item.viewData.selected = true;
 		});
-
 		this.cardContainer.selectionChanged();
 	}
 
 	selectAll(): void {
-		_.each(this.dataSource.filteredDataSet, (item: any): void => {
+		each(this.dataSource.filteredDataSet, item => {
 			item.viewData.selected = true;
 		});
-
 		this.cardContainer.selectionChanged();
 	}
 
 	clearPage(): void {
-		_.each(this.dataSource.dataSet, (item: any): void => {
+		each(this.dataSource.dataSet, item => {
 			item.viewData.selected = false;
 		});
 
@@ -61,21 +60,10 @@ export class SelectionControlController {
 	}
 
 	clearAll(): void {
-		_.each(this.dataSource.filteredDataSet, (item: any): void => {
+		each(this.dataSource.filteredDataSet, item => {
 			item.viewData.selected = false;
 		});
 
 		this.cardContainer.selectionChanged();
 	}
 }
-
-let selectionControl: angular.IComponentOptions = {
-	require: { cardContainer: '?^^rlCardContainer' },
-	template: require('./selectionControl.html'),
-	controller: controllerName,
-	controllerAs: 'selection',
-};
-
-angular.module(moduleName, [downgrade.moduleName])
-	.component(componentName, selectionControl)
-	.controller(controllerName, SelectionControlController);

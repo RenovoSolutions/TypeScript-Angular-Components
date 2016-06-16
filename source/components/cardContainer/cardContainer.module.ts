@@ -12,7 +12,7 @@ import * as filters from './filters/filters.module';
 import * as itemCount from './itemCount/itemCount';
 import * as pager from './pager/pager';
 import * as pageSize from './pageSize/pageSize';
-import * as selectionControl from './selectionControl/selectionControl';
+import * as selectionControl from './selectionControl/selectionControl.ng1';
 import * as sorts from './sorts/index';
 
 import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer';
