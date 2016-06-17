@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import { services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
-import { CardContainerController } from '../cardContainer.ng1';
+import { CardContainerController } from '../../cardContainer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
 export let componentName: string = 'rlCardSearch';

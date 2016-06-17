@@ -17,7 +17,7 @@ interface IDataSourceMock {
 }
 
 describe('PagerComponent', () => {
-	let pager: PagerComponent;
+	let pager: PagerComponent<any>;
 	let dataPager: IDataPagerMock;
 	let dataSource: IDataSourceMock;
 	let cardContainer: any;

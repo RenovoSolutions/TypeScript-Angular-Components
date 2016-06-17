@@ -5,7 +5,7 @@ interface IPagerMock {
 }
 
 describe('PageSizeComponent', (): void => {
-	let pageSize: PageSizeComponent;
+	let pageSize: PageSizeComponent<any>;
 
 	it('should get the pager from the card container and set the defaults', (): void => {
 		const pager: IPagerMock = { pageSize: null };

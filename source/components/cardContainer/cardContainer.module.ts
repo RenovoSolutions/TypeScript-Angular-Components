@@ -5,19 +5,19 @@ import { downgrade } from 'typescript-angular-utilities';
 import { moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
 
 import * as card from './card/card.ng1';
-import * as cardSearch from './cardSearch/cardSearch.ng1';
-import * as columnHeader from './columnHeader/columnHeader';
+import * as cardSearch from './container/cardSearch/cardSearch.ng1';
+import * as columnHeader from './container/columnHeader/columnHeader';
 import * as dataSources from './dataSources/index';
 import * as filters from './filters/filters.module';
-import * as itemCount from './itemCount/itemCount.ng1';
+import * as itemCount from './container/itemCount/itemCount.ng1';
 import * as pager from './paging/pager/pager.ng1';
 import * as pageSize from './paging/pageSize/pageSize.ng1';
-import * as selectionControl from './selectionControl/selectionControl.ng1';
+import * as selectionControl from './container/selectionControl/selectionControl.ng1';
 import * as sorts from './sorts/index';
 
 import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer.ng1';
 import * as builder from './cardContainerBuilder.service';
-import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './defaultComponents';
+import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './container/defaultComponents';
 
 export {
 	builder,

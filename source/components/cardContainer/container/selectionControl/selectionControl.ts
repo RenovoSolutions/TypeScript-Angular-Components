@@ -4,24 +4,24 @@ import { each } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
-import { IDataSource } from '../dataSources/index';
-import { CardContainerComponent } from '../cardContainer';
-import { ButtonComponent } from '../../buttons/index';
+import { IDataSource } from '../../dataSources/index';
+import { CardContainerComponent } from '../../cardContainer';
+import { ButtonComponent } from '../../../buttons/index';
 
 @Component({
 	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
 	directives: [ButtonComponent],
 })
-export class SelectionComponent implements OnInit {
+export class SelectionComponent<T> implements OnInit {
 	selectedItems: number;
 	pagingEnabled: boolean;
-	dataSource: IDataSource<any>;
+	dataSource: IDataSource<T>;
 
-	cardContainer: CardContainerComponent;
+	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
 
-	constructor(cardContainer: CardContainerComponent
+	constructor(cardContainer: CardContainerComponent<T>
 			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
 		this.cardContainer = cardContainer;
 		this.boolean = boolean;
@@ -39,31 +39,31 @@ export class SelectionComponent implements OnInit {
 
 	selectPage(): void {
 		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = true;
+			// item.viewData.selected = true;
 		});
-		this.cardContainer.selectionChanged();
+		// this.cardContainer.selectionChanged();
 	}
 
 	selectAll(): void {
 		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = true;
+			// item.viewData.selected = true;
 		});
-		this.cardContainer.selectionChanged();
+		// this.cardContainer.selectionChanged();
 	}
 
 	clearPage(): void {
 		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = false;
+			// item.viewData.selected = false;
 		});
 
-		this.cardContainer.selectionChanged();
+		// this.cardContainer.selectionChanged();
 	}
 
 	clearAll(): void {
 		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = false;
+			// item.viewData.selected = false;
 		});
 
-		this.cardContainer.selectionChanged();
+		// this.cardContainer.selectionChanged();
 	}
 }

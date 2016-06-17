@@ -142,7 +142,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._disableSelection = value;
 	}
 
-	setCardContainerProperties(cardContainer: CardContainerComponent): void {
+	setCardContainerProperties(cardContainer: CardContainerComponent<any>): void {
 		if (this._searchFilter != null) {
 			this._filters.push(this._searchFilter);
 		}
@@ -152,13 +152,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.searchFilter = this._searchFilter;
 		cardContainer.paging = this._paging;
 		cardContainer.columns = this._columns;
-		cardContainer.containerData = this.containerData;
+		// cardContainer.containerData = this.containerData;
 		cardContainer.clickableCards = this._clickableCards;
 		cardContainer.maxColumnSorts = this.maxColumnSorts;
 		cardContainer.permanentFooters = this._permanentFooters;
-		cardContainer.selectableCards = this._selectableCards;
-		cardContainer.disableSelection = this._disableSelection;
-		cardContainer.renderFilters = this._renderFilters;
+		// cardContainer.selectableCards = this._selectableCards;
+		// cardContainer.disableSelection = this._disableSelection;
+		// cardContainer.renderFilters = this._renderFilters;
 		cardContainer.saveWhenInvalid = this._saveWhenInvalid;
 	}
 }

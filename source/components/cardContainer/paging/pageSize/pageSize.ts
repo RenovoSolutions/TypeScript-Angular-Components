@@ -11,13 +11,13 @@ export const availablePageSizes: number[] = [10, 25, 50, 100];
 	template: require('./pageSize.html'),
 	directives: [SelectComponent],
 })
-export class PageSizeComponent {
+export class PageSizeComponent<T> {
 	pageSizes: number[];
 
-	cardContainer: CardContainerComponent;
+	cardContainer: CardContainerComponent<T>;
 	pager: IDataPager;
 
-	constructor(cardContainer: CardContainerComponent) {
+	constructor(cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 
 		this.pager = this.cardContainer.dataSource.pager;

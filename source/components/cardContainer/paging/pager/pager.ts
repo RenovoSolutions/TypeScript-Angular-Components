@@ -11,14 +11,14 @@ export const defaultVisiblePageCount: number = 5;
 	selector: 'rlPager',
 	template: require('./pager.html'),
 })
-export class PagerComponent implements OnInit {
+export class PagerComponent<T> implements OnInit {
 	@Input() pageCount: number;
 
 	pages: number[];
 	lastPage: number;
 	visiblePageCount: number;
 
-	cardContainer: CardContainerComponent;
+	cardContainer: CardContainerComponent<T>;
 	pager: IDataPager;
 	dataSource: IDataSource<any>;
 
@@ -30,7 +30,7 @@ export class PagerComponent implements OnInit {
 		return this.pager.pageNumber < this.lastPage;
 	}
 
-	constructor(cardContainer: CardContainerComponent) {
+	constructor(cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 		this.pager = this.cardContainer.dataSource.pager;
 	}

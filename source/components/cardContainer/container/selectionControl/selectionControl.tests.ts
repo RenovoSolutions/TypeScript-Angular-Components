@@ -22,7 +22,7 @@ interface ICardContainerMock {
 }
 
 describe('SelectionComponent', () => {
-	let selection: SelectionComponent;
+	let selection: SelectionComponent<IItemMock>;
 	let cardContainer: ICardContainerMock;
 	let items: IItemMock[];
 
@@ -36,7 +36,7 @@ describe('SelectionComponent', () => {
 			selectionChanged: sinon.spy(),
 		};
 
-		selection = new SelectionComponent(<any>cardContainer, new __boolean.BooleanUtility());
+		selection = new SelectionComponent<IItemMock>(<any>cardContainer, new __boolean.BooleanUtility());
 	});
 
 	describe('pagingEnabled', (): void => {

@@ -9,19 +9,19 @@ import __object = services.object;
 
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
+import { CARD_CONTAINER_DIRECTIVES } from '../../source/components/cardContainer/index';
 import {
 	DateFilter,
 	FilterGroup,
 	ModeFilterGroup,
 	RangeFilterGroup,
 	SelectFilter,
-	FILTER_DIRECTIVES,
 } from '../../source/components/cardContainer/filters/index';
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
-import { CardSearchComponent } from '../../source/components/cardContainer/cardSearch/cardSearch';
-import { ItemCountComponent } from '../../source/components/cardContainer/itemCount/itemCount';
+import { CardSearchComponent } from '../../source/components/cardContainer/container/cardSearch/cardSearch';
+import { ItemCountComponent } from '../../source/components/cardContainer/container/itemCount/itemCount';
 import { PagerComponent, PageSizeComponent } from '../../source/components/cardContainer/paging/index';
-import { SelectionComponent } from '../../source/components/cardContainer/selectionControl/selectionControl';
+import { SelectionComponent } from '../../source/components/cardContainer/container/selectionControl/selectionControl';
 
 @Component({
 	selector: 'tsCardsBootstrapper',
@@ -29,7 +29,7 @@ import { SelectionComponent } from '../../source/components/cardContainer/select
 	directives: [
 		SIMPLE_CARD_DIRECTIVES,
 		INPUT_DIRECTIVES,
-		FILTER_DIRECTIVES,
+		CARD_CONTAINER_DIRECTIVES,
 		CardContainerComponent,
 		CardSearchComponent,
 		ItemCountComponent,

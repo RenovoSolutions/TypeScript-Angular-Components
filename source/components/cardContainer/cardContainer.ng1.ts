@@ -125,7 +125,7 @@ export class CardContainerController {
 			, private array: __array.IArrayUtility
 			, private parentChild: IParentChildBehaviorService) {
 		if (this.builder != null) {
-			this.builder.setCardContainerProperties(this);
+			this.builder.setCardContainerProperties(<any>this);
 		}
 
 		this.makeCard = $transclude;

@@ -6,9 +6,9 @@ import __genericSearchFilter = services.genericSearchFilter;
 import __timeout = services.timeout;
 import __isEmpty = filters.isEmpty;
 
-import { CardContainerComponent } from '../cardContainer';
-import { TextboxComponent } from '../../inputs/index';
-import { ButtonComponent } from '../../buttons/index';
+import { CardContainerComponent } from '../../cardContainer';
+import { TextboxComponent } from '../../../inputs/index';
+import { ButtonComponent } from '../../../buttons/index';
 
 export const defaultSearchPlaceholder: string = 'Search';
 export const defaultSearchDelay: number = 1000;
@@ -19,7 +19,7 @@ export const defaultSearchDelay: number = 1000;
 	directives: [TextboxComponent, ButtonComponent, TOOLTIP_DIRECTIVES],
 	pipes: [__isEmpty.IsEmptyPipe],
 })
-export class CardSearchComponent implements OnInit {
+export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;
 	@Input() searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
@@ -28,11 +28,11 @@ export class CardSearchComponent implements OnInit {
 	hasSearchFilter: boolean = true;
 	minSearchError: string;
 
-	cardContainer: CardContainerComponent;
+	cardContainer: CardContainerComponent<T>;
 	timer: __timeout.ITimeout;
 	timeoutService: __timeout.TimeoutService;
 
-	constructor(cardContainer: CardContainerComponent
+	constructor(cardContainer: CardContainerComponent<T>
 			, timeoutService: __timeout.TimeoutService) {
 		this.cardContainer = cardContainer;
 		this.timeoutService = timeoutService;

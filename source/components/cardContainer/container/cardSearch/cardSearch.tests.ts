@@ -20,7 +20,7 @@ interface ICardContainerMock {
 }
 
 describe('CardSearchComponent', () => {
-	let cardSearch: CardSearchComponent;
+	let cardSearch: CardSearchComponent<any>;
 	let cardContainer: ICardContainerMock;
 	let filter: ISearchFilterMock;
 	let refreshSpy: Sinon.SinonSpy;

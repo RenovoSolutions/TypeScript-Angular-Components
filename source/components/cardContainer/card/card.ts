@@ -21,7 +21,7 @@ import { FormService } from '../../../services/form/form.service';
 		}),
 	],
 })
-export class CardComponent extends FormComponent {
+export class CardComponent<T> extends FormComponent {
 	// consumer properties
 	initCard: { (): void } = () => null;
 	clickCard: { (): void } = () => null;
@@ -32,13 +32,13 @@ export class CardComponent extends FormComponent {
 	hasFooter: boolean;
 	refresh: Subject<void>;
 
-	cardContainer: CardContainerComponent;
+	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
 
 	constructor(@Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
 			, @Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
-			, cardContainer: CardContainerComponent) {
+			, cardContainer: CardContainerComponent<T>) {
 		super(notification, formService);
 		this.boolean = boolean;
 		this.cardContainer = cardContainer;
@@ -76,7 +76,7 @@ export class CardComponent extends FormComponent {
 		return canClose;
 	}
 
-	remove(): void {
-		this.cardContainer.dataSource.remove();
+	remove(item: T): void {
+		this.cardContainer.dataSource.remove(item);
 	}
 }

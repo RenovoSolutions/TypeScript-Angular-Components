@@ -1,7 +1,7 @@
 import * as angular from 'angular';
 
-import { ISortDirections, SortDirection } from '../sorts/sortDirection';
-import { IColumn } from '../column';
+import { ISortDirections, SortDirection } from '../../sorts/sortDirection';
+import { IColumn } from '../../column';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.columnHeader';
 export var directiveName: string = 'rlColumnHeader';
