@@ -11,7 +11,7 @@ import {
 	CardController,
 	moduleName,
 	controllerName,
-} from './card';
+} from './card.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';

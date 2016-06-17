@@ -4,7 +4,7 @@ import { downgrade } from 'typescript-angular-utilities';
 
 import { moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
 
-import * as card from './card/card';
+import * as card from './card/card.ng1';
 import * as cardSearch from './cardSearch/cardSearch.ng1';
 import * as columnHeader from './columnHeader/columnHeader';
 import * as dataSources from './dataSources/index';

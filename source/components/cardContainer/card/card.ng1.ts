@@ -199,7 +199,7 @@ export class CardController {
 }
 
 let card: angular.IComponentOptions = {
-	template: require('./card.html'),
+	template: require('./card.ng1.html'),
 	require: { cardContainer: '^^rlCardContainer' },
 	controller: controllerName,
 	controllerAs: '__card',

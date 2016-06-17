@@ -7,7 +7,7 @@ import __transform = services.transform.transform;
 
 import { IColumn } from '../../column';
 
-import { componentName as cardComponent, CardController } from '../card';
+import { componentName as cardComponent, CardController } from '../card.ng1';
 
 export var directiveName: string = 'rlCardHeaderColumn';
 export var controllerName: string = 'CardHeaderColumnController';
