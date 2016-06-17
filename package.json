@@ -99,6 +99,7 @@
     "moment": "~2.11.2",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
+    "ng2-bootstrap": "^1.0.17",
     "signature_pad": "~1.5.3",
     "systemjs": "^0.19.28",
     "typescript-angular-utilities": "~3.1.6",
