@@ -45,7 +45,7 @@ export class CardSearchComponent implements OnInit {
 		}
 
 		if (!this.searchLengthError) {
-			this.timer = this.timeoutService.setTimeout(() => this.cardContainer.dataSource.refresh(), this.delay);
+			this.timer = this.timeoutService.setTimeout(() => this.cardContainer.dataSource.refresh(), this.delay).catch(() => null);
 		}
 	}
 
