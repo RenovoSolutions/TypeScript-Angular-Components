@@ -2,13 +2,13 @@
 	 *ngIf="hasSearchFilter"
 	 [class.has-error]="searchLengthError">
 	<rlTextbox [label]="searchPlaceholder"
-			   [value]="searchText"
+			   [value]="searchFilter.searchText || ''"
 			   (change)="setSearch($event)"
 			   rl-popover="minSearchError"
 			   popover-trigger="mouseenter"
 			   popover-enable="searchLengthError">
 	<div class="input-group-btn">
-		<rlButton [disabled]="searchText | isEmpty"
+		<rlButton [disabled]="searchFilter.searchText | isEmpty"
 				  (click)="setSearch(null)">
 			<i class="fa fa-times"></i>
 		</rlButton>
