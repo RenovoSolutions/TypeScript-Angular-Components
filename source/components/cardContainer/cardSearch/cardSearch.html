@@ -4,9 +4,9 @@
 	<rlTextbox [label]="searchPlaceholder"
 			   [value]="searchFilter.searchText || ''"
 			   (change)="setSearch($event)"
-			   rl-popover="minSearchError"
-			   popover-trigger="mouseenter"
-			   popover-enable="searchLengthError">
+			   tooltip="You must enter at least {{searchFilter.minSearchLength}} characters to perform a search"
+			   tooltipTrigger="mouseenter"
+			   [tooltipEnable]="searchLengthError"></rlTextbox>
 	<div class="input-group-btn">
 		<rlButton [disabled]="searchFilter.searchText | isEmpty"
 				  (click)="setSearch(null)">

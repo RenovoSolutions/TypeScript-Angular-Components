@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
@@ -15,7 +16,8 @@ export const defaultSearchDelay: number = 1000;
 @Component({
 	selector: 'rlCardSearch',
 	template: require('./cardSearch.html'),
-	directives: [TextboxComponent, ButtonComponent, __isEmpty.IsEmptyPipe],
+	directives: [TextboxComponent, ButtonComponent, TOOLTIP_DIRECTIVES],
+	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardSearchComponent implements OnInit {
 	@Input() delay: number;
@@ -50,8 +52,6 @@ export class CardSearchComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.minSearchError = 'You must enter at least {{minSearchLength}} characters to perform a search';
-
 		if (this.searchFilter == null) {
 			let filter: __genericSearchFilter.IGenericSearchFilter = this.cardContainer.searchFilter;
 			this.searchFilter = filter;
