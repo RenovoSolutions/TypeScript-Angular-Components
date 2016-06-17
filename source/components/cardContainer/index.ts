@@ -3,6 +3,8 @@ import * as filters from './filters/index';
 import * as paging from './paging/index';
 import * as sorts from './sorts/index';
 
+export const CARD_CONTAINER_DIRECTIVES: any[] = [filters.FILTER_DIRECTIVES, paging.PAGER_DIRECTIVES];
+
 export { dataSources, filters, paging, sorts };
 
 // card
