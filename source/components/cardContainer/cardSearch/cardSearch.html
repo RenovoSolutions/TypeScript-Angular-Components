@@ -1,9 +1,16 @@
-<div class="input-group" ng-show="cardSearch.hasSearchFilter" ng-class="{ 'has-error': cardSearch.searchLengthError }">
-	<input class="form-control" type="text" placeholder="{{cardSearch.searchPlaceholder}}" ng-model="cardSearch.searchText"
-		   rl-popover="cardSearch.minSearchError" popover-trigger="mouseenter" popover-enable="cardSearch.searchLengthError" />
+<div class="input-group"
+	 *ngIf="hasSearchFilter"
+	 [class.has-error]="searchLengthError">
+	<rlTextbox [label]="searchPlaceholder"
+			   [value]="searchText"
+			   (change)="setSearch($event)"
+			   rl-popover="minSearchError"
+			   popover-trigger="mouseenter"
+			   popover-enable="searchLengthError">
 	<div class="input-group-btn">
-		<button type="button" class="btn btn-default" ng-disabled="cardSearch.searchText | isEmpty" ng-click="cardSearch.searchText = null">
+		<rlButton [disabled]="searchText | isEmpty"
+				  (click)="setSearch(null)">
 			<i class="fa fa-times"></i>
-		</button>
+		</rlButton>
 	</div>
 </div>

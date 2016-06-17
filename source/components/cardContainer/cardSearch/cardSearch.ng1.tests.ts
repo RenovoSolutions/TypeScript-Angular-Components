@@ -1,11 +1,15 @@
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import fakeAsync = __test.fakeAsync;
-import tick = __test.tick;
-import flushMicrotasks = __test.flushMicrotasks;
-import __timeout = services.timeout;
+import test = services.test;
 
-import { CardSearchComponent, defaultSearchPlaceholder } from './cardSearch';
+import {
+	CardSearchController,
+	moduleName,
+	controllerName,
+	defaultSearchPlaceholder,
+} from './cardSearch.ng1';
+
+import * as angular from 'angular';
+import 'angular-mocks';
 
 interface ISearchFilterMock {
 	subscribe: Sinon.SinonSpy;
@@ -19,13 +23,17 @@ interface ICardContainerMock {
 	dataSource: any;
 }
 
-describe('CardSearchComponent', () => {
-	let cardSearch: CardSearchComponent;
+describe('CardSearchController', () => {
+	let scope: angular.IScope;
+	let cardSearch: CardSearchController;
 	let cardContainer: ICardContainerMock;
 	let filter: ISearchFilterMock;
+	let $timeout: angular.ITimeoutService;
 	let refreshSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
+		angular.mock.module(moduleName);
+
 		refreshSpy = sinon.spy();
 
 		filter = {
@@ -44,83 +52,96 @@ describe('CardSearchComponent', () => {
 			},
 		};
 
-		cardSearch = new CardSearchComponent(<any>cardContainer, new __timeout.TimeoutService);
+		const services: any = test.angularFixture.inject('$timeout');
+		$timeout = services.$timeout;
 	});
 
 	it('should lookup the search filter from the card container', (): void => {
-		cardSearch.ngOnInit();
+		buildController();
 		expect(cardSearch.hasSearchFilter).to.be.true;
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
 		cardContainer.searchFilter = null;
-		cardSearch.ngOnInit();
+		buildController();
 		expect(cardSearch.hasSearchFilter).to.be.false;
 		expect(cardSearch.searchPlaceholder).to.not.exist;
 	});
 
 	it('should still init the search filter if it was specified with an attribute binding', (): void => {
 		let filter: any = {};
-		cardSearch.searchFilter = filter;
-		cardSearch.ngOnInit();
+		buildController();
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 	});
 
 	describe('search', (): void => {
-		beforeEach((): void => {
-			cardSearch.ngOnInit();
-		});
-
 		it('should set the search text on the filter', (): void => {
-			cardSearch.setSearch('');
+			buildController();
+			cardSearch.searchText = '';
 
 			expect(filter.searchText).to.be.empty;
 
-			cardSearch.setSearch('search');
+			cardSearch.searchText = 'search';
 
 			expect(filter.searchText).to.equal('search');
 		});
 
-		it('should refresh the data source after a delay of the specified duration', fakeAsync((): void => {
-			cardSearch.delay = 10;
-			cardSearch.setSearch('search');
+		it('should refresh the data source after a delay of the specified duration', (): void => {
+			buildController(10);
+			cardSearch.searchText = 'search';
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5)
-			flushMicrotasks();
+			$timeout.flush(5);
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5);
-			flushMicrotasks();
+			$timeout.flush(5);
 
 			sinon.assert.calledOnce(refreshSpy);
-		}));
+		});
 
-		it('should reset the timer if the search text changes', fakeAsync((): void => {
-			cardSearch.delay = 10;
-			cardSearch.setSearch('search');
-
-			sinon.assert.notCalled(refreshSpy);
-
-			tick(5);
-			flushMicrotasks();
+		it('should reset the timer if the search text changes', (): void => {
+			buildController(10);
+			cardSearch.searchText = 'search';
 
 			sinon.assert.notCalled(refreshSpy);
 
-			cardSearch.setSearch('search 2');
-
-			tick(5);
-			flushMicrotasks();
+			$timeout.flush(5);
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5);
-			flushMicrotasks();
+			cardSearch.searchText = 'search 2';
+
+			$timeout.flush(5);
+
+			sinon.assert.notCalled(refreshSpy);
+
+			$timeout.flush(5);
 
 			sinon.assert.calledOnce(refreshSpy);
-		}));
+		});
+
+		it('should subscribe to changes on the filter', (): void => {
+			buildController();
+			filter.trigger('search');
+			expect(cardSearch.searchText).to.equal('search');
+		});
 	});
+
+	function buildController(delay?: number, filter?: any): void {
+		var bindings: any = {
+			delay: delay,
+			cardContainer: cardContainer,
+			searchFilter: filter,
+		};
+
+		var controllerResult: test.IControllerResult<CardSearchController>
+			= test.angularFixture.controllerWithBindings<CardSearchController>(controllerName, bindings);
+
+		scope = controllerResult.scope;
+		cardSearch = controllerResult.controller;
+		cardSearch.$onInit();
+	}
 });

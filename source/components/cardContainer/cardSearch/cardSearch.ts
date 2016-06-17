@@ -1,65 +1,56 @@
-import * as angular from 'angular';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { services } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
+import __timeout = services.timeout;
+import __isEmpty = filters.isEmpty;
 
-import { CardContainerController } from '../cardContainer.ng1';
+import { CardContainerComponent } from '../cardContainer';
+import { TextboxComponent } from '../../inputs/index';
+import { ButtonComponent } from '../../buttons/index';
 
-export let moduleName: string = 'rl.ui.components.cardContainer.cardSearch';
-export let componentName: string = 'rlCardSearch';
-export let controllerName: string = 'CardSearchController';
+export const defaultSearchPlaceholder: string = 'Search';
+export const defaultSearchDelay: number = 1000;
 
-export let defaultSearchPlaceholder: string = 'Search';
-export let defaultSearchDelay: number = 1000;
-
-export interface ICardSearchBindings {
-	delay: number;
-}
-
-export class CardSearchController {
-	// bindings
-	delay: number;
+@Component({
+	selector: 'rlCardSearch',
+	template: require('./cardSearch.html'),
+	directives: [TextboxComponent, ButtonComponent, __isEmpty.IsEmptyPipe],
+})
+export class CardSearchComponent implements OnInit {
+	@Input() delay: number;
+	@Input() searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
 	searchPlaceholder: string;
 	searchLengthError: boolean = false;
-	minSearchLength: number;
 	hasSearchFilter: boolean = true;
 	minSearchError: string;
-	private _searchText: string;
-	private cardContainer: CardContainerController;
-	private searchFilter: __genericSearchFilter.IGenericSearchFilter;
-	private timer: angular.IPromise<void>;
 
-	get searchText(): string {
-		return this.searchFilter
-			? this.searchFilter.searchText
-			: null;
+	cardContainer: CardContainerComponent;
+	timer: __timeout.ITimeout;
+	timeoutService: __timeout.TimeoutService;
+
+	constructor(cardContainer: CardContainerComponent
+			, timeoutService: __timeout.TimeoutService) {
+		this.cardContainer = cardContainer;
+		this.timeoutService = timeoutService;
 	}
 
-	set searchText(search: string) {
+	setSearch(search: string) {
 		this.searchFilter.searchText = search;
-		this.minSearchLength = this.searchFilter.minSearchLength;
-
-		this.validateSearchLength(search, this.minSearchLength);
+		this.validateSearchLength(search, this.searchFilter.minSearchLength);
 
 		if (this.timer != null) {
-			this.$timeout.cancel(this.timer);
+			this.timer.cancel();
 		}
 
 		if (!this.searchLengthError) {
-			this.timer = this.$timeout<void>(this.cardContainer.dataSource.refresh.bind(this.cardContainer.dataSource), this.delay);
+			this.timer = this.timeoutService.setTimeout(() => this.cardContainer.dataSource.refresh(), this.delay);
 		}
 	}
 
-	static $inject: string[] = ['$timeout'];
-	constructor(private $timeout: angular.ITimeoutService) {}
-
-	$onInit(): void {
-		if (this.cardContainer == null) {
-			return;
-		}
-
-		this.minSearchError = 'You must enter at least {{cardSearch.minSearchLength}} characters to perform a search';
+	ngOnInit(): void {
+		this.minSearchError = 'You must enter at least {{minSearchLength}} characters to perform a search';
 
 		if (this.searchFilter == null) {
 			let filter: __genericSearchFilter.IGenericSearchFilter = this.cardContainer.searchFilter;
@@ -73,13 +64,7 @@ export class CardSearchController {
 		if (this.hasSearchFilter) {
 			this.searchPlaceholder = defaultSearchPlaceholder;
 
-			this.delay = this.delay != null
-				? this.delay
-				: defaultSearchDelay;
-
-			this.searchFilter.subscribe((): void => {
-				this.searchText = this.searchFilter.searchText;
-			});
+			this.delay = this.delay || defaultSearchDelay;
 		}
 	}
 
@@ -90,18 +75,3 @@ export class CardSearchController {
 								&& search.length < minLength;
 	}
 }
-
-let cardSearch: angular.IComponentOptions = {
-	require: { cardContainer: '?^^rlCardContainer' },
-	template: require('./cardSearch.html'),
-	controller: controllerName,
-	controllerAs: 'cardSearch',
-	bindings: {
-		delay: '<?searchDelay',
-		searchFilter: '<?',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, cardSearch)
-	.controller(controllerName, CardSearchController);

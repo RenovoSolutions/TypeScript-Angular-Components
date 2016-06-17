@@ -43,4 +43,8 @@ export class CardContainerComponent {
 		},
 	};
 	selectionChanged = () => console.log('changed');
+	searchFilter: any = {
+		searchText: 'Search',
+		minSearchLength: 3,
+	};
 }
