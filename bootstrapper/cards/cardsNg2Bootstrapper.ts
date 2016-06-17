@@ -18,6 +18,7 @@ import {
 	FILTER_DIRECTIVES,
 } from '../../source/components/cardContainer/filters/index';
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
+import { CardSearchComponent } from '../../source/components/cardContainer/cardSearch/cardSearch';
 import { ItemCountComponent } from '../../source/components/cardContainer/itemCount/itemCount';
 import { PagerComponent } from '../../source/components/cardContainer/pager/pager';
 import { PageSizeComponent } from '../../source/components/cardContainer/pageSize/pageSize';
@@ -31,6 +32,7 @@ import { SelectionComponent } from '../../source/components/cardContainer/select
 		INPUT_DIRECTIVES,
 		FILTER_DIRECTIVES,
 		CardContainerComponent,
+		CardSearchComponent,
 		ItemCountComponent,
 		PagerComponent,
 		PageSizeComponent,

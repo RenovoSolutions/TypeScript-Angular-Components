@@ -34,6 +34,7 @@ export class CardContainerComponent {
 	dataSource: any = {
 		dataSet: items,
 		filteredDataSet: [items[0], items[1]],
+		refresh: () => null,
 		count: 100,
 		countChanges: new Subject<number>(),
 		pager: {
@@ -44,7 +45,7 @@ export class CardContainerComponent {
 	};
 	selectionChanged = () => console.log('changed');
 	searchFilter: any = {
-		searchText: 'Search',
+		searchText: null,
 		minSearchLength: 3,
 	};
 }
