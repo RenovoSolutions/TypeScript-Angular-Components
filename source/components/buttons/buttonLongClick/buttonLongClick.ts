@@ -2,6 +2,7 @@ import { Component, Input, ViewChild, Inject } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
+import __timeout = services.timeout;
 
 import { BusyComponent } from '../../busy/busy';
 import { ButtonAsyncComponent, asyncInputs } from '../buttonAsync/buttonAsync';
@@ -20,13 +21,16 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 	// Should match the CSS animation time
 	duration: number = 2000;
 	active: boolean;
-	actionTimeout: Promise<void>;
-	cancel: Function;
-	private notification: __notification.INotificationService;
+	timer: __timeout.ITimeout;
 
-	constructor(@Inject(__notification.notificationToken) notification: __notification.INotificationService) {
+	notification: __notification.INotificationService;
+	timeoutService: __timeout.TimeoutService;
+
+	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+			, timeoutService: __timeout.TimeoutService) {
 		super();
 		this.notification = notification;
+		this.timeoutService = timeoutService;
 	}
 
 	startAction($event: MouseEvent): void {
@@ -36,28 +40,15 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 
 		this.active = true;
 
-		this.actionTimeout = new Promise<void>((resolve): void => {
-			let pending: boolean = true;
-			this.cancel = () => {
-				if (pending) {
-					resolve();
-					pending = false;
-				}
-			};
-			setTimeout(() => {
-				if (pending) {
-					resolve();
-					pending = false;
-					this.cleanup();
-					this.triggerAction($event);
-				}
-			}, this.duration);
-		});
+		this.timer = this.timeoutService.setTimeout((): void => {
+			this.cleanup();
+			this.triggerAction($event);
+		}, this.duration).catch(() => null);
 	}
 
 	stopAction(): void {
 		if (this.active) {
-			if (this.actionTimeout != null) {
+			if (this.timer != null) {
 				this.warn();
 			}
 
@@ -66,8 +57,8 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 	}
 
 	private cleanup(): void {
-		this.cancel();
-		this.actionTimeout = null;
+		this.timer.cancel();
+		this.timer = null;
 		this.active = false;
 	}
 
