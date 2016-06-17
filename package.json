@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -49,7 +49,7 @@
     "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.1.9",
+    "@renovolive/gulp-utilities": "~2.1.10",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "del": "^2.2.0",
@@ -65,7 +65,6 @@
     "karma-mocha": "~0.2.2",
     "karma-sinon": "~1.0.4",
     "karma-teamcity-reporter": "~0.2.1",
-    "karma-webpack": "~1.7.0",
     "mocha": "~2.4.5",
     "reflect-metadata": "0.1.2",
     "run-sequence": "^1.1.5",
@@ -74,17 +73,16 @@
     "system-text": "^0.1.0",
     "systemjs-builder": "^0.15.16",
     "typescript": "~1.8.2",
-    "typings": "~1.0.4",
-    "webpack": "~1.12.14"
+    "typings": "~1.0.4"
   },
   "dependencies": {
-    "@angular/core": "^2.0.0-rc.1",
-    "@angular/http": "^2.0.0-rc.1",
-    "@angular/upgrade": "^2.0.0-rc.1",
-    "@angular/common": "^2.0.0-rc.1",
-    "@angular/compiler": "^2.0.0-rc.1",
-    "@angular/platform-browser": "^2.0.0-rc.1",
-    "@angular/platform-browser-dynamic": "^2.0.0-rc.1",
+    "@angular/core": "^2.0.0-rc.2",
+    "@angular/http": "^2.0.0-rc.2",
+    "@angular/upgrade": "^2.0.0-rc.2",
+    "@angular/common": "^2.0.0-rc.2",
+    "@angular/compiler": "^2.0.0-rc.2",
+    "@angular/platform-browser": "^2.0.0-rc.2",
+    "@angular/platform-browser-dynamic": "^2.0.0-rc.2",
     "angular2-uuid": "^1.0.7",
     "angular-animate": "~1.5.3",
     "angular-sanitize": "~1.5.0",

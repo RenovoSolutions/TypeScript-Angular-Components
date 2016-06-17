@@ -70,7 +70,7 @@ export class LongClickButtonController extends ButtonAsyncController {
 }
 
 let longClickButton: angular.IComponentOptions = buildButton({
-	template: require('./buttonLongClick.html'),
+	template: require('./buttonLongClick.ng1.html'),
 	controller: controllerName,
 	bindings: {
 		warning: '@',

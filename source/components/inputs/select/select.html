@@ -10,7 +10,7 @@
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<ul class="rl-select-list" *ngIf="showOptions">
-		<li class="rl-select-option" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
+		<li class="rl-select-option rl-select-option-null" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
 		<li class="rl-select-option"
 			*ngFor="let option of wrappedOptions | async"
 			(click)="select(option)">
