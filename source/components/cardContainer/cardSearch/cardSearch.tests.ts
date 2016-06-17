@@ -77,6 +77,7 @@ describe('CardSearchComponent', () => {
 
 			expect(filter.searchText).to.be.empty;
 
+			cardSearch.timer.catch(() => null);
 			cardSearch.setSearch('search');
 
 			expect(filter.searchText).to.equal('search');
@@ -110,6 +111,7 @@ describe('CardSearchComponent', () => {
 
 			sinon.assert.notCalled(refreshSpy);
 
+			cardSearch.timer.catch(() => null);
 			cardSearch.setSearch('search 2');
 
 			tick(5);

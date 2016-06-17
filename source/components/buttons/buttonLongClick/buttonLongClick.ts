@@ -43,7 +43,7 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 		this.timer = this.timeoutService.setTimeout((): void => {
 			this.cleanup();
 			this.triggerAction($event);
-		}, this.duration).catch(() => null);
+		}, this.duration);
 	}
 
 	stopAction(): void {
