@@ -1,5 +1,4 @@
 export * from './clientServerDataSource/clientServerDataSource.service';
-export * from './dataPager/dataPager.service';
 export * from './dataServiceDataSource/dataServiceDataSource.service';
 export * from './serverSideDataSource/serverSideDataSource.service';
 export * from './simpleDataSource/simpleDataSource.service';

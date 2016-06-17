@@ -8,7 +8,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
-import { DataPager } from './dataSources/dataPager/dataPager.service';
+import { DataPager } from './paging/index';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 import { dataPagerFactoryName } from '../../componentsDowngrade';

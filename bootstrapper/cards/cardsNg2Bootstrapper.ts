@@ -20,8 +20,7 @@ import {
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
 import { CardSearchComponent } from '../../source/components/cardContainer/cardSearch/cardSearch';
 import { ItemCountComponent } from '../../source/components/cardContainer/itemCount/itemCount';
-import { PagerComponent } from '../../source/components/cardContainer/pager/pager';
-import { PageSizeComponent } from '../../source/components/cardContainer/pageSize/pageSize';
+import { PagerComponent, PageSizeComponent } from '../../source/components/cardContainer/paging/index';
 import { SelectionComponent } from '../../source/components/cardContainer/selectionControl/selectionControl';
 
 @Component({

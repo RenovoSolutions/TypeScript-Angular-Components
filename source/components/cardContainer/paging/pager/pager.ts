@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { range } from 'lodash';
 
-import { IDataPager, IDataSource } from '../dataSources/index';
-import { CardContainerComponent } from '../cardContainer';
+import { IDataSource } from '../../dataSources/index';
+import { IDataPager } from '../dataPager/dataPager.service';
+import { CardContainerComponent } from '../../cardContainer';
 
 export const defaultVisiblePageCount: number = 5;
 

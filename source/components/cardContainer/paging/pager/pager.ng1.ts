@@ -3,8 +3,9 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource, IDataPager } from '../dataSources/index';
-import { CardContainerController } from '../cardContainer.ng1';
+import { IDataSource } from '../../dataSources/index';
+import { IDataPager } from '../dataPager/dataPager.service';
+import { CardContainerController } from '../../cardContainer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.pager';
 export let componentName: string = 'rlPager';

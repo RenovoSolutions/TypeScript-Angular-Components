@@ -14,6 +14,7 @@ import { CardContainerComponent } from './cardContainer';
 import { IColumn } from './column';
 import * as dataSources from './dataSources/index';
 import * as cardFilters from './filters/index';
+import * as paging from './paging/index';
 import { ISorter, Sorter } from './sorts/index';
 
 export interface ICardContainerBuilder {
@@ -71,7 +72,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
 	_searchFilter: __genericSearchFilter.IGenericSearchFilter;
-	_pager: dataSources.IDataPager;
+	_pager: paging.IDataPager;
 	_renderFilters: boolean;
 	_saveWhenInvalid: boolean;
 

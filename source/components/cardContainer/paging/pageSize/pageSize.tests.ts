@@ -1,4 +1,4 @@
-import { PageSizeComponent, defaultPageSize, availablePageSizes } from './pageSize';
+import { PageSizeComponent, availablePageSizes } from './pageSize';
 
 interface IPagerMock {
 	pageSize: number;
@@ -17,6 +17,5 @@ describe('PageSizeComponent', (): void => {
 
 		expect(pageSize.pager).to.equal(pager);
 		expect(pageSize.pageSizes).to.equal(availablePageSizes);
-		expect(pager.pageSize).to.equal(defaultPageSize);
 	});
 });

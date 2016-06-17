@@ -20,7 +20,7 @@ import { FormComponent } from './components/form/form';
 
 import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/cardContainerBuilder.service';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
-import { DataPager } from './components/cardContainer/dataSources/index';
+import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
