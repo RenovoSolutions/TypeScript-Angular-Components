@@ -15,53 +15,6 @@ import { IColumn } from './column';
 import * as dataSources from './dataSources/index';
 import * as cardFilters from './filters/index';
 import { ISorter, Sorter } from './sorts/index';
-import { columnSearchFilterName, sorterServiceName } from '../../componentsDowngrade';
-
-import IDataSource = dataSources.IDataSource;
-import IAsyncDataSource = dataSources.IAsyncDataSource;
-import IDataSourceDataServiceFunction = dataSources.IDataServiceFunction;
-import IClientServerDataServiceFunction = dataSources.IDataServiceSearchFunction;
-import IServerSearchFunction = dataSources.IServerSearchFunction;
-import IGetFilterModel = dataSources.IGetFilterModel;
-import IValidateFilterModel = dataSources.IValidateFilterModel;
-import IFilter = filters.IFilter;
-import IGenericSearchFilter = __genericSearchFilter.IGenericSearchFilter;
-import ColumnSearchFilter = cardFilters.ColumnSearchFilter;
-import IFilterGroup = cardFilters.IFilterGroup;
-import IFilterGroupSettings = cardFilters.IFilterGroupSettings;
-import IModeFilterGroup = cardFilters.IModeFilterGroup;
-import IModeFilterGroupSettings = cardFilters.IModeFilterGroupSettings;
-import IRangeFilterGroup = cardFilters.IRangeFilterGroup;
-import IRangeFilterGroupSettings = cardFilters.IRangeFilterGroupSettings;
-import ISelectFilter = cardFilters.ISelectFilter;
-import ISelectFilterSettings = cardFilters.ISelectFilterSettings;
-import IEqualityFunction = cardFilters.IEqualityFunction;
-import IDateFilter = cardFilters.IDateFilter;
-import IDateFilterSettings = cardFilters.IDateFilterSettings;
-import IDataPager = dataSources.IDataPager;
-
-export {
-	IColumn,
-	IDataSource,
-	IDataSourceDataServiceFunction,
-	IDateFilter,
-	IDateFilterSettings,
-	IClientServerDataServiceFunction,
-	IServerSearchFunction,
-	IGetFilterModel,
-	IValidateFilterModel,
-	IFilter,
-	IGenericSearchFilter,
-	ColumnSearchFilter,
-	IFilterGroup,
-	IFilterGroupSettings,
-	IModeFilterGroup,
-	IModeFilterGroupSettings,
-	IRangeFilterGroup,
-	IRangeFilterGroupSettings,
-	ISelectFilter,
-	ISelectFilterSettings,
-}
 
 export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
@@ -74,8 +27,8 @@ export interface ICardContainerBuilder {
 	maxColumnSorts: number;
 	disableSelection: { (item: any): string };
 
-	useSearch(tokenized?: boolean): IGenericSearchFilter;
-	searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter;
+	useSearch(tokenized?: boolean): __genericSearchFilter.IGenericSearchFilter;
+	searchFilter(filter: __genericSearchFilter.IGenericSearchFilter): __genericSearchFilter.IGenericSearchFilter;
 	usePaging(): void;
 	addColumn<TItemType>(column: IColumn<TItemType>): void;
 	useClickableCards(): void;
@@ -86,30 +39,30 @@ export interface ICardContainerBuilder {
 }
 
 export interface IDataSourceBuilder {
-	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType>;
-	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType>;
-	buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>
-											, getFilterModel?: IGetFilterModel<TDataType>
-											, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType>;
-	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
-	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
-	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>;
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
+	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>
+											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
+											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>;
 }
 
 export interface IFilterBuilder {
-	buildFilterGroup(settings: IFilterGroupSettings): IFilterGroup;
-	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): IModeFilterGroup;
-	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
-	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
-	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
-	buildColumnSearchFilter(): ColumnSearchFilter;
-	addCustomFilter(filter: IFilter): void;
+	buildFilterGroup(settings: cardFilters.IFilterGroupSettings): cardFilters.IFilterGroup;
+	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup;
+	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup;
+	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType>;
+	buildDateFilter(valueSelector:cardFilters.IDateFilterSettings): cardFilters.IDateFilter;
+	buildColumnSearchFilter(): cardFilters.ColumnSearchFilter;
+	addCustomFilter(filter: filters.IFilter): void;
 
 }
 
 @Injectable()
 export class CardContainerBuilder implements ICardContainerBuilder {
-	_dataSource: IDataSource<any>;
+	_dataSource: dataSources.IDataSource<any>;
 	_filters: filters.IFilter[];
 	_paging: boolean;
 	_columns: IColumn<any>[];
@@ -117,8 +70,8 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_permanentFooters: boolean;
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
-	_searchFilter: IGenericSearchFilter;
-	_pager: IDataPager;
+	_searchFilter: __genericSearchFilter.IGenericSearchFilter;
+	_pager: dataSources.IDataPager;
 	_renderFilters: boolean;
 	_saveWhenInvalid: boolean;
 
@@ -141,13 +94,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		this._columns = [];
 	}
 
-	useSearch(tokenized?: boolean): IGenericSearchFilter {
+	useSearch(tokenized?: boolean): __genericSearchFilter.IGenericSearchFilter {
 		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.injector.get(__genericSearchFilter.genericSearchFilterToken);
 		this._searchFilter = factory.getInstance(tokenized);
 		return this._searchFilter;
 	}
 
-	searchFilter(filter: IGenericSearchFilter): IGenericSearchFilter {
+	searchFilter(filter: __genericSearchFilter.IGenericSearchFilter): __genericSearchFilter.IGenericSearchFilter {
 		this._searchFilter = filter;
 		return this._searchFilter;
 	}
@@ -234,21 +187,21 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		parent._dataSource = this.buildSimpleDataSource([]);
 	}
 
-	buildSimpleDataSource<TDataType>(data: TDataType[]): IDataSource<TDataType> {
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.SimpleDataSource(data, processor, this.array);
 		return this.parent._dataSource;
 	}
 
-	buildDataServiceDataSource<TDataType>(getDataSet: IDataSourceDataServiceFunction<TDataType>): IAsyncDataSource<TDataType> {
+	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.DataServiceDataSource(getDataSet, processor, this.array, this.synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
-	buildClientServerDataSource<TDataType>(getDataSet: IClientServerDataServiceFunction<TDataType>
-										, getFilterModel?: IGetFilterModel<TDataType>
-										, validateModel?: IValidateFilterModel<TDataType>): IAsyncDataSource<TDataType> {
+	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>
+										, getFilterModel?: dataSources.IGetFilterModel<TDataType>
+										, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		if (isUndefined(this.parent._searchFilter)) {
 			this.parent.useSearch();
 		}
@@ -258,19 +211,19 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		return <any>this.parent._dataSource;
 	}
 
-	buildServerSideDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, this.array, this.object, this.synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
-	buildSmartDataSource<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, this.array, this.object, this.synchronizedRequestsFactory);
 		return <any>this.parent._dataSource;
 	}
 
-	buildCustomDataSource<TDataType>(dataSource: IDataSource<TDataType>): IDataSource<TDataType>{
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>{
 		this.parent._dataSource = dataSource;
 		return this.parent._dataSource;
 	}
@@ -306,32 +259,32 @@ export class FilterBuilder implements IFilterBuilder {
 		return filter;
 	}
 
-	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup {
+	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup {
 		let filter: cardFilters.IModeFilterGroup = new cardFilters.ModeFilterGroup(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup {
+	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup {
 		let filter: cardFilters.IRangeFilterGroup = new cardFilters.RangeFilterGroup(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
-		let filter: ISelectFilter<TDataType> = new cardFilters.SelectFilter(settings, this.object, this.transformService);
+	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType> {
+		let filter: cardFilters.ISelectFilter<TDataType> = new cardFilters.SelectFilter(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildDateFilter(settings: cardFilters.IDateFilterSettings): IDateFilter {
-		let filter: IDateFilter = new cardFilters.DateFilter(settings, this.date, this.transformService);
+	buildDateFilter(settings: cardFilters.IDateFilterSettings): cardFilters.IDateFilter {
+		let filter: cardFilters.IDateFilter = new cardFilters.DateFilter(settings, this.date, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildColumnSearchFilter(): ColumnSearchFilter {
-		let filter: ColumnSearchFilter = new ColumnSearchFilter(this.object, this.string, this.transformService);
+	buildColumnSearchFilter(): cardFilters.ColumnSearchFilter {
+		let filter: cardFilters.ColumnSearchFilter = new cardFilters.ColumnSearchFilter(this.object, this.string, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

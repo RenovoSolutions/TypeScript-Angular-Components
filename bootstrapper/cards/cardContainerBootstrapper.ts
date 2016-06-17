@@ -2,12 +2,9 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import {
-	ICardContainerBuilder,
-	ISelectFilter,
-	IDateFilter,
-	IDataSource,
-} from '../../source/components/cardContainer/cardContainerBuilder.service';
+import { ICardContainerBuilder } from '../../source/components/cardContainer/index';
+import { IDataSource } from '../../source/components/cardContainer/dataSources/index';
+import { ISelectFilter,	IDateFilter } from '../../source/components/cardContainer/filters/index';
 import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
 
 export const moduleName: string = 'CardTestModule';
