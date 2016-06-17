@@ -57,6 +57,5 @@ angular.module(moduleName, [
 ])
 	.component(componentName, cardContainer)
 	.controller(controllerName, CardContainerController)
-	.factory(builder.factoryName, builder.cardContainerBuilderFactory)
 	.component(headerComponentName, defaultContainerHeader)
 	.component(footerComponentName, defaultContainerFooter);

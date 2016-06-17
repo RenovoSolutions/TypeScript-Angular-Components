@@ -15,6 +15,7 @@ import {
 	sorts,
 	builder as __builder,
 } from './cardContainer.module';
+import { cardContainerBuilderServiceName } from '../../componentsDowngrade';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -62,9 +63,9 @@ describe('CardContainerController', () => {
 
 		cardContainer = <any>{};
 
-		let services: any = test.angularFixture.inject(__builder.factoryName);
+		let services: any = test.angularFixture.inject(cardContainerBuilderServiceName);
 
-		builder = services[__builder.factoryName].getInstance();
+		builder = services[cardContainerBuilderServiceName].getInstance();
 		builder._dataSource = null;
 	});
 

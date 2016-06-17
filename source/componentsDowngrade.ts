@@ -1,4 +1,4 @@
-import { Provider, provide, ExceptionHandler, PipeTransform } from '@angular/core';
+import { Provider, provide, ExceptionHandler, PipeTransform, Injector } from '@angular/core';
 import { UpgradeAdapter } from '@angular/upgrade';
 
 import * as angular from 'angular';
@@ -18,6 +18,7 @@ import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
 
+import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/cardContainerBuilder.service';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPager } from './components/cardContainer/dataSources/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
@@ -31,6 +32,7 @@ import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from
 
 export const moduleName: string = 'rl.components.downgrade';
 
+export const cardContainerBuilderServiceName: string = 'rlCardContainerBuilder';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
@@ -38,6 +40,18 @@ export const sorterServiceName: string = 'rlSorterService';
 const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
+	upgradeAdapter.addProvider(Injector);
+	upgradeAdapter.addProvider(DataSourceBuilder);
+	upgradeAdapter.addProvider(FilterBuilder);
+
+	const cardContainerBuilderFactoryProvider: Provider = new Provider(CardContainerBuilder, {
+		deps: [Injector, DataSourceBuilder, FilterBuilder],
+		useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
+			return {
+				getInstance: () => new CardContainerBuilder(injector, dataSourceBuilder, filterBuilder),
+			};
+		},
+	});
 	const dataPagerFactoryProvider: Provider = new Provider(DataPager, {
 		useValue: {
 			getInstance: () => new DataPager(),
@@ -55,6 +69,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 	upgradeAdapter.addProvider(Sorter);
 	upgradeAdapter.addProvider(MergeSort);
+	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
@@ -72,6 +87,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
 
+	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));

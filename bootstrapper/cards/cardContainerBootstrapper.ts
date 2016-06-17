@@ -3,13 +3,12 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 import {
-	factoryName as builderService,
-	ICardContainerBuilderFactory,
 	ICardContainerBuilder,
 	ISelectFilter,
 	IDateFilter,
 	IDataSource,
 } from '../../source/components/cardContainer/cardContainerBuilder.service';
+import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
 
 export const moduleName: string = 'CardTestModule';
 
@@ -28,8 +27,8 @@ class CardTestController {
 	dateFilter: IDateFilter;
 	dataSource: IDataSource<ICardItem>;
 
-	static $inject: string[] = [builderService];
-	constructor(cardContainerBuilderFactory: ICardContainerBuilderFactory) {
+	static $inject: string[] = [cardContainerBuilderServiceName];
+	constructor(cardContainerBuilderFactory: any) {
 		const items: ICardItem[] = _.map(_.range(1, 101), (num: number): ICardItem => {
 			const value = Math.floor(Math.random() * 2) + 1;
 			return {
