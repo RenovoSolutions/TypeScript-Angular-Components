@@ -95,9 +95,8 @@ export class CardComponent<T> extends FormComponent {
 		this.cardContainer.dataSource.remove(item);
 	}
 
-	submit(): any {
-		this.form.value = this.item;
-		super.submit();
+	saveForm(): any {
+		return this.save(this.item);
 	}
 
 	getColumnTemplate(columnName: string): ColumnContentTemplate {

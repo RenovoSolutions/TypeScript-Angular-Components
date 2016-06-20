@@ -44,10 +44,14 @@ export class FormComponent {
 
 	submit(): IWaitValue<any> {
 		if (this.formService.isFormValid(this.form)) {
-			return this.save(this.form.value);
+			return this.saveForm();
 		} else {
 			this.notification.warning(this.formService.getAggregateError(this.form));
 			return false;
 		}
+	}
+
+	saveForm(): IWaitValue<any> {
+		return this.save(this.form.value);
 	}
 }
