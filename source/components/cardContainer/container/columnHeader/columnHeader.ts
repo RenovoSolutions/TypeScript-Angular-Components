@@ -1,65 +1,34 @@
-import * as angular from 'angular';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { ISortDirections, SortDirection } from '../../sorts/sortDirection';
+import { services } from 'typescript-angular-utilities';
+import __transform = services.transform;
+
 import { IColumn } from '../../column';
+import { ISortDirections, SortDirection } from '../../sorts/sortDirection';
+import { ColumnHeaderTemplate } from '../columnHeader.template';
+import { SizeForBreakpoints } from '../../card/headerColumn/sizeForBreakpoints';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.columnHeader';
-export var directiveName: string = 'rlColumnHeader';
+@Component({
+	selector: 'rlColumnHeader',
+	template: require('./columnHeader.html'),
+	providers: [SizeForBreakpoints],
+})
+export class ColumnHeaderComponent<T> {
+	@Input() column: IColumn<T>;
+	@Input() sorting: string;
+	@Input() headerTemplate: ColumnHeaderTemplate;
+	@Output() sort: EventEmitter<void> = new EventEmitter<void>();
 
-export interface ICardColumnHeaderScope extends angular.IScope {
-	column: IColumn<any>;
-	sorting: string;
-	sort(): void;
+	sizeClass: string;
 
-	renderedTemplate: JQuery;
-	sortDirection: ISortDirections;
+	sizeForBreakpoints: SizeForBreakpoints;
+	sortDirection: ISortDirections = SortDirection;
+
+	constructor(sizeForBreakpoints: SizeForBreakpoints) {
+		this.sizeForBreakpoints = sizeForBreakpoints;
+	}
+
+	ngOnInit(): void {
+		this.sizeClass = this.sizeForBreakpoints.getClass(this.column.size, this.column.styling);
+	}
 }
-
-cardColumnHeader.$inject = ['$compile'];
-export function cardColumnHeader($compile: angular.ICompileService): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'E',
-		template: `
-			<div rl-size-for-breakpoints="column.size" ng-click="sort()" title="{{::column.description}}"
-					class="column-header">
-				<div class="template-container"></div>
-				<i ng-show="sorting === sortDirection.ascending" class="fa fa-sort-asc"></i>
-				<i ng-show="sorting === sortDirection.descending" class="fa fa-sort-desc"></i>
-			</div>
-		`,
-		scope: {
-			column: '=',
-			sorting: '=',
-			sort: '&',
-		},
-		compile(): angular.IDirectivePrePost {
-			return {
-				pre(scope: ICardColumnHeaderScope): void {
-					var column: IColumn<any> = scope.column;
-					if (column.headerTemplateUrl != null) {
-						scope.renderedTemplate = $compile('<div ng-include="\'' + column.headerTemplateUrl + '\'"></div>')(scope);
-					} else if (column.headerTemplate != null) {
-						scope.renderedTemplate = $compile(column.headerTemplate)(scope);
-					} else {
-						scope.renderedTemplate = <any>('<h5>' + column.label + '</h5');
-					}
-				},
-				post(scope: ICardColumnHeaderScope, element: angular.IAugmentedJQuery): void {
-					if (scope.column.displayColumnHeader != null && scope.column.displayColumnHeader === false) {
-						element.remove();
-						return;
-					}
-					var container: JQuery = element.find('.template-container');
-					container.append(scope.renderedTemplate);
-
-					scope.sortDirection = SortDirection;
-
-				},
-			};
-		}
-	};
-}
-
-angular.module(moduleName, [])
-	.directive(directiveName, cardColumnHeader);

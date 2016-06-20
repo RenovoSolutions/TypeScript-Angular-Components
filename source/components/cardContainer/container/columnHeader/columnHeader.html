@@ -1,0 +1,11 @@
+<div class="column-header"
+	 [ngClass]="sizeClass"
+	 (click)="sort.emit(null)"
+	 [title]="column.description || ''">
+	<div *ngIf="headerTemplate">
+		<div [ngTemplateOutlet]="headerTemplate.template"></div>
+	</div>
+	<div *ngIf="!headerTemplate"><h5>{{column.label}}</h5></div>
+	<i class="fa fa-sort-asc" [hidden]="sorting !== sortDirection.ascending"></i>
+	<i class="fa fa-sort-desc" [hidden]="sorting !== sortDirection.descending"></i>
+</div>

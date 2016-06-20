@@ -16,6 +16,8 @@ import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/ind
 
 import { ColumnContent, CardContent, CardFooter } from './card/content/index';
 import { CardComponent } from './card/card';
+import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
+import { ColumnHeaderTemplate } from './container/columnHeader.template';
 import { ContainerHeaderTemplate, ContainerFooterTemplate } from './container/index';
 import { ContainerHeaderComponent } from './container/containerHeader.component';
 import { ContainerFooterComponent } from './container/containerFooter.component';
@@ -35,6 +37,7 @@ export const defaultMaxColumnSorts: number = 2;
 	directives: [
 		ContainerHeaderComponent,
 		ContainerFooterComponent,
+		ColumnHeaderComponent,
 		CardComponent,
 		BusyComponent,
 	],
@@ -67,6 +70,7 @@ export class CardContainerComponent<T> implements OnInit {
 	@ContentChild(CardContent) cardContent: CardContent;
 	@ContentChild(CardFooter) cardFooter: CardFooter;
 	@ContentChildren(ColumnContent) columnTemplates: QueryList<ColumnContent>;
+	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
 	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
@@ -178,5 +182,9 @@ export class CardContainerComponent<T> implements OnInit {
 
 	private clearVisualSortIndicator(sort: ISort): void {
 		sort.column.sortDirection = null;
+	}
+
+	private getColumnTemplate(columnName: string): ColumnHeaderTemplate {
+		return this.columnHeaders.filter(column => column.name === columnName)[0];
 	}
 }

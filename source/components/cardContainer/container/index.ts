@@ -1,7 +1,8 @@
+import { ColumnHeaderTemplate } from './columnHeader.template';
 import { ContainerHeaderTemplate } from './containerHeader.template';
 import { ContainerFooterTemplate } from './containerFooter.template';
 
-export const CONTAINER_DIRECTIVES: any[] = [ContainerHeaderTemplate, ContainerFooterTemplate];
+export const CONTAINER_DIRECTIVES: any[] = [ColumnHeaderTemplate, ContainerHeaderTemplate, ContainerFooterTemplate];
 
 export * from './cardSearch/cardSearch';
 export * from './itemCount/itemCount';

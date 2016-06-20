@@ -29,6 +29,7 @@
 <div>
 	<label>Card container:</label>
 	<rlCardContainer [builder]="builder">
+		<div *rlColumnHeader="let value; name 'value'">Number</div>
 		<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
 		<div *rlCardContent="let myItem">
 			Name: {{myItem.name}}

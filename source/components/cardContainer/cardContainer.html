@@ -8,7 +8,10 @@
 
 				<div class="card-columns-header">
 					<div *ngFor="let column of columns">
-						<!--<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>-->
+						<rlColumnHeader [column]="column"
+										[headerTemplate]="getColumnTemplate(column.name)"
+										[sorting]="column.sortDirection"
+										(sort)="sort(column)"></rlColumnHeader>
 					</div>
 					<div class="clearfix"></div>
 				</div>
