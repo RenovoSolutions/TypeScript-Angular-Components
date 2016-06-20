@@ -2,5 +2,5 @@
 	<rlItemCount></rlItemCount>
 </div>
 <div *ngIf="footer">
-	<rlTemplateRenderer [template]="footer.template"></rlTemplateRenderer>
+	<template [ngTemplateOutlet]="footer.template"></template>
 </div>

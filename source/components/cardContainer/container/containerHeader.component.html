@@ -7,5 +7,5 @@
 	</div>
 </div>
 <div *ngIf="header">
-	<rlTemplateRenderer [template]="header.template"></rlTemplateRenderer>
+	<template [ngTemplateOutlet]="header.template"></template>
 </div>

@@ -11,13 +11,11 @@ import { IColumn } from '../column';
 import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
-import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 import { CardContent, CardFooter } from './content/index';
 
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
-	directives: [TemplateRenderer],
 	inputs: [baseInputs.save],
 	providers: [
 		new Provider(FormComponent, {

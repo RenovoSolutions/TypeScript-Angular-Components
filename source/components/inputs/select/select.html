@@ -15,7 +15,7 @@
 			*ngFor="let option of wrappedOptions | async"
 			(click)="select(option)">
 			<span *ngIf="template">
-				<rlTemplateRenderer [template]="newTemplate()" [model]="option"></rlTemplateRenderer>
+				<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: option }"></template>
 			</span>
 			<span *ngIf="!template">{{getDisplayName(option)}}</span>
 		</li>

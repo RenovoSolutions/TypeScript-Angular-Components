@@ -8,12 +8,11 @@ import { SimpleCardListComponent } from './simpleCardList';
 import { FormComponent, baseInputs } from '../form/form';
 import { FormService } from '../../services/form/form.service';
 import { CardHeader, CardContent, CardFooter } from '../cardContainer/card/content/index';
-import { TemplateRenderer } from '../templateRenderer/templateRenderer';
 
 @Component({
 	selector: 'rlSimpleCard',
 	template: require('./simpleCard.html'),
-	directives: [FormComponent, TemplateRenderer],
+	directives: [FormComponent],
 	inputs: [baseInputs.save],
 	providers: [
 		new Provider(FormComponent, {

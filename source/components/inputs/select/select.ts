@@ -13,7 +13,6 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
-import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 
 @Component({
 	selector: 'rlSelect',
@@ -21,7 +20,7 @@ import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [BusyComponent, OffClickDirective, TemplateRenderer],
+	directives: [BusyComponent, OffClickDirective],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
