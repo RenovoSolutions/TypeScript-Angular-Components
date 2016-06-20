@@ -1,4 +1,4 @@
-import { Component, Inject, Input, Output, Optional, EventEmitter, OnInit, ViewChild, Provider, forwardRef } from '@angular/core';
+import { Component, Inject, Input, Output, Optional, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
@@ -7,11 +7,13 @@ import __notification = services.notification;
 import { SimpleCardListComponent } from './simpleCardList';
 import { FormComponent, baseInputs } from '../form/form';
 import { FormService } from '../../services/form/form.service';
+import { CardHeader, CardContent, CardFooter } from '../cardContainer/card/content/index';
+import { TemplateRenderer } from '../templateRenderer/templateRenderer';
 
 @Component({
 	selector: 'rlSimpleCard',
 	template: require('./simpleCard.html'),
-	directives: [FormComponent],
+	directives: [FormComponent, TemplateRenderer],
 	inputs: [baseInputs.save],
 	providers: [
 		new Provider(FormComponent, {
@@ -25,6 +27,10 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	@Input() saveWhenInvalid: boolean;
 	@Input() cardType: string;
 	@Output() onOpen: EventEmitter<void> = new EventEmitter<void>();
+
+	@ContentChild(CardHeader) header: CardHeader;
+	@ContentChild(CardContent) content: CardContent;
+	@ContentChild(CardFooter) footer: CardFooter;
 
 	showContent: boolean = false;
 	list: SimpleCardListComponent<T>;
