@@ -294,3 +294,5 @@ export class FilterBuilder implements IFilterBuilder {
 		this.parent._filters.push(filter);
 	}
 }
+
+export const BUILDER_PROVIDERS: any[] = [CardContainerBuilder, DataSourceBuilder, FilterBuilder];

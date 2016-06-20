@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { mapValues } from 'lodash';
+import { mapValues, map, range } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -7,6 +7,7 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
+import { CardContainerBuilder, BUILDER_PROVIDERS } from '../../source/components/cardContainer/index';
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { CARD_CONTAINER_DIRECTIVES } from '../../source/components/cardContainer/index';
@@ -19,6 +20,11 @@ import {
 } from '../../source/components/cardContainer/filters/index';
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
 
+interface ICardItem {
+	name: string;
+	value: number;
+}
+
 @Component({
 	selector: 'tsCardsBootstrapper',
 	template: require('./cardsNg2.html'),
@@ -28,9 +34,11 @@ import { CardContainerComponent } from '../../source/components/cardContainer/ca
 		CARD_CONTAINER_DIRECTIVES,
 		CardContainerComponent,
 	],
+	providers: [BUILDER_PROVIDERS],
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
+	builder: CardContainerBuilder;
 	options: number[];
 	dateFilter: DateFilter;
 	filterGroup: FilterGroup;
@@ -38,10 +46,34 @@ export class CardsBootstrapper {
 	rangeFilterGroup: RangeFilterGroup;
 	selectFilter: SelectFilter<any, any>;
 
-	constructor(@Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService) {
+	constructor( @Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService
+			, cardContainerBuilder: CardContainerBuilder) {
 		timezone.setCurrentTimezone('-05:00');
 
+		const items: ICardItem[] = map(range(1, 101), (num: number): ICardItem => {
+			const value = Math.floor(Math.random() * 2) + 1;
+			return {
+				name: 'Item' + num,
+				value: value,
+			};
+		});
+
 		this.options = [1, 2, 3, 4, 5];
+
+		this.builder = cardContainerBuilder;
+		this.builder.dataSource.buildSimpleDataSource(items);
+		this.builder.usePaging();
+		this.builder.addColumn({
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		this.builder.addColumn({
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
 
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',

@@ -27,6 +27,15 @@
 	</rlSimpleCard>
 </div>
 <div>
+	<label>Card container:</label>
+	<rlCardContainer [builder]="builder">
+		<template rlCardContent>
+			Name: {{myItem.name}}
+			Value: {{myItem.value}}
+		</template>
+	</rlCardContainer>
+</div>
+<div>
 	<rlDateFilter [filter]="dateFilter"
 				  label="Date filter"
 				  showClear="true"
