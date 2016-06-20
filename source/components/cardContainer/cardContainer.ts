@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ContentChild, OnInit } from '@angular/core';
+import { Component, Input, Inject, ContentChild, ContentChildren, QueryList, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isUndefined, isObject, each, map, find } from 'lodash';
 
@@ -14,7 +14,7 @@ import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 
-import { CardContent, CardFooter } from './card/content/index';
+import { ColumnContent, CardContent, CardFooter } from './card/content/index';
 import { CardComponent } from './card/card';
 import { ContainerHeaderTemplate, ContainerFooterTemplate } from './container/index';
 import { ContainerHeaderComponent } from './container/containerHeader.component';
@@ -66,6 +66,7 @@ export class CardContainerComponent<T> implements OnInit {
 	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
 	@ContentChild(CardContent) cardContent: CardContent;
 	@ContentChild(CardFooter) cardFooter: CardFooter;
+	@ContentChildren(ColumnContent) columnTemplates: QueryList<ColumnContent>;
 
 	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility

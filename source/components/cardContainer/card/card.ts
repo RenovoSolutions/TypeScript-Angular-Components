@@ -11,12 +11,14 @@ import { IColumn } from '../column';
 import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
-import { CardContent, CardFooter } from './content/index';
+import { CardHeaderColumnComponent } from './headerColumn/headerColumn';
+import { ColumnContent, CardContent, CardFooter } from './content/index';
 
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
 	inputs: [baseInputs.save],
+	directives: [CardHeaderColumnComponent],
 	providers: [
 		new Provider(FormComponent, {
 			useExisting: forwardRef(() => CardComponent),
@@ -89,5 +91,9 @@ export class CardComponent<T> extends FormComponent {
 	submit(): any {
 		this.form.value = this.item;
 		super.submit();
+	}
+
+	getColumnTemplate(columnName: string): ColumnContent {
+		return this.cardContainer.columnTemplates.filter(column => column.name === columnName)[0];
 	}
 }

@@ -64,11 +64,13 @@ export class CardsBootstrapper {
 		this.builder.dataSource.buildSimpleDataSource(items);
 		this.builder.usePaging();
 		this.builder.addColumn({
+			name: 'name',
 			label: 'Name',
 			size: 6,
 			getValue: 'name',
 		});
 		this.builder.addColumn({
+			name: 'value',
 			label: 'Value',
 			size: 6,
 			getValue: 'value',

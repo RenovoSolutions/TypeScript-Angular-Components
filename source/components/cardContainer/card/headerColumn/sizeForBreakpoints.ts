@@ -1,4 +1,4 @@
-import * as angular from 'angular';
+import { Injectable, Inject } from '@angular/core';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 import __string = services.string;
@@ -6,43 +6,28 @@ import __string = services.string;
 import { xs, sm, md, lg } from '../../../../services/breakpoints/breakpoint';
 import { IBreakpointSize } from '../../column';
 
-export var sizeForBreakpointsName: string = 'rlSizeForBreakpoints';
+@Injectable()
+export class SizeForBreakpoints {
+	string: __string.IStringUtility;
 
-export interface ISizeForBreapointsAttrs extends angular.IAttributes {
-	rlSizeForBreakpoints: string;
-	styling: string;
-}
-
-sizeForBreakpoints.$inject = ['$parse', downgrade.stringServiceName];
-export function sizeForBreakpoints($parse: angular.IParseService, stringUtility: __string.IStringUtility): angular.IDirective {
-	'use strict';
-	return {
-		restrict: 'A',
-		link: linkDirective
-	};
-
-	function linkDirective(scope: angular.IScope
-		, element: angular.IAugmentedJQuery
-		, attributes: ISizeForBreapointsAttrs): void {
-		var sizes: IBreakpointSize = $parse(attributes.rlSizeForBreakpoints)(scope);
-		var styling: string = $parse(attributes.styling)(scope);
-		var classes: any[] = [];
-		classes.push(getColumnClass(sizes, xs));
-		classes.push(getColumnClass(sizes, sm));
-		classes.push(getColumnClass(sizes, md));
-		classes.push(getColumnClass(sizes, lg));
-
-		element.addClass(classes.join(' '));
-		if (styling != null) {
-			element.addClass(styling);
-		}
-
+	constructor( @Inject(__string.stringToken) string: __string.IStringUtility) {
+		this.string = string;
 	}
 
-	function getColumnClass(columnSizes: IBreakpointSize, attribute: string): string {
-		var value: number | string = columnSizes[attribute];
+	getClass(sizes: IBreakpointSize, styling: string): string {
+		let classes: string[] = [];
+		classes.push(this.getColumnClass(sizes, xs));
+		classes.push(this.getColumnClass(sizes, sm));
+		classes.push(this.getColumnClass(sizes, md));
+		classes.push(this.getColumnClass(sizes, lg));
+
+		return classes.join(' ') + ' ' + styling;
+	}
+
+	private getColumnClass(columnSizes: IBreakpointSize, attribute: string): string {
+		const value: number | string = columnSizes[attribute];
 		if (value > 0 && value !== 'hidden') {
-			return stringUtility.substitute('col-{0}-{1}', attribute, <string>value);
+			return this.string.substitute('col-{0}-{1}', attribute, <string>value);
 		} else {
 			return 'hidden-' + attribute;
 		}

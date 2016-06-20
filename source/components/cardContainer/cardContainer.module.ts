@@ -6,7 +6,7 @@ import { moduleName as parentChildModule } from '../../services/parentChild/pare
 
 import * as card from './card/card.ng1';
 import * as cardSearch from './container/cardSearch/cardSearch.ng1';
-import * as columnHeader from './container/columnHeader/columnHeader';
+import * as columnHeader from './container/columnHeader/columnHeader.ng1';
 import * as dataSources from './dataSources/index';
 import * as filters from './filters/filters.module';
 import * as itemCount from './container/itemCount/itemCount.ng1';

@@ -5,7 +5,9 @@
 		 [class.active]="hasBody || !permanentFooter">
 		<div class="row">
 			<div *ngFor="let column of cardContainer.columns">
-				<!--<rl-card-header-column column="column" item="__card.item" alias="__card.cardAs"></rl-card-header-column>-->
+				<rlCardHeaderColumn [column]="column"
+									[item]="item"
+									[columnTemplate]="getColumnTemplate(column.name)"></rlCardHeaderColumn>
 			</div>
 		</div>
 	</div>
