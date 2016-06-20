@@ -1,5 +1,5 @@
 <div class="card"
-	 [class.selected]="item.viewData.selected">
+	 [class.selected]="item?.viewData?.selected">
 	<div class="header"
 		 (click)="toggleContent()"
 		 [class.active]="hasBody || !permanentFooter">
