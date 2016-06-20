@@ -10,7 +10,7 @@ import __isEmpty = filters.isEmpty;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
-import { DataPager } from './paging/index';
+import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 
