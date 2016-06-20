@@ -1,0 +1,39 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="card-container">
+			<div>
+				<div class="card-container-header">
+					<rlContainerHeader [header]="containerHeader"></rlContainerHeader>
+				</div>
+
+				<div class="card-columns-header">
+					<div *ngFor="let column of columns">
+						<!--<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>-->
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				<div *ngIf="dataSource.dataSet | isEmpty:false">
+					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
+						<rlCard [item]="card"
+								[content]="cardContent"
+								[footer]="cardFooter"></rlCard>
+					</div>
+				</div>
+				<div *ngIf="dataSource.needsRefinedSearch">
+					Please refine your search results
+				</div>
+				<div *ngIf="dataSource.isEmpty">
+					There are no items to show
+				</div>
+
+				<div>
+					<rlBusy [loading]="dataSource.loadingDataSet" size="2x"></rlBusy>
+				</div>
+
+				<div class="card-container-footer">
+					<rlContainerFooter [footer]="containerFooter"></rlContainerFooter>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -6,6 +6,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
+import __isEmpty = filters.isEmpty;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
@@ -14,6 +15,11 @@ import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 
 import { CardContent, CardFooter } from './card/content/index';
+import { CardComponent } from './card/card';
+import { ContainerHeaderTemplate, ContainerFooterTemplate } from './container/index';
+import { ContainerHeaderComponent } from './container/containerHeader.component';
+import { ContainerFooterComponent } from './container/containerFooter.component';
+import { BusyComponent } from '../busy/busy';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
@@ -25,6 +31,8 @@ export const defaultMaxColumnSorts: number = 2;
 	selector: 'rlCardContainer',
 	template: require('./cardContainer.html'),
 	providers: [DataPager],
+	directives: [ContainerHeaderComponent, ContainerFooterComponent, CardComponent, BusyComponent],
+	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardContainerComponent<T> implements OnInit {
 	@Input() builder: CardContainerBuilder;
@@ -47,6 +55,8 @@ export class CardContainerComponent<T> implements OnInit {
 	array: __array.IArrayUtility;
 	injectedPager: DataPager; //injection
 
+	@ContentChild(ContainerHeaderTemplate) containerHeader: ContainerHeaderTemplate;
+	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
 	@ContentChild(CardContent) cardContent: CardContent;
 	@ContentChild(CardFooter) cardFooter: CardFooter;
 
