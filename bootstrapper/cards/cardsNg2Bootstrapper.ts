@@ -18,7 +18,6 @@ import {
 	RangeFilterGroup,
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
-import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
 
 interface ICardItem {
 	name: string;
@@ -32,7 +31,6 @@ interface ICardItem {
 		SIMPLE_CARD_DIRECTIVES,
 		INPUT_DIRECTIVES,
 		CARD_CONTAINER_DIRECTIVES,
-		CardContainerComponent,
 	],
 	providers: [CARD_CONTAINER_PROVIDERS],
 })
