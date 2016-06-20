@@ -7,7 +7,7 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
-import { CardContainerBuilder, BUILDER_PROVIDERS } from '../../source/components/cardContainer/index';
+import { builder, CARD_CONTAINER_PROVIDERS } from '../../source/components/cardContainer/index';
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { CARD_CONTAINER_DIRECTIVES } from '../../source/components/cardContainer/index';
@@ -34,11 +34,11 @@ interface ICardItem {
 		CARD_CONTAINER_DIRECTIVES,
 		CardContainerComponent,
 	],
-	providers: [BUILDER_PROVIDERS],
+	providers: [CARD_CONTAINER_PROVIDERS],
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
-	builder: CardContainerBuilder;
+	builder: builder.CardContainerBuilder;
 	options: number[];
 	dateFilter: DateFilter;
 	filterGroup: FilterGroup;
@@ -47,7 +47,7 @@ export class CardsBootstrapper {
 	selectFilter: SelectFilter<any, any>;
 
 	constructor( @Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService
-			, cardContainerBuilder: CardContainerBuilder) {
+			, cardContainerBuilder: builder.CardContainerBuilder) {
 		timezone.setCurrentTimezone('-05:00');
 
 		const items: ICardItem[] = map(range(1, 101), (num: number): ICardItem => {

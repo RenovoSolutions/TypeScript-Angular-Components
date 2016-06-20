@@ -6,7 +6,7 @@ import __date = services.date;
 import __string = services.string;
 import __transform = services.transform;
 
-import * as cardFilters from './filters/index';
+import * as cardFilters from '../filters/index';
 import { CardContainerBuilder } from './cardContainerBuilder.service';
 
 export interface IFilterBuilder {

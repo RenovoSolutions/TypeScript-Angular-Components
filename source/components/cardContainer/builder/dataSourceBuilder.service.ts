@@ -6,8 +6,8 @@ import __object = services.object;
 import __array = services.array;
 import __synchronizedRequests = services.synchronizedRequests;
 
-import * as dataSources from './dataSources/index';
-import { ISorter, Sorter } from './sorts/index';
+import * as dataSources from '../dataSources/index';
+import { ISorter, Sorter } from '../sorts/index';
 import { CardContainerBuilder } from './cardContainerBuilder.service';
 
 export interface IDataSourceBuilder {

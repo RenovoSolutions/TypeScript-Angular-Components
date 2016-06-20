@@ -3,15 +3,13 @@ import { Injector, Injectable } from '@angular/core';
 import { filters, services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
-import { CardContainerComponent } from './cardContainer';
-import { IColumn } from './column';
-import * as dataSources from './dataSources/index';
-import * as paging from './paging/index';
+import { CardContainerComponent } from '../cardContainer';
+import { IColumn } from '../column';
+import * as dataSources from '../dataSources/index';
+import * as paging from '../paging/index';
 
 import { IDataSourceBuilder, DataSourceBuilder } from './dataSourceBuilder.service';
 import { IFilterBuilder, FilterBuilder } from './filterBuilder.service';
-
-export { DataSourceBuilder, FilterBuilder };
 
 export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
@@ -140,5 +138,3 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.saveWhenInvalid = this._saveWhenInvalid;
 	}
 }
-
-export const BUILDER_PROVIDERS: any[] = [CardContainerBuilder, DataSourceBuilder, FilterBuilder];
