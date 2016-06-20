@@ -11,10 +11,12 @@ import { IColumn } from '../column';
 import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, ISaveAction } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
+import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
+	directives: [TemplateRenderer],
 	providers: [
 		new Provider(FormComponent, {
 			useExisting: forwardRef(() => CardComponent),

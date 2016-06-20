@@ -1,0 +1,27 @@
+<div class="card"
+	 [class.selected]="item.viewData.selected">
+	<div class="header"
+		 (click)="toggleContent()"
+		 [class.active]="hasBody || !permanentFooter">
+		<div class="row">
+			<div *ngFor="let column of cardContainer.columns">
+				<!--<rl-card-header-column column="column" item="__card.item" alias="__card.cardAs"></rl-card-header-column>-->
+			</div>
+		</div>
+	</div>
+
+	<div [hidden]="!showContent">
+		<div class="body"
+			 [class.active]="cardContainer.clickableCards"
+			 (click)="clickCard()">
+			<rlTemplateRenderer [template]="content.template" [model]="item"></rlTemplateRenderer>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+	<div [hidden]="!hasFooter || !(showContent || permanentFooter)">
+		<div class="footer">
+			<rlTemplateRenderer [template]="footer.template" [model]="item"></rlTemplateRenderer>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
