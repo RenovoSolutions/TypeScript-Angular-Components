@@ -29,10 +29,10 @@
 <div>
 	<label>Card container:</label>
 	<rlCardContainer [builder]="builder">
-		<template rlCardContent>
+		<div *rlCardContent="let myItem">
 			Name: {{myItem.name}}
 			Value: {{myItem.value}}
-		</template>
+		</div>
 	</rlCardContainer>
 </div>
 <div>
