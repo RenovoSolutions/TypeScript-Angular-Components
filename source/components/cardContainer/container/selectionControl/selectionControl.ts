@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, forwardRef } from '@angular/core';
 import { each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -21,7 +21,7 @@ export class SelectionComponent<T> implements OnInit {
 	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
 
-	constructor(cardContainer: CardContainerComponent<T>
+	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>
 			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
 		this.cardContainer = cardContainer;
 		this.boolean = boolean;

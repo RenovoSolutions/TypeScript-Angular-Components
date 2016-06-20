@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
 import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { services, filters } from 'typescript-angular-utilities';
@@ -32,7 +32,7 @@ export class CardSearchComponent<T> implements OnInit {
 	timer: __timeout.ITimeout;
 	timeoutService: __timeout.TimeoutService;
 
-	constructor(cardContainer: CardContainerComponent<T>
+	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>
 			, timeoutService: __timeout.TimeoutService) {
 		this.cardContainer = cardContainer;
 		this.timeoutService = timeoutService;

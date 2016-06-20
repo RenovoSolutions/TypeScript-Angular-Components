@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
 import { range } from 'lodash';
 
 import { IDataSource } from '../../dataSources/index';
@@ -30,7 +30,7 @@ export class PagerComponent<T> implements OnInit {
 		return this.pager.pageNumber < this.lastPage;
 	}
 
-	constructor(cardContainer: CardContainerComponent<T>) {
+	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 		this.pager = this.cardContainer.dataSource.pager;
 	}

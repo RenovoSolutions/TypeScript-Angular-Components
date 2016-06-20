@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, forwardRef } from '@angular/core';
 
 import { CardContainerComponent } from '../../cardContainer';
 
@@ -9,7 +9,7 @@ import { CardContainerComponent } from '../../cardContainer';
 export class ItemCountComponent<T> {
 	cardContainer: CardContainerComponent<T>;
 
-	constructor(cardContainer: CardContainerComponent<T>) {
+	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 	}
 }

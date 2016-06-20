@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, forwardRef } from '@angular/core';
 
 import { IDataPager } from '../dataPager/dataPager.service';
 import { CardContainerComponent } from '../../cardContainer';
@@ -17,7 +17,7 @@ export class PageSizeComponent<T> {
 	cardContainer: CardContainerComponent<T>;
 	pager: IDataPager;
 
-	constructor(cardContainer: CardContainerComponent<T>) {
+	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 
 		this.pager = this.cardContainer.dataSource.pager;
