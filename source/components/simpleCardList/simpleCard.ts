@@ -7,7 +7,7 @@ import __notification = services.notification;
 import { SimpleCardListComponent } from './simpleCardList';
 import { FormComponent, baseInputs } from '../form/form';
 import { FormService } from '../../services/form/form.service';
-import { CardHeader, CardContent, CardFooter } from '../cardContainer/card/content/index';
+import { CardHeaderTemplate, CardContentTemplate, CardFooterTemplate } from '../cards/index';
 
 @Component({
 	selector: 'rlSimpleCard',
@@ -27,9 +27,9 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	@Input() cardType: string;
 	@Output() onOpen: EventEmitter<void> = new EventEmitter<void>();
 
-	@ContentChild(CardHeader) header: CardHeader;
-	@ContentChild(CardContent) content: CardContent;
-	@ContentChild(CardFooter) footer: CardFooter;
+	@ContentChild(CardHeaderTemplate) header: CardHeaderTemplate;
+	@ContentChild(CardContentTemplate) content: CardContentTemplate;
+	@ContentChild(CardFooterTemplate) footer: CardFooterTemplate;
 
 	showContent: boolean = false;
 	list: SimpleCardListComponent<T>;

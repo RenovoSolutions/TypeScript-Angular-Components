@@ -1,11 +1,9 @@
-import { ColumnHeaderTemplate } from './columnHeader.template';
-import { ContainerHeaderTemplate } from './containerHeader.template';
-import { ContainerFooterTemplate } from './containerFooter.template';
+import { CardSearchComponent } from './cardSearch/cardSearch';
+import { ItemCountComponent } from './itemCount/itemCount';
+import { SelectionComponent } from './selectionControl/selectionControl';
 
-export const CONTAINER_DIRECTIVES: any[] = [ColumnHeaderTemplate, ContainerHeaderTemplate, ContainerFooterTemplate];
+export const CONTAINER_DIRECTIVES: any[] = [CardSearchComponent, ItemCountComponent, SelectionComponent];
 
 export * from './cardSearch/cardSearch';
 export * from './itemCount/itemCount';
 export * from './selectionControl/selectionControl';
-export * from './containerHeader.template';
-export * from './containerFooter.template';

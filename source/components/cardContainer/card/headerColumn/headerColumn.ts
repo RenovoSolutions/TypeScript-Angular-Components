@@ -4,7 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
 
 import { IColumn } from '../../column';
-import { ColumnContent } from '../content/columnContent';
+import { ColumnContentTemplate } from '../../templates/columnContent.template';
 import { SizeForBreakpoints } from './sizeForBreakpoints';
 import { CardComponent } from '../card';
 
@@ -16,7 +16,7 @@ import { CardComponent } from '../card';
 export class CardHeaderColumnComponent<T> implements OnInit {
 	@Input() column: IColumn<T>;
 	@Input() item: T;
-	@Input() columnTemplate: ColumnContent;
+	@Input() columnTemplate: ColumnContentTemplate;
 
 	get value(): string | number | boolean {
 		return this.transformService.getValue(this.item, this.column.getValue);

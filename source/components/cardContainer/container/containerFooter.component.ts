@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { ContainerFooterTemplate } from './containerFooter.template';
+import { ContainerFooterTemplate } from '../templates/containerFooter.template';
 import { ItemCountComponent } from './itemCount/itemCount';
 
 @Component({

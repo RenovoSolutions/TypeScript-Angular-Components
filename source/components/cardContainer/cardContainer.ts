@@ -14,11 +14,11 @@ import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 
-import { ColumnContent, CardContent, CardFooter } from './card/content/index';
 import { CardComponent } from './card/card';
 import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
-import { ColumnHeaderTemplate } from './container/columnHeader.template';
-import { ContainerHeaderTemplate, ContainerFooterTemplate } from './container/index';
+import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
+import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
+import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { ContainerHeaderComponent } from './container/containerHeader.component';
 import { ContainerFooterComponent } from './container/containerFooter.component';
 import { BusyComponent } from '../busy/busy';
@@ -67,9 +67,9 @@ export class CardContainerComponent<T> implements OnInit {
 
 	@ContentChild(ContainerHeaderTemplate) containerHeader: ContainerHeaderTemplate;
 	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
-	@ContentChild(CardContent) cardContent: CardContent;
-	@ContentChild(CardFooter) cardFooter: CardFooter;
-	@ContentChildren(ColumnContent) columnTemplates: QueryList<ColumnContent>;
+	@ContentChild(CardContentTemplate) cardContent: CardContentTemplate;
+	@ContentChild(CardFooterTemplate) cardFooter: CardFooterTemplate;
+	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
 	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility

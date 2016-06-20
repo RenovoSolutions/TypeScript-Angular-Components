@@ -12,7 +12,8 @@ import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
 import { CardHeaderColumnComponent } from './headerColumn/headerColumn';
-import { ColumnContent, CardContent, CardFooter } from './content/index';
+import { CardContentTemplate, CardFooterTemplate } from '../../cards/index';
+import { ColumnContentTemplate } from '../templates/index';
 
 @Component({
 	selector: 'rlCard',
@@ -27,8 +28,8 @@ import { ColumnContent, CardContent, CardFooter } from './content/index';
 })
 export class CardComponent<T> extends FormComponent {
 	@Input() item: T;
-	@Input() content: CardContent;
-	@Input() footer: CardFooter;
+	@Input() content: CardContentTemplate;
+	@Input() footer: CardFooterTemplate;
 
 	// consumer properties
 	initCard: { (): void } = () => null;
@@ -93,7 +94,7 @@ export class CardComponent<T> extends FormComponent {
 		super.submit();
 	}
 
-	getColumnTemplate(columnName: string): ColumnContent {
+	getColumnTemplate(columnName: string): ColumnContentTemplate {
 		return this.cardContainer.columnTemplates.filter(column => column.name === columnName)[0];
 	}
 }

@@ -5,7 +5,7 @@ import __transform = services.transform;
 
 import { IColumn } from '../../column';
 import { ISortDirections, SortDirection } from '../../sorts/sortDirection';
-import { ColumnHeaderTemplate } from '../columnHeader.template';
+import { ColumnHeaderTemplate } from '../../templates/columnHeader.template';
 import { SizeForBreakpoints } from '../../card/headerColumn/sizeForBreakpoints';
 
 @Component({

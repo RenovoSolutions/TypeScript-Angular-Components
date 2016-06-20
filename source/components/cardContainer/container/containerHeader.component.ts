@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { ContainerHeaderTemplate } from './containerHeader.template';
+import { ContainerHeaderTemplate } from '../templates/containerHeader.template';
 import { CardSearchComponent } from './cardSearch/cardSearch';
 import { PageSizeComponent } from '../paging/pageSize/pageSize';
 
