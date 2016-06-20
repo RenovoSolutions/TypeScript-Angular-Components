@@ -12,6 +12,7 @@
 
 	<div [hidden]="!showContent">
 		<div class="body"
+			 *ngIf="content"
 			 [class.active]="cardContainer.clickableCards"
 			 (click)="clickCard()">
 			<rlTemplateRenderer [template]="content.template" [model]="item"></rlTemplateRenderer>
@@ -19,7 +20,7 @@
 		</div>
 	</div>
 	<div [hidden]="!hasFooter || !(showContent || permanentFooter)">
-		<div class="footer">
+		<div class="footer" *ngIf="footer">
 			<rlTemplateRenderer [template]="footer.template" [model]="item"></rlTemplateRenderer>
 			<div class="clearfix"></div>
 		</div>
