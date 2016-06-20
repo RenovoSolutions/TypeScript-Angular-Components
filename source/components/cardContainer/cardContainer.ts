@@ -31,7 +31,12 @@ export const defaultMaxColumnSorts: number = 2;
 	selector: 'rlCardContainer',
 	template: require('./cardContainer.html'),
 	providers: [DataPager],
-	directives: [ContainerHeaderComponent, ContainerFooterComponent, CardComponent, BusyComponent],
+	directives: [
+		ContainerHeaderComponent,
+		ContainerFooterComponent,
+		CardComponent,
+		BusyComponent,
+	],
 	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardContainerComponent<T> implements OnInit {
@@ -53,7 +58,7 @@ export class CardContainerComponent<T> implements OnInit {
 
 	object: __object.IObjectUtility;
 	array: __array.IArrayUtility;
-	injectedPager: DataPager; //injection
+	injectedPager: DataPager;
 
 	@ContentChild(ContainerHeaderTemplate) containerHeader: ContainerHeaderTemplate;
 	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
