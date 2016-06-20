@@ -1,0 +1,6 @@
+<div class="row" *ngIf="!footer">
+	<rl-item-count></rl-item-count>
+</div>
+<div *ngIf="footer">
+	<rlTemplateRenderer [template]="footer.template"></rlTemplateRenderer>
+</div>
