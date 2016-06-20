@@ -1,6 +1,6 @@
-import { Component, Input, Inject, Provider, forwardRef } from '@angular/core';
+import { Component, Inject, Provider, forwardRef } from '@angular/core';
 import { Subject } from 'rxjs';
-import { isFunction } from 'lodash';
+import { isFunction, assign } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
@@ -9,16 +9,24 @@ import __notification = services.notification;
 import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerComponent } from '../cardContainer';
-import { FormComponent, baseInputs } from '../../form/form';
+import { FormComponent, baseInputs, IBaseFormInputs } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
 import { CardHeaderColumnComponent } from './headerColumn/headerColumn';
 import { CardContentTemplate, CardFooterTemplate } from '../../cards/index';
 import { ColumnContentTemplate } from '../templates/index';
 
+export interface ICardInputs extends IBaseFormInputs {
+	item: string,
+}
+
+export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
+	item: 'item',
+});
+
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
-	inputs: [baseInputs.save],
+	inputs: [cardInputs.save, cardInputs.item],
 	directives: [CardHeaderColumnComponent],
 	providers: [
 		new Provider(FormComponent, {
@@ -27,9 +35,7 @@ import { ColumnContentTemplate } from '../templates/index';
 	],
 })
 export class CardComponent<T> extends FormComponent {
-	@Input() item: T;
-	@Input() content: CardContentTemplate;
-	@Input() footer: CardFooterTemplate;
+	item: T;
 
 	// consumer properties
 	initCard: { (): void } = () => null;

@@ -17,13 +17,13 @@
 			 *ngIf="content"
 			 [class.active]="cardContainer.clickableCards"
 			 (click)="clickCard()">
-			<template [ngTemplateOutlet]="content.template" [ngOutletContext]="{ $implicit: item }"></template>
+			<template [ngTemplateOutlet]="cardContainer.cardContent.template" [ngOutletContext]="{ $implicit: item }"></template>
 			<div class="clearfix"></div>
 		</div>
 	</div>
 	<div [hidden]="!hasFooter || !(showContent || permanentFooter)">
 		<div class="footer" *ngIf="footer">
-			<template [ngTemplateOutlet]="footer.template" [ngOutletContext]="{ $implicit: item }"></template>
+			<template [ngTemplateOutlet]="cardContainer.cardFooter.template" [ngOutletContext]="{ $implicit: item }"></template>
 			<div class="clearfix"></div>
 		</div>
 	</div>

@@ -1,0 +1,41 @@
+<div class="select-group">
+	<div class="select-column">
+		<rlCheckbox class="stand-alone-checkbox"
+					[value]="item?.viewData?.selected"
+					(change)="toggleSelected()"
+					[disabled]="item?.viewData?.disabledSelection"
+					[title]="item?.viewData?.selectionTitle"></rlCheckbox>
+	</div>
+	<div class="select-content">
+		<div class="card selectable"
+			 [class.selected]="item?.viewData?.selected">
+			<div class="header"
+				(click)="toggleContent()"
+				[class.active]="hasBody || !permanentFooter">
+				<div class="row">
+					<div *ngFor="let column of cardContainer.columns">
+						<rlCardHeaderColumn [column]="column"
+											[item]="item"
+											[columnTemplate]="getColumnTemplate(column.name)"></rlCardHeaderColumn>
+					</div>
+				</div>
+			</div>
+
+			<div [hidden]="!showContent">
+				<div class="body"
+					*ngIf="content"
+					[class.active]="cardContainer.clickableCards"
+					(click)="clickCard()">
+					<template [ngTemplateOutlet]="cardContainer.cardContent.template" [ngOutletContext]="{ $implicit: item }"></template>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+			<div [hidden]="!hasFooter || !(showContent || permanentFooter)">
+				<div class="footer" *ngIf="footer">
+					<template [ngTemplateOutlet]="cardContainer.cardFooter.template" [ngOutletContext]="{ $implicit: item }"></template>
+					<div class="clearfix"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

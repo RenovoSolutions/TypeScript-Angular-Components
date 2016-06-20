@@ -18,9 +18,7 @@
 				<div *ngIf="dataSource.dataSet | isEmpty:false">
 					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
 						<rlCard [item]="card"
-								[save]="save"
-								[content]="cardContent"
-								[footer]="cardFooter"></rlCard>
+								[save]="save"></rlCard>
 					</div>
 				</div>
 				<div *ngIf="dataSource.needsRefinedSearch">

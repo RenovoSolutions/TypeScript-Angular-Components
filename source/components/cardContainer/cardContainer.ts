@@ -28,11 +28,22 @@ import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
 
+export interface ICardContainerInputs {
+	builder: string;
+	save: string;
+}
+
+export const cardContainerInputs: ICardContainerInputs = {
+	builder: 'builder',
+	save: 'save',
+};
+
 export const defaultMaxColumnSorts: number = 2;
 
 @Component({
 	selector: 'rlCardContainer',
 	template: require('./cardContainer.html'),
+	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
 	providers: [DataPager],
 	directives: [
 		ContainerHeaderComponent,
@@ -44,8 +55,8 @@ export const defaultMaxColumnSorts: number = 2;
 	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardContainerComponent<T> implements OnInit {
-	@Input() builder: CardContainerBuilder;
-	@Input() save: ISaveAction<T>;
+	builder: CardContainerBuilder;
+	save: ISaveAction<T>;
 
 	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
@@ -102,6 +113,64 @@ export class CardContainerComponent<T> implements OnInit {
 
 	openCard(): boolean {
 		return true;
+	}
+
+	sort(column: IColumn<any>): void {
+		let sortList: ISort[] = this.dataSource.sorts;
+		let firstSort: ISort = sortList[0];
+
+		// If column is already the primary sort, change the direction
+		if (firstSort != null
+			&& firstSort.column === column) {
+			firstSort.direction = SortDirection.toggle(firstSort.direction);
+
+			// Clear sort
+			if (firstSort.direction === SortDirection.none) {
+				this.clearVisualSortIndicator(firstSort);
+				firstSort = null;
+
+				// If the column has secondary sorts don't fall back to a
+				//  secondary sort, instead just clear all sorts
+				if (column.secondarySorts != null) {
+					sortList.length = 0;
+				} else { // otehrwise, clear the primary sort and fallback to previous sort
+					sortList.shift();
+				}
+			}
+		} else {
+			// Else make column primary ascending sort
+
+			// Remove any existing non-primary sorts on column
+			this.array.remove(sortList, (sort: ISort): boolean => {
+				return column === sort.column;
+			});
+
+			// Build ascending sort for column
+			let newSort: ISort = {
+				column: column,
+				direction: SortDirection.ascending,
+			};
+
+			sortList.unshift(newSort);
+
+			firstSort = newSort;
+		}
+
+		this.updateVisualColumnSorting();
+
+		// If column has secondary sorts, wipe the sort order and just apply the secondary sorts
+		if (firstSort != null && column.secondarySorts != null) {
+			sortList.length = 0;
+			let secondarySorts: ISort[] = this.buildSecondarySorts(firstSort.direction, column.secondarySorts);
+			sortList.push(firstSort);
+			sortList.push.apply(sortList, secondarySorts);
+		} else {
+			// If not using column secondary sorts, limit the maximum number
+			//  of sorts applied to the maximum number of sorts
+			this.dataSource.sorts = _.take(sortList, this.maxColSorts);
+		}
+
+		this.dataSource.onSortChange();
 	}
 
 	private syncFilters(): void {

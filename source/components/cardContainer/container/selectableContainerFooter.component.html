@@ -1,0 +1,14 @@
+<div class="row" *ngIf="!footer">
+	<div class="col-sm-3">
+		<rlSelection></rlSelection>
+	</div>
+	<div class="col-sm-3">
+		<rlItemCount></rlItemCount>
+	</div>
+	<div class="col-sm-6">
+		<rlPager class="pull-right"></rlPager>
+	</div>
+</div>
+<div *ngIf="footer">
+	<template [ngTemplateOutlet]="footer.template"></template>
+</div>
