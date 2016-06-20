@@ -1,6 +1,6 @@
 import { Component, Input, Inject, ContentChild, ContentChildren, QueryList, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { isUndefined, isObject, each, map, find } from 'lodash';
+import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -68,6 +68,7 @@ export class CardContainerComponent<T> implements OnInit {
 	permanentFooters: boolean;
 	saveWhenInvalid: boolean;
 	sortDirection: ISortDirections;
+	cards: CardComponent<T>[] = [];
 
 	numberSelected: number = 0;
 	numberSelectedChanges: Subject<number> = new Subject<number>();
@@ -111,8 +112,12 @@ export class CardContainerComponent<T> implements OnInit {
 		}
 	}
 
+	registerCard(card: CardComponent<T>): void {
+		this.cards.push(card);
+	}
+
 	openCard(): boolean {
-		return true;
+		return every(map(this.cards, card => card.close()));
 	}
 
 	sort(column: IColumn<any>): void {

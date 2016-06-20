@@ -57,6 +57,7 @@ export class CardComponent<T> extends FormComponent {
 		super(notification, formService);
 		this.boolean = boolean;
 		this.cardContainer = cardContainer;
+		this.cardContainer.registerCard(this);
 	}
 
 	toggleContent(): void {
