@@ -12,6 +12,7 @@ import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, ISaveAction } from '../../form/form';
 import { FormService } from '../../../services/form/form.service';
 import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
+import { CardContent, CardFooter } from './content/index';
 
 @Component({
 	selector: 'rlCard',
@@ -24,6 +25,10 @@ import { TemplateRenderer } from '../../templateRenderer/templateRenderer';
 	],
 })
 export class CardComponent<T> extends FormComponent {
+	@Input() item: T;
+	@Input() content: CardContent;
+	@Input() footer: CardFooter;
+
 	// consumer properties
 	initCard: { (): void } = () => null;
 	clickCard: { (): void } = () => null;
