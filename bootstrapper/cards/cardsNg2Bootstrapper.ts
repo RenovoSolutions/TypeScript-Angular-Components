@@ -18,10 +18,6 @@ import {
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 import { CardContainerComponent } from '../../source/components/cardContainer/cardContainer';
-import { CardSearchComponent } from '../../source/components/cardContainer/container/cardSearch/cardSearch';
-import { ItemCountComponent } from '../../source/components/cardContainer/container/itemCount/itemCount';
-import { PagerComponent, PageSizeComponent } from '../../source/components/cardContainer/paging/index';
-import { SelectionComponent } from '../../source/components/cardContainer/container/selectionControl/selectionControl';
 
 @Component({
 	selector: 'tsCardsBootstrapper',
@@ -31,11 +27,6 @@ import { SelectionComponent } from '../../source/components/cardContainer/contai
 		INPUT_DIRECTIVES,
 		CARD_CONTAINER_DIRECTIVES,
 		CardContainerComponent,
-		CardSearchComponent,
-		ItemCountComponent,
-		PagerComponent,
-		PageSizeComponent,
-		SelectionComponent,
 	],
 })
 export class CardsBootstrapper {
