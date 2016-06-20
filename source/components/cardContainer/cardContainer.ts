@@ -167,7 +167,7 @@ export class CardContainerComponent<T> implements OnInit {
 		} else {
 			// If not using column secondary sorts, limit the maximum number
 			//  of sorts applied to the maximum number of sorts
-			this.dataSource.sorts = _.take(sortList, this.maxColSorts);
+			this.dataSource.sorts = take(sortList, this.maxColumnSorts);
 		}
 
 		this.dataSource.onSortChange();
