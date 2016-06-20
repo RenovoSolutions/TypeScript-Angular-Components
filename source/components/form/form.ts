@@ -8,6 +8,14 @@ import __notification = services.notification;
 import { IWaitValue } from '../busy/busy';
 import { FormService } from '../../services/form/form.service';
 
+export interface IBaseFormInputs {
+	save: string;
+}
+
+export const baseInputs: IBaseFormInputs = {
+	save: 'save',
+};
+
 export interface ISaveAction<T> {
 	(data: T): IWaitValue<T>;
 }

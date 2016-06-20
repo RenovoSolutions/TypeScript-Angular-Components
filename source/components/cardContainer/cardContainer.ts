@@ -20,6 +20,7 @@ import { ContainerHeaderTemplate, ContainerFooterTemplate } from './container/in
 import { ContainerHeaderComponent } from './container/containerHeader.component';
 import { ContainerFooterComponent } from './container/containerFooter.component';
 import { BusyComponent } from '../busy/busy';
+import { ISaveAction } from '../form/form';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
@@ -41,6 +42,7 @@ export const defaultMaxColumnSorts: number = 2;
 })
 export class CardContainerComponent<T> implements OnInit {
 	@Input() builder: CardContainerBuilder;
+	@Input() save: ISaveAction<T>;
 
 	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
