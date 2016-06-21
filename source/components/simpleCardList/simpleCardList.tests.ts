@@ -1,27 +1,25 @@
+import { services } from 'typescript-angular-utilities';
+import __number = services.number;
+
 import { SimpleCardListComponent } from './simpleCardList';
 
 interface ICardMock {
 	close?: Sinon.SinonSpy;
 	alwaysOpen?: boolean;
+	alternatingClass?: string;
 }
 
 describe('SimpleCardListComponent', () => {
 	let list: SimpleCardListComponent<any>;
 	let alwaysOpen: boolean;
+	let cards: any[];
 
 	beforeEach(() => {
-		list = new SimpleCardListComponent();
-	});
-
-	it('should save a list of cards and set alwaysOpen on them', (): void => {
-		list.alwaysOpen = true;
-		const card: ICardMock = {};
-
-		list.registerCard(<any>card);
-
-		expect(list.cards).to.have.length(1);
-		expect(list.cards[0]).to.equal(card);
-		expect(card.alwaysOpen).to.be.true;
+		list = new SimpleCardListComponent(__number.numberUtility);
+		cards = [];
+		list.cardChildren = <any>{
+			toArray: () => cards,
+		};
 	});
 
 	it('should trigger all cards to close on openCard and return true if all are successful', (): void => {
@@ -31,8 +29,8 @@ describe('SimpleCardListComponent', () => {
 		const card2: ICardMock = {
 			close: sinon.spy(() => true),
 		};
-		list.registerCard(<any>card1);
-		list.registerCard(<any>card2);
+		cards.push(<any>card1);
+		cards.push(<any>card2);
 
 		const canOpen: boolean = list.openCard();
 
@@ -48,8 +46,8 @@ describe('SimpleCardListComponent', () => {
 		const cardCantClose: ICardMock = {
 			close: sinon.spy(() => false),
 		};
-		list.registerCard(<any>card1);
-		list.registerCard(<any>cardCantClose);
+		cards.push(<any>card1);
+		cards.push(<any>cardCantClose);
 
 		const canOpen: boolean = list.openCard();
 
@@ -61,12 +59,27 @@ describe('SimpleCardListComponent', () => {
 	it('should update alwaysOpen on each card on changes', (): void => {
 		list.alwaysOpen = true;
 		const card: ICardMock = {};
-		list.registerCard(<any>card);
+		cards.push(<any>card);
 
 		list.ngOnChanges({
 			alwaysOpen: <any>{ currentValue: true },
 		});
 
 		expect(card.alwaysOpen).to.be.true;
+	});
+
+	it('should set class card-odd on the even indexed cards', (): void => {
+		const card1: ICardMock = {};
+		const card2: ICardMock = {};
+		cards.push(<any>card1);
+		cards.push(<any>card2);
+		list.alwaysOpen = true;
+
+		list.ngAfterViewChecked();
+
+		expect(card1.alternatingClass).to.equal('card-odd');
+		expect(card1.alwaysOpen).to.be.true;
+		expect(card2.alternatingClass).to.be.empty;
+		expect(card2.alwaysOpen).to.be.true;
 	});
 });

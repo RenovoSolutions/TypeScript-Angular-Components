@@ -33,6 +33,7 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 
 	showContent: boolean = false;
 	list: SimpleCardListComponent<T>;
+	alternatingClass: string = '';
 	private boolean: __boolean.IBooleanUtility;
 
 	constructor(@Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
@@ -46,7 +47,6 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.canOpen = this.canOpen != null ? this.canOpen : true;
-		this.list.registerCard(this);
 	}
 
 	toggle(): void {
@@ -83,7 +83,7 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	}
 
 	private emptyList(): SimpleCardListComponent<T> {
-		const list: SimpleCardListComponent<T> = new SimpleCardListComponent<T>();
+		const list: SimpleCardListComponent<T> = new SimpleCardListComponent<T>(null);
 		list.openCard = () => true;
 		return list;
 	}
