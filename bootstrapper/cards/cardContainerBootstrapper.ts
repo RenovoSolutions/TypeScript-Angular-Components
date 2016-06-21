@@ -38,7 +38,7 @@ class CardTestController {
 		this.options = [1, 2];
 
 		this.builder = cardContainerBuilderFactory.getInstance();
-		this.builder.dataSource.buildSimpleDataSource(items);
+		this.builder.dataSource.buildSimpleDataSource(_.cloneDeep(items));
 		this.builder.usePaging();
 		this.builder.addColumn({
 			label: 'Name',
@@ -73,7 +73,7 @@ class CardTestController {
 		});
 
 		this.builderWithSelectFilter = cardContainerBuilderFactory.getInstance();
-		this.dataSource = this.builderWithSelectFilter.dataSource.buildSimpleDataSource(items);
+		this.dataSource = this.builderWithSelectFilter.dataSource.buildSimpleDataSource(_.cloneDeep(items));
 		this.builderWithSelectFilter.usePaging();
 		this.builderWithSelectFilter.addColumn({
 			label: 'Name',
@@ -91,7 +91,7 @@ class CardTestController {
 		});
 
 		this.builderWithDateFilter = cardContainerBuilderFactory.getInstance();
-		this.dataSource = this.builderWithDateFilter.dataSource.buildSimpleDataSource(items);
+		this.dataSource = this.builderWithDateFilter.dataSource.buildSimpleDataSource(_.cloneDeep(items));
 		this.builderWithDateFilter.usePaging();
 		this.builderWithDateFilter.addColumn({
 			label: 'Name',
