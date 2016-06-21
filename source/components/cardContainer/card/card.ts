@@ -42,7 +42,7 @@ export class CardComponent<T> extends FormComponent {
 	clickCard: { (): void } = () => null;
 
 	showContent: boolean = false;
-	refresh: Subject<void>;
+	refresh: Subject<void> = new Subject<void>();
 
 	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
@@ -55,6 +55,7 @@ export class CardComponent<T> extends FormComponent {
 		this.boolean = boolean;
 		this.cardContainer = cardContainer;
 		this.cardContainer.registerCard(this);
+		this.refresh.subscribe(() => this.cardContainer.dataSource.refresh());
 	}
 
 	toggleContent(): void {
@@ -89,8 +90,8 @@ export class CardComponent<T> extends FormComponent {
 		return canClose;
 	}
 
-	remove(item: T): void {
-		this.cardContainer.dataSource.remove(item);
+	remove(): void {
+		this.cardContainer.dataSource.remove(this.item);
 	}
 
 	saveForm(): any {
