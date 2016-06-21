@@ -1,48 +1,33 @@
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
+import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
-import {
-	AsyncDataSource,
-} from './asyncDataSource.service';
+import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
 
-import {
-	IDataSource,
-	moduleName,
-	dataSourceProcessor as __dataSourceProcessor,
-} from './dataSources.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { DataSourceProcessor } from './dataSourceProcessor.service';
+import { Sorter } from '../sorts/sorter/sorter.service';
+import { MergeSort } from '../sorts/mergeSort/mergeSort.service';
 
 interface IDataServiceMock {
 	get: Sinon.SinonSpy;
 }
 
-describe('asyncDataSource', () => {
-	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+describe('AsyncDataSource', () => {
+	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
-	let $rootScope: angular.IRootScopeService;
 	let source: AsyncDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
 	let redrawingSpy: Sinon.SinonSpy;
-	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject('$rootScope'
-													, '$q'
-													, downgrade.arrayServiceName
-													, downgrade.synchronizedRequestsServiceName);
-
-		$rootScope = services.$rootScope;
-		$q = services.$q;
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		dataService = {
 			get: test.mock.promise([1, 2]),
@@ -50,8 +35,8 @@ describe('asyncDataSource', () => {
 
 		source = new AsyncDataSource<number>(dataService.get
 											, <any>dataSourceProcessor
-											, services[downgrade.arrayServiceName]
-											, services[downgrade.synchronizedRequestsServiceName]);
+											, __array.arrayUtility
+											, new __synchronizedRequests.SynchronizedRequestsFactory());
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();

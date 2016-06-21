@@ -1,19 +1,18 @@
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
-import genericSearchFilter = services.genericSearchFilter;
+import __genericSearchFilter = services.genericSearchFilter;
+import __object = services.object;
+import __string = services.string;
+import __array = services.array;
+import __transform = services.transform;
+import __synchronizedRequests = services.synchronizedRequests;
 
-import {
-	IClientServerDataSourceFactory,
-	IClientServerDataSource,
-	moduleName,
-	factoryName,
-} from './clientServerDataSource.service';
+import { ClientServerDataSource } from './clientServerDataSource.service';
 
-import {
-	moduleName as dataSourcesModuleName,
-	dataSourceProcessor as __dataSourceProcessor,
-} from '../dataSources.module';
+import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { Sorter } from '../../sorts/sorter/sorter.service';
+import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 import * as angular from 'angular';
 import 'angular-mocks';
@@ -26,27 +25,17 @@ interface ITestFilterModel {
 	prop: string;
 }
 
-describe('clientServerDataSource', () => {
-	let clientServerDataSourceFactory: IClientServerDataSourceFactory;
-	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+describe('ClientServerDataSource', () => {
+	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
-	let $rootScope: angular.IRootScopeService;
-	let searchFilter: genericSearchFilter.IGenericSearchFilter;
-	let source: IClientServerDataSource<number>;
+	let searchFilter: __genericSearchFilter.IGenericSearchFilter;
+	let source: ClientServerDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
 	let changedSpy: Sinon.SinonSpy;
-	let $q: angular.IQService;
 
 	beforeEach(() => {
-		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(moduleName);
-		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope', downgrade.genericSearchFilterServiceName, '$q');
-		clientServerDataSourceFactory = dependencies[factoryName];
-		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
-		$rootScope = dependencies.$rootScope;
-		$q = dependencies.$q;
-		searchFilter = dependencies[downgrade.genericSearchFilterServiceName].getInstance();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		searchFilter = new __genericSearchFilter.GenericSearchFilter(__object.objectUtility, __string.stringUtility, false);
 
 		dataService = {
 			get: test.mock.promise([1, 2]),
@@ -60,7 +49,14 @@ describe('clientServerDataSource', () => {
 
 	describe('server search', (): void => {
 		beforeEach((): void => {
-			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter);
+			source = new ClientServerDataSource<number>(<any>dataService.get
+				, searchFilter
+				, null
+				, null
+				, dataSourceProcessor
+				, __array.arrayUtility
+				, __object.objectUtility
+				, new __synchronizedRequests.SynchronizedRequestsFactory());
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
 		});
@@ -131,7 +127,14 @@ describe('clientServerDataSource', () => {
 
 			let getFilterModel: any = (): ITestFilterModel => { return filterModel; };
 
-			source = <any>clientServerDataSourceFactory.getInstance<number>(<any>dataService.get, searchFilter, getFilterModel, validateSpy);
+			source = new ClientServerDataSource<number>(<any>dataService.get
+				, searchFilter
+				, getFilterModel
+				, validateSpy
+				, dataSourceProcessor
+				, __array.arrayUtility
+				, __object.objectUtility
+				, new __synchronizedRequests.SynchronizedRequestsFactory());
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
 		});

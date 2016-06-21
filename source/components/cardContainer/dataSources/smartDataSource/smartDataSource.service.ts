@@ -1,4 +1,3 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
@@ -7,41 +6,13 @@ import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
 
+import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.smartDataSource';
-export var factoryName: string = 'smartDataSource';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
-}
-
-export interface IServerSearchFunction<TDataType> {
-	(searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
-}
-
-export interface IServerSearchParams {
-	filters: {[index: string]: any};
-	sorts: ISortParams[];
-	paging: IPagingParams;
-}
-
-export interface ISortParams {
-	column: string;
-	direction: string;
-}
-
-export interface IPagingParams {
-	pageNumber: number;
-	pageSize: number;
-}
-
-export interface IDataResult<TDataType> {
-	dataSet: TDataType[];
-	count: number;
-	isEmpty?: boolean;
 }
 
 export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
@@ -140,23 +111,3 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 		this.isEmpty = data.isEmpty;
 	}
 }
-
-export interface ISmartDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
-}
-
-smartDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
-export function smartDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
-												, array: __array.IArrayUtility
-												, object: __object.IObjectUtility
-												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): ISmartDataSourceFactory {
-	'use strict';
-	return {
-		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-			return new SmartDataSource<TDataType>(getDataSet, dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		},
-	};
-}
-
-angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, smartDataSourceFactory);

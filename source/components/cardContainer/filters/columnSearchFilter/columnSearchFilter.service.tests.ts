@@ -5,7 +5,7 @@ import __transform = services.transform;
 
 import { ColumnSearchFilter } from './columnSearchFilter.service';
 
-import { ISort, SortDirection } from '../../sorts/sorts.module';
+import { ISort, SortDirection } from '../../sorts/index';
 
 interface ITestObject {
 	prop1?: string;

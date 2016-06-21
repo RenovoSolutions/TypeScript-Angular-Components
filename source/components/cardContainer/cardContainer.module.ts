@@ -7,13 +7,13 @@ import { moduleName as parentChildModule } from '../../services/parentChild/pare
 import * as card from './card/card';
 import * as cardSearch from './cardSearch/cardSearch';
 import * as columnHeader from './columnHeader/columnHeader';
-import * as dataSources from './dataSources/dataSources.module';
+import * as dataSources from './dataSources/index';
 import * as filters from './filters/filters.module';
 import * as itemCount from './itemCount/itemCount';
 import * as pager from './pager/pager';
 import * as pageSize from './pageSize/pageSize';
 import * as selectionControl from './selectionControl/selectionControl';
-import * as sorts from './sorts/sorts.module';
+import * as sorts from './sorts/index';
 
 import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer';
 import * as builder from './cardContainerBuilder.service';
@@ -40,7 +40,6 @@ export var moduleName: string = 'rl.ui.components.cardContainer';
 
 angular.module(moduleName, [
 	// dependencies
-	dataSources.dataPager.moduleName,
 	downgrade.moduleName,
 	parentChildModule,
 
@@ -54,9 +53,7 @@ angular.module(moduleName, [
 	selectionControl.moduleName,
 
 	// submodules
-	dataSources.moduleName,
 	filters.moduleName,
-	sorts.moduleName,
 ])
 	.component(componentName, cardContainer)
 	.controller(controllerName, CardContainerController)

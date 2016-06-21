@@ -1,23 +1,12 @@
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __object = services.object;
+import __transform = services.transform;
 
-import {
-	IDataSourceProcessor,
-	IProcessResult,
-	processorServiceName,
-} from './dataSourceProcessor.service';
-
-import {
-	moduleName,
-	dataPager,
-} from './dataSources.module';
-
-import { ISort, SortDirection } from '../sorts/sorts.module';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
+import { DataPager } from './dataPager/dataPager.service';
+import { ISort, SortDirection, Sorter, MergeSort } from '../sorts/index';
 
 interface ITestObject {
 	value: number;
@@ -30,21 +19,17 @@ interface IFilterMock {
 	type?: string;
 }
 
-describe('dataSourceProcessor', () => {
-	var dataSourceProcessor: IDataSourceProcessor;
-	var pager: dataPager.IDataPager;
+describe('DataSourceProcessor', () => {
+	let dataSourceProcessor: DataSourceProcessor;
+	let pager: DataPager;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		var services: any = test.angularFixture.inject(processorServiceName, dataPager.factoryName);
-		dataSourceProcessor = services[processorServiceName];
-		var dataPagerFactory: dataPager.IDataPagerFactory = services[dataPager.factoryName];
-		pager = dataPagerFactory.getInstance();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		pager = new DataPager();
 	});
 
 	it('should sort the data', (): void => {
-		var sortList: ISort[] = [
+		let sortList: ISort[] = [
 			{
 				column: <any>{
 					getValue: (item: ITestObject): number => {
@@ -63,22 +48,22 @@ describe('dataSourceProcessor', () => {
 			},
 		];
 
-		var item1: ITestObject = {
+		let item1: ITestObject = {
 			value: 1,
 			name: 'z',
 		};
 
-		var item2: ITestObject = {
+		let item2: ITestObject = {
 			value: 1,
 			name: 'y',
 		};
 
-		var item3: ITestObject = {
+		let item3: ITestObject = {
 			value: 2,
 			name: 'a',
 		};
 
-		var result: IProcessResult<ITestObject> = dataSourceProcessor.process(sortList, null, null, [item2, item3, item1]);
+		let result: IProcessResult<ITestObject> = dataSourceProcessor.process(sortList, null, null, [item2, item3, item1]);
 
 		expect(result.count).to.equal(3);
 		expect(result.dataSet).to.have.length(3);
@@ -88,18 +73,18 @@ describe('dataSourceProcessor', () => {
 	});
 
 	it('should apply filter', (): void => {
-		var greaterThan4: IFilterMock = {
+		let greaterThan4: IFilterMock = {
 			filter(value: number): boolean {
 				return value > 4;
 			},
 		};
-		var mustBeEven: IFilterMock = {
+		let mustBeEven: IFilterMock = {
 			filter(value: number): boolean {
 				return (value % 2) === 0;
 			},
 		};
 
-		var result: IProcessResult<number> =
+		let result: IProcessResult<number> =
 					dataSourceProcessor.process<number>(null, <any>[greaterThan4, mustBeEven], null, _.range(1, 11));
 
 		expect(result.count).to.equal(3);
@@ -113,7 +98,7 @@ describe('dataSourceProcessor', () => {
 		pager.pageNumber = 3;
 		pager.pageSize = 2;
 
-		var result: IProcessResult<number> = dataSourceProcessor.process<number>(null, null, pager, _.range(1, 11));
+		let result: IProcessResult<number> = dataSourceProcessor.process<number>(null, null, pager, _.range(1, 11));
 		expect(result.count).to.equal(10);
 		expect(result.filteredDataSet).to.have.length(10);
 		expect(result.dataSet).to.have.length(2);
@@ -122,8 +107,8 @@ describe('dataSourceProcessor', () => {
 	});
 
 	describe('sort, filter, and paging aggregation', (): void => {
-		var sort: ISort;
-		var data: number[];
+		let sort: ISort;
+		let data: number[];
 
 		beforeEach((): void => {
 			sort = <any>{
@@ -142,13 +127,13 @@ describe('dataSourceProcessor', () => {
 		});
 
 		it('should aggregate sort, filter, and paging together', (): void => {
-			var customFilter: IFilterMock = {
+			let customFilter: IFilterMock = {
 				filter(value: number): boolean {
 					return value > 4;
 				},
 			};
 
-			var result: IProcessResult<number> = dataSourceProcessor.process<number>([sort], <any>[customFilter], pager, data);
+			let result: IProcessResult<number> = dataSourceProcessor.process<number>([sort], <any>[customFilter], pager, data);
 			expect(result.count).to.equal(6);
 			expect(result.filteredDataSet).to.have.length(6);
 			expect(result.filteredDataSet[0]).to.equal(5);
@@ -163,13 +148,13 @@ describe('dataSourceProcessor', () => {
 		});
 
 		it('should perform normal processing if no filters want to calculate option counts', (): void => {
-			var filterWithNoUpdateFunction: IFilterMock = {
+			let filterWithNoUpdateFunction: IFilterMock = {
 				filter(value: number): boolean {
 					return value > 4;
 				},
 			};
 
-			var result: IProcessResult<number> =
+			let result: IProcessResult<number> =
 						dataSourceProcessor.processAndCount<number>([sort], <any>[filterWithNoUpdateFunction], pager, data);
 
 			expect(result.count).to.equal(6);
@@ -179,14 +164,14 @@ describe('dataSourceProcessor', () => {
 		});
 
 		it('should still sort, filter, and page data even if filters are calculating option counts', (): void => {
-			var filterWithUpdateFunction: IFilterMock = {
+			let filterWithUpdateFunction: IFilterMock = {
 				filter(value: number): boolean {
 					return value > 4;
 				},
 				updateOptionCounts: sinon.spy(),
 			};
 
-			var result: IProcessResult<number> =
+			let result: IProcessResult<number> =
 						dataSourceProcessor.processAndCount<number>([sort], <any>[filterWithUpdateFunction], pager, data);
 
 			expect(result.count).to.equal(6);
@@ -197,7 +182,7 @@ describe('dataSourceProcessor', () => {
 	});
 
 	it('should give each filter a chance to calculate option counts on a data set with all other filters applied', (): void => {
-		var greater_than_4: IFilterMock = {
+		let greater_than_4: IFilterMock = {
 			type: 'greater_than_4',
 			filter(value: number): boolean {
 				return value > 4;
@@ -205,7 +190,7 @@ describe('dataSourceProcessor', () => {
 			updateOptionCounts: sinon.spy(),
 		};
 
-		var less_than_8: IFilterMock = {
+		let less_than_8: IFilterMock = {
 			type: 'less_than_8',
 			filter(value: number): boolean {
 				return value < 8;
@@ -213,7 +198,7 @@ describe('dataSourceProcessor', () => {
 			updateOptionCounts: sinon.spy(),
 		};
 
-		var odd: IFilterMock = {
+		let odd: IFilterMock = {
 			type: 'odd',
 			filter(value: number): boolean {
 				return (value % 2) !== 0;
@@ -221,7 +206,7 @@ describe('dataSourceProcessor', () => {
 			updateOptionCounts: sinon.spy(),
 		};
 
-		var result: IProcessResult<number> =
+		let result: IProcessResult<number> =
 			dataSourceProcessor.processAndCount<number>(null, <any>[greater_than_4, less_than_8, odd], null, _.range(1, 11));
 
 		// Each update function called with other filters applied

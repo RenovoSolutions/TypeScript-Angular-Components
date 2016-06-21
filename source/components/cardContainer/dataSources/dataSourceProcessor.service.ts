@@ -5,12 +5,7 @@ import __object = services.object;
 
 import { ISort } from '../sorts/sort';
 import { IDataPager } from './dataPager/dataPager.service';
-import {
-	serviceName as sorterServiceName,
-	ISorter,
-} from '../sorts/sorter/sorter.service';
-
-export var processorServiceName: string = 'dataSourceProcessor';
+import { ISorter } from '../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
 	count: number;
@@ -37,7 +32,6 @@ export interface IDataSourceProcessor {
 }
 
 export class DataSourceProcessor implements IDataSourceProcessor{
-	static $inject: string[] = [downgrade.objectServiceName, sorterServiceName];
 	constructor(private object: __object.IObjectUtility
 			, private sorter: ISorter) { }
 

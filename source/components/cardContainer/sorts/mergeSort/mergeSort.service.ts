@@ -1,11 +1,6 @@
-import * as angular from 'angular';
-
 import { types } from 'typescript-angular-utilities';
 
 import { ICompareFunction } from '../sort';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.sorts.mergeSort';
-export var serviceName: string = 'mergeSort';
 
 export interface IMergeSort {
 	sort<TDataType>(data: TDataType[], compare?: ICompareFunction<TDataType>): TDataType[];
@@ -61,6 +56,3 @@ export class MergeSort implements IMergeSort {
 		return result;
 	}
 }
-
-angular.module(moduleName, [])
-	.service(serviceName, MergeSort);

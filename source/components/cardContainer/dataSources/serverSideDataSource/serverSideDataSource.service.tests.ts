@@ -1,23 +1,18 @@
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
+import __object = services.object;
+import __array = services.array;
+import __transform = services.transform;
+import __synchronizedRequests = services.synchronizedRequests;
 
-import {
-	IServerSideDataSourceFactory,
-	IServerSideDataSource,
-	moduleName,
-	factoryName,
-} from './serverSideDataSource.service';
+import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
-import {
-	moduleName as dataSourcesModuleName,
-	dataSourceProcessor as __dataSourceProcessor,
-} from '../dataSources.module';
+import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { Sorter } from '../../sorts/sorter/sorter.service';
+import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 import { SortDirection } from '../../sorts/sort';
-
-import * as angular from 'angular';
-import 'angular-mocks';
 
 interface IDataServiceMock {
 	get: Sinon.SinonSpy;
@@ -27,23 +22,14 @@ interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
 }
 
-describe('serverSideDataSource', () => {
-	let serverSideDataSourceFactory: IServerSideDataSourceFactory;
-	let dataSourceProcessor: __dataSourceProcessor.IDataSourceProcessor;
+describe('ServerSideDataSource', () => {
+	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
-	let $rootScope: angular.IRootScopeService;
 	let filter: ITestFilter;
 	let source: IServerSideDataSource<number>;
 
 	beforeEach(() => {
-		angular.mock.module(dataSourcesModuleName);
-		angular.mock.module(moduleName);
-
-		let dependencies: any = test.angularFixture.inject(
-			factoryName, __dataSourceProcessor.processorServiceName, '$rootScope');
-		serverSideDataSourceFactory = dependencies[factoryName];
-		dataSourceProcessor = dependencies[__dataSourceProcessor.processorServiceName];
-		$rootScope = dependencies.$rootScope;
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 
 		filter = <any>{
 			type: 'myFilter',
@@ -58,7 +44,7 @@ describe('serverSideDataSource', () => {
 
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 
-		source = <any>serverSideDataSourceFactory.getInstance<number>(<any>dataService.get);
+		source = <any>new ServerSideDataSource<number>(<any>dataService.get, dataSourceProcessor, __array.arrayUtility, __object.objectUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
 		source.filters = <any>[filter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },

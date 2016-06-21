@@ -1,13 +1,7 @@
-// /// <reference path='../../../../../typings/lodashTypeExtensions.d.ts' />
-
-import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.dataPager';
-export var factoryName: string = 'dataPager';
-
-export var defaultPageSize: number = 10;
+export const defaultPageSize: number = 10;
 
 export interface IDataPager {
 	pageNumber: number;
@@ -61,19 +55,3 @@ export class DataPager implements IDataPager {
 			.value();
 	}
 }
-
-export interface IDataPagerFactory {
-	getInstance(): IDataPager;
-}
-
-export function dataPagerFactory(): IDataPagerFactory {
-	'use strict';
-	return {
-		getInstance(): IDataPager {
-			return new DataPager();
-		},
-	};
-}
-
-angular.module(moduleName, [])
-	.factory(factoryName, dataPagerFactory);

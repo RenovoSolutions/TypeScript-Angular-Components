@@ -1,17 +1,13 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.clientServerDataSource';
-export var factoryName: string = 'clientServerDataSource';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 
 export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	getFilterModel: IGetFilterModel<any>;
@@ -94,29 +90,3 @@ export class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType
 		return searchModel;
 	}
 }
-
-export interface IClientServerDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
-						, searchFilter: __genericSearchFilter.IGenericSearchFilter
-						, getFilterModel?: IGetFilterModel<any>
-						, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType>;
-}
-
-clientServerDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName, downgrade.synchronizedRequestsServiceName];
-export function clientServerDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
-												, array: __array.IArrayUtility
-												, object: __object.IObjectUtility
-												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IClientServerDataSourceFactory {
-	'use strict';
-	return {
-		getInstance<TDataType>(getDataSet: IDataServiceSearchFunction<TDataType>
-							, searchFilter: __genericSearchFilter.IGenericSearchFilter
-							, getFilterModel?: IGetFilterModel<any>
-							, validateModel?: IValidateFilterModel<any>): IAsyncDataSource<TDataType> {
-			return new ClientServerDataSource<TDataType>(getDataSet, searchFilter, getFilterModel, validateModel, dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		},
-	};
-}
-
-angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, clientServerDataSourceFactory);

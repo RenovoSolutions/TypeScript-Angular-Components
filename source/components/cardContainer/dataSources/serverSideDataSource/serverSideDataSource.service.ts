@@ -1,45 +1,17 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __synchronizedRequests = services.synchronizedRequests;
 
+import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor, processorServiceName } from '../dataSourceProcessor.service';
+import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 import { ISort, SortDirection } from '../../sorts/sort';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.dataSources.serverSideDataSource';
-export var factoryName: string = 'serverSideDataSource';
 
 export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
-}
-
-export interface IServerSearchFunction<TDataType> {
-	(searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
-}
-
-export interface IServerSearchParams {
-	filters: {[index: string]: any};
-	sorts: ISortParams[];
-	paging: IPagingParams;
-}
-
-export interface ISortParams {
-	column: string;
-	direction: string;
-}
-
-export interface IPagingParams {
-	pageNumber: number;
-	pageSize: number;
-}
-
-export interface IDataResult<TDataType> {
-	dataSet: TDataType[];
-	count: number;
 }
 
 export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
@@ -90,23 +62,3 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 		this.redrawing.next(null);
 	}
 }
-
-export interface IServerSideDataSourceFactory {
-	getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType>;
-}
-
-serverSideDataSourceFactory.$inject = [processorServiceName, downgrade.arrayServiceName, downgrade.objectServiceName,  downgrade.synchronizedRequestsServiceName];
-export function serverSideDataSourceFactory(dataSourceProcessor: IDataSourceProcessor
-												, array: __array.IArrayUtility
-												, object: __object.IObjectUtility
-												, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory): IServerSideDataSourceFactory {
-	'use strict';
-	return {
-		getInstance<TDataType>(getDataSet: IServerSearchFunction<TDataType>): IAsyncDataSource<TDataType> {
-			return new ServerSideDataSource<TDataType>(getDataSet, dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		},
-	};
-}
-
-angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, serverSideDataSourceFactory);

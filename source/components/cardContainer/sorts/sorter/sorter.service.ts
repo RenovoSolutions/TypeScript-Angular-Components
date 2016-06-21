@@ -1,24 +1,28 @@
-import * as angular from 'angular';
+import { Injectable, Inject } from '@angular/core';
 import * as _ from 'lodash';
 
 import { types, services } from 'typescript-angular-utilities';
-import __transform = services.transform.transform;
+import __transform = services.transform;
 
 import { ISort, ICompareFunction } from '../sort';
 import { SortDirection } from '../sortDirection';
-import { serviceName as mergeSortServiceName, IMergeSort } from '../mergeSort/mergeSort.service';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.sorts.sorter';
-export var serviceName: string = 'sorter';
-
+import { MergeSort, IMergeSort } from '../mergeSort/mergeSort.service';
 
 export interface ISorter {
 	sort<TDataType>(data: TDataType[], sort: ISort | ISort[]): TDataType[];
 }
 
+@Injectable()
 export class Sorter implements ISorter {
-	static $inject: string[] = [mergeSortServiceName];
-	constructor(private mergeSort: IMergeSort) { }
+	mergeSort: IMergeSort;
+
+	transformService: __transform.ITransformService;
+
+	constructor(mergeSort: MergeSort
+			, @Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+		this.mergeSort = mergeSort;
+		this.transformService = transformService;
+	}
 
 	sort<TDataType>(data: TDataType[], sort: ISort | ISort[]): TDataType[] {
 		if (sort === null) {
@@ -48,8 +52,8 @@ export class Sorter implements ISorter {
 				return types.CompareResult.equal;
 			}
 
-			var valueOfA: any = __transform.getValue(a, sort.column.getValue);
-			var valueOfB: any = __transform.getValue(b, sort.column.getValue);
+			var valueOfA: any = this.transformService.getValue(a, sort.column.getValue);
+			var valueOfB: any = this.transformService.getValue(b, sort.column.getValue);
 
 			var greaterResult: types.CompareResult = types.CompareResult.greater;
 			var lessResult: types.CompareResult = types.CompareResult.less;
@@ -70,6 +74,3 @@ export class Sorter implements ISorter {
 		};
 	}
 }
-
-angular.module(moduleName, [])
-	.service(serviceName, Sorter);

@@ -3,7 +3,7 @@ import { Component, Input, Inject } from '@angular/core';
 import { services } from 'typescript-angular-utilities';
 import __logger = services.logger;
 
-import { IDataSource } from '../../dataSources/dataSources.module';
+import { IDataSource } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 import { FilterOptionComponent } from './filterOption/filterOption';
 

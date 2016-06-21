@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource, dataPager } from '../dataSources/dataSources.module';
+import { IDataSource, IDataPager } from '../dataSources/index';
 import { CardContainerController } from '../cardContainer';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.pager';
@@ -24,7 +24,7 @@ export class PagerController {
 	canGoForward: boolean = false;
 	pages: number[];
 	private cardContainer: CardContainerController;
-	private pager: dataPager.IDataPager;
+	private pager: IDataPager;
 	private dataSource: IDataSource<any>;
 	private lastPage: number;
 	private visiblePageCount: number;

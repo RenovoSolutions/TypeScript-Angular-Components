@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { dataPager } from '../dataSources/dataSources.module';
+import { IDataPager } from '../dataSources/index';
 import { CardContainerController } from '../cardContainer';
 
 export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
@@ -15,7 +15,7 @@ export const defaultPageSize: number = 10;
 export class PageSizeController {
 	pageSizes: number[];
 	private cardContainer: CardContainerController;
-	private pager: dataPager.IDataPager;
+	private pager: IDataPager;
 
 	get selectedPageSize(): number {
 		if (this.pager != null) {

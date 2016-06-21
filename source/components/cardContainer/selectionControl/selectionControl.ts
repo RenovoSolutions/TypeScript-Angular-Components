@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
-import { IDataSource } from '../dataSources/dataSources.module';
+import { IDataSource } from '../dataSources/index';
 import { CardContainerController } from '../cardContainer';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
