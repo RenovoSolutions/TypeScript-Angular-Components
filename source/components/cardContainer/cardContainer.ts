@@ -26,7 +26,7 @@ import { ISaveAction } from '../form/form';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
+import { ICardContainerBuilder, CardContainerBuilder } from './builder/cardContainerBuilder.service';
 
 export interface ICardContainerInputs {
 	builder: string;

@@ -17,7 +17,7 @@ import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
+import { ICardContainerBuilder, CardContainerBuilder } from './builder/cardContainerBuilder.service';
 
 export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';

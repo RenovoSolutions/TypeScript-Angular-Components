@@ -16,5 +16,4 @@ export { container, builder, dataSources, filters, paging, sorts, templates };
 
 export * from './card/card';
 export * from './cardContainer';
-export * from './cardContainerBuilder.service';
 export * from './column';

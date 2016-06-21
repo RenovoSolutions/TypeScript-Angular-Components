@@ -16,7 +16,7 @@ import * as selectionControl from './container/selectionControl/selectionControl
 import * as sorts from './sorts/index';
 
 import { componentName, cardContainer, controllerName, CardContainerController } from './cardContainer.ng1';
-import * as builder from './cardContainerBuilder.service';
+import * as builder from './builder/cardContainerBuilder.service';
 import { headerComponentName, footerComponentName, defaultContainerHeader, defaultContainerFooter } from './container/defaultComponents';
 
 export {

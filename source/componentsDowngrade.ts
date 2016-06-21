@@ -18,7 +18,7 @@ import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
 
-import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/cardContainerBuilder.service';
+import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
