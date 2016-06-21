@@ -42,9 +42,6 @@ export class CardComponent<T> extends FormComponent {
 	clickCard: { (): void } = () => null;
 
 	showContent: boolean = false;
-	dirty: boolean = false;
-	hasBody: boolean;
-	hasFooter: boolean;
 	refresh: Subject<void>;
 
 	cardContainer: CardContainerComponent<T>;
