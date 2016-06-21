@@ -56,7 +56,7 @@ export const defaultMaxColumnSorts: number = 2;
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
-	save: ISaveAction<T>;
+	save: ISaveAction<any>;
 
 	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
@@ -92,6 +92,7 @@ export class CardContainerComponent<T> implements OnInit {
 		this.object = object;
 		this.array = array;
 		this.injectedPager = pager;
+		this.save = <ISaveAction>() => Promise.resolve();
 	}
 
 	ngOnInit(): void {
