@@ -593,9 +593,9 @@ describe('CardContainerController', () => {
 	});
 
 	function buildController(): void {
-		if (cardContainer.source == null && builder._dataSource == null) {
+		if (cardContainer.dataSource == null && builder._dataSource == null) {
 			mockedDataSource = buildMockedDataSource();
-			cardContainer.source = <any>mockedDataSource;
+			cardContainer.dataSource = <any>mockedDataSource;
 			builder._dataSource = <any>mockedDataSource;
 		}
 

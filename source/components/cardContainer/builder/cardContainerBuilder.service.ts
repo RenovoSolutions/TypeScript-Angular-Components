@@ -4,12 +4,20 @@ import { filters, services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { CardContainerComponent } from '../cardContainer';
+import { CardContainerController } from '../cardContainer.ng1';
+import { SelectableCardContainerComponent } from '../selectableCardContainer';
 import { IColumn } from '../column';
 import * as dataSources from '../dataSources/index';
 import * as paging from '../paging/index';
 
 import { IDataSourceBuilder, DataSourceBuilder } from './dataSourceBuilder.service';
 import { IFilterBuilder, FilterBuilder } from './filterBuilder.service';
+
+export enum CardContainerType {
+	old,
+	standard,
+	selectable,
+}
 
 export interface ICardContainerBuilder {
 	dataSource: IDataSourceBuilder;
@@ -52,11 +60,13 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	dataSource: DataSourceBuilder;
 	filters: FilterBuilder;
 
+	maxColumnSorts: number;
+
+	// deprecated
 	containerData: any;
 	cardController: string;
 	cardControllerAs: string;
 	cardAs: string;
-	maxColumnSorts: number;
 
 	private injector: Injector;
 
@@ -128,13 +138,36 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 		cardContainer.searchFilter = this._searchFilter;
 		cardContainer.paging = this._paging;
 		cardContainer.columns = this._columns;
-		// cardContainer.containerData = this.containerData;
 		cardContainer.clickableCards = this._clickableCards;
 		cardContainer.maxColumnSorts = this.maxColumnSorts;
 		cardContainer.permanentFooters = this._permanentFooters;
-		// cardContainer.selectableCards = this._selectableCards;
-		// cardContainer.disableSelection = this._disableSelection;
-		// cardContainer.renderFilters = this._renderFilters;
 		cardContainer.saveWhenInvalid = this._saveWhenInvalid;
+
+		// cardContainer.renderFilters = this._renderFilters;
+
+		if (cardContainer.type === CardContainerType.selectable) {
+			const selectableCardContainer: SelectableCardContainerComponent<any> = <SelectableCardContainerComponent<any>>cardContainer;
+			selectableCardContainer.disableSelection = this._disableSelection;
+		}
+
+		if (cardContainer.type === CardContainerType.old) {
+			const cardContainerOld: CardContainerController = <any>cardContainer;
+			cardContainerOld.selectableCards = this._selectableCards;
+			cardContainerOld.disableSelection = this._disableSelection;
+			cardContainerOld.renderFilters = this._renderFilters;
+			cardContainerOld.saveWhenInvalid = this._saveWhenInvalid;
+
+			cardContainerOld.containerData = this.containerData;
+
+			if (cardContainerOld.cardController == null) {
+				cardContainerOld.cardController = this.cardController;
+			}
+			if (cardContainerOld.cardControllerAs == null) {
+				cardContainerOld.cardControllerAs = this.cardControllerAs;
+			}
+			if (cardContainerOld.cardAs == null) {
+				cardContainerOld.cardAs = this.cardAs;
+			}
+		}
 	}
 }

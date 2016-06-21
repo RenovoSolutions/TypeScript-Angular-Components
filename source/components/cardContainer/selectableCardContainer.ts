@@ -22,6 +22,8 @@ import { SelectableContainerFooterComponent } from './container/selectableContai
 import { BusyComponent } from '../busy/busy';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
+import { CardContainerType } from './builder/cardContainerBuilder.service';
+
 export const defaultSelectionTitle: string = 'Select card';
 
 export interface ISelectableItem {
@@ -72,6 +74,7 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
 			, pager: DataPager) {
 		super(object, array, pager);
+		this.type = CardContainerType.selectable;
 	}
 
 	ngOnInit(): void {

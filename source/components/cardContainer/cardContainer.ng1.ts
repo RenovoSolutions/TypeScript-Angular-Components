@@ -17,7 +17,7 @@ import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder } from './builder/cardContainerBuilder.service';
+import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
 export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
@@ -88,7 +88,6 @@ export class CardContainerController {
 	// bindings
 	builder: CardContainerBuilder;
 
-	source: IDataSource<any>;
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
@@ -115,6 +114,7 @@ export class CardContainerController {
 	private disablingSelections: boolean;
 
 	makeCard: angular.ITranscludeFunction;
+	type: CardContainerType = CardContainerType.old;
 
 	static $inject: string[] = ['$scope', '$attrs', '$transclude', dataPagerFactoryName, downgrade.objectServiceName, downgrade.arrayServiceName, parentChildServiceName];
 	constructor(private $scope: ICardContainerScope
@@ -129,7 +129,6 @@ export class CardContainerController {
 		}
 
 		this.makeCard = $transclude;
-		this.dataSource = this.source;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
 		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
 		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;

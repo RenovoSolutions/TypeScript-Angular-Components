@@ -26,7 +26,7 @@ import { ISaveAction } from '../form/form';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder } from './builder/cardContainerBuilder.service';
+import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
 export interface ICardContainerInputs {
 	builder: string;
@@ -76,6 +76,8 @@ export class CardContainerComponent<T> implements OnInit {
 	object: __object.IObjectUtility;
 	array: __array.IArrayUtility;
 	injectedPager: DataPager;
+
+	type: CardContainerType = CardContainerType.standard;
 
 	@ContentChild(ContainerHeaderTemplate) containerHeader: ContainerHeaderTemplate;
 	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
