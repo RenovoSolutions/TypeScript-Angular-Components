@@ -26,7 +26,7 @@ import * as select from './inputs/select/select.ng1';
 import * as signaturePad from './signaturePad/signaturePad';
 import * as simpleCardList from './simpleCardList/simpleCardList.module';
 import * as spinner from './inputs/spinner/spinner.ng1';
-import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
+import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark.ng1';
 import * as tabs from './tabs/tabs.module';
 import * as templateRenderer from './templateRenderer/templateRenderer.ng1';
 import * as textarea from './inputs/textarea/textarea.ng1';

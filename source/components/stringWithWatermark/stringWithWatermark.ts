@@ -1,26 +1,13 @@
-import * as angular from 'angular';
+import { Component, Input } from '@angular/core';
 
-export const moduleName: string = 'rl.ui.components.stringWithWatermark';
-export const componentName: string = 'rlStringWithWatermark';
+import { filters } from 'typescript-angular-utilities';
 
-export interface IStringWithWatermarkBindings {
-	string: string;
-	watermark: string;
+@Component({
+	selector: 'rlStringWithWatermark',
+	template: require('./stringWithWatermark.html'),
+	pipes: [filters.isEmpty.IsEmptyPipe],
+})
+export class StringWithWatermarkComponent {
+	@Input() string: string;
+	@Input() watermark: string;
 }
-
-const stringWithWatermark: angular.IComponentOptions = {
-	template: `
-		<rl-generic-container selector="controller.string | isEmpty">
-			<template when-selector="true"><span class="watermark">{{controller.watermark}}</span></template>
-			<template default><span>{{controller.string}}</span></template>
-		</rl-generic-container>
-	`,
-	controllerAs: 'controller',
-	bindings: {
-		string: '@',
-		watermark: '@',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, stringWithWatermark);

@@ -13,6 +13,12 @@
 </div>
 
 <div class="form-group">
+	<div><label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/stringWithWatermark/stringWithWatermark.md">String with watermark</a>:</label></div>
+	<rl-textbox ng-model="misc.text"></rl-textbox>
+	<rl-string-with-watermark-ng [string]="misc.text" watermark="(empty)"></rl-string-with-watermark-ng>
+</div>
+
+<div class="form-group">
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/filters/date/date.filter.md">Date filter</a>:</label>
 	<div>{{misc.date | rlDate}}</div>
 	<div>{{misc.date | rlDate:true}}</div>

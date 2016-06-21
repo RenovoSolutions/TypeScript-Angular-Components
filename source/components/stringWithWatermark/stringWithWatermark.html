@@ -1,0 +1,4 @@
+<span [ngSwitch]="string | isEmpty">
+	<span *ngSwitchDefault>{{string}}</span>
+	<span class="watermark" *ngSwitchCase="true">{{watermark}}</span>
+</span>
