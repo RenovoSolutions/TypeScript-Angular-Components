@@ -18,7 +18,11 @@ interface ICardContainerMock {
 	numberSelected: number;
 	numberSelectedChanges: Subject<number>;
 	dataSource: any;
-	selectionChanged: Subject<void>;
+	selectionChanged: IEventEmitterMock;
+}
+
+interface IEventEmitterMock {
+	emit: Sinon.SinonSpy;
 }
 
 describe('SelectionComponent', () => {
@@ -33,7 +37,7 @@ describe('SelectionComponent', () => {
 			dataSource: {
 				pager: null,
 			},
-			selectionChanged: new Subject<void>(),
+			selectionChanged: { emit: sinon.spy() },
 		};
 
 		selection = new SelectionComponent<IItemMock>(<any>cardContainer, new __boolean.BooleanUtility());
