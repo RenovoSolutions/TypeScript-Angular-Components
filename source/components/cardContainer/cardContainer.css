@@ -1,0 +1,9 @@
+.selection-control .selection-control-count
+, .selection-control .selection-control-buttons {
+	margin-bottom: 5px;
+}
+
+.select-group .select-column .fa-check {
+	margin-left: 6px;
+	cursor: pointer;
+}

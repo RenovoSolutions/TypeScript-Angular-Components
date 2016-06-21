@@ -1,140 +1,108 @@
-import * as angular from 'angular';
-import * as _ from 'lodash';
-import * as Rx from 'rxjs';
+import { Component, Input, Inject, ContentChild, ContentChildren, QueryList, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
+import __isEmpty = filters.isEmpty;
 
-import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
-import { DataPager } from './dataSources/dataPager/dataPager.service';
+import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
-import { dataPagerFactoryName } from '../../componentsDowngrade';
+
+import { CardComponent } from './card/card';
+import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
+import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
+import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
+import { ColumnHeaderTemplate } from './templates/columnHeader.template';
+import { ContainerHeaderComponent } from './container/containerHeader.component';
+import { ContainerFooterComponent } from './container/containerFooter.component';
+import { BusyComponent } from '../busy/busy';
+import { ISaveAction } from '../form/form';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder } from './cardContainerBuilder.service';
+import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
-export let componentName: string = 'rlCardContainer';
-export let controllerName: string = 'CardContainerController';
-
-export let defaultMaxColumnSorts: number = 2;
-export let defaultSelectionTitle: string = 'Select card';
-
-export interface ICardContainerScope extends angular.IScope {
-	containerData: any;
+export interface ICardContainerInputs {
+	builder: string;
+	save: string;
 }
 
-export interface ICardContainerBindings {
-	/**
-	 * A builder for the card container
-	 */
-	builder: ICardContainerBuilder;
+export const cardContainerInputs: ICardContainerInputs = {
+	builder: 'builder',
+	save: 'save',
+};
 
-	/**
-	 * Controller shared by all components on a card
-	 * this controller cannot override any of the following letiable names:
-	 *      columns
-	 *      item
-	 *      contentTemplate
-	 *      footerTemplate
-	 *      clickable
-	 *      cardController
-	 *      cardControllerAs
-	 *      cardAs
-	 *      showContent
-	 *      toggleContent
-	 *      collapse
-	 *      selected
-	 *      setSelected
-	 */
-	cardController: string;
+export const defaultMaxColumnSorts: number = 2;
 
-	/**
-	 * Controller alias specified using controllerAs syntax
-	 */
-	cardControllerAs: string;
-
-	/**
-	 * Name used to access the card data
-	 */
-	cardAs: string;
-
-	/**
-	 * Event that first when a card is selected or deselected
-	 */
-	selectionChangedEvent: { (): void };
-}
-
-export interface ICardBehavior {
-	close(): boolean;
-}
-
-export interface ICardContainerAttrs extends angular.IAttributes {
-	disableSelection: string;
-}
-
-export interface ISelectionViewData {
-	selected: boolean;
-	selectionTitle?: string;
-	disabledSelection?: boolean;
-}
-
-export class CardContainerController {
-	// bindings
+@Component({
+	selector: 'rlCardContainer',
+	template: require('./cardContainer.html'),
+	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
+	providers: [DataPager],
+	directives: [
+		ContainerHeaderComponent,
+		ContainerFooterComponent,
+		ColumnHeaderComponent,
+		CardComponent,
+		BusyComponent,
+	],
+	pipes: [__isEmpty.IsEmptyPipe],
+})
+export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
+	save: ISaveAction<any>;
 
-	source: IDataSource<any>;
+	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;
 	columns: IColumn<any>[];
-	containerData: any;
-	cardController: string;
-	cardControllerAs: string;
-	cardAs: string;
 	clickableCards: boolean;
 	maxColumnSorts: number;
 	permanentFooters: boolean;
-	selectableCards: boolean;
-	disableSelection: { (item: any): string };
-	renderFilters: boolean;
 	saveWhenInvalid: boolean;
-	selectionChangedEvent: { (): void };
-
-	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
+	cards: CardComponent<T>[] = [];
+
 	numberSelected: number = 0;
-	numberSelectedChanges: Rx.Subject<number>;
-	selectionColumn: IColumn<any>;
-	private maxColSorts: number;
-	private disablingSelections: boolean;
+	numberSelectedChanges: Subject<number> = new Subject<number>();
 
-	makeCard: angular.ITranscludeFunction;
+	object: __object.IObjectUtility;
+	array: __array.IArrayUtility;
+	injectedPager: DataPager;
 
-	static $inject: string[] = ['$scope', '$attrs', '$transclude', dataPagerFactoryName, downgrade.objectServiceName, downgrade.arrayServiceName, parentChildServiceName];
-	constructor(private $scope: ICardContainerScope
-			, $attrs: ICardContainerAttrs
-			, $transclude: angular.ITranscludeFunction
-			, private dataPagerFactory: any
-			, private object: __object.IObjectUtility
-			, private array: __array.IArrayUtility
-			, private parentChild: IParentChildBehaviorService) {
+	type: CardContainerType = CardContainerType.standard;
+
+	@ContentChild(ContainerHeaderTemplate) containerHeader: ContainerHeaderTemplate;
+	@ContentChild(ContainerFooterTemplate) containerFooter: ContainerFooterTemplate;
+	@ContentChild(CardContentTemplate) cardContent: CardContentTemplate;
+	@ContentChild(CardFooterTemplate) cardFooter: CardFooterTemplate;
+	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
+	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
+
+	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
+			, @Inject(__array.arrayToken) array: __array.IArrayUtility
+			, pager: DataPager) {
+		this.object = object;
+		this.array = array;
+		this.injectedPager = pager;
+		this.save = <ISaveAction>() => Promise.resolve();
+	}
+
+	ngOnInit(): void {
 		if (this.builder != null) {
 			this.builder.setCardContainerProperties(this);
 		}
 
-		this.makeCard = $transclude;
-		this.dataSource = this.source;
-		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
-		this.maxColSorts = this.maxColumnSorts != null ? this.maxColumnSorts : defaultMaxColumnSorts;
-		this.disablingSelections = object.isNullOrWhitespace($attrs.disableSelection) === false;
+		this.permanentFooters = isUndefined(this.permanentFooters) ? false : this.permanentFooters;
+		this.maxColumnSorts = this.maxColumnSorts || defaultMaxColumnSorts;
 		this.sortDirection = SortDirection;
-		this.numberSelectedChanges = new Rx.Subject<number>();
 
 		this.syncFilters();
 
@@ -142,40 +110,17 @@ export class CardContainerController {
 
 		this.buildColumnSizes();
 
-		if (this.selectableCards) {
-			//*use card container event service?
-			$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
-
-			this.dataSource.changed.subscribe(this.addViewData);
-			this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
-
-			this.addViewData();
-
-			this.selectionColumn = {
-				label: null,
-				size: null,
-				getValue(item: any): boolean {
-					return item.viewData.selected;
-				},
-				flipSort: true,
-			};
-		}
-
 		if (this.dataSource.sorts == null) {
 			this.dataSource.sorts = [];
 		}
-
-		$scope.containerData = this.containerData;
 	}
 
-	sortSelected(): void {
-		this.sort(this.selectionColumn);
+	registerCard(card: CardComponent<T>): void {
+		this.cards.push(card);
 	}
 
 	openCard(): boolean {
-		let behaviors: ICardBehavior[] = this.parentChild.getAllChildBehaviors<ICardBehavior>(this.dataSource.dataSet);
-
-		return _.every(_.map(behaviors, (behavior: ICardBehavior): boolean => { return behavior.close(); }));
+		return every(map(this.cards, card => card.close()));
 	}
 
 	sort(column: IColumn<any>): void {
@@ -230,15 +175,10 @@ export class CardContainerController {
 		} else {
 			// If not using column secondary sorts, limit the maximum number
 			//  of sorts applied to the maximum number of sorts
-			this.dataSource.sorts = _.take(sortList, this.maxColSorts);
+			this.dataSource.sorts = take(sortList, this.maxColumnSorts);
 		}
 
 		this.dataSource.onSortChange();
-	}
-
-	selectionChanged(): void {
-		this.updateSelected();
-		this.selectionChangedEvent();
 	}
 
 	private syncFilters(): void {
@@ -256,7 +196,7 @@ export class CardContainerController {
 			if (this.paging === false) {
 				this.dataSource.pager = null;
 			} else {
-				this.builder._pager = this.dataPagerFactory.getInstance();
+				this.builder._pager = this.injectedPager;
 				this.dataSource.pager = this.builder._pager;
 			}
 		} else if (this.dataSource.pager) {
@@ -268,9 +208,9 @@ export class CardContainerController {
 	}
 
 	private buildColumnSizes(): void {
-		_.each(this.columns, (column: IColumn<any>): void => {
+		each(this.columns, (column: IColumn<any>): void => {
 			let sizes: IBreakpointSize | number = column.size;
-			if (_.isObject(sizes)) {
+			if (isObject(sizes)) {
 				sizes[xs] = this.object.valueOrDefault(sizes[xs], 0);
 				sizes[sm] = this.object.valueOrDefault(sizes[sm], sizes[xs]);
 				sizes[md] = this.object.valueOrDefault(sizes[md], sizes[sm]);
@@ -286,61 +226,15 @@ export class CardContainerController {
 		});
 	}
 
-	private addViewData: {(): void} = (): void => {
-		_.each(this.dataSource.rawDataSet, (item: IViewDataEntity<ISelectionViewData>): void => {
-			if (_.isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
-		});
-
-		this.updateDisabledSelections();
-	}
-
 	private lookupColumn(label: string): IColumn<any> {
-		return _.find(this.columns, (column: IColumn<any>): boolean => {
+		return find(this.columns, (column: IColumn<any>): boolean => {
 			return column.label === label;
 		});
 	}
 
-	private clearFilteredSelections: {(): void} = (): void => {
-		let nonVisibleItems: any[] = _.difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
-
-		_.each(nonVisibleItems, (item: IViewDataEntity<ISelectionViewData>): void => {
-			if (_.isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
-
-			item.viewData.selected = false;
-			item.viewData.selectionTitle = defaultSelectionTitle;
-		});
-
-		this.updateSelected();
-	}
-
-	private updateSelected: {(): void} = (): void => {
-		this.numberSelected = _.filter(this.dataSource.filteredDataSet, (item: IViewDataEntity<ISelectionViewData>): boolean => {
-			return item.viewData != null && item.viewData.selected;
-		}).length;
-		this.numberSelectedChanges.next(this.numberSelected);
-	}
-
-	private updateDisabledSelections: {(): void} = (): void => {
-		if (this.disablingSelections) {
-			_.each(this.dataSource.rawDataSet, (item: IViewDataEntity<ISelectionViewData>): void => {
-				let disabledReason: string = this.disableSelection({ item: item });
-				item.viewData.disabledSelection = (disabledReason != null);
-				item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
-			});
-		}
-	}
-
 	private buildSecondarySorts(direction: SortDirection, secondarySorts: ISecondarySorts): ISort[] {
 		let sortList: IPartialSort[] = secondarySorts[SortDirection.getFullName(direction)];
-		return _.map(sortList, (sort: IPartialSort): ISort => {
+		return map(sortList, (sort: IPartialSort): ISort => {
 			return {
 				direction: sort.direction,
 				column: this.lookupColumn(sort.column),
@@ -349,7 +243,7 @@ export class CardContainerController {
 	}
 
 	private updateVisualColumnSorting(): void {
-		_.each(this.dataSource.sorts, (sort: ISort, index: number): void => {
+		each(this.dataSource.sorts, (sort: ISort, index: number): void => {
 			// Only first sort should have visible direction
 			if (index === 0) {
 				this.updateVisualSortIndicator(sort);
@@ -366,23 +260,8 @@ export class CardContainerController {
 	private clearVisualSortIndicator(sort: ISort): void {
 		sort.column.sortDirection = null;
 	}
-}
 
-export let cardContainer: angular.IComponentOptions = {
-	transclude: <any>{
-		'containerHeaderSlot': '?rlContainerHeader',
-		'containerFooterSlot': '?rlContainerFooter',
-		'contentSlot': '?rlCardContent',
-		'footerSlot': '?rlCardFooter',
-	},
-	template: require('./cardContainer.html'),
-	controller: controllerName,
-	controllerAs: 'cardContainer',
-	bindings: {
-		builder: '=?',
-		cardController: '@',
-		cardControllerAs: '@',
-		cardAs: '@',
-		selectionChangedEvent: '&selectionChanged',
+	private getColumnTemplate(columnName: string): ColumnHeaderTemplate {
+		return this.columnHeaders.filter(column => column.name === columnName)[0];
 	}
 }

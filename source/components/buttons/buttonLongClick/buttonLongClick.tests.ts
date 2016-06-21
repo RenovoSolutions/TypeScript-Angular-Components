@@ -3,6 +3,7 @@ import __test = services.test;
 import fakeAsync = __test.fakeAsync;
 import tick = __test.tick;
 import flushMicrotasks = __test.flushMicrotasks;
+import __timeout = services.timeout;
 
 import { ButtonLongClickComponent } from './buttonLongClick';
 
@@ -25,7 +26,7 @@ describe('ButtonLongClickComponent', () => {
 			warning: sinon.spy(),
 		};
 
-		button = new ButtonLongClickComponent(<any>notification);
+		button = new ButtonLongClickComponent(<any>notification, new __timeout.TimeoutService());
 
 		busy = {
 			trigger: sinon.spy(),
@@ -61,6 +62,7 @@ describe('ButtonLongClickComponent', () => {
 
 		tick(1000);
 
+		button.timer.catch(() => null);
 		button.stopAction();
 
 		sinon.assert.calledOnce(notification.warning);

@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { mapValues } from 'lodash';
+import { mapValues, map, range } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -7,32 +7,36 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
+import { builder, CARD_CONTAINER_PROVIDERS } from '../../source/components/cardContainer/index';
 import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
-import { CheckboxComponent } from '../../source/components/inputs/checkbox/checkbox';
-import { TextboxComponent } from '../../source/components/inputs/textbox/textbox';
-import { DateFilter } from '../../source/components/cardContainer/filters/dateFilter/dateFilter.service';
-import { DateFilterComponent } from '../../source/components/cardContainer/filters/dateFilter/dateFilter.component';
-import { FilterGroup } from '../../source/components/cardContainer/filters/filterGroup/filterGroup.service';
-import { ModeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/modeFilterGroup/modeFilterGroup.service';
-import { RangeFilterGroup } from '../../source/components/cardContainer/filters/filterGroup/rangeFilterGroup/rangeFilterGroup.service';
-import { FilterGroupComponent } from '../../source/components/cardContainer/filters/filterGroup/filterGroup.component';
-import { SelectFilter } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.service';
-import { SelectFilterComponent } from '../../source/components/cardContainer/filters/selectFilter/selectFilter.component';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
+import { CARD_CONTAINER_DIRECTIVES } from '../../source/components/cardContainer/index';
+import {
+	DateFilter,
+	FilterGroup,
+	ModeFilterGroup,
+	RangeFilterGroup,
+	SelectFilter,
+} from '../../source/components/cardContainer/filters/index';
+
+interface ICardItem {
+	name: string;
+	value: number;
+}
 
 @Component({
 	selector: 'tsCardsBootstrapper',
 	template: require('./cardsNg2.html'),
 	directives: [
 		SIMPLE_CARD_DIRECTIVES,
-		CheckboxComponent,
-		TextboxComponent,
-		DateFilterComponent,
-		FilterGroupComponent,
-		SelectFilterComponent,
+		INPUT_DIRECTIVES,
+		CARD_CONTAINER_DIRECTIVES,
 	],
+	providers: [CARD_CONTAINER_PROVIDERS],
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
+	builder: builder.CardContainerBuilder;
 	options: number[];
 	dateFilter: DateFilter;
 	filterGroup: FilterGroup;
@@ -40,10 +44,36 @@ export class CardsBootstrapper {
 	rangeFilterGroup: RangeFilterGroup;
 	selectFilter: SelectFilter<any, any>;
 
-	constructor(@Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService) {
+	constructor( @Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService
+			, cardContainerBuilder: builder.CardContainerBuilder) {
 		timezone.setCurrentTimezone('-05:00');
 
+		const items: ICardItem[] = map(range(1, 101), (num: number): ICardItem => {
+			const value = Math.floor(Math.random() * 2) + 1;
+			return {
+				name: 'Item' + num,
+				value: value,
+			};
+		});
+
 		this.options = [1, 2, 3, 4, 5];
+
+		this.builder = cardContainerBuilder;
+		this.builder.dataSource.buildSimpleDataSource(items);
+		this.builder.usePaging();
+		this.builder.addColumn({
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		this.builder.addColumn({
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
 
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',

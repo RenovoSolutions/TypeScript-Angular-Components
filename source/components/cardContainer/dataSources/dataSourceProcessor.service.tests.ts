@@ -5,7 +5,7 @@ import __object = services.object;
 import __transform = services.transform;
 
 import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
-import { DataPager } from './dataPager/dataPager.service';
+import { DataPager } from '../paging/index';
 import { ISort, SortDirection, Sorter, MergeSort } from '../sorts/index';
 
 interface ITestObject {

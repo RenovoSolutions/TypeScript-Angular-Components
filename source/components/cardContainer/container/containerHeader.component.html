@@ -1,0 +1,11 @@
+<div class="row" *ngIf="!header">
+	<div class="col-xs-12 col-sm-9">
+		<rlCardSearch></rlCardSearch>
+	</div>
+	<div class="hidden-xs col-sm-3">
+		<rlPageSize></rlPageSize>
+	</div>
+</div>
+<div *ngIf="header">
+	<template [ngTemplateOutlet]="header.template"></template>
+</div>

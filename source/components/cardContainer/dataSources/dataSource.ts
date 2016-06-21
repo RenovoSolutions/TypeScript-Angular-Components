@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { filters } from 'typescript-angular-utilities';
 
 import { ISort } from '../sorts/sort';
-import { IDataPager } from './dataPager/dataPager.service';
+import { IDataPager } from '../paging/index';
 
 export interface IDataSource<TDataType> {
 	dataSet: TDataType[];

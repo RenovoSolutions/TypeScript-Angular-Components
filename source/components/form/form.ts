@@ -8,6 +8,14 @@ import __notification = services.notification;
 import { IWaitValue } from '../busy/busy';
 import { FormService } from '../../services/form/form.service';
 
+export interface IBaseFormInputs {
+	save: string;
+}
+
+export const baseInputs: IBaseFormInputs = {
+	save: 'save',
+};
+
 export interface ISaveAction<T> {
 	(data: T): IWaitValue<T>;
 }
@@ -36,10 +44,14 @@ export class FormComponent {
 
 	submit(): IWaitValue<any> {
 		if (this.formService.isFormValid(this.form)) {
-			return this.save(this.form.value);
+			return this.saveForm();
 		} else {
 			this.notification.warning(this.formService.getAggregateError(this.form));
 			return false;
 		}
+	}
+
+	saveForm(): IWaitValue<any> {
+		return this.save(this.form.value);
 	}
 }

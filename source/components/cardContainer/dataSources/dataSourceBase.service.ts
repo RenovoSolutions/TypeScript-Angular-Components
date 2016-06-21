@@ -7,7 +7,7 @@ import __object = services.object;
 import { IDataSource } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { ISort } from '../sorts/sort';
-import { IDataPager } from './dataPager/dataPager.service';
+import { IDataPager } from '../paging/index';
 
 export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	dataSet: TDataType[];

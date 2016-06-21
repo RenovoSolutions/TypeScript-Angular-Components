@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 import __logger = services.logger;
 
-import { INPUT_DIRECTIVES } from '../../../inputs/index';
+import { DateTimeComponent, SpinnerComponent } from '../../../inputs/index';
 import { IDateFilter } from './dateFilter.service';
 import { IDataSource } from '../../dataSources/dataSource';
 
@@ -14,7 +14,7 @@ const type: string = 'days';
 @Component({
 	selector: 'rlDateFilter',
 	template: require('./dateFilter.html'),
-	directives: [INPUT_DIRECTIVES],
+	directives: [DateTimeComponent, SpinnerComponent],
 })
 export class DateFilterComponent implements OnInit {
 	@Input() filter: IDateFilter;

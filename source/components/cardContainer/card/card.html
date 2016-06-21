@@ -1,63 +1,30 @@
-<rl-generic-container selector="__card.selectable">
-	<template when-selector="false" default>
-		<div class="card" ng-class="{ 'selected': __card.item.viewData.selected }">
-			<div class="header" ng-click="__card.toggleContent()" ng-class="{ 'active': __card.hasBody || !__card.permanentFooter }">
-				<div class="row">
-					<div ng-repeat="column in __card.columns">
-						<rl-card-header-column column="column" item="__card.item" alias="__card.cardAs"></rl-card-header-column>
-					</div>
-				</div>
-			</div>
-
-			<div ng-show="__card.showContent">
-				<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" save-when-invalid="__card.saveWhenInvalid">
-					<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
-						<div class="content-template"></div>
-						<div class="clearfix"></div>
-					</div>
-				</ng-form>
-			</div>
-			<div ng-show="__card.hasFooter && (__card.showContent || __card.permanentFooter)">
-				<div class="footer">
-					<div class="footer-template"></div>
-					<div class="clearfix"></div>
-				</div>
+<div class="card"
+	 [class.selected]="item?.viewData?.selected">
+	<div class="header"
+		 (click)="toggleContent()"
+		 [class.active]="cardContainer.cardContent || !permanentFooter">
+		<div class="row">
+			<div *ngFor="let column of cardContainer.columns">
+				<rlCardHeaderColumn [column]="column"
+									[item]="item"
+									[columnTemplate]="getColumnTemplate(column.name)"></rlCardHeaderColumn>
 			</div>
 		</div>
-	</template>
-	<template when-selector="true">
-		<div class="select-group">
-			<div class="select-column">
-				<input type="checkbox" class="stand-alone-checkbox" ng-model="__card.item.viewData.selected" ng-change="__card.selectionChanged()"
-					   ng-disabled="__card.item.viewData.disabledSelection" title="{{__card.item.viewData.selectionTitle}}" />
-			</div>
-			<div class="select-content">
+	</div>
 
-				<div class="card selectable" ng-class="{ 'selected': __card.item.viewData.selected }">
-					<div class="header active" ng-click="__card.toggleContent()">
-						<div class="row">
-							<div ng-repeat="column in __card.columns">
-								<rl-card-header-column column="column" item="__card.item"></rl-card-header-column>
-							</div>
-						</div>
-					</div>
-
-					<div ng-show="__card.showContent">
-						<ng-form rl-autosave="__card.autosaveLink" save="__card.saveCard()" save-when-invalid="__card.saveWhenInvalid">
-							<div class="body" ng-class="{ 'active': __card.clickable }" ng-click="__card.clickCard()">
-								<div class="content-template"></div>
-								<div class="clearfix"></div>
-							</div>
-						</ng-form>
-					</div>
-					<div ng-show="__card.hasFooter && (__card.showContent || __card.permanentFooter)">
-						<div class="footer">
-							<div class="footer-template"></div>
-							<div class="clearfix"></div>
-						</div>
-					</div>
-				</div>
-			</div>
+	<div [hidden]="!showContent">
+		<div class="body"
+			 *ngIf="cardContainer.cardContent"
+			 [class.active]="cardContainer.clickableCards"
+			 (click)="clickCard()">
+			<template [ngTemplateOutlet]="cardContainer.cardContent.template" [ngOutletContext]="{ $implicit: item }"></template>
+			<div class="clearfix"></div>
 		</div>
-	</template>
-</rl-generic-container>
+	</div>
+	<div [hidden]="!cardContainer.cardFooter || !(showContent || permanentFooter)">
+		<div class="footer" *ngIf="cardContainer.cardFooter">
+			<template [ngTemplateOutlet]="cardContainer.cardFooter.template" [ngOutletContext]="{ $implicit: item }"></template>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>

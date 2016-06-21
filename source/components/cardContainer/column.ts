@@ -14,6 +14,7 @@ export interface ISecondarySorts {
 }
 
 export interface IColumn<TItemType> {
+	name?: string;
 	label: string;
 	description?: string;
 	displayColumnHeader?: boolean;

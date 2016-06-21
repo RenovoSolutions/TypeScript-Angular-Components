@@ -1,0 +1,30 @@
+<nav *ngIf="pager">
+	<ul class="pagination">
+		<li title="Go to first page"
+			(click)="first()"
+			[class.disabled]="!canGoBack">
+			<a><i class="fa fa-angle-double-left"></i></a>
+		</li>
+		<li title="Go to previous page"
+			(click)="previous()"
+			[class.disabled]="!canGoBack">
+			<a><i class="fa fa-angle-left"></i></a>
+		</li>
+		<li *ngFor="let page of pages"
+			title="Go to page {{page}}"
+			(click)="goto(page)"
+			[class.active]="pager.pageNumber == page">
+			<a>{{page}}</a>
+		</li>
+		<li title="Go to next page"
+			(click)="next()"
+			[class.disabled]="!canGoForward">
+			<a><i class="fa fa-angle-right"></i></a>
+		</li>
+		<li title="Go to last page"
+			(click)="last()"
+			[class.disabled]="!canGoForward">
+			<a><i class="fa fa-angle-double-right"></i></a>
+		</li>
+	</ul>
+</nav>

@@ -1,0 +1,13 @@
+<div class="selection-control">
+	<div class="selection-control-count">
+		<span><strong>{{selectedItems}}</strong> items selected</span>
+	</div>
+	<div class="selection-control-buttons" *ngIf="pagingEnabled">
+		<rlButton (trigger)="selectPage()">Select page</rlButton>
+		<rlButton (trigger)="clearPage()">Clear page</rlButton>
+	</div>
+	<div>
+		<rlButton (trigger)="selectAll()">Select all</rlButton>
+		<rlButton (trigger)="clearAll()">Clear all</rlButton>
+	</div>
+</div>

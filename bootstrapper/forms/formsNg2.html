@@ -14,7 +14,7 @@
 	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
 	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
 	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
-		<template let-option>{{option.value}}</template>
+		<template let-option>#{{option.value}}</template>
 	</rlSelect>
 	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>

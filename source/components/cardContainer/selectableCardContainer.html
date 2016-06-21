@@ -1,0 +1,50 @@
+<div class="row">
+	<div class="col-xs-12">
+		<div class="card-container">
+			<div>
+				<div class="card-container-header">
+					<rlContainerHeader [header]="containerHeader"></rlContainerHeader>
+				</div>
+
+				<div class="card-columns-header">
+					<div class="select-group">
+						<div class="select-column">
+							<i class="fa fa-check" (click)="sortSelected()"></i>
+							<i [hidden]="selectionColumn.sortDirection !== sortDirection.ascending" class="fa fa-sort-asc"></i>
+							<i [hidden]="selectionColumn.sortDirection !== sortDirection.descending" class="fa fa-sort-desc"></i>
+						</div>
+						<div class="select-content">
+							<div *ngFor="let column of columns">
+							<rlColumnHeader [column]="column"
+											[headerTemplate]="getColumnTemplate(column.name)"
+											[sorting]="column.sortDirection"
+											(sort)="sort(column)"></rlColumnHeader>
+						</div>
+						<div class="clearfix"></div>
+						</div>
+					</div>
+				</div>
+				<div *ngIf="dataSource.dataSet | isEmpty:false">
+					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
+						<rlSelectableCard [item]="card"
+										  [save]="save"></rlSelectableCard>
+					</div>
+				</div>
+				<div *ngIf="dataSource.needsRefinedSearch">
+					Please refine your search results
+				</div>
+				<div *ngIf="dataSource.isEmpty">
+					There are no items to show
+				</div>
+
+				<div>
+					<rlBusy [loading]="dataSource.loadingDataSet" size="2x"></rlBusy>
+				</div>
+
+				<div class="card-container-footer">
+					<rlSelectableContainerFooter [footer]="containerFooter"></rlSelectableContainerFooter>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

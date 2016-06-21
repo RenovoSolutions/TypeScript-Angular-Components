@@ -4,7 +4,7 @@ import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
 import { ISort } from '../sorts/sort';
-import { IDataPager } from './dataPager/dataPager.service';
+import { IDataPager } from '../paging/index';
 import { ISorter } from '../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {

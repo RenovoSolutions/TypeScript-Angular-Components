@@ -5,26 +5,48 @@
 	<div>List always open:</div>
 	<rlSimpleCardList [alwaysOpen]="alwaysOpen">
 		<rlSimpleCard *ngFor="let num of [1, 2, 3, 4, 5]">
-			<div rlCardHeader>Simple card {{num}}</div>
-			<div rlCardContent>Content {{num}}</div>
-			<div rlCardFooter>Footer {{num}}</div>
+			<div *rlCardHeader>Simple card {{num}}</div>
+			<div *rlCardContent>Content {{num}}</div>
+			<div *rlCardFooter>Footer {{num}}</div>
 		</rlSimpleCard>
 	</rlSimpleCardList>
 	<div>Cards always open:</div>
 	<rlSimpleCardList>
 		<rlSimpleCard [alwaysOpen]="alwaysOpen" *ngFor="let num of [1, 2, 3, 4, 5]">
-			<div rlCardHeader>Simple card {{num}}</div>
-			<div rlCardContent>Content {{num}}</div>
-			<div rlCardFooter>Footer {{num}}</div>
+			<div *rlCardHeader>Simple card {{num}}</div>
+			<div *rlCardContent>Content {{num}}</div>
+			<div *rlCardFooter>Footer {{num}}</div>
 		</rlSimpleCard>
 	</rlSimpleCardList>
 	<div>Card form:</div>
 	<rlSimpleCard [save]="submitAsync">
-		<div rlCardHeader>Header</div>
-		<div rlCardContent>
+		<div *rlCardHeader>Header</div>
+		<div *rlCardContent>
 			<rlTextbox name="field" label="Field"></rlTextbox>
 		</div>
 	</rlSimpleCard>
+</div>
+<div>
+	<label>Card container:</label>
+	<rlCardContainer [builder]="builder">
+		<div *rlColumnHeader="let value; name 'value'">Number</div>
+		<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
+		<div *rlCardContent="let myItem">
+			Name: {{myItem.name}}
+			Value: {{myItem.value}}
+		</div>
+	</rlCardContainer>
+</div>
+<div>
+	<label>Selectable card container:</label>
+	<rlSelectableCardContainer [builder]="builder">
+		<div *rlColumnHeader="let value; name 'value'">Number</div>
+		<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
+		<div *rlCardContent="let myItem">
+			Name: {{myItem.name}}
+			Value: {{myItem.value}}
+		</div>
+	</rlSelectableCardContainer>
 </div>
 <div>
 	<rlDateFilter [filter]="dateFilter"
