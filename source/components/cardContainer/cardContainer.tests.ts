@@ -106,12 +106,13 @@ describe('CardContainerComponent', () => {
 			card = <any>{
 				close: sinon.spy((): boolean => { return true; }),
 			};
+			cardContainer.cardChildren = <any>{
+				toArray: () => [card],
+			};
 		});
 
 		it('should signal cards to close before a card opens', (): void => {
 			cardContainer.ngOnInit();
-
-			cardContainer.registerCard(card);
 
 			let okayToOpen: boolean = false;
 
