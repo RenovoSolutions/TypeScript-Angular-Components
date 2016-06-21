@@ -48,7 +48,8 @@ describe('CardContainerComponent', () => {
 	beforeEach(() => {
 		cardContainer = new CardContainerComponent(__object.objectUtility, __array.arrayUtility, new DataPager());
 
-		builder = new __builder.CardContainerBuilder(<any>{}, <any>{}, <any>{});
+		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
+		cardContainer.builder = builder;
 
 		mockedDataSource = buildMockedDataSource();
 		cardContainer.dataSource = <any>mockedDataSource;
