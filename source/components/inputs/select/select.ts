@@ -28,6 +28,9 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
 
+	// used for select filter only
+	@Input() externalTemplate: TemplateRef<any>;
+
 	@ViewChild(BusyComponent) busy: BusyComponent;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
@@ -48,6 +51,7 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
+		this.template = this.template || this.externalTemplate;
 		this.wrappedOptions = isArray(this.options)
 							? Observable.of(<T[]>this.options)
 							: <Observable<T[]>>this.options;

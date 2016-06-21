@@ -18,6 +18,8 @@ import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
 
+import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
+
 import { DatePipe } from './filters/date/date.filter';
 
 import { FormService } from './services/form/form.service';
@@ -26,11 +28,18 @@ import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from
 
 export const moduleName: string = 'rl.components.downgrade';
 
+export const columnSearchFilterName: string = 'columnSearchFilter';
+
 const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
+	const columnSearchFactoryProvider: Provider = new Provider(ColumnSearchFilter, {
+		useValue: new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
+	});
+
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
 	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
@@ -47,4 +56,6 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlCommaListNg', <any>upgradeAdapter.downgradeNg2Component(CommaListComponent));
 	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
+
+	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 }

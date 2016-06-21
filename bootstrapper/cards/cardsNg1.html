@@ -33,3 +33,19 @@
 		</rl-card-content>
 	</rl-card-container>
 </div>
+<div>
+	<label>Card container with date filter:</label>
+	<rl-date-filter filter="cards.dateFilter"
+					source="cards.dataSource"
+					label="Value"
+					include-date-range="true"
+					selected-date-1="cards.date1"
+					selected-date-2="cards.date2"
+					clear-button="true"></rl-date-filter>
+	<rl-card-container builder="cards.builderWithDateFilter" card-as="myItem">
+		<rl-card-content>
+			Name: {{myItem.name}}
+			Value: {{myItem.value}}
+		</rl-card-content>
+	</rl-card-container>
+</div>

@@ -26,3 +26,23 @@
 		</div>
 	</rlSimpleCard>
 </div>
+<div>
+	<rlDateFilter [filter]="dateFilter"
+				  label="Date filter"
+				  showClear="true"
+				  useDateRange="true"
+				  useTime="true"></rlDateFilter>
+</div>
+<div>
+	<rlFilterGroup [filterGroup]="filterGroup"></rlFilterGroup>
+	<rlFilterGroup [filterGroup]="modeFilterGroup"></rlFilterGroup>
+	<rlFilterGroup [filterGroup]="rangeFilterGroup"></rlFilterGroup>
+</div>
+<div>
+	<rlSelectFilter [filter]="selectFilter"
+					label="Select filter"
+					[options]="options"
+					nullOption="All">
+		<template let-option>#{{option}}</template>
+	</rlSelectFilter>
+</div>

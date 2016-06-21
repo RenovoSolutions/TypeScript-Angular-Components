@@ -1,4 +1,9 @@
 <div class="filter-group">
-	<rl-select ng-model="filter.selectedValue" options="filter.options" label="{{filter.label}}"
-			   transform="filter.transform" get-options="filter.getOptions()" null-option="{{filter.nullOption}}" item-as="{{filter.itemAs}}" template="filter.template"></rl-select>
+	<rlSelect [value]="filter.selectedValue"
+			  (change)="setValue($event)"
+			  [label]="label"
+			  [options]="options"
+			  [transform]="transform"
+			  [nullOption]="nullOption"
+			  [externalTemplate]="template"></rlSelect>
 </div>

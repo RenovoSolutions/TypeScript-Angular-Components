@@ -1,10 +1,7 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
-
-export var factoryName: string = 'filterGroup';
 
 export interface IFilterGroupSettings {
 	label: string;
@@ -40,10 +37,17 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 	type: string;
 	options: IFilterOption[];
 	template: string = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
+	settings: IFilterGroupSettings;
+
 	private _activeOption: IFilterOption;
 
-	constructor(private settings: IFilterGroupSettings, private object: __object.IObjectUtility) {
+	object: __object.IObjectUtility;
+
+	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
 		super();
+		this.object = object;
+
+		this.settings = settings;
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
 		this.initOptions();
@@ -115,18 +119,4 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 			option.count = _.filter(filteredDataSet, option.filter.bind(option)).length;
 		});
 	}
-}
-
-export interface IFilterGroupFactory {
-	getInstance(settings: IFilterGroupSettings): IFilterGroup;
-}
-
-filterGroupFactory.$inject = [downgrade.objectServiceName];
-export function filterGroupFactory(object: __object.IObjectUtility): IFilterGroupFactory {
-	'use strict';
-	return {
-		getInstance(settings: IFilterGroupSettings): IFilterGroup {
-			return new FilterGroup(settings, object);
-		},
-	};
 }

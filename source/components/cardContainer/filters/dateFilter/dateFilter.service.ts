@@ -3,99 +3,128 @@ import * as moment from 'moment';
 
 import {filters, services, downgrade} from 'typescript-angular-utilities';
 import __date = services.date;
-import __transform = services.transform.transform;
+import __transform = services.transform;
 
-export let factoryName: string = 'rlDateFilterFactory';
+export interface IDateFilterValue {
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
+}
 
 export interface IDateFilterSettings{
 	type: string;
 	valueSelector: { (item: any): moment.Moment } | string;
 
 	// component settings
-	clearButton?: boolean;
-	includeDateRange?: boolean;
-	includeTime?: boolean;
+	showClear?: boolean;
+	useDateRange?: boolean;
+	useTime?: boolean;
 	label?: string;
 }
 
-export interface IDateFilter extends filters.IFilter {
-	selectedDate1: moment.Moment;
-	selectedDate2: moment.Moment;
-	includeTime: boolean;
+export interface IDateFilter extends filters.ISerializableFilter<IDateFilterValue> {
+	dateFrom: moment.Moment;
+	dateTo: moment.Moment;
+	useTime: boolean;
 	type: string;
 	dateRange: boolean;
 
 	filter(item: any): boolean;
 }
 
-class DateFilter implements IDateFilter {
-	selectedDate1: moment.Moment;
-	selectedDate2: moment.Moment;
-	includeTime: boolean;
+export class DateFilter extends filters.SerializableFilter<IDateFilterValue> implements IDateFilter {
+	useTime: boolean;
 	dateRange: boolean;
 
+	private _dateFrom: moment.Moment;
+	private _dateTo: moment.Moment;
 	private valueSelector: { (item: any): moment.Moment } | string;
 	public type: string;
 
 	// component settings
-	clearButton: boolean;
-	includeDateRange: boolean;
+	showClear: boolean;
+	useDateRange: boolean;
 	label: string;
 	template: string;
 
-	constructor(settings: IDateFilterSettings, private dateUtility: __date.IDateUtility) {
+	private date: __date.IDateUtility;
+	private transformService: __transform.ITransformService;
+
+	get dateFrom(): moment.Moment {
+		return this._dateFrom;
+	}
+
+	set dateFrom(value: moment.Moment) {
+		if (this._dateFrom != value) {
+			this._dateFrom = value;
+			this.onChange();
+		}
+	}
+
+	get dateTo(): moment.Moment {
+		return this._dateTo;
+	}
+
+	set dateTo(value: moment.Moment) {
+		if (this._dateTo != value) {
+			this._dateTo = value;
+			this.onChange();
+		}
+	}
+
+	constructor(settings: IDateFilterSettings
+			, dateUtility: __date.IDateUtility
+			, transformService: __transform.ITransformService) {
+		super();
+
+		this.date = dateUtility;
+		this.transformService = transformService;
+
 		this.valueSelector = settings.valueSelector;
 		this.type = settings.type;
-		this.clearButton = settings.clearButton;
-		this.includeDateRange = settings.includeDateRange;
-		this.includeTime = settings.includeTime != null ? settings.includeTime : false;
+		this.showClear = settings.showClear;
+		this.useDateRange = settings.useDateRange;
+		this.useTime = settings.useTime != null ? settings.useTime : false;
 		this.label = settings.label;
-		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.includeTime"
-									     include-date-range="filter.includeDateRange" clear-button="filter.clearButton"></rl-date-filter>`;
+		this.template = `<rl-date-filter filter="filter" source="dataSource" label="{{filter.label}}" include-time="filter.useTime"
+									     include-date-range="filter.useDateRange" clear-button="filter.showClear"></rl-date-filter>`;
 	}
 
 	filter(item: any): boolean {
-		if (!this.dateUtility.isDate(this.selectedDate1)) {
+		if (!this.date.isDate(this.dateFrom)) {
 			return true;
 		}
 
 		if (this.dateRange) {
 			let itemDate: moment.Moment = this.getValue(item)
-			let selectedDate1: moment.Moment;
+			let dateFrom: moment.Moment;
 
-			//have to set the selectedDate1 to a valid Date object for comparisons.
-			if (this.includeTime) {
-				selectedDate1 = moment(this.selectedDate1);
+			//have to set the dateFrom to a valid Date object for comparisons.
+			if (this.useTime) {
+				dateFrom = moment(this.dateFrom);
 			} else {
-				//increase it by 1 days. to inlcude the selectec date in the range.
-				selectedDate1 = moment(this.selectedDate1).add(1, 'days');
+				//increase it by 1 days. to inlcude the selected date in the range.
+				dateFrom = moment(this.dateFrom).add(1, 'days');
 			}
-			return this.dateUtility.dateInRange(itemDate, this.selectedDate2, this.selectedDate1);
+			return this.date.dateInRange(itemDate, this.dateTo, this.dateFrom);
 
 		} else {
-			if (this.includeTime) {
-				return this.dateUtility.sameDateTime(this.getValue(item), this.selectedDate1);
+			if (this.useTime) {
+				return this.date.sameDateTime(this.getValue(item), this.dateFrom);
 			} else {
-				return this.dateUtility.sameDate(this.getValue(item), this.selectedDate1);
+				return this.date.sameDate(this.getValue(item), this.dateFrom);
 			}
 		}
 	}
 
-	private getValue(item: any): moment.Moment {
-		return __transform.getValue(item, this.valueSelector);
+	serialize(): IDateFilterValue {
+		return {
+			dateFrom: this.dateFrom,
+			dateTo: this.dateTo,
+		};
 	}
 
-}
+	private getValue(item: any): moment.Moment {
+		return this.transformService.getValue(item, this.valueSelector);
+	}
 
-export interface IDateFilterFactory {
-	getInstance(settings:IDateFilterSettings): IDateFilter;
-}
-
-dateFilterFactory.$inject = [downgrade.dateServiceName];
-export function dateFilterFactory(dateUtility: __date.IDateUtility): IDateFilterFactory {
-	return {
-		getInstance(settings: IDateFilterSettings): IDateFilter {
-			return new DateFilter(settings, dateUtility);
-		},
-	};
 }

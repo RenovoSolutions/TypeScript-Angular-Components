@@ -1,12 +1,15 @@
-<div class="row filter-option" ng-class="{ 'active': filter.isActive }" ng-click="filter.activate()">
+<div class="row filter-option"
+	 [class.active]="isActive"
+	 (click)="activate.emit(null)">
 	<div class="col-xs-1">
-		<i class='fa fa-arrow-right' ng-show="filter.isActive == true"></i>
+		<i class='fa fa-arrow-right' [hidden]="!isActive"></i>
 	</div>
-	<div class="col-xs-1" ng-if="filter.hasIcon" ng-bind-html="filter.option.icon"></div>
-	<div ng-class="{ 'col-xs-6': filter.hasIcon, 'col-xs-7': !filter.hasIcon }">
-		{{filter.option.label}}
+	<div class="col-xs-1" *ngIf="option?.icon" [innerHTML]="option?.icon"></div>
+	<div [class.col-xs-6]="option?.icon"
+		 [class.col-xs-7]="!option?.icon">
+		{{option?.label}}
 	</div>
-	<div class="col-xs-3 text-right" ng-show="filter.option.count != null">
-		({{filter.option.count}})
+	<div class="col-xs-3 text-right" [hidden]="option?.count == null">
+		({{option?.count}})
 	</div>
 </div>

@@ -14,7 +14,6 @@ export { columnSearchFilter, filterGroup, selectFilter };
 export var moduleName: string = 'rl.ui.components.cardContainer.filters';
 
 angular.module(moduleName, [
-	columnSearchFilter.moduleName,
 	dateFilter.moduleName,
 	filterGroup.moduleName,
 	selectFilter.moduleName,

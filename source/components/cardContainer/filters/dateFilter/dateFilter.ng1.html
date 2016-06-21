@@ -1,0 +1,28 @@
+<div class="filter-group spinner-container">
+	<div class="content-group">
+		<label>{{::filter.label}}</label>
+		<rl-date-time ng-model="filter.dateFrom" use-time="filter.includeTime" clear-button="filter.clearButton" on-clear-event="filter.clearCount()"
+		class="pull-left"></rl-date-time>
+	</div>
+	<div ng-if="filter.includeDateRange" class="content-group">
+		<label>Add previous</label>
+		<div class="input-group">
+		<span class="input-group-btn">
+			<button  class="btn btn-default" ng-click="filter.decreaseCount();">
+				<i class="fa fa-minus"></i>
+			</button>
+		</span>
+		<input type="number" class="form-control" ng-model="filter.count" ng-change="filter.countChange();" />
+		<span class="input-group-btn">
+			<button class="btn btn-default" ng-click="filter.toggle();">
+			{{filter.type}}
+			</button>
+		</span>
+		<span class="input-group-btn">
+			<button class="btn btn-default" ng-click="filter.increaseCount();">
+				<i class="fa fa-plus"></i>
+			</button>
+		</span>
+		</div>
+	</div>
+</div>

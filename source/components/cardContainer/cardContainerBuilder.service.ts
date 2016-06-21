@@ -10,7 +10,8 @@ import * as dataSources from './dataSources/dataSources.module';
 import * as filterGroup from './filters/filterGroup/filterGroup.module';
 import * as selectFilter from './filters/selectFilter/selectFilter.module';
 import * as dateFilter from './filters/dateFilter/dateFilter.module';
-import { factoryName as columnSearchFactoryName, IColumnSearchFilterFactory, IColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
+import { ColumnSearchFilter } from './filters/columnSearchFilter/columnSearchFilter.service';
+import { columnSearchFilterName } from '../../componentsDowngrade';
 
 import IDataSource = dataSources.IDataSource;
 import IAsyncDataSource = dataSources.IAsyncDataSource;
@@ -48,7 +49,7 @@ export {
 	IValidateFilterModel,
 	IFilter,
 	IGenericSearchFilter,
-	IColumnSearchFilter,
+	ColumnSearchFilter,
 	IFilterGroup,
 	IFilterGroupSettings,
 	IModeFilterGroup,
@@ -98,7 +99,7 @@ export interface IFilterBuilder {
 	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
 	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:IDateFilterSettings):IDateFilter;
-	buildColumnSearchFilter(): IColumnSearchFilter;
+	buildColumnSearchFilter(): ColumnSearchFilter;
 	addCustomFilter(filter: IFilter): void;
 
 }
@@ -266,43 +267,48 @@ export class FilterBuilder implements IFilterBuilder {
 	}
 
 	buildFilterGroup(settings: filterGroup.IFilterGroupSettings): filterGroup.IFilterGroup {
-		let factory: filterGroup.IFilterGroupFactory = this.$injector.get<any>(filterGroup.factoryName);
-		let filter: filterGroup.IFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let filter: filterGroup.IFilterGroup = new filterGroup.FilterGroup(settings, object);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildModeFilterGroup<TItemType>(settings: IModeFilterGroupSettings<TItemType>): filterGroup.modeFilterGroup.IModeFilterGroup {
-		let factory: filterGroup.modeFilterGroup.IModeFilterGroupFactory = this.$injector.get<any>(filterGroup.modeFilterGroup.factoryName);
-		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: filterGroup.modeFilterGroup.IModeFilterGroup = new filterGroup.modeFilterGroup.ModeFilterGroup(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildRangeFilterGroup<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): filterGroup.rangeFilterGroup.IRangeFilterGroup {
-		let factory: filterGroup.rangeFilterGroup.IRangeFilterGroupFactory = this.$injector.get<any>(filterGroup.rangeFilterGroup.factoryName);
-		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: filterGroup.rangeFilterGroup.IRangeFilterGroup = new filterGroup.rangeFilterGroup.RangeFilterGroup(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
 	buildSelectFilter<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
-		let factory: selectFilter.ISelectFilterFactory = this.$injector.get<any>(selectFilter.factoryName);
-		let filter: ISelectFilter<TDataType> = factory.getInstance(settings);
+		let object: services.object.IObjectUtility = this.$injector.get<any>(downgrade.objectServiceName);
+		let transformService: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+		let filter: ISelectFilter<TDataType> = new selectFilter.SelectFilter(settings, object, transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildDateFilter(settings:dateFilter.IDateFilterSettings): IDateFilter {
-		let factory: dateFilter.IDateFilterFactory = this.$injector.get<any>(dateFilter.factoryName);
-		let filter: IDateFilter = factory.getInstance(settings);
+	buildDateFilter(settings: dateFilter.IDateFilterSettings): IDateFilter {
+		let date: services.date.IDateUtility = this.$injector.get<any>(downgrade.dateServiceName);
+		let transform: services.transform.ITransformService = this.$injector.get<any>(downgrade.transformServiceName);
+
+		let filter: IDateFilter = new dateFilter.DateFilter(settings, date, transform);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildColumnSearchFilter(): IColumnSearchFilter {
-		let factory: IColumnSearchFilterFactory = this.$injector.get<any>(columnSearchFactoryName);
-		let filter: IColumnSearchFilter = factory.getInstance();
+	buildColumnSearchFilter(): ColumnSearchFilter {
+		let factory: any = this.$injector.get<any>(columnSearchFilterName);
+		let filter: ColumnSearchFilter = factory.getInstance();
 		this.parent._filters.push(filter);
 		return filter;
 	}

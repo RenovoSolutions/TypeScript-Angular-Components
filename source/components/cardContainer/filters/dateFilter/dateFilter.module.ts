@@ -2,14 +2,12 @@ import * as angular from 'angular';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 
-import {dateFilterFactory, factoryName} from './dateFilter.service';
-import {componentName, dateFilter, controllerName, DateFilterController }from './dateFilter.component';
+import { componentName, dateFilter, controllerName, DateFilterController }from './dateFilter.component.ng1';
 
-export var moduleName: string = 'rl.ui.components.cardContainer.filters.dateFilter';
+export const moduleName: string = 'rl.ui.components.cardContainer.filters.dateFilter';
 export * from  './dateFilter.service';
-export * from './dateFilter.component';
+export * from './dateFilter.component.ng1';
 
 angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, dateFilterFactory)
 	.component(componentName, dateFilter)
 	.controller(controllerName, DateFilterController);

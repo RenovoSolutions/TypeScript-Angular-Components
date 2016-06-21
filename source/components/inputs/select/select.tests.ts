@@ -131,4 +131,13 @@ describe('SelectComponent', () => {
 		expect(clone).to.not.equal(template);
 		expect(clone).to.deep.equal(template);
 	});
+
+	it('should use an external template if one is specified', (): void => {
+		const template: any = {};
+		dropdown.externalTemplate = template;
+
+		dropdown.ngAfterViewInit();
+
+		expect(dropdown.template).to.equal(template);
+	});
 });

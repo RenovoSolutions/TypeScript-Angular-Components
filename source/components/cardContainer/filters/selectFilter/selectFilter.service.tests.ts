@@ -1,25 +1,18 @@
-import * as angular from 'angular';
-import 'angular-mocks';
+import { services } from 'typescript-angular-utilities';
+import __object = services.object;
+import __transform = services.transform;
 
-import { services as utilityServices } from 'typescript-angular-utilities';
-import __test = utilityServices.test;
-
-import { moduleName, factoryName, ISelectFilter, ISelectFilterFactory } from './selectFilter.module';
+import { SelectFilter } from './selectFilter.module';
 
 interface ITestObj {
 	value: number;
 }
 
-describe('selectFilter', (): void => {
-	let selectFilter: ISelectFilter<ITestObj>;
-	let selectFilterFactory: ISelectFilterFactory;
+describe('SelectFilter', (): void => {
+	let selectFilter: SelectFilter<ITestObj, any>;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		let services: any = __test.angularFixture.inject(factoryName);
-		selectFilterFactory = services[factoryName]
-		selectFilter = selectFilterFactory.getInstance({ valueSelector: 'value' });
+		selectFilter = new SelectFilter({ valueSelector: 'value' }, __object.objectUtility, __transform.transform);
 	});
 
 	it('should return true if the items value equal the selected value', (): void => {
@@ -51,10 +44,10 @@ describe('selectFilter', (): void => {
 		let item1: any = { value: { prop: 2 } };
 		let item2: any = { prop: 2, otherProp: 3 };
 
-		selectFilter = selectFilterFactory.getInstance({
+		selectFilter = new SelectFilter({
 			valueSelector: 'value',
 			comparer: (item1: any, item2: any): boolean => { return item1.prop === item2.prop; },
-		});
+		}, __object.objectUtility, __transform.transform);
 		selectFilter.selectedValue = item2;
 
 		expect(selectFilter.filter(item1)).to.be.true;

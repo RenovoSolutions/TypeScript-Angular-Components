@@ -1,28 +1,18 @@
-<div class="filter-group spinner-container">
+<div class="filter-group">
 	<div class="content-group">
-		<label>{{::filter.label}}</label>
-		<rl-date-time ng-model="filter.selectedDate1" use-time="filter.includeTime" clear-button="filter.clearButton" on-clear-event="filter.clearCount()"
-		class="pull-left"></rl-date-time>
+		<rlDateTime class="pull-left"
+					[label]="label"
+					[value]="filter?.dateFrom"
+					(change)="setDate($event)"
+					[useTime]="useTime"
+					[showClear]="showClear"
+					(clear)="clear()"></rlDateTime>
 	</div>
-	<div ng-if="filter.includeDateRange" class="content-group">
-		<label>Add previous</label>
-		<div class="input-group">
-		<span class="input-group-btn">
-			<button  class="btn btn-default" ng-click="filter.decreaseCount();">
-				<i class="fa fa-minus"></i>
-			</button>
-		</span>
-		<input type="number" class="form-control" ng-model="filter.count" ng-change="filter.countChange();" />
-		<span class="input-group-btn">
-			<button class="btn btn-default" ng-click="filter.toggle();">
-			{{filter.type}}
-			</button>
-		</span>
-		<span class="input-group-btn">
-			<button class="btn btn-default" ng-click="filter.increaseCount();">
-				<i class="fa fa-plus"></i>
-			</button>
-		</span>
-		</div>
+	<div class="content-group" *ngIf="useDateRange">
+		<rlSpinner label="Add previous"
+				   min="0"
+				   postfix="days"
+				   [value]="count"
+				   (change)="setCount($event)"></rlSpinner>
 	</div>
 </div>

@@ -1,9 +1,6 @@
-import * as _ from 'lodash';
-import {filters, services} from 'typescript-angular-utilities';
+import { filters, services } from 'typescript-angular-utilities';
 import __object = services.object;
-import __transform = services.transform.transform;
-
-export let factoryName: string = 'rlSelectFilterFactory';
+import __transform = services.transform;
 
 export interface ISelectFilterSettings<TDataType, TFilterType> {
 	valueSelector: string | { (item: TDataType): any };
@@ -17,7 +14,7 @@ export interface ISelectFilterSettings<TDataType, TFilterType> {
 	nullOption?: string;
 }
 
-export interface ISelectFilter<T> extends filters.IFilter {
+export interface ISelectFilter<T> extends filters.ISerializableFilter<any> {
 	selectedValue: any;
 }
 
@@ -25,10 +22,10 @@ export interface IEqualityFunction<TFilterType> {
 	(item1: TFilterType, item2: TFilterType): boolean;
 }
 
-class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
-	selectedValue: any;
+export class SelectFilter<TDataType, TFilterType> extends filters.SerializableFilter<TFilterType> implements ISelectFilter<TDataType> {
 	type: string = 'selectFilter';
 
+	private _selectedValue: TFilterType;
 	private valueSelector: string | { (item: TDataType): any };
 	private comparer: IEqualityFunction<TFilterType>;
 
@@ -40,7 +37,28 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 	nullOption: string;
 	template: string;
 
-	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>) {
+	object: __object.IObjectUtility;
+	transformService: __transform.ITransformService;
+
+	get selectedValue(): TFilterType {
+		return this._selectedValue;
+	}
+
+	set selectedValue(value: TFilterType) {
+		if (this._selectedValue !== value) {
+			this._selectedValue = value;
+			this.onChange();
+		}
+	}
+
+	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>
+			, object: __object.IObjectUtility
+			, transformService: __transform.ITransformService) {
+		super();
+
+		this.object = object;
+		this.transformService = transformService;
+
 		this.valueSelector = settings.valueSelector;
 		this.comparer = settings.comparer;
 		this.options = settings.options;
@@ -61,23 +79,14 @@ class SelectFilter<TDataType, TFilterType> implements ISelectFilter<TDataType> {
 			return this.comparer(this.getValue(item), this.selectedValue);
 		}
 
-		return __object.objectUtility.areEqual(this.getValue(item), this.selectedValue);
+		return this.object.areEqual(this.getValue(item), this.selectedValue);
+	}
+
+	serialize(): TFilterType {
+		return this.selectedValue;
 	}
 
 	private getValue(item: TDataType): any {
-		return __transform.getValue(item, this.valueSelector);
+		return this.transformService.getValue(item, this.valueSelector);
 	}
-
-}
-
-export interface ISelectFilterFactory  {
-	getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType>;
-}
-
-export function selectFilterFactory(): ISelectFilterFactory {
-	return {
-		getInstance<TDataType, TFilterType>(settings: ISelectFilterSettings<TDataType, TFilterType>): ISelectFilter<TDataType> {
-			return new SelectFilter<TDataType, TFilterType>(settings);
-		},
-	};
 }

@@ -1,11 +1,13 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import {
 	factoryName as builderService,
 	ICardContainerBuilderFactory,
 	ICardContainerBuilder,
 	ISelectFilter,
+	IDateFilter,
 	IDataSource,
 } from '../../source/components/cardContainer/cardContainerBuilder.service';
 
@@ -14,19 +16,27 @@ export const moduleName: string = 'CardTestModule';
 interface ICardItem {
 	name: string;
 	value: number;
+	date: moment.Moment;
 }
 
 class CardTestController {
 	builder: ICardContainerBuilder;
 	builderWithSelectFilter: ICardContainerBuilder;
+	builderWithDateFilter: ICardContainerBuilder;
 	options: number[];
 	selectFilter: ISelectFilter<number>;
+	dateFilter: IDateFilter;
 	dataSource: IDataSource<ICardItem>;
 
 	static $inject: string[] = [builderService];
 	constructor(cardContainerBuilderFactory: ICardContainerBuilderFactory) {
 		const items: ICardItem[] = _.map(_.range(1, 101), (num: number): ICardItem => {
-			return { name: 'Item' + num, value: Math.floor(Math.random() * 2) + 1 };
+			const value = Math.floor(Math.random() * 2) + 1;
+			return {
+				name: 'Item' + num,
+				value: value,
+				date: moment().subtract(value, 'days'),
+			};
 		});
 
 		this.options = [1, 2];
@@ -82,6 +92,25 @@ class CardTestController {
 		});
 		this.selectFilter = this.builderWithSelectFilter.filters.buildSelectFilter({
 			valueSelector: 'value',
+		});
+
+		this.builderWithDateFilter = cardContainerBuilderFactory.getInstance();
+		this.dataSource = this.builderWithDateFilter.dataSource.buildSimpleDataSource(items);
+		this.builderWithDateFilter.usePaging();
+		this.builderWithDateFilter.addColumn({
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		this.builderWithDateFilter.addColumn({
+			label: 'Date',
+			size: 6,
+			getValue: 'date',
+			template: '<b>{{myItem.date | rlDate}}</b>',
+		});
+		this.dateFilter = this.builderWithDateFilter.filters.buildDateFilter({
+			type: 'dateFilter',
+			valueSelector: 'date',
 		});
 	}
 }

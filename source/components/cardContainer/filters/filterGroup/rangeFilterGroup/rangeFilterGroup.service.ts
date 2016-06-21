@@ -1,14 +1,10 @@
-import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __object = services.object;
-import __transform = services.transform.transform;
+import __transform = services.transform;
 
 import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
-
-export var moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup.rangeFilterGroup';
-export var factoryName: string = 'rangeFilterGroup';
 
 export interface IRangeFilterGroupSettings<TItemType> {
 	label: string;
@@ -44,11 +40,17 @@ export interface IRangeFilterValue {
 	lowExclusive?: number;
 }
 
-class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
+export class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 	private getValue: { (item: any): number } | string;
 
-	constructor(settings: IRangeFilterGroupSettings<any>, object: __object.IObjectUtility) {
+	transformService: __transform.ITransformService;
+
+	constructor(settings: IRangeFilterGroupSettings<any>
+			, object: __object.IObjectUtility
+			, transformService: __transform.ITransformService) {
 		super(<any>settings, object);
+		this.transformService = transformService;
+
 		this.getValue = settings.getValue;
 		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
 		this.initOptions();
@@ -70,7 +72,7 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
 		var modeOption: IRangeFilterOption = <any>option;
 		modeOption.filter = (item: any): boolean => {
-			var value: number = __transform.getValue(item, this.getValue);
+			var value: number = this.transformService.getValue(item, this.getValue);
 
 			var result: boolean = true;
 
@@ -99,20 +101,3 @@ class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 			&& option.lowExclusive == null;
 	}
 }
-
-export interface IRangeFilterGroupFactory {
-	getInstance<TItemType>(settings: IRangeFilterGroupSettings<TItemType>): IRangeFilterGroup;
-}
-
-rangeFilterGroupFactory.$inject = [downgrade.objectServiceName];
-export function rangeFilterGroupFactory(object: __object.IObjectUtility): IRangeFilterGroupFactory {
-	'use strict';
-	return {
-		getInstance(settings: IRangeFilterGroupSettings<any>): IRangeFilterGroup {
-			return new RangeFilterGroup(settings, object);
-		},
-	};
-}
-
-angular.module(moduleName, [downgrade.moduleName])
-	.factory(factoryName, rangeFilterGroupFactory);
