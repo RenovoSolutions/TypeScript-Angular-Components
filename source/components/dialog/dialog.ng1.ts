@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { DialogService, serviceName as dialogServiceName, moduleName as dialogModule } from '../../services/dialog/dialog.service';
+import { DialogService, serviceName as dialogServiceName, moduleName as dialogModule } from '../../services/dialog/dialog.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
 
 export let moduleName: string = 'rl.ui.components.dialog';
@@ -76,7 +76,7 @@ let dialog: angular.IComponentOptions = {
 		contentSlot: '?rlDialogContent',
 		footerSlot: '?rlDialogFooter',
 	},
-	template: require('./dialog.html'),
+	template: require('./dialog.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'dialog',
 	bindings: {

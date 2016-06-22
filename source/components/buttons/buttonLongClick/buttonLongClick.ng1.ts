@@ -3,6 +3,7 @@ import * as angular from 'angular';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 import __notification = services.notification;
+import __timeout = services.timeout;
 
 import { IPromiseUtility, serviceName as promiseServiceName, moduleName as promiseModuleName} from '../../../services/promise/promise.service';
 
@@ -23,11 +24,11 @@ export class LongClickButtonController extends ButtonAsyncController {
 
 	duration: number = 2000; // Should match the CSS animation time
 	active: boolean;
-	private actionTimeout: angular.IPromise<void>;
+	private timer: __timeout.ITimeout;
 
-	static $inject: string[] = ['$interval', '$timeout', downgrade.objectServiceName, promiseServiceName, downgrade.notificationServiceName];
-	constructor(private $interval: angular.IIntervalService
-			, private $timeout: angular.ITimeoutService
+	static $inject: string[] = ['$scope', downgrade.timeoutServiceName, downgrade.objectServiceName, promiseServiceName, downgrade.notificationServiceName];
+	constructor(private $scope: angular.IScope
+			, private timeoutService: __timeout.TimeoutService
 			, private objectUtility: __object.IObjectUtility
 			, promise: IPromiseUtility
 			, private notification: __notification.INotificationService) {
@@ -41,15 +42,16 @@ export class LongClickButtonController extends ButtonAsyncController {
 
 		this.active = true;
 
-		this.actionTimeout = this.$timeout((): void => {
+		this.timer = this.timeoutService.setTimeout((): void => {
 			this.cleanup();
 			this.trigger();
-		}, this.duration);
+			this.$scope.$apply();
+		}, this.duration).catch(() => null);
 	}
 
 	stopAction(): void {
 		if (this.active) {
-			if (this.actionTimeout != null) {
+			if (this.timer != null) {
 				this.warn();
 			}
 
@@ -58,8 +60,8 @@ export class LongClickButtonController extends ButtonAsyncController {
 	}
 
 	private cleanup(): void {
-		this.$timeout.cancel(this.actionTimeout);
-		this.actionTimeout = null;
+		this.timer.cancel();
+		this.timer = null;
 		this.active = false;
 	}
 

@@ -11,7 +11,7 @@ import * as checkbox from './inputs/checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList.ng1';
 import * as dateTime from './inputs/dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
-import * as dialog from './dialog/dialog';
+import * as dialog from './dialog/dialog.ng1';
 import * as form from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as input from './inputs/input.ng1';
