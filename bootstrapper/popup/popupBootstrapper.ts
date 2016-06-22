@@ -1,6 +1,6 @@
 import * as angular from 'angular';
 
-import { serviceName as dialogService, bootstrapModalDialog } from '../../source/services/dialog/dialog.service';
+import { serviceName as dialogService, bootstrapModalDialog } from '../../source/services/dialog/dialog.service.ng1';
 
 export const moduleName: string = 'PopupTestModule';
 

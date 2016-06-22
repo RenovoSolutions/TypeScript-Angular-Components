@@ -3,7 +3,7 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 
 import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
-import { IDialogInstance } from '../dialog.service';
+import { IDialogInstance } from '../dialog.service.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';

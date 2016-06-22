@@ -9,7 +9,7 @@ import {
 	bootstrapModalDialog,
 	IDialogCloseHandler,
 	IAutosaveDialogSettings,
-} from './dialog.service';
+} from './dialog.service.ng1';
 import { factoryName as autosaveFactoryName } from '../autosave/autosave.service';
 
 import * as angular from 'angular';

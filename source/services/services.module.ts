@@ -5,7 +5,7 @@ import * as autosaveAction from './autosaveAction/autosaveAction.service';
 import * as breakpoints from './breakpoints/breakpoints.module';
 import * as componentValidator from './componentValidator/componentValidator.service.ng1';
 import * as contentProvider from './contentProvider/contentProvider.service';
-import * as dialog from './dialog/dialog.service';
+import * as dialog from './dialog/dialog.service.ng1';
 import * as documentWrapper from './documentWrapper/documentWrapper.service';
 import * as form from './form/form.service.ng1';
 import * as jquery from './jquery/jquery.service';

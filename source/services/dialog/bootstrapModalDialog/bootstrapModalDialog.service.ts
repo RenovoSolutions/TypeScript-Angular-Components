@@ -10,7 +10,7 @@ import {
 	IDialogInstance,
 	IPromptSettings,
 	IPromptInstance,
-} from '../dialog.service';
+} from '../dialog.service.ng1';
 import { controllerName, IBootstrapModalDialogScope } from './bootstrapModalDialog.controller';
 
 export var serviceName: string = 'uiBootstrapModelDialog';
