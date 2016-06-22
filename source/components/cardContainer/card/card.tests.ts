@@ -11,7 +11,6 @@ import { CardComponent } from './card';
 interface ICardContainerMock {
 	openCard: Sinon.SinonSpy;
 	dataSource: any;
-	registerCard: Sinon.SinonSpy;
 	columnTemplates?: any;
 }
 
@@ -26,15 +25,9 @@ describe('CardComponent', () => {
 				refresh: sinon.spy(),
 				remove: sinon.spy(),
 			},
-			registerCard: sinon.spy(),
 		};
 
 		card = new CardComponent(new __boolean.BooleanUtility(), new __notification.NotificationService(<any>{}, <any>{}), new FormService(), <any>cardContainer);
-	});
-
-	it('should register with the card container', (): void => {
-		sinon.assert.calledOnce(cardContainer.registerCard);
-		sinon.assert.calledWith(cardContainer.registerCard, card);
 	});
 
 	it('should pass the item to the save handler', (): void => {

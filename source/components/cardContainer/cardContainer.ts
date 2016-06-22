@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ContentChild, ContentChildren, QueryList, OnInit } from '@angular/core';
+import { Component, Input, Inject, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
@@ -68,7 +68,6 @@ export class CardContainerComponent<T> implements OnInit {
 	permanentFooters: boolean;
 	saveWhenInvalid: boolean;
 	sortDirection: ISortDirections;
-	cards: CardComponent<T>[] = [];
 
 	numberSelected: number = 0;
 	numberSelectedChanges: Subject<number> = new Subject<number>();
@@ -85,6 +84,12 @@ export class CardContainerComponent<T> implements OnInit {
 	@ContentChild(CardFooterTemplate) cardFooter: CardFooterTemplate;
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
+
+	@ViewChildren(CardComponent) cardChildren: QueryList<CardComponent<T>>;
+
+	get cards(): CardComponent<T>[] {
+		return this.cardChildren.toArray();
+	}
 
 	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
@@ -113,10 +118,6 @@ export class CardContainerComponent<T> implements OnInit {
 		if (this.dataSource.sorts == null) {
 			this.dataSource.sorts = [];
 		}
-	}
-
-	registerCard(card: CardComponent<T>): void {
-		this.cards.push(card);
 	}
 
 	openCard(): boolean {

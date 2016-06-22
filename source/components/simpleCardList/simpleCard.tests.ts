@@ -8,7 +8,6 @@ import { SimpleCardListComponent } from './simpleCardList';
 
 interface IListMock {
 	openCard: Sinon.SinonSpy;
-	registerCard: Sinon.SinonSpy;
 }
 
 interface IFormMock {
@@ -22,17 +21,9 @@ describe('SimpleCardComponent', () => {
 	beforeEach(() => {
 		list = {
 			openCard: sinon.spy(() => true),
-			registerCard: sinon.spy(),
 		};
 
 		card = new SimpleCardComponent(new __boolean.BooleanUtility, <any>{}, null, <any>list);
-	});
-
-	it('should register  with the list', (): void => {
-		card.ngOnInit();
-
-		sinon.assert.calledOnce(list.registerCard);
-		sinon.assert.calledWith(list.registerCard, card);
 	});
 
 	it('should create an empty list if no list is provided', (): void => {

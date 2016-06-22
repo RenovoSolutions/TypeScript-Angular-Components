@@ -17,6 +17,7 @@ import {
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { FormComponent } from './components/form/form';
+import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
 import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
@@ -86,6 +87,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlCommaListNg', <any>upgradeAdapter.downgradeNg2Component(CommaListComponent));
 	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
+	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
 
 	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
