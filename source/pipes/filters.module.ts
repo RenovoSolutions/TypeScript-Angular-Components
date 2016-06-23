@@ -1,9 +1,9 @@
 import * as angular from 'angular';
 
-import * as date from './date/date.filter';
+import * as date from './date/date.pipe';
 import * as localizeStringDates from './localizeStringDates/localizeStringDates.filter';
-export { date };
-export { localizeStringDates};
+import * as time from './time/time.pipe';
+export { date, localizeStringDates, time };
 
 export let moduleName: string = 'rl.ui.filters';
 

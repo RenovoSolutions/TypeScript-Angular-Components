@@ -25,7 +25,7 @@ import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
-import { DatePipe } from './filters/date/date.filter';
+import { DatePipe } from './pipes/date/date.pipe';
 
 import { FormService } from './services/form/form.service';
 

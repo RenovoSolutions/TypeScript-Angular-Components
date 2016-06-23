@@ -14,11 +14,15 @@ import 'signature_pad';
 import * as behaviors from './behaviors/behaviors.module';
 import * as components from './components/components.module';
 import * as downgrade from './componentsDowngrade';
-import * as filters from './filters/filters.module';
+import * as pipes from './pipes/filters.module';
 import * as services from './services/services.module';
 import * as types from './types/types.module';
 
-export { behaviors, components, downgrade, filters, services, types };
+// deprecated - use pipes instead
+import * as filters from './pipes/filters.module';
+export { filters };
+
+export { behaviors, components, downgrade, pipes, services, types };
 
 export var moduleName: string = 'rl.ui';
 
