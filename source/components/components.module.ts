@@ -49,6 +49,7 @@ export {
 	buttonSubmit,
 	buttonToggle,
 	cardContainer,
+	cardContainerNg1,
 	checkbox,
 	commaList,
 	dateTime,
