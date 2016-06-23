@@ -32,8 +32,8 @@ import * as tabs from './tabs/tabs.module';
 import * as templateRenderer from './templateRenderer/templateRenderer.ng1';
 import * as textarea from './inputs/textarea/textarea.ng1';
 import * as textbox from './inputs/textbox/textbox.ng1';
-import * as typeahead from './typeahead/typeahead';
-import * as typeaheadList from './typeaheadList/typeaheadList';
+import * as typeahead from './inputs/typeahead/typeahead.ng1';
+import * as typeaheadList from './inputs/typeaheadList/typeaheadList.ng1';
 import * as userRating from './inputs/userRating/userRating.ng1';
 import * as validationGroup from './validationGroup/validationGroup';
 

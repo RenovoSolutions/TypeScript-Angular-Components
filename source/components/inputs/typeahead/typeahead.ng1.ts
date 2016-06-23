@@ -8,10 +8,10 @@ import __arrayUtility = services.array;
 import __validation = services.validation;
 import __transform = services.transform.transform;
 
-import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../../services/parentChild/parentChild.service';
 
-import { buildInput, InputController, moduleName as inputModule } from '../inputs/input.ng1';
-import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../services/componentValidator/componentValidator.service.ng1';
+import { buildInput, InputController, moduleName as inputModule } from '../input.ng1';
+import { IComponentValidatorFactory, factoryName as componentValidatorFactoryName } from '../../../services/componentValidator/componentValidator.service.ng1';
 
 export const moduleName: string = 'rl.ui.components.typeahead';
 export const componentName: string = 'rlTypeahead';
@@ -280,7 +280,7 @@ export class TypeaheadController extends InputController {
 }
 
 const typeahead: angular.IComponentOptions = buildInput({
-	template: require('./typeahead.html'),
+	template: require('./typeahead.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'typeahead',
 	bindings: {
