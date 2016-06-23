@@ -6,7 +6,8 @@ import * as buttonAsync from './buttons/buttonAsync/buttonAsync.ng1';
 import * as buttonLink from './buttons/buttonLink/buttonLink.ng1';
 import * as buttonSubmit from './buttons/buttonSubmit/buttonSubmit.ng1';
 import * as buttonToggle from './buttons/buttonToggle/buttonToggle.ng1';
-import * as cardContainer from './cardContainer/cardContainer.module';
+import * as cardContainerNg1 from './cardContainer/cardContainer.module';
+import * as cardContainer from './cardContainer/index';
 import * as checkbox from './inputs/checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList.ng1';
 import * as dateTime from './inputs/dateTime/dateTime.ng1';
@@ -86,7 +87,7 @@ angular.module(moduleName, [
 	buttonLink.moduleName,
 	buttonSubmit.moduleName,
 	buttonToggle.moduleName,
-	cardContainer.moduleName,
+	cardContainerNg1.moduleName,
 	checkbox.moduleName,
 	commaList.moduleName,
 	dateTime.moduleName,
