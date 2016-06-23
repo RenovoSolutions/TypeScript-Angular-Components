@@ -25,15 +25,15 @@ Angular components that can be added to an application.
 
 ### [Inputs](/source/components/input/input.md)
 
-* [checkbox](/source/components/checkbox/checkbox.md)
-* [dateTime](/source/components/dateTime/dateTime.md)
-* [radio](/source/components/radio/radio.md)
+* [checkbox](/source/components/inputs/checkbox/checkbox.md)
+* [dateTime](/source/components/inputs/dateTime/dateTime.md)
+* [radio](/source/components/inputs/radio/radio.md)
 * [richTextEditor]()
-* [select](/source/components/select/select.md)
-* [spinner](/source/components/spinner/spinner.md)
-* [textarea](/source/components/textarea/textarea.md)
-* [textbox](/source/components/textbox/textbox.md)
-* [typeahead](/source/components/typeahead/typeahead.md)
+* [select](/source/components/inputs/select/select.md)
+* [spinner](/source/components/inputs/spinner/spinner.md)
+* [textarea](/source/components/inputs/textarea/textarea.md)
+* [textbox](/source/components/inputs/textbox/textbox.md)
+* [typeahead](/source/components/inputs/typeahead/typeahead.md)
 * [typeaheadList]()
 
 ### Other
