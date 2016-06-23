@@ -7,7 +7,6 @@ import * as buttonLink from './buttons/buttonLink/buttonLink.ng1';
 import * as buttonSubmit from './buttons/buttonSubmit/buttonSubmit.ng1';
 import * as buttonToggle from './buttons/buttonToggle/buttonToggle.ng1';
 import * as cardContainerNg1 from './cardContainer/cardContainer.module';
-import * as cardContainer from './cardContainer/index';
 import * as checkbox from './inputs/checkbox/checkbox.ng1';
 import * as commaList from './commaList/commaList.ng1';
 import * as dateTime from './inputs/dateTime/dateTime.ng1';
@@ -37,6 +36,10 @@ import * as typeaheadList from './inputs/typeaheadList/typeaheadList.ng1';
 import * as userRating from './inputs/userRating/userRating.ng1';
 import * as validationGroup from './validationGroup/validationGroup';
 
+import * as buttons from './buttons/index';
+import * as cardContainer from './cardContainer/index';
+import * as inputs from './inputs/index';
+
 import { defaultThemeValueName } from './componentsDefaultTheme';
 
 export {
@@ -44,6 +47,7 @@ export {
 
 	busy,
 	button,
+	buttons,
 	buttonAsync,
 	buttonLink,
 	buttonSubmit,
@@ -57,6 +61,7 @@ export {
 	dialog,
 	form,
 	genericContainer,
+	inputs,
 	lazyLoad,
 	longClickButton,
 	messageLog,
