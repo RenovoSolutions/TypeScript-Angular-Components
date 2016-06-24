@@ -11,6 +11,7 @@ import __time = services.time;
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
+import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 
 @Component({
 	selector: 'rlAbsoluteTime',
@@ -18,6 +19,7 @@ import { FormComponent } from '../../form/form';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	directives: [OffClickDirective],
 })
 export class AbsoluteTimeComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() minuteInterval: number = 15;
@@ -47,9 +49,8 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 			this.hour = value.hour;
 			this.minute = value.minute;
 			this.period = value.period;
-			this.hourSelected = this.hour != null;
-			this.minuteSelected = this.minute != null;
 		}
+		this.setSelections();
 	}
 
 	get displayTime(): string {
@@ -87,11 +88,25 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 	}
 
 	toggleTimes(): void {
-		this.showTimes = !this.showTimes;
+		if (this.showTimes) {
+			this.closeTimes();
+		} else {
+			this.showTimes = true;
+		}
+	}
+
+	closeTimes(): void {
+		this.showTimes = false;
+		this.setSelections();
 	}
 
 	togglePeriod(): void {
 		this.period = this.timeUtility.inversePeriod(this.period);
 		this.setValue(this.timeUtility.formatTime(this.time));
+	}
+
+	private setSelections(): void {
+		this.hourSelected = this.hour != null;
+		this.minuteSelected = this.minute != null;
 	}
 }

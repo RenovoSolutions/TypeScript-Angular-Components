@@ -17,6 +17,49 @@ describe('AbsoluteTimeComponent', () => {
 		time = new AbsoluteTimeComponent(null, validator, __object.objectUtility, null, __guid.guid, <any>__time.timeUtility);
 	});
 
+	describe('show times', (): void => {
+		beforeEach((): void => {
+			this.time = {
+				hour: 3,
+				minute: 30,
+			};
+
+			expect(time.hourSelected).to.be.true;
+			expect(time.minuteSelected).to.be.true;
+		});
+
+		it('should toggle the times and reset selection on close', (): void => {
+			expect(time.showTimes).to.be.false;
+
+			time.toggleTimes();
+
+			expect(time.showTimes).to.be.true;
+
+			time.hourSelected = false;
+			time.minuteSelected = false;
+
+			time.toggleTimes();
+
+			expect(time.showTimes).to.be.false;
+
+			expect(time.hourSelected).to.be.true;
+			expect(time.minuteSelected).to.be.true;
+		});
+
+		it('should close the times and reset selection', (): void => {
+			time.showTimes = true;
+			time.hourSelected = false;
+			time.minuteSelected = false;
+
+			time.closeTimes();
+
+			expect(time.showTimes).to.be.false;
+
+			expect(time.hourSelected).to.be.true;
+			expect(time.minuteSelected).to.be.true;
+		});
+	});
+
 	describe('times list', (): void => {
 		it('should generate a list of hours from 1 to 12', (): void => {
 			time.ngOnInit();
