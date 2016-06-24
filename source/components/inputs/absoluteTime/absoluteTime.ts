@@ -27,6 +27,10 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 	period: string;
 
 	get time(): __time.ITime {
+		if (!(this.hourSelected || this.minuteSelected)) {
+			return null;
+		}
+
 		return {
 			hour: this.hour,
 			minute: this.minute,
@@ -43,6 +47,8 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 			this.hour = value.hour;
 			this.minute = value.minute;
 			this.period = value.period;
+			this.hourSelected = this.hour != null;
+			this.minuteSelected = this.minute != null;
 		}
 	}
 
@@ -50,6 +56,9 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 		return this.timeUtility.formatTime(this.time, false);
 	}
 
+	showTimes: boolean = false;
+	hourSelected: boolean = false;
+	minuteSelected: boolean = false;
 	timeUtility: __time.ITimeUtility;
 
 	constructor(@Optional() rlForm: FormComponent
@@ -64,6 +73,10 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 		this.control.valueChanges.subscribe(value => {
 			this.time = timeUtility.parseTime(value);
 		});
+	}
+
+	toggleTimes(): void {
+		this.showTimes = !this.showTimes;
 	}
 
 	togglePeriod(): void {

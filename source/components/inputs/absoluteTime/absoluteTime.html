@@ -4,6 +4,7 @@
 	<input type="text"
 		   class="form-control angular-animate"
 		   [value]="displayTime"
+		   (click)="toggleTimes()"
 		   [placeholder]="label"
 		   [disabled]="disabled" />
 	<span class="rl-time-period" (click)="togglePeriod()">{{period}}</span>
