@@ -9,13 +9,15 @@
 		   [disabled]="disabled" />
 	<span class="rl-time-period" (click)="togglePeriod()">{{period}}</span>
 	<span class="rl-times" *ngIf="showTimes">
-		<ul class="rl-time-hours">
+		<span class="rl-time-selected-hour" [hidden]="!hourSelected">{{hour}}</span>
+		<ul class="rl-time-hours" [hidden]="hourSelected">
 			<li class="rl-time-hour"
 				*ngFor="let hour of allHours">
 				{{hour}}
 			</li>
 		</ul>
-		<ul class="rl-time-minutes">
+		<span class="rl-time-selected-minute" [hidden]="!minuteSelected">{{minute}}</span>
+		<ul class="rl-time-minutes" [hidden]="minuteSelected">
 			<li class="rl-time-minute"
 				*ngFor="let minute of allMinutes">
 				{{minute}}
