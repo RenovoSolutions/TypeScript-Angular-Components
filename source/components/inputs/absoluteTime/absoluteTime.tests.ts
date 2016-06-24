@@ -7,19 +7,31 @@ import { AbsoluteTimeComponent } from './absoluteTime';
 
 describe('AbsoluteTimeComponent', () => {
 	let time: AbsoluteTimeComponent;
+	let setValue: Sinon.SinonSpy;
 
 	beforeEach(() => {
 		const validator: any = {
 			validate: sinon.spy(),
 			setValidators: sinon.spy(),
 		};
+		setValue = sinon.spy();
 
 		time = new AbsoluteTimeComponent(null, validator, __object.objectUtility, null, __guid.guid, <any>__time.timeUtility);
+		time.setValue = setValue;
+	});
+
+	it('should toggle the period and set the model value', (): void => {
+		time.period = __time.timePeriods.AM;
+
+		time.togglePeriod();
+
+		expect(time.period).to.equal(__time.timePeriods.PM);
+		sinon.assert.calledOnce(setValue);
 	});
 
 	describe('show times', (): void => {
 		beforeEach((): void => {
-			this.time = {
+			time.time = <any>{
 				hour: 3,
 				minute: 30,
 			};
