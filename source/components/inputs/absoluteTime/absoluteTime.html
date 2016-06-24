@@ -1,0 +1,13 @@
+<div class="field"
+	[class.error]="!control.valid">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<input type="text"
+		   class="form-control angular-animate"
+		   [value]="displayTime"
+		   [placeholder]="label"
+		   [disabled]="disabled" />
+	<span class="rl-time-period" (click)="togglePeriod()">{{period}}</span>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>
