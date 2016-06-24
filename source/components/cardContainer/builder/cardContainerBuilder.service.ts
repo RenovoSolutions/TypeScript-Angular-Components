@@ -1,4 +1,5 @@
 import { Injector, Injectable } from '@angular/core';
+import { clone } from 'lodash';
 
 import { filters, services } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
@@ -74,9 +75,9 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 			, dataSourceBuilder: DataSourceBuilder
 			, filterBuilder: FilterBuilder) {
 		this.injector = injector;
-		this.dataSource = dataSourceBuilder;
+		this.dataSource = clone(dataSourceBuilder);
 		this.dataSource.init(this);
-		this.filters = filterBuilder;
+		this.filters = clone(filterBuilder);
 		this.filters.init(this);
 		this._columns = [];
 	}
