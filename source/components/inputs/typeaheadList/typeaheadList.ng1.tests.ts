@@ -1,14 +1,14 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
-import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../../services/parentChild/parentChild.service';
 
 import {
 	moduleName,
 	controllerName,
 	TypeaheadListController,
 	ITypeaheadListBehavior,
-} from './typeaheadList';
+} from './typeaheadList.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';

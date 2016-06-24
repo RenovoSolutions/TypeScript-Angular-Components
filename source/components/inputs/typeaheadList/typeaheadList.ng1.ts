@@ -6,12 +6,12 @@ import __array = services.array;
 import __transform = services.transform.transform;
 import __search = services.search;
 
-import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../services/parentChild/parentChild.service';
+import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModule } from '../../../services/parentChild/parentChild.service';
 
-import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead';
-import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem';
+import { ITypeaheadBehavior, IGetItemsParams } from '../typeahead/typeahead.ng1';
+import { typeaheadItem, componentName as itemComponentName } from './typeaheadItem.ng1';
 
-import { IChangeObject } from '../../types/changes';
+import { IChangeObject } from '../../../types/changes';
 
 export const moduleName: string = 'rl.ui.components.typeaheadList';
 export const componentName: string = 'rlTypeaheadList';
@@ -219,7 +219,7 @@ const typeaheadList: angular.IComponentOptions = {
 		headerSlot: '?rlListHeader',
 		listItemSlot: '?rlListItem',
 	},
-	template: require('./typeaheadList.html'),
+	template: require('./typeaheadList.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'list',
 	bindings: {

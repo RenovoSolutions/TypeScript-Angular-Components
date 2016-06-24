@@ -1,7 +1,7 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
-import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
+import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../../services/parentChild/parentChild.service';
 
 import {
 	moduleName,
@@ -10,7 +10,7 @@ import {
 	ISelectParams,
 	IGetItemsParams,
 	ITypeaheadBehavior,
-} from './typeahead';
+} from './typeahead.ng1';
 
 import * as angular from 'angular';
 import 'angular-mocks';

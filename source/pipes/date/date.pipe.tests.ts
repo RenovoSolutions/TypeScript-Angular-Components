@@ -1,12 +1,11 @@
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
-import angularFixture = services.test.angularFixture;
 import __object = services.object;
 
-import { DatePipe } from './date.filter';
+import { DatePipe } from './date.pipe';
 
-describe('date filter', () => {
+describe('DatePipe', () => {
 	let datePipe: DatePipe;
 
 	beforeEach(() => {

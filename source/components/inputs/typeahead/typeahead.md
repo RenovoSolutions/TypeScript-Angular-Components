@@ -1,5 +1,5 @@
 # Typeahead
-This component extends the base [input](../input/input.md) with typeahead-specific behavior.
+This component extends the base [input](../input.md) with typeahead-specific behavior.
 
 ### Usage
 ```
@@ -45,4 +45,4 @@ Example: `ng-disabled="true"` will output `<textarea disabled> ... </textarea>`
 
 `ng-model`, `validator`, `validators`, `label`, `name`.
 
-See [input](../input/input.md) for detail on the base options.
+See [input](../input.md) for detail on the base options.

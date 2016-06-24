@@ -18,7 +18,7 @@ class TypeaheadItemController {
 				contentArea.append(template);
 			}, null, 'listItemSlot');
 		} else {
-			let template: JQuery = contentArea.append(require('./defaultListItem.html'));
+			let template: JQuery = contentArea.append(require('./defaultListItem.ng1.html'));
 			this.$compile(template)(itemScope);
 		}
 	}
