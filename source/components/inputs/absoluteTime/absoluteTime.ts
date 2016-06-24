@@ -1,5 +1,5 @@
-import { Component, Input, Inject, Optional } from '@angular/core';
-import { dropRight, takeRight } from 'lodash';
+import { Component, Input, Inject, Optional, OnInit } from '@angular/core';
+import { dropRight, takeRight, range } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -19,8 +19,8 @@ import { FormComponent } from '../../form/form';
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
 })
-export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment> {
-	@Input() minuteInterval: number;
+export class AbsoluteTimeComponent extends ValidatedInputComponent<string> implements OnInit {
+	@Input() minuteInterval: number = 15;
 
 	hour: number;
 	minute: number;
@@ -59,6 +59,10 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 	showTimes: boolean = false;
 	hourSelected: boolean = false;
 	minuteSelected: boolean = false;
+
+	allHours: number[];
+	allMinutes: number[];
+
 	timeUtility: __time.ITimeUtility;
 
 	constructor(@Optional() rlForm: FormComponent
@@ -73,6 +77,13 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 		this.control.valueChanges.subscribe(value => {
 			this.time = timeUtility.parseTime(value);
 		});
+	}
+
+	ngOnInit(): void {
+		super.ngOnInit();
+
+		this.allHours = range(1, 13);
+		this.allMinutes = range(this.minuteInterval, 60 + this.minuteInterval, this.minuteInterval);
 	}
 
 	toggleTimes(): void {

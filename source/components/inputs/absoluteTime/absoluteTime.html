@@ -8,6 +8,20 @@
 		   [placeholder]="label"
 		   [disabled]="disabled" />
 	<span class="rl-time-period" (click)="togglePeriod()">{{period}}</span>
+	<span class="rl-times" *ngIf="showTimes">
+		<ul class="rl-time-hours">
+			<li class="rl-time-hour"
+				*ngFor="let hour of allHours">
+				{{hour}}
+			</li>
+		</ul>
+		<ul class="rl-time-minutes">
+			<li class="rl-time-minute"
+				*ngFor="let minute of allMinutes">
+				{{minute}}
+			</li>
+		</ul>
+	</span>
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}
 	</div>
