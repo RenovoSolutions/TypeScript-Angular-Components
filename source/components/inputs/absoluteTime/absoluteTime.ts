@@ -68,5 +68,6 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<moment.Moment
 
 	togglePeriod(): void {
 		this.period = this.timeUtility.inversePeriod(this.period);
+		this.setValue(this.timeUtility.formatTime(this.time));
 	}
 }
