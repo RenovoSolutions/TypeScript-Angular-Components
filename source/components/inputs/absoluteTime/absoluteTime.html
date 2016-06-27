@@ -22,12 +22,12 @@
 		</ul>
 		<span class="rl-time-selected-minute"
 			  [hidden]="!minuteSelected"
-			  (click)="deselectMinute()">{{minute}}</span>
+			  (click)="deselectMinute()">{{minute | number:'2.0-0'}}</span>
 		<ul class="rl-time-minutes" [hidden]="minuteSelected">
 			<li class="rl-time-minute"
 				*ngFor="let minute of allMinutes"
 				(click)="selectMinute(minute)">
-				{{minute}}
+				{{minute | number:'2.0-0'}}
 			</li>
 		</ul>
 	</span>
