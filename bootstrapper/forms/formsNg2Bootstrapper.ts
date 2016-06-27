@@ -28,6 +28,7 @@ export class FormsBootstrapper {
 	date: moment.Moment;
 	selection: ITestItem;
 	rating: number;
+	time: string;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
@@ -43,6 +44,7 @@ export class FormsBootstrapper {
 		];
 		this.selection = this.options[0];
 		this.optionsAsync = this.wait(this.options);
+		this.time = '8:00AM';
 	}
 
 	wait(data: any): Observable<any> {

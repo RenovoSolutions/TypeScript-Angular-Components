@@ -17,6 +17,7 @@
 		<template let-option>#{{option.value}}</template>
 	</rlSelect>
 	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
+	<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
 	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
@@ -35,6 +36,7 @@
 	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
 	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
 	<rlDateTime name="dateTime1" label="DateTime"></rlDateTime>
+	<rlAbsoluteTime name="time1" label="AbsoluteTime"></rlAbsoluteTime>
 	<rlUserRating name="userRating1"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
@@ -51,6 +53,7 @@
 	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
 	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" disabled="true"></rlSelect>
 	<rlDateTime name="dateTime1" label="DateTime" disabled="true"></rlDateTime>
+	<rlAbsoluteTime name="time1" label="AbsoluteTime" disabled="true"></rlAbsoluteTime>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>

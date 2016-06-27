@@ -12,7 +12,7 @@ export const baseOutputs: string[] = ['change', 'valueChange'];
 
 export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
-	label: string;
+	label: string = '';
 	disabled: boolean;
 	value: T;
 	change: EventEmitter<T> = new EventEmitter<T>();
