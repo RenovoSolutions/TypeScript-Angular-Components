@@ -88,6 +88,7 @@ describe('AbsoluteTimeComponent', () => {
 			expect(time.hour).to.equal(3);
 			expect(time.hourSelected).to.be.true;
 			expect(time.showTimes).to.be.true;
+			sinon.assert.calledOnce(setValue);
 		});
 
 		it('should set the minute and minute selected', (): void => {
@@ -96,6 +97,7 @@ describe('AbsoluteTimeComponent', () => {
 			expect(time.minute).to.equal(30);
 			expect(time.minuteSelected).to.be.true;
 			expect(time.showTimes).to.be.true;
+			sinon.assert.calledOnce(setValue);
 		});
 
 		it('should collapse the times if the minute is already selected', (): void => {
