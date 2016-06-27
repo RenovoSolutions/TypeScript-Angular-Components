@@ -106,7 +106,12 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 	}
 
 	selectHour(hour: number): void {
+		this.hour = hour;
+		this.hourSelected = true;
 
+		if (this.minuteSelected) {
+			this.showTimes = false;
+		}
 	}
 
 	deselectHour(): void {
@@ -114,7 +119,12 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 	}
 
 	selectMinute(minute: number): void {
+		this.minute = minute;
+		this.minuteSelected = true;
 
+		if (this.hourSelected) {
+			this.showTimes = false;
+		}
 	}
 
 	deselectMinute(): void {
