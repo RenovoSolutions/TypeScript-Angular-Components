@@ -76,8 +76,8 @@ describe('AbsoluteTimeComponent', () => {
 		beforeEach((): void => {
 			time.showTimes = true;
 
-			expect(time.hour).to.be.null;
-			expect(time.minute).to.be.null;
+			expect(time.hour).to.not.exist;
+			expect(time.minute).to.not.exist;
 			expect(time.hourSelected).to.be.false;
 			expect(time.minuteSelected).to.be.false;
 		});
