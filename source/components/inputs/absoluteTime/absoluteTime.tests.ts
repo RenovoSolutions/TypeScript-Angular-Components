@@ -72,6 +72,69 @@ describe('AbsoluteTimeComponent', () => {
 		});
 	});
 
+	describe('select', (): void => {
+		beforeEach((): void => {
+			time.showTimes = true;
+
+			expect(time.hour).to.be.null;
+			expect(time.minute).to.be.null;
+			expect(time.hourSelected).to.be.false;
+			expect(time.minuteSelected).to.be.false;
+		});
+
+		it('should set the hour and hour selected', (): void => {
+			time.selectHour(3);
+
+			expect(time.hour).to.equal(3);
+			expect(time.hourSelected).to.be.true;
+			expect(time.showTimes).to.be.true;
+		});
+
+		it('should set the minute and minute selected', (): void => {
+			time.selectMinute(30);
+
+			expect(time.minute).to.equal(30);
+			expect(time.minuteSelected).to.be.true;
+			expect(time.showTimes).to.be.true;
+		});
+
+		it('should collapse the times if the minute is already selected', (): void => {
+			time.minuteSelected = true;
+			time.selectHour(3);
+
+			expect(time.showTimes).to.be.false;
+		});
+
+		it('should collapse the times if the hour is already selected', (): void => {
+			time.hourSelected = true;
+			time.selectMinute(30);
+
+			expect(time.showTimes).to.be.false;
+		});
+	});
+
+	describe('deselect', (): void => {
+		it('should hide the hour selection without changing the hour value', (): void => {
+			time.hour = 3;
+			time.hourSelected = true;
+
+			time.deselectHour();
+
+			expect(time.hour).to.equal(3);
+			expect(time.hourSelected).to.be.false;
+		});
+
+		it('should hide the minute selection without changing the minute value', (): void => {
+			time.minute = 30;
+			time.minuteSelected = true;
+
+			time.deselectMinute();
+
+			expect(time.minute).to.equal(30);
+			expect(time.minuteSelected).to.be.false;
+		});
+	});
+
 	describe('times list', (): void => {
 		it('should generate a list of hours from 1 to 12', (): void => {
 			time.ngOnInit();

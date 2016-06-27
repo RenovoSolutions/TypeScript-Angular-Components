@@ -105,6 +105,22 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 		this.setValue(this.timeUtility.formatTime(this.time));
 	}
 
+	selectHour(hour: number): void {
+
+	}
+
+	deselectHour(): void {
+
+	}
+
+	selectMinute(minute: number): void {
+
+	}
+
+	deselectMinute(): void {
+
+	}
+
 	private setSelections(): void {
 		this.hourSelected = this.hour != null;
 		this.minuteSelected = this.minute != null;
