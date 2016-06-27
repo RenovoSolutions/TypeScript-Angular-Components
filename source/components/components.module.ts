@@ -12,7 +12,7 @@ import * as commaList from './commaList/commaList.ng1';
 import * as dateTime from './inputs/dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog.ng1';
-import * as form from './form/form.ng1';
+import * as formNg1 from './form/form.ng1';
 import * as genericContainer from './genericContainer/genericContainer';
 import * as input from './inputs/input.ng1';
 import * as lazyLoad from './lazyLoad/lazyLoad';
@@ -39,6 +39,7 @@ import * as validationGroup from './validationGroup/validationGroup';
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
 import * as inputs from './inputs/index';
+import * as form from './form/form';
 
 import { defaultThemeValueName } from './componentsDefaultTheme';
 
@@ -60,6 +61,7 @@ export {
 	dateTimeStatic,
 	dialog,
 	form,
+	formNg1,
 	genericContainer,
 	inputs,
 	lazyLoad,
@@ -99,7 +101,7 @@ angular.module(moduleName, [
 	dateTime.moduleName,
 	dateTimeStatic.moduleName,
 	dialog.moduleName,
-	form.moduleName,
+	formNg1.moduleName,
 	genericContainer.moduleName,
 	lazyLoad.moduleName,
 	longClickButton.moduleName,
