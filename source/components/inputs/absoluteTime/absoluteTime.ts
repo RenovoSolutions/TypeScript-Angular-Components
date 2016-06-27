@@ -50,7 +50,6 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 			this.minute = value.minute;
 			this.period = value.period;
 		}
-		this.setSelections();
 	}
 
 	get displayTime(): string {
@@ -85,6 +84,7 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 
 		this.allHours = range(1, 13);
 		this.allMinutes = range(0, 60, this.minuteInterval);
+		this.setSelections();
 	}
 
 	toggleTimes(): void {
