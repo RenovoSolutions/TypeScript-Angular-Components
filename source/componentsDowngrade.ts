@@ -5,6 +5,7 @@ import * as angular from 'angular';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 
+import { AbsoluteTimeComponent } from './components/inputs/absoluteTime/absoluteTime';
 import { BusyComponent } from './components/busy/busy';
 import {
 	ButtonComponent,
@@ -78,6 +79,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
 	componentsDowngradeModule.filter('rlTime', downgrade.PipeDowngrader(new TimePipe(services.object.objectUtility)));
 
+	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
 	componentsDowngradeModule.directive('rlButtonNg', <any>upgradeAdapter.downgradeNg2Component(ButtonComponent));
 	componentsDowngradeModule.directive('rlButtonAsyncNg', <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
