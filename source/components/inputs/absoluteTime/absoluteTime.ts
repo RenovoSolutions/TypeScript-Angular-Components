@@ -84,7 +84,7 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 		super.ngOnInit();
 
 		this.allHours = range(1, 13);
-		this.allMinutes = range(this.minuteInterval, 60 + this.minuteInterval, this.minuteInterval);
+		this.allMinutes = range(0, 60, this.minuteInterval);
 	}
 
 	toggleTimes(): void {

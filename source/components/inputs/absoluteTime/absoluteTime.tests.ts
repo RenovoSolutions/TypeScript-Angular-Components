@@ -154,27 +154,27 @@ describe('AbsoluteTimeComponent', () => {
 
 		it('should generate a list of possible minute selections at 15 minute intervals', (): void => {
 			time.ngOnInit();
-			expect(time.allMinutes[0]).to.equal(15);
-			expect(time.allMinutes[1]).to.equal(30);
-			expect(time.allMinutes[2]).to.equal(45);
-			expect(time.allMinutes[3]).to.equal(60);
+			expect(time.allMinutes[0]).to.equal(0);
+			expect(time.allMinutes[1]).to.equal(15);
+			expect(time.allMinutes[2]).to.equal(30);
+			expect(time.allMinutes[3]).to.equal(45);
 		});
 
 		it('should generate a list of possible minute selections at the specified interval', (): void => {
 			time.minuteInterval = 5;
 			time.ngOnInit();
-			expect(time.allMinutes[0]).to.equal(5);
-			expect(time.allMinutes[1]).to.equal(10);
-			expect(time.allMinutes[2]).to.equal(15);
-			expect(time.allMinutes[3]).to.equal(20);
-			expect(time.allMinutes[4]).to.equal(25);
-			expect(time.allMinutes[5]).to.equal(30);
-			expect(time.allMinutes[6]).to.equal(35);
-			expect(time.allMinutes[7]).to.equal(40);
-			expect(time.allMinutes[8]).to.equal(45);
-			expect(time.allMinutes[9]).to.equal(50);
-			expect(time.allMinutes[10]).to.equal(55);
-			expect(time.allMinutes[11]).to.equal(60);
+			expect(time.allMinutes[0]).to.equal(0);
+			expect(time.allMinutes[1]).to.equal(5);
+			expect(time.allMinutes[2]).to.equal(10);
+			expect(time.allMinutes[3]).to.equal(15);
+			expect(time.allMinutes[4]).to.equal(20);
+			expect(time.allMinutes[5]).to.equal(25);
+			expect(time.allMinutes[6]).to.equal(30);
+			expect(time.allMinutes[7]).to.equal(35);
+			expect(time.allMinutes[8]).to.equal(40);
+			expect(time.allMinutes[9]).to.equal(45);
+			expect(time.allMinutes[10]).to.equal(50);
+			expect(time.allMinutes[11]).to.equal(55);
 		});
 	});
 });
