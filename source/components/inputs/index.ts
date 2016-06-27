@@ -5,6 +5,7 @@ import { SelectComponent } from './select/select';
 import { SpinnerComponent } from './spinner/spinner';
 import { TextareaComponent } from './textarea/textarea';
 import { TextboxComponent } from './textbox/textbox';
+import { AbsoluteTimeComponent } from './absoluteTime/absoluteTime';
 import { UserRatingComponent } from './userRating/userRating';
 
 export const INPUT_DIRECTIVES: any[] = [
@@ -15,6 +16,7 @@ export const INPUT_DIRECTIVES: any[] = [
 	SpinnerComponent,
 	TextareaComponent,
 	TextboxComponent,
+	AbsoluteTimeComponent,
 	UserRatingComponent,
 ];
 
