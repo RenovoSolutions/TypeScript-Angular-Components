@@ -43,4 +43,15 @@ describe('FormService', (): void => {
 		};
 		expect(formService.getAggregateError(form)).to.equal('error1');
 	});
+
+	it('should get error messages from nested forms', (): void => {
+		const nestedForm: any = {
+			controls: [{ rlErrorMessage: 'nestedError' }],
+		};
+		const form: any = {
+			controls: [],
+			rlNestedFormGroups: [nestedForm],
+		};
+		expect(formService.getAggregateError(form)).to.equal('nestedError');
+	});
 });
