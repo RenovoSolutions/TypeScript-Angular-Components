@@ -35,6 +35,7 @@ describe('AbsoluteTimeComponent', () => {
 				hour: 3,
 				minute: 30,
 			};
+			time.ngOnInit();
 
 			expect(time.hourSelected).to.be.true;
 			expect(time.minuteSelected).to.be.true;
