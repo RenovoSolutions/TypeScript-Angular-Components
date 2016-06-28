@@ -34,7 +34,7 @@ import * as textbox from './inputs/textbox/textbox.ng1';
 import * as typeahead from './inputs/typeahead/typeahead.ng1';
 import * as typeaheadList from './inputs/typeaheadList/typeaheadList.ng1';
 import * as userRating from './inputs/userRating/userRating.ng1';
-import * as validationGroup from './validationGroup/validationGroup';
+import * as validationGroup from './validationGroup/validationGroup.ng1';
 
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';

@@ -49,7 +49,7 @@ export class ValidationGroupController {
 
 let validationGroup: angular.IComponentOptions = {
 	transclude: true,
-	template: require('./validationGroup.html'),
+	template: require('./validationGroup.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'group',
 	bindings: {
