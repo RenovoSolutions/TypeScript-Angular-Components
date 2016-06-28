@@ -42,10 +42,11 @@ import * as commaList from './commaList/commaList';
 import * as inputs from './inputs/index';
 import * as form from './form/form';
 
-import { defaultThemeValueName } from './componentsDefaultTheme';
+import { defaultThemeValueName, defaultThemeToken } from './componentsDefaultTheme';
 
 export {
 	defaultThemeValueName,
+	defaultThemeToken,
 
 	busy,
 	button,
