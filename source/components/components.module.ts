@@ -8,7 +8,7 @@ import * as buttonSubmit from './buttons/buttonSubmit/buttonSubmit.ng1';
 import * as buttonToggle from './buttons/buttonToggle/buttonToggle.ng1';
 import * as cardContainerNg1 from './cardContainer/cardContainer.module';
 import * as checkbox from './inputs/checkbox/checkbox.ng1';
-import * as commaList from './commaList/commaList.ng1';
+import * as commaListNg1 from './commaList/commaList.ng1';
 import * as dateTime from './inputs/dateTime/dateTime.ng1';
 import * as dateTimeStatic from './dateTimeStatic/dateTimeStatic';
 import * as dialog from './dialog/dialog.ng1';
@@ -38,6 +38,7 @@ import * as validationGroup from './validationGroup/validationGroup';
 
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
+import * as commaList from './commaList/commaList';
 import * as inputs from './inputs/index';
 import * as form from './form/form';
 
@@ -57,6 +58,7 @@ export {
 	cardContainerNg1,
 	checkbox,
 	commaList,
+	commaListNg1,
 	dateTime,
 	dateTimeStatic,
 	dialog,
@@ -97,7 +99,7 @@ angular.module(moduleName, [
 	buttonToggle.moduleName,
 	cardContainerNg1.moduleName,
 	checkbox.moduleName,
-	commaList.moduleName,
+	commaListNg1.moduleName,
 	dateTime.moduleName,
 	dateTimeStatic.moduleName,
 	dialog.moduleName,
