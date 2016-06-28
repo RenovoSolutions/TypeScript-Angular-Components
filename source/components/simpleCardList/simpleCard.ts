@@ -36,9 +36,9 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	alternatingClass: string = '';
 	private boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
-			, @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(@Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
+			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
 			, @Optional() list: SimpleCardListComponent<T>) {
 		super(notification, formService);
 		this.list = list || this.emptyList();

@@ -21,7 +21,7 @@ describe('SelectableCardComponent', () => {
 			registerCard: sinon.spy(),
 		};
 
-		card = new SelectableCardComponent(new __boolean.BooleanUtility(), new __notification.NotificationService(<any>{}, <any>{}), new FormService(), <any>cardContainer);
+		card = new SelectableCardComponent(new __notification.NotificationService(<any>{}, <any>{}), new FormService(), new __boolean.BooleanUtility(), <any>cardContainer);
 		card.item = { viewData: {} };
 	});
 

@@ -32,11 +32,11 @@ export class SelectableCardComponent<T extends ISelectableItem> extends CardComp
 		return <SelectableCardContainerComponent<T>>this.cardContainer;
 	}
 
-	constructor( @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
-			, @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
+			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(boolean, notification, formService, cardContainer);
+		super(notification, formService, boolean, cardContainer);
 	}
 
 	setSelected(value: boolean): void {

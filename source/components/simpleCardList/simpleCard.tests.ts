@@ -23,11 +23,11 @@ describe('SimpleCardComponent', () => {
 			openCard: sinon.spy(() => true),
 		};
 
-		card = new SimpleCardComponent(new __boolean.BooleanUtility, <any>{}, null, <any>list);
+		card = new SimpleCardComponent(<any>{}, null, new __boolean.BooleanUtility, <any>list);
 	});
 
 	it('should create an empty list if no list is provided', (): void => {
-		card = new SimpleCardComponent(new __boolean.BooleanUtility, null, null, null);
+		card = new SimpleCardComponent(null, null, new __boolean.BooleanUtility, null);
 		expect(card.list).to.exist;
 	});
 
@@ -85,7 +85,7 @@ describe('SimpleCardComponent', () => {
 		});
 
 		it('should be able to open with an empty list', (): void => {
-			card = new SimpleCardComponent(new __boolean.BooleanUtility, null, null, null);
+			card = new SimpleCardComponent(null, null, new __boolean.BooleanUtility, null);
 			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 			card.ngOnInit();
