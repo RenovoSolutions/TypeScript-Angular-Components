@@ -8,7 +8,7 @@ export class FormService {
 		const allControlsValid = every(form.controls, (control: Control): boolean => {
 			return control.valid;
 		})
-		const nestedFormsValid = every(form.rlNestedForms, (nestedForm: IControlGroup): boolean => {
+		const nestedFormsValid = every(form.rlNestedFormGroups, (nestedForm: IControlGroup): boolean => {
 			return this.isFormValid(nestedForm);
 		});
 		return allControlsValid && nestedFormsValid;

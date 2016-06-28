@@ -38,7 +38,7 @@ export class FormComponent {
 		this.notification = notification;
 		this.formService = formService;
 		this.form = <IControlGroup>new ControlGroup({});
-		this.form.rlNestedForms = [];
+		this.form.rlNestedFormGroups = [];
 		if (!this.save) {
 			this.save = <ISaveAction>() => Promise.resolve();
 		}

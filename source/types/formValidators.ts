@@ -6,7 +6,7 @@ export interface IControlValidator extends Control {
 }
 
 export interface IControlGroup extends ControlGroup {
-	rlNestedForms: IControlGroup[];
+	rlNestedFormGroups: IControlGroup[];
 }
 
 export interface IFormValidator extends angular.IFormController {

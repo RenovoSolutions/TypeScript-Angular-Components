@@ -27,7 +27,7 @@ describe('FormService', (): void => {
 		};
 		const form: any = {
 			controls: [{ valid: true }],
-			rlNestedForms: [nestedForm]
+			rlNestedFormGroups: [nestedForm]
 		};
 		expect(formService.isFormValid(form)).to.be.false;
 	});
