@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Inject } from '@angular/core';
-import { NgForm, ControlGroup, FormBuilder, FORM_DIRECTIVES } from '@angular/common';
+import { NgForm, FormGroup, FormBuilder, FORM_DIRECTIVES } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { services, downgrade } from 'typescript-angular-utilities';
@@ -37,7 +37,7 @@ export class FormComponent {
 			, formService: FormService) {
 		this.notification = notification;
 		this.formService = formService;
-		this.form = <IControlGroup>new ControlGroup({});
+		this.form = <IControlGroup>new FormGroup({});
 		this.form.rlNestedFormGroups = [];
 		if (!this.save) {
 			this.save = <ISaveAction>() => Promise.resolve();

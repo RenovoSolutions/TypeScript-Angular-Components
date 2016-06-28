@@ -1,5 +1,5 @@
 import { Injectable, Inject, Provider } from '@angular/core';
-import { Control } from '@angular/common';
+import { FormControl } from '@angular/forms';
 import { first, values, each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -29,14 +29,14 @@ export class ComponentValidator {
 		});
 	}
 
-	afterInit(control: Control): void {
+	afterInit(control: FormControl): void {
 		control.statusChanges.subscribe((value: any): void => {
 			this.setError(control);
 		});
 		this.setError(control);
 	}
 
-	validate(control: Control): any {
+	validate(control: FormControl): any {
 		if (this.validator.validate(control.value)) {
 			return null;
 		}
