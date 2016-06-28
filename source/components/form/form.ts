@@ -7,6 +7,7 @@ import __notification = services.notification;
 
 import { IWaitValue } from '../busy/busy';
 import { FormService } from '../../services/form/form.service';
+import { IControlGroup } from '../../types/formValidators';
 
 export interface IBaseFormInputs {
 	save: string;
@@ -28,7 +29,7 @@ export interface ISaveAction<T> {
 export class FormComponent {
 	@Input() save: ISaveAction<any>;
 
-	form: ControlGroup;
+	form: IControlGroup;
 	private notification: __notification.INotificationService;
 	private formService: FormService;
 
@@ -36,7 +37,8 @@ export class FormComponent {
 			, formService: FormService) {
 		this.notification = notification;
 		this.formService = formService;
-		this.form = new ControlGroup({});
+		this.form = <IControlGroup>new ControlGroup({});
+		this.form.rlNestedForms = [];
 		if (!this.save) {
 			this.save = <ISaveAction>() => Promise.resolve();
 		}

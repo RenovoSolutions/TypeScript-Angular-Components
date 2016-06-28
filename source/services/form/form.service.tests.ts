@@ -21,6 +21,17 @@ describe('FormService', (): void => {
 		expect(formService.isFormValid(form)).to.be.false;
 	});
 
+	it('should recursively validate nested forms', (): void => {
+		const nestedForm: any = {
+			controls: [{ valid: true }, { valid: false }],
+		};
+		const form: any = {
+			controls: [{ valid: true }],
+			rlNestedForms: [nestedForm]
+		};
+		expect(formService.isFormValid(form)).to.be.false;
+	});
+
 	it('should get the first error message from a child of the form', (): void => {
 		const form: any = {
 			controls: [
