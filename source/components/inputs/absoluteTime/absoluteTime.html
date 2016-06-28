@@ -1,4 +1,4 @@
-<div class="field"
+<div class="field input-group"
 	[class.error]="!control.valid"
 	(offClick)="closeTimes()">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
@@ -8,29 +8,40 @@
 		   (click)="toggleTimes()"
 		   [placeholder]="label"
 		   [disabled]="disabled" />
-	<span class="rl-time-period" (click)="togglePeriod()">{{period}}</span>
-	<span class="rl-times" *ngIf="showTimes">
-		<span class="rl-time-selected-hour"
-			  [hidden]="!hourSelected"
-			  (click)="deselectHour()">{{hour}}</span>
-		<ul class="rl-time-hours" [hidden]="hourSelected">
-			<li class="rl-time-hour"
-				*ngFor="let hour of allHours"
-				(click)="selectHour(hour)">
-				{{hour}}
-			</li>
-		</ul>
-		<span class="rl-time-selected-minute"
-			  [hidden]="!minuteSelected"
-			  (click)="deselectMinute()">{{minute | number:'2.0-0'}}</span>
-		<ul class="rl-time-minutes" [hidden]="minuteSelected">
-			<li class="rl-time-minute"
-				*ngFor="let minute of allMinutes"
-				(click)="selectMinute(minute)">
-				{{minute | number:'2.0-0'}}
-			</li>
-		</ul>
-	</span>
+	<div class="input-group-btn">
+		<button class="btn btn-default rl-time-period"
+				(click)="togglePeriod()">{{period}}</button>
+	</div>
+	<div class="rl-times" *ngIf="showTimes">
+		<div class="row">
+			<div class="col-xs-6 rl-time-group">
+				<div class="rl-time-title">Hour</div>
+				<div class="rl-time-selected-hour"
+					  [hidden]="!hourSelected"
+					  (click)="deselectHour()">{{hour}}</div>
+				<ul class="rl-time-hours" [hidden]="hourSelected">
+					<li class="rl-time-hour"
+						*ngFor="let hour of allHours"
+						(click)="selectHour(hour)">
+						{{hour}}
+					</li>
+				</ul>
+			</div>
+			<div class="col-xs-6 rl-time-group">
+				<div class="rl-time-title">Minute</div>
+				<div class="rl-time-selected-minute"
+					  [hidden]="!minuteSelected"
+					  (click)="deselectMinute()">{{minute | number:'2.0-0'}}</div>
+				<ul class="rl-time-minutes" [hidden]="minuteSelected">
+					<li class="rl-time-minute"
+						*ngFor="let minute of allMinutes"
+						(click)="selectMinute(minute)">
+						{{minute | number:'2.0-0'}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}
 	</div>
