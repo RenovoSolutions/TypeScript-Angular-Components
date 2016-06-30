@@ -58,6 +58,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	setValue(value: T): void {
 		if (!this.disabled) {
 			this.value = value;
+			this.control.markAsDirty();
 			this.control.updateValue(this.value);
 			this.change.emit(this.value);
 		}

@@ -19,6 +19,7 @@ interface IGuidMock {
 interface IControlMock {
 	valueChanges?: Subject<number>;
 	updateValue?: Sinon.SinonSpy;
+	markAsDirty?: Sinon.SinonSpy;
 }
 
 describe('base input', (): void => {
@@ -83,7 +84,7 @@ describe('base input', (): void => {
 	});
 
 	it('should update the value, update the control value, and emit the changes', (): void => {
-		const control: IControlMock = { updateValue: sinon.spy() };
+		const control: IControlMock = { updateValue: sinon.spy(), markAsDirty: sinon.spy() };
 		input.control = <any>control;
 
 		const changeSpy: Sinon.SinonSpy = sinon.spy();
@@ -92,6 +93,7 @@ describe('base input', (): void => {
 		input.setValue(5);
 
 		expect(input.value).to.equal(5);
+		sinon.assert.calledOnce(control.markAsDirty);
 		sinon.assert.calledOnce(control.updateValue);
 		sinon.assert.calledWith(control.updateValue, 5);
 		sinon.assert.calledOnce(changeSpy);
