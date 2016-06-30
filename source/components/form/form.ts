@@ -69,7 +69,7 @@ export class FormComponent {
 		return this.save(this.form.value);
 	}
 
-	private markAsPristine(): void {
+	markAsPristine(): void {
 		(<any>this.form)._pristine = true;
 		(<any>this.form)._dirty = false;
 	}

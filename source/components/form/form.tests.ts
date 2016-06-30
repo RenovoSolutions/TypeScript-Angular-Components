@@ -75,30 +75,31 @@ describe('FormComponent', (): void => {
 
 		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
 			const saveMock = mock.promise();
+			const setPristineSpy = sinon.spy();
 			form.saveForm = saveMock;
 			formService.isFormValid = <any>(() => true);
-			form.form = <any>{ _dirty: true, _pristine: false };
+			form.markAsPristine = setPristineSpy;
+			form.form = <any>{};
 
 			form.submit();
 
-			expect((<any>form.form)._dirty).to.be.true;
-			expect((<any>form.form)._pristine).to.be.false;
+			sinon.assert.notCalled(setPristineSpy);
 
 			saveMock.flush();
 
-			expect((<any>form.form)._dirty).to.be.false;
-			expect((<any>form.form)._pristine).to.be.true;
+			sinon.assert.calledOnce(setPristineSpy);
 		}));
 
 		it('should mark the form as pristine immediately if no async action is returned', (): void => {
 			form.saveForm = <any>(() => null);
+			const setPristineSpy = sinon.spy();
 			formService.isFormValid = <any>(() => true);
-			form.form = <any>{ _dirty: true, _pristine: false };
+			form.markAsPristine = setPristineSpy;
+			form.form = <any>{};
 
 			form.submit();
 
-			expect((<any>form.form)._dirty).to.be.false;
-			expect((<any>form.form)._pristine).to.be.true;
+			sinon.assert.calledOnce(setPristineSpy);
 		});
 	});
 });
