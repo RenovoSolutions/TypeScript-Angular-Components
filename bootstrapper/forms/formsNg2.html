@@ -1,7 +1,7 @@
 <h3>Forms</h3>
 <h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</h4>
 <h5>Form with two-way bindings</h5>
-<rlForm [save]="waitCallback">
+<rlForm #testForm [save]="saveTestForm">
 	<rlForm>
 		<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
 		<rlRadioGroup [(value)]="selection" label="Spinner">

@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -36,6 +36,8 @@ export class FormsBootstrapper {
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
 
+	@ViewChild('testForm') testForm: FormComponent;
+
 	constructor(@Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService) {
 		timezoneService.setCurrentTimezone('-05:00');
 
@@ -68,5 +70,12 @@ export class FormsBootstrapper {
 				resolve();
 			}, 1000);
 		});
+	}
+
+	saveTestForm = (data): any => {
+		if (this.testForm.form.dirty) {
+			return this.waitCallback(data);
+		}
+		return false;
 	}
 }
