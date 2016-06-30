@@ -34,13 +34,14 @@ import * as textbox from './inputs/textbox/textbox.ng1';
 import * as typeahead from './inputs/typeahead/typeahead.ng1';
 import * as typeaheadList from './inputs/typeaheadList/typeaheadList.ng1';
 import * as userRating from './inputs/userRating/userRating.ng1';
-import * as validationGroup from './validationGroup/validationGroup.ng1';
+import * as validationGroupNg1 from './validationGroup/validationGroup.ng1';
 
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
 import * as commaList from './commaList/commaList';
 import * as inputs from './inputs/index';
 import * as form from './form/form';
+import * as validationGroup from './validationGroup/validationGroup';
 
 import { defaultThemeValueName, defaultThemeToken } from './componentsDefaultTheme';
 
@@ -87,6 +88,7 @@ export {
 	typeaheadList,
 	userRating,
 	validationGroup,
+	validationGroupNg1,
 };
 
 export let moduleName: string = 'rl.ui.components';
@@ -125,5 +127,5 @@ angular.module(moduleName, [
 	typeahead.moduleName,
 	typeaheadList.moduleName,
 	userRating.moduleName,
-	validationGroup.moduleName,
+	validationGroupNg1.moduleName,
 ]);
