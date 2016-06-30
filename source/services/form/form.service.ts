@@ -23,7 +23,7 @@ export class FormService {
 		if (errors.length > 0) {
 			return first(errors);
 		} else {
-			return first(map(form.rlNestedFormGroups, nestedForm => this.getAggregateError(nestedForm));
+			return first(map(form.rlNestedFormGroups, nestedForm => this.getAggregateError(nestedForm)));
 		}
 	}
 }
