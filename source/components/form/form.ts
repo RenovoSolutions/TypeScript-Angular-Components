@@ -70,6 +70,7 @@ export class FormComponent {
 	}
 
 	markAsPristine(): void {
+		// TODO: remove this once angular provides a way to mark as pristine or reset the form
 		(<any>this.form)._pristine = true;
 		(<any>this.form)._dirty = false;
 	}
