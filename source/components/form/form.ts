@@ -1,6 +1,7 @@
 import { Component, ViewChild, Input, Inject } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { isBoolean } from 'lodash';
 
 import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -46,7 +47,9 @@ export class FormComponent {
 
 	submit(): IWaitValue<any> {
 		if (this.validate()) {
-			return this.saveForm();
+			const waitOn = this.saveForm();
+			this.resetAfterSubmit(waitOn);
+			return waitOn;
 		} else {
 			this.notification.warning(this.formService.getAggregateError(this.form));
 			return false;
@@ -59,5 +62,19 @@ export class FormComponent {
 
 	saveForm(): IWaitValue<any> {
 		return this.save(this.form.value);
+	}
+
+	private markAsPristine(): void {
+		(<any>this.form)._pristine = true;
+		(<any>this.form)._dirty = false;
+	}
+
+	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
+		if (waitOn == null || isBoolean(waitOn)) {
+			this.markAsPristine();
+			return;
+		}
+
+		Observable.from(<any>waitOn).subscribe(() => this.markAsPristine());
 	}
 }

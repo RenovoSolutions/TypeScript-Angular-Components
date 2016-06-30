@@ -1,5 +1,8 @@
 import { FormComponent } from './form';
 import { isFunction } from 'lodash';
+import { services } from 'typescript-angular-utilities';
+import mock = services.test.mock;
+import fakeAsync = services.test.fakeAsync;
 
 interface INotificationMock {
 	warning: Sinon.SinonSpy;
@@ -68,6 +71,34 @@ describe('FormComponent', (): void => {
 			sinon.assert.calledOnce(getErrorSpy);
 			sinon.assert.calledOnce(notification.warning);
 			sinon.assert.calledWith(notification.warning, 'error');
+		});
+
+		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
+			const saveMock = mock.promise();
+			form.saveForm = saveMock;
+			formService.isFormValid = <any>(() => true);
+			form.form = <any>{ _dirty: true, _pristine: false };
+
+			form.submit();
+
+			expect((<any>form.form)._dirty).to.be.true;
+			expect((<any>form.form)._pristine).to.be.false;
+
+			saveMock.flush();
+
+			expect((<any>form.form)._dirty).to.be.false;
+			expect((<any>form.form)._pristine).to.be.true;
+		}));
+
+		it('should mark the form as pristine immediately if no async action is returned', (): void => {
+			form.saveForm = <any>(() => null);
+			formService.isFormValid = <any>(() => true);
+			form.form = <any>{ _dirty: true, _pristine: false };
+
+			form.submit();
+
+			expect((<any>form.form)._dirty).to.be.false;
+			expect((<any>form.form)._pristine).to.be.true;
 		});
 	});
 });
