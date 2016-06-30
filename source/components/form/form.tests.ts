@@ -22,7 +22,7 @@ describe('FormComponent', (): void => {
 		notification = { warning: sinon.spy() };
 		formService = {};
 
-		form = new FormComponent(<any>notification, <any>formService);
+		form = new FormComponent(<any>notification, <any>formService, null);
 		form.form = <any>{};
 	});
 
