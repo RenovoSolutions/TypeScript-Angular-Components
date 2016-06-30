@@ -99,4 +99,15 @@ describe('ValidationGroupComponent', (): void => {
 		sinon.assert.calledOnce(control.updateValue);
 		sinon.assert.calledWith(control.updateValue, 4);
 	});
+
+	it('should provide an external API for triggering a validation change', (): void => {
+		const control: IControlMock = { updateValue: sinon.spy() };
+		group.validationControl = <any>control;
+		group.model = 4;
+
+		group.triggerChange();
+
+		sinon.assert.calledOnce(control.updateValue);
+		sinon.assert.calledWith(control.updateValue, 4);
+	});
 });
