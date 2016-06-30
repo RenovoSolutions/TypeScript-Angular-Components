@@ -18,7 +18,9 @@
 	</rlSelect>
 	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 	<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
-	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+	<rlValidationGroup [model]="rating" [validator]="validator">
+		<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+	</rlValidationGroup>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
 	{{text}}
