@@ -62,11 +62,11 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 
 	ngOnChanges(changes: IGroupChanges): void {
 		if (changes.model) {
-			this.validationControl.updateValue(changes.model.currentValue);
+			this.validationControl.updateValueAndValidity(changes.model.currentValue);
 		}
 	}
 
 	checkValidity(): void {
-		this.validationControl.updateValue(this.model);
+		this.validationControl.updateValueAndValidity(this.model);
 	}
 }

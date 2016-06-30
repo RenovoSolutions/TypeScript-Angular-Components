@@ -6,7 +6,6 @@ import { ValidationGroupComponent, IGroupChanges } from './validationGroup';
 
 interface IControlMock {
 	updateValueAndValidity?: Sinon.SinonSpy;
-	updateValue?: Sinon.SinonSpy;
 }
 
 interface IComponentValidatorMock {
@@ -89,25 +88,25 @@ describe('ValidationGroupComponent', (): void => {
 	});
 
 	it('should update the control value with changes from the outside', (): void => {
-		const control: IControlMock = { updateValue: sinon.spy() };
+		const control: IControlMock = { updateValueAndValidity: sinon.spy() };
 		group.validationControl = <any>control;
 
 		group.ngOnChanges({
 			model: <any>{ currentValue: 4 },
 		});
 
-		sinon.assert.calledOnce(control.updateValue);
-		sinon.assert.calledWith(control.updateValue, 4);
+		sinon.assert.calledOnce(control.updateValueAndValidity);
+		sinon.assert.calledWith(control.updateValueAndValidity, 4);
 	});
 
 	it('should provide an external API for triggering a validation change', (): void => {
-		const control: IControlMock = { updateValue: sinon.spy() };
+		const control: IControlMock = { updateValueAndValidity: sinon.spy() };
 		group.validationControl = <any>control;
 		group.model = 4;
 
 		group.checkValidity();
 
-		sinon.assert.calledOnce(control.updateValue);
-		sinon.assert.calledWith(control.updateValue, 4);
+		sinon.assert.calledOnce(control.updateValueAndValidity);
+		sinon.assert.calledWith(control.updateValueAndValidity, 4);
 	});
 });
