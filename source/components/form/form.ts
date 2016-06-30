@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Inject } from '@angular/core';
-import { NgForm, FormGroup, FormBuilder, FORM_DIRECTIVES } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { services, downgrade } from 'typescript-angular-utilities';
@@ -24,7 +24,7 @@ export interface ISaveAction<T> {
 @Component({
 	selector: 'rlForm',
 	template: require('./form.html'),
-	directives: [FORM_DIRECTIVES],
+	directives: [FormGroupDirective],
 })
 export class FormComponent {
 	@Input() save: ISaveAction<any>;
