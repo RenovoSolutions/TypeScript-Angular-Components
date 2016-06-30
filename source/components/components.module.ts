@@ -36,11 +36,14 @@ import * as typeaheadListNg1 from './inputs/typeaheadList/typeaheadList.ng1';
 import * as userRatingNg1 from './inputs/userRating/userRating.ng1';
 import * as validationGroupNg1 from './validationGroup/validationGroup.ng1';
 
+import * as busy from './busy/busy';
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
 import * as commaList from './commaList/commaList';
 import * as inputs from './inputs/index';
 import * as form from './form/form';
+import * as simpleCardList from './simpleCardList/index';
+import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as validationGroup from './validationGroup/validationGroup';
 
 import { defaultThemeValueName, defaultThemeToken } from './componentsDefaultTheme';
@@ -84,11 +87,14 @@ export {
 	userRatingNg1,
 	validationGroupNg1,
 
+	busy,
 	buttons,
 	cardContainer,
 	commaList,
 	inputs,
 	form,
+	simpleCardList,
+	stringWithWatermark,
 	validationGroup,
 };
 
