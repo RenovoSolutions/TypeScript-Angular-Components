@@ -1,4 +1,4 @@
-import { Component, Inject, Provider, forwardRef } from '@angular/core';
+import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -34,9 +34,10 @@ export class SelectableCardComponent<T extends ISelectableItem> extends CardComp
 
 	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
+			, @Optional() @SkipSelf() parentForm: FormComponent
 			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, formService, boolean, cardContainer);
+		super(notification, formService, parentForm, boolean, cardContainer);
 	}
 
 	setSelected(value: boolean): void {

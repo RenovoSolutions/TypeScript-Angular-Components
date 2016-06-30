@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, Inject } from '@angular/core';
+import { Component, ViewChild, Input, Inject, Optional, SkipSelf } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { isBoolean } from 'lodash';
@@ -35,13 +35,18 @@ export class FormComponent {
 	private formService: FormService;
 
 	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
-			, formService: FormService) {
+			, formService: FormService
+			, @Optional() @SkipSelf() parentForm: FormComponent) {
 		this.notification = notification;
 		this.formService = formService;
 		this.form = <IControlGroup>new FormGroup({});
 		this.form.rlNestedFormGroups = [];
 		if (!this.save) {
 			this.save = <ISaveAction>() => Promise.resolve();
+		}
+
+		if (parentForm) {
+			parentForm.form.rlNestedFormGroups.push(this.form);
 		}
 	}
 
