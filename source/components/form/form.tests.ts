@@ -42,6 +42,19 @@ describe('FormComponent', (): void => {
 		sinon.assert.calledWith(saveSpy, value);
 	});
 
+	it('should nest the form in a parent form if one is found', (): void => {
+		const pushSpy = sinon.spy();
+		const parentForm: any = {
+			form: {
+				rlNestedFormGroups: { push: pushSpy },
+			},
+		};
+		form = new FormComponent(<any>notification, <any>formService, parentForm);
+
+		sinon.assert.calledOnce(pushSpy);
+		sinon.assert.calledWith(pushSpy, form.form);
+	});
+
 	describe('submit', (): void => {
 		it('should save the form if valid', (): void => {
 			const saveSpy = sinon.spy();
@@ -79,7 +92,6 @@ describe('FormComponent', (): void => {
 			form.saveForm = saveMock;
 			formService.isFormValid = <any>(() => true);
 			form.markAsPristine = setPristineSpy;
-			form.form = <any>{};
 
 			form.submit();
 
@@ -95,7 +107,6 @@ describe('FormComponent', (): void => {
 			const setPristineSpy = sinon.spy();
 			formService.isFormValid = <any>(() => true);
 			form.markAsPristine = setPristineSpy;
-			form.form = <any>{};
 
 			form.submit();
 
