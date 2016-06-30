@@ -66,7 +66,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 		}
 	}
 
-	triggerChange(): void {
+	checkValidity(): void {
 		this.validationControl.updateValue(this.model);
 	}
 }

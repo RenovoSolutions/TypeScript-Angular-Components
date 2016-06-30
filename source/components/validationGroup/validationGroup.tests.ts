@@ -105,7 +105,7 @@ describe('ValidationGroupComponent', (): void => {
 		group.validationControl = <any>control;
 		group.model = 4;
 
-		group.triggerChange();
+		group.checkValidity();
 
 		sinon.assert.calledOnce(control.updateValue);
 		sinon.assert.calledWith(control.updateValue, 4);
