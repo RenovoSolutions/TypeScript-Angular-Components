@@ -1,4 +1,4 @@
-<div class="multi-step checked" ng-class="{ 'numbered': breadcrumb.numbered }">
+<div class="multi-step" ng-class="{ 'numbered': breadcrumb.numbered, 'checked': breadcrumb.checked }">
 	<ol>
 		<li ng-repeat="step in breadcrumb.steps" ng-click="breadcrumb.onClick(step)"
 			ng-class="{ 'completed': step.getCompleted(), 'current': step.isCurrent, 'active': !step.inactive && !breadcrumb.anyLoading() }">

@@ -115,6 +115,7 @@ let multiStepIndicator: angular.IComponentOptions = {
 	bindings: {
 		steps: '=',
 		numbered: '=',
+		checked: '=',
 	},
 };
 
