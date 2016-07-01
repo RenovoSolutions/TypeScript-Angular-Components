@@ -44,7 +44,7 @@ export class PageSizeController {
 
 const pageSize: angular.IComponentOptions = {
 	require: { cardContainer: '?^^rlCardContainer' },
-	template: require('./pageSize.html'),
+	template: require('./pageSize.ng1.html'),
 	controller: controllerName,
 	controllerAs: 'controller',
 };
