@@ -1,6 +1,9 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
+import { services, downgrade } from 'typescript-angular-utilities';
+import __timeout = services.timeout;
+
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger, Trigger } from './trigger';
 
@@ -33,9 +36,9 @@ export interface ITriggerService {
 class TriggerService implements ITriggerService {
 	triggers: ITriggers;
 
-	constructor($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService) {
+	constructor($rootScope: angular.IRootScopeService, timeoutService: __timeout.TimeoutService) {
 		this.triggers = {
-			onChange: new OnChangeTrigger($rootScope, $timeout),
+			onChange: new OnChangeTrigger($rootScope, timeoutService),
 			none: new Trigger<void>('none'),
 		};
 	}
@@ -57,11 +60,11 @@ export interface ITriggerServiceFactory {
 	getInstance(): ITriggerService;
 }
 
-triggerServiceFactory.$inject = ['$rootScope', '$timeout'];
-function triggerServiceFactory($rootScope: angular.IRootScopeService, $timeout: angular.ITimeoutService): ITriggerServiceFactory {
+triggerServiceFactory.$inject = ['$rootScope', downgrade.timeoutServiceName];
+function triggerServiceFactory($rootScope: angular.IRootScopeService, timeoutService: __timeout.TimeoutService): ITriggerServiceFactory {
 	return {
 		getInstance(): ITriggerService {
-			return new TriggerService($rootScope, $timeout);
+			return new TriggerService($rootScope, timeoutService);
 		},
 	};
 }
