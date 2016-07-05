@@ -1,5 +1,6 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
+import __timeout = services.timeout;
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger } from './trigger';
@@ -26,7 +27,7 @@ describe('onChangeTrigger', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
-	let $timeout: ng.ITimeoutService;
+	let timeoutService: __timeout.TimeoutService;
 	let emptyChangeListener: { (): IListener };
 
 	beforeEach(() => {
@@ -46,17 +47,16 @@ describe('onChangeTrigger', () => {
 
 		emptyChangeListener = (): IListener => { return (): void => { return; }; };
 
-		let services: any = test.angularFixture.inject('$q', '$rootScope', '$timeout');
+		let services: any = test.angularFixture.inject('$q', '$rootScope');
 		let $q: ng.IQService = services.$q;
 		$rootScope = services.$rootScope;
-		$timeout = services.$timeout;
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 
-		trigger = new OnChangeTrigger($rootScope, $timeout);
+		trigger = new OnChangeTrigger($rootScope, new __timeout.TimeoutService());
 	});
 
-	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', (): void => {
+	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', test.fakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -69,12 +69,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush(1000);
+		test.tick(1000);
+		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);
-	});
+	}));
 
-	it('should not save if the form is dirty but invalid', (): void => {
+	it('should not save if the form is dirty but invalid', test.fakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -86,12 +87,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush(1000);
+		test.tick(1000);
+		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
-	});
+	}));
 
-	it('should not save if the form is valid but not dirty', (): void => {
+	it('should not save if the form is valid but not dirty', test.fakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -103,12 +105,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush(1000);
+		test.tick(1000);
+		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
-	});
+	}));
 
-	it('should not save if the form is dirty and invalid if saveWhenInvalid was specified', (): void => {
+	it('should not save if the form is dirty and invalid if saveWhenInvalid was specified', test.fakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -121,12 +124,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush(1000);
+		test.tick(1000);
+		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);
-	});
+	}));
 
-	it('should reset the debounce timer on form changes', (): void => {
+	it.only('should reset the debounce timer on form changes', test.fakeAsync((): void => {
 		let triggerChange: { (): void };
 		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {
 			triggerChange = callback;
@@ -145,16 +149,19 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		$timeout.flush(500);
+		test.tick(500);
+		test.flushMicrotasks();
 
 		triggerChange();
 
-		$timeout.flush(500);
+		test.tick(500);
+		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
 
-		$timeout.flush(500);
+		test.tick(500);
+		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);
-	});
+	}));
 });
