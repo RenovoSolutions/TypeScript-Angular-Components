@@ -1,24 +1,28 @@
 <h3>Forms</h3>
 <h4><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/form/form.md">rlForm</a>:</h4>
 <h5>Form with two-way bindings</h5>
-<rlForm [save]="waitCallback">
-	<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
-	<rlRadioGroup [(value)]="selection" label="Spinner">
-		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
-		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
-		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
-	</rlRadioGroup>
-	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
-	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
-	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
-	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
-	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
-	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
-		<template let-option>#{{option.value}}</template>
-	</rlSelect>
-	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
-	<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
-	<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+<rlForm #testForm [save]="saveTestForm">
+	<rlForm>
+		<rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox>
+		<rlRadioGroup [(value)]="selection" label="Spinner">
+			<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+			<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+			<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+		</rlRadioGroup>
+		<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
+		<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
+		<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
+		<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
+		<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
+		<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
+			<template let-option>#{{option.value}}</template>
+		</rlSelect>
+		<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
+		<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
+		<rlValidationGroup [model]="rating" [validator]="validator">
+			<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+		</rlValidationGroup>
+	</rlForm>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 	{{checked}}
 	{{text}}

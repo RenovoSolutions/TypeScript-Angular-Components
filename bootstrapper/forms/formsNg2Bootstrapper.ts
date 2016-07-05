@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -8,6 +8,7 @@ import __timezone = services.timezone;
 import { FormComponent } from '../../source/components/form/form';
 import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
+import { ValidationGroupComponent } from '../../source/components/validationGroup/validationGroup';
 
 export interface ITestItem {
 	value: number;
@@ -20,6 +21,7 @@ export interface ITestItem {
 		FormComponent,
 		ButtonSubmitComponent,
 		INPUT_DIRECTIVES,
+		ValidationGroupComponent,
 	],
 })
 export class FormsBootstrapper {
@@ -29,9 +31,12 @@ export class FormsBootstrapper {
 	selection: ITestItem;
 	rating: number;
 	time: string;
+	validator: any;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
+
+	@ViewChild('testForm') testForm: FormComponent;
 
 	constructor(@Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService) {
 		timezoneService.setCurrentTimezone('-05:00');
@@ -45,6 +50,11 @@ export class FormsBootstrapper {
 		this.selection = this.options[0];
 		this.optionsAsync = this.wait(this.options);
 		this.time = '8:00AM';
+
+		this.validator = {
+			validate: () => this.rating >= 3,
+			errorMessage: 'You must give at least 3 stars',
+		};
 	}
 
 	wait(data: any): Observable<any> {
@@ -60,5 +70,12 @@ export class FormsBootstrapper {
 				resolve();
 			}, 1000);
 		});
+	}
+
+	saveTestForm = (data): any => {
+		if (this.testForm.form.dirty) {
+			return this.waitCallback(data);
+		}
+		return false;
 	}
 }

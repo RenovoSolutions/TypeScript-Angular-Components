@@ -1,63 +1,72 @@
-import * as angular from 'angular';
-import * as _ from 'lodash';
+import { Component, Input, Inject, Optional, OnInit, AfterViewInit, OnChanges, SimpleChange } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
 import __array = services.array;
 
-import { IFormValidator } from '../../types/formValidators';
-import {
-	IComponentValidator,
-	IComponentValidatorFactory,
-	factoryName as componentValidatorFactoryName,
-	moduleName as componentValidatorModuleName,
-} from '../../services/componentValidator/componentValidator.service.ng1';
+import { FormComponent } from '../form/form';
+import { IControlGroup } from '../../types/formValidators';
+import { ComponentValidator } from '../../services/componentValidator/componentValidator.service';
 
-export var moduleName: string = 'rl.ui.components.validationGroup';
-export var componentName: string = 'rlValidationGroup';
-export var controllerName: string = 'ValidationGroupController';
-
-export interface IValidationGroupScope extends angular.IScope {
-	validationGroupForm: IFormValidator;
+export interface IGroupChanges {
+	[key: string]: SimpleChange;
+	model: SimpleChange;
 }
 
-export class ValidationGroupController {
-	// bindings
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
+@Component({
+	selector: 'rlValidationGroup',
+	template: require('./validationGroup.html'),
+	providers: [ComponentValidator],
+})
+export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChanges {
+	@Input() validator: __validation.IValidationHandler;
+	@Input() validators: __validation.IValidationHandler[];
+	@Input() model: any;
 
-	groupValidator: IComponentValidator;
+	groupValidator: ComponentValidator;
+	formGroup: IControlGroup;
+	validationControl: FormControl;
+	arrayUtility: __array.IArrayUtility;
 
-	static $inject: string[] = ['$scope', '$timeout', componentValidatorFactoryName];
-	constructor(private $scope: IValidationGroupScope
-			, private $timeout: angular.ITimeoutService
-			, private componentValidatorFactory: IComponentValidatorFactory) {}
+	constructor(rlForm: FormComponent
+			, componentValidator: ComponentValidator
+			, @Inject(__array.arrayToken) arrayUtility: __array.IArrayUtility) {
+		this.arrayUtility = arrayUtility;
+		this.groupValidator = componentValidator;
+		this.validationControl = new FormControl('', this.groupValidator.validate.bind(this.groupValidator));
+		this.formGroup = <IControlGroup>new FormGroup({ validation: this.validationControl });
+		if (rlForm) {
+			rlForm.form.rlNestedFormGroups.push(this.formGroup);
+		}
+	}
 
-	$onInit(): void {
-		this.$timeout((): void => {
-			this.validators = __array.arrayUtility.arrayify(this.validator).concat(__array.arrayUtility.arrayify(this.validators));
-			if (!_.isUndefined(this.validator)) {
-				this.groupValidator = this.componentValidatorFactory.getInstance({
-					form: this.$scope.validationGroupForm,
-					$scope: this.$scope,
-					validators: this.validators,
-				});
-			}
-		});
+	ngOnInit(): void {
+		let validators: __validation.IValidationHandler[] = [];
+
+		if (this.validator) {
+			validators = validators.concat(this.arrayUtility.arrayify(this.validator));
+		}
+
+		if (this.validators) {
+			validators = validators.concat(this.arrayUtility.arrayify(this.validators));
+		}
+
+		this.groupValidator.setValidators(validators);
+	}
+
+	ngAfterViewInit(): void {
+		this.groupValidator.afterInit(this.validationControl);
+		this.validationControl.updateValueAndValidity(this.model || undefined);
+	}
+
+	ngOnChanges(changes: IGroupChanges): void {
+		if (changes.model) {
+			this.validationControl.updateValueAndValidity(changes.model.currentValue);
+		}
+	}
+
+	checkValidity(): void {
+		this.validationControl.updateValueAndValidity(this.model);
 	}
 }
-
-let validationGroup: angular.IComponentOptions = {
-	transclude: true,
-	template: require('./validationGroup.html'),
-	controller: controllerName,
-	controllerAs: 'group',
-	bindings: {
-		validator: '<?',
-		validators: '<?',
-	},
-};
-
-angular.module(moduleName, [componentValidatorModuleName])
-	.component(componentName, validationGroup)
-	.controller(controllerName, ValidationGroupController);

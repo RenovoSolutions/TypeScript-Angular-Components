@@ -1,5 +1,5 @@
 import { AfterViewInit, OnInit, EventEmitter } from '@angular/core';
-import { Control } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -19,7 +19,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	valueChange: EventEmitter<T> = this.change;
 
 	inputType: string = 'input';
-	control: Control;
+	control: FormControl;
 	rlForm: FormComponent;
 	protected object: __object.IObjectUtility;
 	protected guid: __guid.IGuidService;
@@ -46,7 +46,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 
 	initControl(): void {
 		if (!this.control) {
-			this.control = new Control('');
+			this.control = new FormControl('');
 		}
 
 		this.control.valueChanges.subscribe(value => {
@@ -58,6 +58,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	setValue(value: T): void {
 		if (!this.disabled) {
 			this.value = value;
+			this.control.markAsDirty();
 			this.control.updateValue(this.value);
 			this.change.emit(this.value);
 		}

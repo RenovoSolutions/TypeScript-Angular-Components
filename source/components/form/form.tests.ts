@@ -1,5 +1,8 @@
 import { FormComponent } from './form';
 import { isFunction } from 'lodash';
+import { services } from 'typescript-angular-utilities';
+import mock = services.test.mock;
+import fakeAsync = services.test.fakeAsync;
 
 interface INotificationMock {
 	warning: Sinon.SinonSpy;
@@ -19,7 +22,7 @@ describe('FormComponent', (): void => {
 		notification = { warning: sinon.spy() };
 		formService = {};
 
-		form = new FormComponent(<any>notification, <any>formService);
+		form = new FormComponent(<any>notification, <any>formService, null);
 		form.form = <any>{};
 	});
 
@@ -37,6 +40,19 @@ describe('FormComponent', (): void => {
 
 		sinon.assert.calledOnce(saveSpy);
 		sinon.assert.calledWith(saveSpy, value);
+	});
+
+	it('should nest the form in a parent form if one is found', (): void => {
+		const pushSpy = sinon.spy();
+		const parentForm: any = {
+			form: {
+				rlNestedFormGroups: { push: pushSpy },
+			},
+		};
+		form = new FormComponent(<any>notification, <any>formService, parentForm);
+
+		sinon.assert.calledOnce(pushSpy);
+		sinon.assert.calledWith(pushSpy, form.form);
 	});
 
 	describe('submit', (): void => {
@@ -68,6 +84,33 @@ describe('FormComponent', (): void => {
 			sinon.assert.calledOnce(getErrorSpy);
 			sinon.assert.calledOnce(notification.warning);
 			sinon.assert.calledWith(notification.warning, 'error');
+		});
+
+		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
+			const saveMock = mock.promise();
+			const setPristineSpy = sinon.spy();
+			form.saveForm = saveMock;
+			formService.isFormValid = <any>(() => true);
+			form.markAsPristine = setPristineSpy;
+
+			form.submit();
+
+			sinon.assert.notCalled(setPristineSpy);
+
+			saveMock.flush();
+
+			sinon.assert.calledOnce(setPristineSpy);
+		}));
+
+		it('should mark the form as pristine immediately if no async action is returned', (): void => {
+			form.saveForm = <any>(() => null);
+			const setPristineSpy = sinon.spy();
+			formService.isFormValid = <any>(() => true);
+			form.markAsPristine = setPristineSpy;
+
+			form.submit();
+
+			sinon.assert.calledOnce(setPristineSpy);
 		});
 	});
 });

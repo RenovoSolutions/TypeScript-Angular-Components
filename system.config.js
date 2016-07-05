@@ -69,6 +69,9 @@ System.config({
 		'@angular/common': {
 			main: 'index.js',
 		},
+		'@angular/forms': {
+			main: 'index.js',
+		},
 		'angular2-uuid': {
 			main: 'index.js',
 		},

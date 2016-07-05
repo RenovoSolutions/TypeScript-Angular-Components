@@ -14,6 +14,11 @@ describe('busy', () => {
 		busy = new BusyComponent(true);
 	});
 
+	it('should not show the spinner after triggering if null', (): void => {
+		busy.trigger(null);
+		expect(busy.loading).to.not.exist;
+	});
+
 	it('should show the spinner after triggering if true', (): void => {
 		busy.trigger(true);
 		expect(busy.loading).to.be.true;

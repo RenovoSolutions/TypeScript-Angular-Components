@@ -1,4 +1,4 @@
-import { Component, Inject, Provider, forwardRef } from '@angular/core';
+import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
@@ -47,11 +47,12 @@ export class CardComponent<T> extends FormComponent {
 	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
-			, @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(@Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
+			, @Optional() @SkipSelf() parentForm: FormComponent
+			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, formService);
+		super(notification, formService, parentForm);
 		this.boolean = boolean;
 		this.cardContainer = cardContainer;
 		this.refresh.subscribe(() => this.cardContainer.dataSource.refresh());

@@ -1,8 +1,12 @@
-import { Control } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 import * as angular from 'angular';
 
-export interface IControlValidator extends Control {
+export interface IControlValidator extends FormControl {
 	rlErrorMessage?: string;
+}
+
+export interface IControlGroup extends FormGroup {
+	rlNestedFormGroups: IControlGroup[];
 }
 
 export interface IFormValidator extends angular.IFormController {

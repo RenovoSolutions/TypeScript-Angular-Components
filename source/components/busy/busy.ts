@@ -24,6 +24,10 @@ export class BusyComponent {
 	 * Public API for triggering the rlBusy to wait on a promise
 	 */
 	trigger(waitOn: IWaitValue<any>): void {
+		if (waitOn == null) {
+			return;
+		}
+
 		if (isBoolean(waitOn)) {
 			this.loading = waitOn;
 			return;

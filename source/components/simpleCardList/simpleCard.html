@@ -1,6 +1,7 @@
 <div class="card col-xs-12 {{cardType}} {{alternatingClass}}">
 	<div class="header row"
 		 [class.active]="canOpen && !alwaysOpen"
+		 [class.error]="!validate()"
 		 (click)="toggle()">
 		 <template [ngTemplateOutlet]="header?.template"></template>
 	</div>

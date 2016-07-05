@@ -27,7 +27,7 @@ describe('CardComponent', () => {
 			},
 		};
 
-		card = new CardComponent(new __boolean.BooleanUtility(), new __notification.NotificationService(<any>{}, <any>{}), new FormService(), <any>cardContainer);
+		card = new CardComponent(new __notification.NotificationService(<any>{}, <any>{}), new FormService(), null, new __boolean.BooleanUtility(), <any>cardContainer);
 	});
 
 	it('should pass the item to the save handler', (): void => {

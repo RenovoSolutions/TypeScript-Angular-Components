@@ -1,5 +1,5 @@
 import { AfterViewInit, OnInit, OnChanges, SimpleChange } from '@angular/core';
-import { Control } from '@angular/common';
+import { FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
@@ -35,7 +35,7 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 		super(rlForm, object, guid);
 		this.array = array;
 		this.componentValidator = componentValidator;
-		this.control = new Control('', this.componentValidator.validate.bind(this.componentValidator));
+		this.control = new FormControl('', this.componentValidator.validate.bind(this.componentValidator));
 		this.initControl();
 	}
 
