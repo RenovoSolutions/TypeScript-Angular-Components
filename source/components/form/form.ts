@@ -34,6 +34,10 @@ export class FormComponent {
 	private notification: __notification.INotificationService;
 	private formService: FormService;
 
+	get dirty(): boolean {
+		return this.form.dirty;
+	}
+
 	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent) {
