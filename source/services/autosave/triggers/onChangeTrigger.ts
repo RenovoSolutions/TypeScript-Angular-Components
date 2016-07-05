@@ -1,11 +1,8 @@
 import * as ng from 'angular';
 import * as _ from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
 import { ITrigger, Trigger } from './trigger';
 import { IListener, IClearListener } from './triggers.service';
-
-import __timeout = services.timeout;
 
 export interface OnChangeSettings {
 	form: ng.IFormController;
@@ -16,11 +13,11 @@ export interface OnChangeSettings {
 
 export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigger<OnChangeSettings> {
 	private debounceDuration: number;
-	private timer: __timeout.ITimeout;
+	private timer: number;
 	setListener: { (callback: IListener): IClearListener };
 	clearListener: IClearListener;
 
-	constructor(private $rootScope: ng.IRootScopeService, private timeoutService: __timeout.TimeoutService) {
+	constructor(private $rootScope: ng.IRootScopeService) {
 		super('onChange');
 	}
 
@@ -61,18 +58,15 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 
 	private setTimer(autosave: { (): void }): void {
 		if (this.timer != null) {
-			this.timer.cancel();
-			this.timer = null;
+			clearTimeout(this.timer);
 		}
 
-		this.timer = this.timeoutService.setTimeout(this.debounceDuration)
-			.then((): void => {
-				this.clearListener();
-				autosave();
-				this.$rootScope.$digest();
-				this.timer = null;
-			})
-			.catch(() => null);
+		this.timer = setTimeout(() => {
+			this.clearListener();
+			autosave();
+			this.$rootScope.$digest();
+			this.timer = null;
+		}, this.debounceDuration);
 	}
 
 	private initListeners(): void {

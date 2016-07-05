@@ -1,6 +1,5 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import __timeout = services.timeout;
 
 import { OnChangeTrigger, OnChangeSettings } from './onChangeTrigger';
 import { ITrigger } from './trigger';
@@ -27,7 +26,6 @@ describe('onChangeTrigger', () => {
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
-	let timeoutService: __timeout.TimeoutService;
 	let emptyChangeListener: { (): IListener };
 
 	beforeEach(() => {
@@ -53,7 +51,7 @@ describe('onChangeTrigger', () => {
 
 		saveSpy = sinon.spy((): ng.IPromise<void> => { return $q.when(); });
 
-		trigger = new OnChangeTrigger($rootScope, new __timeout.TimeoutService());
+		trigger = new OnChangeTrigger($rootScope);
 	});
 
 	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', test.fakeAsync((): void => {
@@ -130,7 +128,7 @@ describe('onChangeTrigger', () => {
 		sinon.assert.calledOnce(saveSpy);
 	}));
 
-	it.only('should reset the debounce timer on form changes', test.fakeAsync((): void => {
+	it('should reset the debounce timer on form changes', test.fakeAsync((): void => {
 		let triggerChange: { (): void };
 		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {
 			triggerChange = callback;
