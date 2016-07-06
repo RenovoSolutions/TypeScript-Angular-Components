@@ -1,7 +1,7 @@
 import { ButtonSubmitComponent } from './buttonSubmit';
 
 interface IMockForm {
-	submit: Sinon.SinonSpy;
+	submitAndWait: Sinon.SinonSpy;
 }
 
 interface IMockBusy {
@@ -19,7 +19,7 @@ describe('button submit', (): void => {
 
 	beforeEach((): void => {
 		form = {
-			submit: sinon.spy(() => 5),
+			submitAndWait: sinon.spy(() => 5),
 		};
 		buttonSubmit = new ButtonSubmitComponent(<any>form);
 
@@ -32,7 +32,7 @@ describe('button submit', (): void => {
 	it('should submit the form and pass the result to the spinner', (): void => {
 		buttonSubmit.submit();
 
-		sinon.assert.calledOnce(form.submit);
+		sinon.assert.calledOnce(form.submitAndWait);
 		sinon.assert.calledOnce(busy.trigger);
 		sinon.assert.calledWith(busy.trigger, 5);
 	});

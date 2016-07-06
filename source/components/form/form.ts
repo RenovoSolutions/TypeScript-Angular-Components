@@ -56,11 +56,19 @@ export class FormComponent {
 
 	submit(): boolean {
 		if (this.validate()) {
-			const waitOn = this.saveForm();
-			this.resetAfterSubmit(waitOn);
+			this.saveForm();
 			return true;
 		} else {
-			this.notification.warning(this.formService.getAggregateError(this.form));
+			this.showErrors();
+			return false;
+		}
+	}
+
+	submitAndWait(): IWaitValue<any> {
+		if (this.validate()) {
+			return this.saveForm();
+		} else {
+			this.showErrors();
 			return false;
 		}
 	}
@@ -70,13 +78,19 @@ export class FormComponent {
 	}
 
 	saveForm(): IWaitValue<any> {
-		return this.save(this.form.value);
+		const waitOn = this.save(this.form.value);
+		this.resetAfterSubmit(waitOn);
+		return waitOn;
 	}
 
 	markAsPristine(): void {
 		// TODO: remove this once angular provides a way to mark as pristine or reset the form
 		(<any>this.form)._pristine = true;
 		(<any>this.form)._dirty = false;
+	}
+
+	private showErrors(): void {
+		this.notification.warning(this.formService.getAggregateError(this.form));
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
