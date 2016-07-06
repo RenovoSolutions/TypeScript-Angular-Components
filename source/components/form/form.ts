@@ -54,11 +54,11 @@ export class FormComponent {
 		}
 	}
 
-	submit(): IWaitValue<any> {
+	submit(): boolean {
 		if (this.validate()) {
 			const waitOn = this.saveForm();
 			this.resetAfterSubmit(waitOn);
-			return waitOn;
+			return true;
 		} else {
 			this.notification.warning(this.formService.getAggregateError(this.form));
 			return false;
