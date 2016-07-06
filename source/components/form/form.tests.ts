@@ -55,6 +55,35 @@ describe('FormComponent', (): void => {
 		sinon.assert.calledWith(pushSpy, form.form);
 	});
 
+	describe('saveForm', (): void => {
+		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
+			const saveMock = mock.promise();
+			const setPristineSpy = sinon.spy();
+			form.save = saveMock;
+			formService.isFormValid = <any>(() => true);
+			form.markAsPristine = setPristineSpy;
+
+			form.saveForm();
+
+			sinon.assert.notCalled(setPristineSpy);
+
+			saveMock.flush();
+
+			sinon.assert.calledOnce(setPristineSpy);
+		}));
+
+		it('should mark the form as pristine immediately if no async action is returned', (): void => {
+			form.save = <any>(() => null);
+			const setPristineSpy = sinon.spy();
+			formService.isFormValid = <any>(() => true);
+			form.markAsPristine = setPristineSpy;
+
+			form.saveForm();
+
+			sinon.assert.calledOnce(setPristineSpy);
+		});
+	});
+
 	describe('submit', (): void => {
 		it('should save the form if valid', (): void => {
 			const saveSpy = sinon.spy();
@@ -86,31 +115,24 @@ describe('FormComponent', (): void => {
 			sinon.assert.calledWith(notification.warning, 'error');
 		});
 
-		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
-			const saveMock = mock.promise();
-			const setPristineSpy = sinon.spy();
-			form.saveForm = saveMock;
-			formService.isFormValid = <any>(() => true);
-			form.markAsPristine = setPristineSpy;
+		it('should return true if validation passes', (): void => {
+			const saveSpy = sinon.spy();
+			form.saveForm = saveSpy;
+			form.validate = sinon.spy(() => true);
 
-			form.submit();
+			const submitting = form.submit();
 
-			sinon.assert.notCalled(setPristineSpy);
+			expect(submitting).to.be.true;
+		});
 
-			saveMock.flush();
+		it('should return the wait value for saving the form', (): void => {
+			const saveSpy = sinon.spy(() => 'waiting');
+			form.saveForm = saveSpy;
+			form.validate = sinon.spy(() => true);
 
-			sinon.assert.calledOnce(setPristineSpy);
-		}));
+			const waitOn = form.submitAndWait();
 
-		it('should mark the form as pristine immediately if no async action is returned', (): void => {
-			form.saveForm = <any>(() => null);
-			const setPristineSpy = sinon.spy();
-			formService.isFormValid = <any>(() => true);
-			form.markAsPristine = setPristineSpy;
-
-			form.submit();
-
-			sinon.assert.calledOnce(setPristineSpy);
+			expect(waitOn).to.equal('waiting');
 		});
 	});
 });

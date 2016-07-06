@@ -23,7 +23,7 @@ export class ButtonSubmitComponent extends BaseButtonComponent {
 	}
 
 	submit(): void {
-		const waitValue: IWaitValue<any> = this.form.submit();
+		const waitValue: IWaitValue<any> = this.form.submitAndWait();
 		this.busySpinner.trigger(waitValue);
 	}
 }
