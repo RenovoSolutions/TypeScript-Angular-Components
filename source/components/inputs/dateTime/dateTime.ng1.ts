@@ -126,6 +126,7 @@ export class DateTimeController extends InputController {
 		}).on('change.dp', (): void => {
 			let newValue: any = this.$element.find('input').val();
 			this.ngModel.$setViewValue(newValue);
+			this.$element.keyup();
 			this.$scope.$apply();
 		});
 	}
