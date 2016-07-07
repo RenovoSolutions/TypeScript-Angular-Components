@@ -1,4 +1,4 @@
-import { IAutosaveAttributes, AutosaveController, IAutosaveBehavior, moduleName, controllerName } from './autosave';
+import { IAutosaveAttributes, AutosaveController, IAutosaveBehavior, moduleName, controllerName } from './autosave.ng1';
 
 import { services } from 'typescript-angular-utilities';
 

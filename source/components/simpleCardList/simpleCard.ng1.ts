@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 import {IChild,IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
-import { IAutosaveBehavior } from '../../behaviors/autosave/autosave';
+import { IAutosaveBehavior } from '../../behaviors/autosave/autosave.ng1';
 
 import { ISimpleCardListController } from './simpleCardList.ng1';
 

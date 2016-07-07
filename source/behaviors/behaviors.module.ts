@@ -2,7 +2,7 @@ import * as angular from 'angular';
 
 import * as alias from './alias/alias';
 import * as alternatingClass from './alternatingClass/alternatingClass';
-import * as autosave from './autosave/autosave';
+import * as autosave from './autosave/autosave.ng1';
 import * as offClick from './offClick/offClick.ng1';
 import * as popover from './popover/popover';
 import * as required from './required/required';

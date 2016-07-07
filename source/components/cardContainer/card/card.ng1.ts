@@ -10,7 +10,7 @@ import __object = services.object;
 import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName, moduleName as parentChildModuleName } from '../../../services/parentChild/parentChild.service';
 
 import { moduleName as headerColumnModuleName } from './headerColumn/headerColumn.module';
-import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave';
+import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave.ng1';
 import { IDataSource } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerController } from '../cardContainer.ng1';
