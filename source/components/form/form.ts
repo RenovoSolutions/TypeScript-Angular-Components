@@ -1,6 +1,6 @@
 import { Component, ViewChild, Input, Inject, Optional, SkipSelf } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { isBoolean } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -33,6 +33,7 @@ export class FormComponent {
 	form: IControlGroup;
 	private notification: __notification.INotificationService;
 	private formService: FormService;
+	submitted: Subject<void> = new Subject<void>();
 
 	get dirty(): boolean {
 		return this.form.dirty;
@@ -94,11 +95,15 @@ export class FormComponent {
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
-		if (waitOn == null || isBoolean(waitOn)) {
+		const subscriber = this.submitted.subscribe(() => {
 			this.markAsPristine();
+			subscriber.unsubscribe();
+		})
+		if (waitOn == null || isBoolean(waitOn)) {
+			this.submitted.next(null);
 			return;
 		}
 
-		Observable.from(<any>waitOn).subscribe(() => this.markAsPristine());
+		Observable.from(<any>waitOn).subscribe(() => this.submitted.next(null));
 	}
 }

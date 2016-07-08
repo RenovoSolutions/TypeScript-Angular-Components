@@ -3,10 +3,12 @@ import 'bootstrap';
 import { Component, AfterViewInit } from '@angular/core';
 
 import { DialogRootService } from './dialogRoot.service';
+import { ButtonComponent, ButtonAsyncComponent } from '../buttons/index';
 
 @Component({
 	selector: 'rlDialogOutlet',
 	template: require('./dialogOutlet.html'),
+	directives: [ButtonComponent, ButtonAsyncComponent],
 })
 export class DialogOutletComponent implements AfterViewInit {
 	dialogRoot: DialogRootService;

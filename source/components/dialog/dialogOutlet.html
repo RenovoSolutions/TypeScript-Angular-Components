@@ -24,6 +24,16 @@
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.footer?.template"></template>
 				<div class="clearfix"></div>
 			</div>
+			<div class="modal-footer" *ngIf="!dialogRoot.dialogContext?.footer && dialogRoot.dialogContext?.autosave">
+				<rlButton type="danger"
+						  (trigger)="dismiss()">
+					<i class="fa fa-times"></i> Cancel
+				</rlButton>
+				<rlButtonAsync type="success"
+							   [action]="dialogRoot.dialogContext?.submitAndClose">
+					<i class="fa fa-check"></i> Save
+				</rlButtonAsync>
+			</div>
 		</div>
 	</div>
 </div>

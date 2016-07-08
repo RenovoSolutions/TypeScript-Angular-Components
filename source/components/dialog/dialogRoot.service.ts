@@ -7,6 +7,8 @@ export interface IDialogContent {
 	header?: DialogHeaderTemplate;
 	content?: DialogContentTemplate;
 	footer?: DialogFooterTemplate;
+	autosave?: boolean;
+	submitAndClose?: { (): void };
 }
 
 export interface IDialogClosingHandler {

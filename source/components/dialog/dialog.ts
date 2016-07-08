@@ -20,6 +20,7 @@ import { FormService } from '../../services/form/form.service';
 })
 export class DialogComponent extends FormComponent {
 	@Input() onClosing: IDialogClosingHandler;
+	@Input() autosave: boolean;
 
 	@ContentChild(DialogHeaderTemplate) header: DialogHeaderTemplate;
 	@ContentChild(DialogContentTemplate) content: DialogContentTemplate;
@@ -36,14 +37,38 @@ export class DialogComponent extends FormComponent {
 
 	open(): void {
 		this.dialogRoot.openDialog.next({
-			onClosing: this.onClosing,
+			onClosing: this.wrapOnClosing(),
 			header: this.header,
 			content: this.content,
 			footer: this.footer,
+			autosave: this.autosave,
+			submitAndClose: () => this.submitAndClose(),
 		});
 	}
 
 	close(): void {
 		this.dialogRoot.closeDialog.next(null);
+	}
+
+	submitAndClose(): void {
+		const subscriber = this.submitted.subscribe(() => {
+			this.close();
+			subscriber.unsubscribe();
+		});
+
+		const submitting = this.submit();
+
+		if (!submitting) {
+			subscriber.unsubscribe();
+		}
+	}
+
+	private wrapOnClosing(): IDialogClosingHandler {
+		if (this.autosave) {
+			// autosave closing handler
+			return () => true;
+		} else {
+			return this.onClosing;
+		}
 	}
 }

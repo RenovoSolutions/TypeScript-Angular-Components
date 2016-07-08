@@ -14,12 +14,11 @@
 		<div *rlDialogContent>Content</div>
 		<div *rlDialogFooter>Footer</div>
 	</rlDialog>
-	<rlDialog #dialog2>
+	<rlDialog #dialog2 [autosave]="true" [save]="save">
 		<div *rlDialogHeader>Header 2</div>
 		<div *rlDialogContent>
 			<rlTextbox label="Textbox" name="textbox"></rlTextbox>
 		</div>
-		<div *rlDialogFooter>Footer 2</div>
 	</rlDialog>
 	<rlPromptDialog #prompt
 					message="Confirm?"
@@ -27,8 +26,6 @@
 					cancelButton="No"
 					(onAccept)="yes()"
 					(onCancel)="no()"></rlPromptDialog>
-	<!--<rl-button action="popup.prompt()">Open prompt</rl-button>
-	<rl-button action="popup.openDialog()">Open custom dialog</rl-button>-->
 </div>
 
 <rlDialogOutlet></rlDialogOutlet>

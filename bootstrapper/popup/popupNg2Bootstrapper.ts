@@ -40,4 +40,8 @@ export class PopupBootstrapper {
 	no(): void {
 		console.log('No');
 	}
+
+	save = (data) => {
+		console.log(data);
+	}
 }
