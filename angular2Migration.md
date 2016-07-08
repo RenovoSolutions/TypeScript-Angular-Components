@@ -31,7 +31,7 @@ Tabset
 TemplateRenderer - Done  
 Textarea - Done  
 Textbox - Done  
-Typeahead - In Progress (Jamie)  
+Typeahead    
 TypeheadList  
 UserRating - Done  
 ValidationGroup - Done  
@@ -62,4 +62,4 @@ Jquery - Hopefully not really needed
 ParentChild - Obsolete - this is very angular 1 specific. May be needed during the upgrade, but we'll just upgrade it if needed  
 Promise  
 TemplateLoader - Obsolete - this is used for the generic container  
-WindowWrapper  
+WindowWrapper - In Progress (Jamie)  
