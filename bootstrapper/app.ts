@@ -1,4 +1,5 @@
 import 'jquery';
+import 'bootstrap';
 import * as angular from 'angular';
 import 'angular-ui-router';
 
