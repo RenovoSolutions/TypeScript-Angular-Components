@@ -6,7 +6,11 @@
 
 <div>
 	<label><a href="">Dialog</a>:</label>
-	<rlDialog [onClosing]="onClosing"></rlDialog>
+	<rlDialog [onClosing]="onClosing">
+		<div *rlDialogHeader>Header</div>
+		<div *rlDialogContent>Content</div>
+		<div *rlDialogFooter>Footer</div>
+	</rlDialog>
 	<!--<rl-button action="popup.prompt()">Open prompt</rl-button>
 	<rl-button action="popup.openDialog()">Open custom dialog</rl-button>-->
 </div>

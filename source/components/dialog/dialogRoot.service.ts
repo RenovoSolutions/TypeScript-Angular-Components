@@ -1,7 +1,12 @@
 import { Subject } from 'rxjs';
 
+import { DialogHeaderTemplate, DialogContentTemplate, DialogFooterTemplate } from './templates/index';
+
 export interface IDialogContent {
 	onClosing?: IDialogClosingHandler;
+	header?: DialogHeaderTemplate;
+	content?: DialogContentTemplate;
+	footer?: DialogFooterTemplate;
 }
 
 export interface IDialogClosingHandler {

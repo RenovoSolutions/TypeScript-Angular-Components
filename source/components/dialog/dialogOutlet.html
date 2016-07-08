@@ -2,13 +2,13 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<!--Header-->
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.header?.template"></template>
 			</div>
 			<div class="modal-body">
-				<!--Body-->
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.content?.template"></template>
 			</div>
 			<div class="modal-footer">
-				<!--Footer-->
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.footer?.template"></template>
 			</div>
 		</div>
 	</div>
