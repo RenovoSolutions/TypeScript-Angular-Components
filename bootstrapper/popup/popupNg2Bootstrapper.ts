@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { DialogOutletComponent } from '../../source/components/dialog/dialogOutlet';
-import {} from '../../source/components/dialog/dialog';
+import { DialogComponent } from '../../source/components/dialog/dialog';
 
 @Component({
 	selector: 'tsPopupBootstrapper',
@@ -10,6 +10,7 @@ import {} from '../../source/components/dialog/dialog';
 	directives: [
 		TOOLTIP_DIRECTIVES,
 		DialogOutletComponent,
+		DialogComponent,
 	],
 })
 export class PopupBootstrapper {
