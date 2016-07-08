@@ -27,6 +27,7 @@ import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
 import { DatePipe } from './pipes/date/date.pipe';
+import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
 import { FormService } from './services/form/form.service';
 
@@ -76,6 +77,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
