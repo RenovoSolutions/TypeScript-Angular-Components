@@ -19,6 +19,10 @@ export class DialogRootService {
 	}
 
 	onClosing(): boolean {
-		return this.dialogContext.onClosing();
+		if (this.dialogContext.onClosing) {
+			return this.dialogContext.onClosing();
+		} else {
+			return true;
+		}
 	}
 }
