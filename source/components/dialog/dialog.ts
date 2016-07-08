@@ -67,7 +67,7 @@ export class DialogComponent extends FormComponent {
 		return waitOn;
 	}
 
-	private wrapOnClosing: IDialogClosingHandler = () => {
+	wrapOnClosing: IDialogClosingHandler = () => {
 		if (this.autosave) {
 			if (this.dirty) {
 				return this.submit();
