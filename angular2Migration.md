@@ -8,8 +8,8 @@ ButtonToggle - Done
 Checkbox - Done  
 Comma list - Done  
 DateTime - Done  
-Dialog  
-PromptDialog  
+Dialog - Done  
+PromptDialog - Done  
 Form - In progress (autosave needs resolved)  
 GenericContainer - Obsolete  
 LazyLoad  
@@ -52,7 +52,7 @@ LocalizeStringDates - Done
 ###Services  
 Autosave - Obsolete? - Most of this behavior will move to the form and autosave directives  
 AutosaveAction - (relates to autosave)  
-Breakpoints  
+Breakpoints - In Progress (Josh)  
 ComponentValidator - Done  
 ContentProvider  
 Dialog - Obsolete? - Dialogs will probably be handled through the component now  
