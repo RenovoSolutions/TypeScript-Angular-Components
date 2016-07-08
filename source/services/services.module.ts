@@ -1,5 +1,6 @@
 import * as angular from 'angular';
 
+import * as async from './async/async.service';
 import * as autosave from './autosave/autosave.service';
 import * as autosaveAction from './autosaveAction/autosaveAction.service';
 import * as breakpoints from './breakpoints/breakpoints.module';
@@ -16,6 +17,7 @@ import * as windowWrapper from './windowWrapper/windowWrapper.service';
 
 
 export {
+	async,
 	autosave,
 	autosaveAction,
 	breakpoints,

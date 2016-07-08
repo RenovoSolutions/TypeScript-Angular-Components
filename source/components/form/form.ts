@@ -6,7 +6,7 @@ import { isBoolean } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { IWaitValue } from '../busy/busy';
+import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
 import { IControlGroup } from '../../types/formValidators';
 
@@ -32,6 +32,7 @@ export class FormComponent {
 
 	form: IControlGroup;
 	private notification: __notification.INotificationService;
+	asyncHelper: AsyncHelper;
 	private formService: FormService;
 	submitted: Subject<void> = new Subject<void>();
 
@@ -40,9 +41,11 @@ export class FormComponent {
 	}
 
 	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent) {
 		this.notification = notification;
+		this.asyncHelper = asyncHelper;
 		this.formService = formService;
 		this.form = <IControlGroup>new FormGroup({});
 		this.form.rlNestedFormGroups = [];
@@ -95,15 +98,6 @@ export class FormComponent {
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
-		const subscriber = this.submitted.subscribe(() => {
-			this.markAsPristine();
-			subscriber.unsubscribe();
-		})
-		if (waitOn == null || isBoolean(waitOn)) {
-			this.submitted.next(null);
-			return;
-		}
-
-		Observable.from(<any>waitOn).subscribe(() => this.submitted.next(null));
+		this.asyncHelper.waitAsObservable(waitOn).subscribe(() => this.markAsPristine());
 	}
 }

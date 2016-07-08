@@ -6,6 +6,7 @@ import __notification = services.notification;
 import { DialogRootService, IDialogClosingHandler } from './dialogRoot.service';
 import { DialogHeaderTemplate, DialogContentTemplate, DialogFooterTemplate } from './templates/index';
 import { FormComponent, baseInputs } from '../form/form';
+import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
 
 @Component({
@@ -29,9 +30,10 @@ export class DialogComponent extends FormComponent {
 	dialogRoot: DialogRootService;
 
 	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, dialogRoot: DialogRootService) {
-		super(notification, formService, null);
+		super(notification, asyncHelper, formService, null);
 		this.dialogRoot = dialogRoot;
 	}
 
@@ -50,17 +52,14 @@ export class DialogComponent extends FormComponent {
 		this.dialogRoot.closeDialog.next(null);
 	}
 
-	submitAndClose(): void {
-		const subscriber = this.submitted.subscribe(() => {
-			this.close();
-			subscriber.unsubscribe();
+	submitAndClose(): IWaitValue<any> {
+		const waitOn = this.submitAndWait();
+		this.asyncHelper.waitAsObservable(waitOn).subscribe((result) => {
+			if (result !== false) {
+				this.close();
+			}
 		});
-
-		const submitting = this.submit();
-
-		if (!submitting) {
-			subscriber.unsubscribe();
-		}
+		return waitOn;
 	}
 
 	private wrapOnClosing(): IDialogClosingHandler {

@@ -1,10 +1,10 @@
 import { Component, Inject, Input } from '@angular/core';
 import { isBoolean } from 'lodash';
-import { Observable } from 'rxjs';
 
 import { defaultThemeToken } from '../componentsDefaultTheme';
+import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 
-export type IWaitValue<T> = Observable<T> | Promise<T> | boolean;
+export { IWaitValue };
 
 @Component({
 	selector: 'rlBusy',
@@ -15,9 +15,12 @@ export class BusyComponent {
 	@Input() size: string;
 
 	useDefaultTheme: boolean;
+	asyncHelper: AsyncHelper;
 
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean) {
+	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+			, asyncHelper: AsyncHelper) {
 		this.useDefaultTheme = useDefaultTheme;
+		this.asyncHelper = asyncHelper;
 	}
 
 	/*
@@ -34,6 +37,7 @@ export class BusyComponent {
 		}
 
 		this.loading = true;
-		Observable.from(<Observable<any> | Promise<any>>waitOn).subscribe(() => this.loading = false);
+		this.asyncHelper.waitAsObservable(waitOn)
+			.subscribe(() => this.loading = false);
 	}
 }
