@@ -78,7 +78,7 @@ describe('DialogOutletComponent', (): void => {
 
 		it('should call on closing without canceling the close if the result is true', (): void => {
 			const event = { preventDefault: sinon.spy() };
-			const onClosingSpy = sinon.spy(() => false);
+			const onClosingSpy = sinon.spy(() => true);
 			dialogRoot.onClosing = onClosingSpy;
 
 			hideModal(event);
