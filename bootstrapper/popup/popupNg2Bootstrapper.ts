@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { ButtonComponent } from '../../source/components/buttons/index';
+import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { DialogOutletComponent } from '../../source/components/dialog/dialogOutlet';
 import { DialogComponent } from '../../source/components/dialog/dialog';
 import { PromptDialogComponent } from '../../source/components/dialog/promptDialog';
@@ -14,6 +15,7 @@ import { DIALOG_TEMPLATE_DIRECTIVES } from '../../source/components/dialog/templ
 	directives: [
 		TOOLTIP_DIRECTIVES,
 		ButtonComponent,
+		INPUT_DIRECTIVES,
 		DIALOG_TEMPLATE_DIRECTIVES,
 		DialogOutletComponent,
 		DialogComponent,
