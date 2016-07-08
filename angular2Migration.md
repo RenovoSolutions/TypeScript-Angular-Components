@@ -56,10 +56,10 @@ Breakpoints
 ComponentValidator - Done  
 ContentProvider  
 Dialog - Obsolete? - Dialogs will probably be handled through the component now  
-DocumentWrapper - In Progress (Jamie)  
+DocumentWrapper - Done  
 Form - Done  
 Jquery - Hopefully not really needed  
 ParentChild - Obsolete - this is very angular 1 specific. May be needed during the upgrade, but we'll just upgrade it if needed  
 Promise  
 TemplateLoader - Obsolete - this is used for the generic container  
-WindowWrapper - In Progress (Jamie)  
+WindowWrapper - Done  
