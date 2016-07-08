@@ -1,6 +1,6 @@
 import * as $ from 'jquery';
 import 'bootstrap';
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 
 import { DialogRootService } from './dialogRoot.service';
 
@@ -8,8 +8,11 @@ import { DialogRootService } from './dialogRoot.service';
 	selector: 'rlDialogOutlet',
 	template: require('./dialogOutlet.html'),
 })
-export class DialogOutletComponent {
+export class DialogOutletComponent implements AfterViewInit {
+	dialogRoot: DialogRootService;
+
 	constructor(dialogRoot: DialogRootService) {
+		this.dialogRoot = dialogRoot;
 		dialogRoot.openDialog.subscribe((): void => {
 			$('.rlModal').modal('show');
 		});
@@ -18,4 +21,12 @@ export class DialogOutletComponent {
 		});
 	}
 
+	ngAfterViewInit(): void {
+		$('.rlModal').on('hide.bs.modal', (event: JQueryEventObject) => {
+			const canClose = this.dialogRoot.onClosing();
+			if (!canClose) {
+				event.preventDefault();
+			}
+		});
+	}
 }

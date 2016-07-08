@@ -14,7 +14,12 @@ export class DialogComponent {
 	}
 
 	open(): void {
-		this.dialogRoot.openDialog.next({});
+		this.dialogRoot.openDialog.next({
+			onClosing: () => {
+				console.log('Trying to close...');
+				return false;
+			},
+		});
 	}
 
 	close(): void {
