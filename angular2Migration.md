@@ -8,8 +8,8 @@ ButtonToggle - Done
 Checkbox - Done  
 Comma list - Done  
 DateTime - Done  
-Dialog  
-PromptDialog  
+Dialog - Done  
+PromptDialog - Done  
 Form - In progress (autosave needs resolved)  
 GenericContainer - Obsolete  
 LazyLoad  
