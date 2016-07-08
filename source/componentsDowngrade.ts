@@ -30,6 +30,8 @@ import { DatePipe } from './pipes/date/date.pipe';
 
 import { FormService } from './services/form/form.service';
 
+import {BreakpointService} from './services/breakpoints/index';
+
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 
 export const moduleName: string = 'rl.components.downgrade';
@@ -66,7 +68,8 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
-	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(FormService); /// todo emulate for breakpoint.
+	upgradeAdapter.addProvider(BreakpointService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 	upgradeAdapter.addProvider(Sorter);
