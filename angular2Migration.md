@@ -46,7 +46,7 @@ Required - Obsolete - handled in the base input classes now
 
 ###Pipes  
 Date - Done  
-LocalizeStringDates  
+LocalizeStringDates - Done
 
 
 ###Services  
