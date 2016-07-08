@@ -8,6 +8,7 @@
 	<label><a href="">Dialog</a>:</label>
 	<rlButton (trigger)="dialog1.open()">Open Dialog 1</rlButton>
 	<rlButton (trigger)="dialog2.open()">Open Dialog 2</rlButton>
+	<rlButton (trigger)="prompt.open()">Open prompt</rlButton>
 	<rlDialog #dialog1 [onClosing]="onClosing">
 		<div *rlDialogHeader>Header</div>
 		<div *rlDialogContent>Content</div>
@@ -18,6 +19,12 @@
 		<div *rlDialogContent>Content 2</div>
 		<div *rlDialogFooter>Footer 2</div>
 	</rlDialog>
+	<rlPromptDialog #prompt
+					message="Confirm?"
+					okButton="Yes"
+					cancelButton="No"
+					(onAccept)="yes()"
+					(onCancel)="no()"></rlPromptDialog>
 	<!--<rl-button action="popup.prompt()">Open prompt</rl-button>
 	<rl-button action="popup.openDialog()">Open custom dialog</rl-button>-->
 </div>
