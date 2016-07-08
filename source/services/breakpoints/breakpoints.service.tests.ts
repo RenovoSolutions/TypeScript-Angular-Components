@@ -9,9 +9,7 @@ import {
 } from './breakpoints.module';
 
 import { services } from 'typescript-angular-utilities';
-
-import * as angular from 'angular';
-import 'angular-mocks';
+import {BreakpointService } from './breakpoints.service';
 
 import test = services.test;
 
@@ -20,7 +18,7 @@ interface IVisibleBreakpointsMock {
 }
 
 interface IWindowServiceMock {
-	resize(callback: {(event: JQueryEventObject): any}): void;
+	resize(callback: { (event: JQueryEventObject): any }): void;
 }
 
 describe('breakpoints', () => {
@@ -79,12 +77,6 @@ describe('breakpoints', () => {
 			},
 		};
 
-		test.angularFixture.mock({
-			visibleBreakpoint: mockVisibleBreakpointService,
-			windowWrapper: mockWindowControl,
-		});
-
-		var services: any = test.angularFixture.inject(breakpointServiceName);
-		breakpoints = services[breakpointServiceName];
+		breakpoints = new BreakpointService(mockVisibleBreakpointService, 1000, <any>mockWindowControl);
 	}
 });

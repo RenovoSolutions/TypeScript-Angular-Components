@@ -1,9 +1,9 @@
-import * as ng from 'angular';
+import { Injectable, Inject, Provider } from '@angular/core';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
 import { IWindowService, serviceName as windowWrapperServiceName } from '../windowWrapper/windowWrapper.service';
-import { IVisibleBreakpointService, visibleBreakpointServiceName } from './visibleBreakpoint.service';
+import { IVisibleBreakpointService, VisibleBreakpointService } from './visibleBreakpoint.service';
 
 import { xs, sm, md, lg } from './breakpoint';
 
@@ -15,16 +15,14 @@ export interface IBreakpointService {
 	isBreakpoint(breakpoint: string): boolean;
 }
 
+@Injectable()
 export class BreakpointService implements IBreakpointService {
-	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName]
-	constructor(private $rootScope: ng.IRootScopeService
-			, private visibleBreakpoints: IVisibleBreakpointService
-			, resizeDebounceMilliseconds: number
-			, windowService: IWindowService) {
+
+	constructor(private visibleBreakpoints: VisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: IWindowService) {
 		this.breakpointChanges = new Subject<string>();
 		this.currentBreakpoint = this.getBreakpoint();
 
-		var efficientResize: {(): void} = _.debounce(this.updateBreakpoint, resizeDebounceMilliseconds, {
+		var efficientResize: { (): void } = _.debounce(this.updateBreakpoint, resizeDebounceMilliseconds, {
 			leading: true,
 			trailing: true,
 			maxWait: resizeDebounceMilliseconds,
@@ -51,14 +49,12 @@ export class BreakpointService implements IBreakpointService {
 		return this.currentBreakpoint === breakpoint;
 	}
 
-	private updateBreakpoint: {(): void} = (): void => {
+	private updateBreakpoint: { (): void } = (): void => {
 		var newBreakPoint: string = this.getBreakpoint();
 
 		if (newBreakPoint !== this.currentBreakpoint) {
-			this.$rootScope.$apply((): void => {
-				this.currentBreakpoint = newBreakPoint;
-				this.breakpointChanges.next(this.currentBreakpoint);
-			});
+			this.currentBreakpoint = newBreakPoint;
+			this.breakpointChanges.next(this.currentBreakpoint);
 		}
 	}
 }
