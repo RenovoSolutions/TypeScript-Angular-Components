@@ -39,7 +39,7 @@ export class DialogComponent extends FormComponent {
 
 	open(): void {
 		this.dialogRoot.openDialog.next({
-			onClosing: this.wrapOnClosing(),
+			onClosing: this.wrapOnClosing,
 			header: this.header,
 			content: this.content,
 			footer: this.footer,
@@ -62,12 +62,14 @@ export class DialogComponent extends FormComponent {
 		return waitOn;
 	}
 
-	private wrapOnClosing(): IDialogClosingHandler {
+	private wrapOnClosing: IDialogClosingHandler = () => {
 		if (this.autosave) {
-			// autosave closing handler
-			return () => true;
+			if (this.dirty) {
+				return this.submit();
+			}
+			return true;
 		} else {
-			return this.onClosing;
+			return this.onClosing();
 		}
 	}
 }
