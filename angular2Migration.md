@@ -15,7 +15,7 @@ GenericContainer - Obsolete
 LazyLoad  
 LongClickButton - Done  
 MessageLog  
-MultiStepIndicator  
+MultiStepIndicator - In Progress (Jamie)  
 Radio - Done  
 RadioGroup - Done   
 RatingBar  
@@ -26,8 +26,8 @@ SimpleCard - Done
 SimpleCardList - Done  
 Spinner - Done  
 StringWithWatermark - Done  
-Tab  
-Tabset  
+Tab - In Progress (Andy)  
+Tabset - In Progress (Andy)  
 TemplateRenderer - Done  
 Textarea - Done  
 Textbox - Done  
