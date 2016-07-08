@@ -4,10 +4,9 @@
 		(mouseleave)="stopAction()"
 		(mouseup)="stopAction()"
 		[disabled]="busySpinner?.loading || disabled">
-	<rlBusy *ngIf="rightAligned" size="half"></rlBusy>
 	<span class="long-click-text btn-content">
 		<ng-content></ng-content>
 	</span>
-	<rlBusy *ngIf="!rightAligned" size="half"></rlBusy>
+	<rlBusy></rlBusy>
 	<div class="long-click-progress"></div>
 </button>
