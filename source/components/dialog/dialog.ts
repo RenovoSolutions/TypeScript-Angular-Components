@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { DialogRootService } from './dialogRoot.service';
+import { DialogRootService, IDialogClosingHandler } from './dialogRoot.service';
 
 @Component({
 	selector: 'rlDialog',
 	template: require('./dialog.html'),
 })
 export class DialogComponent {
+	@Input() onClosing: IDialogClosingHandler;
+
 	dialogRoot: DialogRootService;
 
 	constructor(dialogRoot: DialogRootService) {
@@ -15,10 +17,7 @@ export class DialogComponent {
 
 	open(): void {
 		this.dialogRoot.openDialog.next({
-			onClosing: () => {
-				console.log('Trying to close...');
-				return false;
-			},
+			onClosing: this.onClosing,
 		});
 	}
 
