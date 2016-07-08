@@ -74,7 +74,9 @@ export class DialogComponent extends FormComponent {
 			}
 			return true;
 		} else {
-			return this.onClosing();
+			return this.onClosing
+				? this.onClosing()
+				: true;
 		}
 	}
 }
