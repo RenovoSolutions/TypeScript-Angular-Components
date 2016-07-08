@@ -52,6 +52,11 @@ export class DialogComponent extends FormComponent {
 		this.dialogRoot.closeDialog.next(null);
 	}
 
+	dismiss(): void {
+		this.dialogRoot.dismissing = true;
+		this.dialogRoot.closeDialog.next(null);
+	}
+
 	submitAndClose(): IWaitValue<any> {
 		const waitOn = this.submitAndWait();
 		this.asyncHelper.waitAsObservable(waitOn).subscribe((result) => {
