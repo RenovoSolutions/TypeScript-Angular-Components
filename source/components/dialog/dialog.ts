@@ -5,7 +5,7 @@ import { DialogHeaderTemplate, DialogContentTemplate, DialogFooterTemplate } fro
 
 @Component({
 	selector: 'rlDialog',
-	template: require('./dialog.html'),
+	template: '',
 })
 export class DialogComponent {
 	@Input() onClosing: IDialogClosingHandler;
