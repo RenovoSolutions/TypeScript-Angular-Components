@@ -1,9 +1,9 @@
 <button class="btn btn-long-click {{button.types}} {{button.configuredSize}}"
-		ng-class="{ 'btn-busy': button.busy }"
+		ng-class="{ 'btn-loading': button.busy }"
 		ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()"
 		ng-disabled="button.busy || button.ngDisabled">
 	<rl-busy loading="button.busy" ng-if="button.rightAligned" size="half"></rl-busy>
-	<span ng-transclude class="long-click-text">
+	<span ng-transclude class="long-click-text btn-content">
 		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.text}}
 	</span>
 	<rl-busy loading="button.busy" ng-if="!button.rightAligned" size="half"></rl-busy>
