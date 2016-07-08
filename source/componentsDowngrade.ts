@@ -73,7 +73,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(MergeSort);
 	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
-	componentsDowngradeModule.value(defaultThemeValueName, defaultThemeToken);
+	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider(defaultThemeToken));
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
 
