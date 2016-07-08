@@ -77,7 +77,6 @@ let longClickButton: angular.IComponentOptions = buildButton({
 	bindings: {
 		warning: '@',
 		busy: '<?',
-		rightAligned: '<?',
 		// deprecated
 		onShortClickText: '@',
 		icon: '@',
