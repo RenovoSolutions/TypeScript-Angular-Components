@@ -28,6 +28,7 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 
 import { DatePipe } from './pipes/date/date.pipe';
 
+import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
@@ -37,6 +38,7 @@ export const moduleName: string = 'rl.components.downgrade';
 
 export const cardContainerBuilderServiceName: string = 'rlCardContainerBuilder';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
+export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
@@ -68,6 +70,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
