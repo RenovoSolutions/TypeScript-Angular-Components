@@ -29,6 +29,7 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 
 import { DatePipe } from './pipes/date/date.pipe';
 
+import { AsyncHelper } from './services/async/async.service';
 import { FormService } from './services/form/form.service';
 
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
@@ -66,6 +67,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 		},
 	});
 
+	upgradeAdapter.addProvider(AsyncHelper);
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
 	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
