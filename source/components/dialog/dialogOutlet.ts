@@ -1,9 +1,9 @@
-import * as $ from 'jquery';
 import 'bootstrap';
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, Inject } from '@angular/core';
 
 import { DialogRootService } from './dialogRoot.service';
 import { ButtonComponent, ButtonAsyncComponent } from '../buttons/index';
+import { jqueryToken } from '../../services/jquery/jquery.provider';
 
 @Component({
 	selector: 'rlDialogOutlet',
@@ -12,14 +12,17 @@ import { ButtonComponent, ButtonAsyncComponent } from '../buttons/index';
 })
 export class DialogOutletComponent implements AfterViewInit {
 	dialogRoot: DialogRootService;
+	jquery: JQueryStatic;
 
-	constructor(dialogRoot: DialogRootService) {
+	constructor(dialogRoot: DialogRootService
+			, @Inject(jqueryToken) jquery: JQueryStatic) {
 		this.dialogRoot = dialogRoot;
+		this.jquery = jquery;
 		dialogRoot.openDialog.subscribe((): void => {
-			$('.rlModal').modal('show');
+			jquery('.rlModal').modal('show');
 		});
 		dialogRoot.closeDialog.subscribe((): void => {
-			$('.rlModal').modal('hide');
+			jquery('.rlModal').modal('hide');
 		});
 	}
 
@@ -29,7 +32,7 @@ export class DialogOutletComponent implements AfterViewInit {
 	}
 
 	ngAfterViewInit(): void {
-		$('.rlModal').on('hide.bs.modal', (event: JQueryEventObject) => {
+		this.jquery('.rlModal').on('hide.bs.modal', (event: JQueryEventObject) => {
 			if (this.dialogRoot.dismissing) {
 				this.dialogRoot.dismissing = false;
 				return;

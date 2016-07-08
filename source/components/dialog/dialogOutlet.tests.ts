@@ -10,42 +10,35 @@ interface IJqueryBootstrapMock extends Sinon.SinonSpy {
 describe('DialogOutletComponent', (): void => {
 	let dialogOutlet: DialogOutletComponent;
 	let dialogRoot: DialogRootService;
-	let mock$: IJqueryBootstrapMock;
-	let original$: JQueryStatic;
+	let mockJquery: IJqueryBootstrapMock;
 	let hideModal: Function;
 
 	beforeEach((): void => {
-		mock$ = <any>sinon.spy(() => mock$);
-		mock$.modal = sinon.spy();
-		mock$.on = sinon.spy((event, func) => hideModal = func);
-		original$ = $;
-		$ = <any>mock$;
+		mockJquery = <any>sinon.spy(() => mockJquery);
+		mockJquery.modal = sinon.spy();
+		mockJquery.on = sinon.spy((event, func) => hideModal = func);
 
 		dialogRoot = new DialogRootService();
-		dialogOutlet = new DialogOutletComponent(dialogRoot);
-	});
-
-	afterEach(() => {
-		$ = original$;
+		dialogOutlet = new DialogOutletComponent(dialogRoot, <any>mockJquery);
 	});
 
 	it('should show and hide the modal on open and close events', (): void => {
 		dialogRoot.openDialog.next({});
 
-		sinon.assert.calledOnce(mock$);
-		sinon.assert.calledWith(mock$, '.rlModal');
-		sinon.assert.calledOnce(mock$.modal);
-		sinon.assert.calledWith(mock$.modal, 'show');
+		sinon.assert.calledOnce(mockJquery);
+		sinon.assert.calledWith(mockJquery, '.rlModal');
+		sinon.assert.calledOnce(mockJquery.modal);
+		sinon.assert.calledWith(mockJquery.modal, 'show');
 
-		mock$.reset();
-		mock$.modal.reset();
+		mockJquery.reset();
+		mockJquery.modal.reset();
 
 		dialogRoot.closeDialog.next(null);
 
-		sinon.assert.calledOnce(mock$);
-		sinon.assert.calledWith(mock$, '.rlModal');
-		sinon.assert.calledOnce(mock$.modal);
-		sinon.assert.calledWith(mock$.modal, 'hide');
+		sinon.assert.calledOnce(mockJquery);
+		sinon.assert.calledWith(mockJquery, '.rlModal');
+		sinon.assert.calledOnce(mockJquery.modal);
+		sinon.assert.calledWith(mockJquery.modal, 'hide');
 	});
 
 	it('should set dismissing to true and fire a close event', (): void => {
@@ -63,13 +56,13 @@ describe('DialogOutletComponent', (): void => {
 		beforeEach((): void => {
 			dialogOutlet.ngAfterViewInit();
 
-			sinon.assert.calledOnce(mock$);
-			sinon.assert.calledWith(mock$, '.rlModal');
-			sinon.assert.calledOnce(mock$.on);
-			sinon.assert.calledWith(mock$.on, 'hide.bs.modal');
+			sinon.assert.calledOnce(mockJquery);
+			sinon.assert.calledWith(mockJquery, '.rlModal');
+			sinon.assert.calledOnce(mockJquery.on);
+			sinon.assert.calledWith(mockJquery.on, 'hide.bs.modal');
 
-			mock$.reset();
-			mock$.on.reset();
+			mockJquery.reset();
+			mockJquery.on.reset();
 		});
 
 		it('should call on closing and cancel the close if the result is not true', (): void => {
