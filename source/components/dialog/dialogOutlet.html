@@ -3,12 +3,15 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.header?.template"></template>
+				<div class="clearfix"></div>
 			</div>
 			<div class="modal-body">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.content?.template"></template>
+				<div class="clearfix"></div>
 			</div>
 			<div class="modal-footer">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.footer?.template"></template>
+				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
