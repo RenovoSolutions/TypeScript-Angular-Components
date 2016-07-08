@@ -6,12 +6,14 @@
 
 <div>
 	<label><a href="">Dialog</a>:</label>
-	<rlDialog [onClosing]="onClosing">
+	<rlButton (trigger)="dialog1.open()">Open Dialog 1</rlButton>
+	<rlButton (trigger)="dialog2.open()">Open Dialog 2</rlButton>
+	<rlDialog #dialog1 [onClosing]="onClosing">
 		<div *rlDialogHeader>Header</div>
 		<div *rlDialogContent>Content</div>
 		<div *rlDialogFooter>Footer</div>
 	</rlDialog>
-	<rlDialog>
+	<rlDialog #dialog2>
 		<div *rlDialogHeader>Header 2</div>
 		<div *rlDialogContent>Content 2</div>
 		<div *rlDialogFooter>Footer 2</div>
