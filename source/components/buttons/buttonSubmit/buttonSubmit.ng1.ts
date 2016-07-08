@@ -10,7 +10,6 @@ export const componentName: string = 'rlButtonSubmit';
 const buttonSubmit: angular.IComponentOptions = buildButton({
 		template: require('./buttonSubmit.ng1.html'),
 		bindings: {
-			rightAligned: '<?',
 			saving: '<?',
 			action: null,
 		},

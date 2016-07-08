@@ -3,9 +3,8 @@
 		[class.btn-loading]="saving"
 		(click)="submit()"
 		[disabled]="saving || disabled">
-	<rlBusy *ngIf="rightAligned" size="half"></rlBusy>
 	<span class="btn-content">
 		<ng-content></ng-content>
 	</span>
-	<rlBusy *ngIf="!rightAligned" size="half"></rlBusy>
+	<rlBusy></rlBusy>
 </button>
