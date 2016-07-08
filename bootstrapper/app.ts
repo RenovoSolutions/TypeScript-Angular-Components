@@ -21,6 +21,7 @@ import { moduleName as textModuleName } from './text/text';
 
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
+import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
@@ -52,6 +53,7 @@ angular.module(moduleName, [
 	.component('tsBootstrapper', bootstrapper)
 	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
 	.directive('tsCardsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(CardsBootstrapper))
+	.directive('tsPopupBootstrapper', <any>upgradeAdapter.downgradeNg2Component(PopupBootstrapper))
 	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper))
 	.config(BaseRoute);
 
