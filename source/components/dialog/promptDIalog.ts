@@ -33,6 +33,6 @@ export class PromptDialogComponent {
 	}
 
 	dismiss(): void {
-		this.dialog.close();
+		this.dialog.dismiss();
 	}
 }
