@@ -17,6 +17,7 @@ import {
 } from './components/buttons/index';
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
+import { DialogRootService } from './components/dialog/dialogRoot.service';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
@@ -66,6 +67,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
