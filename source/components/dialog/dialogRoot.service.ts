@@ -17,6 +17,7 @@ export interface IDialogClosingHandler {
 
 export class DialogRootService {
 	dialogContext: IDialogContent;
+	dismissing: boolean = false;
 
 	openDialog: Subject<IDialogContent> = new Subject<IDialogContent>();
 	closeDialog: Subject<void> = new Subject<void>();
