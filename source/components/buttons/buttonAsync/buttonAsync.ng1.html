@@ -1,7 +1,6 @@
 ﻿<button type="button" class="btn {{::button.types}} {{::button.configuredSize}}" ng-class="{ 'btn-loading': button.busy }" ng-click="button.trigger()" ng-disabled="button.busy || button.ngDisabled">
-	<rl-busy ng-if="::button.rightAligned" loading="button.busy" size="half"></rl-busy>
 	<span class="btn-content">
 		<span ng-transclude></span>
 	</span>
-	<rl-busy ng-if="::!button.rightAligned" loading="button.busy" size="half"></rl-busy>
+	<rl-busy loading="button.busy"></rl-busy>
 </button>

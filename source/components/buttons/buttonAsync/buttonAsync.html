@@ -3,9 +3,8 @@
 		[class.btn-loading]="busySpinner?.loading"
 		(click)="triggerAction($event)"
 		[disabled]="busySpinner?.loading || disabled">
-	<rlBusy *ngIf="rightAligned" size="half"></rlBusy>
 	<span class="btn-content">
 		<ng-content></ng-content>
 	</span>
-	<rlBusy *ngIf="!rightAligned" size="half"></rlBusy>
+	<rlBusy></rlBusy>
 </button>
