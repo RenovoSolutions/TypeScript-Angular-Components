@@ -1,15 +1,15 @@
 <div class="modal fade rlModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" *ngIf="dialogRoot.dialogContext?.header">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.header?.template"></template>
 				<div class="clearfix"></div>
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" *ngIf="dialogRoot.dialogContext?.content">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.content?.template"></template>
 				<div class="clearfix"></div>
 			</div>
-			<div class="modal-footer">
+			<div class="modal-footer" *ngIf="dialogRoot.dialogContext?.footer">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.footer?.template"></template>
 				<div class="clearfix"></div>
 			</div>
