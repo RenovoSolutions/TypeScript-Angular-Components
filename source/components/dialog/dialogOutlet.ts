@@ -21,6 +21,10 @@ export class DialogOutletComponent implements AfterViewInit {
 		});
 	}
 
+	dismiss(): void {
+		this.dialogRoot.closeDialog.next(null);
+	}
+
 	ngAfterViewInit(): void {
 		$('.rlModal').on('hide.bs.modal', (event: JQueryEventObject) => {
 			const canClose = this.dialogRoot.onClosing();

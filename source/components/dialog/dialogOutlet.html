@@ -1,6 +1,17 @@
 <div class="modal fade rlModal" tabindex="-1" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
+			<button type="button"
+					class="close"
+					[class.modal-header-placeholder]="!dialogRoot.dialogContext?.header"
+					data-dismiss="modal"
+					aria-hidden="true"
+					(click)="dismiss()">
+				<span class="fa-stack">
+					<i class="close-bg fa fa-circle fa-stack-2x"></i>
+					<i class="close-icon fa fa-close fa-stack-1x"></i>
+				</span>
+			</button>
 			<div class="modal-header" *ngIf="dialogRoot.dialogContext?.header">
 				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.header?.template"></template>
 				<div class="clearfix"></div>
