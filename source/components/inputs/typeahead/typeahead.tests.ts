@@ -3,6 +3,7 @@ import __test = services.test;
 import mock = __test.mock;
 import fakeAsync = __test.fakeAsync;
 import flushMicrotasks = __test.flushMicrotasks;
+import __search = services.search;
 
 import { TypeaheadComponent } from './typeahead';
 
@@ -29,7 +30,7 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(null, null, validator, null, null, null);
+		typeahead = new TypeaheadComponent<any>(null, null, validator, null, null, null, __search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
