@@ -90,7 +90,12 @@ export class FormComponent {
 	}
 
 	private showErrors(): void {
-		this.notification.warning(this.formService.getAggregateError(this.form));
+		const error = this.formService.getAggregateError(this.form);
+		if (error) {
+			this.notification.warning(error);
+		} else {
+			throw new Error('The form is invalid but there are no validation errors to show');
+		}
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {

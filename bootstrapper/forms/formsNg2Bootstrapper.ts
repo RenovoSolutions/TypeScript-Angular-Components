@@ -32,6 +32,7 @@ export class FormsBootstrapper {
 	rating: number;
 	time: string;
 	validator: any;
+	brokenValidator: any;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
@@ -54,6 +55,10 @@ export class FormsBootstrapper {
 		this.validator = {
 			validate: () => this.rating >= 3,
 			errorMessage: 'You must give at least 3 stars',
+		};
+		this.brokenValidator = {
+			validate: () => false,
+			errorMessage: null,
 		};
 	}
 

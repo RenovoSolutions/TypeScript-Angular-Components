@@ -61,3 +61,8 @@
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
+<h5>Broken validation</h5>
+<rlForm>
+	<rlTextbox [validator]="brokenValidator"></rlTextbox>
+	<rlButtonSubmit>Throw validation error</rlButtonSubmit>
+</rlForm>
