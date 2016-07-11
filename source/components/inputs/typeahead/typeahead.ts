@@ -52,7 +52,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
-	showOptions: boolean;
+	showOptions: boolean = false;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
