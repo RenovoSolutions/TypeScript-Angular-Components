@@ -45,5 +45,4 @@ angular.module(moduleName, [
 	parentChild.moduleName,
 	promise.moduleName,
 	templateLoader.moduleName,
-	windowWrapper.moduleName,
 ]);
