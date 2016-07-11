@@ -64,7 +64,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			, @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
 			, @Inject(__guid.guidToken) guid: __guid.IGuidService
-			, @Inject(__search.searchToken) searchService: __search.ISearchUtility) {
+			, searchService: __search.SearchUtility) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
 		this.searchUtility = searchService;
