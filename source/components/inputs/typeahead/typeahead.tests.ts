@@ -90,7 +90,7 @@ describe('TypeaheadComponent', () => {
 		}));
 
 		it('should apply the search string if useClientSearching is on', fakeAsync((): void => {
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 
 			let getItemsMock: __test.IMockedRequest<string[]> = mock.request(items);
 			typeahead.getItems = getItemsMock;
@@ -110,7 +110,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
 			, fakeAsync((): void => {
-				typeahead.useClientSearching = true;
+				typeahead.clientSearch = true;
 
 				let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
 				typeahead.getItems = getItemsMock;
@@ -142,7 +142,7 @@ describe('TypeaheadComponent', () => {
 
 	describe('external API', (): void => {
 		it('should add the specified item to the cached item list', fakeAsync((): void => {
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 
 			let items: string[] = [];
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
@@ -159,7 +159,7 @@ describe('TypeaheadComponent', () => {
 		}));
 
 		it('should remove the specified item from the cached items list', fakeAsync((): void => {
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 
 			let items: string[] = ['Item 1'];
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
@@ -183,7 +183,7 @@ describe('TypeaheadComponent', () => {
 		it('should collapse if allowCollapse is turned on', fakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.select = <any>{ emit: selectSpy };
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
 			initialLoad();
 
@@ -198,7 +198,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should call the select function without collapsing', fakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 			typeahead.select = <any>{ emit: selectSpy };
 			initialLoad();
 
@@ -212,7 +212,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should call create with the search text if the search option is selected', fakeAsync((): void => {
 			let createSpy: Sinon.SinonSpy = sinon.spy(search => { return { value: search }; });
-			typeahead.useClientSearching = true;
+			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
 			typeahead.create = createSpy;
 			initialLoad();

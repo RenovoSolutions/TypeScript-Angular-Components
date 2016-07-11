@@ -35,7 +35,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() getItems: { (search?: string): Promise<T[]> | Observable<T[]> };
 	@Input() prefix: string;
-	@Input() useClientSearching: boolean;
+	@Input() clientSearch: boolean;
 	@Input() allowCollapse: boolean;
 	@Input() create: { (value: string): T };
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
@@ -129,7 +129,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		this.loadDelay = this.useClientSearching ? 100 : 500;
+		this.loadDelay = this.clientSearch ? 100 : 500;
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 
@@ -160,7 +160,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 	loadItems(search: string): Observable<T[]> {
 		let itemsStream: Observable<T[]>;
-		if (!this.useClientSearching) {
+		if (!this.clientSearch) {
 			itemsStream = Observable.from(this.getItems(search));
 		} else {
 			itemsStream = this.getItemsClient()
