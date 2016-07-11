@@ -137,17 +137,17 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	loadItems(search: string): Observable<T[]> {
+		let itemsStream: Observable<T[]>;
 		if (!this.useClientSearching) {
-			return Observable.from(this.getItems(search))
-				.do((items: any[]): void => {
-					this.visibleItems = items;
-				});
+			itemsStream = Observable.from(this.getItems(search));
 		} else {
-			return this.getItemsClient()
-				.do((items: any[]): void => {
-					this.visibleItems = this.filter(items, search);
+			itemsStream = this.getItemsClient()
+				.map((items: T[]): T[] => {
+					return this.filter(items, search);
 				});
 		}
+		itemsStream.subscribe(items => this.visibleItems = items);
+		return itemsStream;
 	}
 
 	private getItemsClient(): Observable<T[]> {
@@ -156,15 +156,15 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 		//when useClientSearching is enabled, the entire list is loaded and then filtered in-memory
 		//caching the promise prevents multiple API calls from being made to load the entire list
-		else if (this.getItemsRequest != null) {
-			return this.getItemsRequest;
-		}
-		else {
-			return this.getItemsRequest = Observable.from(this.getItems())
-				.do((items: T[]): T[] => {
+		else if (this.getItemsRequest == null) {
+			this.getItemsRequest = Observable.from(this.getItems())
+
+			this.getItemsRequest.subscribe((items: T[]): T[] => {
 					return this.cachedItems = items;
 				});
 		}
+
+		return this.getItemsRequest;
 	}
 
 	private showCustomSearch(search: string): boolean {
