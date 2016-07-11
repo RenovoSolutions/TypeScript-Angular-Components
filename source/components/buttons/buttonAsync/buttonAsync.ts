@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { BusyComponent, IWaitValue } from '../../busy/busy';
 import { BaseButtonComponent, baseInputs } from '../baseButton';
 
-export const asyncInputs = baseInputs.concat(['action', 'rightAligned']);
+export const asyncInputs = baseInputs.concat(['action']);
 
 export interface IAsyncAction {
 	($event: any): IWaitValue<any>;
@@ -18,7 +18,6 @@ export interface IAsyncAction {
 })
 export class ButtonAsyncComponent extends BaseButtonComponent {
 	action: IAsyncAction;
-	rightAligned: boolean;
 
 	@ViewChild(BusyComponent) busySpinner: BusyComponent;
 

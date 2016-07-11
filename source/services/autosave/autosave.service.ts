@@ -81,7 +81,12 @@ class AutosaveService implements IAutosaveService {
 
 			return true;
 		} else {
-			this.notification.warning(this.formService.getAggregateError(this.contentForm));
+			const error = this.formService.getAggregateError(this.contentForm);
+			if (error) {
+				this.notification.warning(error);
+			} else {
+				throw new Error('The form is invalid but there are no validation errors to show');
+			}
 			return false;
 		}
 	}

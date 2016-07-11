@@ -11,7 +11,6 @@ import { FormComponent } from '../../form/form';
 	directives: [BusyComponent],
 })
 export class ButtonSubmitComponent extends BaseButtonComponent {
-	@Input() rightAligned: boolean;
 
 	@ViewChild(BusyComponent) busySpinner: BusyComponent;
 

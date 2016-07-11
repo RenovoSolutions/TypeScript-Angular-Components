@@ -1,9 +1,10 @@
 <button type="button"
 		class="btn {{configuredTypes}} {{configuredSize}}"
-		[class.btn-busy]="busySpinner?.loading"
+		[class.btn-loading]="busySpinner?.loading"
 		(click)="triggerAction($event)"
 		[disabled]="busySpinner?.loading || disabled">
-	<rlBusy *ngIf="rightAligned" size="half"></rlBusy>
-	<ng-content></ng-content>
-	<rlBusy *ngIf="!rightAligned" size="half"></rlBusy>
+	<span class="btn-content">
+		<ng-content></ng-content>
+	</span>
+	<rlBusy></rlBusy>
 </button>
