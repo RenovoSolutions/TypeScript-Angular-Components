@@ -16,14 +16,12 @@ export interface IButtonBindings {
 	size: string;
 	type: string;
 	ngDisabled: boolean;
-	rightAligned: boolean;
 }
 
 export class ButtonAsyncController extends ButtonController {
 	// bindings
 	busy: boolean;
 	action: { (...params: any[]): angular.IPromise<any> | void };
-	rightAligned: boolean;
 
 	static $inject: string[] = [promiseServiceName];
 	constructor(private promiseUtility: IPromiseUtility) {
@@ -50,7 +48,6 @@ const buttonAsync: angular.IComponentOptions = buildButton({
 	template: require('./buttonAsync.ng1.html'),
 	bindings: {
 		busy: '<?',
-		rightAligned: '<?',
 	},
 	controller: controllerName,
 });

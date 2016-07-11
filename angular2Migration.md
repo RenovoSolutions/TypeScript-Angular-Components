@@ -8,14 +8,14 @@ ButtonToggle - Done
 Checkbox - Done  
 Comma list - Done  
 DateTime - Done  
-Dialog  
-PromptDialog  
+Dialog - Done  
+PromptDialog - Done  
 Form - In progress (autosave needs resolved)  
 GenericContainer - Obsolete  
 LazyLoad  
 LongClickButton - Done  
 MessageLog  
-MultiStepIndicator  
+MultiStepIndicator - In Progress (Jamie)  
 Radio - Done  
 RadioGroup - Done   
 RatingBar  
@@ -26,12 +26,12 @@ SimpleCard - Done
 SimpleCardList - Done  
 Spinner - Done  
 StringWithWatermark - Done  
-Tab  
-Tabset  
+Tab - In Progress (Andy)  
+Tabset - In Progress (Andy)  
 TemplateRenderer - Done  
 Textarea - Done  
 Textbox - Done  
-Typeahead  
+Typeahead    
 TypeheadList  
 UserRating - Done  
 ValidationGroup - Done  
@@ -46,20 +46,20 @@ Required - Obsolete - handled in the base input classes now
 
 ###Pipes  
 Date - Done  
-LocalizeStringDates  
+LocalizeStringDates - Done
 
 
 ###Services  
 Autosave - Obsolete? - Most of this behavior will move to the form and autosave directives  
 AutosaveAction - (relates to autosave)  
-Breakpoints  
+Breakpoints - In Progress (Josh)  
 ComponentValidator - Done  
 ContentProvider  
 Dialog - Obsolete? - Dialogs will probably be handled through the component now  
-DocumentWrapper  
+DocumentWrapper - Done  
 Form - Done  
 Jquery - Hopefully not really needed  
 ParentChild - Obsolete - this is very angular 1 specific. May be needed during the upgrade, but we'll just upgrade it if needed  
 Promise  
 TemplateLoader - Obsolete - this is used for the generic container  
-WindowWrapper  
+WindowWrapper - Done  

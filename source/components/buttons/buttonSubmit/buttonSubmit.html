@@ -1,8 +1,10 @@
 <button type="submit"
 		class="btn {{configuredTypes}} {{configuredSize}}"
+		[class.btn-loading]="saving"
 		(click)="submit()"
 		[disabled]="saving || disabled">
-	<rlBusy *ngIf="rightAligned"></rlBusy>
-	<ng-content></ng-content>
-	<rlBusy *ngIf="!rightAligned"></rlBusy>
+	<span class="btn-content">
+		<ng-content></ng-content>
+	</span>
+	<rlBusy></rlBusy>
 </button>
