@@ -71,14 +71,13 @@ describe('TypeaheadComponent', () => {
 
 		it('should return the result of the getItems function if useClientSearching is off', fakeAsync((): void => {
 			// simulate a server-side search
-			let getItemsMock: __test.IMockedRequest<string[]> = mock.request([[items[0], items[1]]]);
+			let getItemsMock: __test.IMockedRequest<string[]> = mock.request([items[0], items[1]]);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('Item ');
 
 			sinon.assert.calledOnce(getItemsMock);
-			let searchArg: string = getItemsMock.firstCall.args[0];
-			expect(searchArg).to.equal('Item ');
+			sinon.assert.calledWith(getItemsMock, 'Item ');
 
 			getItemsMock.flush();
 
