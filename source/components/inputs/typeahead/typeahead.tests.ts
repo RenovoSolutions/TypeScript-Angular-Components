@@ -262,5 +262,14 @@ describe('TypeaheadComponent', () => {
 			typeahead.selectItem('option');
 			expect(typeahead.showOptions).to.be.false;
 		});
+
+		it('should open the options when a search returns', (): void => {
+			let getItemsMock: __test.IMockedRequest<string> = mock.request(['item']);
+			typeahead.getItems = getItemsMock;
+			typeahead.refresh('I');
+			getItemsMock.flush();
+
+			expect(typeahead.showOptions).to.be.true;
+		});
 	});
 });

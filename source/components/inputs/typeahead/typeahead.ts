@@ -109,6 +109,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		this.busy.trigger(loadRequest);
+		loadRequest.subscribe(() => this.showOptions = true);
 		return loadRequest;
 	}
 
