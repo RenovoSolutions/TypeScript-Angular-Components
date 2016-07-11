@@ -39,6 +39,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
 
+	search: string;
 	cachedItems: any[];
 	getItemsRequest: Observable<T[]>;
 	visibleItems: any[];
@@ -92,8 +93,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 	}
 
-	selectCustom(text: string): void {
-		const newItem: T = this.create(text);
+	selectCustom(): void {
+		const newItem: T = this.create(this.search);
 		this.selectItem(newItem);
 	}
 

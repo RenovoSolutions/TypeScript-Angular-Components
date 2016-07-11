@@ -182,45 +182,34 @@ describe('TypeaheadComponent', () => {
 			items = ['Item 1', 'Item 2', 'Another item', 'A fourth item'];
 		});
 
-		it('should collapse if no select handler is specified', fakeAsync((): void => {
-			typeahead.useClientSearching = true;
-			initialLoad();
-
-			typeahead.selection = items[0];
-
-			expect(typeahead.selection).to.equal(items[0]);
-			expect(typeahead.collapsed).to.be.true;
-		}));
-
-		it('should collapse if a select handler is provided and allowCollapse is turned on', fakeAsync((): void => {
+		it('should collapse if allowCollapse is turned on', fakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			typeahead.select = <any>{ emit: selectSpy };
 			typeahead.useClientSearching = true;
 			typeahead.allowCollapse = true;
-			typeahead.select = selectSpy;
 			initialLoad();
 
-			typeahead.selection = items[0];
+			typeahead.selectItem(items[0]);
 
-			expect(typeahead.selection).to.equal(items[0]);
-			expect(typeahead.collapsed).to.be.true;
-
+			sinon.assert.calledOnce(setValue);
+			sinon.assert.calledWith(setValue, items[0]);
 			sinon.assert.calledOnce(selectSpy);
-			expect(selectSpy.firstCall.args[0].value).to.equal(items[0]);
+			sinon.assert.calledWith(selectSpy, items[0]);
+			expect(typeahead.collapsed).to.be.true;
 		}));
 
 		it('should call the select function without collapsing', fakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.useClientSearching = true;
-			typeahead.select = selectSpy;
+			typeahead.select = <any>{ emit: selectSpy };
 			initialLoad();
 
-			typeahead.selection = items[0];
+			typeahead.selectItem(items[0]);
 
-			expect(typeahead.selection).to.not.exist;
+			sinon.assert.notCalled(setValue);
 			expect(typeahead.collapsed).to.be.false;
-
 			sinon.assert.calledOnce(selectSpy);
-			expect(selectSpy.firstCall.args[0].value).to.equal(items[0]);
+			sinon.assert.calledWith(selectSpy, items[0]);
 		}));
 
 		it('should call create with the search text if the search option is selected', fakeAsync((): void => {
@@ -229,13 +218,13 @@ describe('TypeaheadComponent', () => {
 			typeahead.create = createSpy;
 			initialLoad();
 
-			typeahead._searchOption.text = 'search';
-			typeahead.selection = typeahead._searchOption;
+			typeahead.search = 'search';
+			typeahead.selectCustom();
 
 			sinon.assert.calledOnce(createSpy);
-			expect(createSpy.firstCall.args[0].value).to.equal('search');
-
-			expect(typeahead.selection.value).to.equal('search');
+			sinon.assert.calledWith(createSpy, 'search');
+			sinon.assert.calledOnce(setValue);
+			sinon.assert.calledWith(setValue, { value: 'search' });
 			expect(typeahead.collapsed).to.be.true;
 		}));
 
