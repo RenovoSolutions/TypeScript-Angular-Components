@@ -4,6 +4,8 @@ import { services } from 'typescript-angular-utilities';
 import mock = services.test.mock;
 import fakeAsync = services.test.fakeAsync;
 
+import { AsyncHelper } from '../../services/async/async.service';
+
 interface INotificationMock {
 	warning: Sinon.SinonSpy;
 }
@@ -22,7 +24,7 @@ describe('FormComponent', (): void => {
 		notification = { warning: sinon.spy() };
 		formService = {};
 
-		form = new FormComponent(<any>notification, <any>formService, null);
+		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, null);
 		form.form = <any>{};
 	});
 
@@ -49,7 +51,7 @@ describe('FormComponent', (): void => {
 				rlNestedFormGroups: { push: pushSpy },
 			},
 		};
-		form = new FormComponent(<any>notification, <any>formService, parentForm);
+		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, parentForm);
 
 		sinon.assert.calledOnce(pushSpy);
 		sinon.assert.calledWith(pushSpy, form.form);
@@ -72,7 +74,7 @@ describe('FormComponent', (): void => {
 			sinon.assert.calledOnce(setPristineSpy);
 		}));
 
-		it('should mark the form as pristine immediately if no async action is returned', (): void => {
+		it('should mark the form as pristine immediately if no async action is returned', fakeAsync((): void => {
 			form.save = <any>(() => null);
 			const setPristineSpy = sinon.spy();
 			formService.isFormValid = <any>(() => true);
@@ -81,7 +83,7 @@ describe('FormComponent', (): void => {
 			form.saveForm();
 
 			sinon.assert.calledOnce(setPristineSpy);
-		});
+		}));
 	});
 
 	describe('submit', (): void => {
