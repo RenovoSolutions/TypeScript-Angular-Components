@@ -1,0 +1,35 @@
+<div class="field"
+	 [class.error]="!control.valid"
+	 (offClick)="close()">
+	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<div [hidden]="collapsed">
+		<input class="form-control rl-select-trigger"
+			   (click)="toggle()"
+			   [disabled]="disabled"
+			   [class.rl-select-open]="showOptions"
+			   [placeholder]="label"
+			   [value]="search"
+			   (input)="searchStream.next($event.target.value)" />
+		<ul class="rl-select-list" *ngIf="showOptions && search">
+			<li class="rl-select-option rl-select-option-custom" *ngIf="allowCustomOption" (click)="selectCustom">{{search}}</li>
+			<li class="rl-select-option"
+				*ngFor="let option of visibleItems | async"
+				(click)="selectItem(option)">
+				<span *ngIf="template">
+					<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: option }"></template>
+				</span>
+				<span *ngIf="!template">{{getDisplayName(option)}}</span>
+			</li>
+		</ul>
+	</div>
+	<div class="collapsed" [hidden]="!collapsed">
+		<span>{{getDisplayName(value)}}</span>
+		<rlButton type="default flat" (trigger)="clear()">
+			<i class="fa fa-remove"></i>
+		</rlButton>
+	</div>
+	<rlBusy></rlBusy>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>
