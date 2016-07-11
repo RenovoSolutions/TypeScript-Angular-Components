@@ -209,6 +209,7 @@ describe('TypeaheadComponent', () => {
 		it('should call create with the search text if the search option is selected', fakeAsync((): void => {
 			let createSpy: Sinon.SinonSpy = sinon.spy(search => { return { value: search }; });
 			typeahead.useClientSearching = true;
+			typeahead.allowCollapse = true;
 			typeahead.create = createSpy;
 			initialLoad();
 
