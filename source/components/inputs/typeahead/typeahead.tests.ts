@@ -125,23 +125,14 @@ describe('TypeaheadComponent', () => {
 				expect(typeahead.visibleItems[0]).to.equal(items[1]);
 			}));
 
-		it('should add a special search option to the list if a create handler is provided and no match is found', fakeAsync((): void => {
-			let createSpy: Sinon.SinonSpy = sinon.spy();
-			typeahead.useClientSearching = true;
-			typeahead.create = createSpy;
-
+		it('should set the search value', (): void => {
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('A');
 
-			getItemsMock.flush();
-
-			expect(typeahead.visibleItems.length).to.equal(3);
-			expect(typeahead.visibleItems[0].__isSearchOption).to.be.true;
-			expect(typeahead.visibleItems[1]).to.equal(items[2]);
-			expect(typeahead.visibleItems[2]).to.equal(items[3]);
-		}));
+			expect(typeahead.search).to.equal('A');
+		});
 	});
 
 	describe('external API', (): void => {

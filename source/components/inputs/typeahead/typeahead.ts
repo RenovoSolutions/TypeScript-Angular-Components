@@ -99,6 +99,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	refresh(search: string): Observable<T[]> {
+		this.search = search;
 		if (this.object.isNullOrEmpty(search)) {
 			this.visibleItems = [];
 			return null;
