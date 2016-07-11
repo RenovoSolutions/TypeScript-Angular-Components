@@ -62,10 +62,11 @@ describe('TypeaheadComponent', () => {
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
-			typeahead.refresh('');
+			let visibleItems: string[];
+			typeahead.refresh('').subscribe(result => visibleItems = result);
 
 			sinon.assert.notCalled(getItemsMock);
-			expect(typeahead.visibleItems).to.be.empty;
+			expect(visibleItems).to.be.empty;
 
 			getItemsMock.flush();
 		}));
@@ -75,16 +76,17 @@ describe('TypeaheadComponent', () => {
 			let getItemsMock: __test.IMockedRequest<string[]> = mock.request([items[0], items[1]]);
 			typeahead.getItems = getItemsMock;
 
-			typeahead.refresh('Item ');
+			let visibleItems: string[];
+			typeahead.refresh('Item ').subscribe(result => visibleItems = result);
 
 			sinon.assert.calledOnce(getItemsMock);
 			sinon.assert.calledWith(getItemsMock, 'Item ');
 
 			getItemsMock.flush();
 
-			expect(typeahead.visibleItems.length).to.equal(2);
-			expect(typeahead.visibleItems[0]).to.equal(items[0]);
-			expect(typeahead.visibleItems[1]).to.equal(items[1]);
+			expect(visibleItems.length).to.equal(2);
+			expect(visibleItems[0]).to.equal(items[0]);
+			expect(visibleItems[1]).to.equal(items[1]);
 		}));
 
 		it('should apply the search string if useClientSearching is on', fakeAsync((): void => {
@@ -93,16 +95,17 @@ describe('TypeaheadComponent', () => {
 			let getItemsMock: __test.IMockedRequest<string[]> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
-			typeahead.refresh('A');
+			let visibleItems: string[];
+			typeahead.refresh('A').subscribe(result => visibleItems = result);
 
 			sinon.assert.calledOnce(getItemsMock);
 			expect(getItemsMock.firstCall.args).to.be.empty;
 
 			getItemsMock.flush();
 
-			expect(typeahead.visibleItems.length).to.equal(2);
-			expect(typeahead.visibleItems[0]).to.equal(items[2]);
-			expect(typeahead.visibleItems[1]).to.equal(items[3]);
+			expect(visibleItems.length).to.equal(2);
+			expect(visibleItems[0]).to.equal(items[2]);
+			expect(visibleItems[1]).to.equal(items[3]);
 		}));
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
@@ -111,19 +114,20 @@ describe('TypeaheadComponent', () => {
 
 				let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
 				typeahead.getItems = getItemsMock;
-				typeahead.refresh('A');
+				let visibleItems: string[];
+				typeahead.refresh('A').subscribe(result => visibleItems = result);
 				getItemsMock.flush();
 
 				getItemsMock.reset();
 
-				typeahead.refresh('2');
+				typeahead.refresh('2').subscribe(result => visibleItems = result);
 
 				flushMicrotasks();
 
 				sinon.assert.notCalled(getItemsMock);
 
-				expect(typeahead.visibleItems.length).to.equal(1);
-				expect(typeahead.visibleItems[0]).to.equal(items[1]);
+				expect(visibleItems.length).to.equal(1);
+				expect(visibleItems[0]).to.equal(items[1]);
 			}));
 
 		it('should set the search value', (): void => {
@@ -234,7 +238,7 @@ describe('TypeaheadComponent', () => {
 
 	describe('showOptions', (): void => {
 		it('should toggle the options', (): void => {
-			expect(typeahead.showOptions).to.be.undefined;
+			expect(typeahead.showOptions).to.be.false;
 
 			typeahead.toggle();
 
@@ -263,13 +267,13 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.showOptions).to.be.false;
 		});
 
-		it('should open the options when a search returns', (): void => {
+		it('should open the options when a search returns', fakeAsync((): void => {
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(['item']);
 			typeahead.getItems = getItemsMock;
 			typeahead.refresh('I');
 			getItemsMock.flush();
 
 			expect(typeahead.showOptions).to.be.true;
-		});
+		}));
 	});
 });

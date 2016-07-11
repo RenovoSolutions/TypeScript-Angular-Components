@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, OnChanges, SimpleChange, ViewChild } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { find, filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -14,6 +14,8 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
+
+export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
 
 export interface ITypeaheadChanges {
 	value: SimpleChange;
@@ -40,15 +42,16 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@ViewChild(BusyComponent) busy: BusyComponent;
 
 	search: string;
+	searchStream: Subject<string> = new Subject<string>();
 	cachedItems: any[];
 	getItemsRequest: Observable<T[]>;
-	visibleItems: any[];
+	visibleItems: Observable<T[]>;
 	loading: boolean = false;
 	loadDelay: number;
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
-	showOptions: boolean = false;
+	showOptions: boolean;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
@@ -104,11 +107,12 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	refresh(search: string): Observable<T[]> {
 		this.search = search;
 		if (this.object.isNullOrEmpty(search)) {
-			this.visibleItems = [];
-			return null;
+			this.visibleItems = Observable.empty<T[]>();
+			return this.visibleItems;
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		this.busy.trigger(loadRequest);
+		this.visibleItems = loadRequest;
 		loadRequest.subscribe(() => this.showOptions = true);
 		return loadRequest;
 	}
@@ -133,6 +137,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		if (this.allowCollapse && !this.object.isNullOrEmpty(this.value)) {
 			this.collapsed = true;
 		}
+
+		this.searchStream
+			.debounceTime(DEFAULT_SEARCH_DEBOUNCE)
+			.distinctUntilChanged()
+			.switchMap(search => this.refresh(search));
 	}
 
 	ngOnChanges(changes: ITypeaheadChanges): void {
@@ -158,7 +167,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 					return this.filter(items, search);
 				});
 		}
-		itemsStream.subscribe(items => this.visibleItems = items);
 		return itemsStream;
 	}
 
