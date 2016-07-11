@@ -3,6 +3,8 @@ import __test = services.test;
 import mock = __test.mock;
 import fakeAsync = __test.fakeAsync;
 import flushMicrotasks = __test.flushMicrotasks;
+import __object = services.object;
+import __guid = services.guid;
 import __search = services.search;
 
 import { TypeaheadComponent } from './typeahead';
@@ -26,11 +28,12 @@ describe('TypeaheadComponent', () => {
 
 	beforeEach(() => {
 		const validator: any = {
+			setValidators: sinon.spy(),
 			validate: sinon.spy(),
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(null, null, validator, null, null, null, __search.searchUtility);
+		typeahead = new TypeaheadComponent<any>(null, null, validator, __object.objectUtility, null, __guid.guid, __search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
