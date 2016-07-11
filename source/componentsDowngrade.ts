@@ -29,7 +29,9 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
+import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
+import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 
@@ -37,8 +39,10 @@ export const moduleName: string = 'rl.components.downgrade';
 
 export const cardContainerBuilderServiceName: string = 'rlCardContainerBuilder';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
+export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
+export const windowServiceName: string = 'windowWrapper';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
@@ -67,7 +71,9 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 	upgradeAdapter.addProvider(Sorter);
@@ -97,4 +103,6 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
+	componentsDowngradeModule.factory(documentServiceName, upgradeAdapter.downgradeNg2Provider(DocumentService));
+	componentsDowngradeModule.factory(windowServiceName, upgradeAdapter.downgradeNg2Provider(WindowService));
 }

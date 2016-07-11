@@ -1,8 +1,5 @@
-import * as angular from 'angular';
+import { Injectable } from '@angular/core';
 import * as $ from 'jquery';
-
-export var moduleName: string = 'rl.ui.services.windowWrapper';
-export var serviceName: string = 'windowWrapper';
 
 export interface IWindowService {
 	resize(callback: { (event: JQueryEventObject): any }): void;
@@ -15,8 +12,13 @@ export interface IScrollHandler {
 	(event: JQueryEventObject): any;
 }
 
-class WindowService {
-	private windowControl: JQuery = $(window);
+@Injectable()
+export class WindowService {
+	private windowControl: JQuery;
+
+	constructor() {
+		this.windowControl = $(window);
+	}
 
 	resize(callback: { (event: JQueryEventObject): any }): void {
 		this.windowControl.resize(callback);
@@ -34,6 +36,3 @@ class WindowService {
 		return this.windowControl.height();
 	}
 }
-
-angular.module(moduleName, [])
-	.service(serviceName, WindowService);
