@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -26,5 +26,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> {
 			, componentValidator: ComponentValidator
 			, @Inject(__object.objectToken) object: __object.IObjectUtility
 			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {}
+			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+		super(rlForm, componentValidator, object, array, guid);
+	}
 }

@@ -19,7 +19,7 @@ interface IBusyMock {
 }
 
 describe('TypeaheadComponent', () => {
-	let typeahead: TypeaheadComponent;
+	let typeahead: TypeaheadComponent<any>;
 	let setValue: Sinon.SinonSpy;
 	let busy: IBusyMock;
 
@@ -29,7 +29,7 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<ITestOption>(null, null, validator, null, null, null);
+		typeahead = new TypeaheadComponent<any>(null, null, validator, null, null, null);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
@@ -40,7 +40,7 @@ describe('TypeaheadComponent', () => {
 
 	it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {
 		typeahead.allowCollapse = true;
-		typeahead.ngModel.$viewValue = 'Item';
+		typeahead.value = 'Item';
 		typeahead.ngOnInit();
 
 		expect(typeahead.collapsed).to.be.true;
