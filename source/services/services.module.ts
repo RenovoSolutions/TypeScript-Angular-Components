@@ -40,7 +40,6 @@ angular.module(moduleName, [
 	componentValidator.moduleName,
 	contentProvider.moduleName,
 	dialog.moduleName,
-	documentWrapper.moduleName,
 	form.moduleName,
 	jquery.moduleName,
 	parentChild.moduleName,
