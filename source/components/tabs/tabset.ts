@@ -20,12 +20,11 @@ export interface ITabHeader {
 export class TabsetComponent {
 	@ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
-	//TODO need inject
 	constructor() {
 
 	}
 
 	select(tab: ITabHeader): void {
-		
+
 	}
 }
