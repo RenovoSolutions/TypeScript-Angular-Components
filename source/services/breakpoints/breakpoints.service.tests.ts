@@ -22,10 +22,10 @@ interface IWindowServiceMock {
 }
 
 describe('breakpoints', () => {
-	var breakpoints: IBreakpointService;
+	let breakpoints: IBreakpointService;
 
-	var visibleBreakpoint: string;
-	var triggerResize: { (): void };
+	let visibleBreakpoint: string;
+	let triggerResize: { (): void };
 
 	beforeEach((): void => {
 		angular.mock.module(moduleName);
@@ -44,7 +44,7 @@ describe('breakpoints', () => {
 	});
 
 	it('should signal subscribed listeners when the breakpoint changes', (): void => {
-		var breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
+		let breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
 
 		visibleBreakpoint = sm;
 
@@ -65,18 +65,18 @@ describe('breakpoints', () => {
 	});
 
 	function buildService(): void {
-		var mockVisibleBreakpointService: IVisibleBreakpointsMock = {
+		let mockVisibleBreakpointService: IVisibleBreakpointsMock = {
 			isVisible: (breakpoint: string): boolean => {
 				return breakpoint === visibleBreakpoint;
 			},
 		};
 
-		var mockWindowControl: IWindowServiceMock = {
+		let mockWindowControl: IWindowServiceMock = {
 			resize: (callback: { (): void }): void => {
 				triggerResize = callback;
 			},
 		};
 
-		breakpoints = new BreakpointService(mockVisibleBreakpointService, 1000, <any>mockWindowControl);
+		breakpoints = new BreakpointService(mockVisibleBreakpointService, <any>mockWindowControl);
 	}
 });

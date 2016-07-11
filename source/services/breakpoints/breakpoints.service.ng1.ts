@@ -2,7 +2,8 @@ import * as ng from 'angular';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
-import { IWindowService, serviceName as windowWrapperServiceName } from '../windowWrapper/windowWrapper.service';
+import {windowServiceName} from '../../componentsDowngrade';
+import { IWindowService  } from '../windowWrapper/windowWrapper.service';
 import { IVisibleBreakpointService, visibleBreakpointServiceName } from './visibleBreakpoint.service';
 
 import { xs, sm, md, lg } from './breakpoint';
@@ -16,7 +17,7 @@ export interface IBreakpointService {
 }
 
 export class BreakpointService implements IBreakpointService {
-	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowWrapperServiceName]
+	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowServiceName]
 	constructor(private $rootScope: ng.IRootScopeService
 			, private visibleBreakpoints: IVisibleBreakpointService
 			, resizeDebounceMilliseconds: number

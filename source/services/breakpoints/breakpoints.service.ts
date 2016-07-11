@@ -2,12 +2,14 @@ import { Injectable, Inject, Provider } from '@angular/core';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
-import { IWindowService, serviceName as windowWrapperServiceName } from '../windowWrapper/windowWrapper.service';
+import { IWindowService, WindowService } from '../windowWrapper/windowWrapper.service';
 import { IVisibleBreakpointService, VisibleBreakpointService } from './visibleBreakpoint.service';
 
 import { xs, sm, md, lg } from './breakpoint';
 
-export var breakpointServiceName: string = 'breakpoints';
+export const breakpointServiceName: string = 'breakpoints';
+
+export const RESIZE_DEBOUNCE_MILLISECONDS: number = 500;
 
 export interface IBreakpointService {
 	currentBreakpoint: string;
@@ -18,14 +20,14 @@ export interface IBreakpointService {
 @Injectable()
 export class BreakpointService implements IBreakpointService {
 
-	constructor(private visibleBreakpoints: VisibleBreakpointService, resizeDebounceMilliseconds: number, windowService: IWindowService) {
+	constructor(private visibleBreakpoints: VisibleBreakpointService, windowService: WindowService) {
 		this.breakpointChanges = new Subject<string>();
 		this.currentBreakpoint = this.getBreakpoint();
 
-		var efficientResize: { (): void } = _.debounce(this.updateBreakpoint, resizeDebounceMilliseconds, {
+		var efficientResize: { (): void } = _.debounce(this.updateBreakpoint, RESIZE_DEBOUNCE_MILLISECONDS, {
 			leading: true,
 			trailing: true,
-			maxWait: resizeDebounceMilliseconds,
+			maxWait: RESIZE_DEBOUNCE_MILLISECONDS,
 		});
 		windowService.resize(efficientResize);
 	}
