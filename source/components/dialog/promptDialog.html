@@ -1,0 +1,9 @@
+<rlDialog>
+	<div *rlDialogContent>
+		{{message}}
+	</div>
+	<div *rlDialogFooter>
+		<rlButton type="danger" (trigger)="cancel()"><i class="fa fa-times"></i> {{cancelButton}}</rlButton>
+		<rlButton type="success" (trigger)="accept()"><i class="fa fa-check"></i> {{okButton}}</rlButton>
+	</div>
+</rlDialog>

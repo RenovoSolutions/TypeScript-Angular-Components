@@ -8,22 +8,30 @@ import {
 	breakpointServiceName,
 } from './breakpoints.module';
 
-import {BreakpointService } from './breakpoints.service';
+import { services } from 'typescript-angular-utilities';
 
+import * as angular from 'angular';
+import 'angular-mocks';
+
+import test = services.test;
 
 interface IVisibleBreakpointsMock {
 	isVisible(breakpoint: string): boolean;
 }
 
 interface IWindowServiceMock {
-	resize(callback: { (event: JQueryEventObject): any }): void;
+	resize(callback: {(event: JQueryEventObject): any}): void;
 }
 
-describe('breakpoints', () => {
-	let breakpoints: IBreakpointService;
+describe('breakpoints ng1', () => {
+	var breakpoints: IBreakpointService;
 
-	let visibleBreakpoint: string;
-	let triggerResize: { (): void };
+	var visibleBreakpoint: string;
+	var triggerResize: { (): void };
+
+	beforeEach((): void => {
+		angular.mock.module(moduleName);
+	});
 
 	it('should have visible breakpoint marked as current', (): void => {
 		visibleBreakpoint = md;
@@ -38,7 +46,7 @@ describe('breakpoints', () => {
 	});
 
 	it('should signal subscribed listeners when the breakpoint changes', (): void => {
-		let breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
+		var breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
 
 		visibleBreakpoint = sm;
 
@@ -59,18 +67,24 @@ describe('breakpoints', () => {
 	});
 
 	function buildService(): void {
-		let mockVisibleBreakpointService: IVisibleBreakpointsMock = {
+		var mockVisibleBreakpointService: IVisibleBreakpointsMock = {
 			isVisible: (breakpoint: string): boolean => {
 				return breakpoint === visibleBreakpoint;
 			},
 		};
 
-		let mockWindowControl: IWindowServiceMock = {
+		var mockWindowControl: IWindowServiceMock = {
 			resize: (callback: { (): void }): void => {
 				triggerResize = callback;
 			},
 		};
 
-		breakpoints = new BreakpointService(mockVisibleBreakpointService, <any>mockWindowControl);
+		test.angularFixture.mock({
+			visibleBreakpoint: mockVisibleBreakpointService,
+			windowWrapper: mockWindowControl,
+		});
+
+		var services: any = test.angularFixture.inject(breakpointServiceName);
+		breakpoints = services[breakpointServiceName];
 	}
 });

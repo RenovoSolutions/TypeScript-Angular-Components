@@ -17,6 +17,7 @@ import {
 } from './components/buttons/index';
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
+import { DialogRootService } from './components/dialog/dialogRoot.service';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
@@ -29,9 +30,12 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
+import { AsyncHelper } from './services/async/async.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
+
+import {BreakpointService} from './services/breakpoints/index';
 
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 
@@ -70,9 +74,12 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 		},
 	});
 
+	upgradeAdapter.addProvider(AsyncHelper);
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
-	upgradeAdapter.addProvider(DocumentService);
+	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(DocumentService);
+	upgradeAdapter.addProvider(BreakpointService);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);

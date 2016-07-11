@@ -1,12 +1,5 @@
-<h3>Popup content</h3>
-<div>
-	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/behaviors/popover/popover.md">Popover</a>:</label>
-	<span class="btn btn-default" rl-popover="popup.popover" popover-trigger="mouseenter">Show rl-popover</span>
-	<span class="btn btn-default" rl-popover="A popover {{popup.content}}" text-only="true">Show simple popover</span>
-</div>
-
-<div>
-	<label><a href="">Dialog</a>:</label>
-	<rl-button action="popup.prompt()">Open prompt</rl-button>
-	<rl-button action="popup.openDialog()">Open custom dialog</rl-button>
-</div>
+<ul class="nav nav-tabs">
+	<li role="presentation"><a ui-sref="popup.ng1">Angular 1</a></li>
+	<li role="presentation"><a ui-sref="popup.ng2">Angular 2</a></li>
+</ul>
+<div ui-view></div>

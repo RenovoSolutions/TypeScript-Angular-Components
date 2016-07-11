@@ -1,15 +1,14 @@
-import { Injectable, Inject, Provider } from '@angular/core';
+import * as ng from 'angular';
 import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
-import { IWindowService, WindowService } from '../windowWrapper/windowWrapper.service';
-import { IVisibleBreakpointService, VisibleBreakpointService } from './visibleBreakpoint.service';
+import {windowServiceName} from '../../componentsDowngrade';
+import { IWindowService  } from '../windowWrapper/windowWrapper.service';
+import { IVisibleBreakpointService, visibleBreakpointServiceName } from './visibleBreakpoint.service';
 
 import { xs, sm, md, lg } from './breakpoint';
 
-export const breakpointServiceName: string = 'breakpoints';
-
-export const RESIZE_DEBOUNCE_MILLISECONDS: number = 500;
+export var breakpointServiceName: string = 'breakpoints';
 
 export interface IBreakpointService {
 	currentBreakpoint: string;
@@ -17,17 +16,19 @@ export interface IBreakpointService {
 	isBreakpoint(breakpoint: string): boolean;
 }
 
-@Injectable()
 export class BreakpointService implements IBreakpointService {
-
-	constructor(private visibleBreakpoints: VisibleBreakpointService, windowService: WindowService) {
+	static $inject: string[] = ['$rootScope', visibleBreakpointServiceName, 'resizeDebounceMilliseconds', windowServiceName]
+	constructor(private $rootScope: ng.IRootScopeService
+			, private visibleBreakpoints: IVisibleBreakpointService
+			, resizeDebounceMilliseconds: number
+			, windowService: IWindowService) {
 		this.breakpointChanges = new Subject<string>();
 		this.currentBreakpoint = this.getBreakpoint();
 
-		var efficientResize: { (): void } = _.debounce(this.updateBreakpoint, RESIZE_DEBOUNCE_MILLISECONDS, {
+		var efficientResize: {(): void} = _.debounce(this.updateBreakpoint, resizeDebounceMilliseconds, {
 			leading: true,
 			trailing: true,
-			maxWait: RESIZE_DEBOUNCE_MILLISECONDS,
+			maxWait: resizeDebounceMilliseconds,
 		});
 		windowService.resize(efficientResize);
 	}
@@ -51,12 +52,14 @@ export class BreakpointService implements IBreakpointService {
 		return this.currentBreakpoint === breakpoint;
 	}
 
-	private updateBreakpoint: { (): void } = (): void => {
+	private updateBreakpoint: {(): void} = (): void => {
 		var newBreakPoint: string = this.getBreakpoint();
 
 		if (newBreakPoint !== this.currentBreakpoint) {
-			this.currentBreakpoint = newBreakPoint;
-			this.breakpointChanges.next(this.currentBreakpoint);
+			this.$rootScope.$apply((): void => {
+				this.currentBreakpoint = newBreakPoint;
+				this.breakpointChanges.next(this.currentBreakpoint);
+			});
 		}
 	}
 }
