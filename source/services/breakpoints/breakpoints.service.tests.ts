@@ -8,10 +8,8 @@ import {
 	breakpointServiceName,
 } from './breakpoints.module';
 
-import { services } from 'typescript-angular-utilities';
 import {BreakpointService } from './breakpoints.service';
 
-import test = services.test;
 
 interface IVisibleBreakpointsMock {
 	isVisible(breakpoint: string): boolean;
@@ -26,10 +24,6 @@ describe('breakpoints', () => {
 
 	let visibleBreakpoint: string;
 	let triggerResize: { (): void };
-
-	beforeEach((): void => {
-		angular.mock.module(moduleName);
-	});
 
 	it('should have visible breakpoint marked as current', (): void => {
 		visibleBreakpoint = md;

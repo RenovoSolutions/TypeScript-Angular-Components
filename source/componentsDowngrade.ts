@@ -73,7 +73,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
-	upgradeAdapter.addProvider(FormService); /// todo emulate for breakpoint.
+	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(BreakpointService);
 	upgradeAdapter.addProvider(WindowService);
