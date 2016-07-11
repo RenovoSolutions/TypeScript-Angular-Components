@@ -103,10 +103,9 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			this.visibleItems = [];
 			return null;
 		}
-		this.loading = true;
-		return this.loadItems(search).do((): void => {
-			this.loading = false;
-		});
+		const loadRequest: Observable<T[]> = this.loadItems(search);
+		this.busy.trigger(loadRequest);
+		return loadRequest;
 	}
 
 	ngOnInit(): void {
