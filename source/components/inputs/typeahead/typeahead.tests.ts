@@ -276,4 +276,14 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.showOptions).to.be.true;
 		}));
 	});
+
+	it('should return a clone of the template', (): void => {
+		const template: any = {};
+		typeahead.template = template;
+
+		const clone: any = typeahead.newTemplate();
+
+		expect(clone).to.not.equal(template);
+		expect(clone).to.deep.equal(template);
+	});
 });

@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, OnChanges, SimpleChange, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
-import { find, filter } from 'lodash';
+import { find, filter, clone } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -41,6 +41,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
+	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
 	search: string;
 	searchStream: Subject<string> = new Subject<string>();
@@ -169,6 +170,10 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 				});
 		}
 		return itemsStream;
+	}
+
+	newTemplate(): TemplateRef<any> {
+		return clone(this.template);
 	}
 
 	private getItemsClient(): Observable<T[]> {
