@@ -35,6 +35,8 @@ import { DocumentService } from './services/documentWrapper/documentWrapper.serv
 import { FormService } from './services/form/form.service';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
+import {BreakpointService} from './services/breakpoints/index';
+
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
 
 export const moduleName: string = 'rl.components.downgrade';
@@ -75,8 +77,9 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(AsyncHelper);
 	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
 	upgradeAdapter.addProvider(DialogRootService);
-	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(DocumentService);
+	upgradeAdapter.addProvider(BreakpointService);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
