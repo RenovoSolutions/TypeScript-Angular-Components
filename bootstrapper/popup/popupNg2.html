@@ -1,0 +1,31 @@
+<h3>Popup content</h3>
+<div>
+	<label>Tooltip:</label>
+	<span class="btn btn-default" tooltip="A popover with {{content}}">Show tooltip</span>
+</div>
+
+<div>
+	<label><a href="">Dialog</a>:</label>
+	<rlButton (trigger)="dialog1.open()">Open Dialog 1</rlButton>
+	<rlButton (trigger)="dialog2.open()">Open Dialog 2</rlButton>
+	<rlButton (trigger)="prompt.open()">Open prompt</rlButton>
+	<rlDialog #dialog1 [onClosing]="onClosing">
+		<div *rlDialogHeader>Header</div>
+		<div *rlDialogContent>Content</div>
+		<div *rlDialogFooter>Footer</div>
+	</rlDialog>
+	<rlDialog #dialog2 [autosave]="true" [save]="save">
+		<div *rlDialogHeader>Header 2</div>
+		<div *rlDialogContent>
+			<rlTextbox label="Textbox" name="textbox" rlRequired="Required"></rlTextbox>
+		</div>
+	</rlDialog>
+	<rlPromptDialog #prompt
+					message="Confirm?"
+					okButton="Yes"
+					cancelButton="No"
+					(onAccept)="yes()"
+					(onCancel)="no()"></rlPromptDialog>
+</div>
+
+<rlDialogOutlet></rlDialogOutlet>

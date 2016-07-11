@@ -1,0 +1,39 @@
+<div class="modal fade rlModal" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<button type="button"
+					class="close"
+					[class.modal-header-placeholder]="!dialogRoot.dialogContext?.header"
+					data-dismiss="modal"
+					aria-hidden="true"
+					(click)="dismiss()">
+				<span class="fa-stack">
+					<i class="close-bg fa fa-circle fa-stack-2x"></i>
+					<i class="close-icon fa fa-close fa-stack-1x"></i>
+				</span>
+			</button>
+			<div class="modal-header" *ngIf="dialogRoot.dialogContext?.header">
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.header?.template"></template>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-body" *ngIf="dialogRoot.dialogContext?.content">
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.content?.template"></template>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer" *ngIf="dialogRoot.dialogContext?.footer">
+				<template [ngTemplateOutlet]="dialogRoot.dialogContext?.footer?.template"></template>
+				<div class="clearfix"></div>
+			</div>
+			<div class="modal-footer" *ngIf="!dialogRoot.dialogContext?.footer && dialogRoot.dialogContext?.autosave">
+				<rlButton type="danger"
+						  (trigger)="dismiss()">
+					<i class="fa fa-times"></i> Cancel
+				</rlButton>
+				<rlButtonAsync type="success"
+							   [action]="dialogRoot.dialogContext?.submitAndClose">
+					<i class="fa fa-check"></i> Save
+				</rlButtonAsync>
+			</div>
+		</div>
+	</div>
+</div>

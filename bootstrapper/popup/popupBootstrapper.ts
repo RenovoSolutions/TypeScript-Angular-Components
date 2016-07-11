@@ -43,8 +43,16 @@ function PopupRoute($stateProvider) {
 		.state('popup', {
 			url: '/popup',
 			template: require('./popup.html'),
+		})
+		.state('popup.ng1', {
+			url: '/ng1',
+			template: require('./popupNg1.html'),
 			controller: 'PopupTestController',
 			controllerAs: 'popup',
+		})
+		.state('popup.ng2', {
+			url: '/ng2',
+			template: '<ts-popup-bootstrapper></ts-popup-bootstrapper>',
 		});
 }
 
