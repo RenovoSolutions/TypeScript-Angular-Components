@@ -52,8 +52,7 @@ LocalizeStringDates - Done
 ###Services  
 Autosave - Obsolete? - Most of this behavior will move to the form and autosave directives  
 AutosaveAction - (relates to autosave)  
-Breakpoints - Done
-
+Breakpoints - Done  
 ComponentValidator - Done  
 ContentProvider  
 Dialog - Obsolete? - Dialogs will probably be handled through the component now  
