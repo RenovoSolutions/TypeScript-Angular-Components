@@ -4,6 +4,7 @@
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
+			   type="text"
 			   (click)="toggle()"
 			   [disabled]="disabled"
 			   [class.rl-select-open]="showOptions"
