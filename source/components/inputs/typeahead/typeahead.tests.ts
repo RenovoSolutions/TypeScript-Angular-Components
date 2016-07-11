@@ -7,6 +7,7 @@ import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 import __search = services.search;
+import __transform = services.transform;
 
 import { TypeaheadComponent } from './typeahead';
 
@@ -34,7 +35,7 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(null, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
+		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
