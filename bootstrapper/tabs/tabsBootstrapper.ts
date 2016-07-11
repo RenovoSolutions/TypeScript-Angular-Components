@@ -29,8 +29,16 @@ function TabRoute($stateProvider) {
 		.state('tabs', {
 			url: '/tabs',
 			template: require('./tabs.html'),
+		})
+		.state('tabs.ng1', {
+			url: '/ng1',
+			template: require('./tabsNg1.html'),
 			controller: 'TabTestController',
 			controllerAs: 'tabs',
+		})
+		.state('tabs.ng2', {
+			url: '/ng2',
+			template: '<ts-tabs-bootstrapper></ts-tabs-bootstrapper>',
 		});
 }
 

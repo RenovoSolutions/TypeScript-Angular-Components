@@ -1,0 +1,11 @@
+<div class="nav-tabs-dropshadow">
+	<ul class="nav nav-tabs">
+		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
+			ng-class="{ 'active': tabHeader.isVisible, 'error': !tabHeader.isValid }">
+			<a><span ng-bind-html="tabHeader.template"></span></a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div ng-transclude></div>
+	</div>
+</div>

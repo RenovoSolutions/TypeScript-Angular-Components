@@ -1,16 +1,5 @@
-<h3>Tabs</h3>
-<label>Tabset</label>
-<rl-tabset>
-	<rl-tab>
-		<rl-tab-header>Header</rl-tab-header>
-		<rl-tab-content>Content 1</rl-tab-content>
-		<rl-tab-footer>Footer 1</rl-tab-footer>
-	</rl-tab>
-	<rl-tab>
-		<rl-tab-header>Header 2</rl-tab-header>
-		<rl-tab-content>Content 2</rl-tab-content>
-		<rl-tab-footer>Footer 2</rl-tab-footer>
-	</rl-tab>
-</rl-tabset>
-<label>Multi-step indicator</label>
-<rl-multi-step-indicator steps="tabs.steps"></rl-multi-step-indicator>
+<ul class="nav nav-tabs">
+	<li role="presentation"><a ui-sref="tabs.ng1">Angular 1</a></li>
+	<li role="presentation"><a ui-sref="tabs.ng2">Angular 2</a></li>
+</ul>
+<div ui-view></div>

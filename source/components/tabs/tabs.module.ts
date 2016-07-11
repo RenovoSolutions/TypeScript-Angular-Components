@@ -5,14 +5,15 @@ import {
 	tab,
 	controllerName as tabControllerName,
 	TabController,
-} from './tab';
+} from './tab.ng1';
 import {
 	componentName as tabsetComponentName,
 	tabset,
 	controllerName as tabsetControllerName,
 	TabsetController,
 	ITabHeader,
-} from './tabset';
+} from './tabset.ng1';
+
 
 export {
 	tabComponentName,
