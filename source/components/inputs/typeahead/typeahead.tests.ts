@@ -231,4 +231,36 @@ describe('TypeaheadComponent', () => {
 			getItemsMock.flush();
 		}
 	});
+
+	describe('showOptions', (): void => {
+		it('should toggle the options', (): void => {
+			expect(typeahead.showOptions).to.be.undefined;
+
+			typeahead.toggle();
+
+			expect(typeahead.showOptions).to.be.true;
+
+			typeahead.toggle();
+
+			expect(typeahead.showOptions).to.be.false;
+		});
+
+		it('should close the options', (): void => {
+			typeahead.showOptions = true;
+			typeahead.close();
+			expect(typeahead.showOptions).to.be.false;
+		});
+
+		it('should do nothing if the options are already closed', (): void => {
+			typeahead.showOptions = false;
+			typeahead.close();
+			expect(typeahead.showOptions).to.be.false;
+		});
+
+		it('should close the options when an item is selected', (): void => {
+			typeahead.showOptions = true;
+			typeahead.selectItem('option');
+			expect(typeahead.showOptions).to.be.false;
+		});
+	});
 });

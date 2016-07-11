@@ -48,6 +48,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
+	showOptions: boolean = false;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
@@ -83,6 +84,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	selectItem(item: T): void {
+		this.showOptions = false;
+
 		if (item != null) {
 			this.select.emit(item);
 
@@ -107,6 +110,14 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		this.busy.trigger(loadRequest);
 		return loadRequest;
+	}
+
+	toggle(): void {
+		this.showOptions = !this.showOptions;
+	}
+
+	close(): void {
+		this.showOptions = false;
 	}
 
 	ngOnInit(): void {
