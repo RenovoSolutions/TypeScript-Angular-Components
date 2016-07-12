@@ -186,6 +186,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.select = <any>{ emit: selectSpy };
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
+			typeahead.getDisplayName = item => item;
 			initialLoad();
 
 			typeahead.selectItem(items[0]);
@@ -195,12 +196,14 @@ describe('TypeaheadComponent', () => {
 			sinon.assert.calledOnce(selectSpy);
 			sinon.assert.calledWith(selectSpy, items[0]);
 			expect(typeahead.collapsed).to.be.true;
+			expect(typeahead.search).to.equal(items[0]);
 		}));
 
 		it('should call the select function without collapsing', fakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.clientSearch = true;
 			typeahead.select = <any>{ emit: selectSpy };
+			typeahead.search = 'search';
 			initialLoad();
 
 			typeahead.selectItem(items[0]);
@@ -209,6 +212,7 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.collapsed).to.be.false;
 			sinon.assert.calledOnce(selectSpy);
 			sinon.assert.calledWith(selectSpy, items[0]);
+			expect(typeahead.search).to.be.empty;
 		}));
 
 		it('should call create with the search text if the search option is selected', fakeAsync((): void => {
