@@ -228,6 +228,18 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.collapsed).to.be.true;
 		}));
 
+		it('should clear the current selection', (): void => {
+			typeahead.search = 'search';
+			typeahead.collapsed = true;
+
+			typeahead.clear();
+
+			sinon.assert.calledOnce(setValue);
+			sinon.assert.calledWith(setValue, null);
+			expect(typeahead.search).to.be.empty;
+			expect(typeahead.collapsed).to.be.false;
+		});
+
 		function initialLoad() {
 			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
