@@ -154,9 +154,14 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 
 		this.searchStream
+			.do(search => {
+				this.busy.trigger(!this.object.isNullOrEmpty(search));
+				this.search = search;
+			})
 			.debounceTime(DEFAULT_SEARCH_DEBOUNCE)
 			.distinctUntilChanged()
-			.switchMap(search => this.refresh(search));
+			.switchMap(search => this.refresh(search))
+			.subscribe(() => null);
 	}
 
 	ngOnChanges(changes: ITypeaheadChanges): void {
