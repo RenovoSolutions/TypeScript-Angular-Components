@@ -157,6 +157,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			this.search = this.getDisplayName(changes.value.currentValue);
 			if (changes.value.currentValue && this.allowCollapse) {
 				this.collapsed = true;
+			} else {
+				this.collapsed = false;
 			}
 		}
 	}

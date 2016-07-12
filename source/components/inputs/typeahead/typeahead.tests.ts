@@ -292,6 +292,35 @@ describe('TypeaheadComponent', () => {
 
 			expect(typeahead.showOptions).to.be.true;
 		}));
+
+	describe('ngOnChanges', (): void => {
+		it('should update the search value on a value change', (): void => {
+			typeahead.getDisplayName = item => item;
+			typeahead.ngOnChanges({
+				value: <any>{ currentValue: 'search' },
+			});
+
+			expect(typeahead.search).to.equal('search');
+		});
+
+		it('should collapse the typeahead on a value change if a value is specified and collapse is enabled', (): void => {
+			typeahead.allowCollapse = true;
+			typeahead.ngOnChanges({
+				value: <any>{ currentValue: 'search' },
+			});
+
+			expect(typeahead.collapsed).to.be.true;
+		});
+
+		it('should uncollapse if the value changes to null', (): void => {
+			typeahead.allowCollapse = true;
+			typeahead.collapsed = true;
+			typeahead.ngOnChanges({
+				value: <any>{ currentValue: null },
+			});
+
+			expect(typeahead.collapsed).to.be.false;
+		});
 	});
 
 	it('should return a clone of the template', (): void => {
