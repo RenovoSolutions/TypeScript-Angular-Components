@@ -13,6 +13,8 @@ export class TabComponent {
 	@ContentChild(forwardRef(() => TabHeaderComponent))
 	header: TabHeaderComponent;
 
+	isActive: boolean;
+
 	constructor() {
 	}
 }
@@ -28,9 +30,5 @@ export class TabHeaderComponent {
 
 	get innerHTML(): string {
 		return this.el.nativeElement.innerHTML;
-	}
-
-	ngAfterViewInit() {
-		console.log('header content after view init', this.el.nativeElement.innerHTML);
 	}
 }

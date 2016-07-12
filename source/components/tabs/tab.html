@@ -1,4 +1,4 @@
-<div class="tab-pane" ng-class="{ 'active': header.isVisible }">
+<div class="tab-pane" [ngClass]="{ 'active': isActive }">
 	<div class="tab-body">
         <ng-content select="rlTabContent"></ng-content>
 		<div class="clearfix"></div>

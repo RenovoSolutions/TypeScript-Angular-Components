@@ -19,6 +19,16 @@ export class TabsetComponent {
 	}
 
 	select(tab: TabComponent): void {
+		this.tabs.forEach(thisTab => {
+			thisTab.isActive = false;
+		});
 
+		tab.isActive = true;
+	}
+
+	ngAfterContentInit() {
+		if (this.tabs) {
+			this.select(this.tabs.first);
+		}
 	}
 }

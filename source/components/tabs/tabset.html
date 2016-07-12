@@ -1,7 +1,7 @@
 <div class="nav-tabs-dropshadow">
 	<ul class="nav nav-tabs">
 		<li *ngFor="let tab of tabs" (click)="select(tab)"
-			ng-class="{ 'active': tab.isActive, 'error': !tab.isValid }">
+			[ngClass]="{ 'active': tab.isActive, 'error': !tab.isValid }">
 			<a><span [innerHTML]="tab.header.innerHTML"></span></a>
 		</li>
 	</ul>
