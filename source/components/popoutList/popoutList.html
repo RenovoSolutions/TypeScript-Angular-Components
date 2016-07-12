@@ -1,0 +1,11 @@
+<ul class="rl-select-list" *ngIf="showOptions">
+	<ng-content></ng-content>
+	<li class="rl-select-option"
+		*ngFor="let option of options | async"
+		(click)="select.emit(option)">
+		<span *ngIf="template">
+			<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: option }"></template>
+		</span>
+		<span *ngIf="!template">{{getDisplayName(option)}}</span>
+	</li>
+</ul>
