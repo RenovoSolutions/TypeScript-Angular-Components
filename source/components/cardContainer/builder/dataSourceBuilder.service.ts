@@ -13,7 +13,7 @@ import { CardContainerBuilder } from './cardContainerBuilder.service';
 export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>
+	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
 											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
 											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
