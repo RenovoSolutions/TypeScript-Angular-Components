@@ -58,6 +58,14 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
 
+	get showOptionsWrapper(): boolean {
+		if (this.busy.loading || !this.search) {
+			return false;
+		} else {
+			return this.showOptions;
+		}
+	}
+
 	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator

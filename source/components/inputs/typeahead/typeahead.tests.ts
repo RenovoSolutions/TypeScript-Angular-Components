@@ -293,6 +293,26 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.showOptions).to.be.true;
 		}));
 
+		it('should return false if loading', (): void => {
+			typeahead.busy.loading = true;
+			typeahead.showOptions = true;
+			expect(typeahead.showOptionsWrapper).to.be.false;
+		});
+
+		it('should return false if search is empty', (): void => {
+			typeahead.search = '';
+			typeahead.showOptions = true;
+			expect(typeahead.showOptionsWrapper).to.be.false;
+		});
+
+		it('should return showOptions if not loading and a search is present', (): void => {
+			typeahead.search = 'search';
+			typeahead.busy.loading = false;
+			typeahead.showOptions = true;
+			expect(typeahead.showOptionsWrapper).to.be.true;
+		});
+	});
+
 	describe('ngOnChanges', (): void => {
 		it('should update the search value on a value change', (): void => {
 			typeahead.getDisplayName = item => item;

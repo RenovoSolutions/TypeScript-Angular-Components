@@ -7,11 +7,11 @@
 			   type="text"
 			   (click)="toggle()"
 			   [disabled]="disabled"
-			   [class.rl-select-open]="showOptions"
+			   [class.rl-select-open]="showOptionsWrapper"
 			   [placeholder]="label"
 			   [value]="search"
 			   (input)="searchStream.next($event.target.value)" />
-		<ul class="rl-select-list" *ngIf="showOptions && search">
+		<ul class="rl-select-list" *ngIf="showOptionsWrapper">
 			<li class="rl-select-option rl-select-option-custom" *ngIf="allowCustomOption" (click)="selectCustom()">{{search}}</li>
 			<li class="rl-select-option"
 				*ngFor="let option of visibleItems | async"
