@@ -12,5 +12,21 @@
 		<rlTabFooter>Footer 2</rlTabFooter>
 	</rlTab>
 </rlTabset>
-<!--<label>Multi-step indicator</label>
-<rl-multi-step-indicator steps="tabs.steps"></rl-multi-step-indicator>-->
+
+<label>Tabset With Embedded Form</label>
+<rlTabset>
+	<rlTab>
+		<rlTabHeader>Validated Form In This Tab</rlTabHeader>
+		<rlTabContent>
+			<rlForm>
+				<rlTextbox [validator]="validator" [(value)]="textboxValue" label="Required Field"></rlTextbox>
+				<rlButtonSubmit>Submit</rlButtonSubmit>
+			</rlForm>
+		</rlTabContent>
+	</rlTab>
+	<rlTab>
+		<rlTabHeader>Regular Tab</rlTabHeader>
+		<rlTabContent>Content 2</rlTabContent>
+		<rlTabFooter>Footer 2</rlTabFooter>
+	</rlTab>
+</rlTabset>

@@ -1,21 +1,33 @@
-import { Component, Optional, Inject, ElementRef, forwardRef, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, Optional, Inject, ElementRef, forwardRef, Input, Output, ViewChild, ContentChild, ContentChildren, AfterContentInit, TemplateRef, SkipSelf, Provider, QueryList } from '@angular/core';
 import * as ng from 'angular';
 
 import { TabsetComponent } from './tabset';
 import { FormComponent } from '../form/form';
 
-//TODO extend FormComponent
 @Component({
 	selector: 'rlTab',
-	template: require('./tab.html')
+	template: require('./tab.html'),
 })
-export class TabComponent {
+export class TabComponent implements AfterContentInit {
 	@ContentChild(forwardRef(() => TabHeaderComponent))
 	header: TabHeaderComponent;
 
-	isActive: boolean;
+	@ContentChild(FormComponent)
+	childForm: FormComponent;
 
-	constructor() {
+	isActive: boolean;
+	isValid: boolean = true;
+
+	constructor() { }
+
+	ngAfterContentInit() {
+		let hasChildForm: boolean = this.childForm != null;
+		if (hasChildForm) {
+			this.childForm.form.statusChanges.subscribe(isValid => {
+				this.isValid = (isValid == 'VALID');
+			});
+			this.isValid = this.childForm.form.valid;
+		}
 	}
 }
 
