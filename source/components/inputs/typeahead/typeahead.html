@@ -10,6 +10,7 @@
 			   [class.rl-select-open]="canShowOptions && list.showOptions"
 			   [placeholder]="label"
 			   [value]="search"
+			   (keyup.arrowdown)="list.focus()"
 			   (input)="searchStream.next($event.target.value)" />
 		<rlPopoutList #list
 					  [hidden]="!canShowOptions"
@@ -17,7 +18,7 @@
 					  [template]="template"
 					  [transform]="transform"
 					  (select)="selectItem($event)">
-			<li class="rl-select-option rl-select-option-custom" *ngIf="allowCustomOption" (click)="selectCustom()">{{search}}</li>
+			<rlPopoutItem class="rl-select-option-custom" *ngIf="allowCustomOption" (trigger)="selectCustom()">{{search}}</rlPopoutItem>
 		</rlPopoutList>
 	</div>
 	<div class="collapsed" [hidden]="!collapsed">
