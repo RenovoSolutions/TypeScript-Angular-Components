@@ -35,7 +35,7 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
+		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, <any>__search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
@@ -255,63 +255,21 @@ describe('TypeaheadComponent', () => {
 		}
 	});
 
-	describe('showOptions', (): void => {
-		it('should toggle the options', (): void => {
-			expect(typeahead.showOptions).to.be.false;
-
-			typeahead.toggle();
-
-			expect(typeahead.showOptions).to.be.true;
-
-			typeahead.toggle();
-
-			expect(typeahead.showOptions).to.be.false;
-		});
-
-		it('should close the options', (): void => {
-			typeahead.showOptions = true;
-			typeahead.close();
-			expect(typeahead.showOptions).to.be.false;
-		});
-
-		it('should do nothing if the options are already closed', (): void => {
-			typeahead.showOptions = false;
-			typeahead.close();
-			expect(typeahead.showOptions).to.be.false;
-		});
-
-		it('should close the options when an item is selected', (): void => {
-			typeahead.showOptions = true;
-			typeahead.selectItem('option');
-			expect(typeahead.showOptions).to.be.false;
-		});
-
-		it('should open the options when a search returns', fakeAsync((): void => {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(['item']);
-			typeahead.getItems = getItemsMock;
-			typeahead.refresh('I');
-			getItemsMock.flush();
-
-			expect(typeahead.showOptions).to.be.true;
-		}));
-
+	describe('canShowOptions', (): void => {
 		it('should return false if loading', (): void => {
 			typeahead.busy.loading = true;
-			typeahead.showOptions = true;
-			expect(typeahead.showOptionsWrapper).to.be.false;
+			expect(typeahead.canShowOptions).to.be.false;
 		});
 
 		it('should return false if search is empty', (): void => {
 			typeahead.search = '';
-			typeahead.showOptions = true;
-			expect(typeahead.showOptionsWrapper).to.be.false;
+			expect(typeahead.canShowOptions).to.be.false;
 		});
 
-		it('should return showOptions if not loading and a search is present', (): void => {
+		it('should return true if not loading and a search is present', (): void => {
 			typeahead.search = 'search';
 			typeahead.busy.loading = false;
-			typeahead.showOptions = true;
-			expect(typeahead.showOptionsWrapper).to.be.true;
+			expect(typeahead.canShowOptions).to.be.true;
 		});
 	});
 
@@ -343,15 +301,5 @@ describe('TypeaheadComponent', () => {
 
 			expect(typeahead.collapsed).to.be.false;
 		});
-	});
-
-	it('should return a clone of the template', (): void => {
-		const template: any = {};
-		typeahead.template = template;
-
-		const clone: any = typeahead.newTemplate();
-
-		expect(clone).to.not.equal(template);
-		expect(clone).to.deep.equal(template);
 	});
 });

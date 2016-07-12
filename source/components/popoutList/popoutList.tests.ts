@@ -39,10 +39,10 @@ describe('PopoutListComponent', () => {
 			expect(list.showOptions).to.be.false;
 		});
 
-		it('should do nothing if the options are already closed', (): void => {
-			list.showOptions = false;
-			list.close();
-			expect(list.showOptions).to.be.false;
+		it('should open the options', (): void => {
+			list.showOptions = true;
+			list.open();
+			expect(list.showOptions).to.be.true;
 		});
 	});
 

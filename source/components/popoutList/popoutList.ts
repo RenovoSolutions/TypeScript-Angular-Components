@@ -27,6 +27,10 @@ export class PopoutListComponent<T> {
 		this.showOptions = !this.showOptions;
 	}
 
+	open(): void {
+		this.showOptions = true;
+	}
+
 	close(): void {
 		this.showOptions = false;
 	}

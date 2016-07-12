@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
-import { find, filter, clone } from 'lodash';
+import { find, filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -15,6 +15,7 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
+import { PopoutListComponent } from '../../popoutList/popoutList';
 
 export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
 
@@ -29,7 +30,7 @@ export interface ITypeaheadChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [BusyComponent, ButtonComponent, OffClickDirective]
+	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent]
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;
@@ -41,6 +42,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
+	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
 	search: string;
@@ -53,17 +55,12 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
-	showOptions: boolean = false;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
 
-	get showOptionsWrapper(): boolean {
-		if (this.busy.loading || !this.search) {
-			return false;
-		} else {
-			return this.showOptions;
-		}
+	get canShowOptions(): boolean {
+		return !(this.busy.loading || !this.search);
 	}
 
 	get hideFlowerup(): boolean {
@@ -102,7 +99,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	selectItem(item: T): void {
-		this.showOptions = false;
+		this.list.close();
 		this.search = '';
 
 		if (item != null) {
@@ -129,16 +126,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		this.busy.trigger(loadRequest);
 		this.visibleItems = loadRequest;
-		loadRequest.subscribe(() => this.showOptions = true);
+		loadRequest.subscribe(() => this.list.open());
 		return loadRequest;
-	}
-
-	toggle(): void {
-		this.showOptions = !this.showOptions;
-	}
-
-	close(): void {
-		this.showOptions = false;
 	}
 
 	ngOnInit(): void {
@@ -193,10 +182,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 				});
 		}
 		return itemsStream;
-	}
-
-	newTemplate(): TemplateRef<any> {
-		return clone(this.template);
 	}
 
 	private getItemsClient(): Observable<T[]> {
