@@ -160,6 +160,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 				this.search = search;
 			})
 			.debounceTime(DEFAULT_SEARCH_DEBOUNCE)
+			.do(() => this.busy.trigger(false))
 			.distinctUntilChanged()
 			.switchMap(search => this.refresh(search))
 			.subscribe(() => null);
