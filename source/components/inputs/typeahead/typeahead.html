@@ -1,7 +1,7 @@
 <div class="field"
 	 [class.error]="!control.valid"
 	 (offClick)="close()">
-	<label class="label-slide angular-animate" [hidden]="!(search && label)">{{label}}</label>
+	<label class="label-slide angular-animate" [hidden]="hideFlowerup">{{label}}</label>
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
 			   type="text"

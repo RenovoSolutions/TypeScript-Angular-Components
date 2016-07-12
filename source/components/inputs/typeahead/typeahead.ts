@@ -66,6 +66,10 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 	}
 
+	get hideFlowerup(): boolean {
+		return !((this.search || this.value) && this.label);
+	}
+
 	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -94,22 +98,19 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 	clear(): void {
 		this.setValue(null);
-		this.search = '';
 		this.collapsed = false;
 	}
 
 	selectItem(item: T): void {
 		this.showOptions = false;
+		this.search = '';
 
 		if (item != null) {
 			this.select.emit(item);
 
 			if (this.allowCollapse) {
 				this.collapsed = true;
-				this.search = this.getDisplayName(item);
 				this.setValue(item);
-			} else {
-				this.search = '';
 			}
 		}
 	}
