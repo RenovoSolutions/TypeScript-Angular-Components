@@ -1,8 +1,8 @@
 <div class="nav-tabs-dropshadow">
 	<ul class="nav nav-tabs">
-		<li *ngFor="let tabHeader of tabHeaders" (click)="select(tabHeader)"
-			ng-class="{ 'active': tabHeader.isVisible, 'error': !tabHeader.isValid }">
-			<a><span [innerHTML]="tabHeader.template"></span></a>
+		<li *ngFor="let tab of tabs" (click)="select(tab)"
+			ng-class="{ 'active': tab.isActive, 'error': !tab.isValid }">
+			<a><span [innerHTML]="tab.header.innerHTML"></span></a>
 		</li>
 	</ul>
 	<div class="tab-content">
