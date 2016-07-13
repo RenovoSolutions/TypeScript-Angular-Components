@@ -35,9 +35,11 @@ import { DocumentService } from './services/documentWrapper/documentWrapper.serv
 import { FormService } from './services/form/form.service';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
-import {BreakpointService} from './services/breakpoints/index';
+import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
 
 import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
+
+export { visibleBreakpointServiceName };
 
 export const moduleName: string = 'rl.components.downgrade';
 
@@ -80,6 +82,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(BreakpointService);
+	upgradeAdapter.addProvider(VisibleBreakpointService);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
@@ -111,5 +114,6 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
 	componentsDowngradeModule.factory(documentServiceName, upgradeAdapter.downgradeNg2Provider(DocumentService));
+	componentsDowngradeModule.factory(visibleBreakpointServiceName, upgradeAdapter.downgradeNg2Provider(VisibleBreakpointService));
 	componentsDowngradeModule.factory(windowServiceName, upgradeAdapter.downgradeNg2Provider(WindowService));
 }
