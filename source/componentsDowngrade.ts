@@ -100,7 +100,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
