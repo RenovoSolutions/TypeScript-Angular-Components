@@ -38,7 +38,7 @@ import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
 import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
 
-import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
+import { DefaultTheme, defaultThemeValueName } from './components/componentsDefaultTheme';
 
 export { visibleBreakpointServiceName };
 
@@ -76,9 +76,14 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
 		},
 	});
+	const defaultThemeNg1: Provider = new Provider('defaultThemeNg1', {
+		deps: [DefaultTheme],
+		useFactory: (defaultTheme: DefaultTheme) => defaultTheme.useDefaultTheme,
+	});
 
 	upgradeAdapter.addProvider(AsyncHelper);
-	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(DefaultTheme);
+	upgradeAdapter.addProvider(defaultThemeNg1);
 	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(DocumentService);
@@ -92,7 +97,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(MergeSort);
 	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
-	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider(defaultThemeToken));
+	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
 	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(services.timezone.timezoneService)));

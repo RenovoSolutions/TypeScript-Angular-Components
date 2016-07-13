@@ -1,6 +1,6 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
+import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 import __string = services.string;
 import __transform = services.transform;
@@ -18,11 +18,11 @@ export class ColumnSearchFilter implements filters.IFilter {
 
 	private object: __object.IObjectUtility;
 	private string: __string.IStringUtility;
-	private transformService: __transform.ITransformService
+	private transformService: __transform.ITransformService;
 
-	constructor(@Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__string.stringToken) string: __string.IStringUtility
-			, @Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+	constructor(object: __object.ObjectUtility
+			, string: __string.StringUtility
+			, transformService: __transform.TransformService) {
 		this.object = object;
 		this.string = string;
 		this.transformService = transformService;

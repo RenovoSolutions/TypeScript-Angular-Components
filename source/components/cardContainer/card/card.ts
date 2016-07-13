@@ -48,11 +48,11 @@ export class CardComponent<T> extends FormComponent {
 	cardContainer: CardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
+			, boolean: __boolean.BooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.boolean = boolean;

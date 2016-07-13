@@ -4,7 +4,7 @@ describe('FilterGroupComponent', (): void => {
 	let filterGroup: FilterGroupComponent<any>;
 
 	beforeEach(() => {
-		filterGroup = new FilterGroupComponent({ log: sinon.spy() });
+		filterGroup = new FilterGroupComponent(<any>{ log: sinon.spy() });
 		filterGroup.filterGroup = <any>{};
 	});
 

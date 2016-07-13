@@ -12,7 +12,7 @@ describe('busy', () => {
 	let busy: BusyComponent;
 
 	beforeEach(() => {
-		busy = new BusyComponent(true, new AsyncHelper());
+		busy = new BusyComponent(<any>{}, new AsyncHelper());
 	});
 
 	it('should not show the spinner after triggering if null', (): void => {

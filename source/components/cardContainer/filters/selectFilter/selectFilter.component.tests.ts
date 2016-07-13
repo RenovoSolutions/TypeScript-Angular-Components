@@ -8,7 +8,7 @@ describe('SelectFilterComponent', (): void => {
 	let selectFilter: SelectFilterComponent<ITestObj>;
 
 	beforeEach(() => {
-		selectFilter = new SelectFilterComponent<ITestObj>({ log: sinon.spy() });
+		selectFilter = new SelectFilterComponent<ITestObj>(<any>{ log: sinon.spy() });
 		selectFilter.filter = <any>{};
 	});
 

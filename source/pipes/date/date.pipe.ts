@@ -1,16 +1,15 @@
-import { Pipe, PipeTransform, Inject } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __dateFormats = services.date.defaultFormats;
 import __object = services.object;
 
-
 @Pipe({ name: 'rlDate' })
 export class DatePipe implements PipeTransform {
 	private object: __object.IObjectUtility;
 
-	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility) {
+	constructor(object: __object.ObjectUtility) {
 		this.object = object;
 	}
 

@@ -1,4 +1,4 @@
-import { Component, Input, Inject, Optional, OnInit, AfterViewInit, OnChanges, SimpleChange } from '@angular/core';
+import { Component, Input, Optional, OnInit, AfterViewInit, OnChanges, SimpleChange } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
@@ -31,7 +31,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 
 	constructor(rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__array.arrayToken) arrayUtility: __array.IArrayUtility) {
+			, arrayUtility: __array.ArrayUtility) {
 		this.arrayUtility = arrayUtility;
 		this.groupValidator = componentValidator;
 		this.validationControl = new FormControl('', this.groupValidator.validate.bind(this.groupValidator));

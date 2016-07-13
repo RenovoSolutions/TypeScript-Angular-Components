@@ -36,7 +36,7 @@ export class CardHeaderColumnComponent<T> implements OnInit {
 	sizeForBreakpoints: SizeForBreakpoints;
 
 	constructor(@Inject(forwardRef(() => CardComponent)) card: CardComponent<T>
-			, @Inject(__transform.transformToken) transformService: __transform.ITransformService
+			, transformService: __transform.TransformService
 			, sizeForBreakpoints: SizeForBreakpoints) {
 		this.card = card;
 		this.transformService = transformService;
