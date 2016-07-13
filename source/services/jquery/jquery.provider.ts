@@ -1,8 +1,8 @@
-import { Provider, OpaqueToken } from '@angular/core';
+import { Provider } from '@angular/core';
 import * as $ from 'jquery';
 
-export const jqueryToken: OpaqueToken = new OpaqueToken('Jquery');
+export abstract class JQueryProvider {}
 
-export const JQUERY_PROVIDER: Provider = new Provider(jqueryToken, {
+export const JQUERY_PROVIDER: Provider = new Provider(JQueryProvider, {
 	useValue: $,
 });

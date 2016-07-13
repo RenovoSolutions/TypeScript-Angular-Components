@@ -1,4 +1,4 @@
-import { Injectable, Inject, Provider } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { first, values, each } from 'lodash';
 
@@ -15,7 +15,7 @@ export class ComponentValidator {
 
 	validationService: __validation.IValidationService;
 
-	constructor(@Inject(__validation.validationToken) validationService: __validation.IValidationService) {
+	constructor(validationService: __validation.ValidationService) {
 		this.validationService = validationService;
 		this.validator = this.validationService.buildCustomValidator((error: string, name: string): void => {
 			this.error = error;

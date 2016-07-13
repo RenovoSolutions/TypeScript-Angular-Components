@@ -1,4 +1,4 @@
-import { Injector, Injectable, Inject } from '@angular/core';
+import { Injector, Injectable } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -13,7 +13,7 @@ import { CardContainerBuilder } from './cardContainerBuilder.service';
 export interface IDataSourceBuilder {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>
+	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
 											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
 											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
@@ -31,9 +31,9 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	private sorter: ISorter;
 
 	constructor(injector: Injector
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__synchronizedRequests.synchronizedRequestsToken) synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, synchronizedRequestsFactory: __synchronizedRequests.SynchronizedRequestsFactory
 			, sorter: Sorter) {
 		this.injector = injector;
 		this.object = object;

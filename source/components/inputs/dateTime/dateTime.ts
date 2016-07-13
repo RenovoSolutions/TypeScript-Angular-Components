@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Optional, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -47,13 +47,13 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	private rendering: boolean = false;
 	private touchspin: JQuery;
 
-	constructor(@Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService
-			, @Inject(__date.dateToken) dateService: __date.IDateUtility
+	constructor(timezoneService: __timezone.TimezoneService
+			, dateService: __date.DateUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'dateTime';
 		this.timezoneService = timezoneService;

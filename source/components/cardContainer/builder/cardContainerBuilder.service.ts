@@ -83,7 +83,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	}
 
 	useSearch(tokenized?: boolean): __genericSearchFilter.IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.injector.get(__genericSearchFilter.genericSearchFilterToken);
+		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.injector.get(__genericSearchFilter.GenericSearchFilterFactory);
 		this._searchFilter = factory.getInstance(tokenized);
 		return this._searchFilter;
 	}

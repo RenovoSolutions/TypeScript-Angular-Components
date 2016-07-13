@@ -1,7 +1,7 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { isBoolean } from 'lodash';
 
-import { defaultThemeToken } from '../componentsDefaultTheme';
+import { DefaultTheme } from '../componentsDefaultTheme';
 import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 
 export { IWaitValue };
@@ -17,9 +17,9 @@ export class BusyComponent {
 	useDefaultTheme: boolean;
 	asyncHelper: AsyncHelper;
 
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+	constructor(defaultTheme: DefaultTheme
 			, asyncHelper: AsyncHelper) {
-		this.useDefaultTheme = useDefaultTheme;
+		this.useDefaultTheme = defaultTheme.useDefaultTheme;
 		this.asyncHelper = asyncHelper;
 	}
 

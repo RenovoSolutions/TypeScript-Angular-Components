@@ -1,6 +1,6 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { defaultThemeToken } from '../../componentsDefaultTheme';
+import { DefaultTheme } from '../../componentsDefaultTheme';
 
 import { RadioGroupComponent } from './radioGroup';
 
@@ -15,9 +15,9 @@ export class RadioComponent<T> {
 	radioGroup: RadioGroupComponent<T>;
 	useDefaultTheme: boolean;
 
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+	constructor(defaultTheme: DefaultTheme
 			, radioGroup: RadioGroupComponent<T>) {
 		this.radioGroup = radioGroup;
-		this.useDefaultTheme = useDefaultTheme;
+		this.useDefaultTheme = defaultTheme.useDefaultTheme;
 	}
 }
