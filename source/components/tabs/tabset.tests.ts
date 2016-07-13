@@ -5,9 +5,16 @@ import test = services.test;
 
 import { TabsetComponent, TabComponent, TabHeaderComponent } from './index';
 
+class MockQueryList<T> extends Array<T>
+{
+	get first(): T {
+		return this[0];
+	}
+}
+
 describe('TabsetComponent', () => {
 	let tabset: TabsetComponent;
-	let tabArray: Array<TabComponent>;
+	let mockTabComponentQueryList: MockQueryList<TabComponent>;
 	let tabsetTabsSpy: Sinon.SinonSpy;
 	let tabHeader: TabHeaderComponent;
 
@@ -19,7 +26,7 @@ describe('TabsetComponent', () => {
 			}
 		});
 
-		tabArray = new Array<TabComponent>();
+		mockTabComponentQueryList = new MockQueryList<TabComponent>();
 		let tabComponent: TabComponent;
 
 		for (var i = 0; i < 2; i++) {
@@ -27,10 +34,10 @@ describe('TabsetComponent', () => {
 			tabComponent.header = tabHeader;
 			tabComponent.childForm = null;
 			tabComponent.isActive = false;
-			tabArray.push(tabComponent);
+			mockTabComponentQueryList.push(tabComponent);
 		}
 
-		tabset.tabs = <any>tabArray;
+		tabset.tabs = <any>mockTabComponentQueryList;
 	});
 
 	it('should select the first tab', (): void => {
@@ -41,7 +48,7 @@ describe('TabsetComponent', () => {
 
 	it('should hide all tabs and show the selected tab', (): void => {
 		tabset.ngAfterContentInit();
-		tabset.select(tabArray[1]);
+		tabset.select(mockTabComponentQueryList[1]);
 
 		expect(tabset.tabs[0].isActive).to.be.false;
 		expect(tabset.tabs[1].isActive).to.be.true;
