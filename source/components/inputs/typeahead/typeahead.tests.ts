@@ -42,6 +42,10 @@ describe('TypeaheadComponent', () => {
 
 		busy = { trigger: sinon.spy() };
 		typeahead.busy = <any>busy;
+		typeahead.list = <any>{
+			open: sinon.spy(),
+			close: sinon.spy(),
+		};
 	});
 
 	it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {
