@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, Inject } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { clone } from 'lodash';
 
@@ -19,7 +19,7 @@ export class PopoutListComponent<T> {
 
 	transformService: __transform.ITransformService;
 
-	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+	constructor(transformService: __transform.TransformService) {
 		this.transformService = transformService;
 	}
 

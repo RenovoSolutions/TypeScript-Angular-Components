@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Inject, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { find, filter } from 'lodash';
 
@@ -67,12 +67,12 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		return !((this.search || this.value) && this.label);
 	}
 
-	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService
+	constructor(transformService: __transform.TransformService
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService
 			, searchService: __search.SearchUtility) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
