@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
@@ -72,8 +72,8 @@ export class CardContainerComponent<T> implements OnInit {
 	numberSelected: number = 0;
 	numberSelectedChanges: Subject<number> = new Subject<number>();
 
-	object: __object.IObjectUtility;
-	array: __array.IArrayUtility;
+	objectUtility: __object.IObjectUtility;
+	arrayUtility: __array.IArrayUtility;
 	injectedPager: DataPager;
 
 	type: CardContainerType = CardContainerType.standard;
@@ -91,11 +91,11 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.cardChildren.toArray();
 	}
 
-	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
+	constructor(object: __object.ObjectUtility
+			, array: __array.ArrayUtility
 			, pager: DataPager) {
-		this.object = object;
-		this.array = array;
+		this.objectUtility = object;
+		this.arrayUtility = array;
 		this.injectedPager = pager;
 		this.save = <ISaveAction>() => Promise.resolve();
 	}
@@ -150,7 +150,7 @@ export class CardContainerComponent<T> implements OnInit {
 			// Else make column primary ascending sort
 
 			// Remove any existing non-primary sorts on column
-			this.array.remove(sortList, (sort: ISort): boolean => {
+			this.arrayUtility.remove(sortList, (sort: ISort): boolean => {
 				return column === sort.column;
 			});
 
@@ -183,7 +183,7 @@ export class CardContainerComponent<T> implements OnInit {
 	}
 
 	private syncFilters(): void {
-		if (!this.object.isNullOrEmpty(this.filters)) {
+		if (!this.objectUtility.isNullOrEmpty(this.filters)) {
 			this.dataSource.filters = this.filters;
 			this.dataSource.refresh();
 		} else if (this.dataSource.filters != null) {
@@ -212,10 +212,10 @@ export class CardContainerComponent<T> implements OnInit {
 		each(this.columns, (column: IColumn<any>): void => {
 			let sizes: IBreakpointSize | number = column.size;
 			if (isObject(sizes)) {
-				sizes[xs] = this.object.valueOrDefault(sizes[xs], 0);
-				sizes[sm] = this.object.valueOrDefault(sizes[sm], sizes[xs]);
-				sizes[md] = this.object.valueOrDefault(sizes[md], sizes[sm]);
-				sizes[lg] = this.object.valueOrDefault(sizes[lg], sizes[md]);
+				sizes[xs] = this.objectUtility.valueOrDefault(sizes[xs], 0);
+				sizes[sm] = this.objectUtility.valueOrDefault(sizes[sm], sizes[xs]);
+				sizes[md] = this.objectUtility.valueOrDefault(sizes[md], sizes[sm]);
+				sizes[lg] = this.objectUtility.valueOrDefault(sizes[lg], sizes[md]);
 			} else {
 				column.size = {
 					xs: <number>sizes,

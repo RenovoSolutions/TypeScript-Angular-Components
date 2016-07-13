@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { mapValues, map, range } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -44,7 +44,7 @@ export class CardsBootstrapper {
 	rangeFilterGroup: RangeFilterGroup;
 	selectFilter: SelectFilter<any, any>;
 
-	constructor( @Inject(__timezone.timezoneToken) timezone: __timezone.ITimezoneService
+	constructor(timezone: __timezone.TimezoneService
 			, cardContainerBuilder: builder.CardContainerBuilder) {
 		timezone.setCurrentTimezone('-05:00');
 

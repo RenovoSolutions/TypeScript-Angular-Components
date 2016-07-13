@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange, ViewChild } from '@angular/core';
+import { Component, Optional, Input, AfterViewInit, OnChanges, AfterViewChecked, ElementRef, SimpleChange, ViewChild } from '@angular/core';
 import * as $ from 'jquery';
 import '../../../../libraries/bootstrap-touchspin/index';
 
@@ -38,22 +38,22 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 
 	@ViewChild('spinner') spinner: ElementRef;
 
-	private number: __number.INumberUtility;
-	private string: __string.IStringUtility;
+	private numberUtility: __number.INumberUtility;
+	private stringUtility: __string.IStringUtility;
 	private rendering: boolean = false;
 	private touchspin: JQuery;
 
-	constructor(@Inject(__number.numberToken) number: __number.INumberUtility
-			, @Inject(__string.stringToken) string: __string.IStringUtility
+	constructor(number: __number.NumberUtility
+			, string: __string.StringUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'spinner';
-		this.number = number;
-		this.string = string;
+		this.numberUtility = number;
+		this.stringUtility = string;
 	}
 
 	ngAfterViewInit(): void {
@@ -95,7 +95,7 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 
 			this.touchspin.on('change', (): void => {
 				const spinValue: string = this.touchspin.val();
-				const valueAsNumber: number = this.string.toNumber(spinValue);
+				const valueAsNumber: number = this.stringUtility.toNumber(spinValue);
 				this.setValue(this.round(valueAsNumber));
 			});
 			this.rendering = false;

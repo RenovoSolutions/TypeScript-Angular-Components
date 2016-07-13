@@ -47,11 +47,11 @@ import * as simpleCardList from './simpleCardList/index';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as validationGroup from './validationGroup/validationGroup';
 
-import { defaultThemeValueName, defaultThemeToken } from './componentsDefaultTheme';
+import { defaultThemeValueName, DefaultTheme } from './componentsDefaultTheme';
 
 export {
 	defaultThemeValueName,
-	defaultThemeToken,
+	DefaultTheme,
 
 	busyNg1,
 	buttonNg1,

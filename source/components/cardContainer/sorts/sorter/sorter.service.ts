@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 import { types, services } from 'typescript-angular-utilities';
@@ -19,7 +19,7 @@ export class Sorter implements ISorter {
 	transformService: __transform.ITransformService;
 
 	constructor(mergeSort: MergeSort
-			, @Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+			, transformService: __transform.TransformService) {
 		this.mergeSort = mergeSort;
 		this.transformService = transformService;
 	}

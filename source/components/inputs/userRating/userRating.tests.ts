@@ -9,7 +9,7 @@ describe('UserRatingComponent', () => {
 	let setValue: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		userRating = new UserRatingComponent(true, null, __object.objectUtility, __guid.guid);
+		userRating = new UserRatingComponent(<any>{}, null, __object.objectUtility, __guid.guid);
 
 		setValue = sinon.spy();
 		userRating.setValue = setValue;

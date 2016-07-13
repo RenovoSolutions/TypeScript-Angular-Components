@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, OnInit } from '@angular/core';
+import { Component, Optional, Input, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -21,9 +21,9 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'textbox';
 	}
