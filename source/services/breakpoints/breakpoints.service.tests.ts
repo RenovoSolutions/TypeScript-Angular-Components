@@ -71,6 +71,6 @@ describe('breakpoints', () => {
 			},
 		};
 
-		breakpoints = new BreakpointService(mockVisibleBreakpointService, <any>mockWindowControl);
+		breakpoints = new BreakpointService(<any>mockVisibleBreakpointService, <any>mockWindowControl);
 	}
 });

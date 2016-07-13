@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, TemplateRef, Inject, ContentChildren, ViewChildren, QueryList } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ContentChildren, ViewChildren, QueryList } from '@angular/core';
 import { Observable } from 'rxjs';
 import { clone } from 'lodash';
 
@@ -13,7 +13,7 @@ import { PopoutItem } from './popoutItem';
 	directives: [PopoutItem],
 })
 export class PopoutListComponent<T> {
-	@Input() options: Observable<T>;
+	@Input() options: Observable<T[]>;
 	@Input() template: TemplateRef<any>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
@@ -25,7 +25,7 @@ export class PopoutListComponent<T> {
 
 	transformService: __transform.ITransformService;
 
-	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+	constructor(transformService: __transform.TransformService) {
 		this.transformService = transformService;
 	}
 

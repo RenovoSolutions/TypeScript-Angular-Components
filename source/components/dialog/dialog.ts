@@ -1,4 +1,4 @@
-import { Component, Input, ContentChild, Provider, forwardRef, Inject, Optional, SkipSelf } from '@angular/core';
+import { Component, Input, ContentChild, Provider, forwardRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -29,7 +29,7 @@ export class DialogComponent extends FormComponent {
 
 	dialogRoot: DialogRootService;
 
-	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, dialogRoot: DialogRootService) {

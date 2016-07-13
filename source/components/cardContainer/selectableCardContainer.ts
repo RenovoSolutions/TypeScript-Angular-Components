@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Inject, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
+import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
@@ -70,8 +70,8 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
+	constructor(object: __object.ObjectUtility
+			, array: __array.ArrayUtility
 			, pager: DataPager) {
 		super(object, array, pager);
 		this.type = CardContainerType.selectable;

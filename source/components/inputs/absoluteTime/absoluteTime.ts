@@ -1,4 +1,4 @@
-import { Component, Input, Inject, Optional, OnInit } from '@angular/core';
+import { Component, Input, Optional, OnInit } from '@angular/core';
 import { dropRight, takeRight, range } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
@@ -67,9 +67,9 @@ export class AbsoluteTimeComponent extends ValidatedInputComponent<string> imple
 
 	constructor(@Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService
 			, timeUtility: __time.TimeUtility) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'time';

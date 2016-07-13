@@ -3,7 +3,7 @@ import { Component, AfterViewInit, Inject } from '@angular/core';
 
 import { DialogRootService } from './dialogRoot.service';
 import { ButtonComponent, ButtonAsyncComponent } from '../buttons/index';
-import { jqueryToken } from '../../services/jquery/jquery.provider';
+import { JQueryProvider } from '../../services/jquery/jquery.provider';
 
 @Component({
 	selector: 'rlDialogOutlet',
@@ -15,14 +15,14 @@ export class DialogOutletComponent implements AfterViewInit {
 	jquery: JQueryStatic;
 
 	constructor(dialogRoot: DialogRootService
-			, @Inject(jqueryToken) jquery: JQueryStatic) {
+			, jquery: JQueryProvider) {
 		this.dialogRoot = dialogRoot;
-		this.jquery = jquery;
+		this.jquery = <any>jquery;
 		dialogRoot.openDialog.subscribe((): void => {
-			jquery('.rlModal').modal('show');
+			this.jquery('.rlModal').modal('show');
 		});
 		dialogRoot.closeDialog.subscribe((): void => {
-			jquery('.rlModal').modal('hide');
+			this.jquery('.rlModal').modal('hide');
 		});
 	}
 

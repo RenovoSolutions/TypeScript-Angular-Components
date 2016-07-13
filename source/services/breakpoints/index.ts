@@ -6,5 +6,6 @@ export const BREAKPOINT_PROVIDERS: any[] = [
 	VisibleBreakpointService
 ];
 
+export * from  './breakpoint';
 export * from  './breakpoints.service';
 export * from './visibleBreakpoint.service';

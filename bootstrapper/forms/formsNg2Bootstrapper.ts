@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter } from 'lodash';
@@ -45,7 +45,7 @@ export class FormsBootstrapper {
 
 	@ViewChild('testForm') testForm: FormComponent;
 
-	constructor( @Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService) {
+	constructor(timezoneService: __timezone.TimezoneService) {
 		timezoneService.setCurrentTimezone('-05:00');
 
 		this.text = 'Something is already entered';

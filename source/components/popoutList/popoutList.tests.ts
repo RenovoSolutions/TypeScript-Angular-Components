@@ -48,7 +48,7 @@ describe('PopoutListComponent', () => {
 
 	it('should transform the item to a display name', (): void => {
 		const option: any = { value: 3 };
-		const transform: string = x => x.value;
+		const transform: any = x => x.value;
 		list.transform = transform;
 
 		list.getDisplayName(option);

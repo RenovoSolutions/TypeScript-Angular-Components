@@ -35,13 +35,17 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, <any>__search.searchUtility);
+		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
 
 		busy = { trigger: sinon.spy() };
 		typeahead.busy = <any>busy;
+		typeahead.list = <any>{
+			open: sinon.spy(),
+			close: sinon.spy(),
+		};
 	});
 
 	it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {

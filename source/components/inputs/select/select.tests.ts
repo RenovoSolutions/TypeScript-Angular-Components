@@ -77,7 +77,7 @@ describe('SelectComponent', () => {
 
 	it('should set the value and close the options', (): void => {
 		const closeSpy = sinon.spy();
-		dropdown.list = {
+		dropdown.list = <any>{
 			close: closeSpy,
 		};
 

@@ -7,7 +7,7 @@ describe('CheckboxComponent', () => {
 	let setValue: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		checkbox = new CheckboxComponent(true, null, null, null);
+		checkbox = new CheckboxComponent(<any>{}, null, null, null);
 		setValue = sinon.spy(value => checkbox.value = value);
 		checkbox.setValue = setValue;
 
