@@ -26,7 +26,7 @@ export class TabsetComponent implements AfterContentInit {
 
 	ngAfterContentInit() {
 		if (this.tabs) {
-			this.select(this.tabs.first);
+			this.select(this.tabs[0]);
 		}
 	}
 }
