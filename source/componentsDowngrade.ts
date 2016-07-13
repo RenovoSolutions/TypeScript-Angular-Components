@@ -33,6 +33,7 @@ import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStr
 import { AsyncHelper } from './services/async/async.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
+import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
 import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
@@ -83,6 +84,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(BreakpointService);
 	upgradeAdapter.addProvider(VisibleBreakpointService);
+	upgradeAdapter.addProvider(JQUERY_PROVIDER);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
