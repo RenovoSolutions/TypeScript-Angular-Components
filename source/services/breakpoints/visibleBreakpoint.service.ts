@@ -1,5 +1,5 @@
-import { Injectable, Inject, Provider } from '@angular/core';
-import { jqueryToken } from '../jquery/jquery.provider';
+import { Injectable } from '@angular/core';
+import { JQueryProvider } from '../jquery/jquery.provider';
 
 /*
  * Implementation also requires the following elements to be inserted on the page:
@@ -20,8 +20,8 @@ export interface IVisibleBreakpointService {
 export class VisibleBreakpointService implements IVisibleBreakpointService {
 	jquery: JQueryStatic;
 
-	constructor( @Inject(jqueryToken) jquery: JQueryStatic) {
-		this.jquery = jquery;
+	constructor(jquery: JQueryProvider) {
+		this.jquery = <any>jquery;
 	}
 
 	isVisible(breakpoint: string): boolean {
