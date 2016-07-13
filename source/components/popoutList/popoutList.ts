@@ -10,7 +10,7 @@ import __transform = services.transform;
 	template: require('./popoutList.html'),
 })
 export class PopoutListComponent<T> {
-	@Input() options: Observable<T>;
+	@Input() options: Observable<T[]>;
 	@Input() template: TemplateRef<any>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
