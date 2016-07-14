@@ -4,6 +4,7 @@
 	<div class="form-control rl-select-trigger"
 		 [class.disabled]="disabled"
 		 [class.rl-select-open]="list.showOptions"
+		 tabindex="0"
 		 rlPopoutTrigger>
 		<span class="placeholder" [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
