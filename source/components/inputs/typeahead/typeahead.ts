@@ -17,7 +17,8 @@ import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
-export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
+export const DEFAULT_SERVER_SEARCH_DEBOUNCE: number = 500;
+export const DEFAULT_CLIENT_SEARCH_DEBOUNCE: number = 100;
 
 export interface ITypeaheadChanges {
 	value: SimpleChange;
@@ -134,7 +135,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		this.loadDelay = this.clientSearch ? 100 : 500;
+		this.loadDelay = this.clientSearch ? DEFAULT_CLIENT_SEARCH_DEBOUNCE : DEFAULT_SERVER_SEARCH_DEBOUNCE;
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 
@@ -149,7 +150,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 				this.busy.trigger(!this.object.isNullOrEmpty(search));
 				this.search = search;
 			})
-			.debounceTime(DEFAULT_SEARCH_DEBOUNCE)
+			.debounceTime(this.loadDelay)
 			.do(() => this.busy.trigger(false))
 			.distinctUntilChanged()
 			.switchMap(search => this.refresh(search))
