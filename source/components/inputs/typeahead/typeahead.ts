@@ -137,15 +137,15 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 
-		this.allowCustomOption = !this.object.isNullOrEmpty(this.create);
+		this.allowCustomOption = !!this.create;
 
-		if (this.allowCollapse && !this.object.isNullOrEmpty(this.value)) {
+		if (this.allowCollapse && !!this.value) {
 			this.collapsed = true;
 		}
 
 		this.searchStream
 			.do(search => {
-				this.busy.trigger(!this.object.isNullOrEmpty(search));
+				this.busy.trigger(!!search);
 				this.search = search;
 			})
 			.debounceTime(this.loadDelay)
