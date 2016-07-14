@@ -15,10 +15,7 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
-import { PopoutListComponent } from '../../popoutList/popoutList';
-import { PopoutListService } from '../../popoutList/popoutList.service';
-import { PopoutItemComponent } from '../../popoutList/popoutItem';
-import { PopoutTriggerDirective } from '../../popoutList/popoutTrigger';
+import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
 export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
 
@@ -32,8 +29,8 @@ export interface ITypeaheadChanges {
 	template: require('./typeahead.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	providers: [ComponentValidator, PopoutListService],
-	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent, PopoutItemComponent, PopoutTriggerDirective]
+	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	directives: [BusyComponent, ButtonComponent, OffClickDirective, POPOUT_LIST_DIRECTIVES]
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;
