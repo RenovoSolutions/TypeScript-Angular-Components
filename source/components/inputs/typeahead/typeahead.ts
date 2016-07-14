@@ -104,13 +104,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.list.close();
 		this.search = '';
 
-		if (item != null) {
-			this.select.emit(item);
+		this.select.emit(item);
 
-			if (this.allowCollapse) {
-				this.collapsed = true;
-				this.setValue(item);
-			}
+		if (this.allowCollapse) {
+			this.collapsed = true;
+			this.setValue(item);
 		}
 	}
 
