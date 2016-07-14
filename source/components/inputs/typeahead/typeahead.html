@@ -5,18 +5,14 @@
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
 			   type="text"
-			   (click)="list.toggle()"
 			   [disabled]="disabled"
-			   [class.rl-select-open]="showOptions"
+			   [class.rl-select-open]="list.showOptions"
 			   [placeholder]="placeholder"
 			   [value]="search"
-			   (keyup.arrowdown)="showOptions && list.focusNext()"
-			   (keyup.arrowUp)="showOptions && list.focusPrevious()"
-			   (keyup.enter)="showOptions && list.selectCurrent()"
-			   (blur)="showOptions && list.selectCurrent()"
+			   rlPopoutTrigger
 			   (input)="searchStream.next($event.target.value)" />
 		<rlPopoutList #list
-					  [hidden]="!showOptions"
+					  [disabled]="!canShowOptions"
 					  [options]="visibleItems"
 					  [template]="template"
 					  [transform]="transform"

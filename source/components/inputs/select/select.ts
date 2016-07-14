@@ -14,13 +14,14 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { PopoutListComponent } from '../../popoutList/popoutList';
+import { PopoutListService } from '../../popoutList/popoutList.service';
 
 @Component({
 	selector: 'rlSelect',
 	template: require('./select.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	providers: [ComponentValidator],
+	providers: [ComponentValidator, PopoutListService],
 	directives: [BusyComponent, OffClickDirective, PopoutListComponent],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {

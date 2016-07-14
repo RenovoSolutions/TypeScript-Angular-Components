@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, forwardRef, Inject } from '@angular/core';
 
 import { PopoutListComponent } from './popoutList';
+import { PopoutListService } from './popoutList.service';
 
 @Component({
 	selector: 'rlPopoutItem',
@@ -9,9 +10,9 @@ import { PopoutListComponent } from './popoutList';
 export class PopoutItem<T> {
 	@Output() trigger: EventEmitter<any> = new EventEmitter();
 
-	list: PopoutListComponent<T>;
+	list: PopoutListService<T>;
 
-	constructor(@Inject(forwardRef(() => PopoutListComponent)) list: PopoutListComponent<T>) {
+	constructor(@Inject(forwardRef(() => PopoutListService)) list: PopoutListService<T>) {
 		this.list = list;
 	}
 

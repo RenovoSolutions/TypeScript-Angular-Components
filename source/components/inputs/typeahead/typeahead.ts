@@ -16,7 +16,9 @@ import { BusyComponent } from '../../busy/busy';
 import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { PopoutListComponent } from '../../popoutList/popoutList';
+import { PopoutListService } from '../../popoutList/popoutList.service';
 import { PopoutItem } from '../../popoutList/popoutItem';
+import { PopoutTriggerDirective } from '../../popoutList/popoutTrigger';
 
 export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
 
@@ -30,8 +32,8 @@ export interface ITypeaheadChanges {
 	template: require('./typeahead.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	providers: [ComponentValidator],
-	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent, PopoutItem]
+	providers: [ComponentValidator, PopoutListService],
+	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent, PopoutItem, PopoutTriggerDirective]
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;
@@ -60,8 +62,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
 
-	get showOptions(): boolean {
-		return !this.busy.loading && this.search && this.list.showOptions;
+	get canShowOptions(): boolean {
+		return !(this.busy.loading || !this.search);
 	}
 
 	get hideFlowerup(): boolean {
@@ -97,6 +99,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	clear(): void {
 		this.setValue(null);
 		this.collapsed = false;
+		this.visibleItems = Observable.empty<T[]>();
 	}
 
 	selectItem(item: T): void {

@@ -6,6 +6,7 @@ import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
 
 import { PopoutItem } from './popoutItem';
+import { PopoutListService } from './popoutList.service';
 
 @Component({
 	selector: 'rlPopoutList',
@@ -18,69 +19,43 @@ export class PopoutListComponent<T> {
 	@Input() transform: __transform.ITransform<T, string>;
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
-	showOptions: boolean;
-	focusIndex: number;
-
-	@ContentChildren(PopoutItem) customItems: QueryList<PopoutItem<T>>;
-	@ViewChildren(PopoutItem) listItems: QueryList<PopoutItem<T>>;
-
-	transformService: __transform.ITransformService;
-
-	constructor(transformService: __transform.TransformService) {
-		this.transformService = transformService;
+	@Input() set disabled(value: boolean) {
+		this.popoutListService.disabled = value;
 	}
 
-	toggle(): void {
-		this.showOptions = !this.showOptions;
+	@ContentChildren(PopoutItem) set customItems(value: QueryList<PopoutItem<T>>) {
+		this.popoutListService.customItems = value;
+	}
+	@ViewChildren(PopoutItem) set listItems(value: QueryList<PopoutItem<T>>) {
+		this.popoutListService.listItems = value;
+	}
+
+	transformService: __transform.ITransformService;
+	popoutListService: PopoutListService<T>;
+
+	constructor(transformService: __transform.TransformService
+			, popoutListService: PopoutListService<T>) {
+		this.transformService = transformService;
+		this.popoutListService = popoutListService;
+		popoutListService.select.subscribe(value => this.select.emit(value));
+	}
+
+	get isEmpty(): Observable<boolean> {
+		return this.options
+			? this.options.map(x => !(x || x.length))
+			: Observable.of(true);
+	}
+
+	get showOptions(): boolean {
+		return this.popoutListService.showOptions;
 	}
 
 	open(): void {
-		this.showOptions = true;
+		this.popoutListService.open();
 	}
 
 	close(): void {
-		this.showOptions = false;
-	}
-
-	isFocused(item: PopoutItem<T>): boolean {
-		return item === this.current;
-	}
-
-	focusNext(): void {
-		if (this.focusIndex == null
-			|| this.focusIndex === this.listItems.length + this.customItems.length - 1) {
-			this.focusIndex = 0;
-		} else {
-			this.focusIndex += 1;
-		}
-	}
-
-	focusPrevious(): void {
-		// not using falsy to clarify the intended behavior
-		if (this.focusIndex == null
-			|| this.focusIndex === 0) {
-			this.focusIndex = this.listItems.length + this.customItems.length - 1;
-		} else {
-			this.focusIndex -= 1;
-		}
-	}
-
-	selectCurrent(): void {
-		if (this.current) {
-			this.current.trigger.emit(null);
-			this.focusIndex = null;
-		}
-	}
-
-	get current(): PopoutItem<T> {
-		if (this.focusIndex == null) {
-			return null;
-		} else if (this.focusIndex < this.customItems.length) {
-			return this.customItems.toArray()[this.focusIndex];
-		} else {
-			const indexIntoSecondList = this.focusIndex - this.customItems.length;
-			return this.listItems.toArray()[indexIntoSecondList];
-		}
+		this.popoutListService.close();
 	}
 
 	newTemplate(): TemplateRef<any> {
