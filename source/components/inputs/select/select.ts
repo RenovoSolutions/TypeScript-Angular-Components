@@ -13,16 +13,15 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
-import { PopoutListComponent } from '../../popoutList/popoutList';
-import { PopoutListService } from '../../popoutList/popoutList.service';
+import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
 @Component({
 	selector: 'rlSelect',
 	template: require('./select.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	providers: [ComponentValidator, PopoutListService],
-	directives: [BusyComponent, OffClickDirective, PopoutListComponent],
+	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	directives: [BusyComponent, OffClickDirective, POPOUT_LIST_DIRECTIVES],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
