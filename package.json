@@ -18,6 +18,8 @@
   "scripts": {
     "prepublish": " typings install && npm run build && gulp bundle-css",
     "update": "npm install && typings install && npm run bundle-deps",
+    "update.wipe-npm": "gulp wipe-npm-update",
+
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
