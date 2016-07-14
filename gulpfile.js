@@ -6,6 +6,7 @@ const Builder = require('systemjs-builder');
 const runSequence = require('run-sequence');
 const concat = require('gulp-concat');
 const cleanCss = require('gulp-clean-css');
+const exec = require('child_process').execSync;
 
 const utilities = require('@renovolive/gulp-utilities');
 utilities.gulp.clean.config();
@@ -40,9 +41,9 @@ gulp.task('bundle-all.watch', (done) => {
 
 gulp.task('bundle-all', (done) => {
 	runSequence('bundle-bootstrapper',
-				'bundle-css',
-				'bundle-css.minify',
-				done);
+		'bundle-css',
+		'bundle-css.minify',
+		done);
 });
 
 gulp.task('bundle-css.watch', (done) => {
@@ -63,5 +64,13 @@ gulp.task('bundle-css.minify', () => {
 });
 
 gulp.task('wipe-npm', () => {
-	del('node_modules');
+	return del('node_modules');
+});
+
+gulp.task('run-update', () => {
+	return exec('npm run update');
+});
+
+gulp.task('wipe-npm-update', ['wipe-npm'], () => {
+	gulp.start('run-update');
 });
