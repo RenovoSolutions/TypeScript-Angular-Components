@@ -237,9 +237,13 @@ describe('TypeaheadComponent', () => {
 
 			typeahead.clear();
 
+			let visibleItems;
+			typeahead.visibleItems.subscribe(items => visibleItems = items);
+
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, null);
 			expect(typeahead.collapsed).to.be.false;
+			expect(visibleItems).to.be.empty;
 		});
 
 		it('should clear the search value', (): void => {
