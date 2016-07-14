@@ -1,13 +1,17 @@
-import { Component, Input, Output, EventEmitter, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, TemplateRef, ContentChildren, ViewChildren, QueryList } from '@angular/core';
 import { Observable } from 'rxjs';
 import { clone } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
 
+import { PopoutItemComponent } from './popoutItem';
+import { PopoutListService } from './popoutList.service';
+
 @Component({
 	selector: 'rlPopoutList',
 	template: require('./popoutList.html'),
+	directives: [PopoutItemComponent],
 })
 export class PopoutListComponent<T> {
 	@Input() options: Observable<T[]>;
@@ -15,24 +19,43 @@ export class PopoutListComponent<T> {
 	@Input() transform: __transform.ITransform<T, string>;
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
-	showOptions: boolean;
-
-	transformService: __transform.ITransformService;
-
-	constructor(transformService: __transform.TransformService) {
-		this.transformService = transformService;
+	@Input() set disabled(value: boolean) {
+		this.popoutListService.disabled = value;
 	}
 
-	toggle(): void {
-		this.showOptions = !this.showOptions;
+	@ContentChildren(PopoutItemComponent) set customItems(value: QueryList<PopoutItemComponent<T>>) {
+		this.popoutListService.customItems = value;
+	}
+	@ViewChildren(PopoutItemComponent) set listItems(value: QueryList<PopoutItemComponent<T>>) {
+		this.popoutListService.listItems = value;
+	}
+
+	transformService: __transform.ITransformService;
+	popoutListService: PopoutListService<T>;
+
+	constructor(transformService: __transform.TransformService
+			, popoutListService: PopoutListService<T>) {
+		this.transformService = transformService;
+		this.popoutListService = popoutListService;
+		popoutListService.select.subscribe(value => this.select.emit(value));
+	}
+
+	get isEmpty(): Observable<boolean> {
+		return this.options
+			? this.options.map(x => !(x || x.length))
+			: Observable.of(true);
+	}
+
+	get showOptions(): boolean {
+		return this.popoutListService.showOptions;
 	}
 
 	open(): void {
-		this.showOptions = true;
+		this.popoutListService.open();
 	}
 
 	close(): void {
-		this.showOptions = false;
+		this.popoutListService.close();
 	}
 
 	newTemplate(): TemplateRef<any> {

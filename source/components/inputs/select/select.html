@@ -1,11 +1,11 @@
 <div class="field"
-	 [class.error]="!control.valid"
-	 (offClick)="list.close()">
+	 [class.error]="!control.valid">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
-		 (click)="list.toggle()"
 		 [class.disabled]="disabled"
-		 [class.rl-select-open]="list.showOptions">
+		 [class.rl-select-open]="list.showOptions"
+		 tabindex="0"
+		 rlPopoutTrigger>
 		<span class="placeholder" [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
@@ -14,7 +14,7 @@
 				  [template]="template"
 				  [transform]="transform"
 				  (select)="select($event)">
-		<li class="rl-select-option rl-select-option-null" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
+		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
 	</rlPopoutList>
 	<rlBusy></rlBusy>
 	<div [hidden]="control.valid" class="error-string">
