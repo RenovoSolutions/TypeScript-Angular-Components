@@ -50,10 +50,13 @@ export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
+export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
+	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
+
 	upgradeAdapter.addProvider(Injector);
 	upgradeAdapter.addProvider(DataSourceBuilder);
 	upgradeAdapter.addProvider(FilterBuilder);
