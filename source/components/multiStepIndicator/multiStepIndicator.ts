@@ -42,15 +42,17 @@ export class MultiStepIndicatorComponent implements OnInit {
 		this.configureSteps();
 	}
 
-	onClick(step: IConfiguredStep): void {
+	onClick(step: IConfiguredStep): Promise<void> | void {
 		if (!this.anyLoading()) {
 			step.isLoading = true;
-			step.onClick().then((): void => {
+
+			return step.onClick().then((): void => {
 				step.isLoading = false;
 			}).catch((error) => {
 				step.isLoading = false;
 			});
 		}
+		return null;
 	}
 
 	anyLoading(): boolean {
