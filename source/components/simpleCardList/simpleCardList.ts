@@ -1,4 +1,4 @@
-import { Component, Input, Inject, SimpleChange, OnChanges, AfterViewChecked, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, SimpleChange, OnChanges, AfterViewChecked, ContentChildren, QueryList } from '@angular/core';
 import { every, each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -31,7 +31,7 @@ export class SimpleCardListComponent<T> implements OnChanges, AfterViewChecked {
 
 	numberUtility: __number.INumberUtility;
 
-	constructor(@Inject(__number.numberToken) numberUtility: __number.INumberUtility) {
+	constructor(numberUtility: __number.NumberUtility) {
 		this.numberUtility = numberUtility;
 	}
 

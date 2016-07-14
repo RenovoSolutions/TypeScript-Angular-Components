@@ -1,4 +1,4 @@
-import { Injector, Injectable, Inject } from '@angular/core';
+import { Injector, Injectable } from '@angular/core';
 
 import { filters, services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -23,16 +23,16 @@ export interface IFilterBuilder {
 export class FilterBuilder implements IFilterBuilder {
 	private injector: Injector;
 	private parent: CardContainerBuilder;
-	private object: __object.IObjectUtility;
-	private string: __string.IStringUtility;
-	private date: __date.IDateUtility;
-	private transformService: __transform.ITransformService;
+	private object: __object.ObjectUtility;
+	private string: __string.StringUtility;
+	private date: __date.DateUtility;
+	private transformService: __transform.TransformService;
 
 	constructor(injector: Injector
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__string.stringToken) string: __string.IStringUtility
-			, @Inject(__date.dateToken) date: __date.IDateUtility
-			, @Inject(__transform.transformToken) transform: __transform.ITransformService) {
+			, object: __object.ObjectUtility
+			, string: __string.StringUtility
+			, date: __date.DateUtility
+			, transform: __transform.TransformService) {
 		this.injector = injector;
 		this.object = object;
 		this.date = date;

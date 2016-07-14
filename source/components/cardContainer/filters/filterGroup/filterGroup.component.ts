@@ -1,4 +1,4 @@
-import { Component, Input, Inject } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __logger = services.logger;
@@ -20,7 +20,7 @@ export class FilterGroupComponent<T> {
 	showChildren: boolean = true;
 	logger: __logger.ILogger;
 
-	constructor( @Inject(__logger.loggerToken) logger: __logger.ILogger) {
+	constructor(logger: __logger.Logger) {
 		this.logger = logger;
 	}
 

@@ -1,5 +1,12 @@
 import { Directive, Host, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
+import { services } from 'typescript-angular-utilities';
+import __guid = services.guid;
+
+export interface IOffClickEvent extends MouseEvent {
+	rlEventIdentifier: string;
+}
+
 @Directive({
 	selector: '[offClick]',
 	host: {
@@ -9,7 +16,17 @@ import { Directive, Host, Output, EventEmitter, OnInit, OnDestroy } from '@angul
 export class OffClickDirective implements OnInit, OnDestroy {
 	@Output('offClick') offClick: EventEmitter<any> = new EventEmitter();
 
-	listener: { ($event: MouseEvent): void } = ($event) => this.offClick.emit($event);
+	listener: { ($event: MouseEvent): void } = ($event: IOffClickEvent) => {
+		if ($event.rlEventIdentifier !== this.identifier) {
+			this.offClick.emit($event);
+		}
+	};
+
+	identifier: string;
+
+	constructor(guidService: __guid.GuidService) {
+		this.identifier = guidService.random();
+	}
 
 	ngOnInit() {
 		setTimeout(() => {
@@ -21,7 +38,7 @@ export class OffClickDirective implements OnInit, OnDestroy {
 		document.removeEventListener('click', this.listener);
 	}
 
-	onClick($event) {
-		$event.stopPropagation();
+	onClick($event: IOffClickEvent) {
+		$event.rlEventIdentifier = this.identifier;
 	}
 }

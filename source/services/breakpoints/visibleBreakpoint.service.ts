@@ -1,4 +1,5 @@
-import * as $ from 'jquery';
+import { Injectable } from '@angular/core';
+import { JQueryProvider } from '../jquery/jquery.provider';
 
 /*
  * Implementation also requires the following elements to be inserted on the page:
@@ -15,9 +16,15 @@ export interface IVisibleBreakpointService {
 	isVisible(breakpoint: string): boolean;
 }
 
+@Injectable()
 export class VisibleBreakpointService implements IVisibleBreakpointService {
+	jquery: JQueryStatic;
+
+	constructor(jquery: JQueryProvider) {
+		this.jquery = <any>jquery;
+	}
+
 	isVisible(breakpoint: string): boolean {
-		// jquery gets the breakpoint trigger directives listed above on line 3
-		return $('.device-' + breakpoint).is(':visible');
+		return this.jquery(`.device-${breakpoint}`).is(':visible');
 	}
 }

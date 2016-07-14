@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -32,13 +32,14 @@ export class FormsBootstrapper {
 	rating: number;
 	time: string;
 	validator: any;
+	brokenValidator: any;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
 
 	@ViewChild('testForm') testForm: FormComponent;
 
-	constructor(@Inject(__timezone.timezoneToken) timezoneService: __timezone.ITimezoneService) {
+	constructor(timezoneService: __timezone.TimezoneService) {
 		timezoneService.setCurrentTimezone('-05:00');
 
 		this.text = 'Something is already entered';
@@ -54,6 +55,10 @@ export class FormsBootstrapper {
 		this.validator = {
 			validate: () => this.rating >= 3,
 			errorMessage: 'You must give at least 3 stars',
+		};
+		this.brokenValidator = {
+			validate: () => false,
+			errorMessage: null,
 		};
 	}
 

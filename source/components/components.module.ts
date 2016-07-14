@@ -40,17 +40,18 @@ import * as busy from './busy/busy';
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
 import * as commaList from './commaList/commaList';
+import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
 import * as form from './form/form';
 import * as simpleCardList from './simpleCardList/index';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
 import * as validationGroup from './validationGroup/validationGroup';
 
-import { defaultThemeValueName, defaultThemeToken } from './componentsDefaultTheme';
+import { defaultThemeValueName, DefaultTheme } from './componentsDefaultTheme';
 
 export {
 	defaultThemeValueName,
-	defaultThemeToken,
+	DefaultTheme,
 
 	busyNg1,
 	buttonNg1,
@@ -91,6 +92,7 @@ export {
 	buttons,
 	cardContainer,
 	commaList,
+	dialog,
 	inputs,
 	form,
 	simpleCardList,

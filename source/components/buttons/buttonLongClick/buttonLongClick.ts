@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Inject } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -26,7 +26,7 @@ export class ButtonLongClickComponent extends ButtonAsyncComponent {
 	notification: __notification.INotificationService;
 	timeoutService: __timeout.TimeoutService;
 
-	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
 			, timeoutService: __timeout.TimeoutService) {
 		super();
 		this.notification = notification;

@@ -1,11 +1,11 @@
-import { Component, Inject, Input, Optional } from '@angular/core';
+import { Component, Input, Optional } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 
-import { defaultThemeToken } from '../../componentsDefaultTheme';
+import { DefaultTheme } from '../../componentsDefaultTheme';
 
 import { InputComponent, baseInputs, baseOutputs } from '../input';
 import { FormComponent } from '../../form/form';
@@ -21,14 +21,14 @@ export class CheckboxComponent extends InputComponent<boolean> {
 
 	useDefaultTheme: boolean;
 
-	constructor( @Inject(defaultThemeToken) useDefaultTheme: boolean
+	constructor(defaultTheme: DefaultTheme
 			, @Optional() rlForm: FormComponent
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+			, object: __object.ObjectUtility
+			, guid: __guid.GuidService) {
 		super(rlForm, object, guid);
 		this.inputType = 'checkbox';
 		this.initControl();
-		this.useDefaultTheme = useDefaultTheme;
+		this.useDefaultTheme = defaultTheme.useDefaultTheme;
 	}
 
 	toggle(): void {

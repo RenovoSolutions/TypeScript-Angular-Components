@@ -106,6 +106,9 @@ describe('autosave', () => {
 			contentForm: <any>baseContentForm,
 			triggers: 'none',
 		});
+		(<any>autosave).formService = {
+			getAggregateError: () => 'error',
+		};
 
 		let close: boolean = autosave.autosave();
 

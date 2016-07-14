@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "2.4.0",
+  "version": "2.6.0",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -16,7 +16,7 @@
   "main": "./source/ui.module.js",
   "typings": "./source/ui.module.d.ts",
   "scripts": {
-    "prepublish": " typings install && npm run build",
+    "prepublish": " typings install && npm run build && gulp bundle-css",
     "update": "npm install && typings install && npm run bundle-deps",
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
@@ -38,8 +38,8 @@
 
     "all": "npm run update && npm run build && npm run test.full",
 
-    "bundle": "gulp bundle-bootstrapper",
-    "bundle.watch": "gulp bundle-bootstrapper.watch",
+    "bundle": "gulp bundle-css && gulp bundle-bootstrapper",
+    "bundle.watch": "concurrently --kill-others \"gulp bundle-css.watch\" \"gulp bundle-bootstrapper.watch\" ",
 
     "build-bundle": "npm run build && npm run bundle",
     "build-bundle.watch": "concurrently --kill-others \"npm run build.watch\" \"npm run bundle.watch\"",
@@ -97,11 +97,11 @@
     "moment": "~2.11.2",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "ng2-bootstrap": "^1.0.17",
+    "ng2-bootstrap": "1.0.17",
     "rxjs": "5.0.0-beta.6",
     "signature_pad": "~1.5.3",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.2.1",
+    "typescript-angular-utilities": "~3.3.2",
     "ui-select": "~0.14.7",
     "zone.js": "^0.6.12"
   },

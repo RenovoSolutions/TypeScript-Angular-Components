@@ -9,6 +9,7 @@ const map = {
 	'angular-ui-router': 'node_modules/angular-ui-router/release/angular-ui-router.min.js',
 	'angular-sanitize': 'node_modules/angular-sanitize/index.js',
 	'angular2-uuid': 'node_modules/angular2-uuid',
+	'bootstrap': 'node_modules/bootstrap/dist/js/bootstrap.js',
 	'rxjs': 'node_modules/rxjs',
 	'lodash': 'node_modules/lodash/index',
 	'moment': 'node_modules/moment/moment',

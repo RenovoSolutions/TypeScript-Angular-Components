@@ -8,30 +8,22 @@ import {
 	breakpointServiceName,
 } from './breakpoints.module';
 
-import { services } from 'typescript-angular-utilities';
+import {BreakpointService } from './breakpoints.service';
 
-import * as angular from 'angular';
-import 'angular-mocks';
-
-import test = services.test;
 
 interface IVisibleBreakpointsMock {
 	isVisible(breakpoint: string): boolean;
 }
 
 interface IWindowServiceMock {
-	resize(callback: {(event: JQueryEventObject): any}): void;
+	resize(callback: { (event: JQueryEventObject): any }): void;
 }
 
 describe('breakpoints', () => {
-	var breakpoints: IBreakpointService;
+	let breakpoints: IBreakpointService;
 
-	var visibleBreakpoint: string;
-	var triggerResize: { (): void };
-
-	beforeEach((): void => {
-		angular.mock.module(moduleName);
-	});
+	let visibleBreakpoint: string;
+	let triggerResize: { (): void };
 
 	it('should have visible breakpoint marked as current', (): void => {
 		visibleBreakpoint = md;
@@ -46,7 +38,7 @@ describe('breakpoints', () => {
 	});
 
 	it('should signal subscribed listeners when the breakpoint changes', (): void => {
-		var breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
+		let breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
 
 		visibleBreakpoint = sm;
 
@@ -67,24 +59,18 @@ describe('breakpoints', () => {
 	});
 
 	function buildService(): void {
-		var mockVisibleBreakpointService: IVisibleBreakpointsMock = {
+		let mockVisibleBreakpointService: IVisibleBreakpointsMock = {
 			isVisible: (breakpoint: string): boolean => {
 				return breakpoint === visibleBreakpoint;
 			},
 		};
 
-		var mockWindowControl: IWindowServiceMock = {
+		let mockWindowControl: IWindowServiceMock = {
 			resize: (callback: { (): void }): void => {
 				triggerResize = callback;
 			},
 		};
 
-		test.angularFixture.mock({
-			visibleBreakpoint: mockVisibleBreakpointService,
-			windowWrapper: mockWindowControl,
-		});
-
-		var services: any = test.angularFixture.inject(breakpointServiceName);
-		breakpoints = services[breakpointServiceName];
+		breakpoints = new BreakpointService(<any>mockVisibleBreakpointService, <any>mockWindowControl);
 	}
 });

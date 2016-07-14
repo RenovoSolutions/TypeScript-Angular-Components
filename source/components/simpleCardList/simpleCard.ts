@@ -1,4 +1,4 @@
-import { Component, Inject, Input, Output, Optional, SkipSelf, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
+import { Component, Input, Output, Optional, SkipSelf, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
@@ -6,6 +6,7 @@ import __notification = services.notification;
 
 import { SimpleCardListComponent } from './simpleCardList';
 import { FormComponent, baseInputs } from '../form/form';
+import { AsyncHelper } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
 import { CardHeaderTemplate, CardContentTemplate, CardFooterTemplate } from '../cards/index';
 
@@ -36,12 +37,13 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	alternatingClass: string = '';
 	private boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
+			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility
+			, boolean: __boolean.BooleanUtility
 			, @Optional() list: SimpleCardListComponent<T>) {
-		super(notification, formService, parentForm);
+		super(notification, asyncHelper, formService, parentForm);
 		this.list = list || this.emptyList();
 		this.boolean = boolean;
 	}

@@ -1,11 +1,11 @@
 <rl-form save="dialog.saveAndClose()" saving="dialog.saving" form="dialog.form" initialize-dirty="dialog.initializeFormDirty">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="dialog.close()">
+		<span class="fa-stack">
+			<i class="close-bg fa fa-circle fa-stack-2x"></i>
+			<i class="close-icon fa fa-close fa-stack-1x"></i>
+		</span>
+	</button>
 	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="dialog.close()">
-			<span class="fa-stack">
-				<i class="close-bg fa fa-circle fa-stack-2x"></i>
-				<i class="close-icon fa fa-close fa-stack-1x"></i>
-			</span>
-		</button>
 		<div ng-transclude="headerSlot"></div>
 		<div class="clearfix "></div>
 	</div>

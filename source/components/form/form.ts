@@ -1,12 +1,12 @@
-import { Component, ViewChild, Input, Inject, Optional, SkipSelf } from '@angular/core';
+import { Component, ViewChild, Input, Optional, SkipSelf } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { isBoolean } from 'lodash';
 
-import { services, downgrade } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { IWaitValue } from '../busy/busy';
+import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
 import { IControlGroup } from '../../types/formValidators';
 
@@ -32,16 +32,20 @@ export class FormComponent {
 
 	form: IControlGroup;
 	private notification: __notification.INotificationService;
+	asyncHelper: AsyncHelper;
 	private formService: FormService;
+	submitted: Subject<void> = new Subject<void>();
 
 	get dirty(): boolean {
 		return this.form.dirty;
 	}
 
-	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
+			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent) {
 		this.notification = notification;
+		this.asyncHelper = asyncHelper;
 		this.formService = formService;
 		this.form = <IControlGroup>new FormGroup({});
 		this.form.rlNestedFormGroups = [];
@@ -90,15 +94,15 @@ export class FormComponent {
 	}
 
 	private showErrors(): void {
-		this.notification.warning(this.formService.getAggregateError(this.form));
+		const error = this.formService.getAggregateError(this.form);
+		if (error) {
+			this.notification.warning(error);
+		} else {
+			throw new Error('The form is invalid but there are no validation errors to show');
+		}
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
-		if (waitOn == null || isBoolean(waitOn)) {
-			this.markAsPristine();
-			return;
-		}
-
-		Observable.from(<any>waitOn).subscribe(() => this.markAsPristine());
+		this.asyncHelper.waitAsObservable(waitOn).subscribe(() => this.markAsPristine());
 	}
 }

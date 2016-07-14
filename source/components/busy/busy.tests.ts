@@ -6,12 +6,13 @@ import mock = services.test.mock;
 import fakeAsync = services.test.fakeAsync;
 
 import { BusyComponent } from './busy';
+import { AsyncHelper } from '../../services/async/async.service';
 
 describe('busy', () => {
 	let busy: BusyComponent;
 
 	beforeEach(() => {
-		busy = new BusyComponent(true);
+		busy = new BusyComponent(<any>{}, new AsyncHelper());
 	});
 
 	it('should not show the spinner after triggering if null', (): void => {

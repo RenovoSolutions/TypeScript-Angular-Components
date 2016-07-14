@@ -1,4 +1,4 @@
-import { Component, Input, Inject, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
@@ -29,8 +29,8 @@ export class DateFilterComponent implements OnInit {
 	private date: __date.IDateUtility;
 	private logger: __logger.ILogger;
 
-	constructor( @Inject(__date.dateToken) dateUtility: __date.IDateUtility
-			, @Inject(__logger.loggerToken) logger: __logger.ILogger) {
+	constructor(dateUtility: __date.DateUtility
+			, logger: __logger.Logger) {
 		this.date = dateUtility;
 		this.logger = logger;
 	}

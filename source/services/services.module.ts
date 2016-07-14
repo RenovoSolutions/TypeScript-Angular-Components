@@ -1,8 +1,10 @@
 import * as angular from 'angular';
 
+import * as async from './async/async.service';
 import * as autosave from './autosave/autosave.service';
 import * as autosaveAction from './autosaveAction/autosaveAction.service';
-import * as breakpoints from './breakpoints/breakpoints.module';
+import * as breakpointsNg1 from './breakpoints/breakpoints.module';
+import * as breakpoints from './breakpoints/index';
 import * as componentValidator from './componentValidator/componentValidator.service.ng1';
 import * as contentProvider from './contentProvider/contentProvider.service';
 import * as dialog from './dialog/dialog.service.ng1';
@@ -16,9 +18,11 @@ import * as windowWrapper from './windowWrapper/windowWrapper.service';
 
 
 export {
+	async,
 	autosave,
 	autosaveAction,
 	breakpoints,
+	breakpointsNg1,
 	componentValidator,
 	contentProvider,
 	dialog,
@@ -36,15 +40,13 @@ export var moduleName: string = 'rl.ui.services';
 angular.module(moduleName, [
 	autosave.moduleName,
 	autosaveAction.moduleName,
-	breakpoints.moduleName,
+	breakpointsNg1.moduleName,
 	componentValidator.moduleName,
 	contentProvider.moduleName,
 	dialog.moduleName,
-	documentWrapper.moduleName,
 	form.moduleName,
 	jquery.moduleName,
 	parentChild.moduleName,
 	promise.moduleName,
-	templateLoader.moduleName,
-	windowWrapper.moduleName,
+	templateLoader.moduleName
 ]);

@@ -17,6 +17,7 @@ import {
 } from './components/buttons/index';
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
+import { DialogRootService } from './components/dialog/dialogRoot.service';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
@@ -29,16 +30,26 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
+import { AsyncHelper } from './services/async/async.service';
+import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
+import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
+import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
-import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
+import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
+
+import { DefaultTheme, defaultThemeValueName } from './components/componentsDefaultTheme';
+
+export { visibleBreakpointServiceName };
 
 export const moduleName: string = 'rl.components.downgrade';
 
 export const cardContainerBuilderServiceName: string = 'rlCardContainerBuilder';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
+export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
+export const windowServiceName: string = 'windowWrapper';
 export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
@@ -68,19 +79,31 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
 		},
 	});
+	const defaultThemeNg1: Provider = new Provider('defaultThemeNg1', {
+		deps: [DefaultTheme],
+		useFactory: (defaultTheme: DefaultTheme) => defaultTheme.useDefaultTheme,
+	});
 
-	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(AsyncHelper);
+	upgradeAdapter.addProvider(DefaultTheme);
+	upgradeAdapter.addProvider(defaultThemeNg1);
+	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
+	upgradeAdapter.addProvider(DocumentService);
+	upgradeAdapter.addProvider(BreakpointService);
+	upgradeAdapter.addProvider(VisibleBreakpointService);
+	upgradeAdapter.addProvider(JQUERY_PROVIDER);
+	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
 	upgradeAdapter.addProvider(Sorter);
 	upgradeAdapter.addProvider(MergeSort);
 	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
-	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider(defaultThemeToken));
+	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
@@ -100,4 +123,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
+	componentsDowngradeModule.factory(documentServiceName, upgradeAdapter.downgradeNg2Provider(DocumentService));
+	componentsDowngradeModule.factory(visibleBreakpointServiceName, upgradeAdapter.downgradeNg2Provider(VisibleBreakpointService));
+	componentsDowngradeModule.factory(windowServiceName, upgradeAdapter.downgradeNg2Provider(WindowService));
 }
