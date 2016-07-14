@@ -7,7 +7,7 @@ import { PopoutListService } from './popoutList.service';
 	template: require('./popoutItem.html'),
 })
 export class PopoutItemComponent<T> {
-	@Output() trigger: EventEmitter<any> = new EventEmitter();
+	@Output() trigger: EventEmitter<void> = new EventEmitter<void>();
 
 	list: PopoutListService<T>;
 
@@ -17,5 +17,13 @@ export class PopoutItemComponent<T> {
 
 	get focused(): boolean {
 		return this.list.isFocused(this);
+	}
+
+	focus(): void {
+		this.list.focus(this);
+	}
+
+	blur(): void {
+		this.list.blur();
 	}
 }

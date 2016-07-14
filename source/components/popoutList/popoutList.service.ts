@@ -36,6 +36,24 @@ export class PopoutListService<T> {
 		return item === this.current;
 	}
 
+	focus(item: PopoutItemComponent<T>): void {
+		const indexInFirstList = this.customItems.toArray().indexOf(item);
+
+		if (indexInFirstList != -1) {
+			this.focusIndex = indexInFirstList;
+		}
+
+		const indexInSecondList = this.listItems.toArray().indexOf(item);
+
+		if (indexInSecondList != -1) {
+			this.focusIndex = this.customItems.length + indexInSecondList;
+		}
+	}
+
+	blur(): void {
+		this.focusIndex = null;
+	}
+
 	focusNext(): void {
 		if (this.focusIndex == null
 			|| this.focusIndex === this.listItems.length + this.customItems.length - 1) {
