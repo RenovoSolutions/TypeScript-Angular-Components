@@ -1,4 +1,4 @@
-import { Directive, HostListener } from '@angular/core';
+import { Directive, HostListener, ElementRef } from '@angular/core';
 
 import { PopoutListService } from './popoutList.service';
 
@@ -14,8 +14,10 @@ export class PopoutTriggerDirective {
 
 	popoutListService: PopoutListService<any>;
 
-	constructor(popoutListService: PopoutListService<any>) {
+	constructor(popoutListService: PopoutListService<any>
+			, elementRef: ElementRef) {
 		this.popoutListService = popoutListService;
+		popoutListService.select.subscribe(() => elementRef.nativeElement.blur());
 	}
 
 	show(): void {
