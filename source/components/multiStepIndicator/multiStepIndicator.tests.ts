@@ -1,115 +1,124 @@
-import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import * as ui from 'angular-ui-router';
 
-import {
-	moduleName,
-	controllerName,
-	MultiStepIndicatorController,
-	IStep,
-	IConfiguredStep,
-} from './multiStepIndicator';
+import { MultiStepIndicatorComponent, IStep, IConfiguredStep } from './multiStepIndicator';
 
-import * as angular from 'angular';
-import 'angular-mocks';
+describe('MultiStepIndicatorComponent', () => {
+    let msi: MultiStepIndicatorComponent;
+    let stateMock: any;
+    let fakePromise: Promise<any>;
 
-interface IStateServiceMock {
-	go: Sinon.SinonSpy;
-	includes: Sinon.SinonSpy;
-}
+    beforeEach(() => {
+        fakePromise = new Promise((resolve, reject) => { resolve() });
+        stateMock = {
+            go: sinon.spy((): Promise<any> => fakePromise),
+            includes: sinon.spy(),
+        };
+        msi = new MultiStepIndicatorComponent(stateMock);
+    });
 
-describe('MultiStepIndicatorController', () => {
-	let scope: angular.IScope;
-	let multiStepIndicator: MultiStepIndicatorController;
-	let stateMock: IStateServiceMock;
-	let $q: angular.IQService;
+    it('should set isActive to false if neither a click handler nor state name are provided', (): void => {
+        let step: IStep = <IConfiguredStep>{};
 
-	beforeEach(() => {
-		angular.mock.module(moduleName);
+        msi.steps = <IConfiguredStep[]>[step];
+        msi.ngOnInit();
 
-		let services: any = test.angularFixture.inject('$q');
-		$q = services.$q;
+        expect((<IConfiguredStep>step).isActive).to.be.false;
+    });
 
-		stateMock = {
-			go: sinon.spy((): angular.IPromise<any> => { return $q.when(); }),
-			includes: sinon.spy((): boolean => { return false; }),
-		};
-	});
+    it('should set isActive to true if both a click handler and state name are provided', (): void => {
+        let step: IStep = <any>{ onClick: () => fakePromise, stateName: 'state' };
 
-	it('should set inactive to true if no click handler or state name is provided', (): void => {
-		let step: IStep = <any>{};
-		buildController([step]);
-		expect((<any>step).inactive).to.be.true;
-	});
+        msi.steps = <IConfiguredStep[]>[step];
+        msi.ngOnInit();
 
-	it('should provide a default click handler that redirects to the specified state and sets the step to current if a state name is provided', (): void => {
-		let step: IStep = <any>{ stateName: 'state' };
-		buildController([step]);
+        expect((<IConfiguredStep>step).isActive).to.be.true;
+    });
 
-		step.onClick();
+    it('should provide a default click handler that redirects to the specified state and sets the step to current if a state name is provided', (): Promise<any> => {
+        let step: IStep = <any>{ stateName: 'state' };
 
-		sinon.assert.calledOnce(stateMock.go);
-		sinon.assert.calledWith(stateMock.go, 'state');
+        msi.steps = <IConfiguredStep[]>[step];
+        msi.ngOnInit();
 
-		scope.$digest();
+        let promise: Promise<any> = step.onClick();
 
-		expect(step.isCurrent).to.be.true;
-	});
+        sinon.assert.calledOnce(stateMock.go);
+        sinon.assert.calledWith(stateMock.go, 'state');
 
-	it('should set the step to current if the specified state is already active', (): void => {
-		let step1: IStep = <any>{ stateName: 'state2', isCurrent: false };
-		let step2: IStep = <any>{ stateName: 'state1', isCurrent: false };
-		stateMock.includes = sinon.spy((name: string): boolean => { return name === step1.stateName; });
-		buildController([step1, step2]);
+        return promise.then(() => {
+            expect(step.isCurrent).to.be.true;
+        });
+    });
 
-		expect(step1.isCurrent).to.be.true;
-		expect(step2.isCurrent).to.be.false;
-	});
+    it('should set the step to current if the specified state is already active', (): void => {
+        let activeState = 'activeState';
+        let step1: IStep = <any>{ stateName: activeState };
+        let step2: IStep = <any>{ stateName: 'inactiveState' };
 
-	it('should show a spinner on the step and disable all clicks when the step is loading', (): void => {
-		let step1: IConfiguredStep = <any>{ onClick: sinon.spy(), };
-		let step2: IConfiguredStep = <any>{ onClick: sinon.spy(), };
-		buildController([step1, step2]);
+        stateMock.includes = sinon.spy((name: string): boolean => name === activeState);
+        msi.steps = <IConfiguredStep[]>[step1, step2];
+        msi.ngOnInit();
 
-		multiStepIndicator.onClick(step1);
+        expect(step1.isCurrent).to.be.true;
+        expect(step2.isCurrent).to.be.false;
+    });
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
-		expect(step1.loading).to.be.true;
+    it('should show a spinner on the step and disable all clicks when the step is loading', (): Promise<any> => {
+        let step1: IStep = <any>{ onClick: sinon.spy(() => fakePromise) };
+        let step2: IStep = <any>{ onClick: sinon.spy() };
 
-		multiStepIndicator.onClick(step2);
+        msi.steps = <IConfiguredStep[]>[step1, step2];
+        msi.ngOnInit();
 
-		sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
-	});
+        msi.onClick(<IConfiguredStep>step1);
+        msi.onClick(<IConfiguredStep>step2);
 
-	it('should clear the spinner when the promise resolves', (): void => {
-		let step1: IConfiguredStep = <any>{ onClick: sinon.spy(), };
-		buildController([step1]);
+        expect((<IConfiguredStep>step1).isLoading).to.be.true;
+        expect((<IConfiguredStep>step2).isLoading).to.be.false;
 
-		multiStepIndicator.onClick(step1);
+        return fakePromise.then(() => {
+            sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
+            sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
+        });
+    });
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
-		expect(step1.loading).to.be.true;
+    it('should clear the spinner when the promise resolves', (): Promise<any> => {
+        let step: IStep = <any>{ onClick: sinon.spy(() => fakePromise) };
 
-		scope.$digest();
+        msi.steps = <IConfiguredStep[]>[step];
+        msi.ngOnInit();
 
-		expect(step1.loading).to.be.false;
-	});
+        msi.onClick(<IConfiguredStep>step);
 
-	it('should allow for specifying isCompleted as a bool or a function', (): void => {
-		let step1: IConfiguredStep = <any>{ isCompleted: true, };
-		let step2: IConfiguredStep = <any>{ isCompleted: sinon.spy((): boolean => { return true; }), };
-		buildController([step1, step2]);
+    	expect((<IConfiguredStep>step).isLoading).to.be.true;
 
-		expect(step1.getCompleted()).to.be.true;
-		expect(step2.getCompleted()).to.be.true;
+        return fakePromise.then(() => {
+            sinon.assert.calledOnce(<Sinon.SinonSpy>step.onClick);
+        	expect((<IConfiguredStep>step).isLoading).to.be.false;
+        });
+    });
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isCompleted);
-	});
+    it('should allow isCompleted to be supplied as a bool or a function', (): void => {
+    	let step1: IStep = <any>{ isCompleted: true, };
+    	let step2: IStep = <any>{ isCompleted: sinon.spy((): boolean => { return true; }), };
 
-	function buildController(steps: IStep[]): void {
-		let controllerResult: test.IControllerResult<MultiStepIndicatorController>
-			= test.angularFixture.controllerWithBindings<MultiStepIndicatorController>(controllerName, { steps: steps }, { $state: stateMock });
+        msi.steps = <IConfiguredStep[]>[step1, step2];
+        msi.ngOnInit();
 
-		scope = <angular.IScope>controllerResult.scope;
-		multiStepIndicator = controllerResult.controller;
-	}
+    	expect((<IConfiguredStep>step1).getCompleted()).to.be.true;
+    	expect((<IConfiguredStep>step2).getCompleted()).to.be.true;
+    	sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isCompleted);
+    });
+
+    it('should allow isValid to be supplied as a bool or a function', (): void => {
+    	let step1: IStep = <any>{ isValid: true, };
+    	let step2: IStep = <any>{ isValid: sinon.spy((): boolean => { return true; }), };
+
+        msi.steps = <IConfiguredStep[]>[step1, step2];
+        msi.ngOnInit();
+
+    	expect((<IConfiguredStep>step1).getValid()).to.be.true;
+    	expect((<IConfiguredStep>step2).getValid()).to.be.true;
+    	sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isValid);
+    });
 });
