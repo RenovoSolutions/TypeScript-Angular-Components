@@ -99,7 +99,7 @@ export class FormsBootstrapper {
 	}
 
 	getOptions = (): Observable<any> => {
-		return this.wait(this.typeaheadOptions);
+		return Observable.of(this.typeaheadOptions);
 	}
 
 	searchOptions = (search: string): Observable<any> => {
