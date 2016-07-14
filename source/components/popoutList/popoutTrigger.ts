@@ -37,8 +37,10 @@ export class PopoutTriggerDirective {
 	}
 
 	select(): void {
-		if (this.popoutListService.showOptions) {
+		if (this.popoutListService.current) {
 			this.popoutListService.selectCurrent();
+		} else {
+			this.popoutListService.close();
 		}
 	}
 }
