@@ -9,12 +9,10 @@ import { IStep, MultiStepIndicatorComponent } from '../../source/components/mult
 })
 export class MsiBootstrapperComponent implements OnInit {
 	steps: IStep[];
-	shit: string;
 	numbered: boolean;
 	checked: boolean;
 
     constructor() {
-		this.shit = 'BITCH';
 		this.numbered = false;
 		this.checked = true;
 	 }
