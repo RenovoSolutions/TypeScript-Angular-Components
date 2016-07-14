@@ -282,15 +282,6 @@ describe('TypeaheadComponent', () => {
 	});
 
 	describe('ngOnChanges', (): void => {
-		it('should update the search value on a value change', (): void => {
-			typeahead.getDisplayName = item => item;
-			typeahead.ngOnChanges({
-				value: <any>{ currentValue: 'search' },
-			});
-
-			expect(typeahead.search).to.equal('search');
-		});
-
 		it('should collapse the typeahead on a value change if a value is specified and collapse is enabled', (): void => {
 			typeahead.allowCollapse = true;
 			typeahead.ngOnChanges({
