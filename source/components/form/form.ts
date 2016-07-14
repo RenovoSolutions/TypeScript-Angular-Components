@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, Inject, Optional, SkipSelf } from '@angular/core';
+import { Component, ViewChild, Input, Optional, SkipSelf } from '@angular/core';
 import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { isBoolean } from 'lodash';
@@ -40,7 +40,7 @@ export class FormComponent {
 		return this.form.dirty;
 	}
 
-	constructor( @Inject(__notification.notificationToken) notification: __notification.INotificationService
+	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent) {

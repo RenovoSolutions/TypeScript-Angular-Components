@@ -1,4 +1,4 @@
-import { Directive, Host, Output, EventEmitter, OnInit, OnDestroy, Inject } from '@angular/core';
+import { Directive, Host, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __guid = services.guid;
@@ -24,7 +24,7 @@ export class OffClickDirective implements OnInit, OnDestroy {
 
 	identifier: string;
 
-	constructor(@Inject(__guid.guidToken) guidService: __guid.IGuidService) {
+	constructor(guidService: __guid.GuidService) {
 		this.identifier = guidService.random();
 	}
 

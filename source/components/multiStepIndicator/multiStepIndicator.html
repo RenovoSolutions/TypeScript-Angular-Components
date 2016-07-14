@@ -1,11 +1,15 @@
-<div class="multi-step" ng-class="{ 'numbered': breadcrumb.numbered, 'checked': breadcrumb.checked }">
+<div class="multi-step"
+	[class.numbered]="numbered"
+	[class.checked]="checked">
 	<ol>
-		<li ng-repeat="step in breadcrumb.steps" ng-click="breadcrumb.onClick(step)"
-			ng-class="{ 'completed': step.getCompleted(), 'current': step.isCurrent, 'active': !step.inactive && !breadcrumb.anyLoading() }">
+		<li *ngFor="let step of steps" (click)="onClick(step)"
+			[class.completed]="step.getCompleted()"
+			[class.current]="step.isCurrent"
+			[class.active]="step.isActive && !anyLoading()">
 			<div class="wrap">
-				<p class="badge" ng-show="step.hasCount">{{step.count()}}</p>
-				<p class="error" ng-if="!step.getValid()"></p>
-				<p class="title">{{step.title}} <rl-busy loading="step.loading"></rl-busy></p>
+				<p class="badge" *ngIf="step.count">{{step.count()}}</p>
+				<p class="error" *ngIf="!step.getValid()"></p>
+				<p class="title">{{step.title}} <rlBusy [loading]="step.isLoading"></rlBusy></p>
 				<p class="subtitle">{{step.subtitle}}</p>
 			</div>
 		</li>

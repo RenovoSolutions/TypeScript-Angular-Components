@@ -22,7 +22,7 @@ export class SelectionComponent<T extends ISelectableItem> implements OnInit {
 	boolean: __boolean.IBooleanUtility;
 
 	constructor(@Inject(forwardRef(() => SelectableCardContainerComponent)) cardContainer: SelectableCardContainerComponent<T>
-			, @Inject(__boolean.booleanToken) boolean: __boolean.IBooleanUtility) {
+			, boolean: __boolean.BooleanUtility) {
 		this.cardContainer = cardContainer;
 		this.boolean = boolean;
 	}

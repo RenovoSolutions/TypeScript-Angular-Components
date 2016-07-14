@@ -11,5 +11,4 @@ export var moduleName: string = 'rl.ui.services.breakpoints';
 
 angular.module(moduleName, [])
 	.constant('resizeDebounceMilliseconds', 500)
-	.service(visibleBreakpointServiceName, VisibleBreakpointService)
 	.service(breakpointServiceName, BreakpointService);

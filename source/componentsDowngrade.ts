@@ -33,11 +33,14 @@ import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStr
 import { AsyncHelper } from './services/async/async.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
+import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
-import {BreakpointService} from './services/breakpoints/index';
+import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
 
-import { defaultThemeToken, defaultThemeValueName, DEFAULT_THEME_PROVIDER } from './components/componentsDefaultTheme';
+import { DefaultTheme, defaultThemeValueName } from './components/componentsDefaultTheme';
+
+export { visibleBreakpointServiceName };
 
 export const moduleName: string = 'rl.components.downgrade';
 
@@ -47,10 +50,13 @@ export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
+export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
+	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
+
 	upgradeAdapter.addProvider(Injector);
 	upgradeAdapter.addProvider(DataSourceBuilder);
 	upgradeAdapter.addProvider(FilterBuilder);
@@ -73,13 +79,20 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
 		},
 	});
+	const defaultThemeNg1: Provider = new Provider('defaultThemeNg1', {
+		deps: [DefaultTheme],
+		useFactory: (defaultTheme: DefaultTheme) => defaultTheme.useDefaultTheme,
+	});
 
 	upgradeAdapter.addProvider(AsyncHelper);
-	upgradeAdapter.addProvider(DEFAULT_THEME_PROVIDER);
+	upgradeAdapter.addProvider(DefaultTheme);
+	upgradeAdapter.addProvider(defaultThemeNg1);
 	upgradeAdapter.addProvider(DialogRootService);
 	upgradeAdapter.addProvider(FormService);
 	upgradeAdapter.addProvider(DocumentService);
 	upgradeAdapter.addProvider(BreakpointService);
+	upgradeAdapter.addProvider(VisibleBreakpointService);
+	upgradeAdapter.addProvider(JQUERY_PROVIDER);
 	upgradeAdapter.addProvider(WindowService);
 	upgradeAdapter.addProvider(dataPagerFactoryProvider);
 	upgradeAdapter.addProvider(columnSearchFactoryProvider);
@@ -87,10 +100,10 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(MergeSort);
 	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
-	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider(defaultThemeToken));
+	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
@@ -111,5 +124,6 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
 	componentsDowngradeModule.factory(documentServiceName, upgradeAdapter.downgradeNg2Provider(DocumentService));
+	componentsDowngradeModule.factory(visibleBreakpointServiceName, upgradeAdapter.downgradeNg2Provider(VisibleBreakpointService));
 	componentsDowngradeModule.factory(windowServiceName, upgradeAdapter.downgradeNg2Provider(WindowService));
 }

@@ -1,4 +1,4 @@
-import { Component, Input, Inject, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, ContentChild, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
@@ -26,7 +26,7 @@ export class SelectFilterComponent<T> {
 
 	logger: __logger.ILogger;
 
-	constructor( @Inject(__logger.loggerToken) logger: __logger.ILogger) {
+	constructor(logger: __logger.Logger) {
 		this.logger = logger;
 	}
 

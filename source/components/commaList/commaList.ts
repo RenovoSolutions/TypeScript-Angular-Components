@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { take, map } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -20,8 +20,8 @@ export class CommaListComponent<T> implements OnInit {
 	private object: __object.IObjectUtility;
 	private transformService: __transform.ITransformService;
 
-	constructor( @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__transform.transformToken) transformService: __transform.ITransformService) {
+	constructor( object: __object.ObjectUtility
+			, transformService: __transform.TransformService) {
 		this.object = object;
 		this.transformService = transformService;
 	}

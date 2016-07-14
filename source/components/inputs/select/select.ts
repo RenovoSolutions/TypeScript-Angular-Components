@@ -1,4 +1,4 @@
-import { Component, Optional, Inject, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
+import { Component, Optional, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isArray, clone } from 'lodash';
 
@@ -37,12 +37,12 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	showOptions: boolean;
 	private transformService: __transform.ITransformService;
 
-	constructor(@Inject(__transform.transformToken) transformService: __transform.ITransformService
+	constructor(transformService: __transform.TransformService
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
-			, @Inject(__object.objectToken) object: __object.IObjectUtility
-			, @Inject(__array.arrayToken) array: __array.IArrayUtility
-			, @Inject(__guid.guidToken) guid: __guid.IGuidService) {
+			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
+			, guid: __guid.GuidService) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
 		this.inputType = 'select';
