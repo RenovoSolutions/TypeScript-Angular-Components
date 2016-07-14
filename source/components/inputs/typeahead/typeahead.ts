@@ -158,7 +158,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnChanges(changes: ITypeaheadChanges): void {
 		super.ngOnChanges(changes);
 		if (changes.value) {
-			this.search = this.getDisplayName(changes.value.currentValue);
 			if (changes.value.currentValue && this.allowCollapse) {
 				this.collapsed = true;
 			} else {
