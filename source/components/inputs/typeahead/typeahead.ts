@@ -97,7 +97,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	clear(): void {
 		this.setValue(null);
 		this.collapsed = false;
-		this.visibleItems = Observable.empty<T[]>();
+		this.searchStream.next('');
 	}
 
 	selectItem(item: T): void {

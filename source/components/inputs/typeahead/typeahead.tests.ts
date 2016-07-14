@@ -234,16 +234,16 @@ describe('TypeaheadComponent', () => {
 
 		it('should clear the current selection', (): void => {
 			typeahead.collapsed = true;
+			const searchSpy = sinon.spy();
+			typeahead.searchStream.subscribe(searchSpy);
 
 			typeahead.clear();
-
-			let visibleItems;
-			typeahead.visibleItems.subscribe(items => visibleItems = items);
 
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, null);
 			expect(typeahead.collapsed).to.be.false;
-			expect(visibleItems).to.be.empty;
+			sinon.assert.calledOnce(searchSpy);
+			sinon.assert.calledWith(searchSpy, '');
 		});
 
 		it('should clear the search value', (): void => {
