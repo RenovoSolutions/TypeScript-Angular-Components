@@ -1,7 +1,7 @@
 import { QueryList } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { PopoutItem } from './popoutItem';
+import { PopoutItemComponent } from './popoutItem';
 
 export class PopoutListService<T> {
 	select: Subject<T> = new Subject<T>();
@@ -17,8 +17,8 @@ export class PopoutListService<T> {
 		return this._showOptions;
 	}
 
-	customItems: QueryList<PopoutItem<T>>;
-	listItems: QueryList<PopoutItem<T>>;
+	customItems: QueryList<PopoutItemComponent<T>>;
+	listItems: QueryList<PopoutItemComponent<T>>;
 
 	constructor() {
 		this.select.subscribe(() => this.close());
@@ -32,7 +32,7 @@ export class PopoutListService<T> {
 		this._showOptions = false;
 	}
 
-	isFocused(item: PopoutItem<T>): boolean {
+	isFocused(item: PopoutItemComponent<T>): boolean {
 		return item === this.current;
 	}
 
@@ -62,7 +62,7 @@ export class PopoutListService<T> {
 		}
 	}
 
-	get current(): PopoutItem<T> {
+	get current(): PopoutItemComponent<T> {
 		if (this.focusIndex == null) {
 			return null;
 		} else if (this.focusIndex < this.customItems.length) {

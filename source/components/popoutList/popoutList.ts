@@ -5,13 +5,13 @@ import { clone } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
 
-import { PopoutItem } from './popoutItem';
+import { PopoutItemComponent } from './popoutItem';
 import { PopoutListService } from './popoutList.service';
 
 @Component({
 	selector: 'rlPopoutList',
 	template: require('./popoutList.html'),
-	directives: [PopoutItem],
+	directives: [PopoutItemComponent],
 })
 export class PopoutListComponent<T> {
 	@Input() options: Observable<T[]>;
@@ -23,10 +23,10 @@ export class PopoutListComponent<T> {
 		this.popoutListService.disabled = value;
 	}
 
-	@ContentChildren(PopoutItem) set customItems(value: QueryList<PopoutItem<T>>) {
+	@ContentChildren(PopoutItemComponent) set customItems(value: QueryList<PopoutItemComponent<T>>) {
 		this.popoutListService.customItems = value;
 	}
-	@ViewChildren(PopoutItem) set listItems(value: QueryList<PopoutItem<T>>) {
+	@ViewChildren(PopoutItemComponent) set listItems(value: QueryList<PopoutItemComponent<T>>) {
 		this.popoutListService.listItems = value;
 	}
 

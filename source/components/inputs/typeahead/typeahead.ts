@@ -17,7 +17,7 @@ import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { PopoutListComponent } from '../../popoutList/popoutList';
 import { PopoutListService } from '../../popoutList/popoutList.service';
-import { PopoutItem } from '../../popoutList/popoutItem';
+import { PopoutItemComponent } from '../../popoutList/popoutItem';
 import { PopoutTriggerDirective } from '../../popoutList/popoutTrigger';
 
 export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
@@ -33,7 +33,7 @@ export interface ITypeaheadChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, PopoutListService],
-	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent, PopoutItem, PopoutTriggerDirective]
+	directives: [BusyComponent, ButtonComponent, OffClickDirective, PopoutListComponent, PopoutItemComponent, PopoutTriggerDirective]
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;
