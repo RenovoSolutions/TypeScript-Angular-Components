@@ -10,8 +10,7 @@
 			   [value]="search"
 			   rlPopoutTrigger
 			   (input)="searchStream.next($event.target.value)" />
-		<rlPopoutList #list
-					  [disabled]="!canShowOptions"
+		<rlPopoutList [disabled]="!canShowOptions"
 					  [options]="visibleItems"
 					  [template]="template"
 					  [transform]="transform"
