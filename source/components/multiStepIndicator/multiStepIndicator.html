@@ -9,7 +9,7 @@
 			<div class="wrap">
 				<p class="badge" *ngIf="step.count">{{step.count()}}</p>
 				<p class="error" *ngIf="!step.getValid()"></p>
-				<p class="title">{{step.title}} <rl-busy [loading]="step.isLoading"></rl-busy></p>
+				<p class="title">{{step.title}} <rlBusy [loading]="step.isLoading"></rlBusy></p>
 				<p class="subtitle">{{step.subtitle}}</p>
 			</div>
 		</li>
