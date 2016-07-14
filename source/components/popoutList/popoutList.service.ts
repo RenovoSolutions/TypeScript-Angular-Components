@@ -7,7 +7,7 @@ export class PopoutListService<T> {
 	select: Subject<T> = new Subject<T>();
 
 	disabled: boolean;
-	private _showOptions: boolean;
+	_showOptions: boolean;
 	focusIndex: number;
 
 	get showOptions(): boolean {

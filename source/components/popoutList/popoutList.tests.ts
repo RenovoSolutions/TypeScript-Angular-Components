@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 import { PopoutListComponent } from './popoutList';
 
@@ -6,44 +6,51 @@ interface ITransformMock {
 	getValue: Sinon.SinonSpy;
 }
 
+interface IListServiceMock {
+	open: Sinon.SinonSpy;
+	close: Sinon.SinonSpy;
+	select: Subject<any>;
+}
+
 describe('PopoutListComponent', () => {
 	let list: PopoutListComponent<string>;
 	let options: string[];
 	let transformService: ITransformMock;
+	let listService: IListServiceMock;
 
 	beforeEach(() => {
 		transformService = { getValue: sinon.spy() };
 
-		list = new PopoutListComponent<string>(transformService);
+		listService = {
+			open: sinon.spy(),
+			close: sinon.spy(),
+			select: new Subject(),
+		};
+
+		list = new PopoutListComponent<string>(transformService, <any>listService);
 
 		options = ['Option 1', 'Option 2', 'Option 3'];
 		list.options = Observable.of(options);
 	});
 
-	describe('showOptions', (): void => {
-		it('should toggle the options', (): void => {
-			expect(list.showOptions).to.be.undefined;
+	it('should emit a select event when a select is triggered on the list service', (): void => {
+		const emitSpy = sinon.spy();
+		list.select = <any>{ emit: emitSpy };
 
-			list.toggle();
+		listService.select.next('value');
 
-			expect(list.showOptions).to.be.true;
+		sinon.assert.calledOnce(emitSpy);
+		sinon.assert.calledWith(emitSpy, 'value');
+	});
 
-			list.toggle();
+	it('should call open and close on the list service', (): void => {
+		list.close();
 
-			expect(list.showOptions).to.be.false;
-		});
+		sinon.assert.calledOnce(listService.close);
 
-		it('should close the options', (): void => {
-			list.showOptions = true;
-			list.close();
-			expect(list.showOptions).to.be.false;
-		});
+		list.open();
 
-		it('should open the options', (): void => {
-			list.showOptions = true;
-			list.open();
-			expect(list.showOptions).to.be.true;
-		});
+		sinon.assert.calledOnce(listService.open);
 	});
 
 	it('should transform the item to a display name', (): void => {
