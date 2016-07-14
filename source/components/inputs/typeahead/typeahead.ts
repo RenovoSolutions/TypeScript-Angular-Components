@@ -191,11 +191,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		//when useClientSearching is enabled, the entire list is loaded and then filtered in-memory
 		//caching the promise prevents multiple API calls from being made to load the entire list
 		else if (this.getItemsRequest == null) {
-			this.getItemsRequest = Observable.from(this.getItems())
+			this.getItemsRequest = Observable.from(this.getItems());
 
 			this.getItemsRequest.subscribe((items: T[]): T[] => {
-					return this.cachedItems = items;
-				});
+				return this.cachedItems = items;
+			});
 		}
 
 		return this.getItemsRequest;
