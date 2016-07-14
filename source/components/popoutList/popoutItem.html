@@ -1,9 +1,5 @@
-<li #li
-	class="rl-select-option"
-	(click)="trigger.emit($event)"
-	(keyup.enter)="trigger.emit($event)"
-	(keyup.arrowdown)="focusNext()"
-	(keyup.arrowUp)="focusPrevious()"
-	tabindex="0">
+<li class="rl-select-option"
+	[class.focused]="focused"
+	(click)="trigger.emit()">
 	<ng-content></ng-content>
 </li>

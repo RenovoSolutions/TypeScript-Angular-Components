@@ -72,3 +72,7 @@
     cursor: not-allowed;
     pointer-events: none;
 }
+
+.rl-select-option.focused {
+  background-color: #eee;
+}

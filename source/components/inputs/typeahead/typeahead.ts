@@ -60,8 +60,8 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
 
-	get canShowOptions(): boolean {
-		return !(this.busy.loading || !this.search);
+	get showOptions(): boolean {
+		return !this.busy.loading && this.search && this.list.showOptions;
 	}
 
 	get hideFlowerup(): boolean {

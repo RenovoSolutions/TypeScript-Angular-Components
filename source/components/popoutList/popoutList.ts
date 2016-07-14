@@ -19,6 +19,7 @@ export class PopoutListComponent<T> {
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
 	showOptions: boolean;
+	focusIndex: number;
 
 	@ContentChildren(PopoutItem) customItems: QueryList<PopoutItem<T>>;
 	@ViewChildren(PopoutItem) listItems: QueryList<PopoutItem<T>>;
@@ -41,45 +42,44 @@ export class PopoutListComponent<T> {
 		this.showOptions = false;
 	}
 
-	focus(): void {
-		this.customItems.first.focus();
+	isFocused(item: PopoutItem<T>): boolean {
+		return item === this.current;
 	}
 
-	focusNext(item): void {
-		const customList = this.customItems.toArray();
-		const locationInCustom = customList.indexOf(item);
-
-		if (locationInCustom > -1) {
-			if (locationInCustom < customList.length - 1) {
-				customList[locationInCustom + 1].focus();
-			} else {
-				this.listItems.first.focus();
-			}
+	focusNext(): void {
+		if (this.focusIndex == null
+			|| this.focusIndex === this.listItems.length + this.customItems.length - 1) {
+			this.focusIndex = 0;
 		} else {
-			const ourList = this.listItems.toArray();
-			const locationInOurs = ourList.indexOf(item);
-			if (locationInCustom < ourList.length - 1) {
-				ourList[locationInOurs + 1].focus();
-			}
+			this.focusIndex += 1;
 		}
 	}
 
-	focusPrevious(item): void {
-		const ourList = this.listItems.toArray();
-		const locationInOurs = ourList.indexOf(item);
-
-		if (locationInOurs > -1) {
-			if (locationInOurs > 0) {
-				ourList[locationInOurs - 1].focus();
-			} else {
-				this.customItems.last.focus();
-			}
+	focusPrevious(): void {
+		// not using falsy to clarify the intended behavior
+		if (this.focusIndex == null
+			|| this.focusIndex === 0) {
+			this.focusIndex = this.listItems.length + this.customItems.length - 1;
 		} else {
-			const customList = this.customItems.toArray();
-			const locationInCustom = customList.indexOf(item);
-			if (locationInCustom > 0) {
-				customList[locationInCustom - 1].focus();
-			}
+			this.focusIndex -= 1;
+		}
+	}
+
+	selectCurrent(): void {
+		if (this.current) {
+			this.current.trigger.emit(null);
+			this.focusIndex = null;
+		}
+	}
+
+	get current(): PopoutItem<T> {
+		if (this.focusIndex == null) {
+			return null;
+		} else if (this.focusIndex < this.customItems.length) {
+			return this.customItems.toArray()[this.focusIndex];
+		} else {
+			const indexIntoSecondList = this.focusIndex - this.customItems.length;
+			return this.listItems.toArray()[indexIntoSecondList];
 		}
 	}
 
