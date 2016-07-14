@@ -24,10 +24,6 @@ export class PopoutListService<T> {
 		this.select.subscribe(() => this.close());
 	}
 
-	toggle(): void {
-		this._showOptions = !this._showOptions;
-	}
-
 	open(): void {
 		this._showOptions = true;
 	}
