@@ -36,9 +36,8 @@ export class ButtonAsyncController extends ButtonController {
 			if (this.promiseUtility.isPromise(result)) {
 				result.then((): void => {
 					this.busy = false;
-				}).catch((error) => {
+				}).catch(() => {
 					this.busy = false;
-					throw error; //do not swallow error here, allow it to be handled gracefully further down the chain
 				});
 			} else if (<any>result !== true) {
 				this.busy = false;
