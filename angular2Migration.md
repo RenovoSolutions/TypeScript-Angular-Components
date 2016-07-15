@@ -14,7 +14,7 @@ Form - In progress (autosave needs resolved)
 GenericContainer - Obsolete  
 LazyLoad  
 LongClickButton - Done  
-MessageLog  - Move to Core Services?(Needs Discussion)
+MessageLog  - Move to Core Services?(Needs Discussion)  
 MultiStepIndicator - In Progress (Jamie)  
 Radio - Done  
 RadioGroup - Done   
