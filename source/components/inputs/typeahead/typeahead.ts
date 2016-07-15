@@ -17,7 +17,8 @@ import { ButtonComponent } from '../../buttons/index';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
-export const DEFAULT_SEARCH_DEBOUNCE: number = 1000;
+export const DEFAULT_SERVER_SEARCH_DEBOUNCE: number = 500;
+export const DEFAULT_CLIENT_SEARCH_DEBOUNCE: number = 100;
 
 export interface ITypeaheadChanges {
 	value: SimpleChange;
@@ -96,20 +97,18 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	clear(): void {
 		this.setValue(null);
 		this.collapsed = false;
-		this.visibleItems = Observable.empty<T[]>();
+		this.searchStream.next('');
 	}
 
 	selectItem(item: T): void {
 		this.list.close();
 		this.search = '';
 
-		if (item != null) {
-			this.select.emit(item);
+		this.select.emit(item);
 
-			if (this.allowCollapse) {
-				this.collapsed = true;
-				this.setValue(item);
-			}
+		if (this.allowCollapse) {
+			this.collapsed = true;
+			this.setValue(item);
 		}
 	}
 
@@ -134,22 +133,22 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		this.loadDelay = this.clientSearch ? 100 : 500;
+		this.loadDelay = this.clientSearch ? DEFAULT_CLIENT_SEARCH_DEBOUNCE : DEFAULT_SERVER_SEARCH_DEBOUNCE;
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 
-		this.allowCustomOption = !this.object.isNullOrEmpty(this.create);
+		this.allowCustomOption = !!this.create;
 
-		if (this.allowCollapse && !this.object.isNullOrEmpty(this.value)) {
+		if (this.allowCollapse && !!this.value) {
 			this.collapsed = true;
 		}
 
 		this.searchStream
 			.do(search => {
-				this.busy.trigger(!this.object.isNullOrEmpty(search));
+				this.busy.trigger(!!search);
 				this.search = search;
 			})
-			.debounceTime(DEFAULT_SEARCH_DEBOUNCE)
+			.debounceTime(this.loadDelay)
 			.do(() => this.busy.trigger(false))
 			.distinctUntilChanged()
 			.switchMap(search => this.refresh(search))
@@ -159,7 +158,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnChanges(changes: ITypeaheadChanges): void {
 		super.ngOnChanges(changes);
 		if (changes.value) {
-			this.search = this.getDisplayName(changes.value.currentValue);
 			if (changes.value.currentValue && this.allowCollapse) {
 				this.collapsed = true;
 			} else {
@@ -192,11 +190,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		//when useClientSearching is enabled, the entire list is loaded and then filtered in-memory
 		//caching the promise prevents multiple API calls from being made to load the entire list
 		else if (this.getItemsRequest == null) {
-			this.getItemsRequest = Observable.from(this.getItems())
+			this.getItemsRequest = Observable.from(this.getItems());
 
 			this.getItemsRequest.subscribe((items: T[]): T[] => {
-					return this.cachedItems = items;
-				});
+				return this.cachedItems = items;
+			});
 		}
 
 		return this.getItemsRequest;
