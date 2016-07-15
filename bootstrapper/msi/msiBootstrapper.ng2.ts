@@ -26,8 +26,11 @@ export class MsiBootstrapperComponent implements OnInit {
 				onClick: (): Promise<{}> => {
 					return new Promise(
 						function (resolve, reject) {
-							console.log('Visited step 1');
-							resolve();
+							console.log('Processing step 1');
+							setTimeout(() => {
+								console.log('Step 1 processed');
+								resolve();
+							}, 1000);
 						}
 					);
 				},
@@ -38,8 +41,11 @@ export class MsiBootstrapperComponent implements OnInit {
 				onClick: (): Promise<{}> => {
 					return new Promise(
 						function (resolve, reject) {
-							console.log('Visited step 2');
-							resolve();
+							console.log('Processing step 2');
+							setTimeout(() => {
+								console.log('Step 2 processed');
+								resolve();
+							}, 1000);
 						}
 					);
 				},
