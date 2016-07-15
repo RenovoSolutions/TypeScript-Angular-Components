@@ -1,0 +1,32 @@
+<div class="field typeahead"
+	 [class.error]="!control.valid">
+	<label class="label-slide angular-animate" [hidden]="hideFlowerup">{{label}}</label>
+	<div [hidden]="collapsed">
+		<input class="form-control rl-select-trigger"
+			   type="text"
+			   [disabled]="disabled"
+			   [class.rl-select-open]="list.showOptions"
+			   [placeholder]="placeholder"
+			   [value]="search"
+			   rlPopoutTrigger
+			   (input)="searchStream.next($event.target.value)" />
+		<rlPopoutList #list
+					  [disabled]="!canShowOptions"
+					  [options]="visibleItems"
+					  [template]="template"
+					  [transform]="transform"
+					  (select)="selectItem($event)">
+			<rlPopoutItem class="rl-select-option-custom" *ngIf="allowCustomOption" (trigger)="selectCustom()">{{search}}</rlPopoutItem>
+		</rlPopoutList>
+	</div>
+	<div class="collapsed" [hidden]="!collapsed">
+		<span>{{getDisplayName(value)}}</span>
+		<rlButton type="default flat" (trigger)="clear()">
+			<i class="fa fa-remove"></i>
+		</rlButton>
+	</div>
+	<rlBusy></rlBusy>
+	<div [hidden]="control.valid" class="error-string">
+		{{componentValidator.error}}
+	</div>
+</div>

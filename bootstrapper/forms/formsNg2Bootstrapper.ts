@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
@@ -12,6 +13,10 @@ import { ValidationGroupComponent } from '../../source/components/validationGrou
 
 export interface ITestItem {
 	value: number;
+}
+
+export interface ITestItem2 {
+	value: string;
 }
 
 @Component({
@@ -36,6 +41,7 @@ export class FormsBootstrapper {
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
+	typeaheadOptions: ITestItem2[];
 
 	@ViewChild('testForm') testForm: FormComponent;
 
@@ -60,6 +66,14 @@ export class FormsBootstrapper {
 			validate: () => false,
 			errorMessage: null,
 		};
+
+		this.typeaheadOptions = [
+			{ value: 'Option 1' },
+			{ value: 'Option 2' },
+			{ value: 'Option 3' },
+			{ value: 'Option 4' },
+			{ value: 'Option 5' },
+		];
 	}
 
 	wait(data: any): Observable<any> {
@@ -82,5 +96,21 @@ export class FormsBootstrapper {
 			return this.waitCallback(data);
 		}
 		return false;
+	}
+
+	getOptions = (): Observable<any> => {
+		return this.wait(this.typeaheadOptions);
+	}
+
+	searchOptions = (search: string): Observable<any> => {
+		return this.wait(filter(this.typeaheadOptions, option => option.value.search(search) != -1));
+	}
+
+	createOption = (text: string): any => {
+		return { value: text };
+	}
+
+	log(value: any): void {
+		console.log(value);
 	}
 }
