@@ -10,6 +10,7 @@ const exec = require('child_process').execSync;
 
 const utilities = require('@renovolive/gulp-utilities');
 utilities.gulp.clean.config();
+utilities.gulp.version.config();
 
 const testBundleSource = '(source/ui.module.js + karma-test-setup.js + source/**/*.tests.js)';
 utilities.gulp.bundle.config('tests', testBundleSource, {
