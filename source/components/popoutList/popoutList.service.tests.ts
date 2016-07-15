@@ -36,9 +36,20 @@ describe('PopoutListService', () => {
 	});
 
 	describe('focus', (): void => {
+		let customItems;
+		let listItems;
+
 		beforeEach(() => {
-			listService.listItems = <any>{ length: 2 };
-			listService.customItems = <any>{ length: 2 };
+			customItems = [{ value: 11 }, { value: 12 }];
+			listItems = [{ value: 13 }, { value: 14 }];
+			listService.customItems = <any>{
+				length: 2,
+				toArray: () => customItems,
+			};
+			listService.listItems = <any>{
+				length: 2,
+				toArray: () => listItems,
+			};
 		});
 
 		it('should set the index to 0 if it was null', (): void => {
@@ -81,6 +92,24 @@ describe('PopoutListService', () => {
 			listService.focusPrevious();
 
 			expect(listService.focusIndex).to.equal(2);
+		});
+
+		it('should focus the specified item', (): void => {
+			listService.focus(customItems[1]);
+
+			expect(listService.focusIndex).to.equal(1);
+
+			listService.focus(listItems[1]);
+
+			expect(listService.focusIndex).to.equal(3);
+		});
+
+		it('should clear the focus', (): void => {
+			listService.focusIndex = 3;
+
+			listService.blur();
+
+			expect(listService.focusIndex).to.be.null;
 		});
 	});
 

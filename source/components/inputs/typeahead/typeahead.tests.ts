@@ -234,16 +234,16 @@ describe('TypeaheadComponent', () => {
 
 		it('should clear the current selection', (): void => {
 			typeahead.collapsed = true;
+			const searchSpy = sinon.spy();
+			typeahead.searchStream.subscribe(searchSpy);
 
 			typeahead.clear();
-
-			let visibleItems;
-			typeahead.visibleItems.subscribe(items => visibleItems = items);
 
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, null);
 			expect(typeahead.collapsed).to.be.false;
-			expect(visibleItems).to.be.empty;
+			sinon.assert.calledOnce(searchSpy);
+			sinon.assert.calledWith(searchSpy, '');
 		});
 
 		it('should clear the search value', (): void => {
@@ -282,15 +282,6 @@ describe('TypeaheadComponent', () => {
 	});
 
 	describe('ngOnChanges', (): void => {
-		it('should update the search value on a value change', (): void => {
-			typeahead.getDisplayName = item => item;
-			typeahead.ngOnChanges({
-				value: <any>{ currentValue: 'search' },
-			});
-
-			expect(typeahead.search).to.equal('search');
-		});
-
 		it('should collapse the typeahead on a value change if a value is specified and collapse is enabled', (): void => {
 			typeahead.allowCollapse = true;
 			typeahead.ngOnChanges({
