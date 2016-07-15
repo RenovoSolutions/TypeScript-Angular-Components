@@ -1,0 +1,10 @@
+<ul class="rl-select-list" *ngIf="showOptions && !(isEmpty | async)">
+	<ng-content></ng-content>
+	<rlPopoutItem *ngFor="let option of options | async"
+				  (trigger)="popoutListService.select.next(option)">
+		<span *ngIf="template">
+			<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: option }"></template>
+		</span>
+		<span *ngIf="!template">{{getDisplayName(option)}}</span>
+	</rlPopoutItem>
+</ul>

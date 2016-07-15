@@ -17,6 +17,11 @@
 		<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
 			<template let-option>#{{option.value}}</template>
 		</rlSelect>
+		<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead collapsable" [getItems]="searchOptions" transform="value" allowCollapse="true"></rlTypeahead>
+		<rlTypeahead (select)="log($event)" prefix="Search for a" label="Typeahead client searching" [getItems]="getOptions" clientSearch="true" transform="value">
+			<template let-option>Value - {{option.value}}</template>
+		</rlTypeahead>
+		<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>
 		<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 		<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
 		<rlValidationGroup [model]="rating" [validator]="validator">
@@ -39,6 +44,7 @@
 	<rlTextarea name="textarea1" label="Textarea 1" rlRequired="Required text area"></rlTextarea>
 	<rlSpinner name="spinner1" label="Spinner 1"></rlSpinner>
 	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
+	<rlTypeahead name="typeahead1" prefix="Search for a" label="Typeahead" [getItems]="searchOptions" transform="value" allowCollapse="true"></rlTypeahead>
 	<rlDateTime name="dateTime1" label="DateTime"></rlDateTime>
 	<rlAbsoluteTime name="time1" label="AbsoluteTime"></rlAbsoluteTime>
 	<rlUserRating name="userRating1"></rlUserRating>
@@ -56,6 +62,7 @@
 	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
 	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
 	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" disabled="true"></rlSelect>
+	<rlTypeahead name="typeahead1" prefix="Search for a" label="Typeahead" [getItems]="searchOptions" transform="value" allowCollapse="true" disabled="true"></rlTypeahead>
 	<rlDateTime name="dateTime1" label="DateTime" disabled="true"></rlDateTime>
 	<rlAbsoluteTime name="time1" label="AbsoluteTime" disabled="true"></rlAbsoluteTime>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>

@@ -1,6 +1,6 @@
 import { Component, Optional, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
 import { Observable } from 'rxjs';
-import { isArray, clone } from 'lodash';
+import { isArray } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -13,14 +13,15 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { OffClickDirective } from '../../../behaviors/offClick/offClick';
+import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
 @Component({
 	selector: 'rlSelect',
 	template: require('./select.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	providers: [ComponentValidator],
-	directives: [BusyComponent, OffClickDirective],
+	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	directives: [BusyComponent, OffClickDirective, POPOUT_LIST_DIRECTIVES],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
@@ -31,10 +32,10 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	@Input() externalTemplate: TemplateRef<any>;
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
+	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
 	wrappedOptions: Observable<T[]>;
-	showOptions: boolean;
 	private transformService: __transform.ITransformService;
 
 	constructor(transformService: __transform.TransformService
@@ -57,26 +58,12 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 		this.busy.trigger(this.wrappedOptions);
 	}
 
-	toggle(): void {
-		this.showOptions = !this.showOptions;
-	}
-
-	close: { (): void } = () => {
-		if (this.showOptions) {
-			this.showOptions = false;
-		}
-	}
-
 	select(value: T): void {
 		this.setValue(value);
-		this.showOptions = false;
+		this.list.close();
 	}
 
 	getDisplayName(item: T): string {
 		return this.transformService.getValue(item, this.transform);
-	}
-
-	newTemplate(): TemplateRef<any> {
-		return clone(this.template);
 	}
 }
