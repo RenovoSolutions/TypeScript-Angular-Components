@@ -74,7 +74,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		}
 	}
 
-	searchItems(search?: string): Observable<T[]> {
+	searchItems = (search?: string): Observable<T[]> => {
 		return this.loadItems(search).map((items: T[]): T[] => {
 			return this.filter(items, search);
 		});
