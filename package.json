@@ -34,7 +34,7 @@
     "install-build": "npm install && npm run build",
     "install-build-test": "npm install && npm run build && npm run test",
     "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
-    "build-test": "npm run build && gulp bundle-tests && npm run test",
+    "build-test": "npm run build && npm run test",
     "build-test.watch": "npm run build && gulp bundle-tests.watch && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
 
     "full-build": "npm install && npm run build",
