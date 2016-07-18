@@ -79,7 +79,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	}
 
 	add(item: T): Observable<T> {
-		const action = Observable.from(this.onAdd(item));
+		const action = this.asObservable(this.onAdd(item));
 		action.subscribe(newItem => {
 			newItem = newItem || item;
 			const newValue = clone(this.value);
@@ -94,7 +94,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	}
 
 	remove(item: T): Observable<void> {
-		const action = Observable.from(this.onRemove(item));
+		const action = this.asObservable(this.onRemove(item));
 		action.subscribe(() => {
 			const newValue = clone(this.value);
 			this.array.remove(newValue, item);
@@ -148,5 +148,13 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		this.searchItems().subscribe((items: T[]): void => {
 			this.cachedItems = items;
 		});
+	}
+
+	private asObservable(value: Promise<any> | Observable<any> | void): Observable<any> {
+		if (value) {
+			return Observable.from(<Promise<any> | Observable<any>>value);
+		} else {
+			return Observable.empty();
+		}
 	}
 }
