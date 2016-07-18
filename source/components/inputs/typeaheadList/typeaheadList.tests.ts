@@ -2,7 +2,9 @@ import { services } from 'typescript-angular-utilities';
 import __test = services.test;
 import fakeAsync = __test.fakeAsync;
 import __object = services.object;
+import __array = services.array;
 import __guid = services.guid;
+import __search = services.search;
 
 import { TypeaheadListComponent } from './typeaheadList';
 
@@ -32,7 +34,7 @@ describe('TypeaheadListComponent', () => {
 			{ id: 5, prop: 4 },
 		];
 
-		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, __object.objectUtility, null, __guid.guid, null);
+		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
 
 		getItemsMock = __test.mock.request(items);
 		typeaheadList.getItems = getItemsMock;
@@ -168,7 +170,7 @@ describe('TypeaheadListComponent', () => {
 			const onRemoveMock: __test.IMockedRequest<void> = __test.mock.request();
 			typeaheadList.onRemove = onRemoveMock;
 
-			typeaheadList.add(list[0]);
+			typeaheadList.remove(list[0]);
 
 			sinon.assert.notCalled(setValue);
 			expect(list).to.not.be.empty;
