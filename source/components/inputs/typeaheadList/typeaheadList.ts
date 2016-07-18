@@ -120,11 +120,11 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		super.ngOnInit();
 
 		if (!this.onAdd) {
-			this.onAdd = () => Observable.empty<T>();
+			this.onAdd = () => this.immediateObservable();
 		}
 
 		if (!this.onRemove) {
-			this.onRemove = () => Observable.empty<void>();
+			this.onRemove = () => this.immediateObservable();
 		}
 
 		if (this.disableSearching) {
@@ -164,7 +164,11 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		if (value) {
 			return Observable.from(<Promise<any> | Observable<any>>value);
 		} else {
-			return new BehaviorSubject(null);
+			return this.immediateObservable();
 		}
+	}
+
+	private immediateObservable(data?: any): Observable<any> {
+		return new BehaviorSubject(data);
 	}
 }
