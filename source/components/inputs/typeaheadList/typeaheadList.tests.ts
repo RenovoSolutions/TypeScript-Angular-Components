@@ -40,7 +40,7 @@ describe('TypeaheadListComponent', () => {
 		typeaheadList.getItems = getItemsMock;
 		typeaheadList.clientSearch = true;
 
-		setValue = sinon.spy();
+		setValue = sinon.spy(value => typeaheadList.value = value);
 		typeaheadList.setValue = setValue;
 	});
 
