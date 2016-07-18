@@ -62,7 +62,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	loadItems(search?: string): Observable<T[]> {
 		if (this.clientSearch || this.disableSearching) {
-			if (!this.cachedItems) {
+			if (this.cachedItems) {
 				return Observable.of(this.cachedItems);
 			} else {
 				return Observable.from(this.getItems());
