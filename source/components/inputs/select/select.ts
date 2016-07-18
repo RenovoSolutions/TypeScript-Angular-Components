@@ -12,7 +12,6 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
-import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
 @Component({
@@ -21,7 +20,7 @@ import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } fr
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
-	directives: [BusyComponent, OffClickDirective, POPOUT_LIST_DIRECTIVES],
+	directives: [BusyComponent, POPOUT_LIST_DIRECTIVES],
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;
