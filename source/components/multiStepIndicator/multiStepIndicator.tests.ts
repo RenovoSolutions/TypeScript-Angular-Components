@@ -104,12 +104,15 @@ describe('MultiStepIndicatorComponent', () => {
     }));
 
     it('should clear the spinner when the promise rejects', fakeAsync((): void => {
-        let step: IStep = <any>{ onClick: mock.rejectedPromise() };
+        const fakeError = 'fakeError';
+        let step: IStep = <any>{ onClick: mock.rejectedPromise(fakeError) };
 
         msi.steps = <IConfiguredStep[]>[step];
         msi.ngOnInit();
 
-        msi.onClick(<IConfiguredStep>step);
+        msi.onClick(<IConfiguredStep>step).catch((error) => {
+            expect(error).to.equal(fakeError);
+        });
 
         expect((<IConfiguredStep>step).isLoading).to.be.true;
 
