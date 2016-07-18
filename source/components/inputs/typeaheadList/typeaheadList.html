@@ -1,0 +1,39 @@
+<div [ngSwitch]="disableSearching">
+	<div *ngSwitchCase="true">
+		<rlSelect *ngIf="list.cachedItems && list.cachedItems.length"
+				  (change)="add($event)"
+				  [transform]="transform"
+				  [options]="cachedItems"
+				  [label]="label"
+				  [disabled]="disabled"></rlSelect>
+	</div>
+	<div *ngSwitchDefault>
+		<rlTypeahead (select)="add($event)"
+					 allowCollapse="false"
+					 [transform]="transform"
+					 [getItems]="searchItems"
+					 [label]="label"
+					 [prefix]="prefix"
+					 [disabled]="disabled"></rlTypeahead>
+	</div>
+</div>
+<div class="table-container">
+	<div class="row table-header" [hidden]="!(list.value && list.value.length)">
+		<div ng-content="rlTypeaheadListHeader">
+			<div class="col-xs-12">Name</div>
+		</div>
+	</div>
+	<div class="row table-row" *ngFor="let item of value">
+		<div *ngIf="template">
+			<div [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: item }"></div>
+		</div>
+		<div *ngIf="!template">
+			<div class="col-xs-10">{{getDisplayName(item)}}</div>
+			<div class="col-xs-2">
+				<rlButtonAsync type="danger" [action]="remove(item)">
+					<i class="fa fa-remove"></i>
+				</rlButtonAsync>
+			</div>
+		</div>
+	</div>
+</div>

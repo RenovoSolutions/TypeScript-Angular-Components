@@ -14,6 +14,7 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { FormComponent } from '../../form/form';
 import { ButtonAsyncComponent } from '../../buttons/index';
 import { TypeaheadComponent } from '../typeahead/typeahead';
+import { SelectComponent } from '../select/select';
 
 export interface ITypeaheadListChanges {
 	value: SimpleChange;
@@ -27,7 +28,7 @@ export interface ITypeaheadListChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [ButtonAsyncComponent, TypeaheadComponent]
+	directives: [ButtonAsyncComponent, TypeaheadComponent, SelectComponent],
 })
 export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;
@@ -133,6 +134,10 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems) {
 			this.loadCachedItems();
 		}
+	}
+
+	newTemplate(): TemplateRef<any> {
+		return clone(this.template);
 	}
 
 	private filter(list: T[], search: string): T[] {
