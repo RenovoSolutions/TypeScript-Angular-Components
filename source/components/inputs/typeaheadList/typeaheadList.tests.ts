@@ -103,16 +103,39 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2');
 			getItemsMock.flush();
-			const addEventSpy: Sinon.SinonSpy = sinon.spy();
-			typeaheadList.onAdd = addEventSpy;
+			const onAddSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.onAdd = onAddSpy;
 
 			typeaheadList.add(items[0]);
 
 			expect(list).to.have.length(1);
 			expect(list[0].id).to.equal(1);
 			expect(typeaheadList.cachedItems).to.have.length(4);
-			sinon.assert.calledOnce(addEventSpy);
-			expect(addEventSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(onAddSpy);
+			expect(onAddSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(setValue);
+			sinon.assert.calledWith(setValue, list);
+		}));
+
+		it('should wait on the result if the onAdd handler returns a value', fakeAsync((): void => {
+			const list: ITestObject[] = [];
+			typeaheadList.value = list;
+			typeaheadList.searchItems('2');
+			getItemsMock.flush();
+			const newItem = {};
+			const onAddMock: __test.IMockedRequest<ITestObject> = __test.mock.request(newItem);
+			typeaheadList.onAdd = onAddMock;
+
+			typeaheadList.add(items[0]);
+
+			sinon.assert.notCalled(setValue);
+			expect(list).to.be.empty;
+
+			onAddMock.flush();
+
+			expect(list).to.have.length(1);
+			expect(list[0]).to.equal(newItem);
+			expect(typeaheadList.cachedItems).to.have.length(4);
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, list);
 		}));
@@ -124,15 +147,36 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2');
 			getItemsMock.flush();
-			const removeEventSpy: Sinon.SinonSpy = sinon.spy();
-			typeaheadList.onRemove = removeEventSpy;
+			const onRemoveSpy: Sinon.SinonSpy = sinon.spy();
+			typeaheadList.onRemove = onRemoveSpy;
 
 			typeaheadList.remove(list[0]);
 
 			expect(list).to.be.empty;
 			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
-			sinon.assert.calledOnce(removeEventSpy);
-			expect(removeEventSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(onRemoveSpy);
+			expect(onRemoveSpy.firstCall.args[0].item.id).to.equal(1);
+			sinon.assert.calledOnce(setValue);
+			sinon.assert.calledWith(setValue, list);
+		}));
+
+		it('should wait on the result if the onRemove handler returns a value', fakeAsync((): void => {
+			const list: ITestObject[] = [items[0]];
+			typeaheadList.value = list;
+			typeaheadList.searchItems('2');
+			getItemsMock.flush();
+			const onRemoveMock: __test.IMockedRequest<void> = __test.mock.request();
+			typeaheadList.onRemove = onRemoveMock;
+
+			typeaheadList.add(list[0]);
+
+			sinon.assert.notCalled(setValue);
+			expect(list).to.not.be.empty;
+
+			onRemoveMock.flush();
+
+			expect(list).to.be.empty;
+			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, list);
 		}));
