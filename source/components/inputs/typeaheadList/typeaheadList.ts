@@ -86,7 +86,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 			newValue.push(newItem);
 			this.setValue(newValue);
 			if (this.cachedItems) {
-				this.array.remove(this.cachedItems, newItem);
+				this.array.remove(this.cachedItems, item);
 			}
 			return newItem;
 		});
