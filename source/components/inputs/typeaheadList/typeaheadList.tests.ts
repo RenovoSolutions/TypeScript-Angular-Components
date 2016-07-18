@@ -62,11 +62,11 @@ describe('TypeaheadListComponent', () => {
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on', fakeAsync((): void => {
 			getItemsMock = __test.mock.request(items);
 			typeaheadList.getItems = getItemsMock;
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			getItemsMock.reset();
 
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 
 			sinon.assert.notCalled(getItemsMock);
 		}));
@@ -103,7 +103,7 @@ describe('TypeaheadListComponent', () => {
 		it('should remove the item from the typeahead and add it to the list', fakeAsync((): void => {
 			const list: ITestObject[] = [];
 			typeaheadList.value = list;
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			const onAddSpy: Sinon.SinonSpy = sinon.spy();
 			typeaheadList.onAdd = onAddSpy;
@@ -122,7 +122,7 @@ describe('TypeaheadListComponent', () => {
 		it('should wait on the result if the onAdd handler returns a value', fakeAsync((): void => {
 			const list: ITestObject[] = [];
 			typeaheadList.value = list;
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			const newItem = {};
 			const onAddMock: __test.IMockedRequest<ITestObject> = __test.mock.request(newItem);
@@ -147,7 +147,7 @@ describe('TypeaheadListComponent', () => {
 		it('should add the item back to the cached items and remove it from the list', fakeAsync((): void => {
 			const list: ITestObject[] = [items[0]];
 			typeaheadList.value = list;
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			const onRemoveSpy: Sinon.SinonSpy = sinon.spy();
 			typeaheadList.onRemove = onRemoveSpy;
@@ -165,7 +165,7 @@ describe('TypeaheadListComponent', () => {
 		it('should wait on the result if the onRemove handler returns a value', fakeAsync((): void => {
 			const list: ITestObject[] = [items[0]];
 			typeaheadList.value = list;
-			typeaheadList.searchItems('2');
+			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			const onRemoveMock: __test.IMockedRequest<void> = __test.mock.request();
 			typeaheadList.onRemove = onRemoveMock;
