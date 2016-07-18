@@ -13,6 +13,7 @@ describe('TypeaheadListComponent', () => {
 	let typeaheadList: TypeaheadListComponent<ITestObject>;
 	let items: ITestObject[];
 	let setValue: Sinon.SinonSpy;
+	let getItemsMock: __test.IMockedRequest<ITestObject[]>;
 
 	beforeEach(() => {
 		const validator: any = {
@@ -29,10 +30,11 @@ describe('TypeaheadListComponent', () => {
 			{ id: 5, prop: 4 },
 		];
 
-		typeaheadList.getItems = __test.mock.request(items);
-		typeaheadList.useClientSearching = true;
-
 		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, null, null, null, null);
+
+		getItemsMock = __test.mock.request(items);
+		typeaheadList.getItems = getItemsMock;
+		typeaheadList.clientSearch = true;
 
 		setValue = sinon.spy();
 		typeaheadList.setValue = setValue;
@@ -43,51 +45,51 @@ describe('TypeaheadListComponent', () => {
 			const selections: ITestObject[] = [items[0], items[2]];
 			typeaheadList.value = selections;
 
-			typeaheadList.searchItems().then((data: ITestObject[]): void => {
+			typeaheadList.searchItems().subscribe((data: ITestObject[]): void => {
 				expect(data).to.have.length(3);
 				expect(data[0].id).to.equal(2);
 				expect(data[1].id).to.equal(4);
 				expect(data[2].id).to.equal(5);
 			});
 
-			typeaheadList.getItems.flush();
+			getItemsMock.flush();
 		}));
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on', fakeAsync((): void => {
-			const getItemsSpy: __test.IMockedRequest<ITestObject[]> = __test.mock.request(items);
-			typeaheadList.getItems = getItemsSpy;
+			getItemsMock = __test.mock.request(items);
+			typeaheadList.getItems = getItemsMock;
 			typeaheadList.searchItems('2');
-			getItemsSpy.flush();
-			getItemsSpy.reset();
+			getItemsMock.flush();
+			getItemsMock.reset();
 
 			typeaheadList.searchItems('2');
 
-			sinon.assert.notCalled(getItemsSpy);
+			sinon.assert.notCalled(getItemsMock);
 		}));
 
 		it('should load the items when searching is disabled', fakeAsync((): void => {
-			const getItemsSpy: __test.IMockedRequest<ITestObject[]> = __test.mock.request(items);
-			typeaheadList.getItems = getItemsSpy;
-			typeaheadList.$onChanges({
-				disableSearching: <any>{ currentValue: true },
+			getItemsMock = __test.mock.request(items);
+			typeaheadList.getItems = getItemsMock;
+			typeaheadList.ngOnChanges(<any>{
+				disableSearching: { currentValue: true },
 			});
 
-			sinon.assert.calledOnce(getItemsSpy);
+			sinon.assert.calledOnce(getItemsMock);
 
-			getItemsSpy.flush();
+			getItemsMock.flush();
 
 			expect(typeaheadList.cachedItems).to.not.be.empty;
 		}));
 
 		it('should load the items on init if searching is disabled', fakeAsync((): void => {
-			const getItemsSpy: __test.IMockedRequest<ITestObject[]> = __test.mock.request(items);
-			typeaheadList.getItems = getItemsSpy;
+			getItemsMock = __test.mock.request(items);
+			typeaheadList.getItems = getItemsMock;
 			typeaheadList.disableSearching = true;
-			typeaheadList.$onInit();
+			typeaheadList.ngOnInit();
 
-			sinon.assert.calledOnce(getItemsSpy);
+			sinon.assert.calledOnce(getItemsMock);
 
-			getItemsSpy.flush();
+			getItemsMock.flush();
 
 			expect(typeaheadList.cachedItems).to.not.be.empty;
 		}));
@@ -98,12 +100,11 @@ describe('TypeaheadListComponent', () => {
 			const list: ITestObject[] = [];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2');
-			typeaheadList.getItems.flush();
+			getItemsMock.flush();
 			const addEventSpy: Sinon.SinonSpy = sinon.spy();
-			typeaheadList.add = addEventSpy;
+			typeaheadList.onAdd = addEventSpy;
 
-			typeaheadList.addItem(items[0]);
-			__test.flushMicrotasks();
+			typeaheadList.add(items[0]);
 
 			expect(list).to.have.length(1);
 			expect(list[0].id).to.equal(1);
@@ -120,12 +121,11 @@ describe('TypeaheadListComponent', () => {
 			const list: ITestObject[] = [items[0]];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2');
-			typeaheadList.getItems.flush();
+			getItemsMock.flush();
 			const removeEventSpy: Sinon.SinonSpy = sinon.spy();
-			typeaheadList.remove = removeEventSpy;
+			typeaheadList.onRemove = removeEventSpy;
 
-			typeaheadList.removeItem(list[0]);
-			typeaheadList.getItems.flush();
+			typeaheadList.remove(list[0]);
 
 			expect(list).to.be.empty;
 			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
