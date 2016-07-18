@@ -1,6 +1,8 @@
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
 import fakeAsync = __test.fakeAsync;
+import __object = services.object;
+import __guid = services.guid;
 
 import { TypeaheadListComponent } from './typeaheadList';
 
@@ -30,7 +32,7 @@ describe('TypeaheadListComponent', () => {
 			{ id: 5, prop: 4 },
 		];
 
-		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, null, null, null, null);
+		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, __object.objectUtility, null, __guid.guid, null);
 
 		getItemsMock = __test.mock.request(items);
 		typeaheadList.getItems = getItemsMock;
