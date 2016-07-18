@@ -1,6 +1,6 @@
 <div [ngSwitch]="disableSearching">
 	<div *ngSwitchCase="true">
-		<rlSelect *ngIf="list.cachedItems && list.cachedItems.length"
+		<rlSelect *ngIf="list.cachedItems"
 				  (change)="add($event)"
 				  [transform]="transform"
 				  [options]="cachedItems"

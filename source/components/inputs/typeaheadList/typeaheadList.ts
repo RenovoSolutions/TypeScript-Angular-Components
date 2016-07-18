@@ -43,7 +43,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
-	cachedItems: T[];
+	cachedItemsArray: T[];
+	cachedItems: BehaviorSubject<T[]>;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
@@ -64,7 +65,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	loadItems(search?: string): Observable<T[]> {
 		if (this.clientSearch || this.disableSearching) {
 			if (this.cachedItems) {
-				return Observable.of(this.cachedItems);
+				return this.cachedItems;
 			} else {
 				return Observable.from(this.getItems());
 			}
@@ -88,7 +89,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 			newValue.push(newItem);
 			this.setValue(newValue);
 			if (this.cachedItems) {
-				this.array.remove(this.cachedItems, item);
+				this.array.remove(this.cachedItemsArray, item);
+				this.cachedItems.next(this.cachedItemsArray);
 			}
 			return newItem;
 		});
@@ -103,7 +105,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 			this.array.remove(newValue, item);
 			this.setValue(newValue);
 			if (this.cachedItems != null) {
-				this.cachedItems.push(item);
+				this.cachedItemsArray.push(item);
+				this.cachedItems.next(this.cachedItemsArray);
 			}
 		});
 		return action;
@@ -144,7 +147,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		const filteredList: T[] = filter(list, item => !find(this.value, item));
 
 		if (this.clientSearch) {
-			this.cachedItems = filteredList;
+			this.cachedItems = new BehaviorSubject<T[]>(filteredList);
 			return filter(filteredList, item => this.searchUtility.tokenizedSearch(item, search));
 		} else {
 			return filteredList;
@@ -153,7 +156,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	private loadCachedItems(): void {
 		this.searchItems().subscribe((items: T[]): void => {
-			this.cachedItems = items;
+			this.cachedItems = new BehaviorSubject<T[]>(items);
 		});
 	}
 

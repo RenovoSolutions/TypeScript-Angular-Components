@@ -82,7 +82,7 @@ describe('TypeaheadListComponent', () => {
 
 			getItemsMock.flush();
 
-			expect(typeaheadList.cachedItems).to.not.be.empty;
+			expect(typeaheadList.cachedItemsArray).to.not.be.empty;
 		}));
 
 		it('should load the items on init if searching is disabled', fakeAsync((): void => {
@@ -95,7 +95,7 @@ describe('TypeaheadListComponent', () => {
 
 			getItemsMock.flush();
 
-			expect(typeaheadList.cachedItems).to.not.be.empty;
+			expect(typeaheadList.cachedItemsArray).to.not.be.empty;
 		}));
 	});
 
@@ -112,7 +112,7 @@ describe('TypeaheadListComponent', () => {
 
 			expect(typeaheadList.value).to.have.length(1);
 			expect(typeaheadList.value[0].id).to.equal(1);
-			expect(typeaheadList.cachedItems).to.have.length(4);
+			expect(typeaheadList.cachedItemsArray).to.have.length(4);
 			sinon.assert.calledOnce(onAddSpy);
 			expect(onAddSpy.firstCall.args[0].id).to.equal(1);
 			sinon.assert.calledOnce(setValue);
@@ -137,7 +137,7 @@ describe('TypeaheadListComponent', () => {
 
 			expect(typeaheadList.value).to.have.length(1);
 			expect(typeaheadList.value[0]).to.equal(newItem);
-			expect(typeaheadList.cachedItems).to.have.length(4);
+			expect(typeaheadList.cachedItemsArray).to.have.length(4);
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, list);
 		}));
@@ -155,7 +155,7 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.remove(list[0]);
 
 			expect(typeaheadList.value).to.be.empty;
-			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
+			expect(typeaheadList.cachedItemsArray[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(onRemoveSpy);
 			expect(onRemoveSpy.firstCall.args[0].id).to.equal(1);
 			sinon.assert.calledOnce(setValue);
@@ -178,7 +178,7 @@ describe('TypeaheadListComponent', () => {
 			onRemoveMock.flush();
 
 			expect(typeaheadList.value).to.be.empty;
-			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
+			expect(typeaheadList.cachedItemsArray[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
