@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ContentChild, TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { find, filter, clone } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -154,7 +154,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		if (value) {
 			return Observable.from(<Promise<any> | Observable<any>>value);
 		} else {
-			return Observable.empty();
+			return new BehaviorSubject(null);
 		}
 	}
 }
