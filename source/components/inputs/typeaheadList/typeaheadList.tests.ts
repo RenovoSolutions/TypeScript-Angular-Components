@@ -110,13 +110,13 @@ describe('TypeaheadListComponent', () => {
 
 			typeaheadList.add(items[0]);
 
-			expect(list).to.have.length(1);
-			expect(list[0].id).to.equal(1);
+			expect(typeaheadList.value).to.have.length(1);
+			expect(typeaheadList.value[0].id).to.equal(1);
 			expect(typeaheadList.cachedItems).to.have.length(4);
 			sinon.assert.calledOnce(onAddSpy);
-			expect(onAddSpy.firstCall.args[0].item.id).to.equal(1);
+			expect(onAddSpy.firstCall.args[0].id).to.equal(1);
 			sinon.assert.calledOnce(setValue);
-			sinon.assert.calledWith(setValue, list);
+			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 
 		it('should wait on the result if the onAdd handler returns a value', fakeAsync((): void => {
@@ -131,12 +131,12 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.add(items[0]);
 
 			sinon.assert.notCalled(setValue);
-			expect(list).to.be.empty;
+			expect(typeaheadList.value).to.be.empty;
 
 			onAddMock.flush();
 
-			expect(list).to.have.length(1);
-			expect(list[0]).to.equal(newItem);
+			expect(typeaheadList.value).to.have.length(1);
+			expect(typeaheadList.value[0]).to.equal(newItem);
 			expect(typeaheadList.cachedItems).to.have.length(4);
 			sinon.assert.calledOnce(setValue);
 			sinon.assert.calledWith(setValue, list);
@@ -154,12 +154,12 @@ describe('TypeaheadListComponent', () => {
 
 			typeaheadList.remove(list[0]);
 
-			expect(list).to.be.empty;
+			expect(typeaheadList.value).to.be.empty;
 			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(onRemoveSpy);
-			expect(onRemoveSpy.firstCall.args[0].item.id).to.equal(1);
+			expect(onRemoveSpy.firstCall.args[0].id).to.equal(1);
 			sinon.assert.calledOnce(setValue);
-			sinon.assert.calledWith(setValue, list);
+			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 
 		it('should wait on the result if the onRemove handler returns a value', fakeAsync((): void => {
@@ -173,14 +173,14 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.remove(list[0]);
 
 			sinon.assert.notCalled(setValue);
-			expect(list).to.not.be.empty;
+			expect(typeaheadList.value).to.not.be.empty;
 
 			onRemoveMock.flush();
 
-			expect(list).to.be.empty;
+			expect(typeaheadList.value).to.be.empty;
 			expect(typeaheadList.cachedItems[4]).to.equal(items[0]);
 			sinon.assert.calledOnce(setValue);
-			sinon.assert.calledWith(setValue, list);
+			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 	});
 });
