@@ -1,5 +1,6 @@
-<div class="field"
-	 [class.error]="!control.valid">
+<div class="field rl-select"
+	 [class.error]="!control.valid"
+	 [class.rl-select-loading]="busy?.loading">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
 		 [class.disabled]="disabled"
