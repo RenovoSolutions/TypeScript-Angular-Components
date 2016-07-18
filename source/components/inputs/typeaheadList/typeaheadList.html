@@ -1,6 +1,6 @@
 <div [ngSwitch]="disableSearching">
 	<div *ngSwitchCase="true">
-		<rlSelect *ngIf="list.cachedItems"
+		<rlSelect *ngIf="cachedItems"
 				  (change)="add($event)"
 				  [transform]="transform"
 				  [options]="cachedItems"
@@ -9,7 +9,7 @@
 	</div>
 	<div *ngSwitchDefault>
 		<rlTypeahead (select)="add($event)"
-					 allowCollapse="false"
+					 [allowCollapse]="false"
 					 [transform]="transform"
 					 [getItems]="searchItems"
 					 [label]="label"
@@ -18,8 +18,8 @@
 	</div>
 </div>
 <div class="table-container">
-	<div class="row table-header" [hidden]="!(list.value && list.value.length)">
-		<div ng-content="rlTypeaheadListHeader">
+	<div class="row table-header" [hidden]="!(value && value.length)">
+		<div ng-content="rlHeader">
 			<div class="col-xs-12">Name</div>
 		</div>
 	</div>
