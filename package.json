@@ -31,15 +31,10 @@
     "test.tc": "npm run bundle-tests && karma start karma.tc.conf.js",
     "test.full": "npm run bundle-tests && karma start karma.full.conf.js",
 
-    "install-build": "npm install && npm run build",
-    "install-build-test": "npm install && npm run build && npm run test",
-    "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
     "build-test": "npm run build && npm run test",
     "build-test.watch": "npm run build && gulp bundle-tests.watch && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
 
-    "full-build": "npm install && npm run build",
-
-    "all": "npm run update && npm run build && npm run test.full",
+    "all": "npm run update && npm run build && npm run test.full && npm run bundle",
 
     "bundle": "gulp bundle-css && gulp bundle-bootstrapper",
     "bundle.watch": "concurrently --kill-others \"gulp bundle-css.watch\" \"gulp bundle-bootstrapper.watch\" ",
