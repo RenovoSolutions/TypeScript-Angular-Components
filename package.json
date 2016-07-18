@@ -18,7 +18,7 @@
   "scripts": {
     "prepublish": " typings install && npm run build && gulp bundle-css",
     "update": "npm install && npm run bundle-deps",
-    "update.wipe-npm": "gulp wipe-npm && npm run update",
+    "update.wipe-npm": "gulp wipe-npm-update",
     "version": "gulp version -v ",
 
     "clean": "gulp clean",

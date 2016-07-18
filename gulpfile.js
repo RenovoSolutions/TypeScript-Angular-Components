@@ -67,3 +67,11 @@ gulp.task('bundle-css.minify', () => {
 gulp.task('wipe-npm', () => {
 	return del('node_modules');
 });
+
+gulp.task('run-update', () => {
+	return exec('npm run update');
+});
+
+gulp.task('wipe-npm-update', ['wipe-npm'], () => {
+	gulp.start('run-update');
+});
