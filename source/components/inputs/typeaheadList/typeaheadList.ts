@@ -81,7 +81,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		});
 	}
 
-	add(item: T): Observable<T> {
+	add = (item: T): Observable<T> => {
 		const action = this.asObservable(this.onAdd(item));
 		action.subscribe(newItem => {
 			newItem = newItem || item;
@@ -98,7 +98,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		return action;
 	}
 
-	remove(item: T): Observable<void> {
+	remove = (item: T): Observable<void> => {
 		const action = this.asObservable(this.onRemove(item));
 		action.subscribe(() => {
 			// immutability?
