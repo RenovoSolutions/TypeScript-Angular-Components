@@ -26,8 +26,8 @@
 		<rlTypeaheadList [value]="selections" label="Typeahead list with templates" [getItems]="getOptions" clientSearch="true" transform="value">
 			<div *rlListHeader class="col-xs-12">Other name</div>
 			<div *rlListItem="let option; let remove = remove">
-				<div class="col-xs-11">Value - {{option.value}}</div>
-				<div class="col-xs-1"><rlButtonAsync [action]="remove">Remove</rlButtonAsync></div>
+				<div class="col-xs-10">Value - {{option.value}}</div>
+				<div class="col-xs-2"><rlButtonAsync [action]="remove">Remove</rlButtonAsync></div>
 			</div>
 		</rlTypeaheadList>
 		<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
