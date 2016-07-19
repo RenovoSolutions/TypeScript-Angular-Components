@@ -149,7 +149,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		const filteredList: T[] = filter(list, item => !find(this.value, item));
 
 		if (this.clientSearch) {
-			this.cachedItems = new BehaviorSubject<T[]>(filteredList);
+			this.cachedItemsArray = filteredList;
+			this.cachedItems = new BehaviorSubject<T[]>(this.cachedItemsArray);
 			return filter(filteredList, item => this.searchUtility.tokenizedSearch(item, search));
 		} else {
 			return filteredList;
@@ -158,7 +159,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	private loadCachedItems(): void {
 		this.searchItems().subscribe((items: T[]): void => {
-			this.cachedItems = new BehaviorSubject<T[]>(items);
+			this.cachedItemsArray = items;
+			this.cachedItems = new BehaviorSubject<T[]>(this.cachedItemsArray);
 		});
 	}
 
