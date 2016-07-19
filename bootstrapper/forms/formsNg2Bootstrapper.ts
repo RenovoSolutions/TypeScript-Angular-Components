@@ -4,6 +4,7 @@ import { FormComponent } from '../../source/components/form/form';
 import { BUTTON_DIRECTIVES } from '../../source/components/buttons/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { ValidationGroupComponent } from '../../source/components/validationGroup/validationGroup';
+import { AutosaveDirective } from '../../source/behaviors/autosave/autosave';
 
 @Component({
 	selector: 'tsFormsBootstrapper',
@@ -13,6 +14,7 @@ import { ValidationGroupComponent } from '../../source/components/validationGrou
 		BUTTON_DIRECTIVES,
 		INPUT_DIRECTIVES,
 		ValidationGroupComponent,
+		AutosaveDirective,
 	],
 })
 export class FormsBootstrapper {
