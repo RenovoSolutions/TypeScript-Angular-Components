@@ -27,6 +27,7 @@
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
 <h5>Autosave form</h5>
+<rlBusy [loading]="autosaveAction.saving || autosaveAction.complete"></rlBusy>
 <rlForm [save]="waitCallback" rlAutosave>
 	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
 </rlForm>

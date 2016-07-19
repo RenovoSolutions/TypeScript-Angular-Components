@@ -4,6 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __timeout = services.timeout;
 
 import { FormComponent } from '../../components/form/form';
+import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
 
 const DEFAULT_AUTOSAVE_DEBOUNCE: number = 3000;
 
@@ -16,11 +17,14 @@ export class AutosaveDirective implements AfterViewInit {
 	timer: __timeout.ITimeout;
 	form: FormComponent;
 	timeoutService: __timeout.TimeoutService;
+	autosaveAction: AutosaveActionService;
 
 	constructor( @Self() form: FormComponent
-			, timeoutService: __timeout.TimeoutService) {
+			, timeoutService: __timeout.TimeoutService
+			, autosaveAction: AutosaveActionService) {
 		this.form = form;
 		this.timeoutService = timeoutService;
+		this.autosaveAction = autosaveAction;
 	}
 
 	ngAfterViewInit(): void {
@@ -44,6 +48,7 @@ export class AutosaveDirective implements AfterViewInit {
 
 	autosave = (): void => {
 		console.log('Autosave');
+		this.autosaveAction.trigger(this.timeoutService.setTimeout(1000));
 		this.timer = null;
 	}
 }
