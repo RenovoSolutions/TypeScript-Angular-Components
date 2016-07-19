@@ -1,15 +1,58 @@
 <h3><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/input/input.md">Angular 2 Inputs</a></h3>
-<div>
+<rlForm>
+	<div>
+		<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
+		<div><rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox></div>
+		<div><rlCheckbox value="false" [active]="false" label="Inactive"></rlCheckbox></div>
+		<div><rlCheckbox [active]="true" label="Disabled"></rlCheckbox></div>
+		<div><rlCheckbox (change)="log($event)" label="Output event"></rlCheckbox></div>
+		<div>Value: {{checked}}</div>
+	</div>
+	<rlRadioGroup [(value)]="selection" label="Spinner">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/blob/master/source/components/textbox/textbox.md">Textbox</a>:</label>
-	<rl-textbox-ng></rl-textbox-ng>
-</div>
-<div>
-	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
-	<div><rl-checkbox-ng [(value)]="input.checked" label="Two-way bound"></rl-checkbox-ng></div>
-	<div><rl-checkbox-ng value="true" label="Initial value"></rl-checkbox-ng></div>
-	<div><rl-checkbox-ng value="false" [active]="false" label="Inactive"></rl-checkbox-ng></div>
-	<div><rl-checkbox-ng disabled="true" label="Disabled"></rl-checkbox-ng></div>
-	<div><rl-checkbox-ng (change)="input.log($event)" label="Output event"></rl-checkbox-ng></div>
-	<div>Value: {{input.checked}}</div>
-	<div><rl-absolute-time></rl-absolute-time></div>
-</div>
+	<rlTextbox [(value)]="text" label="Textbox with 2-way binding"></rlTextbox>
+	<rlTextbox rlRequired="This is a required field" label="Textbox" maxlength="10"></rlTextbox>
+	<rlTextarea [(value)]="text" label="Textarea" rlRequired="This is a required field" rows="3" maxlength="10"></rlTextarea>
+	<rlSpinner [(value)]="number" label="Spinner" roundToStep="true" step="3.65" decimals="2" prefix="$" postfix="/hr"></rlSpinner>
+	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value"></rlSelect>
+	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
+		<template let-option>#{{option.value}}</template>
+	</rlSelect>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
+	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead collapsable" [getItems]="searchOptions" transform="value" allowCollapse="true"></rlTypeahead>
+	<rlTypeahead (select)="log($event)" prefix="Search for a" label="Typeahead client searching" [getItems]="getOptions" clientSearch="true" transform="value">
+		<template let-option>Value - {{option.value}}</template>
+	</rlTypeahead>
+	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>
+	<rlTypeaheadList [(value)]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value"></rlTypeaheadList>
+	<rlTypeaheadList [(value)]="selections" label="Typeahead list with templates" [getItems]="getOptions" clientSearch="true" transform="value">
+		<div *rlListHeader class="col-xs-12">Other name</div>
+		<div *rlListItem="let option; let remove = remove">
+			<div class="col-xs-10">Value - {{option.value}}</div>
+			<div class="col-xs-2"><rlButtonAsync [action]="remove">Remove</rlButtonAsync></div>
+		</div>
+	</rlTypeaheadList>
+	<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
+	<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
+</rlForm>
+<h5>Disabled inputs</h5>
+<rlForm>
+	<rlCheckbox name="checkbox1" disabled="true" label="Checkbox 1"></rlCheckbox>
+	<rlRadioGroup name="radio1" disabled="true">
+		<rlRadio label="Option 1" [option]="options[0]"></rlRadio>
+		<rlRadio label="Option 2" [option]="options[1]"></rlRadio>
+		<rlRadio label="Option 3" [option]="options[2]"></rlRadio>
+	</rlRadioGroup>
+	<rlTextbox name="textbox1" disabled="true" label="Textbox 1" rlRequired="This is a required field"></rlTextbox>
+	<rlTextarea name="textarea1" disabled="true" label="Textarea 1" rlRequired="This is a required field"></rlTextarea>
+	<rlSpinner name="spinner1" label="Spinner 1" disabled="true" prefix="$" postfix="/hr"></rlSpinner>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" disabled="true"></rlSelect>
+	<rlTypeahead name="typeahead1" prefix="Search for a" label="Typeahead" [getItems]="searchOptions" transform="value" allowCollapse="true" disabled="true"></rlTypeahead>
+	<rlDateTime name="dateTime1" label="DateTime" disabled="true"></rlDateTime>
+	<rlAbsoluteTime name="time1" label="AbsoluteTime" disabled="true"></rlAbsoluteTime>
+	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
+</rlForm>
