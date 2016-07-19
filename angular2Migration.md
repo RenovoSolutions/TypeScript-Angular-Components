@@ -31,8 +31,8 @@ Tabset - In Progress (Andy)
 TemplateRenderer - Done  
 Textarea - Done  
 Textbox - Done  
-Typeahead  
-TypeheadList  
+Typeahead - Done  
+TypeheadList - Done  
 UserRating - Done  
 ValidationGroup - Done  
 
