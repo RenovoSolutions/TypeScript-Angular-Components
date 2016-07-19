@@ -6,6 +6,8 @@ import __digest = services.digestService;
 
 import { AsyncHelper, IWaitValue } from '../async/async.service';
 
+export const COMPLETE_MESSAGE_DURATION: number = 1000;
+
 export interface IAutosaveActionService {
 	trigger(promise: Promise<any>): void;
 	saving: boolean;
@@ -26,8 +28,6 @@ export class AutosaveActionService implements IAutosaveActionService {
 		this.asyncService = asyncService;
 		this.digestService = digestService;
 	}
-
-	private completeMessageDuration: number = 1000;
 
 	private _saving: boolean;
 	private _complete: boolean;
@@ -68,6 +68,6 @@ export class AutosaveActionService implements IAutosaveActionService {
 			this._complete = false;
 			// remove this once ng1 goes away
 			this.digestService.runDigestCycle();
-		}, this.completeMessageDuration);
+		}, COMPLETE_MESSAGE_DURATION);
 	}
 }
