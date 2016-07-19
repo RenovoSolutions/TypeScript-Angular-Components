@@ -24,15 +24,17 @@
 		</div>
 	</div>
 	<div class="row table-row" *ngFor="let item of value">
-		<div *ngIf="template">
-			<div [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: item }"></div>
-		</div>
-		<div *ngIf="!template">
-			<div class="col-xs-10">{{getDisplayName(item)}}</div>
-			<div class="col-xs-2">
-				<rlButtonAsync type="danger" [action]="remove(item)">
-					<i class="fa fa-remove"></i>
-				</rlButtonAsync>
+		<div [rlTypeaheadDataItem]="item" #data>
+			<div *ngIf="template">
+				<div [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="data.context"></div>
+			</div>
+			<div *ngIf="!template">
+				<div class="col-xs-10">{{getDisplayName(item)}}</div>
+				<div class="col-xs-2">
+					<rlButtonAsync type="danger" [action]="data.remove">
+						<i class="fa fa-remove"></i>
+					</rlButtonAsync>
+				</div>
 			</div>
 		</div>
 	</div>
