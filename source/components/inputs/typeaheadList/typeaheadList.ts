@@ -61,6 +61,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		this.transformService = transformService;
 		this.searchUtility = searchUtility;
 		this.inputType = 'typeaheadList';
+		this.value = [];
 	}
 
 	loadItems(search?: string): Observable<T[]> {
