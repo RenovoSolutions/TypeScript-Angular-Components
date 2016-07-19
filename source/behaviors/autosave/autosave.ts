@@ -47,8 +47,8 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	autosave = (): void => {
-		console.log('Autosave');
-		this.autosaveAction.trigger(this.timeoutService.setTimeout(1000));
+		const waitOn = this.form.submitAndWait();
+		this.autosaveAction.trigger(waitOn);
 		this.timer = null;
 	}
 }
