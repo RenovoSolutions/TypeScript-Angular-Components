@@ -3,7 +3,7 @@
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/checkbox/checkbox.md">Checkbox</a>:</label>
 	<div><rlCheckbox [(value)]="checked" label="Checkbox with 2-way binding"></rlCheckbox></div>
 	<div><rlCheckbox value="false" [active]="false" label="Inactive"></rlCheckbox></div>
-	<div><rlCheckbox [active]="true" label="Disabled"></rlCheckbox></div>
+	<div><rlCheckbox [disabled]="true" label="Disabled"></rlCheckbox></div>
 	<div><rlCheckbox (change)="log($event)" label="Output event"></rlCheckbox></div>
 	<div>Value: {{checked}}</div>
 </div>
