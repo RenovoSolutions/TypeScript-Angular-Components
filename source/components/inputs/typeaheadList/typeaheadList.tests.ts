@@ -139,7 +139,7 @@ describe('TypeaheadListComponent', () => {
 			expect(typeaheadList.value[0]).to.equal(newItem);
 			expect(typeaheadList.cachedItemsArray).to.have.length(4);
 			sinon.assert.calledOnce(setValue);
-			sinon.assert.calledWith(setValue, list);
+			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 	});
 
