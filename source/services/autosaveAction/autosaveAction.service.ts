@@ -1,7 +1,10 @@
-import * as ng from 'angular';
+import { Injectable } from '@angular/core';
 
-export var moduleName: string = 'rl.utilities.services.autosaveAction';
-export var serviceName: string = 'autosaveAction';
+import { services } from 'typescript-angular-utilities';
+import __timeout = services.timeout;
+import __digest = services.digestService;
+
+import { AsyncHelper, IWaitValue } from '../async/async.service';
 
 export interface IAutosaveActionService {
 	trigger(promise: Promise<any>): void;
@@ -10,9 +13,19 @@ export interface IAutosaveActionService {
 	successful: boolean;
 }
 
-class AutosaveActionService implements IAutosaveActionService {
-	static $inject: string[] = ['$timeout'];
-	constructor(private $timeout: ng.ITimeoutService) {}
+@Injectable()
+export class AutosaveActionService implements IAutosaveActionService {
+	timeoutService: __timeout.TimeoutService;
+	asyncService: AsyncHelper;
+	digestService: __digest.IDigestService;
+
+	constructor(timeoutService: __timeout.TimeoutService
+			, asyncService: AsyncHelper
+			, digestService: __digest.DigestService) {
+		this.timeoutService = timeoutService;
+		this.asyncService = asyncService;
+		this.digestService = digestService;
+	}
 
 	private completeMessageDuration: number = 1000;
 
@@ -32,32 +45,29 @@ class AutosaveActionService implements IAutosaveActionService {
 		return this._successful;
 	}
 
-	trigger(promise: Promise<any>): any {
+	trigger(waitOn: IWaitValue<any>): void {
 		this._saving = true;
-		return promise.then(this.autosaveSuccessful)
-					.catch(this.autosaveFailed);
+		this.asyncService.waitAsObservable(waitOn)
+			.subscribe(this.autosaveSuccessful, this.autosaveFailed);
 	}
 
-	private autosaveSuccessful: { (data: any): any } = (data: any): any => {
-		return this.resolveAutosave(data, true);
+	private autosaveSuccessful = (): void => {
+		this.resolveAutosave(true);
 	}
 
-	private autosaveFailed: { (data: any): any } = (data: any): any => {
-		return this.resolveAutosave(data, false);
+	private autosaveFailed = (): void => {
+		this.resolveAutosave(false);
 	}
 
-	private resolveAutosave: { (data: any, success: boolean): any } = (data: any, success: boolean): any => {
+	private resolveAutosave = (success: boolean): void => {
 		this._saving = false;
 		this._complete = true;
 		this._successful = success;
 
-		this.$timeout((): void => {
+		this.timeoutService.setTimeout(() => {
 			this._complete = false;
+			// remove this once ng1 goes away
+			this.digestService.runDigestCycle();
 		}, this.completeMessageDuration);
-
-		return data;
 	}
 }
-
-ng.module(moduleName, [])
-	.service(serviceName, AutosaveActionService);
