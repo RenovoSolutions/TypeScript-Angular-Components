@@ -16,6 +16,7 @@ import { TypeaheadComponent } from '../typeahead/typeahead';
 import { SelectComponent } from '../select/select';
 import { ButtonAsyncComponent } from '../../buttons/index';
 import { TypeaheadDataItemComponent } from './typeaheadDataItem';
+import { ListHeaderTemplate, ListItemTemplate } from './templates/index';
 
 export interface ITypeaheadListChanges {
 	value: SimpleChange;
@@ -42,7 +43,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	@Input() onRemove: { (item: T): Promise<void> | Observable<void> };
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
-	@ContentChild(TemplateRef) template: TemplateRef<any>;
+	@ContentChild(ListHeaderTemplate) listHeader: ListHeaderTemplate;
+	@ContentChild(ListItemTemplate) listItem: ListItemTemplate;
 
 	cachedItemsArray: T[];
 	cachedItems: BehaviorSubject<T[]>;
@@ -114,10 +116,6 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		return action;
 	}
 
-	getDisplayName(item: T): string {
-		return this.transformService.getValue(item, this.transform);
-	}
-
 	ngOnInit(): void {
 		super.ngOnInit();
 
@@ -141,8 +139,12 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		}
 	}
 
-	newTemplate(): TemplateRef<any> {
-		return clone(this.template);
+	getDisplayName(item: T): string {
+		return this.transformService.getValue(item, this.transform);
+	}
+
+	newItemTemplate(): TemplateRef<any> {
+		return clone(this.listItem.template);
 	}
 
 	private filter(list: T[], search: string): T[] {

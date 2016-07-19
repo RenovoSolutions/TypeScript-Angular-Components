@@ -7,7 +7,7 @@ import { SpinnerComponent } from './spinner/spinner';
 import { TextareaComponent } from './textarea/textarea';
 import { TextboxComponent } from './textbox/textbox';
 import { TypeaheadComponent } from './typeahead/typeahead';
-import { TypeaheadListComponent } from './typeaheadList/typeaheadList';
+import { TYPEAHEAD_LIST_DIRECTIVES } from './typeaheadList/index';
 import { UserRatingComponent } from './userRating/userRating';
 
 export const INPUT_DIRECTIVES: any[] = [
@@ -20,7 +20,7 @@ export const INPUT_DIRECTIVES: any[] = [
 	TextareaComponent,
 	TextboxComponent,
 	TypeaheadComponent,
-	TypeaheadListComponent,
+	TYPEAHEAD_LIST_DIRECTIVES,
 	UserRatingComponent,
 ];
 
@@ -33,5 +33,5 @@ export * from './spinner/spinner';
 export * from './textarea/textarea';
 export * from './textbox/textbox';
 export * from './typeahead/typeahead';
-export * from './typeaheadList/typeaheadList';
+export * from './typeaheadList/index';
 export * from './userRating/userRating';

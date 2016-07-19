@@ -19,16 +19,17 @@
 </div>
 <div class="table-container">
 	<div class="row table-header" [hidden]="!(value && value.length)">
-		<div ng-content="rlHeader">
+		<div *ngIf="listHeader" [ngTemplateOutlet]="listHeader.template"></div>
+		<div *ngIf="!listHeader">
 			<div class="col-xs-12">Name</div>
 		</div>
 	</div>
 	<div class="row table-row" *ngFor="let item of value">
 		<div [rlTypeaheadDataItem]="item" #data>
-			<div *ngIf="template">
-				<div [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="data.context"></div>
+			<div *ngIf="listItem">
+				<div [ngTemplateOutlet]="newItemTemplate()" [ngOutletContext]="data.context"></div>
 			</div>
-			<div *ngIf="!template">
+			<div *ngIf="!listItem">
 				<div class="col-xs-10">{{getDisplayName(item)}}</div>
 				<div class="col-xs-2">
 					<rlButtonAsync type="danger" [action]="data.remove">
