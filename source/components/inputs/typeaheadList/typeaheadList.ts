@@ -56,10 +56,10 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 			, object: __object.ObjectUtility
 			, array: __array.ArrayUtility
 			, guid: __guid.GuidService
-			, searchService: __search.SearchUtility) {
+			, searchUtility: __search.SearchUtility) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
-		this.searchUtility = searchService;
+		this.searchUtility = searchUtility;
 		this.inputType = 'typeaheadList';
 	}
 
