@@ -28,7 +28,7 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	setDebounce = (): void => {
-		if (this.form.validate()) {
+		if (!this.timer && this.form.validate()) {
 			this.timer = this.timeoutService.setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
 											.catch(() => null);
 		}
