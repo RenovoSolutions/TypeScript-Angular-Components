@@ -6,7 +6,7 @@ import __timeout = services.timeout;
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
 
-const DEFAULT_AUTOSAVE_DEBOUNCE: number = 3000;
+export const DEFAULT_AUTOSAVE_DEBOUNCE: number = 3000;
 
 @Directive({
 	selector: '[rlAutosave]',
