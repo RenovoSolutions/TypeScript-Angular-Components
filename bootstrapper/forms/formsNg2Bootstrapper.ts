@@ -7,7 +7,7 @@ import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 
 import { FormComponent } from '../../source/components/form/form';
-import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
+import { BUTTON_DIRECTIVES } from '../../source/components/buttons/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { ValidationGroupComponent } from '../../source/components/validationGroup/validationGroup';
 
@@ -24,7 +24,7 @@ export interface ITestItem2 {
 	template: require('./formsNg2.html'),
 	directives: [
 		FormComponent,
-		ButtonSubmitComponent,
+		BUTTON_DIRECTIVES,
 		INPUT_DIRECTIVES,
 		ValidationGroupComponent,
 	],
@@ -42,6 +42,7 @@ export class FormsBootstrapper {
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
 	typeaheadOptions: ITestItem2[];
+	selections: ITestItem2[];
 
 	@ViewChild('testForm') testForm: FormComponent;
 
@@ -74,6 +75,8 @@ export class FormsBootstrapper {
 			{ value: 'Option 4' },
 			{ value: 'Option 5' },
 		];
+
+		this.selections = [this.typeaheadOptions[0], this.typeaheadOptions[2]]
 	}
 
 	wait(data: any): Observable<any> {

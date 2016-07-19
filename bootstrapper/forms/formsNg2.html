@@ -22,6 +22,16 @@
 			<template let-option>Value - {{option.value}}</template>
 		</rlTypeahead>
 		<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>
+		<rlTypeaheadList [value]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value">
+			<div class="col-xs-12" rlHeader>Other name</div>
+		</rlTypeaheadList>
+		<rlTypeaheadList [value]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value">
+			<div class="col-xs-12" rlHeader>Other name</div>
+			<template let-option let-remove="remove">
+				<div class="col-xs-11">Value - {{option.value}}</div>
+				<div class="col-xs-1"><rlButtonAsync [action]="remove">Remove</rlButtonAsync></div>
+			</template>
+		</rlTypeaheadList>
 		<rlDateTime [(value)]="date" label="DateTime"></rlDateTime>
 		<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
 		<rlValidationGroup [model]="rating" [validator]="validator">
