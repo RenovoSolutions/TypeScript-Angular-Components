@@ -22,8 +22,8 @@
 			<template let-option>Value - {{option.value}}</template>
 		</rlTypeahead>
 		<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>
-		<rlTypeaheadList [value]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value"></rlTypeaheadList>
-		<rlTypeaheadList [value]="selections" label="Typeahead list with templates" [getItems]="getOptions" clientSearch="true" transform="value">
+		<rlTypeaheadList [(value)]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value"></rlTypeaheadList>
+		<rlTypeaheadList [(value)]="selections" label="Typeahead list with templates" [getItems]="getOptions" clientSearch="true" transform="value">
 			<div *rlListHeader class="col-xs-12">Other name</div>
 			<div *rlListItem="let option; let remove = remove">
 				<div class="col-xs-10">Value - {{option.value}}</div>
