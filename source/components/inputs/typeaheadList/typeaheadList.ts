@@ -88,9 +88,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		const action = this.asObservable(this.onAdd(item));
 		action.subscribe(newItem => {
 			newItem = newItem || item;
-			// immutability?
-			const newValue = clone(this.value);
-			newValue.push(newItem);
+			// immutability
+			const newValue = [...this.value, newItem];
 			this.setValue(newValue);
 			if (this.cachedItems$) {
 				this.array.remove(this.cachedItemsArray, item);
@@ -104,8 +103,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	remove = (item: T): Observable<void> => {
 		const action = this.asObservable(this.onRemove(item));
 		action.subscribe(() => {
-			// immutability?
-			const newValue = clone(this.value);
+			// immutability
+			let newValue = [...this.value];
 			this.array.remove(newValue, item);
 			this.setValue(newValue);
 			if (this.cachedItems$ != null) {
