@@ -8,15 +8,17 @@ import { PopoutListService } from './popoutList.service';
 export class PopoutTriggerDirective {
 	@HostListener('keyup.arrowdown') downArrow = () => this.next();
 	@HostListener('keyup.arrowup') upArrow = () => this.previous();
-	@HostListener('keyup.enter') onEnter = () => this.select();
 	@HostListener('blur') onBlur = () => this.select();
 	@HostListener('focus') onFocus = () => this.show();
+	@HostListener('keyup.enter') onEnter = () => this.elementRef.nativeElement.blur();
 
 	popoutListService: PopoutListService<any>;
+	elementRef: ElementRef;
 
 	constructor(popoutListService: PopoutListService<any>
 			, elementRef: ElementRef) {
 		this.popoutListService = popoutListService;
+		this.elementRef = elementRef;
 		popoutListService.select.subscribe(() => elementRef.nativeElement.blur());
 	}
 
