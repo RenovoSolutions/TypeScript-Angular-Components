@@ -1,71 +1,66 @@
-﻿import { services } from 'typescript-angular-utilities';
-
-import {
-	ButtonAsyncController,
-	moduleName,
-	controllerName,
-} from './buttonAsync.ng1';
-
-import * as angular from 'angular';
+﻿import * as angular from 'angular';
 import 'angular-mocks';
 
-import test = services.test;
+import { services } from 'typescript-angular-utilities';
+import __test = services.test;
+import mock = __test.mock;
+import fakeAsync = __test.fakeAsync;
+import IMockedPromise = __test.IMockedPromise;
+
+import { ButtonAsyncController, moduleName, controllerName } from './buttonAsync.ng1';
 
 describe('ButtonAsyncController', () => {
-	var scope: angular.IScope;
-	var button: ButtonAsyncController;
-	var actionSpy: Sinon.SinonSpy;
+	let button: ButtonAsyncController;
+	let actionSpy: any;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
-
-		actionSpy = sinon.spy(() => true);
 	});
 
 	it('should be busy after triggering the action if no promise is returned', (): void => {
+		actionSpy = sinon.spy(() => true);
 		button = buildController();
-		scope.$digest();
 
 		button.trigger();
-		scope.$digest();
 
-		expect(button.busy).to.be.true;
 		sinon.assert.calledOnce(actionSpy);
+		expect(button.busy).to.be.true;
 	});
 
-	describe('should finish after promise ends', (): void => {
-		var deferred: angular.IDeferred<any>;
-
-		beforeEach((): void => {
-			var $q: angular.IQService = test.angularFixture.inject('$q').$q;
-			deferred = $q.defer();
-
-			actionSpy = sinon.spy((): angular.IPromise<any> => {
-				return deferred.promise;
-			});
-
+	describe('should finish', (): void => {
+		it('when promise resolves', fakeAsync((): void => {
+			actionSpy = mock.promise();
 			button = buildController();
+
 			button.trigger();
 
 			expect(button.busy).to.be.true;
-		});
 
-		it('should finish after promise completes', (): void => {
-			deferred.resolve();
-			scope.$digest();
-
+			(<IMockedPromise<any>>actionSpy).flush();
+			sinon.assert.calledOnce(actionSpy);
 			expect(button.busy).to.be.false;
-		});
+		}));
 
-		it('should finish after promise fails', (): void => {
-			deferred.reject();
-			scope.$digest();
+		it('when promise rejects', fakeAsync((): void => {
+			const fakeError = 'fakeError';
+			actionSpy = mock.rejectedPromise(fakeError);
+			button = buildController();
 
+			button.trigger().catch((error) => {
+				expect(error).to.equal(fakeError);
+			});
+
+			expect(button.busy).to.be.true;
+
+			(<IMockedPromise<any>>actionSpy).flush();
+
+			sinon.assert.calledOnce(actionSpy);
 			expect(button.busy).to.be.false;
-		});
+		}));
 	});
 
 	it('should not allow triggers while busy', (): void => {
+		actionSpy = sinon.spy(() => true);
 		button = buildController(true);
 
 		expect(button.busy).to.be.true;
@@ -76,10 +71,8 @@ describe('ButtonAsyncController', () => {
 	});
 
 	function buildController(busy: boolean = false): ButtonAsyncController {
-		var controllerResult: test.IControllerResult<ButtonAsyncController>
-			= test.angularFixture.controllerWithBindings<ButtonAsyncController>(controllerName, { busy: busy, action: actionSpy });
-
-		scope = controllerResult.scope;
+		var controllerResult: __test.IControllerResult<ButtonAsyncController>
+			= __test.angularFixture.controllerWithBindings<ButtonAsyncController>(controllerName, { busy: busy, action: actionSpy });
 		return controllerResult.controller;
 	}
 });
