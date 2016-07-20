@@ -47,7 +47,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	@ContentChild(ListItemTemplate) listItem: ListItemTemplate;
 
 	cachedItemsArray: T[];
-	cachedItems: BehaviorSubject<T[]>;
+	cachedItems$: BehaviorSubject<T[]>;
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
@@ -68,8 +68,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	loadItems(search?: string): Observable<T[]> {
 		if (this.clientSearch || this.disableSearching) {
-			if (this.cachedItems) {
-				return this.cachedItems;
+			if (this.cachedItems$) {
+				return this.cachedItems$;
 			} else {
 				return Observable.from(this.getItems());
 			}
@@ -88,13 +88,12 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 		const action = this.asObservable(this.onAdd(item));
 		action.subscribe(newItem => {
 			newItem = newItem || item;
-			// immutability?
-			const newValue = clone(this.value);
-			newValue.push(newItem);
+			// immutability
+			const newValue = [...this.value, newItem];
 			this.setValue(newValue);
-			if (this.cachedItems) {
+			if (this.cachedItems$) {
 				this.array.remove(this.cachedItemsArray, item);
-				this.cachedItems.next(this.cachedItemsArray);
+				this.cachedItems$.next(this.cachedItemsArray);
 			}
 			return newItem;
 		});
@@ -104,13 +103,13 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	remove = (item: T): Observable<void> => {
 		const action = this.asObservable(this.onRemove(item));
 		action.subscribe(() => {
-			// immutability?
-			const newValue = clone(this.value);
+			// immutability
+			let newValue = [...this.value];
 			this.array.remove(newValue, item);
 			this.setValue(newValue);
-			if (this.cachedItems != null) {
+			if (this.cachedItems$ != null) {
 				this.cachedItemsArray.push(item);
-				this.cachedItems.next(this.cachedItemsArray);
+				this.cachedItems$.next(this.cachedItemsArray);
 			}
 		});
 		return action;
@@ -134,7 +133,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	ngOnChanges(changes: ITypeaheadListChanges): void {
 		super.ngOnChanges(<any>changes);
-		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems) {
+		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems$) {
 			this.loadCachedItems();
 		}
 	}
@@ -152,7 +151,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 		if (this.clientSearch) {
 			this.cachedItemsArray = filteredList;
-			this.cachedItems = new BehaviorSubject<T[]>(this.cachedItemsArray);
+			this.cachedItems$ = new BehaviorSubject<T[]>(this.cachedItemsArray);
 			return filter(filteredList, item => this.searchUtility.tokenizedSearch(item, search));
 		} else {
 			return filteredList;
@@ -162,7 +161,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	private loadCachedItems(): void {
 		this.searchItems().subscribe((items: T[]): void => {
 			this.cachedItemsArray = items;
-			this.cachedItems = new BehaviorSubject<T[]>(this.cachedItemsArray);
+			this.cachedItems$ = new BehaviorSubject<T[]>(this.cachedItemsArray);
 		});
 	}
 
