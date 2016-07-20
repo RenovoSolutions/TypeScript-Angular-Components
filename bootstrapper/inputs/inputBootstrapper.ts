@@ -99,9 +99,7 @@ function InputRoute($stateProvider) {
 		})
 		.state('inputs.ng2', {
 			url: '/ng2',
-			template: require('./inputsNg2.html'),
-			controller: 'InputTestController',
-			controllerAs: 'input',
+			template: '<ts-inputs-bootstrapper></ts-inputs-bootstrapper>',
 		});
 }
 
