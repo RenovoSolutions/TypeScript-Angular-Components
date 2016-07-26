@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "2.6.0",
+  "version": "2.6.2",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -17,26 +17,24 @@
   "typings": "./source/ui.module.d.ts",
   "scripts": {
     "prepublish": " typings install && npm run build && gulp bundle-css",
-    "update": "npm install && typings install && npm run bundle-deps",
+    "update": "npm install && npm run bundle-deps",
+    "update.wipe-npm": "gulp wipe-npm-update",
+    "version": "gulp version -v ",
+
     "clean": "gulp clean",
     "build": "gulp clean && tsc && echo Build complete",
     "build.watch": "tsc -w",
 
     "bundle-tests": "gulp bundle-tests",
     "test": "npm run bundle-tests && karma start",
-    "test.debug": "concurrently --kill-others \"gulp bundle-tests.watch\" \"karma start karma.debug.conf.js\"",
+    "test.debug": "gulp bundle-tests && concurrently --kill-others \"gulp bundle-tests.watch\" \"karma start karma.debug.conf.js\"",
     "test.tc": "npm run bundle-tests && karma start karma.tc.conf.js",
     "test.full": "npm run bundle-tests && karma start karma.full.conf.js",
 
-    "install-build": "npm install && npm run build",
-    "install-build-test": "npm install && npm run build && npm run test",
-    "build-bundle-test": "concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\"",
-    "build-test": "npm run build && gulp bundle-tests && npm run test",
-    "build-test.watch": "npm run build && gulp bundle-tests.watch && concurrently --kill-others \"npm run build.watch\" \"gulp bundle-tests.watch\" \"npm run test.debug\"",
+    "build-test": "npm run build && npm run test",
+    "build-test.watch": "npm run build && gulp bundle-tests && concurrently --kill-others \"npm run build.watch\" \"npm run test.debug\"",
 
-    "full-build": "npm install && npm run build",
-
-    "all": "npm run update && npm run build && npm run test.full",
+    "all": "npm run update && npm run build && npm run test.full && npm run bundle",
 
     "bundle": "gulp bundle-css && gulp bundle-bootstrapper",
     "bundle.watch": "concurrently --kill-others \"gulp bundle-css.watch\" \"gulp bundle-bootstrapper.watch\" ",
@@ -101,7 +99,7 @@
     "rxjs": "5.0.0-beta.6",
     "signature_pad": "~1.5.3",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.3.2",
+    "typescript-angular-utilities": "~3.3.3",
     "ui-select": "~0.14.7",
     "zone.js": "^0.6.12"
   },

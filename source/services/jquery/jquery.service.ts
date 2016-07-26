@@ -1,5 +1,7 @@
 import * as angular from 'angular';
 
+export * from './jquery.provider';
+
 export var moduleName: string = 'rl.utilities.services.jquery';
 export var serviceName: string = 'jqueryUtility';
 

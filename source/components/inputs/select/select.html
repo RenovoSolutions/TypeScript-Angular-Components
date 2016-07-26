@@ -1,25 +1,22 @@
-<div class="field"
+<div class="field rl-select"
 	 [class.error]="!control.valid"
-	 (offClick)="close()">
+	 [class.rl-select-loading]="busy?.loading">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
-		 (click)="toggle()"
 		 [class.disabled]="disabled"
-		 [class.rl-select-open]="showOptions">
+		 [class.rl-select-open]="list.showOptions"
+		 tabindex="0"
+		 rlPopoutTrigger>
 		<span class="placeholder" [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
-	<ul class="rl-select-list" *ngIf="showOptions">
-		<li class="rl-select-option rl-select-option-null" *ngIf="nullOption" (click)="select(null)">{{nullOption}}</li>
-		<li class="rl-select-option"
-			*ngFor="let option of wrappedOptions | async"
-			(click)="select(option)">
-			<span *ngIf="template">
-				<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: option }"></template>
-			</span>
-			<span *ngIf="!template">{{getDisplayName(option)}}</span>
-		</li>
-	</ul>
+	<rlPopoutList #list
+				  [options]="wrappedOptions"
+				  [template]="template"
+				  [transform]="transform"
+				  (select)="select($event)">
+		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
+	</rlPopoutList>
 	<rlBusy></rlBusy>
 	<div [hidden]="control.valid" class="error-string">
 		{{componentValidator.error}}

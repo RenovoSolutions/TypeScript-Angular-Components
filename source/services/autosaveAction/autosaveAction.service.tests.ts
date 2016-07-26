@@ -1,60 +1,58 @@
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import __test = services.test;
 
-import { IAutosaveActionService, moduleName, serviceName } from './autosaveAction.service';
+import { AutosaveActionService, COMPLETE_MESSAGE_DURATION } from './autosaveAction.service';
+import { AsyncHelper } from '../async/async.service';
 
-import * as ng from 'angular';
-import 'angular-mocks';
-
-describe('autosaveAction', () => {
-	var autosaveAction: IAutosaveActionService;
-	var $timeout: ng.ITimeoutService;
-	var $q: ng.IQService;
-	var $rootScope: ng.IScope;
-	var deferred: ng.IDeferred<void>;
+describe('AutosaveActionService', () => {
+	let autosaveAction: AutosaveActionService;
+	let mockAction: __test.IMockedRequest<void>;
 
 	beforeEach(() => {
-		ng.mock.module(moduleName);
+		const digestMock = {
+			runDigestCycle: sinon.spy(),
+		};
 
-		var services: any = test.angularFixture.inject(serviceName, '$timeout', '$q', '$rootScope');
-		autosaveAction = services[serviceName];
-		$timeout = services.$timeout;
-		$q = services.$q;
-		$rootScope = services.$rootScope;
+		autosaveAction = new AutosaveActionService(new services.timeout.TimeoutService(), new AsyncHelper(), <any>digestMock);
 
-		deferred = $q.defer<void>();
-
-		autosaveAction.trigger(deferred.promise);
+		mockAction = __test.mock.request();
+		autosaveAction.trigger(mockAction());
 
 		expect(autosaveAction.saving).to.be.true;
 	});
 
-	it('should set successful to true if the promise resolves successfully', (): void => {
-		deferred.resolve();
-		$rootScope.$digest();
+	it('should set successful to true if the request resolves successfully', __test.fakeAsync((): void => {
+		mockAction.flush();
 
 		expect(autosaveAction.saving).to.be.false;
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.true;
-	});
 
-	it('should set successful to false if the promise fails', (): void => {
-		deferred.reject();
-		$rootScope.$digest();
+		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.flushMicrotasks();
+	}));
+
+	it('should set successful to false if the promise fails', __test.fakeAsync((): void => {
+		mockAction = __test.mock.rejectedRequest();
+		autosaveAction.trigger(mockAction());
+		mockAction.flush();
 
 		expect(autosaveAction.saving).to.be.false;
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.false;
-	});
 
-	it('should set complete to false after 1 second', (): void => {
-		deferred.resolve();
-		$rootScope.$digest();
+		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.flushMicrotasks();
+	}));
+
+	it('should set complete to false after the duration', __test.fakeAsync((): void => {
+		mockAction.flush();
 
 		expect(autosaveAction.complete).to.be.true;
 
-		$timeout.flush(1000);
+		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.flushMicrotasks();
 
 		expect(autosaveAction.complete).to.be.false;
-	});
+	}));
 });

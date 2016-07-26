@@ -12,7 +12,7 @@ export const controllerName: string = 'ButtonAsyncController';
 
 export interface IButtonBindings {
 	busy: boolean;
-	action(...params: any[]): angular.IPromise<any> | void;
+	action(...params: any[]): Promise<any> | void;
 	size: string;
 	type: string;
 	ngDisabled: boolean;
@@ -21,26 +21,32 @@ export interface IButtonBindings {
 export class ButtonAsyncController extends ButtonController {
 	// bindings
 	busy: boolean;
-	action: { (...params: any[]): angular.IPromise<any> | void };
+	action: { (...params: any[]): Promise<any> | void };
 
 	static $inject: string[] = [promiseServiceName];
 	constructor(private promiseUtility: IPromiseUtility) {
 		super();
 	}
 
-	trigger(): void {
+	trigger(): Promise<any> {
 		if (!this.busy) {
 			this.busy = true;
 
-			let result: angular.IPromise<any> = <angular.IPromise<any>>this.action();
-			if (this.promiseUtility.isPromise(result) && _.isFunction(result.finally)) {
-				result.finally((): void => {
+			let result: Promise<any> = <Promise<any>>this.action();
+
+			if (this.promiseUtility.isPromise(result)) {
+				return result.then((): void => {
 					this.busy = false;
+				}).catch((error) => {
+					this.busy = false;
+					throw error;
 				});
 			} else if (<any>result !== true) {
 				this.busy = false;
 			}
 		}
+
+		return null;
 	}
 }
 

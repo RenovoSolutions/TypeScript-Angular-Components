@@ -14,10 +14,10 @@ Form - In progress (autosave needs resolved)
 GenericContainer - Obsolete  
 LazyLoad  
 LongClickButton - Done  
-MessageLog  
-MultiStepIndicator - In Progress (Jamie)  
+MessageLog
+MultiStepIndicator - Done  
 Radio - Done  
-RadioGroup - Done   
+RadioGroup - Done  
 RatingBar  
 RichTextEditor  
 Select - Done  
@@ -31,12 +31,12 @@ Tabset - In Progress (Andy)
 TemplateRenderer - Done  
 Textarea - Done  
 Textbox - Done  
-Typeahead 
-TypeheadList  
+Typeahead - Done  
+TypeheadList - Done  
 UserRating - Done  
 ValidationGroup - Done  
 
-###Directives  
+###Directives
 Alias - Obsolete?  
 AlternatingClass - Not possible, to my knowledge - one-off implementation in simple-card list for now  
 Autosave - (relates to form)  
@@ -44,12 +44,12 @@ OffClick - Done
 Popover - Obsolete - we'll just use ng2-bootstrap tooltip for now  
 Required - Obsolete - handled in the base input classes now  
 
-###Pipes  
+###Pipes
 Date - Done  
-LocalizeStringDates - Done
+LocalizeStringDates - Done  
 
 
-###Services  
+###Services
 Autosave - Obsolete? - Most of this behavior will move to the form and autosave directives  
 AutosaveAction - (relates to autosave)  
 Breakpoints - Done  

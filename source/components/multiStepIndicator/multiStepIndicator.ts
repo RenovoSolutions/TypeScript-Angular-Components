@@ -42,7 +42,7 @@ export class MultiStepIndicatorComponent implements OnInit {
 		this.configureSteps();
 	}
 
-	onClick(step: IConfiguredStep): Promise<void> | void {
+	onClick(step: IConfiguredStep): Promise<void> {
 		if (!this.anyLoading()) {
 			step.isLoading = true;
 
@@ -50,6 +50,7 @@ export class MultiStepIndicatorComponent implements OnInit {
 				step.isLoading = false;
 			}).catch((error) => {
 				step.isLoading = false;
+				throw error;
 			});
 		}
 		return null;

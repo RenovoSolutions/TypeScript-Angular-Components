@@ -75,40 +75,17 @@ describe('SelectComponent', () => {
 		});
 	});
 
-	describe('dropdown', (): void => {
-		it('should toggle the options', (): void => {
-			expect(dropdown.showOptions).to.be.undefined;
+	it('should set the value and close the options', (): void => {
+		const closeSpy = sinon.spy();
+		dropdown.list = <any>{
+			close: closeSpy,
+		};
 
-			dropdown.toggle();
+		dropdown.select(options[1]);
 
-			expect(dropdown.showOptions).to.be.true;
-
-			dropdown.toggle();
-
-			expect(dropdown.showOptions).to.be.false;
-		});
-
-		it('should close the options', (): void => {
-			dropdown.showOptions = true;
-			dropdown.close();
-			expect(dropdown.showOptions).to.be.false;
-		});
-
-		it('should do nothing if the options are already closed', (): void => {
-			dropdown.showOptions = false;
-			dropdown.close();
-			expect(dropdown.showOptions).to.be.false;
-		});
-
-		it('should set the value and close the options', (): void => {
-			dropdown.showOptions = true;
-
-			dropdown.select(options[1]);
-
-			expect(dropdown.showOptions).to.be.false;
-			sinon.assert.calledOnce(setValue);
-			sinon.assert.calledWith(setValue, options[1]);
-		});
+		sinon.assert.calledOnce(closeSpy);
+		sinon.assert.calledOnce(setValue);
+		sinon.assert.calledWith(setValue, options[1]);
 	});
 
 	it('should transform the item to a display name', (): void => {
@@ -120,16 +97,6 @@ describe('SelectComponent', () => {
 
 		sinon.assert.calledOnce(transformService.getValue);
 		sinon.assert.calledWith(transformService.getValue, option, transform);
-	});
-
-	it('should return a clone of the template', (): void => {
-		const template: any = {};
-		dropdown.template = template;
-
-		const clone: any = dropdown.newTemplate();
-
-		expect(clone).to.not.equal(template);
-		expect(clone).to.deep.equal(template);
 	});
 
 	it('should use an external template if one is specified', (): void => {

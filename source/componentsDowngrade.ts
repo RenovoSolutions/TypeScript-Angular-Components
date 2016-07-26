@@ -31,6 +31,7 @@ import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
 import { AsyncHelper } from './services/async/async.service';
+import { AutosaveActionService } from './services/autosaveAction/autosaveAction.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
 import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
@@ -44,6 +45,7 @@ export { visibleBreakpointServiceName };
 
 export const moduleName: string = 'rl.components.downgrade';
 
+export const autosaveActionServiceName: string = 'autosaveAction';
 export const cardContainerBuilderServiceName: string = 'rlCardContainerBuilder';
 export const dataPagerFactoryName: string = 'rlDataPagerFactory';
 export const documentServiceName: string = 'documentWrapper';
@@ -85,6 +87,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	});
 
 	upgradeAdapter.addProvider(AsyncHelper);
+	upgradeAdapter.addProvider(AutosaveActionService);
 	upgradeAdapter.addProvider(DefaultTheme);
 	upgradeAdapter.addProvider(defaultThemeNg1);
 	upgradeAdapter.addProvider(DialogRootService);
@@ -119,6 +122,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
 	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
 
+	componentsDowngradeModule.factory(autosaveActionServiceName, upgradeAdapter.downgradeNg2Provider(AutosaveActionService));
 	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));

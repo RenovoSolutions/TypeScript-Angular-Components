@@ -1,56 +1,37 @@
 import { Component, ViewChild } from '@angular/core';
-import * as moment from 'moment';
-import { BehaviorSubject, Observable } from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __timezone = services.timezone;
-
+import { BusyComponent } from '../../source/components/busy/busy';
 import { FormComponent } from '../../source/components/form/form';
-import { ButtonSubmitComponent } from '../../source/components/buttons/buttonSubmit/buttonSubmit';
+import { BUTTON_DIRECTIVES } from '../../source/components/buttons/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
 import { ValidationGroupComponent } from '../../source/components/validationGroup/validationGroup';
-
-export interface ITestItem {
-	value: number;
-}
+import { AutosaveDirective } from '../../source/behaviors/autosave/autosave';
+import { AutosaveActionService } from '../../source/services/autosaveAction/autosaveAction.service';
 
 @Component({
 	selector: 'tsFormsBootstrapper',
 	template: require('./formsNg2.html'),
 	directives: [
+		BusyComponent,
 		FormComponent,
-		ButtonSubmitComponent,
+		BUTTON_DIRECTIVES,
 		INPUT_DIRECTIVES,
 		ValidationGroupComponent,
+		AutosaveDirective,
 	],
 })
 export class FormsBootstrapper {
-	checked: boolean;
 	text: string;
-	date: moment.Moment;
-	selection: ITestItem;
 	rating: number;
-	time: string;
 	validator: any;
 	brokenValidator: any;
 
-	options: ITestItem[];
-	optionsAsync: Observable<ITestItem[]>;
-
 	@ViewChild('testForm') testForm: FormComponent;
 
-	constructor(timezoneService: __timezone.TimezoneService) {
-		timezoneService.setCurrentTimezone('-05:00');
+	autosaveAction: AutosaveActionService;
 
-		this.text = 'Something is already entered';
-		this.options = [
-			{ value: 1 },
-			{ value: 2 },
-			{ value: 3 },
-		];
-		this.selection = this.options[0];
-		this.optionsAsync = this.wait(this.options);
-		this.time = '8:00AM';
+	constructor(autosaveAction: AutosaveActionService) {
+		this.autosaveAction = autosaveAction;
 
 		this.validator = {
 			validate: () => this.rating >= 3,
@@ -60,12 +41,6 @@ export class FormsBootstrapper {
 			validate: () => false,
 			errorMessage: null,
 		};
-	}
-
-	wait(data: any): Observable<any> {
-		const subject: BehaviorSubject<ITestItem[]> = new BehaviorSubject<ITestItem[]>([]);
-		setTimeout(() => subject.next(data), 1000);
-		return subject.asObservable();
 	}
 
 	waitCallback: { (data: any): Promise<void> } = (data: any) => {

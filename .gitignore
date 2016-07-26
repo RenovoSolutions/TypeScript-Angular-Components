@@ -4,6 +4,7 @@
 /source/**/*.d.ts
 /bootstrapper/**/*.js
 /bootstrapper/**/*.d.ts
+/bootstrapper/**/*.js.map
 /tests/
 
 # Node deps
