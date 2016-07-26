@@ -21,6 +21,7 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
+import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
@@ -57,6 +58,7 @@ angular.module(moduleName, [
 	.component('tsBootstrapper', bootstrapper)
 	.directive('tsInputsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(InputsBootstrapper))
 	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
+	.directive('tsTabsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(TabsBootstrapper))
 	.directive('tsMsiBootstrapper', <any>upgradeAdapter.downgradeNg2Component(MsiBootstrapperComponent))
 	.directive('tsCardsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(CardsBootstrapper))
 	.directive('tsPopupBootstrapper', <any>upgradeAdapter.downgradeNg2Component(PopupBootstrapper))

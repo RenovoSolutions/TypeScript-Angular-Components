@@ -1,47 +1,46 @@
+import { Component, Optional, Inject, ElementRef, Input, Output, ViewChild, ContentChild, ContentChildren, AfterContentInit, TemplateRef, SkipSelf, Provider, QueryList } from '@angular/core';
 import * as ng from 'angular';
 
-import { TabsetController, ITabHeader } from './tabset';
+import { TabsetComponent } from './tabset';
+import { FormComponent } from '../form/form';
 
-export let componentName: string = 'rlTab';
-export let controllerName: string = 'rlTabController';
+@Component({
+	selector: 'rlTabHeader',
+	template: '<ng-content></ng-content>',
+})
+export class TabHeaderComponent {
 
-export interface ITabScope extends ng.IScope {
-	tabForm: ng.IFormController;
-}
-
-export class TabController {
-	header: ITabHeader;
-
-	tabset: TabsetController;
-
-	static $inject: string[] = ['$scope', '$element', '$transclude'];
-	constructor($scope: ng.IScope
-			, private $element: ng.IAugmentedJQuery
-			, private $transclude: ng.ITranscludeFunction) {
-		$scope.$watch('tabForm.$valid', (isValid: boolean): void => {
-			this.header.isValid = isValid != null ? isValid : true;
-		});
+	constructor(private el: ElementRef) {
 	}
 
-	$postLink(): void {
-		this.$transclude((header: JQuery): void => {
-			this.header = {
-				template: header.html(),
-				isValid: true,
-			};
-			this.tabset.registerTab(this.$element, this.header);
-		}, null, 'headerSlot');
+	get innerHTML(): string {
+		return this.el.nativeElement.innerHTML;
 	}
 }
 
-export let tab: ng.IComponentOptions = {
-	transclude: <any>{
-		'headerSlot': '?rlTabHeader',
-		'contentSlot': '?rlTabContent',
-		'footerSlot': '?rlTabFooter',
-	},
-	require: { tabset: '^^rlTabset' },
+@Component({
+	selector: 'rlTab',
 	template: require('./tab.html'),
-	controller: controllerName,
-	controllerAs: 'tab',
-};
+})
+export class TabComponent implements AfterContentInit {
+	@ContentChild(TabHeaderComponent)
+	header: TabHeaderComponent;
+
+	@ContentChild(FormComponent)
+	childForm: FormComponent;
+
+	isActive: boolean;
+	isValid: boolean = true;
+
+	constructor() { }
+
+	ngAfterContentInit() {
+		let hasChildForm: boolean = this.childForm != null;
+		if (hasChildForm) {
+			this.childForm.form.statusChanges.subscribe(isValid => {
+				this.isValid = (isValid == 'VALID');
+			});
+			this.isValid = this.childForm.form.valid;
+		}
+	}
+}

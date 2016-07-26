@@ -1,62 +1,56 @@
+import { Component, Optional, Inject, Input, Output, ViewChild, ViewChildren, ContentChildren, AfterViewInit, AfterContentInit, TemplateRef, QueryList } from '@angular/core';
+
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 
-import { moduleName, TabsetController, tabsetControllerName, ITabHeader } from './tabs.module';
+import { TabsetComponent, TabComponent, TabHeaderComponent } from './index';
 
-import * as angular from 'angular';
-import 'angular-mocks';
-
-interface IElementMock {
-	position: number;
+class MockQueryList<T> extends Array<T>
+{
+	get first(): T {
+		return this[0];
+	}
 }
 
-describe('TabsetController', () => {
-	let scope: angular.IScope;
-	let tabset: TabsetController;
+describe('TabsetComponent', () => {
+	let tabset: TabsetComponent;
+	let mockTabComponentQueryList: MockQueryList<TabComponent>;
+	let tabsetTabsSpy: Sinon.SinonSpy;
+	let tabHeader: TabHeaderComponent;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-		buildController();
-		let findPositionMock: Sinon.SinonSpy = sinon.spy((elem: IElementMock): number => {
-			return elem.position;
+		tabset = new TabsetComponent();
+		tabHeader = new TabHeaderComponent({
+			nativeElement: {
+				innerHTML: 'Header Text'
+			}
 		});
-		tabset.findPosition = findPositionMock;
+
+		mockTabComponentQueryList = new MockQueryList<TabComponent>();
+		let tabComponent: TabComponent;
+
+		for (var i = 0; i < 2; i++) {
+			tabComponent = new TabComponent();
+			tabComponent.header = tabHeader;
+			tabComponent.childForm = null;
+			tabComponent.isActive = false;
+			mockTabComponentQueryList.push(tabComponent);
+		}
+
+		tabset.tabs = <any>mockTabComponentQueryList;
 	});
 
-	it('should register the tab headers at the specified position and select the first tab', (): void => {
-		let header1: ITabHeader = {	template: 'header1' };
-		let header2: ITabHeader = { template: 'header2' };
-
-		tabset.registerTab(<any>{ position: 1 }, header2);
-		tabset.registerTab(<any>{ position: 0 }, header1);
-
-		expect(tabset.tabHeaders[0]).to.equal(header1);
-		expect(tabset.tabHeaders[1]).to.equal(header2);
-		expect(header1.isVisible).to.be.true;
-		expect(header2.isVisible).to.be.false;
+	it('should select the first tab', (): void => {
+		tabset.ngAfterContentInit();
+		expect(tabset.tabs[0].isActive).to.be.true;
+		expect(tabset.tabs[1].isActive).to.be.false;
 	});
 
 	it('should hide all tabs and show the selected tab', (): void => {
-		let header1: ITabHeader = {	template: 'header1', isVisible: true };
-		let header2: ITabHeader = { template: 'header2', isVisible: false };
+		tabset.ngAfterContentInit();
+		tabset.select(mockTabComponentQueryList[1]);
 
-		tabset.tabHeaders = [header1, header2];
-
-		tabset.select(header2);
-
-		expect(header1.isVisible).to.be.false;
-		expect(header2.isVisible).to.be.true;
+		expect(tabset.tabs[0].isActive).to.be.false;
+		expect(tabset.tabs[1].isActive).to.be.true;
 	});
-
-	function buildController(): void {
-		let locals: any = {
-			$element: {},
-		};
-
-		let controllerResult: test.IControllerResult<TabsetController>
-			= test.angularFixture.controllerWithBindings<TabsetController>(tabsetControllerName, null, locals);
-
-		scope = controllerResult.scope;
-		tabset = controllerResult.controller;
-	}
 });
