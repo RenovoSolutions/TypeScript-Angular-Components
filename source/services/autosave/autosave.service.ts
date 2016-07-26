@@ -4,11 +4,8 @@ import * as _ from 'lodash';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import {
-	moduleName as autosaveActionModuleName,
-	serviceName as autosaveActionServiceName,
-	IAutosaveActionService,
-} from '../autosaveAction/autosaveAction.service';
+import { IAutosaveActionService } from '../autosaveAction/autosaveAction.service';
+import { autosaveActionServiceName, moduleName as componentsDowngradeModule } from '../../componentsDowngrade';
 import * as triggers from './triggers/triggers.service';
 import { IFormService, serviceName as formServiceName, moduleName as formModule } from '../form/form.service.ng1';
 import { IFormValidator } from '../../types/formValidators';
@@ -129,5 +126,5 @@ function autosaveServiceFactory(notification: __notification.INotificationServic
 	};
 }
 
-angular.module(moduleName, [downgrade.moduleName, autosaveActionModuleName, triggers.moduleName, formModule])
+angular.module(moduleName, [downgrade.moduleName, componentsDowngradeModule, triggers.moduleName, formModule])
 	.factory(factoryName, autosaveServiceFactory);

@@ -26,6 +26,11 @@
 	<rlTextbox name="textbox1" label="Textbox 1" rlRequired="Required textbox"></rlTextbox>
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
+<h5>Autosave form</h5>
+<rlBusy [loading]="autosaveAction.saving || autosaveAction.complete"></rlBusy>
+<rlForm [save]="waitCallback" rlAutosave>
+	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
+</rlForm>
 <h5>Broken validation</h5>
 <rlForm>
 	<rlTextbox [validator]="brokenValidator"></rlTextbox>

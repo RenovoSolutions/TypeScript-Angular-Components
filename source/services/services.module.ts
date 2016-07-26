@@ -39,7 +39,6 @@ export var moduleName: string = 'rl.ui.services';
 
 angular.module(moduleName, [
 	autosave.moduleName,
-	autosaveAction.moduleName,
 	breakpointsNg1.moduleName,
 	componentValidator.moduleName,
 	contentProvider.moduleName,
