@@ -20,7 +20,7 @@ import * as longClickButtonNg1 from './buttons/buttonLongClick/buttonLongClick.n
 import * as messageLogNg1 from './messageLog/messageLog.module';
 import * as multiStepIndicatorNg1 from './multiStepIndicator/multiStepIndicator.ng1';
 import * as radioNg1 from './inputs/radio/radio.module';
-import * as ratingBarNg1 from './ratingBar/ratingBar';
+import * as ratingBarNg1 from './ratingBar/ratingBar.ng1';
 import * as richTextEditorNg1 from './richTextEditor/richTextEditor';
 import * as selectNg1 from './inputs/select/select.ng1';
 import * as signaturePadNg1 from './signaturePad/signaturePad';

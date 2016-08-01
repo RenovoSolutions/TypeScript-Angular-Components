@@ -5,7 +5,7 @@ import {
 	moduleName,
 	controllerName,
 	RatingBarController,
-} from './ratingBar';
+} from './ratingBar.ng1';
 
 import { defaultThemeValueName } from '../componentsDefaultTheme';
 
