@@ -2,3 +2,17 @@
 <div><rlBusy #busy></rlBusy></div>
 <div><button (click)="toggle()">Toggle</button></div>
 <div><rlBusy #busy2></rlBusy></div>
+<div class="form-group">
+	<label>Rating Bar:</label>
+	<rlRatingBar [width]="100" [height]="10" [value]="0" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="10" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="30" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="50" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="70" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="90" [min]="0" [max]="100"></rlRatingBar>
+	<rlRatingBar [width]="100" [height]="10" [value]="100" [min]="0" [max]="100"></rlRatingBar>
+	<label>Dynamic:</label>
+	<rlSpinner [(value)]="value" label="Value" [max]="100"></rlSpinner>
+	<rlSpinner [(value)]="width" label="Width"></rlSpinner>
+	<rlRatingBar [width]="width" [height]="10" [value]="value" [min]="0" [max]="100"></rlRatingBar>
+</div>
