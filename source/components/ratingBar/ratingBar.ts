@@ -1,80 +1,78 @@
-import * as angular from 'angular';
-
-import { defaultThemeValueName } from '../componentsDefaultTheme';
+import { Component, Input, OnInit, OnChanges, SimpleChange } from '@angular/core';
 
 import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './ratingBarBackgrounds.service';
 import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
-
-import { IChangeObject } from '../../types/changes';
-
-export var moduleName: string = 'rl.ui.components.ratingBar';
-export var componentName: string = 'rlRatingBar';
-export var controllerName: string = 'RatingBarController';
+import { DefaultTheme } from '../componentsDefaultTheme';
 
 export interface IDimensions {
 	width: number;
 	height: number;
 }
 
-export interface IRatingBarScopeBindings {
-	totalWidth: number;
-	height: number;
-	value: number;
-	min: number;
-	max: number;
-	background: string;
-}
-
 export interface IRatingBarChanges {
-	value?: IChangeObject<number>;
-	totalWidth?: IChangeObject<number>;
+	value?: SimpleChange;
+	width?: SimpleChange;
+	[key: string]: SimpleChange;
 }
 
-export class RatingBarController implements IRatingBarScopeBindings {
-	// bindings
-	totalWidth: number;
-	height: number;
-	value: number;
-	min: number;
-	max: number;
-	background: string;
+@Component({
+	selector: 'rlRatingBar',
+	template: require('./ratingBar.html'),
+})
+export class RatingBarComponent implements OnInit {
+	@Input() value: number;
+	@Input() min: number;
+	@Input() max: number;
+	@Input() width: number;
+	@Input() height: number;
+	@Input() background: string;
 
 	backgroundClass: string;
 	dimensions: IDimensions;
-	width: number;
+	calculatedWidth: number;
 	barClass: string;
 
 	private ratingBarClass: IRatingBarClassService;
+	private ratingBarBackgrounds: IRatingBarBackgroundsService;
+	private useDefaultTheme: boolean;
 
-	static $inject: string[] = [defaultThemeValueName];
-	constructor(public useDefaultTheme: boolean) {
-		let ratingBarBackgrounds: IRatingBarBackgroundsService = new RatingBarBackgroundService;
-		this.ratingBarClass = new RatingBarClassService;
+	constructor(defaultTheme: DefaultTheme) {
+		this.useDefaultTheme = defaultTheme.useDefaultTheme;
+		this.ratingBarClass = new RatingBarClassService();
+		this.ratingBarBackgrounds = new RatingBarBackgroundService();
+	}
 
-		this.backgroundClass = ratingBarBackgrounds.getBackground(this.background);
+	ngOnInit(): void {
+		this.backgroundClass = this.ratingBarBackgrounds.getBackground(this.background);
 
-		if (this.value == null) {
+		if (!this.value) {
 			this.value = 0;
 		}
 
 		this.updateValue(this.value);
-		this.updateDimensions(this.totalWidth);
+		this.updateDimensions(this.width);
 	}
 
-	$onChanges(changes: IRatingBarChanges): void {
+	ngOnChanges(changes: IRatingBarChanges): void {
 		if (changes.value) {
 			this.updateValue(changes.value.currentValue);
 		}
 
-		if (changes.totalWidth) {
-			this.updateDimensions(changes.totalWidth.currentValue);
+		if (changes.width) {
+			this.updateDimensions(changes.width.currentValue);
 		}
 	}
 
 	private updateValue(newValue: number): void {
-		var confidenceScore: number = (newValue - this.min) / (this.max - this.min);
+		if (newValue > this.max) {
+			newValue = this.max;
+		} else if (newValue < this.min) {
+			newValue = this.min;
+		}
+
+		const confidenceScore: number = (newValue - this.min) / (this.max - this.min);
 		this.barClass = this.ratingBarClass.getClass(confidenceScore);
-		this.width = Math.round(confidenceScore * this.totalWidth);
+		this.calculatedWidth = Math.round(confidenceScore * this.width);
 	}
 
 	private updateDimensions(totalWidth: number): void {
@@ -85,27 +83,3 @@ export class RatingBarController implements IRatingBarScopeBindings {
 		this.updateValue(this.value);
 	}
 }
-
-let ratingBar: angular.IComponentOptions = {
-	template: `
-		<div class="rating-bar">
-			<div class="{{ratingBar.backgroundClass}}" ng-class="{ empty: ratingBar.value == ratingBar.min, 'default-theme': ratingBar.useDefaultTheme }" ng-style="ratingBar.dimensions">
-				<div ng-class="ratingBar.barClass" ng-style="{ width: ratingBar.width, height: ratingBar.height }"></div>
-			</div>
-		</div>
-	`,
-	controller: controllerName,
-	controllerAs: 'ratingBar',
-	bindings: {
-		totalWidth: '<width',
-		height: '<',
-		value: '<',
-		min: '<',
-		max: '<',
-		background: '<',
-	},
-};
-
-angular.module(moduleName, [])
-	.component(componentName, ratingBar)
-	.controller(controllerName, RatingBarController);

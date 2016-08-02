@@ -1,0 +1,10 @@
+<div class="rating-bar">
+	<div class="{{backgroundClass}}"
+		 [class.empty]="value == min"
+		 [class.default-theme]="useDefaultTheme"
+		 [ngStyle]="dimensions">
+		<div [ngClass]="barClass"
+			 [style.width]="calculatedWidth"
+			 [style.height]="height"></div>
+	</div>
+</div>

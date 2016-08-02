@@ -1,74 +1,50 @@
-import { services } from 'typescript-angular-utilities';
-import test = services.test;
+import { RatingBarComponent } from './ratingBar';
 
-import {
-	moduleName,
-	controllerName,
-	RatingBarController,
-} from './ratingBar';
+import { RatingBarBackgroundService } from './ratingBarBackgrounds.service';
+import { RatingBarClassService } from './ratingBarClass.service';
 
-import { defaultThemeValueName } from '../componentsDefaultTheme';
-
-import { IRatingBarBackgroundsService, RatingBarBackgroundService } from './ratingBarBackgrounds.service';
-
-import { IRatingBarClassService, RatingBarClassService } from './ratingBarClass.service';
-
-import * as angular from 'angular';
-import 'angular-mocks';
-
-interface IRatingBarProperties {
-	value: number;
-	min: number;
-	max: number;
-	background: number;
-	height: number;
-	totalWidth: number;
-}
-
-describe('RatingBarController', () => {
-	var scope: angular.IScope;
-	var ratingBar: RatingBarController;
-	var ratingBarBackgrounds: IRatingBarBackgroundsService;
-	var ratingBarClass: IRatingBarClassService;
+describe('RatingBarComponent', () => {
+	let ratingBar: RatingBarComponent;
+	let ratingBarBackgrounds: RatingBarBackgroundService;
+	let ratingBarClass: RatingBarClassService;
 
 	beforeEach(() => {
-		angular.mock.module(moduleName);
-
-		let mocks: any = {};
-		mocks[defaultThemeValueName] = true;
-		test.angularFixture.mock(mocks);
-
 		ratingBarBackgrounds = new RatingBarBackgroundService();
 		ratingBarClass = new RatingBarClassService();
+		ratingBar = new RatingBarComponent({ useDefaultTheme: true });
 	});
 
 	describe('background', (): void => {
 		it('should set the background to dark', (): void => {
-			buildController(<any>{ background: ratingBarBackgrounds.dark.type });
+			ratingBar.background = ratingBarBackgrounds.dark.type;
+			ratingBar.ngOnInit();
 			expect(ratingBar.backgroundClass).to.equal(ratingBarBackgrounds.dark.class);
 		});
 
 		it('should set the background to transparent', (): void => {
-			buildController(<any>{ background: ratingBarBackgrounds.transparent.type });
+			ratingBar.background = ratingBarBackgrounds.transparent.type;
+			ratingBar.ngOnInit();
 			expect(ratingBar.backgroundClass).to.equal(ratingBarBackgrounds.transparent.class);
 		});
 
 		it('should use the default background', (): void => {
-			buildController();
+			ratingBar.ngOnInit();
 			expect(ratingBar.backgroundClass).to.equal(ratingBarBackgrounds.standard.class);
 		});
 	});
 
 	describe('dimensions', (): void => {
 		it('should set the dimensions to tne number passed in plus 2 pixels on each size', (): void => {
-			buildController(<any>{ height: 20, totalWidth: 30 });
+			ratingBar.height = 20;
+			ratingBar.width = 30;
+			ratingBar.ngOnInit();
 
 			expect(ratingBar.dimensions.height).to.equal(22);
 			expect(ratingBar.dimensions.width).to.equal(32);
 
 			// only the width can be updated dynamically from outside the directive
-			ratingBar.$onChanges({
-				totalWidth: <any>{ currentValue: 40 },
+			ratingBar.ngOnChanges({
+				width: <any>{ currentValue: 40 },
 			});
 
 			expect(ratingBar.dimensions.width).to.equal(42);
@@ -76,87 +52,71 @@ describe('RatingBarController', () => {
 	});
 
 	describe('confidence', (): void => {
-		it('should set the value on the controller', (): void => {
-			buildController(<any>{ value: 20 });
-			expect(ratingBar.value).to.equal(20);
-		});
-
 		it('should default to 0 if no value is provided', (): void => {
-			buildController();
+			ratingBar.ngOnInit();
 			expect(ratingBar.value).to.equal(0);
 		});
 
 		it('should set the width to the confidence score multiplied by the total width', (): void => {
-			var confidenceData: IRatingBarProperties = <any>{
-				value: 20,
-				min: 0,
-				max: 40,
-				totalWidth: 20,
-			};
+			const value = 20;
+			const maxValue = 40;
+			const width = 20;
 
-			buildController(confidenceData);
+			ratingBar.value = value;
+			ratingBar.min = 0;
+			ratingBar.max = maxValue;
+			ratingBar.width = width;
 
-			// confidence = 20 / 40 = 0.5;
-			// width = 0.5 * 20 = 10;
-			expect(ratingBar.width).to.equal(10);
+			const confidence = value / maxValue; // 20 / 40 = 0.5
+			const calculatedWidth = confidence * width; // 0.5 * 20 = 10
+
+			ratingBar.ngOnInit();
+
+			expect(ratingBar.calculatedWidth).to.equal(calculatedWidth);
+			expect(ratingBar.calculatedWidth).to.equal(10);
 		});
 
 		describe('class', (): void => {
-			var confidenceData: IRatingBarProperties;
-
 			beforeEach((): void => {
-				confidenceData = <any>{
-					min: 0,
-					max: 100,
-				};
+				ratingBar.min = 0;
+				ratingBar.max = 100;
 			});
 
 			it('should set the class to very high if the confidence is equal to or above 80%', (): void => {
-				confidenceData.value = 80;
-
-				buildController(confidenceData);
-
+				ratingBar.value = 80;
+				ratingBar.ngOnInit();
 				expect(ratingBar.barClass).to.equal('very-high');
 			});
 
 			it('should set the class to high if the confidence is between 60% and 80%', (): void => {
-				confidenceData.value = 60;
-
-				buildController(confidenceData);
-
+				ratingBar.value = 60;
+				ratingBar.ngOnInit();
 				expect(ratingBar.barClass).to.equal('high');
 			});
 
 			it('should set the class to high if the confidence is between 40% and 60%', (): void => {
-				confidenceData.value = 40;
-
-				buildController(confidenceData);
-
+				ratingBar.value = 40;
+				ratingBar.ngOnInit();
 				expect(ratingBar.barClass).to.equal('medium');
 			});
 
 			it('should set the class to high if the confidence is between 20% and 40%', (): void => {
-				confidenceData.value = 20;
-
-				buildController(confidenceData);
-
+				ratingBar.value = 20;
+				ratingBar.ngOnInit();
 				expect(ratingBar.barClass).to.equal('low');
 			});
 
 			it('should set the class to very high if the confidence is equal to or below 20%', (): void => {
-				confidenceData.value = 0;
-
-				buildController(confidenceData);
-
+				ratingBar.value = 0;
+				ratingBar.ngOnInit();
 				expect(ratingBar.barClass).to.equal('very-low');
 			});
 
 			it('should update the confidence when the value changes', (): void => {
-				confidenceData.value = 0;
+				ratingBar.value = 0;
+				ratingBar.ngOnInit();
 
-				buildController(confidenceData);
-
-				ratingBar.$onChanges({
+				ratingBar.ngOnChanges({
 					value: <any>{ currentValue: 20 },
 				});
 
@@ -164,12 +124,4 @@ describe('RatingBarController', () => {
 			});
 		});
 	});
-
-	function buildController(initialProperties?: IRatingBarProperties): void {
-		var controllerResult: test.IControllerResult<RatingBarController>
-			= test.angularFixture.controllerWithBindings<RatingBarController>(controllerName, initialProperties);
-
-		scope = controllerResult.scope;
-		ratingBar = controllerResult.controller;
-	}
 });
