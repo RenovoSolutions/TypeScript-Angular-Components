@@ -1,9 +1,10 @@
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
@@ -29,8 +30,6 @@ describe('ServerSideDataSource', () => {
 	let source: IServerSideDataSource<number>;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
-
 		filter = <any>{
 			type: 'myFilter',
 			filter: (item: number): boolean => { return item === filter.value; },
@@ -42,9 +41,20 @@ describe('ServerSideDataSource', () => {
 			get: test.mock.promise({ dataSet: [1, 2], count: 2 }),
 		};
 
-		sinon.spy(dataSourceProcessor, 'processAndCount');
+		addProviders([
+			DataSourceProcessor,
+			Sorter,
+			MergeSort,
+			services.UTILITY_PROVIDERS,
+		]);
+		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
+			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
 
-		source = <any>new ServerSideDataSource<number>(<any>dataService.get, dataSourceProcessor, __array.arrayUtility, __object.objectUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
+			dataSourceProcessor = _dataSourceProcessor;
+			sinon.spy(dataSourceProcessor, 'processAndCount');
+			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
+		})();
+
 		source.filters = <any>[filter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },

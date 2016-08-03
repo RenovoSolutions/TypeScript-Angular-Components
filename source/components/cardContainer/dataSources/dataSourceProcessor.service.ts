@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import * as _ from 'lodash';
 
 import { services, filters, downgrade } from 'typescript-angular-utilities';
@@ -5,7 +6,7 @@ import __object = services.object;
 
 import { ISort } from '../sorts/sort';
 import { IDataPager } from '../paging/index';
-import { ISorter } from '../sorts/sorter/sorter.service';
+import { Sorter } from '../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
 	count: number;
@@ -31,9 +32,10 @@ export interface IDataSourceProcessor {
 	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
 }
 
+@Injectable()
 export class DataSourceProcessor implements IDataSourceProcessor{
-	constructor(private object: __object.IObjectUtility
-			, private sorter: ISorter) { }
+	constructor(private object: __object.ObjectUtility
+			, private sorter: Sorter) { }
 
 	process<TDataType>(sorts: ISort[]
 					, filters: filters.IFilter[]

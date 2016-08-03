@@ -1,11 +1,10 @@
+import { addProviders, inject } from '@angular/core/testing';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
-import __object = services.object;
 import __array = services.array;
-import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
@@ -27,16 +26,19 @@ describe('AsyncDataSource', () => {
 	let redrawingSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
-
 		dataService = {
 			get: test.mock.promise([1, 2]),
 		};
-
-		source = new AsyncDataSource<number>(dataService.get
-											, <any>dataSourceProcessor
-											, __array.arrayUtility
-											, new __synchronizedRequests.SynchronizedRequestsFactory());
+		addProviders([
+			DataSourceProcessor,
+			Sorter,
+			MergeSort,
+			services.UTILITY_PROVIDERS,
+		]);
+		inject([DataSourceProcessor, __array.ArrayUtility, __synchronizedRequests.SynchronizedRequestsFactory]
+				, (dataSourceProcessor, array, synchronizedRequestsFactory) => {
+			source = new AsyncDataSource<number>(dataService.get, dataSourceProcessor, array, synchronizedRequestsFactory);
+		})();
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();

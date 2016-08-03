@@ -1,9 +1,10 @@
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { SmartDataSource } from './smartDataSource.service';
@@ -39,8 +40,6 @@ describe('SmartDataSource', () => {
 	let data: number[];
 
 	beforeEach(() => {
-		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
-
 		appliedFilter = <any>{
 			type: 'filter1',
 			filter: (item: number): boolean => { return true; },
@@ -75,12 +74,22 @@ describe('SmartDataSource', () => {
 		dataService = {
 			get: test.mock.promise({ dataSet: data, count: 2 }),
 		};
+		addProviders([
+			DataSourceProcessor,
+			Sorter,
+			MergeSort,
+			services.UTILITY_PROVIDERS,
+		]);
+		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
+			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
 
-		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
-		dataSourceProcessor.sort = sinon.spy();
-		dataSourceProcessor.page = sinon.spy();
+			dataSourceProcessor = _dataSourceProcessor;
+			dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
+			dataSourceProcessor.sort = sinon.spy();
+			dataSourceProcessor.page = sinon.spy();
+			source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
+		})();
 
-		source = <any>new SmartDataSource<number>(<any>dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility, new __synchronizedRequests.SynchronizedRequestsFactory());
 		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{
 			column: { label: 'col1' },
