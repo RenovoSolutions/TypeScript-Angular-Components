@@ -9,7 +9,7 @@ export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
 export const componentName: string = 'rlPageSize';
 export const controllerName: string = 'PageSizeController';
 
-export const availablePageSizes: number[] = [10, 25, 50, 100];
+export const availablePageSizes: number[] = [10, 25, 50];
 export const defaultPageSize: number = 10;
 
 export class PageSizeController {
