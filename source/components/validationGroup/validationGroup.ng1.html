@@ -1,6 +1,6 @@
 <div class="content-group" ng-form="validationGroupForm">
-	<div class="error-message" ng-if="validationGroupForm.$error.customValidation">
-		<label>{{group.groupValidator.error}}</label>
+	<div class="alert alert-danger" ng-if="validationGroupForm.$error.customValidation">
+		{{group.groupValidator.error}}
 	</div>
 	<div ng-transclude></div>
 </div>
