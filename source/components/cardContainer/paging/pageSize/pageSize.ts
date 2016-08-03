@@ -4,7 +4,7 @@ import { IDataPager } from '../dataPager/dataPager.service';
 import { CardContainerComponent } from '../../cardContainer';
 import { SelectComponent } from '../../../inputs/index';
 
-export const availablePageSizes: number[] = [10, 25, 50];
+export const availablePageSizes: number[] = [10, 15, 20, 25];
 
 @Component({
 	selector: 'rlPageSize',
