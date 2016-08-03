@@ -72,17 +72,13 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 			return true;
 		}
 
-		const canClose: boolean = this.saveForm();
+		const canClose: boolean = this.submit();
 
 		if (canClose) {
 			this.showContent = false;
 		}
 
 		return canClose;
-	}
-
-	saveForm(): boolean {
-		return this.boolean.toBool(this.submit());
 	}
 
 	private emptyList(): SimpleCardListComponent<T> {
