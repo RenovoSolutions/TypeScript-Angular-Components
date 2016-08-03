@@ -62,8 +62,8 @@ describe('ButtonLongClickComponent', () => {
 
 		tick(1000);
 
-		button.timer.catch(() => null);
 		button.stopAction();
+		flushMicrotasks();
 
 		sinon.assert.calledOnce(notification.warning);
 		sinon.assert.calledWith(notification.warning, 'warning');
