@@ -1,6 +1,6 @@
 <div class="content-group">
-	<div class="error-message" [hidden]="validationControl.valid">
-		<label>{{groupValidator.error}}</label>
+	<div class="alert alert-danger" [hidden]="validationControl.valid">
+		{{groupValidator.error}}
 	</div>
 	<ng-content></ng-content>
 </div>
