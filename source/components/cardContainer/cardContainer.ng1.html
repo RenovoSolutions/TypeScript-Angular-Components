@@ -65,7 +65,7 @@
 					<rl-busy loading="cardContainer.dataSource.loadingDataSet" size="2x"></rl-busy>
 				</div>
 
-				<div class="card-container-footer">
+				<div class="card-container-footer" ng-if="!cardContainer.dataSource.isEmpty">
 					<div ng-transclude="containerFooterSlot">
 						<rl-default-card-container-footer></rl-default-card-container-footer>
 					</div>

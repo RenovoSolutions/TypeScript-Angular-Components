@@ -32,7 +32,7 @@
 					<rlBusy [loading]="dataSource.loadingDataSet" size="2x"></rlBusy>
 				</div>
 
-				<div class="card-container-footer">
+				<div class="card-container-footer" *ngIf="!dataSource.isEmpty">
 					<rlContainerFooter [footer]="containerFooter"></rlContainerFooter>
 				</div>
 			</div>
