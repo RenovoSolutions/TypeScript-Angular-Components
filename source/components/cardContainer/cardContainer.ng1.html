@@ -54,10 +54,10 @@
 								save-when-invalid="cardContainer.saveWhenInvalid"></rl-card>
 					</div>
 				</div>
-				<div ng-if="cardContainer.dataSource.needsRefinedSearch">
+				<div class="alert alert-info" ng-if="cardContainer.dataSource.needsRefinedSearch">
 					Please refine your search results
 				</div>
-				<div ng-if="cardContainer.dataSource.isEmpty">
+				<div class="alert alert-info" ng-if="cardContainer.dataSource.isEmpty">
 					There are no items to show
 				</div>
 

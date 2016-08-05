@@ -21,10 +21,10 @@
 								[save]="save"></rlCard>
 					</div>
 				</div>
-				<div *ngIf="dataSource.needsRefinedSearch">
+				<div class="alert alert-info" *ngIf="dataSource.needsRefinedSearch">
 					Please refine your search results
 				</div>
-				<div *ngIf="dataSource.isEmpty">
+				<div class="alert alert-info" *ngIf="dataSource.isEmpty">
 					There are no items to show
 				</div>
 
