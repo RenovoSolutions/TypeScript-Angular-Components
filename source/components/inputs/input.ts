@@ -45,7 +45,6 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 
 		this.control.valueChanges.subscribe(value => {
 			this.value = value;
-			this.change.emit(value);
 		});
 	}
 
@@ -60,6 +59,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 			this.value = value;
 			this.control.markAsDirty();
 			this.control.updateValue(this.value);
+			this.change.emit(value);
 		}
 	}
 }
