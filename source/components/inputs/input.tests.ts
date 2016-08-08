@@ -61,20 +61,15 @@ describe('InputComponent', (): void => {
 		sinon.assert.calledWith(rlForm.form.addControl, 'name', control);
 	});
 
-	it('should subscribe to changes on the form, update the value, and emit the changes', (): void => {
+	it('should subscribe to changes on the form control and update the value', (): void => {
 		const control: IControlMock = { valueChanges: new Subject<number>() };
 		input.control = <any>control;
-
-		const changeSpy: Sinon.SinonSpy = sinon.spy();
-		input.change.emit = changeSpy;
 
 		input.ngAfterViewInit();
 
 		control.valueChanges.next(3);
 
 		expect(input.value).to.equal(3);
-		sinon.assert.calledOnce(changeSpy);
-		sinon.assert.calledWith(changeSpy, 3);
 	});
 
 	it('should initialize the control if none is present', (): void => {
@@ -96,6 +91,8 @@ describe('InputComponent', (): void => {
 		sinon.assert.calledOnce(control.markAsDirty);
 		sinon.assert.calledOnce(control.updateValue);
 		sinon.assert.calledWith(control.updateValue, 5);
+		sinon.assert.calledOnce(changeSpy);
+		sinon.assert.calledWith(changeSpy, 5);
 	});
 
 	it('should ignore updates if disabled', (): void => {
