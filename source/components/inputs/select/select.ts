@@ -58,7 +58,9 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	}
 
 	select(value: T): void {
-		this.setValue(value);
+		if (value != this.value) {
+			this.setValue(value);
+		}
 		this.list.close();
 	}
 

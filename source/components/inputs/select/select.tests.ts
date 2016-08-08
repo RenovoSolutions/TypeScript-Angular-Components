@@ -88,6 +88,19 @@ describe('SelectComponent', () => {
 		sinon.assert.calledWith(setValue, options[1]);
 	});
 
+	it('should close the options without setting the value if the current value is reselected', (): void => {
+		const closeSpy = sinon.spy();
+		dropdown.list = <any>{
+			close: closeSpy,
+		};
+		dropdown.value = options[1];
+
+		dropdown.select(options[1]);
+
+		sinon.assert.calledOnce(closeSpy);
+		sinon.assert.notCalled(setValue);
+	});
+
 	it('should transform the item to a display name', (): void => {
 		const option: ITestOption = { value: 3 };
 		const transform: string = 'value';

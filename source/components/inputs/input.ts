@@ -42,12 +42,6 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		if (this.rlForm) {
 			this.rlForm.form.addControl(this.name, this.control);
 		}
-	}
-
-	initControl(): void {
-		if (!this.control) {
-			this.control = new FormControl('');
-		}
 
 		this.control.valueChanges.subscribe(value => {
 			this.value = value;
@@ -55,12 +49,17 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		});
 	}
 
+	initControl(): void {
+		if (!this.control) {
+			this.control = new FormControl('');
+		}
+	}
+
 	setValue(value: T): void {
 		if (!this.disabled) {
 			this.value = value;
 			this.control.markAsDirty();
 			this.control.updateValue(this.value);
-			this.change.emit(this.value);
 		}
 	}
 }
