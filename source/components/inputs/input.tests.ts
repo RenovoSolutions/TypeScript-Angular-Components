@@ -51,7 +51,7 @@ describe('InputComponent', (): void => {
 	});
 
 	it('should add the control to the form using the name if a form is present', (): void => {
-		const control: any = {};
+		const control: any = { valueChanges: new Subject<number>() };
 		input.control = control;
 		input.name = 'name';
 
@@ -68,7 +68,7 @@ describe('InputComponent', (): void => {
 		const changeSpy: Sinon.SinonSpy = sinon.spy();
 		input.change.emit = changeSpy;
 
-		input.initControl();
+		input.ngAfterViewInit();
 
 		control.valueChanges.next(3);
 

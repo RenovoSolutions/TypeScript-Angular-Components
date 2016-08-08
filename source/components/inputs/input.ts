@@ -42,17 +42,17 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		if (this.rlForm) {
 			this.rlForm.form.addControl(this.name, this.control);
 		}
+
+		this.control.valueChanges.subscribe(value => {
+			this.value = value;
+			this.change.emit(value);
+		});
 	}
 
 	initControl(): void {
 		if (!this.control) {
 			this.control = new FormControl('');
 		}
-
-		this.control.valueChanges.subscribe(value => {
-			this.value = value;
-			this.change.emit(value);
-		});
 	}
 
 	setValue(value: T): void {

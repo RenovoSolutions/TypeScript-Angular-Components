@@ -10,6 +10,7 @@ import { ValidatedInputComponent, IInputChanges } from './validationInput';
 interface IControlMock {
 	updateValueAndValidity?: Sinon.SinonSpy;
 	updateValue?: Sinon.SinonSpy;
+	valueChanges?: { subscribe: Sinon.SinonSpy };
 }
 
 interface IComponentValidatorMock {
@@ -66,7 +67,10 @@ describe('ValidatedInputComponent', (): void => {
 	});
 
 	it('should set the control on the component validator and update the validity of the control', (): void => {
-		const control: IControlMock = { updateValueAndValidity: sinon.spy() };
+		const control: IControlMock = {
+			updateValueAndValidity: sinon.spy(),
+			valueChanges: { subscribe: sinon.spy() },
+		};
 		input.control = <any>control;
 		input.value = 4;
 
@@ -80,7 +84,10 @@ describe('ValidatedInputComponent', (): void => {
 
 	// updateValueAndValidity doesn't handle 'null' properly
 	it('should default the value to undefined if null', (): void => {
-		const control: IControlMock = { updateValueAndValidity: sinon.spy() };
+		const control: IControlMock = {
+			updateValueAndValidity: sinon.spy(),
+			valueChanges: { subscribe: sinon.spy() },
+		};
 		input.control = <any>control;
 		input.value = null;
 
