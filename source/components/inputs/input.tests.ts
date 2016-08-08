@@ -22,7 +22,7 @@ interface IControlMock {
 	markAsDirty?: Sinon.SinonSpy;
 }
 
-describe('base input', (): void => {
+describe('InputComponent', (): void => {
 	let input: InputComponent<number>;
 	let rlForm: IFormMock;
 	let guid: IGuidMock;

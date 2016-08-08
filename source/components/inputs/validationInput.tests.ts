@@ -18,7 +18,7 @@ interface IComponentValidatorMock {
 	validate: Sinon.SinonSpy;
 }
 
-describe('base validating input', (): void => {
+describe('ValidatedInputComponent', (): void => {
 	let input: ValidatedInputComponent<number>;
 	let componentValidator: IComponentValidatorMock;
 
