@@ -96,8 +96,6 @@ describe('InputComponent', (): void => {
 		sinon.assert.calledOnce(control.markAsDirty);
 		sinon.assert.calledOnce(control.updateValue);
 		sinon.assert.calledWith(control.updateValue, 5);
-		sinon.assert.calledOnce(changeSpy);
-		sinon.assert.calledWith(changeSpy, 5);
 	});
 
 	it('should ignore updates if disabled', (): void => {
