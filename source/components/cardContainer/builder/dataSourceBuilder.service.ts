@@ -25,10 +25,10 @@ export interface IDataSourceBuilder {
 export class DataSourceBuilder implements IDataSourceBuilder {
 	private injector: Injector;
 	private parent: CardContainerBuilder;
-	private object: __object.IObjectUtility;
+	private object: __object.ObjectUtility;
 	private array: __array.IArrayUtility;
 	private synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory;
-	private sorter: ISorter;
+	private sorter: Sorter;
 
 	constructor(injector: Injector
 			, object: __object.ObjectUtility
