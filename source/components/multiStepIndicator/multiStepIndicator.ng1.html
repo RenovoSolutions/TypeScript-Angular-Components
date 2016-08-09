@@ -2,7 +2,8 @@
 	<ol>
 		<li ng-repeat="step in breadcrumb.steps" ng-click="breadcrumb.onClick(step)"
 			ng-class="{ 'completed': step.getCompleted(), 'current': step.isCurrent, 'active': !step.inactive && !breadcrumb.anyLoading() }">
-			<div class="wrap">
+			<div class="wrap"
+				 ng-class="{ 'multi-step-loading': step.loading }">
 				<p class="badge" ng-show="step.hasCount">{{step.count()}}</p>
 				<p class="error" ng-if="!step.getValid()"></p>
 				<p class="title">{{step.title}} <rl-busy loading="step.loading"></rl-busy></p>

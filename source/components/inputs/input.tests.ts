@@ -22,7 +22,7 @@ interface IControlMock {
 	markAsDirty?: Sinon.SinonSpy;
 }
 
-describe('base input', (): void => {
+describe('InputComponent', (): void => {
 	let input: InputComponent<number>;
 	let rlForm: IFormMock;
 	let guid: IGuidMock;
@@ -51,7 +51,7 @@ describe('base input', (): void => {
 	});
 
 	it('should add the control to the form using the name if a form is present', (): void => {
-		const control: any = {};
+		const control: any = { valueChanges: new Subject<number>() };
 		input.control = control;
 		input.name = 'name';
 
@@ -61,20 +61,15 @@ describe('base input', (): void => {
 		sinon.assert.calledWith(rlForm.form.addControl, 'name', control);
 	});
 
-	it('should subscribe to changes on the form, update the value, and emit the changes', (): void => {
+	it('should subscribe to changes on the form control and update the value', (): void => {
 		const control: IControlMock = { valueChanges: new Subject<number>() };
 		input.control = <any>control;
 
-		const changeSpy: Sinon.SinonSpy = sinon.spy();
-		input.change.emit = changeSpy;
-
-		input.initControl();
+		input.ngAfterViewInit();
 
 		control.valueChanges.next(3);
 
 		expect(input.value).to.equal(3);
-		sinon.assert.calledOnce(changeSpy);
-		sinon.assert.calledWith(changeSpy, 3);
 	});
 
 	it('should initialize the control if none is present', (): void => {

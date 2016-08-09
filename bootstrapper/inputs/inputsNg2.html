@@ -35,6 +35,7 @@
 		<template let-option>#{{option.value}}</template>
 	</rlSelect>
 	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
+	<rlSelect [value]="selection" (change)="log($event)" label="Output event" [options]="options" transform="value"></rlSelect>
 </div>
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/inputs/typeahead/typeahead.md">Typeahead</a>:</label>
