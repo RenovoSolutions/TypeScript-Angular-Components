@@ -1,13 +1,13 @@
+import { provide } from '@angular/core';
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
 import mock = __test.mock;
 import fakeAsync = __test.fakeAsync;
 import flushMicrotasks = __test.flushMicrotasks;
-import __object = services.object;
-import __array = services.array;
-import __guid = services.guid;
-import __search = services.search;
-import __transform = services.transform;
+
+import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
 import { TypeaheadComponent } from './typeahead';
 
@@ -35,7 +35,15 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		typeahead = new TypeaheadComponent<any>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
+		addProviders([
+			TypeaheadComponent,
+			provide(ComponentValidator, { useValue: validator }),
+			services.UTILITY_PROVIDERS,
+		]);
+
+		inject([TypeaheadComponent], (_typeahead) => {
+			typeahead = _typeahead;
+		})();
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
