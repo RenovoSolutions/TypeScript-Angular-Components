@@ -23,7 +23,7 @@
 			</template>
 		</rl-generic-container>
 	</div>
-	<div class="content-group" ng-if="(log.messages | isEmpty) && !log.loadingInitial">No existing messages</div>
+	<div class="alert alert-info" ng-if="(log.messages | isEmpty) && !log.loadingInitial">No existing messages</div>
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="text-center">
