@@ -5,7 +5,6 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
@@ -47,12 +46,12 @@ describe('ServerSideDataSource', () => {
 			MergeSort,
 			services.UTILITY_PROVIDERS,
 		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
+		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility]
+			, (_dataSourceProcessor, array, object) => {
 
 			dataSourceProcessor = _dataSourceProcessor;
 			sinon.spy(dataSourceProcessor, 'processAndCount');
-			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object);
 		})();
 
 		source.filters = <any>[filter];

@@ -5,7 +5,6 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { DataServiceDataSource, IAsyncDataSource } from './dataServiceDataSource.service';
 
@@ -23,7 +22,6 @@ describe('DataServiceDataSource', () => {
 	let dataSourceProcessor: DataSourceProcessor;
 	let dataService: IDataServiceMock;
 	let arrayUtility: __array.ArrayUtility;
-	let synchronizedRequestsFactory: __synchronizedRequests.SynchronizedRequestsFactory;
 
 	beforeEach(() => {
 		addProviders([
@@ -32,13 +30,12 @@ describe('DataServiceDataSource', () => {
 			MergeSort,
 			services.UTILITY_PROVIDERS,
 		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, _array, _synchronizedRequestsFactory) => {
+		inject([DataSourceProcessor, __array.ArrayUtility]
+			, (_dataSourceProcessor, _array) => {
 
 			dataSourceProcessor = _dataSourceProcessor;
 			sinon.spy(dataSourceProcessor, 'processAndCount');
 			arrayUtility = _array;
-			synchronizedRequestsFactory = _synchronizedRequestsFactory;
 		})();
 
 		dataService = <any> {};
@@ -48,7 +45,7 @@ describe('DataServiceDataSource', () => {
 		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2, 3]);
 
-			new DataServiceDataSource(dataService.get, dataSourceProcessor, arrayUtility, synchronizedRequestsFactory);
+			new DataServiceDataSource(dataService.get, dataSourceProcessor, arrayUtility);
 			test.mock.flushAll(dataService)
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
@@ -57,7 +54,7 @@ describe('DataServiceDataSource', () => {
 		it('should make an initial request to the server for data', fakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2]);
 
-			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, arrayUtility, synchronizedRequestsFactory);
+			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, arrayUtility);
 
 			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
 			source.reloaded.subscribe(reloadedSpy);

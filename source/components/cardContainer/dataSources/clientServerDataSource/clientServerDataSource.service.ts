@@ -4,7 +4,6 @@ import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessor } from '../dataSourceProcessor.service';
@@ -37,9 +36,8 @@ export class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType
 			, public validateModel: IValidateFilterModel<any>
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
-			, private object: __object.IObjectUtility
-			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(getDataSet, dataSourceProcessor, array, synchronizedRequestsFactory);
+			, private object: __object.IObjectUtility) {
+		super(getDataSet, dataSourceProcessor, array);
 
 		this.getFilterModel = this.getFilterModel || function(): void { return null; };
 		this.validateModel = this.validateModel || function(): boolean { return true; };
