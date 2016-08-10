@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { IDataSource } from '../dataSources/dataSource';
@@ -46,16 +45,13 @@ export class CardComponent<T> extends FormComponent {
 	refresh: Subject<void> = new Subject<void>();
 
 	cardContainer: CardContainerComponent<T>;
-	boolean: __boolean.IBooleanUtility;
 
 	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, boolean: __boolean.BooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
-		this.boolean = boolean;
 		this.cardContainer = cardContainer;
 		this.refresh.subscribe(() => this.cardContainer.dataSource.refresh());
 	}
@@ -83,7 +79,7 @@ export class CardComponent<T> extends FormComponent {
 			return true;
 		}
 
-		const canClose: boolean = this.boolean.toBool(this.submit());
+		const canClose: boolean = !!this.submit();
 
 		if (canClose) {
 			this.showContent = false;
