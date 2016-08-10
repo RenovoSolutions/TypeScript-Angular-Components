@@ -1,11 +1,11 @@
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __genericSearchFilter = services.genericSearchFilter;
 import __object = services.object;
-import __string = services.string;
 import __array = services.array;
-import __transform = services.transform;
 import __synchronizedRequests = services.synchronizedRequests;
 
 import { ClientServerDataSource } from './clientServerDataSource.service';
@@ -34,32 +34,42 @@ describe('ClientServerDataSource', () => {
 	let changedSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
-		searchFilter = new __genericSearchFilter.GenericSearchFilter(__object.objectUtility, __string.stringUtility, false);
+		addProviders([
+			DataSourceProcessor,
+			Sorter,
+			MergeSort,
+			services.UTILITY_PROVIDERS,
+		]);
+		inject([DataSourceProcessor, __genericSearchFilter.GenericSearchFilterFactory]
+			, (_dataSourceProcessor, genericSearchFactory) => {
+
+			dataSourceProcessor = _dataSourceProcessor;
+			sinon.spy(dataSourceProcessor, 'processAndCount');
+			searchFilter = genericSearchFactory.getInstance(false);
+		})();
 
 		dataService = {
 			get: test.mock.promise([1, 2]),
 		};
-
-		sinon.spy(dataSourceProcessor, 'processAndCount');
 
 		reloadedSpy = sinon.spy();
 		changedSpy = sinon.spy();
 	});
 
 	describe('server search', (): void => {
-		beforeEach((): void => {
+		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
+			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
 			source = new ClientServerDataSource<number>(<any>dataService.get
 				, searchFilter
 				, null
 				, null
 				, dataSourceProcessor
-				, __array.arrayUtility
-				, __object.objectUtility
-				, new __synchronizedRequests.SynchronizedRequestsFactory());
+				, arrayUtility
+				, objectUtility
+				, synchronizedRequestsFactory);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
-		});
+		}));
 
 		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
 			searchFilter.searchText = 'search';
@@ -120,7 +130,8 @@ describe('ClientServerDataSource', () => {
 		let filterModel: ITestFilterModel;
 		let validateSpy: Sinon.SinonSpy;
 
-		beforeEach((): void => {
+		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
+			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
 			validateSpy = sinon.spy((model: ITestFilterModel): boolean => {
 				return model.prop != null;
 			});
@@ -132,12 +143,12 @@ describe('ClientServerDataSource', () => {
 				, getFilterModel
 				, validateSpy
 				, dataSourceProcessor
-				, __array.arrayUtility
-				, __object.objectUtility
-				, new __synchronizedRequests.SynchronizedRequestsFactory());
+				, arrayUtility
+				, objectUtility
+				, synchronizedRequestsFactory);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
-		});
+		}));
 
 		it('should make a request to reload the data when the filter model changes', fakeAsync((): void => {
 			filterModel = { prop: '123' };

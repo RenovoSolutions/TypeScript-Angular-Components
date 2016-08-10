@@ -1,10 +1,11 @@
+import { provide } from '@angular/core';
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
 import fakeAsync = __test.fakeAsync;
-import __object = services.object;
-import __array = services.array;
-import __guid = services.guid;
-import __search = services.search;
+
+import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
 import { TypeaheadListComponent } from './typeaheadList';
 
@@ -34,7 +35,15 @@ describe('TypeaheadListComponent', () => {
 			{ id: 5, prop: 4 },
 		];
 
-		typeaheadList = new TypeaheadListComponent<ITestObject>(null, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
+		addProviders([
+			TypeaheadListComponent,
+			provide(ComponentValidator, { useValue: validator }),
+			services.UTILITY_PROVIDERS,
+		]);
+
+		inject([TypeaheadListComponent], (_typeaheadList) => {
+			typeaheadList = _typeaheadList;
+		})();
 
 		getItemsMock = __test.mock.request(items);
 		typeaheadList.getItems = getItemsMock;

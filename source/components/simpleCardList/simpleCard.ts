@@ -1,7 +1,6 @@
-import { Component, Input, Output, Optional, SkipSelf, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
+import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { SimpleCardListComponent } from './simpleCardList';
@@ -35,17 +34,14 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	showContent: boolean = false;
 	list: SimpleCardListComponent<T>;
 	alternatingClass: string = '';
-	private boolean: __boolean.IBooleanUtility;
 
 	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, boolean: __boolean.BooleanUtility
-			, @Optional() list: SimpleCardListComponent<T>) {
+			, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.list = list || this.emptyList();
-		this.boolean = boolean;
 	}
 
 	ngOnInit(): void {
@@ -72,17 +68,13 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 			return true;
 		}
 
-		const canClose: boolean = this.saveForm();
+		const canClose: boolean = this.submit();
 
 		if (canClose) {
 			this.showContent = false;
 		}
 
 		return canClose;
-	}
-
-	saveForm(): boolean {
-		return this.boolean.toBool(this.submit());
 	}
 
 	private emptyList(): SimpleCardListComponent<T> {

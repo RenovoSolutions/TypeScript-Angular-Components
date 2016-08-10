@@ -1,7 +1,10 @@
+import { provide } from '@angular/core';
+import { addProviders, inject } from '@angular/core/testing';
+
 import { services } from 'typescript-angular-utilities';
 import __time = services.time;
-import __object = services.object;
-import __guid = services.guid;
+
+import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
 import { AbsoluteTimeComponent } from './absoluteTime';
 
@@ -16,7 +19,15 @@ describe('AbsoluteTimeComponent', () => {
 		};
 		setValue = sinon.spy();
 
-		time = new AbsoluteTimeComponent(null, validator, __object.objectUtility, null, __guid.guid, <any>__time.timeUtility);
+		addProviders([
+			AbsoluteTimeComponent,
+			provide(ComponentValidator, { useValue: validator }),
+			services.UTILITY_PROVIDERS,
+		]);
+
+		inject([AbsoluteTimeComponent], (_time) => {
+			time = _time;
+		})();
 		time.setValue = setValue;
 	});
 

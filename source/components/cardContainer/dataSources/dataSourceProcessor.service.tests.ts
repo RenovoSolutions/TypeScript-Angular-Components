@@ -1,8 +1,7 @@
+import { addProviders, inject } from '@angular/core/testing';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __object = services.object;
-import __transform = services.transform;
 
 import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { DataPager } from '../paging/index';
@@ -24,7 +23,15 @@ describe('DataSourceProcessor', () => {
 	let pager: DataPager;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		addProviders([
+			DataSourceProcessor,
+			Sorter,
+			MergeSort,
+			services.UTILITY_PROVIDERS,
+		]);
+		inject([DataSourceProcessor], (_dataSourceProcessor) => {
+			dataSourceProcessor = _dataSourceProcessor;
+		})();
 		pager = new DataPager();
 	});
 

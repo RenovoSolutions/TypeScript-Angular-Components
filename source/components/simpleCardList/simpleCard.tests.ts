@@ -1,8 +1,3 @@
-import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
-
 import { SimpleCardComponent } from './simpleCard';
 import { SimpleCardListComponent } from './simpleCardList';
 
@@ -23,11 +18,11 @@ describe('SimpleCardComponent', () => {
 			openCard: sinon.spy(() => true),
 		};
 
-		card = new SimpleCardComponent(<any>{}, null, null, null, new __boolean.BooleanUtility, <any>list);
+		card = new SimpleCardComponent(<any>{}, null, null, null, <any>list);
 	});
 
 	it('should create an empty list if no list is provided', (): void => {
-		card = new SimpleCardComponent(null, null, null, null, new __boolean.BooleanUtility, null);
+		card = new SimpleCardComponent(null, null, null, null, null);
 		expect(card.list).to.exist;
 	});
 
@@ -85,7 +80,7 @@ describe('SimpleCardComponent', () => {
 		});
 
 		it('should be able to open with an empty list', (): void => {
-			card = new SimpleCardComponent(null, null, null, null, new __boolean.BooleanUtility, null);
+			card = new SimpleCardComponent(null, null, null, null, null);
 			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 			card.ngOnInit();
