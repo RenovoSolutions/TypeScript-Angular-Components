@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
@@ -14,7 +15,7 @@ export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDa
 }
 
 export interface IDataServiceSearchFunction<TDataType> {
-	(search: string | any): Promise<TDataType[]>;
+	(search: string | any): Promise<TDataType[]> | Observable<TDataType[]>;
 }
 
 export interface IGetFilterModel<TFilterModelType> {

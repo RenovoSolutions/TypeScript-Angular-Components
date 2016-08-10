@@ -1,5 +1,7 @@
+import { Observable } from 'rxjs';
+
 export interface IServerSearchFunction<TDataType> {
-	(searchParams: IServerSearchParams): angular.IPromise<IDataResult<TDataType>>;
+	(searchParams: IServerSearchParams): Promise<IDataResult<TDataType>> | Observable<IDataResult<TDataType>>;
 }
 
 export interface IServerSearchParams {
