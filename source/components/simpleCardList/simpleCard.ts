@@ -39,6 +39,7 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
+			, @Optional() nullInjectionConflictsWithCardParameter: AsyncHelper
 			, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.list = list || this.emptyList();
