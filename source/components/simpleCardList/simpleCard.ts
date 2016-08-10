@@ -1,4 +1,4 @@
-import { Component, Input, Output, Optional, SkipSelf, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
+import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -39,7 +39,7 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Optional() list: SimpleCardListComponent<T>) {
+			, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.list = list || this.emptyList();
 	}
