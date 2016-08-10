@@ -60,7 +60,7 @@ export class CardsBootstrapper {
 		this.options = [1, 2, 3, 4, 5];
 
 		this.builder = cardContainerBuilder;
-		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => this.wait(items));
+		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
 		this.builder.usePaging();
 		this.builder.addColumn({
 			name: 'name',
@@ -140,12 +140,6 @@ export class CardsBootstrapper {
 		this.modeFilterGroup.subscribe(value => console.log(value));
 		this.rangeFilterGroup.subscribe(value => console.log(value));
 		this.selectFilter.subscribe(value => console.log(value));
-	}
-
-	wait(data: any): Observable<any> {
-		const subject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-		setTimeout(() => subject.next(data), 1000);
-		return subject.asObservable();
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {
