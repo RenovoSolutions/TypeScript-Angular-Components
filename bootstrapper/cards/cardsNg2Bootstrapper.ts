@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { mapValues, map, range } from 'lodash';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -59,7 +60,7 @@ export class CardsBootstrapper {
 		this.options = [1, 2, 3, 4, 5];
 
 		this.builder = cardContainerBuilder;
-		this.builder.dataSource.buildSimpleDataSource(items);
+		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => this.wait(items));
 		this.builder.usePaging();
 		this.builder.addColumn({
 			name: 'name',
@@ -139,6 +140,12 @@ export class CardsBootstrapper {
 		this.modeFilterGroup.subscribe(value => console.log(value));
 		this.rangeFilterGroup.subscribe(value => console.log(value));
 		this.selectFilter.subscribe(value => console.log(value));
+	}
+
+	wait(data: any): Observable<any> {
+		const subject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+		setTimeout(() => subject.next(data), 1000);
+		return subject.asObservable();
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {
