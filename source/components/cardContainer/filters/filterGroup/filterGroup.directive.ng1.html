@@ -1,15 +1,15 @@
-<div class="filter-group">
-	<div class="row filter-header" ng-click="controller.toggleChildren()">
+<div class="filter-group" ng-class="{'filter-disabled': !controller.enabled}">
+	<div class="row filter-header" ng-click="controller.toggleExpanded()">
 		<div class="col-sm-12">
-			<i class="collapse-icon fa fa-caret-down fa-2x" ng-show="controller.showChildren" title="Hide filter list"></i>
-			<i class="collapse-icon fa fa-caret-right fa-2x" ng-hide="controller.showChildren" title="Show filter list"></i>
+			<i class="collapse-icon fa fa-caret-down fa-2x" ng-show="controller.childrenVisible" title="Hide filter list"></i>
+			<i class="collapse-icon fa fa-caret-right fa-2x" ng-hide="controller.childrenVisible" title="Show filter list"></i>
 			<div class="filter-option">
 				<div style="display:inline-block" ng-show="controller.hasIcon" ng-bind-html="controller.icon"></div>
-				<h4 style="display: inline-block">{{controller.filterGroup.label}}: {{controller.filterGroup.activeOption.label}}</h4>
+				<h4 style="display: inline-block">{{controller.headerTitle}}</h4>
 			</div>
 		</div>
 	</div>
-	<div ng-show="controller.showChildren" ng-repeat="filterOption in controller.filterGroup.options">
+	<div ng-show="controller.childrenVisible" ng-repeat="filterOption in controller.filterGroup.options">
 		<rl-filter-option option="filterOption" active="filterGroup.activeOption === filterOption" activate="controller.selectOption(filterOption)"></rl-filter-option>
 	</div>
 </div>
