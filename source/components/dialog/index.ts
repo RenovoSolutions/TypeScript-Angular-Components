@@ -1,8 +1,9 @@
 import { DialogComponent } from './dialog';
 import { DialogOutletComponent } from './dialogOutlet';
+import { PromptDialogComponent } from './promptDialog';
 import { DialogRootService } from './dialogRoot.service';
 
-export const DIALOG_DIRECTIVES: any[] = [DialogComponent, DialogOutletComponent];
+export const DIALOG_DIRECTIVES: any[] = [DialogComponent, DialogOutletComponent, PromptDialogComponent];
 export const DIALOG_PROVIDERS: any[] = [DialogRootService];
 
 export * from './dialog';
