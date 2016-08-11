@@ -73,6 +73,9 @@ System.config({
 		'@angular/forms': {
 			main: 'index.js',
 		},
+		'@angular/router': {
+			main: 'index.js',
+		},
 		'angular2-uuid': {
 			main: 'index.js',
 		},
