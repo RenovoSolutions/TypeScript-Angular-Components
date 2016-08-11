@@ -17,7 +17,7 @@ import { CardComponent, cardInputs } from './card';
 @Component({
 	selector: 'rlSelectableCard',
 	template: require('./selectableCard.html'),
-	inputs: [cardInputs.save, cardInputs.item],
+	inputs: [cardInputs.item],
 	directives: [CardHeaderColumnComponent, CheckboxComponent],
 	providers: [
 		new Provider(FormComponent, {

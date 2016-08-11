@@ -27,7 +27,7 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
-	inputs: [cardInputs.save, cardInputs.item],
+	inputs: [cardInputs.item],
 	directives: [CardHeaderColumnComponent],
 	providers: [
 		new Provider(FormComponent, {
