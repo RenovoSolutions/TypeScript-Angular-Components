@@ -6,10 +6,6 @@ import { filter } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __timezone = services.timezone;
 
-import { FormComponent } from '../../source/components/form/form';
-import { BUTTON_DIRECTIVES } from '../../source/components/buttons/index';
-import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
-
 export interface ITestItem {
 	value: number;
 }
@@ -21,11 +17,6 @@ export interface ITestItem2 {
 @Component({
 	selector: 'tsinputsBootstrapper',
 	template: require('./inputsNg2.html'),
-	directives: [
-		FormComponent,
-		BUTTON_DIRECTIVES,
-		INPUT_DIRECTIVES,
-	],
 })
 export class InputsBootstrapper {
 	checked: boolean;

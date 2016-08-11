@@ -8,9 +8,6 @@ import __timezone = services.timezone;
 import __object = services.object;
 
 import { builder, CARD_CONTAINER_PROVIDERS } from '../../source/components/cardContainer/index';
-import { SIMPLE_CARD_DIRECTIVES } from '../../source/components/simpleCardList/index';
-import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
-import { CARD_CONTAINER_DIRECTIVES } from '../../source/components/cardContainer/index';
 import {
 	DateFilter,
 	FilterGroup,
@@ -27,11 +24,6 @@ interface ICardItem {
 @Component({
 	selector: 'tsCardsBootstrapper',
 	template: require('./cardsNg2.html'),
-	directives: [
-		SIMPLE_CARD_DIRECTIVES,
-		INPUT_DIRECTIVES,
-		CARD_CONTAINER_DIRECTIVES,
-	],
 	providers: [CARD_CONTAINER_PROVIDERS],
 })
 export class CardsBootstrapper {
