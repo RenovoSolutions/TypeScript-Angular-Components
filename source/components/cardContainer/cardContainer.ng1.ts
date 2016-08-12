@@ -104,6 +104,7 @@ export class CardContainerController {
 	renderFilters: boolean;
 	saveWhenInvalid: boolean;
 	selectionChangedEvent: { (): void };
+	searchPlaceholder: string;
 
 	dataSource: IDataSource<any>;
 	sortDirection: ISortDirections;
@@ -381,5 +382,6 @@ export let cardContainer: angular.IComponentOptions = {
 		cardControllerAs: '@',
 		cardAs: '@',
 		selectionChangedEvent: '&selectionChanged',
+		searchPlaceholder: '<'
 	}
 }
