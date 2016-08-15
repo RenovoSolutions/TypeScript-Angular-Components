@@ -4,7 +4,6 @@ import { isUndefined } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import * as dataSources from '../dataSources/index';
 import { ISorter, Sorter } from '../sorts/index';
@@ -27,18 +26,15 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 	private parent: CardContainerBuilder;
 	private object: __object.ObjectUtility;
 	private array: __array.IArrayUtility;
-	private synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory;
 	private sorter: Sorter;
 
 	constructor(injector: Injector
 			, object: __object.ObjectUtility
 			, array: __array.ArrayUtility
-			, synchronizedRequestsFactory: __synchronizedRequests.SynchronizedRequestsFactory
 			, sorter: Sorter) {
 		this.injector = injector;
 		this.object = object;
 		this.array = array;
-		this.synchronizedRequestsFactory = synchronizedRequestsFactory;
 		this.sorter = sorter;
 	}
 
@@ -56,7 +52,7 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.DataServiceDataSource(getDataSet, processor, this.array, this.synchronizedRequestsFactory);
+		this.parent._dataSource = new dataSources.DataServiceDataSource(getDataSet, processor, this.array);
 		return <any>this.parent._dataSource;
 	}
 
@@ -68,19 +64,19 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		}
 
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.ClientServerDataSource(getDataSet, this.parent._searchFilter, getFilterModel, validateModel, processor, this.array, this.object, this.synchronizedRequestsFactory);
+		this.parent._dataSource = new dataSources.ClientServerDataSource(getDataSet, this.parent._searchFilter, getFilterModel, validateModel, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
 	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, this.array, this.object, this.synchronizedRequestsFactory);
+		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
 	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, this.array, this.object, this.synchronizedRequestsFactory);
+		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 

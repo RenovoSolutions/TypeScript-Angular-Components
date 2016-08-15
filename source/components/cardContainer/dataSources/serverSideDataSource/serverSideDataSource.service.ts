@@ -3,7 +3,6 @@ import * as _ from 'lodash';
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
@@ -18,9 +17,8 @@ export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
 			, dataSourceProcessor: IDataSourceProcessor
 			, array: __array.IArrayUtility
-			, private object: __object.IObjectUtility
-			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
-		super(<any>getDataSet, dataSourceProcessor, array, synchronizedRequestsFactory);
+			, private object: __object.IObjectUtility) {
+		super(<any>getDataSet, dataSourceProcessor, array);
 	}
 
 	refresh(): void {

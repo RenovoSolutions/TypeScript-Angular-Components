@@ -2,7 +2,6 @@ import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@an
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { CheckboxComponent } from '../../inputs/index';
@@ -37,9 +36,8 @@ export class SelectableCardComponent<T extends ISelectableItem> extends CardComp
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, boolean: __boolean.BooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, asyncHelper, formService, parentForm, boolean, cardContainer);
+		super(notification, asyncHelper, formService, parentForm, cardContainer);
 	}
 
 	setSelected(value: boolean): void {

@@ -6,7 +6,6 @@ import fakeAsync = test.fakeAsync;
 import __genericSearchFilter = services.genericSearchFilter;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { ClientServerDataSource } from './clientServerDataSource.service';
 
@@ -57,16 +56,15 @@ describe('ClientServerDataSource', () => {
 	});
 
 	describe('server search', (): void => {
-		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
+		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility]
+			, (arrayUtility, objectUtility): void => {
 			source = new ClientServerDataSource<number>(<any>dataService.get
 				, searchFilter
 				, null
 				, null
 				, dataSourceProcessor
 				, arrayUtility
-				, objectUtility
-				, synchronizedRequestsFactory);
+				, objectUtility);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
 		}));
@@ -130,8 +128,8 @@ describe('ClientServerDataSource', () => {
 		let filterModel: ITestFilterModel;
 		let validateSpy: Sinon.SinonSpy;
 
-		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
+		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility]
+			, (arrayUtility, objectUtility): void => {
 			validateSpy = sinon.spy((model: ITestFilterModel): boolean => {
 				return model.prop != null;
 			});
@@ -144,8 +142,7 @@ describe('ClientServerDataSource', () => {
 				, validateSpy
 				, dataSourceProcessor
 				, arrayUtility
-				, objectUtility
-				, synchronizedRequestsFactory);
+				, objectUtility);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
 		}));

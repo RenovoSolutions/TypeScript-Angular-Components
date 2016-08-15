@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { mapValues, map, range } from 'lodash';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -59,7 +60,7 @@ export class CardsBootstrapper {
 		this.options = [1, 2, 3, 4, 5];
 
 		this.builder = cardContainerBuilder;
-		this.builder.dataSource.buildSimpleDataSource(items);
+		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
 		this.builder.usePaging();
 		this.builder.addColumn({
 			name: 'name',

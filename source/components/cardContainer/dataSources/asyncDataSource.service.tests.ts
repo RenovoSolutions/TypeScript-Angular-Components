@@ -5,7 +5,6 @@ import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
 
@@ -35,9 +34,9 @@ describe('AsyncDataSource', () => {
 			MergeSort,
 			services.UTILITY_PROVIDERS,
 		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-				, (dataSourceProcessor, array, synchronizedRequestsFactory) => {
-			source = new AsyncDataSource<number>(dataService.get, dataSourceProcessor, array, synchronizedRequestsFactory);
+		inject([DataSourceProcessor, __array.ArrayUtility]
+				, (dataSourceProcessor, array) => {
+			source = new AsyncDataSource<number>(dataService.get, dataSourceProcessor, array);
 		})();
 
 		reloadedSpy = sinon.spy();
@@ -72,5 +71,43 @@ describe('AsyncDataSource', () => {
 		source.reload();
 		sinon.assert.calledOnce(dataService.get);
 		sinon.assert.calledWith(dataService.get, 4);
+	});
+
+	describe('synchronization', () => {
+		it('should synchronize the promises', fakeAsync(() => {
+			const firstRequest = test.mock.promise([1, 2]);
+			source.getDataSet = firstRequest;
+			source.reload();
+
+			const secondRequest = test.mock.promise([3, 4]);
+			source.getDataSet = secondRequest;
+			source.reload();
+
+			firstRequest.flush();
+
+			expect(source.rawDataSet).to.not.exist;
+
+			secondRequest.flush();
+
+			expect(source.rawDataSet).to.deep.equal([3, 4]);
+		}));
+
+		it('should synchronize the requests', fakeAsync(() => {
+			const firstRequest = test.mock.request([1, 2]);
+			source.getDataSet = firstRequest;
+			source.reload();
+
+			const secondRequest = test.mock.request([3, 4]);
+			source.getDataSet = secondRequest;
+			source.reload();
+
+			firstRequest.flush();
+
+			expect(source.rawDataSet).to.not.exist;
+
+			secondRequest.flush();
+
+			expect(source.rawDataSet).to.deep.equal([3, 4]);
+		}));
 	});
 });

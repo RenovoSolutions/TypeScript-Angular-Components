@@ -5,7 +5,6 @@ import test = services.test;
 import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { SmartDataSource } from './smartDataSource.service';
 
@@ -80,14 +79,14 @@ describe('SmartDataSource', () => {
 			MergeSort,
 			services.UTILITY_PROVIDERS,
 		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
+		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility]
+			, (_dataSourceProcessor, array, object) => {
 
 			dataSourceProcessor = _dataSourceProcessor;
 			dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
 			dataSourceProcessor.sort = sinon.spy();
 			dataSourceProcessor.page = sinon.spy();
-			source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object);
 		})();
 
 		source.filters = <any>[appliedFilter, unappliedFilter];
