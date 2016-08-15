@@ -23,7 +23,6 @@ export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;
 	@Input() searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
-	searchPlaceholder: string;
 	searchLengthError: boolean = false;
 	hasSearchFilter: boolean = true;
 	minSearchError: string;
@@ -62,11 +61,15 @@ export class CardSearchComponent<T> implements OnInit {
 		}
 
 		if (this.hasSearchFilter) {
-			this.searchPlaceholder = defaultSearchPlaceholder;
-
 			this.delay = this.delay || defaultSearchDelay;
 		}
 	}
+
+	get searchPlaceholder(): string {
+ 		if (this.hasSearchFilter) {
+ 			return this.cardContainer.searchPlaceholder || defaultSearchPlaceholder;
+ 		}
+ 	}
 
 	private validateSearchLength(search: string, minLength: number): void {
 		// show error if search string exists but is below minimum size
