@@ -9,7 +9,7 @@ import flushMicrotasks = __test.flushMicrotasks;
 
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
-import { TypeaheadComponent } from './typeahead';
+import { TypeaheadComponent, DEFAULT_SERVER_SEARCH_DEBOUNCE } from './typeahead';
 
 interface ITransformMock {
 	getValue: Sinon.SinonSpy;
@@ -308,5 +308,64 @@ describe('TypeaheadComponent', () => {
 
 			expect(typeahead.collapsed).to.be.false;
 		});
+	});
+
+	describe('searchStream', () => {
+		let loadItems: __test.IMockedRequest<string>;
+
+		beforeEach(fakeAsync(() => {
+			typeahead.ngOnInit();
+			const items = ['item1', 'item2', 'item3'];
+			loadItems = mock.request(items);
+			let visibleItems;
+			typeahead.getItems = loadItems;
+
+			typeahead.searchStream.next('search');
+			__test.tick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			__test.flushMicrotasks();
+			typeahead.visibleItems.subscribe(data => visibleItems = data);
+			loadItems.flush();
+			loadItems.reset();
+			busy.trigger.reset();
+
+			expect(visibleItems).to.equal(items);
+		}));
+
+		it('should show a busy spinner while the debounce is pending', fakeAsync(() => {
+			typeahead.searchStream.next('search2');
+
+			sinon.assert.calledOnce(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, true);
+			expect(typeahead.search).to.equal('search2');
+
+			typeahead.searchStream.next('search');
+
+			sinon.assert.calledTwice(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, true);
+			expect(typeahead.search).to.equal('search');
+			busy.trigger.reset();
+
+			__test.tick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			__test.flushMicrotasks();
+
+			sinon.assert.calledOnce(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, false);
+			sinon.assert.notCalled(loadItems)
+		}));
+
+		it('should make a request to refresh the visible items', fakeAsync(() => {
+			typeahead.searchStream.next('search2');
+
+			busy.trigger.reset();
+			__test.tick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			__test.flushMicrotasks();
+
+			sinon.assert.calledTwice(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, typeahead.visibleItems);
+			sinon.assert.calledOnce(loadItems);
+			sinon.assert.calledWith(loadItems, 'search2');
+
+			loadItems.flush();
+		}));
 	});
 });
