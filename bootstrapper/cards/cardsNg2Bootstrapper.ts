@@ -43,6 +43,7 @@ export class CardsBootstrapper {
 	filterGroup: FilterGroup;
 	modeFilterGroup: ModeFilterGroup;
 	rangeFilterGroup: RangeFilterGroup;
+	disabledFilterGroup: FilterGroup;
 	selectFilter: SelectFilter<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService
@@ -75,6 +76,7 @@ export class CardsBootstrapper {
 			getValue: 'value',
 			template: '<b>{{myItem.value}}</b>',
 		});
+		this.builder.useSearch();
 
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',
@@ -131,6 +133,23 @@ export class CardsBootstrapper {
 			],
 		}, __object.objectUtility, __transform.transform);
 
+		this.disabledFilterGroup = new FilterGroup({
+			type: 'testGroup',
+			label: 'Disabled Filter Group',
+			options: [
+				{
+					label: 'Show',
+					filter: item => item.show,
+					serialize: () => 'show',
+				},
+				{
+					label: 'Hide',
+					filter: item => !item.show,
+					serialize: () => 'hide',
+				},
+			],
+		}, __object.objectUtility);
+
 		this.selectFilter = new SelectFilter({
 			valueSelector: 'value',
 		}, __object.objectUtility, __transform.transform);
@@ -139,6 +158,7 @@ export class CardsBootstrapper {
 		this.filterGroup.subscribe(value => console.log(value));
 		this.modeFilterGroup.subscribe(value => console.log(value));
 		this.rangeFilterGroup.subscribe(value => console.log(value));
+		this.disabledFilterGroup.subscribe(value => console.log(value));
 		this.selectFilter.subscribe(value => console.log(value));
 	}
 

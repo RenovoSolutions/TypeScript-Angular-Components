@@ -16,6 +16,7 @@ interface ISearchFilterMock {
 
 interface ICardContainerMock {
 	searchFilter: any;
+	searchPlaceholder: any;
 	dataSource: any;
 }
 
@@ -39,6 +40,7 @@ describe('CardSearchComponent', () => {
 
 		cardContainer = {
 			searchFilter: filter,
+			searchPlaceholder: null,
 			dataSource: {
 				refresh: refreshSpy,
 			},
@@ -65,6 +67,12 @@ describe('CardSearchComponent', () => {
 		cardSearch.searchFilter = filter;
 		cardSearch.ngOnInit();
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
+	});
+
+	it('should lookup the search placeholder from the card container', (): void => {
+		cardSearch.ngOnInit();
+		cardContainer.searchPlaceholder = 'custom placeholder';
+		expect(cardSearch.searchPlaceholder).to.equal(cardContainer.searchPlaceholder);
 	});
 
 	describe('search', (): void => {

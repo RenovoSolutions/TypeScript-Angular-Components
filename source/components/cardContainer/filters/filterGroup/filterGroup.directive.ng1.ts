@@ -20,23 +20,36 @@ export class FilterGroupController {
 	icon: string;
 	filterGroup: IFilterGroup;
 	source: IDataSource<any>;
+	disabled: boolean;
 
 	hasIcon: boolean;
-	showChildren: boolean;
+	expanded: boolean;
 
 	static $inject: string[] = ['$scope'];
 	constructor(private $scope: angular.IScope) {
 		this.hasIcon = this.icon != null && this.icon !== '';
-		this.showChildren = true;
+		this.expanded = true;
 	}
 
-	toggleChildren(): void {
-		this.showChildren = !this.showChildren;
+	get headerTitle(): string {
+		if (!this.disabled) {
+			return this.filterGroup.label + ': ' + this.filterGroup.activeOption.label
+		}
+
+		return this.filterGroup.label;
+	}
+
+	toggleExpanded(): void {
+		this.expanded = !this.expanded;
+	}
+
+	get childrenVisible(): boolean {
+		return this.expanded && !this.disabled;
 	}
 
 	selectOption(option: IFilterOption): void {
 		this.filterGroup.activeOption = option;
-		this.showChildren = false;
+		this.expanded = false;
 
 		if (this.source != null) {
 			this.source.refresh();
@@ -54,5 +67,6 @@ export let filterGroup: angular.IComponentOptions = {
 		icon: '=',
 		filterGroup: '=',
 		source: '=',
+		disabled: '<',
 	},
 };

@@ -16,21 +16,34 @@ export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup;
 	@Input() dataSource: IDataSource<T>;
 	@Input() icon: string;
+	@Input() disabled: boolean;
 
-	showChildren: boolean = true;
+	expanded: boolean = true;
 	logger: __logger.ILogger;
 
 	constructor(logger: __logger.Logger) {
 		this.logger = logger;
 	}
 
-	toggleChildren(): void {
-		this.showChildren = !this.showChildren;
+	get headerTitle(): string {
+		if (!this.disabled) {
+			return this.filterGroup.label + ': ' + this.filterGroup.activeOption.label
+		}
+
+		return this.filterGroup.label;
+	}
+
+	toggleExpanded(): void {
+		this.expanded = !this.expanded;
+	}
+
+	get childrenVisible(): boolean {
+		return this.expanded && !this.disabled;
 	}
 
 	selectOption(option: IFilterOption): void {
 		this.filterGroup.activeOption = option;
-		this.showChildren = false;
+		this.expanded = false;
 
 		if (this.dataSource != null) {
 			this.dataSource.refresh();
