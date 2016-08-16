@@ -16,7 +16,7 @@ export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup;
 	@Input() dataSource: IDataSource<T>;
 	@Input() icon: string;
-	@Input() enabled: boolean = true;
+	@Input() disabled: boolean;
 
 	expanded: boolean = true;
 	logger: __logger.ILogger;
@@ -26,7 +26,7 @@ export class FilterGroupComponent<T> {
 	}
 
 	get headerTitle(): string {
-		if (this.enabled) {
+		if (!this.disabled) {
 			return this.filterGroup.label + ': ' + this.filterGroup.activeOption.label
 		}
 
@@ -38,7 +38,7 @@ export class FilterGroupComponent<T> {
 	}
 
 	get childrenVisible(): boolean {
-		return this.expanded && this.enabled;
+		return this.expanded && !this.disabled;
 	}
 
 	selectOption(option: IFilterOption): void {

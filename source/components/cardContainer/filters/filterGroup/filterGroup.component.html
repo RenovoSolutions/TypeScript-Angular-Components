@@ -1,4 +1,4 @@
-<div class="filter-group" [ngClass]="{'filter-disabled': !enabled}">
+<div class="filter-group" [ngClass]="{'filter-disabled': disabled}">
 	<div class="row filter-header" (click)="toggleExpanded()">
 		<div class="col-sm-12">
 			<i class="collapse-icon fa fa-caret-down fa-2x" [hidden]="!childrenVisible" title="Hide filter list"></i>

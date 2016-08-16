@@ -26,21 +26,21 @@ describe('FilterGroupComponent', (): void => {
 		expect(filterGroupComponent.expanded).to.be.true;
 	});
 
-	it('should only show children if expanded and enabled', (): void => {
+	it('should only show children if expanded and not disabled', (): void => {
 		filterGroupComponent.expanded = true;
-		filterGroupComponent.enabled = false;
+		filterGroupComponent.disabled = true;
 		expect(filterGroupComponent.childrenVisible).to.be.false;
 
 		filterGroupComponent.expanded = false;
-		filterGroupComponent.enabled = true;
+		filterGroupComponent.disabled = false;
 		expect(filterGroupComponent.childrenVisible).to.be.false;
 
 		filterGroupComponent.expanded = false;
-		filterGroupComponent.enabled = false;
+		filterGroupComponent.disabled = true;
 		expect(filterGroupComponent.childrenVisible).to.be.false;
 
 		filterGroupComponent.expanded = true;
-		filterGroupComponent.enabled = true;
+		filterGroupComponent.disabled = false;
 		expect(filterGroupComponent.childrenVisible).to.be.true;
 	});
 
@@ -56,12 +56,12 @@ describe('FilterGroupComponent', (): void => {
 		expect(filterGroupComponent.expanded).to.be.false;
 	});
 
-	it('should only show active option label if enabled', (): void => {
-		filterGroupComponent.enabled = true;
+	it('should not show active option label if disabled', (): void => {
+		filterGroupComponent.disabled = false;
 		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.label);
 		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.activeOption.label);
 
-		filterGroupComponent.enabled = false;
+		filterGroupComponent.disabled = true;
 		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.label);
 		expect(filterGroupComponent.headerTitle).to.not.contain(filterGroup.activeOption.label);
 	});
