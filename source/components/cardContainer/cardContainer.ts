@@ -58,8 +58,7 @@ export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
 	save: ISaveAction<any>;
 
-	@Input()
-	searchPlaceholder: string;
+	@Input() searchPlaceholder: string;
 
 	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
