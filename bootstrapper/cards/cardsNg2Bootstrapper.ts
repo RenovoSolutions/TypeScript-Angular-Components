@@ -75,6 +75,7 @@ export class CardsBootstrapper {
 			getValue: 'value',
 			template: '<b>{{myItem.value}}</b>',
 		});
+		this.builder.useSearch();
 
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',

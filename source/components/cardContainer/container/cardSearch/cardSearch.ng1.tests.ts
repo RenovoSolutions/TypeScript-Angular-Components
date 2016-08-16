@@ -20,6 +20,7 @@ interface ISearchFilterMock {
 
 interface ICardContainerMock {
 	searchFilter: any;
+	searchPlaceholder: any;
 	dataSource: any;
 }
 
@@ -47,6 +48,7 @@ describe('CardSearchController', () => {
 
 		cardContainer = {
 			searchFilter: filter,
+			searchPlaceholder: null,
 			dataSource: {
 				refresh: refreshSpy,
 			},
@@ -73,6 +75,12 @@ describe('CardSearchController', () => {
 		let filter: any = {};
 		buildController();
 		expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
+	});
+
+	it('should lookup the search placeholder from the card container', (): void => {
+		buildController();
+		cardContainer.searchPlaceholder = 'custom placeholder';
+		expect(cardSearch.searchPlaceholder).to.equal(cardContainer.searchPlaceholder);
 	});
 
 	describe('search', (): void => {

@@ -39,7 +39,11 @@ export interface ISelectionViewData {
 @Component({
 	selector: 'rlSelectableCardContainer',
 	template: require('./selectableCardContainer.html'),
-	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
+	inputs: [
+		cardContainerInputs.builder,
+		cardContainerInputs.save,
+		cardContainerInputs.searchPlaceholder
+	],
 	providers: [
 		DataPager,
 		new Provider(CardContainerComponent, {

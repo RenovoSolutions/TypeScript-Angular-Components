@@ -28,14 +28,10 @@ import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
-export interface ICardContainerInputs {
-	builder: string;
-	save: string;
-}
-
-export const cardContainerInputs: ICardContainerInputs = {
+export const cardContainerInputs = {
 	builder: 'builder',
 	save: 'save',
+	searchPlaceholder: 'searchPlaceholder'
 };
 
 export const defaultMaxColumnSorts: number = 2;
@@ -43,7 +39,11 @@ export const defaultMaxColumnSorts: number = 2;
 @Component({
 	selector: 'rlCardContainer',
 	template: require('./cardContainer.html'),
-	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
+	inputs: [
+		cardContainerInputs.builder,
+		cardContainerInputs.save,
+		cardContainerInputs.searchPlaceholder
+	],
 	providers: [DataPager],
 	directives: [
 		ContainerHeaderComponent,
@@ -57,6 +57,7 @@ export const defaultMaxColumnSorts: number = 2;
 export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
 	save: ISaveAction<any>;
+	searchPlaceholder: string;
 
 	dataSource: IDataSource<T>;
 	filters: filters.IFilter[];
