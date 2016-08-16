@@ -28,13 +28,7 @@ import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
 import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
-export interface ICardContainerInputs {
-	builder: string;
-	save: string;
-	searchPlaceholder: string;
-}
-
-export const cardContainerInputs: ICardContainerInputs = {
+export const cardContainerInputs = {
 	builder: 'builder',
 	save: 'save',
 	searchPlaceholder: 'searchPlaceholder'
