@@ -3,7 +3,7 @@ import { addProviders, inject } from '@angular/core/testing';
 
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import fakeAsync = __test.fakeAsync;
+import rlFakeAsync = __test.rlFakeAsync;
 
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
@@ -54,7 +54,7 @@ describe('TypeaheadListComponent', () => {
 	});
 
 	describe('loadItems', (): void => {
-		it('should filter out items that are already selected', fakeAsync((): void => {
+		it('should filter out items that are already selected', rlFakeAsync((): void => {
 			const selections: ITestObject[] = [items[0], items[2]];
 			typeaheadList.value = selections;
 
@@ -68,7 +68,7 @@ describe('TypeaheadListComponent', () => {
 			getItemsMock.flush();
 		}));
 
-		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on', fakeAsync((): void => {
+		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on', rlFakeAsync((): void => {
 			getItemsMock = __test.mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.searchItems('2').subscribe(() => null);
@@ -80,7 +80,7 @@ describe('TypeaheadListComponent', () => {
 			sinon.assert.notCalled(getItemsMock);
 		}));
 
-		it('should load the items when searching is disabled', fakeAsync((): void => {
+		it('should load the items when searching is disabled', rlFakeAsync((): void => {
 			getItemsMock = __test.mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.ngOnChanges(<any>{
@@ -94,7 +94,7 @@ describe('TypeaheadListComponent', () => {
 			expect(typeaheadList.cachedItemsArray).to.not.be.empty;
 		}));
 
-		it('should load the items on init if searching is disabled', fakeAsync((): void => {
+		it('should load the items on init if searching is disabled', rlFakeAsync((): void => {
 			getItemsMock = __test.mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.disableSearching = true;
@@ -109,7 +109,7 @@ describe('TypeaheadListComponent', () => {
 	});
 
 	describe('add', (): void => {
-		it('should remove the item from the typeahead and add it to the list', fakeAsync((): void => {
+		it('should remove the item from the typeahead and add it to the list', rlFakeAsync((): void => {
 			const list: ITestObject[] = [];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
@@ -128,7 +128,7 @@ describe('TypeaheadListComponent', () => {
 			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 
-		it('should wait on the result if the onAdd handler returns a value', fakeAsync((): void => {
+		it('should wait on the result if the onAdd handler returns a value', rlFakeAsync((): void => {
 			const list: ITestObject[] = [];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
@@ -153,7 +153,7 @@ describe('TypeaheadListComponent', () => {
 	});
 
 	describe('remove', (): void => {
-		it('should add the item back to the cached items and remove it from the list', fakeAsync((): void => {
+		it('should add the item back to the cached items and remove it from the list', rlFakeAsync((): void => {
 			const list: ITestObject[] = [items[0]];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
@@ -171,7 +171,7 @@ describe('TypeaheadListComponent', () => {
 			sinon.assert.calledWith(setValue, typeaheadList.value);
 		}));
 
-		it('should wait on the result if the onRemove handler returns a value', fakeAsync((): void => {
+		it('should wait on the result if the onRemove handler returns a value', rlFakeAsync((): void => {
 			const list: ITestObject[] = [items[0]];
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);

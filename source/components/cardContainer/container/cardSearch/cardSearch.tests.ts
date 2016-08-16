@@ -1,7 +1,7 @@
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import fakeAsync = __test.fakeAsync;
-import tick = __test.tick;
+import rlFakeAsync = __test.rlFakeAsync;
+import rlTick = __test.rlTick;
 import flushMicrotasks = __test.flushMicrotasks;
 import __timeout = services.timeout;
 
@@ -82,42 +82,42 @@ describe('CardSearchComponent', () => {
 			expect(filter.searchText).to.equal('search');
 		});
 
-		it('should refresh the data source after a delay of the specified duration', fakeAsync((): void => {
+		it('should refresh the data source after a delay of the specified duration', rlFakeAsync((): void => {
 			cardSearch.delay = 10;
 			cardSearch.setSearch('search');
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5)
+			rlTick(5)
 			flushMicrotasks();
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5);
+			rlTick(5);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(refreshSpy);
 		}));
 
-		it('should reset the timer if the search text changes', fakeAsync((): void => {
+		it('should reset the timer if the search text changes', rlFakeAsync((): void => {
 			cardSearch.delay = 10;
 			cardSearch.setSearch('search');
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5);
+			rlTick(5);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(refreshSpy);
 
 			cardSearch.setSearch('search 2');
 
-			tick(5);
+			rlTick(5);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(refreshSpy);
 
-			tick(5);
+			rlTick(5);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(refreshSpy);

@@ -21,18 +21,18 @@ describe('AutosaveActionService', () => {
 		expect(autosaveAction.saving).to.be.true;
 	});
 
-	it('should set successful to true if the request resolves successfully', __test.fakeAsync((): void => {
+	it('should set successful to true if the request resolves successfully', __test.rlFakeAsync((): void => {
 		mockAction.flush();
 
 		expect(autosaveAction.saving).to.be.false;
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.true;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.rlTick(COMPLETE_MESSAGE_DURATION);
 		__test.flushMicrotasks();
 	}));
 
-	it('should set successful to false if the promise fails', __test.fakeAsync((): void => {
+	it('should set successful to false if the promise fails', __test.rlFakeAsync((): void => {
 		mockAction = __test.mock.rejectedRequest();
 		autosaveAction.trigger(mockAction());
 		mockAction.flush();
@@ -41,16 +41,16 @@ describe('AutosaveActionService', () => {
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.false;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.rlTick(COMPLETE_MESSAGE_DURATION);
 		__test.flushMicrotasks();
 	}));
 
-	it('should set complete to false after the duration', __test.fakeAsync((): void => {
+	it('should set complete to false after the duration', __test.rlFakeAsync((): void => {
 		mockAction.flush();
 
 		expect(autosaveAction.complete).to.be.true;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
+		__test.rlTick(COMPLETE_MESSAGE_DURATION);
 		__test.flushMicrotasks();
 
 		expect(autosaveAction.complete).to.be.false;

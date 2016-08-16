@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 import __array = services.array;
 
 import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
@@ -48,7 +48,7 @@ describe('AsyncDataSource', () => {
 		source.processData = sinon.spy();
 	});
 
-	it('should call make a request to get the data when reload is called', fakeAsync((): void => {
+	it('should call make a request to get the data when reload is called', rlFakeAsync((): void => {
 		source.reload();
 
 		sinon.assert.calledOnce(dataService.get);
@@ -58,7 +58,7 @@ describe('AsyncDataSource', () => {
 		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
 	}));
 
-	it('should fire changed, reloaded, and redrawing events when the reload completeds', fakeAsync((): void => {
+	it('should fire changed, reloaded, and redrawing events when the reload completeds', rlFakeAsync((): void => {
 		source.reload();
 		test.mock.flushAll(dataService);
 		sinon.assert.calledOnce(changedSpy);
@@ -74,7 +74,7 @@ describe('AsyncDataSource', () => {
 	});
 
 	describe('synchronization', () => {
-		it('should synchronize the promises', fakeAsync(() => {
+		it('should synchronize the promises', rlFakeAsync(() => {
 			const firstRequest = test.mock.promise([1, 2]);
 			source.getDataSet = firstRequest;
 			source.reload();
@@ -92,7 +92,7 @@ describe('AsyncDataSource', () => {
 			expect(source.rawDataSet).to.deep.equal([3, 4]);
 		}));
 
-		it('should synchronize the requests', fakeAsync(() => {
+		it('should synchronize the requests', rlFakeAsync(() => {
 			const firstRequest = test.mock.request([1, 2]);
 			source.getDataSet = firstRequest;
 			source.reload();

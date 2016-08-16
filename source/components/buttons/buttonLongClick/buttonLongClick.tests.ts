@@ -1,7 +1,7 @@
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import fakeAsync = __test.fakeAsync;
-import tick = __test.tick;
+import rlFakeAsync = __test.rlFakeAsync;
+import rlTick = __test.rlTick;
 import flushMicrotasks = __test.flushMicrotasks;
 import __timeout = services.timeout;
 
@@ -34,7 +34,7 @@ describe('ButtonLongClickComponent', () => {
 		button.busySpinner = <any>busy;
 	});
 
-	it('should trigger the action after 2 seconds', fakeAsync((): void => {
+	it('should trigger the action after 2 seconds', rlFakeAsync((): void => {
 		action = sinon.spy(() => 5);
 		button.action = action;
 		const event: any = { value: 2 };
@@ -43,7 +43,7 @@ describe('ButtonLongClickComponent', () => {
 
 		sinon.assert.notCalled(action);
 
-		tick(2000);
+		rlTick(2000);
 		flushMicrotasks();
 
 		sinon.assert.calledOnce(action);
@@ -52,7 +52,7 @@ describe('ButtonLongClickComponent', () => {
 		sinon.assert.calledWith(busy.trigger, 5);
 	}));
 
-	it('should cancel and show a warning if the user stops the action before the time is up', fakeAsync((): void => {
+	it('should cancel and show a warning if the user stops the action before the time is up', rlFakeAsync((): void => {
 		action = sinon.spy(() => 5);
 		button.action = action;
 		const event: any = { value: 2 };
@@ -60,7 +60,7 @@ describe('ButtonLongClickComponent', () => {
 
 		button.startAction(event);
 
-		tick(1000);
+		rlTick(1000);
 
 		button.stopAction();
 		flushMicrotasks();
@@ -68,7 +68,7 @@ describe('ButtonLongClickComponent', () => {
 		sinon.assert.calledOnce(notification.warning);
 		sinon.assert.calledWith(notification.warning, 'warning');
 
-		tick(1000);
+		rlTick(1000);
 		flushMicrotasks();
 
 		sinon.assert.notCalled(action);

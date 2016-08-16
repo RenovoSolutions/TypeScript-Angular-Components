@@ -2,7 +2,7 @@ import { addProviders, inject } from '@angular/core/testing';
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
 
@@ -42,7 +42,7 @@ describe('DataServiceDataSource', () => {
 	});
 
 	describe('loading', (): void => {
-		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
+		it('should call data processor to process the data when refreshing', rlFakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2, 3]);
 
 			new DataServiceDataSource(dataService.get, dataSourceProcessor, arrayUtility);
@@ -51,7 +51,7 @@ describe('DataServiceDataSource', () => {
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
-		it('should make an initial request to the server for data', fakeAsync((): void => {
+		it('should make an initial request to the server for data', rlFakeAsync((): void => {
 			dataService.get = test.mock.promise([1, 2]);
 
 			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, arrayUtility);

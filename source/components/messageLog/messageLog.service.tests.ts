@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 
 import {
 	moduleName,
@@ -58,7 +58,7 @@ describe('messageLog', () => {
 			, '16', '17', '18', '19', '20'];
 	}
 
-	it('should load an initial page of messages from the server', fakeAsync((): void => {
+	it('should load an initial page of messages from the server', rlFakeAsync((): void => {
 		messageLog.dataService = <any>dataService;
 
 		sinon.assert.calledOnce(dataService.getMessages);
@@ -68,13 +68,13 @@ describe('messageLog', () => {
 	}));
 
 	describe('after initial request', (): void => {
-		beforeEach(fakeAsync((): void => {
+		beforeEach(rlFakeAsync((): void => {
 			messageLog.dataService = <any>dataService;
 			test.mock.flushAll(dataService);
 			dataService.getMessages.reset();
 		}));
 
-		it('should load the next page from the server if more messages are available', fakeAsync((): void => {
+		it('should load the next page from the server if more messages are available', rlFakeAsync((): void => {
 			messageLog.getNextPage();
 			sinon.assert.calledOnce(dataService.getMessages);
 			test.mock.flushAll(dataService);
@@ -86,7 +86,7 @@ describe('messageLog', () => {
 			expect(messageLog.visibleMessages[4]).to.equal('10');
 		}));
 
-		it('should not load a full page if not enough messages are available', fakeAsync((): void => {
+		it('should not load a full page if not enough messages are available', rlFakeAsync((): void => {
 			messageLog.pageSize = 15;
 			test.mock.flushAll(dataService);
 
@@ -104,7 +104,7 @@ describe('messageLog', () => {
 			expect(messageLog.visibleMessages[4]).to.equal('20');
 		}));
 
-		it('should refresh the current page when the page size changes', fakeAsync((): void => {
+		it('should refresh the current page when the page size changes', rlFakeAsync((): void => {
 			messageLog.pageSize = 10;
 			sinon.assert.calledOnce(dataService.getMessages);
 			test.mock.flushAll(dataService);
@@ -113,7 +113,7 @@ describe('messageLog', () => {
 		}));
 
 		it('should load a full page when paging back to the beginning even if less than a full page of messages were paged back'
-			, fakeAsync((): void => {
+			, rlFakeAsync((): void => {
 				messageLog.getNextPage();
 				(<any>dataService.getMessages).flush();
 
@@ -140,7 +140,7 @@ describe('messageLog', () => {
 				expect(messageLog.visibleMessages[9]).to.equal('10');
 			}));
 
-		it('should disable paging forward if no more messages are available', fakeAsync((): void => {
+		it('should disable paging forward if no more messages are available', rlFakeAsync((): void => {
 			messageLog.pageSize = 20;
 			test.mock.flushAll(dataService);
 			dataService.getMessages.reset();
@@ -160,7 +160,7 @@ describe('messageLog', () => {
 			expect(messageLog.hasBackwardMessages).to.be.false;
 		});
 
-		it('should load first page when getTopPage is called', fakeAsync((): void => {
+		it('should load first page when getTopPage is called', rlFakeAsync((): void => {
 			messageLog.getNextPage();
 			messageLog.getNextPage();
 			sinon.assert.calledTwice(dataService.getMessages);
@@ -185,7 +185,7 @@ describe('messageLog', () => {
 			expect(messageLog.visibleMessages[4]).to.equal('5');
 		}));
 
-		it('should save a new message, add it to the beginning of the log, and display it if on the first page', fakeAsync((): void => {
+		it('should save a new message, add it to the beginning of the log, and display it if on the first page', rlFakeAsync((): void => {
 			messageLog.addMessage(<any>'new message');
 			sinon.assert.calledOnce(dataService.saveMessage);
 			// save request
@@ -196,7 +196,7 @@ describe('messageLog', () => {
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
 		}));
 
-		it('should delete the message and refresh the current page', fakeAsync((): void => {
+		it('should delete the message and refresh the current page', rlFakeAsync((): void => {
 			messageLog.getNextPage();
 			test.mock.flushAll(dataService);
 
@@ -219,7 +219,7 @@ describe('messageLog', () => {
 			expect(messageLog.visibleMessages[4]).to.equal('11');
 		}));
 
-		it('should take the user back to the first page if the user adds a new message', fakeAsync((): void => {
+		it('should take the user back to the first page if the user adds a new message', rlFakeAsync((): void => {
 			messageLog.getNextPage();
 			test.mock.flushAll(dataService);
 			dataService.getMessages.reset();
