@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
@@ -57,6 +57,7 @@ export interface ISelectionViewData {
 	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
+	@Input() searchPlaceholder: string;
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
 
 	selectionColumn: IColumn<any>;
