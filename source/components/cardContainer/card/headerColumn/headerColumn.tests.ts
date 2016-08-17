@@ -11,7 +11,7 @@ interface ISizeForBreakpointsMock {
 describe('CardHeaderColumnComponent', () => {
 	let headerColumn: CardHeaderColumnComponent<number>;
 	let transform: ITransformMock;
-	let sizeForBreakpoints: any;
+	let sizeForBreakpoints: ISizeForBreakpointsMock;
 
 	beforeEach(() => {
 		transform = {
@@ -20,7 +20,7 @@ describe('CardHeaderColumnComponent', () => {
 		sizeForBreakpoints = {
 			getClass: sinon.spy(),
 		};
-		headerColumn = new CardHeaderColumnComponent<number>(transform, sizeForBreakpoints);
+		headerColumn = new CardHeaderColumnComponent<number>(transform, <any>sizeForBreakpoints);
 		headerColumn.column = <any>{};
 	});
 
