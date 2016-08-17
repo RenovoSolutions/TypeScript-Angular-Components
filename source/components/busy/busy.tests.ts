@@ -42,8 +42,14 @@ describe('busy', () => {
 			expect(busy.loading).to.be.true;
 		});
 
-		it('should finish after an event is received', (): void => {
+		it('should not finish after an event is received', (): void => {
 			stream.next(null);
+
+			expect(busy.loading).to.be.true;
+		});
+
+		it('should finish after an event is complete', (): void => {
+			stream.complete();
 
 			expect(busy.loading).to.be.false;
 		});
