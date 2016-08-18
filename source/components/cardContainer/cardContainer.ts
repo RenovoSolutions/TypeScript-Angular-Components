@@ -3,7 +3,6 @@ import { Subject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
 import __isEmpty = filters.isEmpty;
@@ -71,7 +70,6 @@ export class CardContainerComponent<T> implements OnInit {
 	numberSelected: number = 0;
 	numberSelectedChanges: Subject<number> = new Subject<number>();
 
-	objectUtility: __object.IObjectUtility;
 	arrayUtility: __array.IArrayUtility;
 	injectedPager: DataPager;
 
@@ -90,10 +88,7 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.cardChildren.toArray();
 	}
 
-	constructor(object: __object.ObjectUtility
-			, array: __array.ArrayUtility
-			, pager: DataPager) {
-		this.objectUtility = object;
+	constructor(array: __array.ArrayUtility, pager: DataPager) {
 		this.arrayUtility = array;
 		this.injectedPager = pager;
 		this.save = <ISaveAction>() => Promise.resolve();
@@ -180,7 +175,7 @@ export class CardContainerComponent<T> implements OnInit {
 	}
 
 	private syncFilters(): void {
-		if (!this.objectUtility.isNullOrEmpty(this.filters)) {
+		if (this.filters) {
 			this.dataSource.filters = this.filters;
 			this.dataSource.refresh();
 		} else if (this.dataSource.filters != null) {

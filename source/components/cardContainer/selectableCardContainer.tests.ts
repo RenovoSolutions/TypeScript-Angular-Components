@@ -2,7 +2,6 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
-import __object = services.object;
 import __array = services.array;
 
 import { DataPager } from './paging/index';
@@ -46,7 +45,7 @@ describe('SelectableCardContainerComponent', () => {
 	let mockedDataSource: IDataSourceMock;
 
 	beforeEach(() => {
-		cardContainer = new SelectableCardContainerComponent(__object.objectUtility, __array.arrayUtility, new DataPager());
+		cardContainer = new SelectableCardContainerComponent(__array.arrayUtility, new DataPager());
 
 		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
 		cardContainer.builder = builder;

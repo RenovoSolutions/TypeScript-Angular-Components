@@ -46,7 +46,7 @@ describe('CardContainerComponent', () => {
 	let mockedDataSource: IDataSourceMock;
 
 	beforeEach(() => {
-		cardContainer = new CardContainerComponent(__object.objectUtility, __array.arrayUtility, new DataPager());
+		cardContainer = new CardContainerComponent(__array.arrayUtility, new DataPager());
 
 		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
 		cardContainer.builder = builder;

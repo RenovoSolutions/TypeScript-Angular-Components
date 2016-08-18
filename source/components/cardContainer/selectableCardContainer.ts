@@ -2,7 +2,6 @@ import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, Co
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
 import __isEmpty = filters.isEmpty;
@@ -74,10 +73,9 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(object: __object.ObjectUtility
-			, array: __array.ArrayUtility
+	constructor(array: __array.ArrayUtility
 			, pager: DataPager) {
-		super(object, array, pager);
+		super(array, pager);
 		this.type = CardContainerType.selectable;
 	}
 
