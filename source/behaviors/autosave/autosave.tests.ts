@@ -2,8 +2,8 @@ import { Subject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import fakeAsync = __test.fakeAsync;
-import tick = __test.tick;
+import rlFakeAsync = __test.rlFakeAsync;
+import rlTick = __test.rlTick;
 import flushMicrotasks = __test.flushMicrotasks;
 
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
@@ -48,43 +48,43 @@ describe('AutosaveDirective', () => {
 	});
 
 	describe('setDebounce', () => {
-		it('should set a timer to autosave after the specified duration', fakeAsync((): void => {
+		it('should set a timer to autosave after the specified duration', rlFakeAsync((): void => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should only autosave once if called again while the timer is in progress', fakeAsync(() => {
+		it('should only autosave once if called again while the timer is in progress', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should not trigger an autosave if the form is invalid', fakeAsync(() => {
+		it('should not trigger an autosave if the form is invalid', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 			form.validate = sinon.spy(() => false);
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);
@@ -92,35 +92,35 @@ describe('AutosaveDirective', () => {
 	});
 
 	describe('resetDebounce', () => {
-		it('should reset the timer for autosaving', fakeAsync(() => {
+		it('should reset the timer for autosaving', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			autosave.resetDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should do nothing if no timer is in progress', fakeAsync(() => {
+		it('should do nothing if no timer is in progress', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.resetDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);

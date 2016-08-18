@@ -2,7 +2,7 @@ import { addProviders, inject } from '@angular/core/testing';
 
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 import __genericSearchFilter = services.genericSearchFilter;
 import __object = services.object;
 import __array = services.array;
@@ -69,7 +69,7 @@ describe('ClientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		}));
 
-		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
+		it('should call data processor to process the data when refreshing', rlFakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
@@ -78,7 +78,7 @@ describe('ClientServerDataSource', () => {
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
-		it('should make a request to reload the data when the search text changes', fakeAsync((): void => {
+		it('should make a request to reload the data when the search text changes', rlFakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.refresh();
 
@@ -147,7 +147,7 @@ describe('ClientServerDataSource', () => {
 			source.changed.subscribe(changedSpy);
 		}));
 
-		it('should make a request to reload the data when the filter model changes', fakeAsync((): void => {
+		it('should make a request to reload the data when the filter model changes', rlFakeAsync((): void => {
 			filterModel = { prop: '123' };
 			source.refresh();
 

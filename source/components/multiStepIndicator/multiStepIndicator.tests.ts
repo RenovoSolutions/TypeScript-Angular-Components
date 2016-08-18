@@ -3,7 +3,7 @@ import * as ui from 'angular-ui-router';
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
 import mock = __test.mock;
-import fakeAsync = __test.fakeAsync;
+import rlFakeAsync = __test.rlFakeAsync;
 import IMockedPromise = __test.IMockedPromise;
 
 import { MultiStepIndicatorComponent, IStep, IConfiguredStep } from './multiStepIndicator';
@@ -39,7 +39,7 @@ describe('MultiStepIndicatorComponent', () => {
         expect((<IConfiguredStep>step).isActive).to.be.true;
     });
 
-    it('should provide a default click handler that redirects to the specified state and sets the step to current if a state name is provided', fakeAsync((): void => {
+    it('should provide a default click handler that redirects to the specified state and sets the step to current if a state name is provided', rlFakeAsync((): void => {
         let step: IStep = <any>{ stateName: 'state' };
 
         msi.steps = <IConfiguredStep[]>[step];
@@ -68,7 +68,7 @@ describe('MultiStepIndicatorComponent', () => {
         expect(step2.isCurrent).to.be.false;
     });
 
-    it('should show a spinner on the step and disable all clicks when the step is loading', fakeAsync((): void => {
+    it('should show a spinner on the step and disable all clicks when the step is loading', rlFakeAsync((): void => {
         let step1: IStep = <any>{ onClick: mock.promise() };
         let step2: IStep = <any>{ onClick: sinon.spy() };
 
@@ -87,7 +87,7 @@ describe('MultiStepIndicatorComponent', () => {
         sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
     }));
 
-    it('should clear the spinner when the promise resolves', fakeAsync((): void => {
+    it('should clear the spinner when the promise resolves', rlFakeAsync((): void => {
         let step: IStep = <any>{ onClick: mock.promise() };
 
         msi.steps = <IConfiguredStep[]>[step];
@@ -103,7 +103,7 @@ describe('MultiStepIndicatorComponent', () => {
         expect((<IConfiguredStep>step).isLoading).to.be.false;
     }));
 
-    it('should clear the spinner when the promise rejects', fakeAsync((): void => {
+    it('should clear the spinner when the promise rejects', rlFakeAsync((): void => {
         const fakeError = 'fakeError';
         let step: IStep = <any>{ onClick: mock.rejectedPromise(fakeError) };
 

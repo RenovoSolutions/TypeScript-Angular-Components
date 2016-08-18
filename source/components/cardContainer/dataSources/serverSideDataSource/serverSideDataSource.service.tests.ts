@@ -2,7 +2,7 @@ import { addProviders, inject } from '@angular/core/testing';
 
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
 
@@ -98,7 +98,7 @@ describe('ServerSideDataSource', () => {
 		expect(filters['clientSideFilter']).to.not.exist;
 	});
 
-	it('should set the data set and count with the response from the server', fakeAsync((): void => {
+	it('should set the data set and count with the response from the server', rlFakeAsync((): void => {
 		source.refresh();
 		test.mock.flushAll(dataService);
 		expect(source.dataSet[0]).to.equal(1);
