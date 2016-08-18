@@ -73,10 +73,10 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 
 	clear() {
 		this.rawDataSet = [];
-        this.dataSet = [];
-        this.filteredDataSet = [];
-        this.count = 0;
-        this.isEmpty = true;
+		this.dataSet = [];
+		this.filteredDataSet = [];
+		this.count = 0;
+		this.isEmpty = true;
 	}
 
 	processData(): void {

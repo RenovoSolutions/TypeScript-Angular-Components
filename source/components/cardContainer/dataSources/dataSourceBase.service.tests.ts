@@ -315,9 +315,9 @@ describe('DataSourceBase', () => {
 	describe('clear', (): void => {
 		it('should clear all datasets, count, and reset isEmpty', (): void => {
 			dataSourceBase.rawDataSet = [1, 2, 3];
-	       	dataSourceBase.dataSet = [1, 2, 3];
-	        dataSourceBase.filteredDataSet = [1, 2];
-	        dataSourceBase.count = dataSourceBase.rawDataSet.length;
+			dataSourceBase.dataSet = [1, 2, 3];
+			dataSourceBase.filteredDataSet = [1, 2];
+			dataSourceBase.count = dataSourceBase.rawDataSet.length;
 			dataSourceBase.isEmpty = false;
 
 			dataSourceBase.clear();
