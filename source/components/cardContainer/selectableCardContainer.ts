@@ -4,7 +4,6 @@ import { each, isUndefined, filter, difference } from 'lodash';
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
-import __isEmpty = filters.isEmpty;
 
 import { IColumn } from './column';
 import { SortDirection, ISortDirections } from './sorts/index';
@@ -56,8 +55,6 @@ export interface ISelectionViewData {
 		SelectableCardComponent,
 		BusyComponent,
 	],
-
-	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();

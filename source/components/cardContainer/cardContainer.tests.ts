@@ -56,6 +56,18 @@ describe('CardContainerComponent', () => {
 		builder._dataSource = <any>mockedDataSource;
 	});
 
+	describe('hasItems', () => {
+		it('should return true if the data set is not empty', () => {
+			cardContainer.dataSource.dataSet = [];
+
+			expect(cardContainer.hasItems).to.be.false;
+
+			cardContainer.dataSource.dataSet = [1];
+
+			expect(cardContainer.hasItems).to.be.true;
+		});
+	});
+
 	describe('data source', (): void => {
 		it('should put source on the controller', (): void => {
 			cardContainer.ngOnInit();

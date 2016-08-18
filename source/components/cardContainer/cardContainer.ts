@@ -5,7 +5,6 @@ import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
-import __isEmpty = filters.isEmpty;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
@@ -49,7 +48,6 @@ export const defaultMaxColumnSorts: number = 2;
 		CardComponent,
 		BusyComponent,
 	],
-	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
@@ -86,6 +84,10 @@ export class CardContainerComponent<T> implements OnInit {
 
 	get cards(): CardComponent<T>[] {
 		return this.cardChildren.toArray();
+	}
+
+	get hasItems(): boolean {
+		return this.dataSource.dataSet && !!this.dataSource.dataSet.length;
 	}
 
 	constructor(array: __array.ArrayUtility, pager: DataPager) {
