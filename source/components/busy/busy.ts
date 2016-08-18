@@ -18,7 +18,7 @@ export class BusyComponent {
 	asyncHelper: AsyncHelper;
 
 	constructor(defaultTheme: DefaultTheme
-			, asyncHelper: AsyncHelper) {
+		, asyncHelper: AsyncHelper) {
 		this.useDefaultTheme = defaultTheme.useDefaultTheme;
 		this.asyncHelper = asyncHelper;
 	}
@@ -38,6 +38,6 @@ export class BusyComponent {
 
 		this.loading = true;
 		this.asyncHelper.waitAsObservable(waitOn)
-			.subscribe(() => this.loading = false);
+			.subscribe(null, null, () => this.loading = false);
 	}
 }
