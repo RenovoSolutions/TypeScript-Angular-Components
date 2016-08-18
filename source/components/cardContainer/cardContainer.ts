@@ -24,8 +24,6 @@ import { ContainerFooterComponent } from './container/containerFooter.component'
 import { BusyComponent } from '../busy/busy';
 import { ISaveAction } from '../form/form';
 
-import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
-
 import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
 
 export const cardContainerInputs = {
@@ -113,8 +111,6 @@ export class CardContainerComponent<T> implements OnInit {
 		this.syncFilters();
 
 		this.setupPaging();
-
-		this.buildColumnSizes();
 
 		if (this.dataSource.sorts == null) {
 			this.dataSource.sorts = [];
@@ -207,25 +203,6 @@ export class CardContainerComponent<T> implements OnInit {
 		}
 
 		this.dataSource.initPager();
-	}
-
-	private buildColumnSizes(): void {
-		each(this.columns, (column: IColumn<any>): void => {
-			let sizes: IBreakpointSize | number = column.size;
-			if (isObject(sizes)) {
-				sizes[xs] = this.objectUtility.valueOrDefault(sizes[xs], 0);
-				sizes[sm] = this.objectUtility.valueOrDefault(sizes[sm], sizes[xs]);
-				sizes[md] = this.objectUtility.valueOrDefault(sizes[md], sizes[sm]);
-				sizes[lg] = this.objectUtility.valueOrDefault(sizes[lg], sizes[md]);
-			} else {
-				column.size = {
-					xs: <number>sizes,
-					sm: <number>sizes,
-					md: <number>sizes,
-					lg: <number>sizes,
-				};
-			}
-		});
 	}
 
 	private lookupColumn(label: string): IColumn<any> {
