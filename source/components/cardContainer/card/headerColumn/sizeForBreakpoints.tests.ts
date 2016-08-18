@@ -2,12 +2,13 @@ import { SizeForBreakpoints } from './sizeForBreakpoints';
 
 import { services } from 'typescript-angular-utilities';
 import __string = services.string;
+import __object = services.object;
 
 describe('SizeForBreakpoints', () => {
 	let sizeForBreakpoints: SizeForBreakpoints;
 
 	beforeEach(() => {
-		sizeForBreakpoints = new SizeForBreakpoints(__string.stringUtility);
+		sizeForBreakpoints = new SizeForBreakpoints(__string.stringUtility, __object.objectUtility);
 	});
 
 	it('should convert an object of breakpoint sizes into a class string', () => {
@@ -38,5 +39,36 @@ describe('SizeForBreakpoints', () => {
 			xs: 1,
 		};
 		expect(sizeForBreakpoints.getClass(sizes, 'my-class')).to.equal('col-xs-1 col-sm-1 col-md-1 col-lg-1 my-class');
+	});
+
+	it('should cascade smaller sizes up', () => {
+		const sizes = {
+			xs: 1,
+			md: 3,
+		};
+		const builtSizes = sizeForBreakpoints.buildSizes(sizes);
+
+		expect(builtSizes.xs).to.equal(1);
+		expect(builtSizes.sm).to.equal(1);
+		expect(builtSizes.md).to.equal(3);
+		expect(builtSizes.lg).to.equal(3);
+	});
+
+	it('should fill empty sizes with 0', () => {
+		const builtSizes = sizeForBreakpoints.buildSizes({});
+
+		expect(builtSizes.xs).to.equal(0);
+		expect(builtSizes.sm).to.equal(0);
+		expect(builtSizes.md).to.equal(0);
+		expect(builtSizes.lg).to.equal(0);
+	});
+
+	it('should use a constant size for all breakpoints', () => {
+		const builtSizes = sizeForBreakpoints.buildSizes(2);
+
+		expect(builtSizes.xs).to.equal(2);
+		expect(builtSizes.sm).to.equal(2);
+		expect(builtSizes.md).to.equal(2);
+		expect(builtSizes.lg).to.equal(2);
 	});
 });

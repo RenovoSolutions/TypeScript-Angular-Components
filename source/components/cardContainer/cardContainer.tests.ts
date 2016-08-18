@@ -6,6 +6,7 @@ import __object = services.object;
 import __array = services.array;
 
 import { DataPager } from './paging/index';
+import { SortManagerService } from './sorts/index';
 
 import { CardContainerComponent	} from './cardContainer';
 import {
@@ -46,7 +47,7 @@ describe('CardContainerComponent', () => {
 	let mockedDataSource: IDataSourceMock;
 
 	beforeEach(() => {
-		cardContainer = new CardContainerComponent(__object.objectUtility, __array.arrayUtility, new DataPager());
+		cardContainer = new CardContainerComponent(__array.arrayUtility, new DataPager(), new SortManagerService());
 
 		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
 		cardContainer.builder = builder;
@@ -54,6 +55,28 @@ describe('CardContainerComponent', () => {
 		mockedDataSource = buildMockedDataSource();
 		cardContainer.dataSource = <any>mockedDataSource;
 		builder._dataSource = <any>mockedDataSource;
+	});
+
+	function buildMockedDataSource(): IDataSourceMock {
+		return <any>{
+			refresh: sinon.spy(),
+			onSortChange: sinon.spy(),
+			initPager: sinon.spy(),
+			changed: new Subject<void>(),
+			redrawing: new Subject<void>(),
+		};
+	}
+
+	describe('hasItems', () => {
+		it('should return true if the data set is not empty', () => {
+			cardContainer.dataSource.dataSet = [];
+
+			expect(cardContainer.hasItems).to.be.false;
+
+			cardContainer.dataSource.dataSet = [1];
+
+			expect(cardContainer.hasItems).to.be.true;
+		});
 	});
 
 	describe('data source', (): void => {
@@ -124,85 +147,42 @@ describe('CardContainerComponent', () => {
 		});
 	});
 
-	describe('column sizes', (): void => {
-		it('should fill column size with all breakpoint values', (): void => {
-			builder.addColumn(<any>{
-				size: {},
-			});
-			builder.addColumn(<any>{
-				size: {
-					xs: 1,
-				},
-			});
-			builder.addColumn(<any>{
-				size: {
-					lg: 1,
-				},
-			});
-			builder.addColumn(<any>{
-				size: {
-					xs: 1,
-					md: 2,
-				},
-			});
-			builder.addColumn(<any>{
-				size: {
-					xs: 1,
-					sm: 2,
-					md: 3,
-					lg: 4,
-				},
-			});
+	describe('filters', (): void => {
+		it('should set the filters on the data source and call refresh', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+
+			builder._dataSource = <any>dataSource;
+			builder._filters = filters;
 
 			cardContainer.ngOnInit();
 
-			let size: IBreakpointSize = cardContainer.columns[0].size;
-			expect(size.xs).to.equal(0);
-			expect(size.sm).to.equal(0);
-			expect(size.md).to.equal(0);
-			expect(size.lg).to.equal(0);
-
-			size = cardContainer.columns[1].size;
-			expect(size.xs).to.equal(1);
-			expect(size.sm).to.equal(1);
-			expect(size.md).to.equal(1);
-			expect(size.lg).to.equal(1);
-
-			size = cardContainer.columns[2].size;
-			expect(size.xs).to.equal(0);
-			expect(size.sm).to.equal(0);
-			expect(size.md).to.equal(0);
-			expect(size.lg).to.equal(1);
-
-			size = cardContainer.columns[3].size;
-			expect(size.xs).to.equal(1);
-			expect(size.sm).to.equal(1);
-			expect(size.md).to.equal(2);
-			expect(size.lg).to.equal(2);
-
-			size = cardContainer.columns[4].size;
-			expect(size.xs).to.equal(1);
-			expect(size.sm).to.equal(2);
-			expect(size.md).to.equal(3);
-			expect(size.lg).to.equal(4);
+			expect(dataSource.filters).to.equal(filters);
+			sinon.assert.calledOnce(dataSource.refresh);
 		});
 
-		it('should use constant size for all breakpoints', (): void => {
-			builder.addColumn(<any>{
-				size: 3,
-			});
+		it('should init filters from data source filters if no filters are specified', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+			dataSource.filters = filters;
+
+			builder._dataSource = <any>dataSource;
 
 			cardContainer.ngOnInit();
 
-			let size: IBreakpointSize = cardContainer.columns[0].size;
-			expect(size.xs).to.equal(3);
-			expect(size.sm).to.equal(3);
-			expect(size.md).to.equal(3);
-			expect(size.lg).to.equal(3);
+			expect(cardContainer.filters).to.equal(filters);
 		});
 	});
 
-	describe('sort', (): void => {
+	describe('sort - integration with the sortManager', (): void => {
 		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
 			let columns: IColumn<any>[] = <any>[
 				{
@@ -381,49 +361,4 @@ describe('CardContainerComponent', () => {
 			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
 		});
 	});
-
-	describe('filters', (): void => {
-		it('should set the filters on the data source and call refresh', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-
-			builder._dataSource = <any>dataSource;
-			builder._filters = filters;
-
-			cardContainer.ngOnInit();
-
-			expect(dataSource.filters).to.equal(filters);
-			sinon.assert.calledOnce(dataSource.refresh);
-		});
-
-		it('should init filters from data source filters if no filters are specified', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.filters = filters;
-
-			builder._dataSource = <any>dataSource;
-
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.filters).to.equal(filters);
-		});
-	});
-
-	function buildMockedDataSource(): IDataSourceMock {
-		return <any>{
-			refresh: sinon.spy(),
-			onSortChange: sinon.spy(),
-			initPager: sinon.spy(),
-			changed: new Subject<void>(),
-			redrawing: new Subject<void>(),
-		};
-	}
 });
