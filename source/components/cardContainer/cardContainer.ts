@@ -129,6 +129,10 @@ export class CardContainerComponent<T> implements OnInit {
 		this.sortManager.sort(column);
 	}
 
+	getColumnTemplate(columnName: string): ColumnHeaderTemplate {
+		return this.columnHeaders.filter(column => column.name === columnName)[0];
+	}
+
 	private syncFilters(): void {
 		if (this.filters) {
 			this.dataSource.filters = this.filters;
@@ -159,9 +163,5 @@ export class CardContainerComponent<T> implements OnInit {
 		return find(this.columns, (column: IColumn<any>): boolean => {
 			return column.label === label;
 		});
-	}
-
-	private getColumnTemplate(columnName: string): ColumnHeaderTemplate {
-		return this.columnHeaders.filter(column => column.name === columnName)[0];
 	}
 }
