@@ -10,7 +10,7 @@ import { IViewDataEntity } from '../../types/viewData';
 import { IDataSource } from './dataSources/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
-import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
+import { ISort, IPartialSort, SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 
 import { CardComponent } from './card/card';
 import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
@@ -40,7 +40,7 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.save,
 		cardContainerInputs.searchPlaceholder
 	],
-	providers: [DataPager],
+	providers: [DataPager, SortManagerService],
 	directives: [
 		ContainerHeaderComponent,
 		ContainerFooterComponent,
@@ -70,6 +70,7 @@ export class CardContainerComponent<T> implements OnInit {
 
 	arrayUtility: __array.IArrayUtility;
 	injectedPager: DataPager;
+	sortManager: SortManagerService;
 
 	type: CardContainerType = CardContainerType.standard;
 
@@ -90,9 +91,10 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.dataSource.dataSet && !!this.dataSource.dataSet.length;
 	}
 
-	constructor(array: __array.ArrayUtility, pager: DataPager) {
+	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
 		this.arrayUtility = array;
 		this.injectedPager = pager;
+		this.sortManager = sortManager;
 		this.save = <ISaveAction>() => Promise.resolve();
 	}
 
@@ -112,6 +114,11 @@ export class CardContainerComponent<T> implements OnInit {
 		if (this.dataSource.sorts == null) {
 			this.dataSource.sorts = [];
 		}
+
+		this.sortManager.setup(this.dataSource.sorts, name => this.lookupColumn(name), this.maxColumnSorts);
+
+		this.sortManager.sortList$.subscribe(sorts => this.dataSource.sorts = sorts);
+		this.sortManager.sortChange$.subscribe(() => this.dataSource.onSortChange());
 	}
 
 	openCard(): boolean {
@@ -119,61 +126,7 @@ export class CardContainerComponent<T> implements OnInit {
 	}
 
 	sort(column: IColumn<any>): void {
-		let sortList: ISort[] = this.dataSource.sorts;
-		let firstSort: ISort = sortList[0];
-
-		// If column is already the primary sort, change the direction
-		if (firstSort != null
-			&& firstSort.column === column) {
-			firstSort.direction = SortDirection.toggle(firstSort.direction);
-
-			// Clear sort
-			if (firstSort.direction === SortDirection.none) {
-				this.clearVisualSortIndicator(firstSort);
-				firstSort = null;
-
-				// If the column has secondary sorts don't fall back to a
-				//  secondary sort, instead just clear all sorts
-				if (column.secondarySorts != null) {
-					sortList.length = 0;
-				} else { // otehrwise, clear the primary sort and fallback to previous sort
-					sortList.shift();
-				}
-			}
-		} else {
-			// Else make column primary ascending sort
-
-			// Remove any existing non-primary sorts on column
-			this.arrayUtility.remove(sortList, (sort: ISort): boolean => {
-				return column === sort.column;
-			});
-
-			// Build ascending sort for column
-			let newSort: ISort = {
-				column: column,
-				direction: SortDirection.ascending,
-			};
-
-			sortList.unshift(newSort);
-
-			firstSort = newSort;
-		}
-
-		this.updateVisualColumnSorting();
-
-		// If column has secondary sorts, wipe the sort order and just apply the secondary sorts
-		if (firstSort != null && column.secondarySorts != null) {
-			sortList.length = 0;
-			let secondarySorts: ISort[] = this.buildSecondarySorts(firstSort.direction, column.secondarySorts);
-			sortList.push(firstSort);
-			sortList.push.apply(sortList, secondarySorts);
-		} else {
-			// If not using column secondary sorts, limit the maximum number
-			//  of sorts applied to the maximum number of sorts
-			this.dataSource.sorts = take(sortList, this.maxColumnSorts);
-		}
-
-		this.dataSource.onSortChange();
+		this.sortManager.sort(column);
 	}
 
 	private syncFilters(): void {
@@ -206,35 +159,6 @@ export class CardContainerComponent<T> implements OnInit {
 		return find(this.columns, (column: IColumn<any>): boolean => {
 			return column.label === label;
 		});
-	}
-
-	private buildSecondarySorts(direction: SortDirection, secondarySorts: ISecondarySorts): ISort[] {
-		let sortList: IPartialSort[] = secondarySorts[SortDirection.getFullName(direction)];
-		return map(sortList, (sort: IPartialSort): ISort => {
-			return {
-				direction: sort.direction,
-				column: this.lookupColumn(sort.column),
-			};
-		});
-	}
-
-	private updateVisualColumnSorting(): void {
-		each(this.dataSource.sorts, (sort: ISort, index: number): void => {
-			// Only first sort should have visible direction
-			if (index === 0) {
-				this.updateVisualSortIndicator(sort);
-			} else {
-				this.clearVisualSortIndicator(sort);
-			}
-		});
-	}
-
-	private updateVisualSortIndicator(sort: ISort): void {
-		sort.column.sortDirection = sort.direction;
-	}
-
-	private clearVisualSortIndicator(sort: ISort): void {
-		sort.column.sortDirection = null;
 	}
 
 	private getColumnTemplate(columnName: string): ColumnHeaderTemplate {

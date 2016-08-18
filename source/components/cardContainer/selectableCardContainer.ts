@@ -6,7 +6,7 @@ import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IColumn } from './column';
-import { SortDirection, ISortDirections } from './sorts/index';
+import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
@@ -44,6 +44,7 @@ export interface ISelectionViewData {
 	],
 	providers: [
 		DataPager,
+		SortManagerService,
 		new Provider(CardContainerComponent, {
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		}),
@@ -70,9 +71,8 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(array: __array.ArrayUtility
-			, pager: DataPager) {
-		super(array, pager);
+	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
+		super(array, pager, sortManager);
 		this.type = CardContainerType.selectable;
 	}
 
