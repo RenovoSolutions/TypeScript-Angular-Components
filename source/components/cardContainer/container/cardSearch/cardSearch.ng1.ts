@@ -53,6 +53,10 @@ export class CardSearchController {
 	static $inject: string[] = ['$timeout'];
 	constructor(private $timeout: angular.ITimeoutService) {}
 
+	get focusOn(): boolean {
+		return this.cardContainer.focusSearchOn;
+	}
+
 	$onInit(): void {
 		if (this.cardContainer == null) {
 			return;
