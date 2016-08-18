@@ -57,6 +57,16 @@ describe('CardContainerComponent', () => {
 		builder._dataSource = <any>mockedDataSource;
 	});
 
+	function buildMockedDataSource(): IDataSourceMock {
+		return <any>{
+			refresh: sinon.spy(),
+			onSortChange: sinon.spy(),
+			initPager: sinon.spy(),
+			changed: new Subject<void>(),
+			redrawing: new Subject<void>(),
+		};
+	}
+
 	describe('hasItems', () => {
 		it('should return true if the data set is not empty', () => {
 			cardContainer.dataSource.dataSet = [];
@@ -137,7 +147,42 @@ describe('CardContainerComponent', () => {
 		});
 	});
 
-	describe('sort', (): void => {
+	describe('filters', (): void => {
+		it('should set the filters on the data source and call refresh', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+
+			builder._dataSource = <any>dataSource;
+			builder._filters = filters;
+
+			cardContainer.ngOnInit();
+
+			expect(dataSource.filters).to.equal(filters);
+			sinon.assert.calledOnce(dataSource.refresh);
+		});
+
+		it('should init filters from data source filters if no filters are specified', (): void => {
+			let filters: IFilterMock[] = [{
+				type: 'type',
+				filter: sinon.spy(),
+			}];
+
+			let dataSource: IDataSourceMock = buildMockedDataSource();
+			dataSource.filters = filters;
+
+			builder._dataSource = <any>dataSource;
+
+			cardContainer.ngOnInit();
+
+			expect(cardContainer.filters).to.equal(filters);
+		});
+	});
+
+	describe('sort - integration with the sortManager', (): void => {
 		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
 			let columns: IColumn<any>[] = <any>[
 				{
@@ -316,49 +361,4 @@ describe('CardContainerComponent', () => {
 			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
 		});
 	});
-
-	describe('filters', (): void => {
-		it('should set the filters on the data source and call refresh', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-
-			builder._dataSource = <any>dataSource;
-			builder._filters = filters;
-
-			cardContainer.ngOnInit();
-
-			expect(dataSource.filters).to.equal(filters);
-			sinon.assert.calledOnce(dataSource.refresh);
-		});
-
-		it('should init filters from data source filters if no filters are specified', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.filters = filters;
-
-			builder._dataSource = <any>dataSource;
-
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.filters).to.equal(filters);
-		});
-	});
-
-	function buildMockedDataSource(): IDataSourceMock {
-		return <any>{
-			refresh: sinon.spy(),
-			onSortChange: sinon.spy(),
-			initPager: sinon.spy(),
-			changed: new Subject<void>(),
-			redrawing: new Subject<void>(),
-		};
-	}
 });
