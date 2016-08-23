@@ -3,6 +3,7 @@ import * as angular from 'angular';
 export const moduleName: string = 'rl.ui.behaviors.focusOn';
 export const directiveName: string = 'rlFocusOn';
 
+focusOn.$inject = ['$timeout', '$parse'];
 export function focusOn($timeout, $parse): angular.IDirective {
 	return {
 		link: function(scope, element, attrs: any) {
