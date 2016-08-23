@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import IMockedPromise = services.test.IMockedPromise;
@@ -50,6 +50,12 @@ describe('busy', () => {
 
 		it('should finish after an event is complete', (): void => {
 			stream.complete();
+
+			expect(busy.loading).to.be.false;
+		});
+
+		it('should finish after an event errors', (): void => {
+			stream.error(new Error('Error'));
 
 			expect(busy.loading).to.be.false;
 		});

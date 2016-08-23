@@ -38,6 +38,6 @@ export class BusyComponent {
 
 		this.loading = true;
 		this.asyncHelper.waitAsObservable(waitOn)
-			.subscribe(null, null, () => this.loading = false);
+			.subscribe(null, () => this.loading = false, () => this.loading = false);
 	}
 }
