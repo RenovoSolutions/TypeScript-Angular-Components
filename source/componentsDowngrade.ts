@@ -17,6 +17,7 @@ import {
 } from './components/buttons/index';
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
+import { DialogOutletComponent } from './components/dialog/dialogOutlet';
 import { DialogRootService } from './components/dialog/dialogRoot.service';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
@@ -118,6 +119,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlButtonToggleNg', <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
 	componentsDowngradeModule.directive('rlCheckboxNg', <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));
 	componentsDowngradeModule.directive('rlCommaListNg', <any>upgradeAdapter.downgradeNg2Component(CommaListComponent));
+	componentsDowngradeModule.directive('rlDialogOutlet', <any>upgradeAdapter.downgradeNg2Component(DialogOutletComponent));
 	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
 	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
