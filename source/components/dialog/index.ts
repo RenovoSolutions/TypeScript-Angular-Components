@@ -10,3 +10,4 @@ export const DIALOG_PROVIDERS: any[] = [DialogRootService];
 export * from './dialog';
 export * from './dialogOutlet';
 export * from './dialogRoot.service';
+export * from './promptDialog';
