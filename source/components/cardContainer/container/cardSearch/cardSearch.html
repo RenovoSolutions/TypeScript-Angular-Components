@@ -3,7 +3,7 @@
 	 [class.has-error]="searchLengthError">
 	<rlTextbox [label]="searchPlaceholder"
 			   [value]="searchFilter.searchText || ''"
-			   (change)="setSearch($event)"
+			   (valueChange)="setSearch($event)"
 			   tooltip="You must enter at least {{searchFilter.minSearchLength}} characters to perform a search"
 			   tooltipTrigger="mouseenter"
 			   [tooltipEnable]="searchLengthError"></rlTextbox>
