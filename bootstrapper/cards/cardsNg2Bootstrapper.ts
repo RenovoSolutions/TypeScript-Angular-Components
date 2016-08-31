@@ -80,7 +80,9 @@ export class CardsBootstrapper {
 			getValue: 'value',
 			template: '<b>{{myItem.value}}</b>',
 		});
-		this.builder.useSearch();
+
+		const searchFilter = this.builder.useSearch();
+		searchFilter.minSearchLength = 5;
 
 		this.initFilteredCardContainer();
 
