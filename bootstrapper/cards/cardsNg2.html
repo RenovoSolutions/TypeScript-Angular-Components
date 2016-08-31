@@ -66,11 +66,22 @@
 				  useDateRange="true"
 				  useTime="true"></rlDateFilter>
 </div>
-<div>
-	<rlFilterGroup [filterGroup]="filterGroup"></rlFilterGroup>
-	<rlFilterGroup [filterGroup]="modeFilterGroup"></rlFilterGroup>
-	<rlFilterGroup [filterGroup]="rangeFilterGroup"></rlFilterGroup>
-	<rlFilterGroup [filterGroup]="disabledFilterGroup" [disabled]="true"></rlFilterGroup>
+<div class="row">
+	<div class="col-sm-2">
+		<rlFilterGroup [filterGroup]="modeFilterGroup" [dataSource]="builderWithFilters._dataSource"></rlFilterGroup>
+		<rlFilterGroup [filterGroup]="rangeFilterGroup" [dataSource]="builderWithFilters._dataSource"></rlFilterGroup>
+		<rlFilterGroup [filterGroup]="disabledFilterGroup" [dataSource]="builderWithFilters._dataSource" [disabled]="true"></rlFilterGroup>
+	</div>
+	<div class="col-sm-10">
+		<label>Card Container with Filters:</label>
+		<rlCardContainer [builder]="builderWithFilters">
+			<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
+			<div *rlCardContent="let myItem">
+				Name: {{myItem.name}}
+				Value: {{myItem.value}}
+			</div>
+		</rlCardContainer>
+	</div>
 </div>
 <div>
 	<rlSelectFilter [filter]="selectFilter"
