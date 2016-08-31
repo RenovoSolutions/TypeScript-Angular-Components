@@ -2,7 +2,7 @@
 	 [class.has-warning]="!validFormat"
 	 [class.error]="!control.valid"
 	 [class.datepicker-with-clear]="showClear">
-	<span #datepicker>
+	<span #datepicker class="show-date-picker">
 		<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 		<input type="text"
 			   #dateinput
