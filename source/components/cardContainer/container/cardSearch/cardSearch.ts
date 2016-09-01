@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
@@ -16,7 +15,7 @@ export const defaultSearchDelay: number = 1000;
 @Component({
 	selector: 'rlCardSearch',
 	template: require('./cardSearch.html'),
-	directives: [TextboxComponent, ButtonComponent, TOOLTIP_DIRECTIVES],
+	directives: [TextboxComponent, ButtonComponent],
 	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardSearchComponent<T> implements OnInit {
