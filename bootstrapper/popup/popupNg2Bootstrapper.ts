@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { ButtonComponent } from '../../source/components/buttons/index';
 import { INPUT_DIRECTIVES } from '../../source/components/inputs/index';
@@ -13,7 +12,6 @@ import { DIALOG_TEMPLATE_DIRECTIVES } from '../../source/components/dialog/templ
 	selector: 'tsPopupBootstrapper',
 	template: require('./popupNg2.html'),
 	directives: [
-		TOOLTIP_DIRECTIVES,
 		ButtonComponent,
 		INPUT_DIRECTIVES,
 		DIALOG_TEMPLATE_DIRECTIVES,
