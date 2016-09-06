@@ -12,6 +12,7 @@ interface IFormMock {
 	form: { statusChanges: Subject<void> };
 	validate: Sinon.SinonSpy;
 	submitAndWait: Sinon.SinonSpy;
+	saveForm: Sinon.SinonSpy;
 }
 
 interface IAutosaveActionMock {
@@ -28,6 +29,7 @@ describe('AutosaveDirective', () => {
 			form: { statusChanges: new Subject<void>() },
 			validate: sinon.spy(() => true),
 			submitAndWait: sinon.spy(),
+			saveForm: sinon.spy(),
 		};
 
 		autosaveAction = { trigger: sinon.spy() };
@@ -89,6 +91,20 @@ describe('AutosaveDirective', () => {
 
 			sinon.assert.notCalled(autosaveSpy);
 		}));
+
+		it('should still trigger an autosave if the form is invalid but saveWhenInvalid is enabled', rlFakeAsync(() => {
+			const autosaveSpy = sinon.spy();
+			autosave.autosave = autosaveSpy;
+			autosave.saveWhenInvalid = true;
+			form.validate = sinon.spy(() => false);
+
+			autosave.setDebounce();
+
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.calledOnce(autosaveSpy);
+		}));
 	});
 
 	describe('resetDebounce', () => {
@@ -131,6 +147,17 @@ describe('AutosaveDirective', () => {
 		it('should submit the form and pass the wait value to the autosave action', () => {
 			const waitValue = __test.mock.request()();
 			form.submitAndWait = sinon.spy(() => waitValue);
+
+			autosave.autosave();
+
+			sinon.assert.calledOnce(autosaveAction.trigger);
+			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
+		});
+
+		it('should save the form directly if saveWhenInvalid is true', () => {
+			autosave.saveWhenInvalid = true;
+			const waitValue = __test.mock.request()();
+			form.saveForm = sinon.spy(() => waitValue);
 
 			autosave.autosave();
 
