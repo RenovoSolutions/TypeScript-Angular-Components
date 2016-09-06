@@ -42,7 +42,7 @@ import * as cardContainer from './cardContainer/index';
 import * as commaList from './commaList/commaList';
 import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
-import * as form from './form/form';
+import * as form from './form/index';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as simpleCardList from './simpleCardList/index';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
