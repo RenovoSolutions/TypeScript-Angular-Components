@@ -24,7 +24,6 @@ export class CardSearchComponent<T> implements OnInit {
 
 	searchLengthError: boolean = false;
 	hasSearchFilter: boolean = true;
-	minSearchError: string;
 
 	cardContainer: CardContainerComponent<T>;
 	timer: __timeout.ITimeout;
@@ -68,7 +67,11 @@ export class CardSearchComponent<T> implements OnInit {
  		if (this.hasSearchFilter) {
  			return this.cardContainer.searchPlaceholder || defaultSearchPlaceholder;
  		}
- 	}
+	}
+
+	get minSearchError(): string {
+		return `You must enter at least ${this.searchFilter.minSearchLength} characters to perform a search`;
+	}
 
 	private validateSearchLength(search: string, minLength: number): void {
 		// show error if search string exists but is below minimum size
