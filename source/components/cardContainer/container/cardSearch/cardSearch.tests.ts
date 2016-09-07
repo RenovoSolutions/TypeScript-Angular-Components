@@ -75,6 +75,11 @@ describe('CardSearchComponent', () => {
 		expect(cardSearch.searchPlaceholder).to.equal(cardContainer.searchPlaceholder);
 	});
 
+	it('should show an error for the minimum search length', () => {
+		cardSearch.searchFilter = <any>{ minSearchLength: 3 };
+		expect(cardSearch.minSearchError).to.equal('You must enter at least 3 characters to perform a search');
+	});
+
 	describe('search', (): void => {
 		beforeEach((): void => {
 			cardSearch.ngOnInit();
