@@ -2,7 +2,7 @@
 	 *ngIf="hasSearchFilter"
 	 [class.has-error]="searchLengthError"
 	 [class.rl-tooltip]="searchLengthError"
-	 [attr.data-tooltip]="You must enter at least {{searchFilter.minSearchLength}} characters to perform a search">
+	 [attr.data-tooltip]="minSearchError">
 	<rlTextbox [label]="searchPlaceholder"
 			   [value]="searchFilter.searchText || ''"
 			   (valueChange)="setSearch($event)"></rlTextbox>
