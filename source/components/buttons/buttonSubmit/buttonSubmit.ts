@@ -8,7 +8,6 @@ import { FormComponent } from '../../form/form';
 	selector: 'rlButtonSubmit',
 	template: require('./buttonSubmit.html'),
 	inputs: baseInputs,
-	directives: [BusyComponent],
 })
 export class ButtonSubmitComponent extends BaseButtonComponent {
 

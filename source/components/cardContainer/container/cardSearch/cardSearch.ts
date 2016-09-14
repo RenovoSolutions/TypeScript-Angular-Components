@@ -3,11 +3,8 @@ import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
 import { services, filters } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
 import __timeout = services.timeout;
-import __isEmpty = filters.isEmpty;
 
 import { CardContainerComponent } from '../../cardContainer';
-import { TextboxComponent } from '../../../inputs/index';
-import { ButtonComponent } from '../../../buttons/index';
 
 export const defaultSearchPlaceholder: string = 'Search';
 export const defaultSearchDelay: number = 1000;
@@ -15,8 +12,6 @@ export const defaultSearchDelay: number = 1000;
 @Component({
 	selector: 'rlCardSearch',
 	template: require('./cardSearch.html'),
-	directives: [TextboxComponent, ButtonComponent],
-	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;

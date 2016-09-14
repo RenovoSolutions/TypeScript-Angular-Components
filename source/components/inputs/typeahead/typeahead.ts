@@ -13,8 +13,7 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
-import { ButtonComponent } from '../../buttons/index';
-import { POPOUT_LIST_DIRECTIVES, POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
+import { POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
 export const DEFAULT_SERVER_SEARCH_DEBOUNCE: number = 500;
 export const DEFAULT_CLIENT_SEARCH_DEBOUNCE: number = 100;
@@ -30,7 +29,6 @@ export interface ITypeaheadChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
-	directives: [BusyComponent, ButtonComponent, POPOUT_LIST_DIRECTIVES]
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;

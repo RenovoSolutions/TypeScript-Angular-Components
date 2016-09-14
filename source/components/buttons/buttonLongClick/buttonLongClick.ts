@@ -11,7 +11,6 @@ import { ButtonAsyncComponent, asyncInputs } from '../buttonAsync/buttonAsync';
 	selector: 'rlButtonLongClick',
 	template: require('./buttonLongClick.html'),
 	inputs: asyncInputs,
-	directives: [BusyComponent],
 })
 export class ButtonLongClickComponent extends ButtonAsyncComponent {
 	@Input() warning: string;

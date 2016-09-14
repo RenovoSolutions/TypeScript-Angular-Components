@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, Optional, SkipSelf } from '@angular/core';
-import { NgForm, FormGroup, FormBuilder, FormGroupDirective } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { isBoolean } from 'lodash';
 
@@ -25,7 +25,6 @@ export interface ISaveAction<T> {
 @Component({
 	selector: 'rlForm',
 	template: require('./form.html'),
-	directives: [FormGroupDirective],
 })
 export class FormComponent {
 	@Input() save: ISaveAction<any>;
