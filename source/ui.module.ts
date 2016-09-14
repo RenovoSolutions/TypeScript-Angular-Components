@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { BEHAVIOR_DIRECTIVES } from './behaviors/index';
 import { BusyComponent } from'./components/busy/busy';
@@ -43,7 +44,10 @@ export * from './ui.module.ng1';
 export * from './componentProviders.module';
 
 @NgModule({
-	imports: [CommonModule],
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+	],
 	declarations: [
 		...componentsList,
 		ContainerHeaderComponent,
