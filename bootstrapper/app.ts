@@ -7,8 +7,8 @@ import { NgModule, forwardRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
 
+import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
-import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
 import { moduleName as componentsModule } from '../source/ui.module';
 import * as componentsDowngrade from '../source/componentsDowngrade';
 
