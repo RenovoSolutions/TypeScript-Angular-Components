@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { OffClickDirective } from './behaviors/offClick/offClick';
+import { BEHAVIOR_DIRECTIVES } from './behaviors/index';
 import { BusyComponent } from'./components/busy/busy';
 import { BUTTON_DIRECTIVES } from'./components/buttons/index';
 import { CARD_CONTAINER_DIRECTIVES } from'./components/cardContainer/index';
@@ -23,7 +23,7 @@ import { ValidationGroupComponent } from'./components/validationGroup/validation
 import { ComponentProvidersModule } from './componentProviders.module';
 
 export const componentsList: any[] = [
-	OffClickDirective,
+	BEHAVIOR_DIRECTIVES,
 	BusyComponent,
 	BUTTON_DIRECTIVES,
 	CARD_CONTAINER_DIRECTIVES,
