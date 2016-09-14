@@ -17,6 +17,8 @@ import { StringWithWatermarkComponent } from'./components/stringWithWatermark/st
 import { TABS_COMPONENT } from'./components/tabs/index';
 import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
 
+import { DatePipe, IsEmptyPipe, LocalizeStringDatesPipe, TruncatePipe } from './pipes/index';
+
 // internal components
 import { CardHeaderColumnComponent } from './components/cardContainer/card/headerColumn/headerColumn';
 import { ContainerHeaderComponent } from'./components/cardContainer/container/containerHeader.component';
@@ -43,6 +45,12 @@ export const componentsList: any[] = [
 	StringWithWatermarkComponent,
 	TABS_COMPONENT,
 	ValidationGroupComponent,
+
+	// pipes
+	DatePipe,
+	IsEmptyPipe,
+	LocalizeStringDatesPipe,
+	TruncatePipe,
 ];
 
 export * from './ui.module.ng1';
