@@ -7,10 +7,8 @@ import { NgModule, forwardRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
 
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
-
 import { moduleName as componentsModule } from '../source/ui.module';
 import * as componentsDowngrade from '../source/componentsDowngrade';
 
@@ -45,6 +43,8 @@ import { ValidationGroupComponent } from '../source/components/validationGroup/v
 import { AutosaveDirective } from '../source/behaviors/autosave/autosave';
 import { RatingBarComponent } from '../source/components/ratingBar/ratingBar';
 import { MultiStepIndicatorComponent } from '../source/components/multiStepIndicator/multiStepIndicator';
+
+import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
@@ -83,24 +83,20 @@ angular.module(moduleName, [
 	.config(BaseRoute);
 
 @NgModule({
-	declarations: [
-		INPUT_DIRECTIVES,
-		BUTTON_DIRECTIVES,
-		CARD_CONTAINER_DIRECTIVES,
-		SIMPLE_CARD_DIRECTIVES,
-		DIALOG_DIRECTIVES,
-		TABS_COMPONENT,
-		FormComponent,
-		BusyComponent,
-		ValidationGroupComponent,
-		AutosaveDirective,
-		RatingBarComponent,
-		MultiStepIndicatorComponent,
-
-		// should be a module import eventually
-		TOOLTIP_DIRECTIVES,
+	imports: [
+		BrowserModule,
+		UtilitiesModule,
+		ComponentsModule,
 	],
-	imports: [BrowserModule]
+	declarations: [
+		InputsBootstrapper,
+		FormsBootstrapper,
+		TabsBootstrapper,
+		MsiBootstrapperComponent,
+		CardsBootstrapper,
+		PopupBootstrapper,
+		MiscNgContextBootstrapper,
+	],
 })
 class ComponentsBootstrapperModule {}
 
