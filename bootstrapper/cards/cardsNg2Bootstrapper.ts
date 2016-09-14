@@ -9,7 +9,7 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
-import { builder, CARD_CONTAINER_PROVIDERS } from '../../source/components/cardContainer/index';
+import { builder } from '../../source/components/cardContainer/index';
 import {
 	DateFilter,
 	IFilterGroup,
@@ -35,7 +35,6 @@ const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardI
 @Component({
 	selector: 'tsCardsBootstrapper',
 	template: require('./cardsNg2.html'),
-	providers: [CARD_CONTAINER_PROVIDERS],
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
