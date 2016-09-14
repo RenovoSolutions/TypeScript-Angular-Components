@@ -49,13 +49,6 @@ export interface ISelectionViewData {
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		}),
 	],
-	directives: [
-		ContainerHeaderComponent,
-		SelectableContainerFooterComponent,
-		ColumnHeaderComponent,
-		SelectableCardComponent,
-		BusyComponent,
-	],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();

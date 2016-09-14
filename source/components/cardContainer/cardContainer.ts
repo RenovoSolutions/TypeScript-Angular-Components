@@ -41,13 +41,6 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.searchPlaceholder
 	],
 	providers: [DataPager, SortManagerService],
-	directives: [
-		ContainerHeaderComponent,
-		ContainerFooterComponent,
-		ColumnHeaderComponent,
-		CardComponent,
-		BusyComponent,
-	],
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
