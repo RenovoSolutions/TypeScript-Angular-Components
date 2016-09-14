@@ -1,23 +1,22 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { IStep, MultiStepIndicatorComponent } from '../../source/components/multiStepIndicator/multiStepIndicator';
+import { IStep } from '../../source/components/multiStepIndicator/multiStepIndicator';
 
 @Component({
-    selector: 'tsMsiBootstrapper',
-    template: require('./msi.ng2.html'),
-	directives: [MultiStepIndicatorComponent]
+	selector: 'tsMsiBootstrapper',
+	template: require('./msi.ng2.html'),
 })
 export class MsiBootstrapperComponent implements OnInit {
 	steps: IStep[];
 	numbered: boolean;
 	checked: boolean;
 
-    constructor() {
+	constructor() {
 		this.numbered = false;
 		this.checked = true;
-	 }
+	}
 
-    ngOnInit() {
+	ngOnInit() {
 		this.steps = [
 			{
 				title: 'Step 1',
@@ -51,5 +50,5 @@ export class MsiBootstrapperComponent implements OnInit {
 				},
 			},
 		];
-    }
+	}
 }
