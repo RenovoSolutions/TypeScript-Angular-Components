@@ -54,7 +54,7 @@ describe('onChangeTrigger', () => {
 		trigger = new OnChangeTrigger($rootScope);
 	});
 
-	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', test.fakeAsync((): void => {
+	it('should trigger autosave when the form becomes dirty and valid after the debounce duration', test.rlFakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -67,13 +67,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		test.tick(1000);
+		test.rlTick(1000);
 		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);
 	}));
 
-	it('should not save if the form is dirty but invalid', test.fakeAsync((): void => {
+	it('should not save if the form is dirty but invalid', test.rlFakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -85,13 +85,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		test.tick(1000);
+		test.rlTick(1000);
 		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
 	}));
 
-	it('should not save if the form is valid but not dirty', test.fakeAsync((): void => {
+	it('should not save if the form is valid but not dirty', test.rlFakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -103,13 +103,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		test.tick(1000);
+		test.rlTick(1000);
 		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
 	}));
 
-	it('should not save if the form is dirty and invalid if saveWhenInvalid was specified', test.fakeAsync((): void => {
+	it('should not save if the form is dirty and invalid if saveWhenInvalid was specified', test.rlFakeAsync((): void => {
 		trigger.configure({
 			form: <any>baseContentForm,
 			debounceDuration: 1000,
@@ -122,13 +122,13 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		test.tick(1000);
+		test.rlTick(1000);
 		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);
 	}));
 
-	it('should reset the debounce timer on form changes', test.fakeAsync((): void => {
+	it('should reset the debounce timer on form changes', test.rlFakeAsync((): void => {
 		let triggerChange: { (): void };
 		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {
 			triggerChange = callback;
@@ -147,17 +147,17 @@ describe('onChangeTrigger', () => {
 
 		$rootScope.$digest();
 
-		test.tick(500);
+		test.rlTick(500);
 		test.flushMicrotasks();
 
 		triggerChange();
 
-		test.tick(500);
+		test.rlTick(500);
 		test.flushMicrotasks();
 
 		sinon.assert.notCalled(saveSpy);
 
-		test.tick(500);
+		test.rlTick(500);
 		test.flushMicrotasks();
 
 		sinon.assert.calledOnce(saveSpy);

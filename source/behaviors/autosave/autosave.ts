@@ -1,10 +1,11 @@
-import { Directive, Self, AfterViewInit, HostListener } from '@angular/core';
+import { Directive, Input, Self, AfterViewInit, HostListener } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __timeout = services.timeout;
 
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
+import { IWaitValue } from '../../services/async/async.service';
 
 export const DEFAULT_AUTOSAVE_DEBOUNCE: number = 3000;
 
@@ -12,6 +13,7 @@ export const DEFAULT_AUTOSAVE_DEBOUNCE: number = 3000;
 	selector: '[rlAutosave]',
 })
 export class AutosaveDirective implements AfterViewInit {
+	@Input() saveWhenInvalid: boolean;
 	@HostListener('keyup') keyupListener = this.resetDebounce;
 
 	timer: __timeout.ITimeout;
@@ -32,7 +34,7 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	setDebounce = (): void => {
-		if (!this.timer && this.form.validate()) {
+		if (!this.timer && (this.saveWhenInvalid || this.form.validate())) {
 			this.timer = this.timeoutService.setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
 											.catch(() => null);
 		}
@@ -47,8 +49,16 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	autosave = (): void => {
-		const waitOn = this.form.submitAndWait();
+		const waitOn = this.submitAndWait();
 		this.autosaveAction.trigger(waitOn);
 		this.timer = null;
+	}
+
+	submitAndWait(): IWaitValue<any> {
+		if (this.saveWhenInvalid) {
+			return this.form.saveForm();
+		} else {
+			return this.form.submitAndWait();
+		}
 	}
 }

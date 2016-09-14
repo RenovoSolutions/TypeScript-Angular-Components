@@ -24,7 +24,7 @@
 						</div>
 					</div>
 				</div>
-				<div *ngIf="dataSource.dataSet | isEmpty:false">
+				<div *ngIf="hasItems">
 					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
 						<rlSelectableCard [item]="card"
 										  [save]="save"></rlSelectableCard>

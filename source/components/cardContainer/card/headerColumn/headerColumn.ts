@@ -1,4 +1,4 @@
-import { Component, Input, Inject, forwardRef, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
@@ -6,7 +6,6 @@ import __transform = services.transform;
 import { IColumn } from '../../column';
 import { ColumnContentTemplate } from '../../templates/columnContent.template';
 import { SizeForBreakpoints } from './sizeForBreakpoints';
-import { CardComponent } from '../card';
 
 @Component({
 	selector: 'rlCardHeaderColumn',
@@ -31,14 +30,11 @@ export class CardHeaderColumnComponent<T> implements OnInit {
 
 	sizeClass: string;
 
-	card: CardComponent<T>
 	transformService: __transform.ITransformService;
 	sizeForBreakpoints: SizeForBreakpoints;
 
-	constructor(@Inject(forwardRef(() => CardComponent)) card: CardComponent<T>
-			, transformService: __transform.TransformService
+	constructor(transformService: __transform.TransformService
 			, sizeForBreakpoints: SizeForBreakpoints) {
-		this.card = card;
 		this.transformService = transformService;
 		this.sizeForBreakpoints = sizeForBreakpoints;
 	}

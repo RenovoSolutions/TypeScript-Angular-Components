@@ -1,12 +1,11 @@
 <div class="input-group"
 	 *ngIf="hasSearchFilter"
-	 [class.has-error]="searchLengthError">
+	 [class.has-error]="searchLengthError"
+	 [class.rl-tooltip]="searchLengthError"
+	 [attr.data-tooltip]="minSearchError">
 	<rlTextbox [label]="searchPlaceholder"
 			   [value]="searchFilter.searchText || ''"
-			   (change)="setSearch($event)"
-			   tooltip="You must enter at least {{searchFilter.minSearchLength}} characters to perform a search"
-			   tooltipTrigger="mouseenter"
-			   [tooltipEnable]="searchLengthError"></rlTextbox>
+			   (valueChange)="setSearch($event)"></rlTextbox>
 	<div class="input-group-btn">
 		<rlButton [disabled]="searchFilter.searchText | isEmpty"
 				  (click)="setSearch(null)">

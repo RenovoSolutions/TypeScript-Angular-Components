@@ -1,6 +1,6 @@
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 
 import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service.ng1';
@@ -71,7 +71,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.calledOnce(event.preventDefault);
 	});
 
-	it('should resolve promises and provide the results as locals on the dialog controller', fakeAsync(() => {
+	it('should resolve promises and provide the results as locals on the dialog controller', rlFakeAsync(() => {
 		let data: any = { prop: 5 };
 		let dataService: any = {
 			get: test.mock.promise(data),
@@ -105,7 +105,7 @@ describe('bootstrapModalDialog', () => {
 		expect(dataResult).to.equal(data);
 	}));
 
-	it('should not open the dialog if resolve fails', fakeAsync(() => {
+	it('should not open the dialog if resolve fails', rlFakeAsync(() => {
 		let dataService: any = {
 			get: test.mock.rejectedPromise(new Error()),
 		};
@@ -123,7 +123,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled($uibModal.open);
 	}));
 
-	it('should return an object with functions to dismiss and close the dialog once its open', fakeAsync((): void => {
+	it('should return an object with functions to dismiss and close the dialog once its open', rlFakeAsync((): void => {
 		const options: any = {
 			resolve: {
 				data: test.mock.promise<void>(),

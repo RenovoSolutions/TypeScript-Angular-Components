@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "2.6.11",
+  "version": "2.6.24",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -95,11 +95,10 @@
     "moment": "~2.14.1",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "ng2-bootstrap": "1.0.24",
     "rxjs": "5.0.0-beta.6",
     "signature_pad": "~1.5.3",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.3.6",
+    "typescript-angular-utilities": "~3.3.9",
     "ui-select": "~0.14.7",
     "zone.js": "^0.6.12"
   },

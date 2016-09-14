@@ -2,13 +2,11 @@ import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, Co
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
-import __isEmpty = filters.isEmpty;
 
 import { IColumn } from './column';
-import { SortDirection, ISortDirections } from './sorts/index';
+import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
@@ -39,9 +37,14 @@ export interface ISelectionViewData {
 @Component({
 	selector: 'rlSelectableCardContainer',
 	template: require('./selectableCardContainer.html'),
-	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
+	inputs: [
+		cardContainerInputs.builder,
+		cardContainerInputs.save,
+		cardContainerInputs.searchPlaceholder
+	],
 	providers: [
 		DataPager,
+		SortManagerService,
 		new Provider(CardContainerComponent, {
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		}),
@@ -53,8 +56,6 @@ export interface ISelectionViewData {
 		SelectableCardComponent,
 		BusyComponent,
 	],
-
-	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
@@ -70,10 +71,8 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(object: __object.ObjectUtility
-			, array: __array.ArrayUtility
-			, pager: DataPager) {
-		super(object, array, pager);
+	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
+		super(array, pager, sortManager);
 		this.type = CardContainerType.selectable;
 	}
 

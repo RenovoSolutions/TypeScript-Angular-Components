@@ -114,4 +114,4 @@ function BaseRoute($urlRouterProvider, $stateProvider) {
 		});
 }
 
-upgradeAdapter.bootstrap(document.body, [moduleName]);
+upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });

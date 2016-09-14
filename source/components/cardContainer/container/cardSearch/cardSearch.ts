@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __genericSearchFilter = services.genericSearchFilter;
@@ -16,17 +15,15 @@ export const defaultSearchDelay: number = 1000;
 @Component({
 	selector: 'rlCardSearch',
 	template: require('./cardSearch.html'),
-	directives: [TextboxComponent, ButtonComponent, TOOLTIP_DIRECTIVES],
+	directives: [TextboxComponent, ButtonComponent],
 	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;
 	@Input() searchFilter: __genericSearchFilter.IGenericSearchFilter;
 
-	searchPlaceholder: string;
 	searchLengthError: boolean = false;
 	hasSearchFilter: boolean = true;
-	minSearchError: string;
 
 	cardContainer: CardContainerComponent<T>;
 	timer: __timeout.ITimeout;
@@ -62,10 +59,18 @@ export class CardSearchComponent<T> implements OnInit {
 		}
 
 		if (this.hasSearchFilter) {
-			this.searchPlaceholder = defaultSearchPlaceholder;
-
 			this.delay = this.delay || defaultSearchDelay;
 		}
+	}
+
+	get searchPlaceholder(): string {
+ 		if (this.hasSearchFilter) {
+ 			return this.cardContainer.searchPlaceholder || defaultSearchPlaceholder;
+ 		}
+	}
+
+	get minSearchError(): string {
+		return `You must enter at least ${this.searchFilter.minSearchLength} characters to perform a search`;
 	}
 
 	private validateSearchLength(search: string, minLength: number): void {

@@ -13,9 +13,7 @@ export class MiscNgContextBootstrapper {
 	value: number = 0;
 
 	wait(): Observable<void> {
-		const subject: Subject<void> = new Subject<void>();
-		setTimeout(() => subject.next(null), 1000);
-		return subject;
+		return Observable.of(null).delay(1000);
 	}
 
 	toggle(): void {

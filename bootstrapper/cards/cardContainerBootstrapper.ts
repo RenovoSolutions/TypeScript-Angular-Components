@@ -19,6 +19,7 @@ class CardTestController {
 	builder: ICardContainerBuilder;
 	builderWithSelectFilter: ICardContainerBuilder;
 	builderWithDateFilter: ICardContainerBuilder;
+	builderWithSearch: ICardContainerBuilder;
 	options: number[];
 	selectFilter: ISelectFilter<number>;
 	dateFilter: IDateFilter;
@@ -71,6 +72,22 @@ class CardTestController {
 				},
 			],
 		});
+
+		this.builderWithSearch = cardContainerBuilderFactory.getInstance();
+		this.builderWithSearch.dataSource.buildSimpleDataSource(_.cloneDeep(items));
+		this.builder.usePaging();
+		this.builderWithSearch.addColumn({
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		this.builderWithSearch.addColumn({
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
+		this.builderWithSearch.useSearch();
 
 		this.builderWithSelectFilter = cardContainerBuilderFactory.getInstance();
 		this.dataSource = this.builderWithSelectFilter.dataSource.buildSimpleDataSource(_.cloneDeep(items));

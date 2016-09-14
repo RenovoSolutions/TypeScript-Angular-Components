@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import IMockedPromise = services.test.IMockedPromise;
 import mock = services.test.mock;
-import fakeAsync = services.test.fakeAsync;
+import rlFakeAsync = services.test.rlFakeAsync;
 
 import { AsyncHelper } from './async.service';
 
@@ -14,7 +14,7 @@ describe('AsyncHelper', () => {
 		async = new AsyncHelper();
 	});
 
-	it('should fire immediately after the action completes on a primitive', fakeAsync((): void => {
+	it('should fire immediately after the action completes on a primitive', rlFakeAsync((): void => {
 		let nullValue;
 		let falseValue;
 		let trueValue;

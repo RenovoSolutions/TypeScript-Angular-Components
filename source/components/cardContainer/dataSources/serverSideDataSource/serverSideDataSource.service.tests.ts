@@ -2,10 +2,9 @@ import { addProviders, inject } from '@angular/core/testing';
 
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
+import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
@@ -47,12 +46,12 @@ describe('ServerSideDataSource', () => {
 			MergeSort,
 			services.UTILITY_PROVIDERS,
 		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
+		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility]
+			, (_dataSourceProcessor, array, object) => {
 
 			dataSourceProcessor = _dataSourceProcessor;
 			sinon.spy(dataSourceProcessor, 'processAndCount');
-			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
+			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object);
 		})();
 
 		source.filters = <any>[filter];
@@ -99,7 +98,7 @@ describe('ServerSideDataSource', () => {
 		expect(filters['clientSideFilter']).to.not.exist;
 	});
 
-	it('should set the data set and count with the response from the server', fakeAsync((): void => {
+	it('should set the data set and count with the response from the server', rlFakeAsync((): void => {
 		source.refresh();
 		test.mock.flushAll(dataService);
 		expect(source.dataSet[0]).to.equal(1);
