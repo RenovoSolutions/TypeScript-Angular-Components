@@ -1,7 +1,7 @@
-.tab-content .tab-pane { display: none }
-.tab-content .tab-pane.active { display: block }
+.rl-tab-content .rl-tab-pane { display: none }
+.rl-tab-content .rl-tab-pane.active { display: block }
 
-.nav-tabs li.error > a::before {
+.rl-tabset li.error > a::before {
     font-family: "FontAwesome";
     content: '\f071';
     color: #d50000;
