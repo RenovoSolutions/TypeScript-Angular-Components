@@ -28,6 +28,8 @@ import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
+import { IsEmptyPipe } from './pipes/isEmpty/isEmpty.pipe';
+import { TruncatePipe } from './pipes/truncate/truncate.pipe';
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
@@ -56,6 +58,13 @@ export const windowServiceName: string = 'windowWrapper';
 export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
+
+export function PipeDowngrader(pipe: PipeTransform) {
+	// factory that returns a filter
+	return () => (value: any, ...args: any[]): any => {
+		return pipe.transform(value, ...args);
+	};
+}
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
@@ -106,6 +115,8 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
+	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)));
 	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
 	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
