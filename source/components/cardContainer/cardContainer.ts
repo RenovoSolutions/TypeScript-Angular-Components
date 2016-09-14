@@ -13,13 +13,9 @@ import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 
 import { CardComponent } from './card/card';
-import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
 import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
 import { ColumnHeaderTemplate } from './templates/columnHeader.template';
-import { ContainerHeaderComponent } from './container/containerHeader.component';
-import { ContainerFooterComponent } from './container/containerFooter.component';
-import { BusyComponent } from '../busy/busy';
 import { ISaveAction } from '../form/form';
 
 import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
