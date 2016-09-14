@@ -64,7 +64,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DataSourceBuilder);
 	upgradeAdapter.addProvider(FilterBuilder);
 
-	const cardContainerBuilderFactoryProvider: Provider = new Provider(CardContainerBuilder, {
+	const cardContainerBuilderFactoryProvider: Provider = new Provider(cardContainerBuilderServiceName, {
 		deps: [Injector, DataSourceBuilder, FilterBuilder],
 		useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
 			return {
@@ -125,7 +125,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
 
 	componentsDowngradeModule.factory(autosaveActionServiceName, upgradeAdapter.downgradeNg2Provider(AutosaveActionService));
-	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
+	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(cardContainerBuilderServiceName));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
