@@ -1,9 +1,22 @@
 var moduleName = require('source/ui.module').moduleName;
 var UpgradeAdapter = require('@angular/upgrade').UpgradeAdapter;
+var core = require('@angular/core');
+var browser = require('@angular/platform-browser');
+var forms = require('@angular/forms');
 var downgrade = require('typescript-angular-utilities').downgrade;
 var downgradeComponents = require('./source/componentsDowngrade');
+var ComponentsModule = require('./source/ui.module').ComponentsModule;
 
-var upgrade = new UpgradeAdapter();
+var upgrade = new UpgradeAdapter(core.forwardRef(function () { return TestModule; }));
+
+class TestModule { }
+core.NgModule({
+	imports: [
+		browser.BrowserModule,
+		forms.ReactiveFormsModule,
+		ComponentsModule,
+	],
+})(TestModule)
 
 function setup() {
 	beforeEach(function () {
