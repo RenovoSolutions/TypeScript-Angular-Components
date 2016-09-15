@@ -117,8 +117,8 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 
 	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
 	componentsDowngradeModule.filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
