@@ -26,6 +26,7 @@ import { ContainerFooterComponent } from'./components/cardContainer/container/co
 import { SelectableContainerFooterComponent } from'./components/cardContainer/container/selectableContainerFooter.component';
 import { ColumnHeaderComponent } from'./components/cardContainer/container/columnHeader/columnHeader';
 import { FilterOptionComponent } from'./components/cardContainer/filters/index';
+import { TypeaheadDataItemComponent } from'./components/inputs/typeaheadList/typeaheadDataItem';
 import { POPOUT_LIST_DIRECTIVES } from'./components/popoutList/index';
 
 import { ComponentProvidersModule } from './componentProviders.module';
@@ -69,6 +70,7 @@ export * from './componentProviders.module';
 		SelectableContainerFooterComponent,
 		ColumnHeaderComponent,
 		FilterOptionComponent,
+		TypeaheadDataItemComponent,
 		POPOUT_LIST_DIRECTIVES,
 	],
 	exports: [
