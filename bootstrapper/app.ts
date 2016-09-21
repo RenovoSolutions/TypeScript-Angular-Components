@@ -31,19 +31,6 @@ import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 
-import { INPUT_DIRECTIVES } from '../source/components/inputs/index';
-import { BUTTON_DIRECTIVES } from '../source/components/buttons/index';
-import { CARD_CONTAINER_DIRECTIVES } from '../source/components/cardContainer/index';
-import { SIMPLE_CARD_DIRECTIVES } from '../source/components/simpleCardList/index';
-import { DIALOG_DIRECTIVES } from '../source/components/dialog/index';
-import { TABS_COMPONENT } from '../source/components/tabs/index';
-import { FormComponent } from '../source/components/form/form';
-import { BusyComponent } from '../source/components/busy/busy';
-import { ValidationGroupComponent } from '../source/components/validationGroup/validationGroup';
-import { AutosaveDirective } from '../source/behaviors/autosave/autosave';
-import { RatingBarComponent } from '../source/components/ratingBar/ratingBar';
-import { MultiStepIndicatorComponent } from '../source/components/multiStepIndicator/multiStepIndicator';
-
 import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
