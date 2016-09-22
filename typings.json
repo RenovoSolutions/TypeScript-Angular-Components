@@ -15,7 +15,6 @@
     "jquery.jsignature": "registry:dt/jquery.jsignature#0.0.0+20160316155526",
     "moment-node": "registry:dt/moment-node#2.11.1+20160511043338",
     "moment-timezone": "registry:dt/moment-timezone#0.2.5+20160329220348",
-    "signature_pad": "registry:dt/signature_pad#0.0.0+20160317120654"
   },
   "globalDevDependencies": {
     "chai": "registry:dt/chai#3.4.0+20160317120654",
