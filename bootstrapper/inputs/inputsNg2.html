@@ -61,6 +61,10 @@
 <div>
 	<rlAbsoluteTime [(value)]="time" label="AbsoluteTime"></rlAbsoluteTime>
 </div>
+<rlCheckbox label="Disable signature" [(value)]="disableSignature"></rlCheckbox>
+<div style="height: 200px; width: 600px">
+	<rlSignature [value]="signature" (valueChange)="log($event)" [disabled]="disableSignature"></rlSignature>
+</div>
 
 <h5>Disabled inputs</h5>
 <div>
@@ -96,4 +100,7 @@
 </div>
 <div>
 	<rlUserRating name="userRating1" disabled="true"></rlUserRating>
+</div>
+<div>
+	<rlSignature name="signature1" [disabled]="true"></rlSignature>
 </div>
