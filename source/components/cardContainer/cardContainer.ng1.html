@@ -39,6 +39,13 @@
 					</template>
 				</rl-generic-container>
 
+				<div class="alert alert-info" ng-show="!cardContainer.hasItems">
+					Please refine your search results
+				</div>
+				<div class="alert alert-info" ng-show="cardContainer.dataSource.isEmpty">
+					There are no items to show
+				</div>
+
 				<div ng-if="cardContainer.dataSource.dataSet | isEmpty:false">
 					<div class="card-item-repeat" ng-repeat="card in cardContainer.dataSource.dataSet">
 						<rl-card columns="cardContainer.columns" item="card"
@@ -53,12 +60,6 @@
 								card-as="cardContainer.cardAs"
 								save-when-invalid="cardContainer.saveWhenInvalid"></rl-card>
 					</div>
-				</div>
-				<div class="alert alert-info" ng-if="cardContainer.dataSource.needsRefinedSearch">
-					Please refine your search results
-				</div>
-				<div class="alert alert-info" ng-if="cardContainer.dataSource.isEmpty">
-					There are no items to show
 				</div>
 
 				<div>
