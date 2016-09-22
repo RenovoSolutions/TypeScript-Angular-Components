@@ -14,7 +14,6 @@ const map = {
 	'lodash': 'node_modules/lodash/index',
 	'moment': 'node_modules/moment/moment',
 	'moment-timezone': 'node_modules/moment-timezone/builds/moment-timezone-with-data.min',
-	'signature_pad': 'node_modules/signature_pad/signature_pad',
 	'ng-wig': 'node_modules/ng-wig',
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',

@@ -9,3 +9,7 @@
 .placeholder {
     color: #999999;
 }
+
+.img-responsive.disabled {
+	background: #eeeeee;
+}
