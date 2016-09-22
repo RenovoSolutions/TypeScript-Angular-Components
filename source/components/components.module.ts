@@ -38,6 +38,7 @@ import * as validationGroupNg1 from './validationGroup/validationGroup.ng1';
 import * as busy from './busy/busy';
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
+import * as cards from './cards/index';
 import * as commaList from './commaList/commaList';
 import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
@@ -90,6 +91,7 @@ export {
 	busy,
 	buttons,
 	cardContainer,
+	cards,
 	commaList,
 	dialog,
 	inputs,
