@@ -15,17 +15,19 @@
 					</div>
 					<div class="clearfix"></div>
 				</div>
+
+				<div class="alert alert-info" [hidden]="hasItems">
+					Please refine your search results
+				</div>
+				<div class="alert alert-info" [hidden]="!dataSource.isEmpty">
+					There are no items to show
+				</div>
+
 				<div *ngIf="hasItems">
 					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
 						<rlCard [item]="card"
 								[save]="save"></rlCard>
 					</div>
-				</div>
-				<div class="alert alert-info" *ngIf="dataSource.needsRefinedSearch">
-					Please refine your search results
-				</div>
-				<div class="alert alert-info" *ngIf="dataSource.isEmpty">
-					There are no items to show
 				</div>
 
 				<div>
