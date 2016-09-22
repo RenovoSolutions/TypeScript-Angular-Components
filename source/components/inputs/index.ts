@@ -3,6 +3,7 @@ import { CheckboxComponent } from './checkbox/checkbox';
 import { DateTimeComponent } from './dateTime/dateTime';
 import { RADIO_DIRECTIVES } from './radio/index';
 import { SelectComponent } from './select/select';
+import { SignatureComponent } from './signature/signature';
 import { SpinnerComponent } from './spinner/spinner';
 import { TextareaComponent } from './textarea/textarea';
 import { TextboxComponent } from './textbox/textbox';
@@ -16,6 +17,7 @@ export const INPUT_DIRECTIVES: any[] = [
 	DateTimeComponent,
 	RADIO_DIRECTIVES,
 	SelectComponent,
+	SignatureComponent,
 	SpinnerComponent,
 	TextareaComponent,
 	TextboxComponent,
