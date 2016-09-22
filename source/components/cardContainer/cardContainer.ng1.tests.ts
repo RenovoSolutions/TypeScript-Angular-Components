@@ -592,6 +592,27 @@ describe('CardContainerController', () => {
 		});
 	});
 
+	describe('hasItems', (): void => {
+		it('should return true if the data set is not empty', (): void => {
+			let dataSource: IDataSourceMock;
+			dataSource = buildMockedDataSource();
+			dataSource.rawDataSet = [
+				{ id: 0 },
+				{ id: 1 },
+			];
+			dataSource.dataSet = dataSource.rawDataSet;
+			buildController();
+
+			cardContainer.dataSource.dataSet = [];
+
+			expect(cardContainer.hasItems).to.be.false;
+
+			cardContainer.dataSource.dataSet = [1];
+
+			expect(cardContainer.hasItems).to.be.true;
+		});
+	});
+
 	function buildController(): void {
 		if (cardContainer.dataSource == null && builder._dataSource == null) {
 			mockedDataSource = buildMockedDataSource();
