@@ -28,7 +28,9 @@ export interface ISignatureChanges extends IInputChanges {
 })
 export class SignatureComponent extends ValidatedInputComponent<string> implements AfterViewInit, AfterViewChecked, OnChanges {
 	private _canvas: JQuery;
-	@ViewChild('canvas') set canvas(value: JQuery) {
+
+	@ViewChild('canvas')
+	set canvas(value: JQuery) {
 		if (value) {
 			this._canvas = this.jquery((value as any).nativeElement);
 		} else {
