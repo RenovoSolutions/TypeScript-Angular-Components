@@ -30,7 +30,6 @@ import { TypeaheadDataItemComponent } from'./components/inputs/typeaheadList/typ
 import { POPOUT_LIST_DIRECTIVES } from'./components/popoutList/index';
 
 import { ComponentProvidersModule } from './componentProviders.module';
-
 export const componentsList: any[] = [
 	BEHAVIOR_DIRECTIVES,
 	BusyComponent,

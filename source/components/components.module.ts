@@ -23,7 +23,6 @@ import * as radioNg1 from './inputs/radio/radio.module';
 import * as ratingBarNg1 from './ratingBar/ratingBar.ng1';
 import * as richTextEditorNg1 from './richTextEditor/richTextEditor';
 import * as selectNg1 from './inputs/select/select.ng1';
-import * as signaturePadNg1 from './signaturePad/signaturePad';
 import * as simpleCardListNg1 from './simpleCardList/simpleCardList.module';
 import * as spinnerNg1 from './inputs/spinner/spinner.ng1';
 import * as stringWithWatermarkNg1 from './stringWithWatermark/stringWithWatermark.ng1';
@@ -39,6 +38,7 @@ import * as validationGroupNg1 from './validationGroup/validationGroup.ng1';
 import * as busy from './busy/busy';
 import * as buttons from './buttons/index';
 import * as cardContainer from './cardContainer/index';
+import * as cards from './cards/index';
 import * as commaList from './commaList/commaList';
 import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
@@ -76,7 +76,6 @@ export {
 	ratingBarNg1,
 	richTextEditorNg1,
 	selectNg1,
-	signaturePadNg1,
 	simpleCardListNg1,
 	spinnerNg1,
 	stringWithWatermarkNg1,
@@ -92,6 +91,7 @@ export {
 	busy,
 	buttons,
 	cardContainer,
+	cards,
 	commaList,
 	dialog,
 	inputs,
@@ -127,7 +127,6 @@ angular.module(moduleName, [
 	ratingBarNg1.moduleName,
 	richTextEditorNg1.moduleName,
 	selectNg1.moduleName,
-	signaturePadNg1.moduleName,
 	simpleCardListNg1.moduleName,
 	spinnerNg1.moduleName,
 	stringWithWatermarkNg1.moduleName,

@@ -1,0 +1,9 @@
+<div [ngSwitch]="disabled">
+	<div *ngSwitchCase="true">
+		<img class="img-responsive disabled" [src]="image" />
+	</div>
+	<div *ngSwitchDefault>
+		<div #canvas></div>
+		<rlButton (trigger)="reset()">Clear</rlButton>
+	</div>
+</div>

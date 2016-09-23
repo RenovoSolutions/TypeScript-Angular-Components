@@ -25,6 +25,8 @@ export class InputsBootstrapper {
 	selection: ITestItem;
 	rating: number;
 	time: string;
+	signature: string;
+	disableSignature: boolean;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
@@ -52,7 +54,7 @@ export class InputsBootstrapper {
 			{ value: 'Option 5' },
 		];
 
-		this.selections = [this.typeaheadOptions[0], this.typeaheadOptions[2]]
+		this.selections = [this.typeaheadOptions[0], this.typeaheadOptions[2]];
 	}
 
 	getOptions = (): Observable<any> => {
