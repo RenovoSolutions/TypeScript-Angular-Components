@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import * as $ from 'jquery';
 import '../../../../libraries/bootstrap-datetimepicker/index';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
@@ -12,7 +12,6 @@ import __date = services.date;
 import __dateFormats = __date.defaultFormats;
 import __timezone = services.timezone;
 
-import { ButtonComponent } from '../../buttons/button/button';
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
@@ -22,9 +21,7 @@ import { FormComponent } from '../../form/form';
 	template: require('./dateTime.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	directives: [ButtonComponent],
 	providers: [ComponentValidator],
-	pipes: [filters.isEmpty.IsEmptyPipe],
 })
 export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements AfterViewInit {
 	@Input() useDate: boolean;

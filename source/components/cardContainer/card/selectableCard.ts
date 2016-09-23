@@ -4,7 +4,6 @@ import { isUndefined } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { CheckboxComponent } from '../../inputs/index';
 import { CardContainerComponent } from '../cardContainer';
 import { SelectableCardContainerComponent, ISelectableItem } from '../selectableCardContainer';
 import { FormComponent } from '../../form/form';
@@ -16,8 +15,7 @@ import { CardComponent, cardInputs } from './card';
 @Component({
 	selector: 'rlSelectableCard',
 	template: require('./selectableCard.html'),
-	inputs: [cardInputs.save, cardInputs.item],
-	directives: [CardHeaderColumnComponent, CheckboxComponent],
+	inputs: [cardInputs.item],
 	providers: [
 		new Provider(FormComponent, {
 			useExisting: forwardRef(() => SelectableCardComponent),

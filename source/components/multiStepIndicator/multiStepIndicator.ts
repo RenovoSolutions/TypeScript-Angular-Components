@@ -2,8 +2,6 @@ import { Component, Inject, Input, OnInit } from '@angular/core';
 import * as ui from 'angular-ui-router';
 import * as _ from 'lodash';
 
-import { BusyComponent } from '../busy/busy';
-
 export interface IStep {
 	title: string;
 	subtitle?: string;
@@ -25,7 +23,6 @@ export interface IConfiguredStep extends IStep {
 @Component({
 	selector: 'rlMultiStepIndicator',
 	template: require('./multiStepIndicator.html'),
-	directives: [BusyComponent],
 })
 export class MultiStepIndicatorComponent implements OnInit {
 	@Input() steps: IConfiguredStep[];

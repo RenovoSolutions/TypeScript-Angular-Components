@@ -1,34 +1,89 @@
-import * as angular from 'angular';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
-import 'angular-ui-bootstrap';
-import 'angular-sanitize';
-import 'angular-animate';
+import { BEHAVIOR_DIRECTIVES } from './behaviors/index';
+import { BusyComponent } from'./components/busy/busy';
+import { BUTTON_DIRECTIVES } from'./components/buttons/index';
+import { CARD_CONTAINER_DIRECTIVES } from'./components/cardContainer/index';
+import { CommaListComponent } from'./components/commaList/commaList';
+import { DIALOG_DIRECTIVES } from'./components/dialog/index';
+import { FormComponent } from'./components/form/form';
+import { INPUT_DIRECTIVES } from'./components/inputs/index';
+import { MultiStepIndicatorComponent } from'./components/multiStepIndicator/multiStepIndicator';
+import { RatingBarComponent } from'./components/ratingBar/ratingBar';
+import { SIMPLE_CARD_DIRECTIVES } from'./components/simpleCardList/index';
+import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
+import { TABS_COMPONENT } from'./components/tabs/index';
+import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
 
-import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
-import * as componentsDowngrade from './componentsDowngrade';
+import { DatePipe, IsEmptyPipe, LocalizeStringDatesPipe, TruncatePipe } from './pipes/index';
 
-import '../libraries/angular-bootstrap-slider/slider';
+// internal components
+import { CardHeaderColumnComponent } from './components/cardContainer/card/headerColumn/headerColumn';
+import { ContainerHeaderComponent } from'./components/cardContainer/container/containerHeader.component';
+import { ContainerFooterComponent } from'./components/cardContainer/container/containerFooter.component';
+import { SelectableContainerFooterComponent } from'./components/cardContainer/container/selectableContainerFooter.component';
+import { ColumnHeaderComponent } from'./components/cardContainer/container/columnHeader/columnHeader';
+import { FilterOptionComponent } from'./components/cardContainer/filters/index';
+import { TypeaheadDataItemComponent } from'./components/inputs/typeaheadList/typeaheadDataItem';
+import { POPOUT_LIST_DIRECTIVES } from'./components/popoutList/index';
 
-import * as behaviors from './behaviors/behaviors.module';
-import * as components from './components/components.module';
-import * as downgrade from './componentsDowngrade';
-import * as pipes from './pipes/index';
-import * as services from './services/services.module';
-import * as types from './types/types.module';
+import { ComponentProvidersModule } from './componentProviders.module';
+export const componentsList: any[] = [
+	BEHAVIOR_DIRECTIVES,
+	BusyComponent,
+	BUTTON_DIRECTIVES,
+	CARD_CONTAINER_DIRECTIVES,
+	CommaListComponent,
+	DIALOG_DIRECTIVES,
+	FormComponent,
+	INPUT_DIRECTIVES,
+	MultiStepIndicatorComponent,
+	RatingBarComponent,
+	SIMPLE_CARD_DIRECTIVES,
+	StringWithWatermarkComponent,
+	TABS_COMPONENT,
+	ValidationGroupComponent,
 
-export { behaviors, components, downgrade, pipes, services, types };
+	// pipes
+	DatePipe,
+	IsEmptyPipe,
+	LocalizeStringDatesPipe,
+	TruncatePipe,
+];
 
-export var moduleName: string = 'rl.ui';
+export * from './ui.module.ng1';
+export * from './componentProviders.module';
 
-angular.module(moduleName, [
-	'ui.bootstrap',
-	'ui.bootstrap-slider',
-	'ngSanitize',
-	utilitiesDowngrade.moduleName,
-	componentsDowngrade.moduleName,
+@NgModule({
+	imports: [
+		CommonModule,
+		ReactiveFormsModule,
+	],
+	declarations: [
+		...componentsList,
+		CardHeaderColumnComponent,
+		ContainerHeaderComponent,
+		ContainerFooterComponent,
+		SelectableContainerFooterComponent,
+		ColumnHeaderComponent,
+		FilterOptionComponent,
+		TypeaheadDataItemComponent,
+		POPOUT_LIST_DIRECTIVES,
+	],
+	exports: [
+		...componentsList,
+	],
+})
+export class ComponentsSharedModule { }
 
-	behaviors.moduleName,
-	components.moduleName,
-	downgrade.moduleName,
-	services.moduleName,
-]);
+@NgModule({
+	imports: [
+		CommonModule,
+		ComponentProvidersModule,
+		ComponentsSharedModule,
+	],
+	exports: [ComponentsSharedModule],
+})
+export class ComponentsModule { }

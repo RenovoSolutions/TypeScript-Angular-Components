@@ -2,13 +2,11 @@ import 'bootstrap';
 import { Component, AfterViewInit, Inject } from '@angular/core';
 
 import { DialogRootService } from './dialogRoot.service';
-import { ButtonComponent, ButtonAsyncComponent } from '../buttons/index';
 import { JQueryProvider } from '../../services/jquery/jquery.provider';
 
 @Component({
 	selector: 'rlDialogOutlet',
 	template: require('./dialogOutlet.html'),
-	directives: [ButtonComponent, ButtonAsyncComponent],
 })
 export class DialogOutletComponent implements AfterViewInit {
 	dialogRoot: DialogRootService;

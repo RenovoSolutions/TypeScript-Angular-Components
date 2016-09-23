@@ -2,14 +2,12 @@ import { Component, Inject, forwardRef } from '@angular/core';
 
 import { IDataPager } from '../dataPager/dataPager.service';
 import { CardContainerComponent } from '../../cardContainer';
-import { SelectComponent } from '../../../inputs/index';
 
 export const availablePageSizes: number[] = [10, 15, 20, 25];
 
 @Component({
 	selector: 'rlPageSize',
 	template: require('./pageSize.html'),
-	directives: [SelectComponent],
 })
 export class PageSizeComponent<T> {
 	pageSizes: number[];

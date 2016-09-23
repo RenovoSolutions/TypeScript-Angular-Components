@@ -12,7 +12,6 @@ import { CardHeaderTemplate, CardContentTemplate, CardFooterTemplate } from '../
 @Component({
 	selector: 'rlSimpleCard',
 	template: require('./simpleCard.html'),
-	directives: [FormComponent],
 	inputs: [baseInputs.save],
 	providers: [
 		new Provider(FormComponent, {

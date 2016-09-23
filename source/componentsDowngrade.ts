@@ -28,6 +28,8 @@ import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
+import { IsEmptyPipe } from './pipes/isEmpty/isEmpty.pipe';
+import { TruncatePipe } from './pipes/truncate/truncate.pipe';
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
@@ -57,6 +59,13 @@ export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
+export function PipeDowngrader(pipe: PipeTransform) {
+	// factory that returns a filter
+	return () => (value: any, ...args: any[]): any => {
+		return pipe.transform(value, ...args);
+	};
+}
+
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
 
@@ -64,7 +73,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.addProvider(DataSourceBuilder);
 	upgradeAdapter.addProvider(FilterBuilder);
 
-	const cardContainerBuilderFactoryProvider: Provider = new Provider(CardContainerBuilder, {
+	const cardContainerBuilderFactoryProvider: Provider = new Provider(cardContainerBuilderServiceName, {
 		deps: [Injector, DataSourceBuilder, FilterBuilder],
 		useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
 			return {
@@ -106,8 +115,10 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
-	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
@@ -125,7 +136,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
 
 	componentsDowngradeModule.factory(autosaveActionServiceName, upgradeAdapter.downgradeNg2Provider(AutosaveActionService));
-	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
+	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(cardContainerBuilderServiceName));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));

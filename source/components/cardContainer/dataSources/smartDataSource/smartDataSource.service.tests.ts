@@ -1,10 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
-
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 
 import { SmartDataSource } from './smartDataSource.service';
 
@@ -73,21 +72,12 @@ describe('SmartDataSource', () => {
 		dataService = {
 			get: test.mock.promise({ dataSet: data, count: 2 }),
 		};
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility]
-			, (_dataSourceProcessor, array, object) => {
 
-			dataSourceProcessor = _dataSourceProcessor;
-			dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
-			dataSourceProcessor.sort = sinon.spy();
-			dataSourceProcessor.page = sinon.spy();
-			source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object);
-		})();
+		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
+		dataSourceProcessor.sort = sinon.spy();
+		dataSourceProcessor.page = sinon.spy();
+		source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 
 		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{

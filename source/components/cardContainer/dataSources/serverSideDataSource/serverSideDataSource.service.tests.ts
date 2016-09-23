@@ -1,10 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
-
 import { services, filters } from 'typescript-angular-utilities';
 import test = services.test;
 import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
@@ -40,19 +39,9 @@ describe('ServerSideDataSource', () => {
 			get: test.mock.promise({ dataSet: [1, 2], count: 2 }),
 		};
 
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility]
-			, (_dataSourceProcessor, array, object) => {
-
-			dataSourceProcessor = _dataSourceProcessor;
-			sinon.spy(dataSourceProcessor, 'processAndCount');
-			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object);
-		})();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		sinon.spy(dataSourceProcessor, 'processAndCount');
+		source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 
 		source.filters = <any>[filter];
 		source.sorts = <any>[{

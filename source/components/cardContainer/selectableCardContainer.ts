@@ -14,10 +14,6 @@ import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate
 import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 
 import { SelectableCardComponent } from './card/selectableCard';
-import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
-import { ContainerHeaderComponent } from './container/containerHeader.component';
-import { SelectableContainerFooterComponent } from './container/selectableContainerFooter.component';
-import { BusyComponent } from '../busy/busy';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
 import { CardContainerType } from './builder/cardContainerBuilder.service';
@@ -48,13 +44,6 @@ export interface ISelectionViewData {
 		new Provider(CardContainerComponent, {
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		}),
-	],
-	directives: [
-		ContainerHeaderComponent,
-		SelectableContainerFooterComponent,
-		ColumnHeaderComponent,
-		SelectableCardComponent,
-		BusyComponent,
 	],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {

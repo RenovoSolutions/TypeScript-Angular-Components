@@ -1,10 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
-
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
 import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
+import __transform = services.transform;
 
 import { DataServiceDataSource, IAsyncDataSource } from './dataServiceDataSource.service';
 
@@ -24,19 +23,9 @@ describe('DataServiceDataSource', () => {
 	let arrayUtility: __array.ArrayUtility;
 
 	beforeEach(() => {
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __array.ArrayUtility]
-			, (_dataSourceProcessor, _array) => {
-
-			dataSourceProcessor = _dataSourceProcessor;
-			sinon.spy(dataSourceProcessor, 'processAndCount');
-			arrayUtility = _array;
-		})();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		sinon.spy(dataSourceProcessor, 'processAndCount');
+		arrayUtility = __array.arrayUtility;
 
 		dataService = <any> {};
 	});

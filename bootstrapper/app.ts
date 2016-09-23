@@ -3,9 +3,11 @@ import 'bootstrap';
 import * as angular from 'angular';
 import 'angular-ui-router';
 
+import { NgModule, forwardRef } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
 
-import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
+import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
 import { moduleName as componentsModule } from '../source/ui.module';
 import * as componentsDowngrade from '../source/componentsDowngrade';
@@ -29,7 +31,9 @@ import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 
-const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter();
+import { ComponentsModule } from'../source/ui.module';
+
+const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
 
@@ -64,6 +68,24 @@ angular.module(moduleName, [
 	.directive('tsPopupBootstrapper', <any>upgradeAdapter.downgradeNg2Component(PopupBootstrapper))
 	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper))
 	.config(BaseRoute);
+
+@NgModule({
+	imports: [
+		BrowserModule,
+		UtilitiesModule,
+		ComponentsModule,
+	],
+	declarations: [
+		InputsBootstrapper,
+		FormsBootstrapper,
+		TabsBootstrapper,
+		MsiBootstrapperComponent,
+		CardsBootstrapper,
+		PopupBootstrapper,
+		MiscNgContextBootstrapper,
+	],
+})
+class ComponentsBootstrapperModule {}
 
 BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
 function BaseRoute($urlRouterProvider, $stateProvider) {

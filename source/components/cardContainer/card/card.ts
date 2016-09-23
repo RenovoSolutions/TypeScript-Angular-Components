@@ -11,7 +11,6 @@ import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs, IBaseFormInputs } from '../../form/form';
 import { AsyncHelper } from '../../../services/async/async.service';
 import { FormService } from '../../../services/form/form.service';
-import { CardHeaderColumnComponent } from './headerColumn/headerColumn';
 import { CardContentTemplate, CardFooterTemplate } from '../../cards/index';
 import { ColumnContentTemplate } from '../templates/index';
 
@@ -26,8 +25,7 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 @Component({
 	selector: 'rlCard',
 	template: require('./card.html'),
-	inputs: [cardInputs.save, cardInputs.item],
-	directives: [CardHeaderColumnComponent],
+	inputs: [cardInputs.item],
 	providers: [
 		new Provider(FormComponent, {
 			useExisting: forwardRef(() => CardComponent),

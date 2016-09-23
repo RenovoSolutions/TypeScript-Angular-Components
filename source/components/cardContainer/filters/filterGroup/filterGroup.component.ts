@@ -5,12 +5,10 @@ import __logger = services.logger;
 
 import { IDataSource } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
-import { FilterOptionComponent } from './filterOption/filterOption';
 
 @Component({
 	selector: 'rlFilterGroup',
 	template: require('./filterGroup.component.html'),
-	directives: [FilterOptionComponent],
 })
 export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup;

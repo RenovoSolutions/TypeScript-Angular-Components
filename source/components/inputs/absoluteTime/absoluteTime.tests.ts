@@ -1,8 +1,8 @@
-import { provide } from '@angular/core';
-import { addProviders, inject } from '@angular/core/testing';
-
 import { services } from 'typescript-angular-utilities';
 import __time = services.time;
+import __object = services.object;
+import __array = services.array;
+import __guid = services.guid;
 
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
@@ -19,15 +19,7 @@ describe('AbsoluteTimeComponent', () => {
 		};
 		setValue = sinon.spy();
 
-		addProviders([
-			AbsoluteTimeComponent,
-			provide(ComponentValidator, { useValue: validator }),
-			services.UTILITY_PROVIDERS,
-		]);
-
-		inject([AbsoluteTimeComponent], (_time) => {
-			time = _time;
-		})();
+		time = new AbsoluteTimeComponent(null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __time.timeUtility);
 		time.setValue = setValue;
 	});
 
