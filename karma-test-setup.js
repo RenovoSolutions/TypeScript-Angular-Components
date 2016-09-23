@@ -3,7 +3,8 @@ var UpgradeAdapter = require('@angular/upgrade').UpgradeAdapter;
 var core = require('@angular/core');
 var browser = require('@angular/platform-browser');
 var forms = require('@angular/forms');
-var downgrade = require('typescript-angular-utilities').downgrade;
+var utilities = require('typescript-angular-utilities');
+var downgrade = utilities.downgrade;
 var downgradeComponents = require('./source/componentsDowngrade');
 var ComponentsModule = require('./source/ui.module').ComponentsModule;
 
@@ -14,6 +15,7 @@ core.NgModule({
 	imports: [
 		browser.BrowserModule,
 		forms.ReactiveFormsModule,
+		utilities.UtilitiesModule,
 		ComponentsModule,
 	],
 })(TestModule)
