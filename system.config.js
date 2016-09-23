@@ -22,6 +22,17 @@ const map = {
 	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
 
+var defaultPackages = [
+	'@angular/core',
+	'@angular/compiler',
+	'@angular/common',
+	'@angular/platform-browser',
+	'@angular/platform-browser-dynamic',
+	'@angular/http',
+	'@angular/forms',
+	'@angular/upgrade',
+];
+
 const meta = {
 	'*.html': {
 		loader: 'text',
@@ -31,54 +42,40 @@ const meta = {
 	},
 };
 
+var packages = {
+	'libraries': {
+		defaultExtension: 'js',
+	},
+	'bootstrapper': {
+		defaultExtension: 'js',
+	},
+	'source': {
+		defaultExtension: 'js',
+	},
+	'node_modules': {
+		defaultExtension: 'js',
+	},
+	'angular2-uuid': {
+		main: 'index.js',
+	},
+	'rxjs': {
+		main: 'Rx.js',
+	},
+	'angular': {
+		main: 'index.js',
+	}
+};
+
+function setDefaultPackage(packageName) {
+	packages[packageName] = {
+		main: 'index.js',
+	};
+}
+
+defaultPackages.forEach(setDefaultPackage);
+
 System.config({
 	meta,
 	map,
-	packages: {
-		'libraries': {
-			defaultExtension: 'js',
-		},
-		'bootstrapper': {
-			defaultExtension: 'js',
-		},
-		'source': {
-			defaultExtension: 'js',
-		},
-		'node_modules': {
-			defaultExtension: 'js',
-		},
-		'@angular/http': {
-			main: 'index.js',
-		},
-		'@angular/core': {
-			main: 'index.js',
-		},
-		'@angular/upgrade': {
-			main: 'index.js',
-		},
-		'@angular/platform-browser-dynamic': {
-			main: 'index.js',
-		},
-		'@angular/platform-browser': {
-			main: 'index.js',
-		},
-		'@angular/compiler': {
-			main: 'index.js',
-		},
-		'@angular/common': {
-			main: 'index.js',
-		},
-		'@angular/forms': {
-			main: 'index.js',
-		},
-		'angular2-uuid': {
-			main: 'index.js',
-		},
-		'rxjs': {
-			main: 'Rx.js',
-		},
-		'angular': {
-			main: 'index.js',
-		}
-	},
+	packages: packages,
 });
