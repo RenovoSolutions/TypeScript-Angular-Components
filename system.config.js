@@ -22,15 +22,15 @@ const map = {
 	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
 
-var defaultPackages = [
-	'@angular/core',
-	'@angular/compiler',
-	'@angular/common',
-	'@angular/platform-browser',
-	'@angular/platform-browser-dynamic',
-	'@angular/http',
-	'@angular/forms',
-	'@angular/upgrade',
+var angularPackageNames = [
+	'core',
+	'compiler',
+	'common',
+	'platform-browser',
+	'platform-browser-dynamic',
+	'http',
+	'forms',
+	'upgrade',
 ];
 
 const meta = {
@@ -66,13 +66,16 @@ var packages = {
 	}
 };
 
-function setDefaultPackage(packageName) {
-	packages[packageName] = {
-		main: 'index.js',
-	};
+function setAngularPackage(packageName) {
+	map[`@angular/${packageName}`] = `node_modules/@angular/${packageName}/bundles/${packageName}.umd.js`;
 }
 
-defaultPackages.forEach(setDefaultPackage);
+function setAngularTestingPackage(packageName) {
+	map[`@angular/${packageName}/testing`] = `node_modules/@angular/${packageName}/bundles/${packageName}-testing.umd.js`;
+}
+
+angularPackageNames.forEach(setAngularPackage);
+angularPackageNames.forEach(setAngularTestingPackage);
 
 System.config({
 	meta,
