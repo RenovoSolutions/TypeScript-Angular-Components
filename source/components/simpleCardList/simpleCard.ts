@@ -1,4 +1,4 @@
-import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
+import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -14,9 +14,10 @@ import { CardHeaderTemplate, CardContentTemplate, CardFooterTemplate } from '../
 	template: require('./simpleCard.html'),
 	inputs: [baseInputs.save],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => SimpleCardComponent),
-		}),
+		},
 	],
 })
 export class SimpleCardComponent<T> extends FormComponent implements OnInit {

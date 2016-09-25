@@ -11,7 +11,7 @@ import { SelectableCardContainerComponent } from './selectableCardContainer';
 import { CardComponent } from './card/card';
 import { SelectableCardComponent } from './card/selectableCard';
 
-export const CARD_CONTAINER_DIRECTIVES: any[] = [CardContainerComponent, SelectableCardContainerComponent, CardComponent, SelectableCardComponent, container.CONTAINER_DIRECTIVES, filters.FILTER_DIRECTIVES, templates.TEMPLATE_DIRECTIVES];
+export const CARD_CONTAINER_DIRECTIVES: any[] = [CardContainerComponent, SelectableCardContainerComponent, CardComponent, SelectableCardComponent, container.CONTAINER_DIRECTIVES, filters.FILTER_DIRECTIVES, templates.TEMPLATE_DIRECTIVES, paging.PAGER_DIRECTIVES];
 export const CARD_CONTAINER_PROVIDERS: any[] = [builder.BUILDER_PROVIDERS];
 
 export { container, builder, dataSources, filters, paging, sorts, templates };

@@ -63,7 +63,7 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		this.control.valueChanges.subscribe(value => {
 			const roundedValue: number = this.round(value);
 			if (value !== roundedValue) {
-				this.control.updateValue(roundedValue);
+				this.control.setValue(roundedValue);
 				this.value = roundedValue;
 			}
 

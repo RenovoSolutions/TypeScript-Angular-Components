@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
+import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
@@ -41,9 +41,10 @@ export interface ISelectionViewData {
 	providers: [
 		DataPager,
 		SortManagerService,
-		new Provider(CardContainerComponent, {
+		{
+			provide: CardContainerComponent,
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
-		}),
+		},
 	],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
