@@ -1,4 +1,4 @@
-import { Provider, provide, ExceptionHandler, PipeTransform, Injector } from '@angular/core';
+import { PipeTransform, Injector } from '@angular/core';
 import { UpgradeAdapter } from '@angular/upgrade';
 
 import * as angular from 'angular';
@@ -18,26 +18,20 @@ import {
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
 import { DialogOutletComponent } from './components/dialog/dialogOutlet';
-import { DialogRootService } from './components/dialog/dialogRoot.service';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
-import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
-import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
 import { IsEmptyPipe } from './pipes/isEmpty/isEmpty.pipe';
 import { TruncatePipe } from './pipes/truncate/truncate.pipe';
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
-import { AsyncHelper } from './services/async/async.service';
 import { AutosaveActionService } from './services/autosaveAction/autosaveAction.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
-import { FormService } from './services/form/form.service';
-import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
 import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
@@ -68,50 +62,6 @@ export function PipeDowngrader(pipe: PipeTransform) {
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
-
-	upgradeAdapter.addProvider(Injector);
-	upgradeAdapter.addProvider(DataSourceBuilder);
-	upgradeAdapter.addProvider(FilterBuilder);
-
-	const cardContainerBuilderFactoryProvider: Provider = new Provider(cardContainerBuilderServiceName, {
-		deps: [Injector, DataSourceBuilder, FilterBuilder],
-		useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
-			return {
-				getInstance: () => new CardContainerBuilder(injector, dataSourceBuilder, filterBuilder),
-			};
-		},
-	});
-	const dataPagerFactoryProvider: Provider = new Provider(DataPager, {
-		useValue: {
-			getInstance: () => new DataPager(),
-		},
-	});
-	const columnSearchFactoryProvider: Provider = new Provider(ColumnSearchFilter, {
-		useValue: {
-			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
-		},
-	});
-	const defaultThemeNg1: Provider = new Provider('defaultThemeNg1', {
-		deps: [DefaultTheme],
-		useFactory: (defaultTheme: DefaultTheme) => defaultTheme.useDefaultTheme,
-	});
-
-	upgradeAdapter.addProvider(AsyncHelper);
-	upgradeAdapter.addProvider(AutosaveActionService);
-	upgradeAdapter.addProvider(DefaultTheme);
-	upgradeAdapter.addProvider(defaultThemeNg1);
-	upgradeAdapter.addProvider(DialogRootService);
-	upgradeAdapter.addProvider(FormService);
-	upgradeAdapter.addProvider(DocumentService);
-	upgradeAdapter.addProvider(BreakpointService);
-	upgradeAdapter.addProvider(VisibleBreakpointService);
-	upgradeAdapter.addProvider(JQUERY_PROVIDER);
-	upgradeAdapter.addProvider(WindowService);
-	upgradeAdapter.addProvider(dataPagerFactoryProvider);
-	upgradeAdapter.addProvider(columnSearchFactoryProvider);
-	upgradeAdapter.addProvider(Sorter);
-	upgradeAdapter.addProvider(MergeSort);
-	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
 
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 

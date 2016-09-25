@@ -1,4 +1,4 @@
-import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -17,12 +17,14 @@ import { CardComponent, cardInputs } from './card';
 	template: require('./selectableCard.html'),
 	inputs: [cardInputs.item],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => SelectableCardComponent),
-		}),
-		new Provider(CardComponent, {
+		},
+		{
+			provide: CardComponent,
 			useExisting: forwardRef(() => SelectableCardComponent),
-		}),
+		},
 	],
 })
 export class SelectableCardComponent<T extends ISelectableItem> extends CardComponent<T> {

@@ -1,4 +1,4 @@
-import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
@@ -27,9 +27,10 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 	template: require('./card.html'),
 	inputs: [cardInputs.item],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => CardComponent),
-		}),
+		},
 	],
 })
 export class CardComponent<T> extends FormComponent {

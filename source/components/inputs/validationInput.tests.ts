@@ -9,7 +9,7 @@ import { ValidatedInputComponent, IInputChanges } from './validationInput';
 
 interface IControlMock {
 	updateValueAndValidity?: Sinon.SinonSpy;
-	updateValue?: Sinon.SinonSpy;
+	setValue?: Sinon.SinonSpy;
 	valueChanges?: { subscribe: Sinon.SinonSpy };
 }
 
@@ -98,14 +98,14 @@ describe('ValidatedInputComponent', (): void => {
 	});
 
 	it('should update the control value with changes from the outside', (): void => {
-		const control: IControlMock = { updateValue: sinon.spy() };
+		const control: IControlMock = { setValue: sinon.spy() };
 		input.control = <any>control;
 
 		input.ngOnChanges({
 			value: <any>{ currentValue: 4 },
 		});
 
-		sinon.assert.calledOnce(control.updateValue);
-		sinon.assert.calledWith(control.updateValue, 4);
+		sinon.assert.calledOnce(control.setValue);
+		sinon.assert.calledWith(control.setValue, 4);
 	});
 });

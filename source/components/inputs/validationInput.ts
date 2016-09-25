@@ -72,7 +72,7 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 
 	ngOnChanges(changes: IInputChanges): void {
 		if (changes.value) {
-			this.control.updateValue(changes.value.currentValue);
+			this.control.setValue(changes.value.currentValue);
 		}
 	}
 }

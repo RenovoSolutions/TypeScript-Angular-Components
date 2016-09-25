@@ -24,7 +24,6 @@ export interface ISignatureChanges extends IInputChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [ButtonComponent],
 })
 export class SignatureComponent extends ValidatedInputComponent<string> implements AfterViewInit, AfterViewChecked, OnChanges {
 	private _canvas: JQuery;

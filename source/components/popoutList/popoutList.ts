@@ -11,7 +11,6 @@ import { PopoutListService } from './popoutList.service';
 @Component({
 	selector: 'rlPopoutList',
 	template: require('./popoutList.html'),
-	directives: [PopoutItemComponent],
 })
 export class PopoutListComponent<T> {
 	@Input() options: Observable<T[]>;
