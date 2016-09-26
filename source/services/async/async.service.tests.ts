@@ -1,9 +1,5 @@
 import { Subject } from 'rxjs';
-
-import { services } from 'typescript-angular-utilities';
-import IMockedPromise = services.test.IMockedPromise;
-import mock = services.test.mock;
-import rlFakeAsync = services.test.rlFakeAsync;
+import { rlFakeAsync, mock, IMockedPromise } from 'rl-async-testing';
 
 import { AsyncHelper } from './async.service';
 

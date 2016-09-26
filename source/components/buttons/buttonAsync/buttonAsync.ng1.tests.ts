@@ -1,11 +1,9 @@
 ﻿import * as angular from 'angular';
 import 'angular-mocks';
+import { rlFakeAsync, mock, IMockedPromise } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import mock = __test.mock;
-import rlFakeAsync = __test.rlFakeAsync;
-import IMockedPromise = __test.IMockedPromise;
 
 import { ButtonAsyncController, moduleName, controllerName } from './buttonAsync.ng1';
 

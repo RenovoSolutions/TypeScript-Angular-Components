@@ -1,6 +1,6 @@
+import { rlFakeAsync, mock } from 'rl-async-testing';
+
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
-import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
 import __transform = services.transform;
@@ -32,16 +32,16 @@ describe('DataServiceDataSource', () => {
 
 	describe('loading', (): void => {
 		it('should call data processor to process the data when refreshing', rlFakeAsync((): void => {
-			dataService.get = test.mock.promise([1, 2, 3]);
+			dataService.get = mock.promise([1, 2, 3]);
 
 			new DataServiceDataSource(dataService.get, dataSourceProcessor, arrayUtility);
-			test.mock.flushAll(dataService)
+			mock.flushAll(dataService)
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
 		it('should make an initial request to the server for data', rlFakeAsync((): void => {
-			dataService.get = test.mock.promise([1, 2]);
+			dataService.get = mock.promise([1, 2]);
 
 			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, arrayUtility);
 
@@ -50,7 +50,7 @@ describe('DataServiceDataSource', () => {
 			let changedSpy: Sinon.SinonSpy = sinon.spy();
 			source.changed.subscribe(changedSpy);
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);

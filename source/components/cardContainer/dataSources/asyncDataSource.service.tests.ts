@@ -1,8 +1,7 @@
 import * as _ from 'lodash';
+import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
-import rlFakeAsync = test.rlFakeAsync;
 import __array = services.array;
 import __object = services.object;
 import __transform = services.transform;
@@ -27,7 +26,7 @@ describe('AsyncDataSource', () => {
 
 	beforeEach(() => {
 		dataService = {
-			get: test.mock.promise([1, 2]),
+			get: mock.promise([1, 2]),
 		};
 		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
 		source = new AsyncDataSource<number>(dataService.get, dataSourceProcessor, __array.arrayUtility);
@@ -46,14 +45,14 @@ describe('AsyncDataSource', () => {
 
 		sinon.assert.calledOnce(dataService.get);
 
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 
 		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
 	}));
 
 	it('should fire changed, reloaded, and redrawing events when the reload completeds', rlFakeAsync((): void => {
 		source.reload();
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 		sinon.assert.calledOnce(changedSpy);
 		sinon.assert.calledOnce(reloadedSpy);
 		sinon.assert.calledOnce(redrawingSpy);
@@ -68,11 +67,11 @@ describe('AsyncDataSource', () => {
 
 	describe('synchronization', () => {
 		it('should synchronize the promises', rlFakeAsync(() => {
-			const firstRequest = test.mock.promise([1, 2]);
+			const firstRequest = mock.promise([1, 2]);
 			source.getDataSet = firstRequest;
 			source.reload();
 
-			const secondRequest = test.mock.promise([3, 4]);
+			const secondRequest = mock.promise([3, 4]);
 			source.getDataSet = secondRequest;
 			source.reload();
 
@@ -86,11 +85,11 @@ describe('AsyncDataSource', () => {
 		}));
 
 		it('should synchronize the requests', rlFakeAsync(() => {
-			const firstRequest = test.mock.request([1, 2]);
+			const firstRequest = mock.request([1, 2]);
 			source.getDataSet = firstRequest;
 			source.reload();
 
-			const secondRequest = test.mock.request([3, 4]);
+			const secondRequest = mock.request([3, 4]);
 			source.getDataSet = secondRequest;
 			source.reload();
 

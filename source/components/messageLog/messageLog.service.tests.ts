@@ -1,9 +1,9 @@
 import * as _ from 'lodash';
+import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import test = services.test;
-import rlFakeAsync = test.rlFakeAsync;
 
 import {
 	moduleName,
@@ -39,9 +39,9 @@ describe('messageLog', () => {
 		messageLog.pageSize = 5;
 
 		dataService = {
-			saveMessage: test.mock.promise((message: any): void => { allMessages.unshift(message); }),
-			deleteMessage: test.mock.promise((message: any): void => { __array.arrayUtility.remove(allMessages, message); }),
-			getMessages: test.mock.promise((startFrom: number, quantity: number): IGetMessagesResult => {
+			saveMessage: mock.promise((message: any): void => { allMessages.unshift(message); }),
+			deleteMessage: mock.promise((message: any): void => { __array.arrayUtility.remove(allMessages, message); }),
+			getMessages: mock.promise((startFrom: number, quantity: number): IGetMessagesResult => {
 				let hasMoreMessages: boolean = startFrom + quantity < allMessages.length;
 				return {
 					hasMoreMessages: hasMoreMessages,
@@ -62,7 +62,7 @@ describe('messageLog', () => {
 		messageLog.dataService = <any>dataService;
 
 		sinon.assert.calledOnce(dataService.getMessages);
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 
 		expect(messageLog.visibleMessages).to.have.length(5);
 	}));
@@ -70,14 +70,14 @@ describe('messageLog', () => {
 	describe('after initial request', (): void => {
 		beforeEach(rlFakeAsync((): void => {
 			messageLog.dataService = <any>dataService;
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.getMessages.reset();
 		}));
 
 		it('should load the next page from the server if more messages are available', rlFakeAsync((): void => {
 			messageLog.getNextPage();
 			sinon.assert.calledOnce(dataService.getMessages);
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages[0]).to.equal('6');
 			expect(messageLog.visibleMessages[1]).to.equal('7');
@@ -88,13 +88,13 @@ describe('messageLog', () => {
 
 		it('should not load a full page if not enough messages are available', rlFakeAsync((): void => {
 			messageLog.pageSize = 15;
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(15);
 
 			messageLog.getNextPage();
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('16');
@@ -107,7 +107,7 @@ describe('messageLog', () => {
 		it('should refresh the current page when the page size changes', rlFakeAsync((): void => {
 			messageLog.pageSize = 10;
 			sinon.assert.calledOnce(dataService.getMessages);
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(10);
 		}));
@@ -142,7 +142,7 @@ describe('messageLog', () => {
 
 		it('should disable paging forward if no more messages are available', rlFakeAsync((): void => {
 			messageLog.pageSize = 20;
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.getMessages.reset();
 
 			expect(messageLog.hasForwardMessages).to.be.false;
@@ -164,7 +164,7 @@ describe('messageLog', () => {
 			messageLog.getNextPage();
 			messageLog.getNextPage();
 			sinon.assert.calledTwice(dataService.getMessages);
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('11');
@@ -175,7 +175,7 @@ describe('messageLog', () => {
 
 			messageLog.getTopPage();
 			sinon.assert.calledThrice(dataService.getMessages);
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('1');
@@ -189,16 +189,16 @@ describe('messageLog', () => {
 			messageLog.addMessage(<any>'new message');
 			sinon.assert.calledOnce(dataService.saveMessage);
 			// save request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			// reload request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
 		}));
 
 		it('should delete the message and refresh the current page', rlFakeAsync((): void => {
 			messageLog.getNextPage();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages[0]).to.equal('6');
 
@@ -207,9 +207,9 @@ describe('messageLog', () => {
 			sinon.assert.calledOnce(dataService.deleteMessage);
 
 			// delete request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			// reload request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('7');
@@ -221,16 +221,16 @@ describe('messageLog', () => {
 
 		it('should take the user back to the first page if the user adds a new message', rlFakeAsync((): void => {
 			messageLog.getNextPage();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.getMessages.reset();
 
 			messageLog.addMessage(<any>'new message');
 			sinon.assert.calledOnce(dataService.saveMessage);
 
 			// create request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			// reload request
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(messageLog.visibleMessages).to.have.length(5);
 			expect(messageLog.visibleMessages[0]).to.equal('new message');
