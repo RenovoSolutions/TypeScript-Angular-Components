@@ -1,8 +1,6 @@
+import { rlFakeAsync, mock, IMockedRequest, rlTick, flushMicrotasks } from 'rl-async-testing';
+
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import mock = __test.mock;
-import rlFakeAsync = __test.rlFakeAsync;
-import flushMicrotasks = __test.flushMicrotasks;
 import __transform = services.transform;
 import __array = services.array;
 import __object = services.object;
@@ -66,7 +64,7 @@ describe('TypeaheadComponent', () => {
 		});
 
 		it('should return an empty list if no text is entered', rlFakeAsync((): void => {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -80,7 +78,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should return the result of the getItems function if useClientSearching is off', rlFakeAsync((): void => {
 			// simulate a server-side search
-			let getItemsMock: __test.IMockedRequest<string[]> = mock.request([items[0], items[1]]);
+			let getItemsMock: IMockedRequest<string[]> = mock.request([items[0], items[1]]);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -99,7 +97,7 @@ describe('TypeaheadComponent', () => {
 		it('should apply the search string if useClientSearching is on', rlFakeAsync((): void => {
 			typeahead.clientSearch = true;
 
-			let getItemsMock: __test.IMockedRequest<string[]> = mock.request(items);
+			let getItemsMock: IMockedRequest<string[]> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -119,7 +117,7 @@ describe('TypeaheadComponent', () => {
 			, rlFakeAsync((): void => {
 				typeahead.clientSearch = true;
 
-				let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+				let getItemsMock: IMockedRequest<string> = mock.request(items);
 				typeahead.getItems = getItemsMock;
 				let visibleItems: string[];
 				typeahead.refresh('A').subscribe(result => visibleItems = result);
@@ -138,7 +136,7 @@ describe('TypeaheadComponent', () => {
 			}));
 
 		it('should set the search value', (): void => {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('A');
@@ -152,7 +150,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.clientSearch = true;
 
 			let items: string[] = [];
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 			typeahead.refresh('A');
 			getItemsMock.flush();
@@ -169,7 +167,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.clientSearch = true;
 
 			let items: string[] = ['Item 1'];
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 			typeahead.refresh('I');
 			getItemsMock.flush();
@@ -257,7 +255,7 @@ describe('TypeaheadComponent', () => {
 		});
 
 		function initialLoad() {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('A');
@@ -305,7 +303,7 @@ describe('TypeaheadComponent', () => {
 	});
 
 	describe('searchStream', () => {
-		let loadItems: __test.IMockedRequest<string>;
+		let loadItems: IMockedRequest<string>;
 
 		beforeEach(rlFakeAsync(() => {
 			typeahead.ngOnInit();
@@ -315,8 +313,8 @@ describe('TypeaheadComponent', () => {
 			typeahead.getItems = loadItems;
 
 			typeahead.searchStream.next('search');
-			__test.rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
-			__test.flushMicrotasks();
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
 			typeahead.visibleItems.subscribe(data => visibleItems = data);
 			loadItems.flush();
 			loadItems.reset();
@@ -339,8 +337,8 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.search).to.equal('search');
 			busy.trigger.reset();
 
-			__test.rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
-			__test.flushMicrotasks();
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
 
 			sinon.assert.calledOnce(busy.trigger);
 			sinon.assert.calledWith(busy.trigger, false);
@@ -351,8 +349,8 @@ describe('TypeaheadComponent', () => {
 			typeahead.searchStream.next('search2');
 
 			busy.trigger.reset();
-			__test.rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
-			__test.flushMicrotasks();
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
 
 			sinon.assert.calledTwice(busy.trigger);
 			sinon.assert.calledWith(busy.trigger, typeahead.visibleItems);

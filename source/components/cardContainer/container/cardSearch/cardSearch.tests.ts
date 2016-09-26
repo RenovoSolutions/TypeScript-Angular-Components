@@ -1,8 +1,6 @@
+import { rlFakeAsync, rlTick, flushMicrotasks } from 'rl-async-testing';
+
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import rlFakeAsync = __test.rlFakeAsync;
-import rlTick = __test.rlTick;
-import flushMicrotasks = __test.flushMicrotasks;
 import __timeout = services.timeout;
 
 import { CardSearchComponent, defaultSearchPlaceholder } from './cardSearch';

@@ -1,10 +1,7 @@
 import { Subject } from 'rxjs';
+import { rlFakeAsync, mock, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import rlFakeAsync = __test.rlFakeAsync;
-import rlTick = __test.rlTick;
-import flushMicrotasks = __test.flushMicrotasks;
 
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 
@@ -145,7 +142,7 @@ describe('AutosaveDirective', () => {
 
 	describe('autosave', () => {
 		it('should submit the form and pass the wait value to the autosave action', () => {
-			const waitValue = __test.mock.request()();
+			const waitValue = mock.request()();
 			form.submitAndWait = sinon.spy(() => waitValue);
 
 			autosave.autosave();
@@ -156,7 +153,7 @@ describe('AutosaveDirective', () => {
 
 		it('should save the form directly if saveWhenInvalid is true', () => {
 			autosave.saveWhenInvalid = true;
-			const waitValue = __test.mock.request()();
+			const waitValue = mock.request()();
 			form.saveForm = sinon.spy(() => waitValue);
 
 			autosave.autosave();

@@ -1,6 +1,6 @@
+import { rlFakeAsync, mock } from 'rl-async-testing';
+
 import { services, filters } from 'typescript-angular-utilities';
-import test = services.test;
-import rlFakeAsync = test.rlFakeAsync;
 import __object = services.object;
 import __array = services.array;
 import __transform = services.transform;
@@ -70,7 +70,7 @@ describe('SmartDataSource', () => {
 		data = [1, 2];
 
 		dataService = {
-			get: test.mock.promise({ dataSet: data, count: 2 }),
+			get: mock.promise({ dataSet: data, count: 2 }),
 		};
 
 		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
@@ -102,10 +102,10 @@ describe('SmartDataSource', () => {
 		});
 
 		data = [1, 2, 3, 4];
-		dataService.get = test.mock.promise({ dataSet: data, count: serverCount });
+		dataService.get = mock.promise({ dataSet: data, count: serverCount });
 		source.getDataSet = dataService.get;
 		source.reload();
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 
 		expect(source.count).to.equal(serverCount);
 	}));
@@ -113,10 +113,10 @@ describe('SmartDataSource', () => {
 	describe('throttled', (): void => {
 		beforeEach(rlFakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = test.mock.promise({ dataSet: data, count: 20 });
+			dataService.get = mock.promise({ dataSet: data, count: 20 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.get.reset();
 
 			expect(source.throttled).to.be.true;
@@ -142,10 +142,10 @@ describe('SmartDataSource', () => {
 	describe('not throttled', (): void => {
 		beforeEach(rlFakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = test.mock.promise({ dataSet: data, count: 10 });
+			dataService.get = mock.promise({ dataSet: data, count: 10 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.get.reset();
 			dataSourceProcessor.process.reset();
 

@@ -1,6 +1,6 @@
+import { rlFakeAsync, mock, IMockedRequest } from 'rl-async-testing';
+
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import rlFakeAsync = __test.rlFakeAsync;
 import __transform = services.transform;
 import __array = services.array;
 import __object = services.object;
@@ -20,7 +20,7 @@ describe('TypeaheadListComponent', () => {
 	let typeaheadList: TypeaheadListComponent<ITestObject>;
 	let items: ITestObject[];
 	let setValue: Sinon.SinonSpy;
-	let getItemsMock: __test.IMockedRequest<ITestObject[]>;
+	let getItemsMock: IMockedRequest<ITestObject[]>;
 
 	beforeEach(() => {
 		const validator: any = {
@@ -39,7 +39,7 @@ describe('TypeaheadListComponent', () => {
 
 		typeaheadList = new TypeaheadListComponent<ITestObject>(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
 
-		getItemsMock = __test.mock.request(items);
+		getItemsMock = mock.request(items);
 		typeaheadList.getItems = getItemsMock;
 		typeaheadList.clientSearch = true;
 
@@ -63,7 +63,7 @@ describe('TypeaheadListComponent', () => {
 		}));
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on', rlFakeAsync((): void => {
-			getItemsMock = __test.mock.request(items);
+			getItemsMock = mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
@@ -75,7 +75,7 @@ describe('TypeaheadListComponent', () => {
 		}));
 
 		it('should load the items when searching is disabled', rlFakeAsync((): void => {
-			getItemsMock = __test.mock.request(items);
+			getItemsMock = mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.ngOnChanges(<any>{
 				disableSearching: { currentValue: true },
@@ -89,7 +89,7 @@ describe('TypeaheadListComponent', () => {
 		}));
 
 		it('should load the items on init if searching is disabled', rlFakeAsync((): void => {
-			getItemsMock = __test.mock.request(items);
+			getItemsMock = mock.request(items);
 			typeaheadList.getItems = getItemsMock;
 			typeaheadList.disableSearching = true;
 			typeaheadList.ngOnInit();
@@ -128,7 +128,7 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
 			const newItem = {};
-			const onAddMock: __test.IMockedRequest<ITestObject> = __test.mock.request(newItem);
+			const onAddMock: IMockedRequest<ITestObject> = mock.request(newItem);
 			typeaheadList.onAdd = onAddMock;
 
 			typeaheadList.add(items[0]);
@@ -170,7 +170,7 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
-			const onRemoveMock: __test.IMockedRequest<void> = __test.mock.request();
+			const onRemoveMock: IMockedRequest<void> = mock.request();
 			typeaheadList.onRemove = onRemoveMock;
 
 			typeaheadList.remove(list[0]);

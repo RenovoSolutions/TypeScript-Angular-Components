@@ -1,8 +1,7 @@
+import { rlFakeAsync, mock } from 'rl-async-testing';
+
 import { FormComponent } from './form';
 import { isFunction } from 'lodash';
-import { services } from 'typescript-angular-utilities';
-import mock = services.test.mock;
-import rlFakeAsync = services.test.rlFakeAsync;
 
 import { AsyncHelper } from '../../services/async/async.service';
 
