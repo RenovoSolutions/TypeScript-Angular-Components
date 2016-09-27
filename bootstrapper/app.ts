@@ -110,7 +110,7 @@ export const appRoutingProviders: any[] = [
 		MiscNgContextBootstrapper,
 		InputsBootstrapper,
 		MiscNgContextBootstrapper,
-
+		App,
 	],
 	providers: [
 		{
