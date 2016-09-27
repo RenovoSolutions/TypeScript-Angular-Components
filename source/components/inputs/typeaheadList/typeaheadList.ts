@@ -12,10 +12,6 @@ import __search = services.search;
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
-import { TypeaheadComponent } from '../typeahead/typeahead';
-import { SelectComponent } from '../select/select';
-import { ButtonAsyncComponent } from '../../buttons/index';
-import { TypeaheadDataItemComponent } from './typeaheadDataItem';
 import { ListHeaderTemplate, ListItemTemplate } from './templates/index';
 
 export interface ITypeaheadListChanges {
@@ -30,7 +26,6 @@ export interface ITypeaheadListChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [TypeaheadComponent, SelectComponent, ButtonAsyncComponent, TypeaheadDataItemComponent],
 })
 export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;

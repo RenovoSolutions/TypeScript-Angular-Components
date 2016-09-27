@@ -1,4 +1,4 @@
-import { Provider, provide, ExceptionHandler, PipeTransform, Injector } from '@angular/core';
+import { PipeTransform, Injector } from '@angular/core';
 import { UpgradeAdapter } from '@angular/upgrade';
 
 import * as angular from 'angular';
@@ -17,24 +17,21 @@ import {
 } from './components/buttons/index';
 import { CheckboxComponent, TextboxComponent } from './components/inputs/index';
 import { CommaListComponent } from './components/commaList/commaList';
-import { DialogRootService } from './components/dialog/dialogRoot.service';
+import { DialogOutletComponent } from './components/dialog/dialogOutlet';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 
-import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPager } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
-import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
+import { IsEmptyPipe } from './pipes/isEmpty/isEmpty.pipe';
+import { TruncatePipe } from './pipes/truncate/truncate.pipe';
 import { DatePipe } from './pipes/date/date.pipe';
 import { LocalizeStringDatesPipe } from './pipes/localizeStringDates/localizeStringDates.pipe';
 
-import { AsyncHelper } from './services/async/async.service';
 import { AutosaveActionService } from './services/autosaveAction/autosaveAction.service';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
-import { FormService } from './services/form/form.service';
-import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
 import { WindowService } from './services/windowWrapper/windowWrapper.service';
 
 import { BreakpointService, VisibleBreakpointService, visibleBreakpointServiceName } from './services/breakpoints/index';
@@ -56,57 +53,22 @@ export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
+export function PipeDowngrader(pipe: PipeTransform) {
+	// factory that returns a filter
+	return () => (value: any, ...args: any[]): any => {
+		return pipe.transform(value, ...args);
+	};
+}
+
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
 
-	upgradeAdapter.addProvider(Injector);
-	upgradeAdapter.addProvider(DataSourceBuilder);
-	upgradeAdapter.addProvider(FilterBuilder);
-
-	const cardContainerBuilderFactoryProvider: Provider = new Provider(CardContainerBuilder, {
-		deps: [Injector, DataSourceBuilder, FilterBuilder],
-		useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
-			return {
-				getInstance: () => new CardContainerBuilder(injector, dataSourceBuilder, filterBuilder),
-			};
-		},
-	});
-	const dataPagerFactoryProvider: Provider = new Provider(DataPager, {
-		useValue: {
-			getInstance: () => new DataPager(),
-		},
-	});
-	const columnSearchFactoryProvider: Provider = new Provider(ColumnSearchFilter, {
-		useValue: {
-			getInstance: () => new ColumnSearchFilter(services.object.objectUtility, services.string.stringUtility, services.transform.transform),
-		},
-	});
-	const defaultThemeNg1: Provider = new Provider('defaultThemeNg1', {
-		deps: [DefaultTheme],
-		useFactory: (defaultTheme: DefaultTheme) => defaultTheme.useDefaultTheme,
-	});
-
-	upgradeAdapter.addProvider(AsyncHelper);
-	upgradeAdapter.addProvider(AutosaveActionService);
-	upgradeAdapter.addProvider(DefaultTheme);
-	upgradeAdapter.addProvider(defaultThemeNg1);
-	upgradeAdapter.addProvider(DialogRootService);
-	upgradeAdapter.addProvider(FormService);
-	upgradeAdapter.addProvider(DocumentService);
-	upgradeAdapter.addProvider(BreakpointService);
-	upgradeAdapter.addProvider(VisibleBreakpointService);
-	upgradeAdapter.addProvider(JQUERY_PROVIDER);
-	upgradeAdapter.addProvider(WindowService);
-	upgradeAdapter.addProvider(dataPagerFactoryProvider);
-	upgradeAdapter.addProvider(columnSearchFactoryProvider);
-	upgradeAdapter.addProvider(Sorter);
-	upgradeAdapter.addProvider(MergeSort);
-	upgradeAdapter.addProvider(cardContainerBuilderFactoryProvider);
-
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
-	componentsDowngradeModule.filter('rlDate', downgrade.PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', downgrade.PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
+	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)));
+	componentsDowngradeModule.filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
 
 	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
 	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
@@ -118,12 +80,13 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlButtonToggleNg', <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
 	componentsDowngradeModule.directive('rlCheckboxNg', <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));
 	componentsDowngradeModule.directive('rlCommaListNg', <any>upgradeAdapter.downgradeNg2Component(CommaListComponent));
+	componentsDowngradeModule.directive('rlDialogOutlet', <any>upgradeAdapter.downgradeNg2Component(DialogOutletComponent));
 	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
 	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
 	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
 
 	componentsDowngradeModule.factory(autosaveActionServiceName, upgradeAdapter.downgradeNg2Provider(AutosaveActionService));
-	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(CardContainerBuilder));
+	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(cardContainerBuilderServiceName));
 	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPager));
 	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
 	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));

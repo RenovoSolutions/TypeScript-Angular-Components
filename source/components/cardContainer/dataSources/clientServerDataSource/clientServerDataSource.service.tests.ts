@@ -1,12 +1,11 @@
-import { addProviders, inject } from '@angular/core/testing';
+import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
-import test = services.test;
-import fakeAsync = test.fakeAsync;
 import __genericSearchFilter = services.genericSearchFilter;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
+import __string = services.string;
+import __transform = services.transform;
 
 import { ClientServerDataSource } from './clientServerDataSource.service';
 
@@ -34,22 +33,12 @@ describe('ClientServerDataSource', () => {
 	let changedSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __genericSearchFilter.GenericSearchFilterFactory]
-			, (_dataSourceProcessor, genericSearchFactory) => {
-
-			dataSourceProcessor = _dataSourceProcessor;
-			sinon.spy(dataSourceProcessor, 'processAndCount');
-			searchFilter = genericSearchFactory.getInstance(false);
-		})();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		sinon.spy(dataSourceProcessor, 'processAndCount');
+		searchFilter = new __genericSearchFilter.GenericSearchFilter(__object.objectUtility, __string.stringUtility, false);
 
 		dataService = {
-			get: test.mock.promise([1, 2]),
+			get: mock.promise([1, 2]),
 		};
 
 		reloadedSpy = sinon.spy();
@@ -57,36 +46,34 @@ describe('ClientServerDataSource', () => {
 	});
 
 	describe('server search', (): void => {
-		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
+		beforeEach((): void => {
 			source = new ClientServerDataSource<number>(<any>dataService.get
 				, searchFilter
 				, null
 				, null
 				, dataSourceProcessor
-				, arrayUtility
-				, objectUtility
-				, synchronizedRequestsFactory);
+				, __array.arrayUtility
+				, __object.objectUtility);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
-		}));
+		});
 
-		it('should call data processor to process the data when refreshing', fakeAsync((): void => {
+		it('should call data processor to process the data when refreshing', rlFakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.reload();
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
-		it('should make a request to reload the data when the search text changes', fakeAsync((): void => {
+		it('should make a request to reload the data when the search text changes', rlFakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.refresh();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService)
+			mock.flushAll(dataService)
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);
@@ -101,7 +88,7 @@ describe('ClientServerDataSource', () => {
 
 			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);
@@ -130,8 +117,7 @@ describe('ClientServerDataSource', () => {
 		let filterModel: ITestFilterModel;
 		let validateSpy: Sinon.SinonSpy;
 
-		beforeEach(inject([__array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (arrayUtility, objectUtility, synchronizedRequestsFactory): void => {
+		beforeEach((): void => {
 			validateSpy = sinon.spy((model: ITestFilterModel): boolean => {
 				return model.prop != null;
 			});
@@ -143,20 +129,19 @@ describe('ClientServerDataSource', () => {
 				, getFilterModel
 				, validateSpy
 				, dataSourceProcessor
-				, arrayUtility
-				, objectUtility
-				, synchronizedRequestsFactory);
+				, __array.arrayUtility
+				, __object.objectUtility);
 			source.reloaded.subscribe(reloadedSpy);
 			source.changed.subscribe(changedSpy);
-		}));
+		});
 
-		it('should make a request to reload the data when the filter model changes', fakeAsync((): void => {
+		it('should make a request to reload the data when the filter model changes', rlFakeAsync((): void => {
 			filterModel = { prop: '123' };
 			source.refresh();
 
 			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			expect(source.dataSet).to.have.length(2);
 			expect(source.dataSet[0]).to.equal(1);
@@ -171,7 +156,7 @@ describe('ClientServerDataSource', () => {
 
 			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
 
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 
 			sinon.assert.calledTwice(reloadedSpy);
 			sinon.assert.calledTwice(changedSpy);

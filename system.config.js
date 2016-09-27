@@ -10,19 +10,35 @@ const map = {
 	'angular-sanitize': 'node_modules/angular-sanitize/index.js',
 	'angular2-uuid': 'node_modules/angular2-uuid',
 	'bootstrap': 'node_modules/bootstrap/dist/js/bootstrap.js',
-	'rxjs': 'node_modules/rxjs',
+	'jquery': 'node_modules/jquery/dist/jquery.js',
 	'lodash': 'node_modules/lodash/index',
 	'moment': 'node_modules/moment/moment',
 	'moment-timezone': 'node_modules/moment-timezone/builds/moment-timezone-with-data.min',
-	'ng2-bootstrap': 'node_modules/ng2-bootstrap/ng2-bootstrap.js',
-	'signature_pad': 'node_modules/signature_pad/signature_pad',
 	'ng-wig': 'node_modules/ng-wig',
+	'rl-async-testing': 'node_modules/rl-async-testing',
+	'rl-http': 'node_modules/rl-http',
+	'rxjs': 'node_modules/rxjs',
+	'text': 'node_modules/system-text/text',
+	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',
-	'text': 'node_modules/system-text/text',
-	'jquery': 'node_modules/jquery/dist/jquery.js',
-	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 };
+
+var angularPackageNames = [
+	'core',
+	'compiler',
+	'common',
+	'platform-browser',
+	'platform-browser-dynamic',
+	'http',
+	'forms',
+	'upgrade',
+];
+
+var defaultPackages = [
+	'rl-async-testing',
+	'rl-http',
+];
 
 const meta = {
 	'*.html': {
@@ -33,57 +49,51 @@ const meta = {
 	},
 };
 
-System.config({
-	meta,
-	map,
-	packages: {
-		'libraries': {
-			defaultExtension: 'js',
-		},
-		'bootstrapper': {
-			defaultExtension: 'js',
-		},
-		'source': {
-			defaultExtension: 'js',
-		},
-		'node_modules': {
-			defaultExtension: 'js',
-		},
-		'@angular/http': {
-			main: 'index.js',
-		},
-		'@angular/core': {
-			main: 'index.js',
-		},
-		'@angular/upgrade': {
-			main: 'index.js',
-		},
-		'@angular/platform-browser-dynamic': {
-			main: 'index.js',
-		},
-		'@angular/platform-browser': {
-			main: 'index.js',
-		},
-		'@angular/compiler': {
-			main: 'index.js',
-		},
-		'@angular/common': {
-			main: 'index.js',
-		},
-		'@angular/forms': {
-			main: 'index.js',
-		},
+var packages = {
+	'libraries': {
+		defaultExtension: 'js',
+	},
+	'bootstrapper': {
+		defaultExtension: 'js',
+	},
+	'source': {
+		defaultExtension: 'js',
+	},
+	'node_modules': {
+		defaultExtension: 'js',
+	},
 		'@angular/router': {
 			main: 'index.js',
 		},
-		'angular2-uuid': {
-			main: 'index.js',
-		},
-		'rxjs': {
-			main: 'Rx.js',
-		},
-		'angular': {
-			main: 'index.js',
-		}
+	'angular2-uuid': {
+		main: 'index.js',
 	},
+	'rxjs': {
+		main: 'Rx.js',
+	},
+	'angular': {
+		main: 'index.js',
+	}
+};
+
+function setAngularPackage(packageName) {
+	map[`@angular/${packageName}`] = `node_modules/@angular/${packageName}/bundles/${packageName}.umd.js`;
+}
+
+function setAngularTestingPackage(packageName) {
+	map[`@angular/${packageName}/testing`] = `node_modules/@angular/${packageName}/bundles/${packageName}-testing.umd.js`;
+}
+
+function setDefaultPackage(packageName) {
+	packages[packageName] = { main: 'index.js' };
+}
+
+angularPackageNames.forEach(setAngularPackage);
+angularPackageNames.forEach(setAngularTestingPackage);
+defaultPackages.forEach(setDefaultPackage);
+
+System.config({
+	meta,
+	map,
+	packages: packages,
 });

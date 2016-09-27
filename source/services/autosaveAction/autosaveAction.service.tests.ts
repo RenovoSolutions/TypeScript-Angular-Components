@@ -1,12 +1,12 @@
+import { rlFakeAsync, rlTick, flushMicrotasks, mock, IMockedRequest } from 'rl-async-testing';
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
 
 import { AutosaveActionService, COMPLETE_MESSAGE_DURATION } from './autosaveAction.service';
 import { AsyncHelper } from '../async/async.service';
 
 describe('AutosaveActionService', () => {
 	let autosaveAction: AutosaveActionService;
-	let mockAction: __test.IMockedRequest<void>;
+	let mockAction: IMockedRequest<void>;
 
 	beforeEach(() => {
 		const digestMock = {
@@ -15,25 +15,25 @@ describe('AutosaveActionService', () => {
 
 		autosaveAction = new AutosaveActionService(new services.timeout.TimeoutService(), new AsyncHelper(), <any>digestMock);
 
-		mockAction = __test.mock.request();
+		mockAction = mock.request();
 		autosaveAction.trigger(mockAction());
 
 		expect(autosaveAction.saving).to.be.true;
 	});
 
-	it('should set successful to true if the request resolves successfully', __test.fakeAsync((): void => {
+	it('should set successful to true if the request resolves successfully', rlFakeAsync((): void => {
 		mockAction.flush();
 
 		expect(autosaveAction.saving).to.be.false;
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.true;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
-		__test.flushMicrotasks();
+		rlTick(COMPLETE_MESSAGE_DURATION);
+		flushMicrotasks();
 	}));
 
-	it('should set successful to false if the promise fails', __test.fakeAsync((): void => {
-		mockAction = __test.mock.rejectedRequest();
+	it('should set successful to false if the promise fails', rlFakeAsync((): void => {
+		mockAction = mock.rejectedRequest();
 		autosaveAction.trigger(mockAction());
 		mockAction.flush();
 
@@ -41,17 +41,17 @@ describe('AutosaveActionService', () => {
 		expect(autosaveAction.complete).to.be.true;
 		expect(autosaveAction.successful).to.be.false;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
-		__test.flushMicrotasks();
+		rlTick(COMPLETE_MESSAGE_DURATION);
+		flushMicrotasks();
 	}));
 
-	it('should set complete to false after the duration', __test.fakeAsync((): void => {
+	it('should set complete to false after the duration', rlFakeAsync((): void => {
 		mockAction.flush();
 
 		expect(autosaveAction.complete).to.be.true;
 
-		__test.tick(COMPLETE_MESSAGE_DURATION);
-		__test.flushMicrotasks();
+		rlTick(COMPLETE_MESSAGE_DURATION);
+		flushMicrotasks();
 
 		expect(autosaveAction.complete).to.be.false;
 	}));

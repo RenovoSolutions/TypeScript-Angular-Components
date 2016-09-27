@@ -1,8 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
 import * as _ from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
+import __object = services.object;
+import __transform = services.transform;
 
 import { SimpleDataSource, IDataSource } from './simpleDataSource.service';
 
@@ -14,15 +15,7 @@ describe('SimpleDataSource', () => {
 	let processor: DataSourceProcessor;
 
 	beforeEach((): void => {
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor], (_processor) => {
-			processor = _processor;
-		})();
+		processor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 	});
 
 	it('should set data set and filter count settings on base', (): void => {

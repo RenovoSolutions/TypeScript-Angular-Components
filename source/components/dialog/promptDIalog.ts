@@ -1,13 +1,10 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 
 import { DialogComponent } from './dialog';
-import { DIALOG_TEMPLATE_DIRECTIVES } from './templates/index';
-import { ButtonComponent } from '../buttons/index';
 
 @Component({
 	selector: 'rlPromptDialog',
 	template: require('./promptDialog.html'),
-	directives: [DIALOG_TEMPLATE_DIRECTIVES, DialogComponent, ButtonComponent],
 })
 export class PromptDialogComponent {
 	@Input() message: string;

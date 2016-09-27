@@ -1,11 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
+import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { services, filters } from 'typescript-angular-utilities';
-import test = services.test;
-import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
+import __transform = services.transform;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
@@ -38,22 +36,12 @@ describe('ServerSideDataSource', () => {
 		};
 
 		dataService = {
-			get: test.mock.promise({ dataSet: [1, 2], count: 2 }),
+			get: mock.promise({ dataSet: [1, 2], count: 2 }),
 		};
 
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
-
-			dataSourceProcessor = _dataSourceProcessor;
-			sinon.spy(dataSourceProcessor, 'processAndCount');
-			source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		})();
+		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		sinon.spy(dataSourceProcessor, 'processAndCount');
+		source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 
 		source.filters = <any>[filter];
 		source.sorts = <any>[{
@@ -99,9 +87,9 @@ describe('ServerSideDataSource', () => {
 		expect(filters['clientSideFilter']).to.not.exist;
 	});
 
-	it('should set the data set and count with the response from the server', fakeAsync((): void => {
+	it('should set the data set and count with the response from the server', rlFakeAsync((): void => {
 		source.refresh();
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 		expect(source.dataSet[0]).to.equal(1);
 		expect(source.dataSet[1]).to.equal(2);
 		expect(source.count).to.equal(2);

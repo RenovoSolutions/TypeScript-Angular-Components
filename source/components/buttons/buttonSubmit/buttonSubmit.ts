@@ -1,4 +1,4 @@
-import { Component, Input, Optional, ExceptionHandler, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 
 import { BusyComponent, IWaitValue } from '../../busy/busy';
 import { BaseButtonComponent, baseInputs } from '../baseButton';
@@ -8,7 +8,6 @@ import { FormComponent } from '../../form/form';
 	selector: 'rlButtonSubmit',
 	template: require('./buttonSubmit.html'),
 	inputs: baseInputs,
-	directives: [BusyComponent],
 })
 export class ButtonSubmitComponent extends BaseButtonComponent {
 

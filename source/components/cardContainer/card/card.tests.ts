@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { FormService } from '../../../services/form/form.service';
@@ -27,7 +26,7 @@ describe('CardComponent', () => {
 			},
 		};
 
-		card = new CardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), null, new __boolean.BooleanUtility(), <any>cardContainer);
+		card = new CardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), null, <any>cardContainer);
 	});
 
 	it('should pass the item to the save handler', (): void => {

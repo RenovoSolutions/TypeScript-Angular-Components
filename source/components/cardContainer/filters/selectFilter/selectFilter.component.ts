@@ -7,12 +7,10 @@ import __logger = services.logger;
 
 import { ISelectFilter } from './selectFilter.service';
 import { IDataSource } from '../../datasources/dataSource';
-import { SelectComponent } from '../../../inputs/select/select';
 
 @Component({
 	selector: 'rlSelectFilter',
 	template: require('./selectFilter.html'),
-	directives: [SelectComponent],
 })
 export class SelectFilterComponent<T> {
 	@Input() filter: ISelectFilter<T>;

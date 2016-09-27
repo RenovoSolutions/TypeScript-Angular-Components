@@ -1,9 +1,8 @@
-import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { IDataSource } from '../dataSources/dataSource';
@@ -12,7 +11,6 @@ import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs, IBaseFormInputs } from '../../form/form';
 import { AsyncHelper } from '../../../services/async/async.service';
 import { FormService } from '../../../services/form/form.service';
-import { CardHeaderColumnComponent } from './headerColumn/headerColumn';
 import { CardContentTemplate, CardFooterTemplate } from '../../cards/index';
 import { ColumnContentTemplate } from '../templates/index';
 
@@ -28,11 +26,11 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 	selector: 'rlCard',
 	template: require('./card.html'),
 	inputs: [cardInputs.item],
-	directives: [CardHeaderColumnComponent],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => CardComponent),
-		}),
+		},
 	],
 })
 export class CardComponent<T> extends FormComponent {
@@ -46,16 +44,13 @@ export class CardComponent<T> extends FormComponent {
 	refresh: Subject<void> = new Subject<void>();
 
 	cardContainer: CardContainerComponent<T>;
-	boolean: __boolean.IBooleanUtility;
 
 	constructor(notification: __notification.NotificationService
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, boolean: __boolean.BooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
-		this.boolean = boolean;
 		this.cardContainer = cardContainer;
 		this.refresh.subscribe(() => this.cardContainer.dataSource.refresh());
 	}
@@ -83,7 +78,7 @@ export class CardComponent<T> extends FormComponent {
 			return true;
 		}
 
-		const canClose: boolean = this.boolean.toBool(this.submit());
+		const canClose: boolean = !!this.submit();
 
 		if (canClose) {
 			this.showContent = false;

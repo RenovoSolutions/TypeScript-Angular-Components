@@ -45,7 +45,7 @@ describe('promiseUtility', () => {
 	});
 
 	describe('resolvePromises', (): void => {
-		it('should return the value directly if type is object or primitive', (done: MochaDone): void => {
+		it('should return the value directly if type is object or primitive', done => {
 			let object: Object = { prop: 5 };
 			promiseUtility.resolvePromises({ object: object, num: 5 }).then((resolveData: any): void => {
 				expect(resolveData.object).to.equal(object);
@@ -56,7 +56,7 @@ describe('promiseUtility', () => {
 			$rootScope.$digest();
 		});
 
-		it('should inject the specified value if the type is string', (done: MochaDone): void => {
+		it('should inject the specified value if the type is string', done => {
 			promiseUtility.resolvePromises({ data: 'value' }).then((resolveData: any): void => {
 				expect(resolveData.data).to.equal(mockedValue);
 				done();
@@ -65,7 +65,7 @@ describe('promiseUtility', () => {
 			$rootScope.$digest();
 		});
 
-		it('should invoke the value with dependencies if type is function or an array with a function as the last param', (done: MochaDone): void => {
+		it('should invoke the value with dependencies if type is function or an array with a function as the last param', done => {
 			let func: Sinon.SinonSpy = sinon.spy((value: number): number => { return value - 1; });
 			func.$inject = ['value'];
 			let array: any[] = ['value', sinon.spy((value: number): number => { return value * 2; })];

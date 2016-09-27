@@ -1,4 +1,4 @@
-import { Component, Input, ContentChild, Provider, forwardRef } from '@angular/core';
+import { Component, Input, ContentChild, forwardRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -14,9 +14,10 @@ import { FormService } from '../../services/form/form.service';
 	template: '',
 	inputs: [baseInputs.save],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => DialogComponent),
-		}),
+		},
 	],
 })
 export class DialogComponent extends FormComponent {

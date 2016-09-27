@@ -20,7 +20,6 @@ export class CardSearchController {
 	// bindings
 	delay: number;
 
-	searchPlaceholder: string;
 	searchLengthError: boolean = false;
 	minSearchLength: number;
 	hasSearchFilter: boolean = true;
@@ -54,6 +53,10 @@ export class CardSearchController {
 	static $inject: string[] = ['$timeout'];
 	constructor(private $timeout: angular.ITimeoutService) {}
 
+	get focusOn(): boolean {
+		return this.cardContainer.focusSearchOn;
+	}
+
 	$onInit(): void {
 		if (this.cardContainer == null) {
 			return;
@@ -71,8 +74,6 @@ export class CardSearchController {
 		}
 
 		if (this.hasSearchFilter) {
-			this.searchPlaceholder = defaultSearchPlaceholder;
-
 			this.delay = this.delay != null
 				? this.delay
 				: defaultSearchDelay;
@@ -80,6 +81,12 @@ export class CardSearchController {
 			this.searchFilter.subscribe((): void => {
 				this.searchText = this.searchFilter.searchText;
 			});
+		}
+	}
+
+	get searchPlaceholder(): string {
+		if (this.hasSearchFilter) {
+			return this.cardContainer.searchPlaceholder || defaultSearchPlaceholder;
 		}
 	}
 

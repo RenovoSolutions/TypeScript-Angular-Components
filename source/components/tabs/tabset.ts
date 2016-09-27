@@ -9,7 +9,6 @@ import { TabComponent } from './tab';
 @Component({
 	selector: 'rlTabset',
 	template: require('./tabset.html'),
-	directives: [TabComponent]
 })
 export class TabsetComponent implements AfterContentInit {
 	@ContentChildren(TabComponent) tabs: QueryList<TabComponent>;

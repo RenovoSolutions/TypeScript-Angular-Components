@@ -1,8 +1,7 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
 
 import { IDataSource } from './dataSource';
 import { DataSourceBase } from './dataSourceBase.service';
@@ -11,7 +10,7 @@ import { IDataSourceProcessor } from './dataSourceProcessor.service';
 export { IDataSource };
 
 export interface IDataSetFunction<TDataType> {
-	(params: any): Promise<TDataType[]>;
+	(params: any): Promise<TDataType[]> | Observable<TDataType[]>;
 }
 
 export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
@@ -21,20 +20,17 @@ export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
 }
 
 export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implements IAsyncDataSource<TDataType> {
-	protected synchronizedRequests: __synchronizedRequests.ISynchronizedRequestsService;
+	protected synchronizedRequests: Subject<Observable<TDataType[]>> = new Subject<Observable<TDataType[]>>();
 	reloaded: Subject<void>;
+	getDataSet: IDataSetFunction<TDataType>;
 
 	constructor(getDataSet: IDataSetFunction<TDataType>
 			, dataSourceProcessor: IDataSourceProcessor
-			, array: __array.IArrayUtility
-			, synchronizedRequestsFactory: __synchronizedRequests.ISynchronizedRequestsFactory) {
+			, array: __array.IArrayUtility) {
 		super(dataSourceProcessor, array);
-		this.synchronizedRequests = synchronizedRequestsFactory.getInstance(getDataSet, this.resolveReload.bind(this));
+		this.getDataSet = getDataSet;
 		this.reloaded = new Subject<void>();
-	}
-
-	set getDataSet(value: IDataSetFunction<TDataType>) {
-		this.synchronizedRequests.dataProvider = value;
+		this.synchronizedRequests.switch().subscribe(data => this.resolveReload(data));
 	}
 
 	reload(): void {
@@ -42,7 +38,7 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 		this.rawDataSet = null;
 		this.loadingDataSet = true;
 
-		this.synchronizedRequests.getData(this.getParams());
+		this.synchronizedRequests.next(Observable.from(this.getDataSet(this.getParams())));
 	}
 
 	protected resolveReload(data: TDataType[]): void {

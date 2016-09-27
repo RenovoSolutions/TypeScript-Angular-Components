@@ -1,10 +1,7 @@
 import { Subject } from 'rxjs';
+import { rlFakeAsync, mock, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import fakeAsync = __test.fakeAsync;
-import tick = __test.tick;
-import flushMicrotasks = __test.flushMicrotasks;
 
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 
@@ -12,6 +9,7 @@ interface IFormMock {
 	form: { statusChanges: Subject<void> };
 	validate: Sinon.SinonSpy;
 	submitAndWait: Sinon.SinonSpy;
+	saveForm: Sinon.SinonSpy;
 }
 
 interface IAutosaveActionMock {
@@ -28,6 +26,7 @@ describe('AutosaveDirective', () => {
 			form: { statusChanges: new Subject<void>() },
 			validate: sinon.spy(() => true),
 			submitAndWait: sinon.spy(),
+			saveForm: sinon.spy(),
 		};
 
 		autosaveAction = { trigger: sinon.spy() };
@@ -48,79 +47,93 @@ describe('AutosaveDirective', () => {
 	});
 
 	describe('setDebounce', () => {
-		it('should set a timer to autosave after the specified duration', fakeAsync((): void => {
+		it('should set a timer to autosave after the specified duration', rlFakeAsync((): void => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should only autosave once if called again while the timer is in progress', fakeAsync(() => {
+		it('should only autosave once if called again while the timer is in progress', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should not trigger an autosave if the form is invalid', fakeAsync(() => {
+		it('should not trigger an autosave if the form is invalid', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 			form.validate = sinon.spy(() => false);
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);
 		}));
+
+		it('should still trigger an autosave if the form is invalid but saveWhenInvalid is enabled', rlFakeAsync(() => {
+			const autosaveSpy = sinon.spy();
+			autosave.autosave = autosaveSpy;
+			autosave.saveWhenInvalid = true;
+			form.validate = sinon.spy(() => false);
+
+			autosave.setDebounce();
+
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.calledOnce(autosaveSpy);
+		}));
 	});
 
 	describe('resetDebounce', () => {
-		it('should reset the timer for autosaving', fakeAsync(() => {
+		it('should reset the timer for autosaving', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.setDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			autosave.resetDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE / 2);
 			flushMicrotasks();
 
 			sinon.assert.calledOnce(autosaveSpy);
 		}));
 
-		it('should do nothing if no timer is in progress', fakeAsync(() => {
+		it('should do nothing if no timer is in progress', rlFakeAsync(() => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 
 			autosave.resetDebounce();
 
-			tick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
 			flushMicrotasks();
 
 			sinon.assert.notCalled(autosaveSpy);
@@ -129,8 +142,19 @@ describe('AutosaveDirective', () => {
 
 	describe('autosave', () => {
 		it('should submit the form and pass the wait value to the autosave action', () => {
-			const waitValue = __test.mock.request()();
+			const waitValue = mock.request()();
 			form.submitAndWait = sinon.spy(() => waitValue);
+
+			autosave.autosave();
+
+			sinon.assert.calledOnce(autosaveAction.trigger);
+			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
+		});
+
+		it('should save the form directly if saveWhenInvalid is true', () => {
+			autosave.saveWhenInvalid = true;
+			const waitValue = mock.request()();
+			form.saveForm = sinon.spy(() => waitValue);
 
 			autosave.autosave();
 

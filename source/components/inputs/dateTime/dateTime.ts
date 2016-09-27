@@ -1,10 +1,10 @@
-import { Component, Optional, Input, Output, EventEmitter, OnInit, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Optional, Input, Output, EventEmitter, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
 import '../../../../libraries/bootstrap-datetimepicker/index';
 
-import { services, filters } from 'typescript-angular-utilities';
+import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
@@ -12,7 +12,6 @@ import __date = services.date;
 import __dateFormats = __date.defaultFormats;
 import __timezone = services.timezone;
 
-import { ButtonComponent } from '../../buttons/button/button';
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
@@ -22,11 +21,9 @@ import { FormComponent } from '../../form/form';
 	template: require('./dateTime.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
-	directives: [ButtonComponent],
 	providers: [ComponentValidator],
-	pipes: [filters.isEmpty.IsEmptyPipe],
 })
-export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements OnInit, AfterViewInit {
+export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements AfterViewInit {
 	@Input() useDate: boolean;
 	@Input() useTime: boolean;
 	@Input() min: string | Date | moment.Moment;
@@ -61,18 +58,15 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.timezone = this.timezoneService.currentTimezone;
 	}
 
-	ngOnInit(): void {
-		super.ngOnInit();
-		this.valueAsString = this.value != null
-							? this.formatDate(this.value)
-							: '';
-	}
-
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
 
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
+
+		this.valueAsString = this.value != null
+							? this.formatDate(this.value)
+							: '';
 
 		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.datepicker).datetimepicker.defaults;
 		this.min = this.min != null ? this.min : defaults.minDate;

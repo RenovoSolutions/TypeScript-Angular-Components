@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "2.6.11",
+  "version": "3.1.0",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -47,7 +47,7 @@
     "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.1.13",
+    "@renovolive/gulp-utilities": "~2.2.0",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "del": "^2.2.0",
@@ -55,15 +55,16 @@
     "gulp-clean-css": "^2.0.7",
     "gulp-concat": "^2.6.0",
     "http-server": "^0.9.0",
+    "jasmine": "^2.5.2",
+    "jasmine-core": "^2.5.2",
     "karma": "~0.13.21",
     "karma-chai": "~0.1.0",
     "karma-chrome-launcher": "~0.2.2",
     "karma-firefox-launcher": "~0.1.7",
     "karma-ie-launcher": "~0.2.0",
-    "karma-mocha": "~0.2.2",
+    "karma-jasmine": "~1.0.2",
     "karma-sinon": "~1.0.4",
     "karma-teamcity-reporter": "~0.2.1",
-    "mocha": "~2.4.5",
     "reflect-metadata": "0.1.2",
     "run-sequence": "^1.1.5",
     "sinon": "~1.17.3",
@@ -74,15 +75,15 @@
     "typings": "~1.0.4"
   },
   "dependencies": {
-    "@angular/common": "2.0.0-rc.5",
-    "@angular/compiler": "2.0.0-rc.5",
-    "@angular/core": "2.0.0-rc.5",
-    "@angular/forms": "~0.3.0",
-    "@angular/http": "2.0.0-rc.5",
-    "@angular/platform-browser": "2.0.0-rc.5",
-    "@angular/platform-browser-dynamic": "2.0.0-rc.5",
+    "@angular/common": "~2.0.0",
+    "@angular/compiler": "~2.0.0",
+    "@angular/core": "~2.0.0",
+    "@angular/forms": "~2.0.0",
+    "@angular/http": "~2.0.0",
+    "@angular/platform-browser": "~2.0.0",
+    "@angular/platform-browser-dynamic": "~2.0.0",
+    "@angular/upgrade": "~2.0.0",
     "@angular/router": "^3.0.0-rc.1",
-    "@angular/upgrade": "2.0.0-rc.5",
     "angular": "~1.5.3",
     "angular-animate": "~1.5.3",
     "angular-mocks": "~1.5.0",
@@ -96,13 +97,13 @@
     "moment": "~2.14.1",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "ng2-bootstrap": "1.0.24",
-    "rxjs": "5.0.0-beta.6",
-    "signature_pad": "~1.5.3",
+    "rl-async-testing": "~1.1.1",
+    "rl-http": "~1.0.2",
+    "rxjs": "5.0.0-beta.12",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.3.6",
+    "typescript-angular-utilities": "~3.6.0",
     "ui-select": "~0.14.7",
-    "zone.js": "^0.6.12"
+    "zone.js": "~0.6.25"
   },
   "license": "GPL-3.0"
 }

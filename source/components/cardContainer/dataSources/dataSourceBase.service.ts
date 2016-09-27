@@ -71,6 +71,14 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		this._isEmpty = value;
 	}
 
+	clear() {
+		this.rawDataSet = [];
+		this.dataSet = [];
+		this.filteredDataSet = [];
+		this.count = 0;
+		this.isEmpty = true;
+	}
+
 	processData(): void {
 		var processedData: IProcessResult<TDataType>;
 

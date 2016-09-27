@@ -1,11 +1,12 @@
-<div class="nav-tabs-dropshadow">
-	<ul class="nav nav-tabs">
-		<li ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
+<div class="rl-tab">
+	<ul class="rl-tabset">
+		<li class="rl-tabset-item"
+			ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
 			ng-class="{ 'active': tabHeader.isVisible, 'error': !tabHeader.isValid }">
-			<a><span ng-bind-html="tabHeader.template"></span></a>
+			<a class="rl-tabset-link"><span ng-bind-html="tabHeader.template"></span></a>
 		</li>
 	</ul>
-	<div class="tab-content">
+	<div class="rl-tab-content">
 		<div ng-transclude></div>
 	</div>
 </div>

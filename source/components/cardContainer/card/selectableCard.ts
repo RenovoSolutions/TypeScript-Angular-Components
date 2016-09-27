@@ -1,11 +1,9 @@
-import { Component, Inject, Provider, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
-import { CheckboxComponent } from '../../inputs/index';
 import { CardContainerComponent } from '../cardContainer';
 import { SelectableCardContainerComponent, ISelectableItem } from '../selectableCardContainer';
 import { FormComponent } from '../../form/form';
@@ -18,14 +16,15 @@ import { CardComponent, cardInputs } from './card';
 	selector: 'rlSelectableCard',
 	template: require('./selectableCard.html'),
 	inputs: [cardInputs.item],
-	directives: [CardHeaderColumnComponent, CheckboxComponent],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => SelectableCardComponent),
-		}),
-		new Provider(CardComponent, {
+		},
+		{
+			provide: CardComponent,
 			useExisting: forwardRef(() => SelectableCardComponent),
-		}),
+		},
 	],
 })
 export class SelectableCardComponent<T extends ISelectableItem> extends CardComponent<T> {
@@ -37,9 +36,8 @@ export class SelectableCardComponent<T extends ISelectableItem> extends CardComp
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
-			, boolean: __boolean.BooleanUtility
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, asyncHelper, formService, parentForm, boolean, cardContainer);
+		super(notification, asyncHelper, formService, parentForm, cardContainer);
 	}
 
 	setSelected(value: boolean): void {

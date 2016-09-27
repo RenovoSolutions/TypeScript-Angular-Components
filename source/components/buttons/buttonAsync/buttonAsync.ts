@@ -14,7 +14,6 @@ export interface IAsyncAction {
 	selector: 'rlButtonAsync',
 	template: require('./buttonAsync.html'),
 	inputs: asyncInputs,
-	directives: [BusyComponent],
 })
 export class ButtonAsyncComponent extends BaseButtonComponent {
 	action: IAsyncAction;

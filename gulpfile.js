@@ -2,7 +2,6 @@
 
 const gulp = require('gulp');
 const del = require('del');
-const Builder = require('systemjs-builder');
 const runSequence = require('run-sequence');
 const concat = require('gulp-concat');
 const cleanCss = require('gulp-clean-css');

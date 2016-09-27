@@ -311,4 +311,22 @@ describe('DataSourceBase', () => {
 			sinon.assert.calledOnce(changeSpy);
 		});
 	});
+
+	describe('clear', (): void => {
+		it('should clear all datasets, count, and reset isEmpty', (): void => {
+			dataSourceBase.rawDataSet = [1, 2, 3];
+			dataSourceBase.dataSet = [1, 2, 3];
+			dataSourceBase.filteredDataSet = [1, 2];
+			dataSourceBase.count = dataSourceBase.rawDataSet.length;
+			dataSourceBase.isEmpty = false;
+
+			dataSourceBase.clear();
+
+			expect(dataSourceBase.rawDataSet.length).to.equal(0);
+			expect(dataSourceBase.dataSet.length).to.equal(0);
+			expect(dataSourceBase.filteredDataSet.length).to.equal(0);
+			expect(dataSourceBase.count).to.equal(0);
+			expect(dataSourceBase.isEmpty).to.be.true;
+		});
+	});
 });

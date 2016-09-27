@@ -1,34 +1,68 @@
 import { FilterGroupComponent } from './filterGroup.component';
 
 describe('FilterGroupComponent', (): void => {
-	let filterGroup: FilterGroupComponent<any>;
+	let filterGroupComponent: FilterGroupComponent<any>;
+	let filterGroup = <any> {
+		label: 'some label',
+		activeOption: {
+			label: 'active option label'
+		}
+	};
 
 	beforeEach(() => {
-		filterGroup = new FilterGroupComponent(<any>{ log: sinon.spy() });
-		filterGroup.filterGroup = <any>{};
+		filterGroupComponent = new FilterGroupComponent(<any>{ log: sinon.spy() });
+		filterGroupComponent.filterGroup = filterGroup;
 	});
 
 	it('should toggle the children', (): void => {
-		expect(filterGroup.showChildren).to.be.true;
+		expect(filterGroupComponent.expanded).to.be.true;
 
-		filterGroup.toggleChildren();
+		filterGroupComponent.toggleExpanded();
 
-		expect(filterGroup.showChildren).to.be.false;
+		expect(filterGroupComponent.expanded).to.be.false;
 
-		filterGroup.toggleChildren();
+		filterGroupComponent.toggleExpanded();
 
-		expect(filterGroup.showChildren).to.be.true;
+		expect(filterGroupComponent.expanded).to.be.true;
+	});
+
+	it('should only show children if expanded and not disabled', (): void => {
+		filterGroupComponent.expanded = true;
+		filterGroupComponent.disabled = true;
+		expect(filterGroupComponent.childrenVisible).to.be.false;
+
+		filterGroupComponent.expanded = false;
+		filterGroupComponent.disabled = false;
+		expect(filterGroupComponent.childrenVisible).to.be.false;
+
+		filterGroupComponent.expanded = false;
+		filterGroupComponent.disabled = true;
+		expect(filterGroupComponent.childrenVisible).to.be.false;
+
+		filterGroupComponent.expanded = true;
+		filterGroupComponent.disabled = false;
+		expect(filterGroupComponent.childrenVisible).to.be.true;
 	});
 
 	it('should set the active option and refresh the data source', (): void => {
 		const dataSource: any = { refresh: sinon.spy() };
-		filterGroup.dataSource = dataSource;
+		filterGroupComponent.dataSource = dataSource;
 		const option: any = { prop: 4 };
 
-		filterGroup.selectOption(option);
+		filterGroupComponent.selectOption(option);
 
 		sinon.assert.calledOnce(dataSource.refresh);
-		expect(filterGroup.filterGroup.activeOption).to.equal(option);
-		expect(filterGroup.showChildren).to.be.false;
+		expect(filterGroupComponent.filterGroup.activeOption).to.equal(option);
+		expect(filterGroupComponent.expanded).to.be.false;
+	});
+
+	it('should not show active option label if disabled', (): void => {
+		filterGroupComponent.disabled = false;
+		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.label);
+		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.activeOption.label);
+
+		filterGroupComponent.disabled = true;
+		expect(filterGroupComponent.headerTitle).to.contain(filterGroup.label);
+		expect(filterGroupComponent.headerTitle).to.not.contain(filterGroup.activeOption.label);
 	});
 });

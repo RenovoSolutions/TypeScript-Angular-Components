@@ -11,7 +11,6 @@ import __time = services.time;
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
-import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 
 @Component({
 	selector: 'rlAbsoluteTime',
@@ -19,7 +18,6 @@ import { OffClickDirective } from '../../../behaviors/offClick/offClick';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	directives: [OffClickDirective],
 })
 export class AbsoluteTimeComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() minuteInterval: number = 15;

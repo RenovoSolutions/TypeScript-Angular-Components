@@ -1,4 +1,4 @@
-import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, Provider, forwardRef, ContentChild } from '@angular/core';
+import { Component, Input, Output, Optional, SkipSelf, Inject, EventEmitter, OnInit, forwardRef, ContentChild } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -12,12 +12,12 @@ import { CardHeaderTemplate, CardContentTemplate, CardFooterTemplate } from '../
 @Component({
 	selector: 'rlSimpleCard',
 	template: require('./simpleCard.html'),
-	directives: [FormComponent],
 	inputs: [baseInputs.save],
 	providers: [
-		new Provider(FormComponent, {
+		{
+			provide: FormComponent,
 			useExisting: forwardRef(() => SimpleCardComponent),
-		}),
+		},
 	],
 })
 export class SimpleCardComponent<T> extends FormComponent implements OnInit {
@@ -39,6 +39,7 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 			, asyncHelper: AsyncHelper
 			, formService: FormService
 			, @Optional() @SkipSelf() parentForm: FormComponent
+			, @Optional() nullInjectionConflictsWithCardParameter: AsyncHelper
 			, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.list = list || this.emptyList();

@@ -44,7 +44,7 @@ describe('TypeaheadListController', () => {
 	});
 
 	describe('loadItems', (): void => {
-		it('should filter out items that are already selected', (done: MochaDone): void => {
+		it('should filter out items that are already selected', done => {
 			let selections: ITestObject[] = [items[0], items[2]];
 			buildController(selections);
 

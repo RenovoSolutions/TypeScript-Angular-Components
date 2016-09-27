@@ -1,11 +1,9 @@
 ﻿import * as angular from 'angular';
 import 'angular-mocks';
+import { rlFakeAsync, mock, IMockedPromise } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
 import __test = services.test;
-import mock = __test.mock;
-import fakeAsync = __test.fakeAsync;
-import IMockedPromise = __test.IMockedPromise;
 
 import { ButtonAsyncController, moduleName, controllerName } from './buttonAsync.ng1';
 
@@ -28,7 +26,7 @@ describe('ButtonAsyncController', () => {
 	});
 
 	describe('should finish', (): void => {
-		it('when promise resolves', fakeAsync((): void => {
+		it('when promise resolves', rlFakeAsync((): void => {
 			actionSpy = mock.promise();
 			button = buildController();
 
@@ -41,7 +39,7 @@ describe('ButtonAsyncController', () => {
 			expect(button.busy).to.be.false;
 		}));
 
-		it('when promise rejects', fakeAsync((): void => {
+		it('when promise rejects', rlFakeAsync((): void => {
 			const fakeError = 'fakeError';
 			actionSpy = mock.rejectedPromise(fakeError);
 			button = buildController();

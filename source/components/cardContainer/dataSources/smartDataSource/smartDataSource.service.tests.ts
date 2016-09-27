@@ -1,11 +1,9 @@
-import { addProviders, inject } from '@angular/core/testing';
+import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { services, filters } from 'typescript-angular-utilities';
-import test = services.test;
-import fakeAsync = test.fakeAsync;
 import __object = services.object;
 import __array = services.array;
-import __synchronizedRequests = services.synchronizedRequests;
+import __transform = services.transform;
 
 import { SmartDataSource } from './smartDataSource.service';
 
@@ -72,23 +70,14 @@ describe('SmartDataSource', () => {
 		data = [1, 2];
 
 		dataService = {
-			get: test.mock.promise({ dataSet: data, count: 2 }),
+			get: mock.promise({ dataSet: data, count: 2 }),
 		};
-		addProviders([
-			DataSourceProcessor,
-			Sorter,
-			MergeSort,
-			services.UTILITY_PROVIDERS,
-		]);
-		inject([DataSourceProcessor, __array.ArrayUtility, __object.ObjectUtility, __synchronizedRequests.SynchronizedRequestsFactory]
-			, (_dataSourceProcessor, array, object, synchronizedRequestsFactory) => {
 
-			dataSourceProcessor = _dataSourceProcessor;
-			dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
-			dataSourceProcessor.sort = sinon.spy();
-			dataSourceProcessor.page = sinon.spy();
-			source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, array, object, synchronizedRequestsFactory);
-		})();
+		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
+		dataSourceProcessor.sort = sinon.spy();
+		dataSourceProcessor.page = sinon.spy();
+		source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 
 		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{
@@ -102,7 +91,7 @@ describe('SmartDataSource', () => {
 		};
 	});
 
-	it('should use the count returned by the server when a reload resolves', fakeAsync((): void => {
+	it('should use the count returned by the server when a reload resolves', rlFakeAsync((): void => {
 		let clientCount: number = 2;
 		let serverCount: number = 4;
 		dataSourceProcessor.process = sinon.spy((data: any): any => {
@@ -113,21 +102,21 @@ describe('SmartDataSource', () => {
 		});
 
 		data = [1, 2, 3, 4];
-		dataService.get = test.mock.promise({ dataSet: data, count: serverCount });
+		dataService.get = mock.promise({ dataSet: data, count: serverCount });
 		source.getDataSet = dataService.get;
 		source.reload();
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 
 		expect(source.count).to.equal(serverCount);
 	}));
 
 	describe('throttled', (): void => {
-		beforeEach(fakeAsync((): void => {
+		beforeEach(rlFakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = test.mock.promise({ dataSet: data, count: 20 });
+			dataService.get = mock.promise({ dataSet: data, count: 20 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.get.reset();
 
 			expect(source.throttled).to.be.true;
@@ -151,12 +140,12 @@ describe('SmartDataSource', () => {
 	});
 
 	describe('not throttled', (): void => {
-		beforeEach(fakeAsync((): void => {
+		beforeEach(rlFakeAsync((): void => {
 			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = test.mock.promise({ dataSet: data, count: 10 });
+			dataService.get = mock.promise({ dataSet: data, count: 10 });
 			source.getDataSet = dataService.get;
 			source.reload();
-			test.mock.flushAll(dataService);
+			mock.flushAll(dataService);
 			dataService.get.reset();
 			dataSourceProcessor.process.reset();
 

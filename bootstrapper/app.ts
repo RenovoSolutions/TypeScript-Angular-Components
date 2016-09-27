@@ -8,9 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
 import { Routes, RouterModule } from '@angular/router';
 
-import { TOOLTIP_DIRECTIVES } from 'ng2-bootstrap';
-
-import { downgrade as utilitiesDowngrade } from 'typescript-angular-utilities';
+import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
 import { moduleName as componentsModule } from '../source/ui.module';
 import * as componentsDowngrade from '../source/componentsDowngrade';
@@ -35,18 +33,7 @@ import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { App } from './app.ng2';
 
-import { INPUT_DIRECTIVES } from '../source/components/inputs/index';
-import { BUTTON_DIRECTIVES } from '../source/components/buttons/index';
-import { CARD_CONTAINER_DIRECTIVES } from '../source/components/cardContainer/index';
-import { SIMPLE_CARD_DIRECTIVES } from '../source/components/simpleCardList/index';
-import { DIALOG_DIRECTIVES } from '../source/components/dialog/index';
-import { TABS_COMPONENT } from '../source/components/tabs/index';
-import { FormComponent } from '../source/components/form/form';
-import { BusyComponent } from '../source/components/busy/busy';
-import { ValidationGroupComponent } from '../source/components/validationGroup/validationGroup';
-import { AutosaveDirective } from '../source/behaviors/autosave/autosave';
-import { RatingBarComponent } from '../source/components/ratingBar/ratingBar';
-import { MultiStepIndicatorComponent } from '../source/components/multiStepIndicator/multiStepIndicator';
+import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
@@ -107,25 +94,22 @@ export const appRoutingProviders: any[] = [
 // export const routing = RouterModule.forRoot(appRoutes);
 
 @NgModule({
+	imports: [
+		BrowserModule,
+		UtilitiesModule,
+		ComponentsModule,
+	],
 	declarations: [
-		INPUT_DIRECTIVES,
-		BUTTON_DIRECTIVES,
-		CARD_CONTAINER_DIRECTIVES,
-		SIMPLE_CARD_DIRECTIVES,
-		DIALOG_DIRECTIVES,
-		TABS_COMPONENT,
-		FormComponent,
-		BusyComponent,
-		ValidationGroupComponent,
-		AutosaveDirective,
-		RatingBarComponent,
-		MultiStepIndicatorComponent,
-
+		InputsBootstrapper,
+		FormsBootstrapper,
+		TabsBootstrapper,
+		MsiBootstrapperComponent,
+		CardsBootstrapper,
+		PopupBootstrapper,
+		MiscNgContextBootstrapper,
 		InputsBootstrapper,
 		MiscNgContextBootstrapper,
 
-		// should be a module import eventually
-		TOOLTIP_DIRECTIVES,
 	],
 	providers: [
 		{
@@ -150,4 +134,4 @@ class ComponentsBootstrapperModule {}
 // 		});
 // }
 
-upgradeAdapter.bootstrap(document.body, [moduleName]);
+upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });

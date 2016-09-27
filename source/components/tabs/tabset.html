@@ -1,11 +1,12 @@
-<div class="nav-tabs-dropshadow">
-	<ul class="nav nav-tabs">
-		<li *ngFor="let tab of tabs" (click)="select(tab)"
+<div class="rl-tab">
+	<ul class="rl-tabset">
+		<li class="rl-tabset-item"
+			*ngFor="let tab of tabs" (click)="select(tab)"
 			[ngClass]="{ 'active': tab.isActive, 'error': !tab.isValid }">
-			<a><span [innerHTML]="tab.header.innerHTML"></span></a>
+			<a class="rl-tabset-link"><span [innerHTML]="tab.header.innerHTML"></span></a>
 		</li>
 	</ul>
-	<div class="tab-content">
+	<div class="rl-tab-content">
 		<ng-content></ng-content>
 	</div>
 </div>

@@ -1,8 +1,7 @@
+import { rlFakeAsync, mock } from 'rl-async-testing';
+
 import { FormComponent } from './form';
 import { isFunction } from 'lodash';
-import { services } from 'typescript-angular-utilities';
-import mock = services.test.mock;
-import fakeAsync = services.test.fakeAsync;
 
 import { AsyncHelper } from '../../services/async/async.service';
 
@@ -58,7 +57,7 @@ describe('FormComponent', (): void => {
 	});
 
 	describe('saveForm', (): void => {
-		it('should mark the form as pristine after the submit completes', fakeAsync((): void => {
+		it('should mark the form as pristine after the submit completes', rlFakeAsync((): void => {
 			const saveMock = mock.promise();
 			const setPristineSpy = sinon.spy();
 			form.save = saveMock;
@@ -74,7 +73,7 @@ describe('FormComponent', (): void => {
 			sinon.assert.calledOnce(setPristineSpy);
 		}));
 
-		it('should mark the form as pristine immediately if no async action is returned', fakeAsync((): void => {
+		it('should mark the form as pristine immediately if no async action is returned', rlFakeAsync((): void => {
 			form.save = <any>(() => null);
 			const setPristineSpy = sinon.spy();
 			formService.isFormValid = <any>(() => true);

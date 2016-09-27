@@ -1,14 +1,12 @@
-import { Component, Output, EventEmitter, Provider, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
+import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
 import { each, isUndefined, filter, difference } from 'lodash';
 
 import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
 import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
-import __isEmpty = filters.isEmpty;
 
 import { IColumn } from './column';
-import { SortDirection, ISortDirections } from './sorts/index';
+import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
@@ -16,10 +14,6 @@ import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate
 import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 
 import { SelectableCardComponent } from './card/selectableCard';
-import { ColumnHeaderComponent } from './container/columnHeader/columnHeader';
-import { ContainerHeaderComponent } from './container/containerHeader.component';
-import { SelectableContainerFooterComponent } from './container/selectableContainerFooter.component';
-import { BusyComponent } from '../busy/busy';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
 import { CardContainerType } from './builder/cardContainerBuilder.service';
@@ -39,22 +33,19 @@ export interface ISelectionViewData {
 @Component({
 	selector: 'rlSelectableCardContainer',
 	template: require('./selectableCardContainer.html'),
-	inputs: [cardContainerInputs.builder, cardContainerInputs.save],
+	inputs: [
+		cardContainerInputs.builder,
+		cardContainerInputs.save,
+		cardContainerInputs.searchPlaceholder
+	],
 	providers: [
 		DataPager,
-		new Provider(CardContainerComponent, {
+		SortManagerService,
+		{
+			provide: CardContainerComponent,
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
-		}),
+		},
 	],
-	directives: [
-		ContainerHeaderComponent,
-		SelectableContainerFooterComponent,
-		ColumnHeaderComponent,
-		SelectableCardComponent,
-		BusyComponent,
-	],
-
-	pipes: [__isEmpty.IsEmptyPipe],
 })
 export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
@@ -70,10 +61,8 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(object: __object.ObjectUtility
-			, array: __array.ArrayUtility
-			, pager: DataPager) {
-		super(object, array, pager);
+	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
+		super(array, pager, sortManager);
 		this.type = CardContainerType.selectable;
 	}
 

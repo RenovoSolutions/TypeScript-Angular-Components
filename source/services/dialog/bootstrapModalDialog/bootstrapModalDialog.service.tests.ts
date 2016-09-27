@@ -1,6 +1,6 @@
+import { rlFakeAsync, mock } from 'rl-async-testing';
 import { services } from 'typescript-angular-utilities';
 import test = services.test;
-import fakeAsync = test.fakeAsync;
 
 import { moduleName, serviceName, BootstrapModalDialogService } from './bootstrapModalDialog.module';
 import { IDialogInstance } from '../dialog.service.ng1';
@@ -71,10 +71,10 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.calledOnce(event.preventDefault);
 	});
 
-	it('should resolve promises and provide the results as locals on the dialog controller', fakeAsync(() => {
+	it('should resolve promises and provide the results as locals on the dialog controller', rlFakeAsync(() => {
 		let data: any = { prop: 5 };
 		let dataService: any = {
-			get: test.mock.promise(data),
+			get: mock.promise(data),
 		};
 
 		let dataResult: any;
@@ -96,7 +96,7 @@ describe('bootstrapModalDialog', () => {
 		sinon.assert.notCalled($uibModal.open);
 		expect(dataResult).to.not.exist;
 
-		test.mock.flushAll(dataService);
+		mock.flushAll(dataService);
 		$rootScope.$digest();
 		sinon.assert.calledOnce($uibModal.open);
 
@@ -105,9 +105,9 @@ describe('bootstrapModalDialog', () => {
 		expect(dataResult).to.equal(data);
 	}));
 
-	it('should not open the dialog if resolve fails', fakeAsync(() => {
+	it('should not open the dialog if resolve fails', rlFakeAsync(() => {
 		let dataService: any = {
-			get: test.mock.rejectedPromise(new Error()),
+			get: mock.rejectedPromise(new Error()),
 		};
 
 		let options: any = {
@@ -118,15 +118,15 @@ describe('bootstrapModalDialog', () => {
 
 		bootstrapModalDialog.open(options);
 
-		test.mock.flushAll(dataService)
+		mock.flushAll(dataService)
 
 		sinon.assert.notCalled($uibModal.open);
 	}));
 
-	it('should return an object with functions to dismiss and close the dialog once its open', fakeAsync((): void => {
+	it('should return an object with functions to dismiss and close the dialog once its open', rlFakeAsync((): void => {
 		const options: any = {
 			resolve: {
-				data: test.mock.promise<void>(),
+				data: mock.promise<void>(),
 			},
 		};
 

@@ -1,15 +1,15 @@
-import { provide } from '@angular/core';
-import { addProviders, inject } from '@angular/core/testing';
+import { rlFakeAsync, mock, IMockedRequest, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
-import __test = services.test;
-import mock = __test.mock;
-import fakeAsync = __test.fakeAsync;
-import flushMicrotasks = __test.flushMicrotasks;
+import __transform = services.transform;
+import __array = services.array;
+import __object = services.object;
+import __guid = services.guid;
+import __search = services.search;
 
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
-import { TypeaheadComponent } from './typeahead';
+import { TypeaheadComponent, DEFAULT_SERVER_SEARCH_DEBOUNCE } from './typeahead';
 
 interface ITransformMock {
 	getValue: Sinon.SinonSpy;
@@ -35,15 +35,7 @@ describe('TypeaheadComponent', () => {
 			afterInit: sinon.spy(),
 		};
 
-		addProviders([
-			TypeaheadComponent,
-			provide(ComponentValidator, { useValue: validator }),
-			services.UTILITY_PROVIDERS,
-		]);
-
-		inject([TypeaheadComponent], (_typeahead) => {
-			typeahead = _typeahead;
-		})();
+		typeahead = new TypeaheadComponent(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
@@ -71,8 +63,8 @@ describe('TypeaheadComponent', () => {
 			items = ['Item 1', 'Item 2', 'Another item', 'A fourth item'];
 		});
 
-		it('should return an empty list if no text is entered', fakeAsync((): void => {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+		it('should return an empty list if no text is entered', rlFakeAsync((): void => {
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -84,9 +76,9 @@ describe('TypeaheadComponent', () => {
 			getItemsMock.flush();
 		}));
 
-		it('should return the result of the getItems function if useClientSearching is off', fakeAsync((): void => {
+		it('should return the result of the getItems function if useClientSearching is off', rlFakeAsync((): void => {
 			// simulate a server-side search
-			let getItemsMock: __test.IMockedRequest<string[]> = mock.request([items[0], items[1]]);
+			let getItemsMock: IMockedRequest<string[]> = mock.request([items[0], items[1]]);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -102,10 +94,10 @@ describe('TypeaheadComponent', () => {
 			expect(visibleItems[1]).to.equal(items[1]);
 		}));
 
-		it('should apply the search string if useClientSearching is on', fakeAsync((): void => {
+		it('should apply the search string if useClientSearching is on', rlFakeAsync((): void => {
 			typeahead.clientSearch = true;
 
-			let getItemsMock: __test.IMockedRequest<string[]> = mock.request(items);
+			let getItemsMock: IMockedRequest<string[]> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			let visibleItems: string[];
@@ -122,10 +114,10 @@ describe('TypeaheadComponent', () => {
 		}));
 
 		it('should cache the results of the parent getItems function and apply searches aganst the cached data if useClientSearching is on'
-			, fakeAsync((): void => {
+			, rlFakeAsync((): void => {
 				typeahead.clientSearch = true;
 
-				let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+				let getItemsMock: IMockedRequest<string> = mock.request(items);
 				typeahead.getItems = getItemsMock;
 				let visibleItems: string[];
 				typeahead.refresh('A').subscribe(result => visibleItems = result);
@@ -144,7 +136,7 @@ describe('TypeaheadComponent', () => {
 			}));
 
 		it('should set the search value', (): void => {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('A');
@@ -154,11 +146,11 @@ describe('TypeaheadComponent', () => {
 	});
 
 	describe('external API', (): void => {
-		it('should add the specified item to the cached item list', fakeAsync((): void => {
+		it('should add the specified item to the cached item list', rlFakeAsync((): void => {
 			typeahead.clientSearch = true;
 
 			let items: string[] = [];
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 			typeahead.refresh('A');
 			getItemsMock.flush();
@@ -171,11 +163,11 @@ describe('TypeaheadComponent', () => {
 			expect(items[0]).to.equal(newItem);
 		}));
 
-		it('should remove the specified item from the cached items list', fakeAsync((): void => {
+		it('should remove the specified item from the cached items list', rlFakeAsync((): void => {
 			typeahead.clientSearch = true;
 
 			let items: string[] = ['Item 1'];
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 			typeahead.refresh('I');
 			getItemsMock.flush();
@@ -193,7 +185,7 @@ describe('TypeaheadComponent', () => {
 			items = ['Item 1', 'Item 2', 'Another item', 'A fourth item'];
 		});
 
-		it('should collapse if allowCollapse is turned on', fakeAsync((): void => {
+		it('should collapse if allowCollapse is turned on', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.select = <any>{ emit: selectSpy };
 			typeahead.clientSearch = true;
@@ -209,7 +201,7 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.collapsed).to.be.true;
 		}));
 
-		it('should call the select function without collapsing', fakeAsync((): void => {
+		it('should call the select function without collapsing', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.clientSearch = true;
 			typeahead.select = <any>{ emit: selectSpy };
@@ -223,7 +215,7 @@ describe('TypeaheadComponent', () => {
 			sinon.assert.calledWith(selectSpy, items[0]);
 		}));
 
-		it('should call create with the search text if the search option is selected', fakeAsync((): void => {
+		it('should call create with the search text if the search option is selected', rlFakeAsync((): void => {
 			let createSpy: Sinon.SinonSpy = sinon.spy(search => { return { value: search }; });
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
@@ -263,7 +255,7 @@ describe('TypeaheadComponent', () => {
 		});
 
 		function initialLoad() {
-			let getItemsMock: __test.IMockedRequest<string> = mock.request(items);
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
 
 			typeahead.refresh('A');
@@ -308,5 +300,64 @@ describe('TypeaheadComponent', () => {
 
 			expect(typeahead.collapsed).to.be.false;
 		});
+	});
+
+	describe('searchStream', () => {
+		let loadItems: IMockedRequest<string>;
+
+		beforeEach(rlFakeAsync(() => {
+			typeahead.ngOnInit();
+			const items = ['item1', 'item2', 'item3'];
+			loadItems = mock.request(items);
+			let visibleItems;
+			typeahead.getItems = loadItems;
+
+			typeahead.searchStream.next('search');
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
+			typeahead.visibleItems.subscribe(data => visibleItems = data);
+			loadItems.flush();
+			loadItems.reset();
+			busy.trigger.reset();
+
+			expect(visibleItems).to.equal(items);
+		}));
+
+		it('should show a busy spinner while the debounce is pending', rlFakeAsync(() => {
+			typeahead.searchStream.next('search2');
+
+			sinon.assert.calledOnce(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, true);
+			expect(typeahead.search).to.equal('search2');
+
+			typeahead.searchStream.next('search');
+
+			sinon.assert.calledTwice(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, true);
+			expect(typeahead.search).to.equal('search');
+			busy.trigger.reset();
+
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.calledOnce(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, false);
+			sinon.assert.notCalled(loadItems)
+		}));
+
+		it('should make a request to refresh the visible items', rlFakeAsync(() => {
+			typeahead.searchStream.next('search2');
+
+			busy.trigger.reset();
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.calledTwice(busy.trigger);
+			sinon.assert.calledWith(busy.trigger, typeahead.visibleItems);
+			sinon.assert.calledOnce(loadItems);
+			sinon.assert.calledWith(loadItems, 'search2');
+
+			loadItems.flush();
+		}));
 	});
 });

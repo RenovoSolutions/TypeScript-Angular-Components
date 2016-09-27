@@ -25,6 +25,8 @@ export class InputsBootstrapper {
 	selection: ITestItem;
 	rating: number;
 	time: string;
+	signature: string;
+	disableSignature: boolean;
 
 	options: ITestItem[];
 	optionsAsync: Observable<ITestItem[]>;
@@ -41,7 +43,7 @@ export class InputsBootstrapper {
 			{ value: 3 },
 		];
 		this.selection = this.options[0];
-		this.optionsAsync = this.wait(this.options);
+		this.optionsAsync = Observable.of(this.options).delay(1000);
 		this.time = '8:00AM';
 
 		this.typeaheadOptions = [
@@ -52,13 +54,7 @@ export class InputsBootstrapper {
 			{ value: 'Option 5' },
 		];
 
-		this.selections = [this.typeaheadOptions[0], this.typeaheadOptions[2]]
-	}
-
-	wait(data: any): Observable<any> {
-		const subject: BehaviorSubject<ITestItem[]> = new BehaviorSubject<ITestItem[]>([]);
-		setTimeout(() => subject.next(data), 1000);
-		return subject.asObservable();
+		this.selections = [this.typeaheadOptions[0], this.typeaheadOptions[2]];
 	}
 
 	getOptions = (): Observable<any> => {
@@ -66,7 +62,7 @@ export class InputsBootstrapper {
 	}
 
 	searchOptions = (search: string): Observable<any> => {
-		return this.wait(filter(this.typeaheadOptions, option => option.value.search(search) != -1));
+		return Observable.of(filter(this.typeaheadOptions, option => option.value.search(search) != -1)).delay(1000);
 	}
 
 	createOption = (text: string): any => {
