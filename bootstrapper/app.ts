@@ -96,6 +96,7 @@ export const appRoutingProviders: any[] = [
 @NgModule({
 	imports: [
 		BrowserModule,
+		RouterModule.forRoot(appRoutes),
 		UtilitiesModule,
 		ComponentsModule,
 	],
@@ -120,7 +121,6 @@ export const appRoutingProviders: any[] = [
 			},
 		},
 	],
-	imports: [BrowserModule, RouterModule.forRoot(appRoutes)]
 })
 class ComponentsBootstrapperModule {}
 
