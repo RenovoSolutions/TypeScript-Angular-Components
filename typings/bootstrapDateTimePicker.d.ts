@@ -1,8 +1,7 @@
-// /// <reference path="./moment/moment-node.d.ts"/>
-// /// <reference path="./jquery/jquery.d.ts"/>
+import * as moment from 'moment'
 
-declare module bootstrapDateTimePicker {
-	interface IConfiguration {
+declare namespace bootstrapDateTimePicker {
+	export interface IConfiguration {
 		stepping?: number;
 		format?: string | boolean;
 		direction?: string;
@@ -13,12 +12,14 @@ declare module bootstrapDateTimePicker {
 		maxDate?: string | Date | moment.Moment;
 	}
 
-	interface IDateTimePicker {
+	export interface IDateTimePicker extends JQuery {
 		(config: IConfiguration): JQuery;
 		defaults: IConfiguration;
 	}
 }
 
-interface JQuery {
-	datetimepicker: bootstrapDateTimePicker.IDateTimePicker;
-}
+
+export = bootstrapDateTimePicker;
+export as namespace bootstrapDateTimePicker;
+
+
