@@ -86,12 +86,6 @@ export class FormComponent {
 		return waitOn;
 	}
 
-	markAsPristine(): void {
-		// TODO: remove this once angular provides a way to mark as pristine or reset the form
-		(<any>this.form)._pristine = true;
-		(<any>this.form)._dirty = false;
-	}
-
 	private showErrors(): void {
 		const error = this.formService.getAggregateError(this.form);
 		if (error) {
@@ -102,6 +96,6 @@ export class FormComponent {
 	}
 
 	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
-		this.asyncHelper.waitAsObservable(waitOn).subscribe(() => this.markAsPristine());
+		this.asyncHelper.waitAsObservable(waitOn).subscribe(() => this.form.markAsPristine());
 	}
 }
