@@ -24,7 +24,7 @@ export interface IPromptSettings {
 }
 
 export interface IAutosaveDialogSettings {
-	scope?: ng.IScope;
+	scope?: angular.IScope;
 	template?: string;
 	templateUrl?: string;
 	size?: string;
@@ -36,7 +36,7 @@ export interface IAutosaveDialogSettings {
 }
 
 export interface IDialogSettings {
-	scope?: ng.IScope;
+	scope?: angular.IScope;
 	template?: string;
 	templateUrl?: string;
 	size?: string;

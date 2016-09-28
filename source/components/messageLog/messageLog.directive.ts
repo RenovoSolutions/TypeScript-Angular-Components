@@ -176,10 +176,10 @@ messageLog.$inject = [
 	templateLoaderService,
 	downgrade.objectServiceName,
 ];
-export function messageLog($interpolate: angular.IInterpolateService,
+export function messageLog($interpolate: ng.IInterpolateService,
 	jquery: IJQueryUtility,
 	templateLoader: ITemplateLoader,
-	object: __object.IObjectUtility): angular.IDirective {
+	object: __object.IObjectUtility): ng.IDirective {
 	'use strict';
 	return {
 		restrict: 'E',
@@ -200,9 +200,9 @@ export function messageLog($interpolate: angular.IInterpolateService,
 			canDelete: '=?',
 			canEdit: '=?',
 		},
-		link: (scope: angular.IScope,
-			element: angular.IAugmentedJQuery,
-			attributes: angular.IAttributes,
+		link: (scope: ng.IScope,
+			element: ng.IAugmentedJQuery,
+			attributes: ng.IAttributes,
 			controller: MessageLogController,
 			transclude: angular.ITranscludeFunction): void => {
 			controller.templates = templateLoader.loadTemplates(transclude).templates;
