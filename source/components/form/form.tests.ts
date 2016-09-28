@@ -24,7 +24,9 @@ describe('FormComponent', (): void => {
 		formService = {};
 
 		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, null);
-		form.form = <any>{};
+		form.form = <any>{
+			markAsPristine: sinon.spy(),
+		};
 	});
 
 	it('should default save if not specified', (): void => {
@@ -62,7 +64,7 @@ describe('FormComponent', (): void => {
 			const setPristineSpy = sinon.spy();
 			form.save = saveMock;
 			formService.isFormValid = <any>(() => true);
-			form.markAsPristine = setPristineSpy;
+			form.form.markAsPristine = setPristineSpy;
 
 			form.saveForm();
 
@@ -77,7 +79,7 @@ describe('FormComponent', (): void => {
 			form.save = <any>(() => null);
 			const setPristineSpy = sinon.spy();
 			formService.isFormValid = <any>(() => true);
-			form.markAsPristine = setPristineSpy;
+			form.form.markAsPristine = setPristineSpy;
 
 			form.saveForm();
 
