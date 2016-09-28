@@ -1,3 +1,5 @@
+import { fakeAsync, tick } from '@angular/core/testing';
+
 import { SignatureComponent } from './signature';
 import { emptySignature } from './emptySignature';
 
@@ -58,16 +60,22 @@ describe('SignatureComponent', () => {
 			expect(signature.rendering).to.not.exist;
 		});
 
-		it('should trigger the canvas to render on init if not disabled', () => {
+		it('should trigger the canvas to render on init if not disabled', fakeAsync(() => {
 			signature.ngAfterViewInit();
-			expect(signature.rendering).to.be.true;
-		});
 
-		it('should not trigger the canvas to render on init if disabled', () => {
+			tick();
+
+			expect(signature.rendering).to.be.true;
+		}));
+
+		it('should not trigger the canvas to render on init if disabled', fakeAsync(() => {
 			signature.disabled = true;
 			signature.ngAfterViewInit();
+
+			tick();
+
 			expect(signature.rendering).to.be.false;
-		});
+		}));
 
 		it('should trigger the canvas to render when disabled changes to false', () => {
 			signature.disabled = true;
