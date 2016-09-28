@@ -35,7 +35,7 @@ export class DateFilterController implements IDateFilterBindings {
 	includeTime: boolean;
 	label: string;
 	source: IDataSource<any>;
-	type: string = "days";
+	type: moment.UnitOfTime = 'days';
 	private inputField: angular.IAugmentedJQuery;
 
 	dateFrom: moment.Moment;
