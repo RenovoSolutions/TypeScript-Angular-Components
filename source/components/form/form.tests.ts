@@ -58,6 +58,15 @@ describe('FormComponent', (): void => {
 		sinon.assert.calledWith(pushSpy, form.form);
 	});
 
+	it('should reset the form', () => {
+		const resetSpy = sinon.spy();
+		form.form.reset = resetSpy;
+
+		form.reset();
+
+		sinon.assert.calledOnce(resetSpy);
+	});
+
 	describe('saveForm', (): void => {
 		it('should mark the form as pristine after the submit completes', rlFakeAsync((): void => {
 			const saveMock = mock.promise();
