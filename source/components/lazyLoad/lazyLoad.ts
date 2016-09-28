@@ -43,4 +43,4 @@ const lazyLoad: angular.IComponentOptions = {
 
 angular.module(moduleName, [])
 	.component(componentName, lazyLoad)
-	.controller(controllerName, LazyLoadController);
+	.controller(controllerName, <any>LazyLoadController);

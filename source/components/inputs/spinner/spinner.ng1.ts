@@ -157,4 +157,4 @@ const spinner: angular.IComponentOptions = buildInput({
 
 angular.module(moduleName, [inputModule])
 	.component(componentName, spinner)
-	.controller(controllerName, SpinnerController);
+	.controller(controllerName, <any>SpinnerController);
