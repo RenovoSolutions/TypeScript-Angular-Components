@@ -1,4 +1,5 @@
 import { filters, services } from 'typescript-angular-utilities';
+import * as angular from 'angular';
 import __object = services.object;
 import __transform = services.transform;
 
