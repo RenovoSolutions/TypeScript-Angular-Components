@@ -61,7 +61,7 @@ export class OnChangeTrigger extends Trigger<OnChangeSettings> implements ITrigg
 			clearTimeout(this.timer);
 		}
 
-		this.timer = setTimeout(() => {
+		this.timer = <any>setTimeout(() => {
 			this.clearListener();
 			autosave();
 			this.$rootScope.$digest();
