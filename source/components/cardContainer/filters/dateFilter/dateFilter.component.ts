@@ -8,7 +8,7 @@ import __logger = services.logger;
 import { IDateFilter } from './dateFilter.service';
 import { IDataSource } from '../../dataSources/dataSource';
 
-const type: string = 'days';
+const type: moment.UnitOfTime = 'days';
 
 @Component({
 	selector: 'rlDateFilter',

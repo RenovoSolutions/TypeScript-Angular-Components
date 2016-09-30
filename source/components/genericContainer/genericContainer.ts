@@ -114,4 +114,4 @@ let genericContainer: angular.IComponentOptions = {
 
 angular.module(moduleName, [jqueryModuleName, downgrade.moduleName, templateLoaderModule])
 	.component(componentName, genericContainer)
-	.controller(controllerName, GenericContainerController);
+	.controller(controllerName, <any>GenericContainerController);

@@ -61,7 +61,7 @@ export class SignatureComponent extends ValidatedInputComponent<string> implemen
 
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
-		this.rendering = !this.disabled;
+		setTimeout(() => this.rendering = !this.disabled, 0);
 	}
 
 	ngOnChanges(changes: ISignatureChanges): void {

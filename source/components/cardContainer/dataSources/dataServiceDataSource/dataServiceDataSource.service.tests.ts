@@ -1,4 +1,5 @@
 import { rlFakeAsync, mock } from 'rl-async-testing';
+import * as angular from 'angular'
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;

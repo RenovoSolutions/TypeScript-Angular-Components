@@ -240,5 +240,5 @@ const typeaheadList: angular.IComponentOptions = {
 
 angular.module(moduleName, [parentChildModule])
 	.component(componentName, typeaheadList)
-	.controller(controllerName, TypeaheadListController)
+	.controller(controllerName, <any>TypeaheadListController)
 	.component(itemComponentName, typeaheadItem);

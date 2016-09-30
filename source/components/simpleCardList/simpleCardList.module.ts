@@ -17,4 +17,4 @@ angular.module(moduleName, [downgrade.moduleName, parentChildModuleName])
 	.directive(list.directiveName, list.simpleCardList)
 	.controller(list.controllerName, list.SimpleCardListController)
 	.component(card.componentName, card.simpleCard)
-	.controller(card.controllerName, card.SimpleCardController);
+	.controller(card.controllerName, <any>card.SimpleCardController);

@@ -36,7 +36,7 @@ export class TabsetController {
 	}
 
 	static $inject: string[] = ['$element'];
-	constructor(private $element: angular.IAugmentedJQuery) {}
+	constructor(private $element: ng.IAugmentedJQuery) {}
 
 	findPosition(tabElement: ng.IAugmentedJQuery): number {
 		// find the position of the specified element by iterating over the tabs and finding a matching element

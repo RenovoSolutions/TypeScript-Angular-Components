@@ -28,9 +28,12 @@
 </rlForm>
 <h5>Autosave form</h5>
 <rlBusy [loading]="autosaveAction.saving || autosaveAction.complete"></rlBusy>
-<rlForm [save]="waitCallback" rlAutosave>
+<rlForm #autosaveForm [save]="waitCallback" rlAutosave [saveWhenInvalid]="true">
 	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
 </rlForm>
+{{autosaveForm.form.pristine ? 'Pristine' : 'Dirty'}}
+<rlButton (click)="autosaveForm.form.markAsPristine()">Mark as pristine</rlButton>
+<rlButton (click)="autosaveForm.reset()">Reset</rlButton>
 <h5>Broken validation</h5>
 <rlForm>
 	<rlTextbox [validator]="brokenValidator"></rlTextbox>
