@@ -71,6 +71,7 @@
     "system-css": "^0.1.0",
     "system-text": "^0.1.0",
     "systemjs-builder": "^0.15.16",
+    "traceur": "0.0.111",
     "typescript": "~2.0.3"
   },
   "dependencies": {
