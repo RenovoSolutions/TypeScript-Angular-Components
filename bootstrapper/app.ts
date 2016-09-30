@@ -51,14 +51,14 @@ angular.module(moduleName, [
 
 	utilitiesDowngrade.moduleName,
 	// multStepModuleName,
-	// inputModuleName,
+	inputModuleName,
 	// buttonModuleName,
 	// popupModuleName,
 	// messageLogModuleName,
 	// cardModuleName,
 	// tabModuleName,
 	// formModuleName,
-	// miscModuleName,
+	miscModuleName,
 	// textModuleName,
 ])
 	.component('tsBootstrapper', bootstrapper)
@@ -75,16 +75,14 @@ angular.module(moduleName, [
 
 const appRoutes: Routes = [
 	{ path: 'inputs', component: InputsBootstrapper },
-	{ path: 'misc', component: MiscNgContextBootstrapper },
-	// {
-	// 	path: 'heroes',
-	// 	component: HeroListComponent,
-	// 	data: {
-	// 		title: 'Heroes List'
-	// 	}
-	// },
-	// { path: 'hero/:id', component: HeroDetailComponent },
-	// { path: '**', component: PageNotFoundComponent }
+	{
+		path: 'misc',
+		component: upgradeAdapter.upgradeNg1Component('tsMisc'),
+		children: [
+			{ path: 'ng1', component: upgradeAdapter.upgradeNg1Component('tsMisc.ng1') },
+			{ path: 'ng2', component: upgradeAdapter.upgradeNg1Component('tsMisc.ng2') },
+		],
+	},
 ];
 
 export const appRoutingProviders: any[] = [

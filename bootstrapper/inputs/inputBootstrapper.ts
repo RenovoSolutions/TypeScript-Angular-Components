@@ -104,5 +104,4 @@ function InputRoute($stateProvider) {
 }
 
 angular.module(moduleName, [])
-	.controller('InputTestController', InputTestController)
-	.config(InputRoute);
+	.controller('InputTestController', InputTestController);

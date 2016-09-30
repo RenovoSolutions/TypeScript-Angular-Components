@@ -45,27 +45,18 @@ class MiscTestController {
 	}
 }
 
-MiscRoute.$inject = ['$stateProvider'];
-function MiscRoute($stateProvider) {
-	$stateProvider
-		.state('misc', {
-			url: '/misc',
-			template: require('./misc.html'),
-		})
-		.state('misc.ng1', {
-			url: '/ng1',
-			template: require('./miscNg1.html'),
-			controller: 'MiscTestController',
-			controllerAs: 'misc',
-		})
-		.state('misc.ng2', {
-			url: '/ng2',
-			template: require('./miscNg2.html'),
-			controller: 'MiscTestController',
-			controllerAs: 'misc',
-		});
-}
-
 angular.module(moduleName, [])
-	.controller('MiscTestController', MiscTestController)
-	.config(MiscRoute);
+	.component('tsMisc', {
+		template: require('./misc.html'),
+	})
+	.component('tsMisc.ng1', {
+		template: require('./miscNg1.html'),
+		controller: 'MiscTestController',
+		controllerAs: 'misc',
+	})
+	.component('tsMisc.ng2', {
+		template: require('./miscNg2.html'),
+		controller: 'MiscTestController',
+		controllerAs: 'misc',
+	})
+	.controller('MiscTestController', MiscTestController);
