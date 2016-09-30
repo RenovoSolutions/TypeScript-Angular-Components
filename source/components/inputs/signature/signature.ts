@@ -16,6 +16,7 @@ import { emptySignature } from './emptySignature';
 
 export interface ISignatureChanges extends IInputChanges {
 	disabled: SimpleChange;
+	value: SimpleChange;
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class SignatureComponent extends ValidatedInputComponent<string> implemen
 
 	rendering: boolean;
 	jquery: JQueryStatic;
+	lastInternalChange: string;
 
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -69,6 +71,13 @@ export class SignatureComponent extends ValidatedInputComponent<string> implemen
 		if (changes.disabled) {
 			this.rendering = !changes.disabled.currentValue;
 		}
+
+		if (changes.value && this.canvas && changes.value.currentValue !== this.lastInternalChange) {
+			this.canvas.jSignature('reset');
+			if (changes.value.currentValue) {
+				this.canvas.jSignature('setData', changes.value.currentValue);
+			}
+		}
 	}
 
 	ngAfterViewChecked(): void {
@@ -86,6 +95,7 @@ export class SignatureComponent extends ValidatedInputComponent<string> implemen
 
 	onChange(): void {
 		const value: string = this.canvas.jSignature('getData', 'default');
+		this.lastInternalChange = value;
 		this.setValue(value);
 	}
 
