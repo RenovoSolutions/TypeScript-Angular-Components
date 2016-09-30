@@ -153,6 +153,48 @@ describe('SignatureComponent', () => {
 		});
 	});
 
+	describe('ngOnChanges', () => {
+		let canvas: ICanvasMock;
+
+		beforeEach(() => {
+			canvas = {
+				jSignature: sinon.spy(),
+			};
+			(signature as any)._canvas = canvas;
+		});
+
+		it('should reset the signature if the value is cleared', () => {
+			signature.lastInternalChange = '123';
+
+			signature.ngOnChanges(<any>{ value: { currentValue: null } });
+
+			sinon.assert.calledOnce(canvas.jSignature);
+			sinon.assert.calledWith(canvas.jSignature, 'reset');
+		});
+
+		it('should reset the signature and set the new value if the value is changed from outside', () => {
+			const newSignature = '123';
+
+			signature.ngOnChanges(<any>{ value: { currentValue: newSignature } });
+
+			sinon.assert.calledTwice(canvas.jSignature);
+			expect(canvas.jSignature.firstCall.args[0]).to.equal('reset');
+
+			const setArgs = canvas.jSignature.secondCall.args;
+			expect(setArgs[0]).to.equal('setData');
+			expect(setArgs[1]).to.equal(newSignature);
+		});
+
+		it('should ignore the change if it matches the last internal change', () => {
+			const updatedSignature = '123';
+			signature.lastInternalChange = updatedSignature;
+
+			signature.ngOnChanges(<any>{ value: { currentValue: updatedSignature } });
+
+			sinon.assert.notCalled(canvas.jSignature);
+		});
+	});
+
 	describe('reset', () => {
 		let canvas: ICanvasMock;
 
