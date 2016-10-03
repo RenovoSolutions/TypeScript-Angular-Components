@@ -28,6 +28,8 @@ import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
+import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from './buttons/buttonBootstrapper';
+import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
@@ -62,7 +64,7 @@ angular.module(moduleName, [
 	utilitiesDowngrade.moduleName,
 	// multStepModuleName,
 	inputModuleName,
-	// buttonModuleName,
+	buttonModuleName,
 	// popupModuleName,
 	// messageLogModuleName,
 	// cardModuleName,
@@ -94,6 +96,14 @@ const appRoutes: Routes = [
 		],
 	},
 	{
+		path: 'buttons',
+		component: ButtonsRootComponent,
+		children: [
+			{ path: 'ng1', component: ButtonsNg1BootstrapperComponent },
+			{ path: 'ng2', component: ButtonsNg2BootstrapperComponent },
+		],
+	},
+	{
 		path: 'misc',
 		component: MiscRootComponent,
 		children: [
@@ -121,6 +131,12 @@ export const appRoutingProviders: any[] = [
 		InputsRootComponent,
 		InputsNg1BootstrapperComponent,
 		upgradeAdapter.upgradeNg1Component('tsInputsNg1'),
+
+		ButtonsRootComponent,
+		ButtonsNg1BootstrapperComponent,
+		ButtonsNg2BootstrapperComponent,
+		upgradeAdapter.upgradeNg1Component('tsButtonsNg1'),
+		upgradeAdapter.upgradeNg1Component('tsButtonsNg2'),
 
 		FormsBootstrapper,
 		TabsBootstrapper,
