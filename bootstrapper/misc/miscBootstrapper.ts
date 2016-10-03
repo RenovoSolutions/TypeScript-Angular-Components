@@ -59,9 +59,6 @@ export class MiscNg1BootstrapperComponent { }
 export class MiscNg2BootstrapperComponent {}
 
 angular.module(moduleName, [])
-	.component('tsMisc', {
-		template: require('./misc.html'),
-	})
 	.component('tsMiscNg1', {
 		template: require('./miscNg1.html'),
 		controller: 'MiscTestController',

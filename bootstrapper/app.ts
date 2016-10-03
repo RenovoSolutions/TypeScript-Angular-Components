@@ -25,6 +25,8 @@ import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
+import { InputsRootComponent } from './inputs/inputRoot';
+import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
@@ -76,7 +78,14 @@ angular.module(moduleName, [
 	// .config(BaseRoute);
 
 const appRoutes: Routes = [
-	{ path: 'inputs', component: InputsBootstrapper },
+	{
+		path: 'inputs',
+		component: InputsRootComponent,
+		children: [
+			{ path: 'ng1', component: InputsNg1BootstrapperComponent },
+			{ path: 'ng2', component: InputsBootstrapper },
+		],
+	},
 	{
 		path: 'misc',
 		component: MiscRootComponent,
@@ -102,19 +111,24 @@ export const appRoutingProviders: any[] = [
 	],
 	declarations: [
 		InputsBootstrapper,
+		InputsRootComponent,
+		InputsNg1BootstrapperComponent,
+		upgradeAdapter.upgradeNg1Component('tsInputsNg1'),
+
 		FormsBootstrapper,
 		TabsBootstrapper,
 		MsiBootstrapperComponent,
 		CardsBootstrapper,
 		PopupBootstrapper,
+
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
 		MiscNg2BootstrapperComponent,
 		MiscNgContextBootstrapper,
-		App,
-
 		upgradeAdapter.upgradeNg1Component('tsMiscNg1'),
 		upgradeAdapter.upgradeNg1Component('tsMiscNg2'),
+
+		App,
 	],
 	providers: [
 		{

@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -84,24 +85,16 @@ class InputTestController {
 	}
 }
 
-InputRoute.$inject = ['$stateProvider'];
-function InputRoute($stateProvider) {
-	$stateProvider
-		.state('inputs', {
-			url: '/inputs',
-			template: require('./inputs.html'),
-		})
-		.state('inputs.ng1', {
-			url: '/ng1',
-			template: require('./inputsNg1.html'),
-			controller: 'InputTestController',
-			controllerAs: 'input',
-		})
-		.state('inputs.ng2', {
-			url: '/ng2',
-			template: '<ts-inputs-bootstrapper></ts-inputs-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsInputsNg1',
+	template: '<ts-inputs-ng1></ts-inputs-ng1>'
+})
+export class InputsNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
+	.component('tsInputsNg1', {
+		template: require('./inputsNg1.html'),
+		controller: 'InputTestController',
+		controllerAs: 'input',
+	})
 	.controller('InputTestController', InputTestController);
