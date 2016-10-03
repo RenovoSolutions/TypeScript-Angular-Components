@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 import * as moment from 'moment';
 
@@ -45,16 +46,28 @@ class MiscTestController {
 	}
 }
 
+@Component({
+	selector: 'tsMiscNg1',
+	template: '<ts-misc-ng1></ts-misc-ng1>'
+})
+export class MiscNg1BootstrapperComponent { }
+
+@Component({
+	selector: 'tsMiscNg2',
+	template: '<ts-misc-ng2></ts-misc-ng2>'
+})
+export class MiscNg2BootstrapperComponent {}
+
 angular.module(moduleName, [])
 	.component('tsMisc', {
 		template: require('./misc.html'),
 	})
-	.component('tsMisc.ng1', {
+	.component('tsMiscNg1', {
 		template: require('./miscNg1.html'),
 		controller: 'MiscTestController',
 		controllerAs: 'misc',
 	})
-	.component('tsMisc.ng2', {
+	.component('tsMiscNg2', {
 		template: require('./miscNg2.html'),
 		controller: 'MiscTestController',
 		controllerAs: 'misc',

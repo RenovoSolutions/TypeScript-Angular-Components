@@ -30,7 +30,9 @@ import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
+import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
+import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
 import { App } from './app.ng2';
 
 import { ComponentsModule } from'../source/ui.module';
@@ -77,10 +79,10 @@ const appRoutes: Routes = [
 	{ path: 'inputs', component: InputsBootstrapper },
 	{
 		path: 'misc',
-		component: upgradeAdapter.upgradeNg1Component('tsMisc'),
+		component: MiscRootComponent,
 		children: [
-			{ path: 'ng1', component: upgradeAdapter.upgradeNg1Component('tsMisc.ng1') },
-			{ path: 'ng2', component: upgradeAdapter.upgradeNg1Component('tsMisc.ng2') },
+			{ path: 'ng1', component: MiscNg1BootstrapperComponent },
+			{ path: 'ng2', component: MiscNg2BootstrapperComponent },
 		],
 	},
 ];
@@ -105,8 +107,14 @@ export const appRoutingProviders: any[] = [
 		MsiBootstrapperComponent,
 		CardsBootstrapper,
 		PopupBootstrapper,
+		MiscRootComponent,
+		MiscNg1BootstrapperComponent,
+		MiscNg2BootstrapperComponent,
 		MiscNgContextBootstrapper,
 		App,
+
+		upgradeAdapter.upgradeNg1Component('tsMiscNg1'),
+		upgradeAdapter.upgradeNg1Component('tsMiscNg2'),
 	],
 	providers: [
 		{
