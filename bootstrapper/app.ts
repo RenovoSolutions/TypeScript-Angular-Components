@@ -3,7 +3,7 @@ import 'bootstrap';
 import * as angular from 'angular';
 import 'angular-ui-router';
 
-import { NgModule, forwardRef, ApplicationRef } from '@angular/core';
+import { NgModule, forwardRef, ApplicationRef, Component } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
 import { Routes, RouterModule } from '@angular/router';
@@ -47,6 +47,12 @@ const bootstrapper: angular.IComponentOptions = {
 	template: require('./app.html'),
 }
 
+@Component({
+	selector: 'tsWelcome',
+	template: '<h3>Welcome to typescript-angular-components</h3>',
+})
+export class WelcomeComponent { }
+
 const moduleName: string = 'bootstrapper-app';
 
 angular.module(moduleName, [
@@ -78,6 +84,7 @@ angular.module(moduleName, [
 	// .config(BaseRoute);
 
 const appRoutes: Routes = [
+	{ path: '', component: WelcomeComponent },
 	{
 		path: 'inputs',
 		component: InputsRootComponent,
@@ -128,6 +135,7 @@ export const appRoutingProviders: any[] = [
 		upgradeAdapter.upgradeNg1Component('tsMiscNg1'),
 		upgradeAdapter.upgradeNg1Component('tsMiscNg2'),
 
+		WelcomeComponent,
 		App,
 	],
 	providers: [
