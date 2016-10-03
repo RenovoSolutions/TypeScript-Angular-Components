@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 
 import { serviceName as dialogService, bootstrapModalDialog } from '../../source/services/dialog/dialog.service.ng1';
@@ -37,25 +38,16 @@ class PopupTestController {
 	}
 }
 
-PopupRoute.$inject = ['$stateProvider'];
-function PopupRoute($stateProvider) {
-	$stateProvider
-		.state('popup', {
-			url: '/popup',
-			template: require('./popup.html'),
-		})
-		.state('popup.ng1', {
-			url: '/ng1',
-			template: require('./popupNg1.html'),
-			controller: 'PopupTestController',
-			controllerAs: 'popup',
-		})
-		.state('popup.ng2', {
-			url: '/ng2',
-			template: '<ts-popup-bootstrapper></ts-popup-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsPopupNg1',
+	template: '<ts-popup-ng1></ts-popup-ng1>'
+})
+export class PopupNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('PopupTestController', PopupTestController)
-	.config(PopupRoute);
+	.component('tsPopupNg1', {
+		template: require('./popupNg1.html'),
+		controller: 'PopupTestController',
+		controllerAs: 'popup',
+	})
+	.controller('PopupTestController', PopupTestController);
