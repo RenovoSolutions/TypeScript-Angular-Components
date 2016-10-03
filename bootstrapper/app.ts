@@ -106,8 +106,6 @@ export const appRoutingProviders: any[] = [
 		CardsBootstrapper,
 		PopupBootstrapper,
 		MiscNgContextBootstrapper,
-		InputsBootstrapper,
-		MiscNgContextBootstrapper,
 		App,
 	],
 	providers: [
