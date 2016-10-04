@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 
 import { IStep } from '../../source/components/multiStepIndicator/multiStepIndicator';
@@ -8,25 +9,16 @@ class TabTestController {
 
 }
 
-TabRoute.$inject = ['$stateProvider'];
-function TabRoute($stateProvider) {
-	$stateProvider
-		.state('tabs', {
-			url: '/tabs',
-			template: require('./tabs.html'),
-		})
-		.state('tabs.ng1', {
-			url: '/ng1',
-			template: require('./tabsNg1.html'),
-			controller: 'TabTestController',
-			controllerAs: 'tabs',
-		})
-		.state('tabs.ng2', {
-			url: '/ng2',
-			template: '<ts-tabs-bootstrapper></ts-tabs-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsTabsNg1',
+	template: '<ts-tabs-ng1></ts-tabs-ng1>'
+})
+export class TabsNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('TabTestController', TabTestController)
-	.config(TabRoute);
+	.component('tsTabsNg1', {
+		template: require('./tabsNg1.html'),
+		controller: 'TabTestController',
+		controllerAs: 'tabs',
+	})
+	.controller('TabTestController', TabTestController);

@@ -24,7 +24,6 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
-import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
@@ -32,12 +31,15 @@ import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
-import { CardsRootComponent } from './cards/cardRoot';
-import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
-import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
+import { CardsRootComponent } from './cards/cardRoot';
+import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
+import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
+import { TabsRootComponent } from './tabs/tabRoot';
+import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
+import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -72,7 +74,7 @@ angular.module(moduleName, [
 	popupModuleName,
 	// messageLogModuleName,
 	cardModuleName,
-	// tabModuleName,
+	tabModuleName,
 	// formModuleName,
 	miscModuleName,
 	// textModuleName,
@@ -80,7 +82,6 @@ angular.module(moduleName, [
 	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
 	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
 	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
-	.directive('tsTabsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(TabsBootstrapper))
 	.directive('tsMsiBootstrapper', <any>upgradeAdapter.downgradeNg2Component(MsiBootstrapperComponent));
 	// .config(BaseRoute);
 
@@ -116,6 +117,14 @@ const appRoutes: Routes = [
 		children: [
 			{ path: 'ng1', component: CardsNg1BootstrapperComponent },
 			{ path: 'ng2', component: CardsBootstrapper },
+		],
+	},
+	{
+		path: 'tabs',
+		component: TabsRootComponent,
+		children: [
+			{ path: 'ng1', component: TabsNg1BootstrapperComponent },
+			{ path: 'ng2', component: TabsBootstrapper },
 		],
 	},
 	{
@@ -163,8 +172,12 @@ export const appRoutingProviders: any[] = [
 		CardsBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsCardsNg1'),
 
-		FormsBootstrapper,
+		TabsRootComponent,
+		TabsNg1BootstrapperComponent,
 		TabsBootstrapper,
+		upgradeAdapter.upgradeNg1Component('tsTabsNg1'),
+
+		FormsBootstrapper,
 		MsiBootstrapperComponent,
 
 		MiscRootComponent,
