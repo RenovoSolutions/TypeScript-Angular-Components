@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 
 import { IStep } from '../../source/components/multiStepIndicator/multiStepIndicator.ng1';
@@ -23,25 +24,16 @@ class MultiStepTestController {
 	}
 }
 
-MultiStepRoute.$inject = ['$stateProvider'];
-function MultiStepRoute($stateProvider) {
-	$stateProvider
-		.state('msi', {
-			url: '/msi',
-			template: require('./msi.html'),
-		})
-		.state('msi.ng1', {
-			url: '/ng1',
-			template: require('./msi.ng1.html'),
-			controller: 'MultiStepTestController',
-			controllerAs: 'vm',
-		})
-		.state('msi.ng2', {
-			url: '/ng2',
-			template: '<ts-msi-bootstrapper></ts-msi-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsMsiNg1',
+	template: '<ts-msi-ng1></ts-msi-ng1>'
+})
+export class MsiNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('MultiStepTestController', MultiStepTestController)
-	.config(MultiStepRoute);
+	.component('tsMsiNg1', {
+		template: require('./msi.ng1.html'),
+		controller: 'MultiStepTestController',
+		controllerAs: 'vm',
+	})
+	.controller('MultiStepTestController', MultiStepTestController);

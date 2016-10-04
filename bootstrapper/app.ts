@@ -30,7 +30,6 @@ import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
 import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from './buttons/buttonBootstrapper';
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
-import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
@@ -40,6 +39,9 @@ import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
 import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
+import { MsiRootComponent } from './msi/msiRoot';
+import { MsiNg1BootstrapperComponent } from './msi/msiBootstrapper.ng1';
+import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -68,21 +70,20 @@ angular.module(moduleName, [
 	// 'ui.router',
 
 	utilitiesDowngrade.moduleName,
-	// multStepModuleName,
 	inputModuleName,
 	buttonModuleName,
 	popupModuleName,
 	// messageLogModuleName,
 	cardModuleName,
 	tabModuleName,
+	multStepModuleName,
 	// formModuleName,
 	miscModuleName,
 	// textModuleName,
 ])
 	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
 	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
-	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
-	.directive('tsMsiBootstrapper', <any>upgradeAdapter.downgradeNg2Component(MsiBootstrapperComponent));
+	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper));
 	// .config(BaseRoute);
 
 const appRoutes: Routes = [
@@ -125,6 +126,14 @@ const appRoutes: Routes = [
 		children: [
 			{ path: 'ng1', component: TabsNg1BootstrapperComponent },
 			{ path: 'ng2', component: TabsBootstrapper },
+		],
+	},
+	{
+		path: 'msi',
+		component: MsiRootComponent,
+		children: [
+			{ path: 'ng1', component: MsiNg1BootstrapperComponent },
+			{ path: 'ng2', component: MsiBootstrapperComponent },
 		],
 	},
 	{
@@ -177,8 +186,12 @@ export const appRoutingProviders: any[] = [
 		TabsBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsTabsNg1'),
 
-		FormsBootstrapper,
+		MsiRootComponent,
+		MsiNg1BootstrapperComponent,
 		MsiBootstrapperComponent,
+		upgradeAdapter.upgradeNg1Component('tsMsiNg1'),
+
+		FormsBootstrapper,
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
