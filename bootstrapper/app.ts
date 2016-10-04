@@ -1,12 +1,10 @@
 import 'jquery';
 import 'bootstrap';
 import * as angular from 'angular';
-import 'angular-ui-router';
 
-import { NgModule, forwardRef, ApplicationRef, Component } from '@angular/core';
+import { NgModule, forwardRef, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
-import { Routes, RouterModule } from '@angular/router';
 
 import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
@@ -50,21 +48,13 @@ import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
 import { App } from './app.ng2';
 
+import { appRoutingProviders, routing, WelcomeComponent } from './app.routing';
+
 import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
-
-const bootstrapper: angular.IComponentOptions = {
-	template: require('./app.html'),
-}
-
-@Component({
-	selector: 'tsWelcome',
-	template: '<h3>Welcome to typescript-angular-components</h3>',
-})
-export class WelcomeComponent { }
 
 const moduleName: string = 'bootstrapper-app';
 
@@ -85,88 +75,10 @@ angular.module(moduleName, [
 ])
 	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App));
 
-const appRoutes: Routes = [
-	{ path: '', component: WelcomeComponent },
-	{
-		path: 'inputs',
-		component: InputsRootComponent,
-		children: [
-			{ path: 'ng1', component: InputsNg1BootstrapperComponent },
-			{ path: 'ng2', component: InputsBootstrapper },
-		],
-	},
-	{
-		path: 'buttons',
-		component: ButtonsRootComponent,
-		children: [
-			{ path: 'ng1', component: ButtonsNg1BootstrapperComponent },
-			{ path: 'ng2', component: ButtonsNg2BootstrapperComponent },
-		],
-	},
-	{
-		path: 'popup',
-		component: PopupRootComponent,
-		children: [
-			{ path: 'ng1', component: PopupNg1BootstrapperComponent },
-			{ path: 'ng2', component: PopupBootstrapper },
-		],
-	},
-	{
-		path: 'cards',
-		component: CardsRootComponent,
-		children: [
-			{ path: 'ng1', component: CardsNg1BootstrapperComponent },
-			{ path: 'ng2', component: CardsBootstrapper },
-		],
-	},
-	{
-		path: 'tabs',
-		component: TabsRootComponent,
-		children: [
-			{ path: 'ng1', component: TabsNg1BootstrapperComponent },
-			{ path: 'ng2', component: TabsBootstrapper },
-		],
-	},
-	{
-		path: 'msi',
-		component: MsiRootComponent,
-		children: [
-			{ path: 'ng1', component: MsiNg1BootstrapperComponent },
-			{ path: 'ng2', component: MsiBootstrapperComponent },
-		],
-	},
-	{
-		path: 'forms',
-		component: FormsRootComponent,
-		children: [
-			{ path: 'ng1', component: FormsNg1BootstrapperComponent },
-			{ path: 'ng2', component: FormsBootstrapper },
-		],
-	},
-	{
-		path: 'messageLog',
-		component: MessageLogNg1BootstrapperComponent,
-	},
-	{
-		path: 'misc',
-		component: MiscRootComponent,
-		children: [
-			{ path: 'ng1', component: MiscNg1BootstrapperComponent },
-			{ path: 'ng2', component: MiscNg2BootstrapperComponent },
-		],
-	},
-];
-
-export const appRoutingProviders: any[] = [
-
-];
-
-// export const routing = RouterModule.forRoot(appRoutes);
-
 @NgModule({
 	imports: [
 		BrowserModule,
-		RouterModule.forRoot(appRoutes),
+		routing,
 		UtilitiesModule,
 		ComponentsModule,
 	],
