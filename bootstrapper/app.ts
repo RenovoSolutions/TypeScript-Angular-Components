@@ -70,7 +70,6 @@ const moduleName: string = 'bootstrapper-app';
 
 angular.module(moduleName, [
 	componentsModule,
-	// 'ui.router',
 
 	utilitiesDowngrade.moduleName,
 	inputModuleName,
@@ -85,8 +84,6 @@ angular.module(moduleName, [
 	textModuleName,
 ])
 	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App));
-	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
-	// .config(BaseRoute);
 
 const appRoutes: Routes = [
 	{ path: '', component: WelcomeComponent },
@@ -234,15 +231,5 @@ export const appRoutingProviders: any[] = [
 	],
 })
 class ComponentsBootstrapperModule {}
-
-// BaseRoute.$inject = ['$urlRouterProvider', '$stateProvider'];
-// function BaseRoute($urlRouterProvider, $stateProvider) {
-// 	$urlRouterProvider.otherwise('/');
-// 	$stateProvider
-// 		.state('/', {
-// 			url: '/',
-// 			template: '<h3>Welcome to typescript-angular-components</h3>',
-// 		});
-// }
 
 upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });
