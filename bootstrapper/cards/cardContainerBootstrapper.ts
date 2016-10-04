@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -128,25 +129,16 @@ class CardTestController {
 	}
 }
 
-CardRoute.$inject = ['$stateProvider'];
-function CardRoute($stateProvider) {
-	$stateProvider
-		.state('cards', {
-			url: '/cards',
-			template: require('./cards.html'),
-		})
-		.state('cards.ng1', {
-			url: '/ng1',
-			template: require('./cardsNg1.html'),
-			controller: 'CardTestController',
-			controllerAs: 'cards',
-		})
-		.state('cards.ng2', {
-			url: '/ng2',
-			template: '<ts-cards-bootstrapper></ts-cards-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsCardsNg1',
+	template: '<ts-cards-ng1></ts-cards-ng1>'
+})
+export class CardsNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('CardTestController', CardTestController)
-	.config(CardRoute);
+	.component('tsCardsNg1', {
+		template: require('./cardsNg1.html'),
+		controller: 'CardTestController',
+		controllerAs: 'cards',
+	})
+	.controller('CardTestController', CardTestController);

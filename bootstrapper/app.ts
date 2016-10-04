@@ -32,6 +32,8 @@ import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
+import { CardsRootComponent } from './cards/cardRoot';
+import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
@@ -69,7 +71,7 @@ angular.module(moduleName, [
 	buttonModuleName,
 	popupModuleName,
 	// messageLogModuleName,
-	// cardModuleName,
+	cardModuleName,
 	// tabModuleName,
 	// formModuleName,
 	miscModuleName,
@@ -79,8 +81,7 @@ angular.module(moduleName, [
 	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
 	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper))
 	.directive('tsTabsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(TabsBootstrapper))
-	.directive('tsMsiBootstrapper', <any>upgradeAdapter.downgradeNg2Component(MsiBootstrapperComponent))
-	.directive('tsCardsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(CardsBootstrapper));
+	.directive('tsMsiBootstrapper', <any>upgradeAdapter.downgradeNg2Component(MsiBootstrapperComponent));
 	// .config(BaseRoute);
 
 const appRoutes: Routes = [
@@ -107,6 +108,14 @@ const appRoutes: Routes = [
 		children: [
 			{ path: 'ng1', component: PopupNg1BootstrapperComponent },
 			{ path: 'ng2', component: PopupBootstrapper },
+		],
+	},
+	{
+		path: 'cards',
+		component: CardsRootComponent,
+		children: [
+			{ path: 'ng1', component: CardsNg1BootstrapperComponent },
+			{ path: 'ng2', component: CardsBootstrapper },
 		],
 	},
 	{
@@ -149,10 +158,14 @@ export const appRoutingProviders: any[] = [
 		PopupBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsPopupNg1'),
 
+		CardsRootComponent,
+		CardsNg1BootstrapperComponent,
+		CardsBootstrapper,
+		upgradeAdapter.upgradeNg1Component('tsCardsNg1'),
+
 		FormsBootstrapper,
 		TabsBootstrapper,
 		MsiBootstrapperComponent,
-		CardsBootstrapper,
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
