@@ -29,7 +29,6 @@ import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
 import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from './buttons/buttonBootstrapper';
 import { ButtonsRootComponent } from './buttons/buttonRoot';
-import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
@@ -42,6 +41,9 @@ import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { MsiRootComponent } from './msi/msiRoot';
 import { MsiNg1BootstrapperComponent } from './msi/msiBootstrapper.ng1';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
+import { FormsRootComponent } from './forms/formsRoot';
+import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
+import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -77,13 +79,12 @@ angular.module(moduleName, [
 	cardModuleName,
 	tabModuleName,
 	multStepModuleName,
-	// formModuleName,
+	formModuleName,
 	miscModuleName,
 	// textModuleName,
 ])
-	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
+	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App));
 	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
-	.directive('tsFormsBootstrapper', <any>upgradeAdapter.downgradeNg2Component(FormsBootstrapper));
 	// .config(BaseRoute);
 
 const appRoutes: Routes = [
@@ -134,6 +135,14 @@ const appRoutes: Routes = [
 		children: [
 			{ path: 'ng1', component: MsiNg1BootstrapperComponent },
 			{ path: 'ng2', component: MsiBootstrapperComponent },
+		],
+	},
+	{
+		path: 'forms',
+		component: FormsRootComponent,
+		children: [
+			{ path: 'ng1', component: FormsNg1BootstrapperComponent },
+			{ path: 'ng2', component: FormsBootstrapper },
 		],
 	},
 	{
@@ -191,7 +200,10 @@ export const appRoutingProviders: any[] = [
 		MsiBootstrapperComponent,
 		upgradeAdapter.upgradeNg1Component('tsMsiNg1'),
 
+		FormsRootComponent,
+		FormsNg1BootstrapperComponent,
 		FormsBootstrapper,
+		upgradeAdapter.upgradeNg1Component('tsFormsNg1'),
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
