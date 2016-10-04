@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -79,17 +80,16 @@ class MessageLogTestController {
 	}
 }
 
-MessageLogRoute.$inject = ['$stateProvider'];
-function MessageLogRoute($stateProvider) {
-	$stateProvider
-		.state('messageLog', {
-			url: '/messageLog',
-			template: require('./messageLogTest.html'),
-			controller: 'MessageLogTestController',
-			controllerAs: 'messageLog',
-		});
-}
+@Component({
+	selector: 'tsMessageLogNg1',
+	template: '<ts-message-log-ng1></ts-message-log-ng1>'
+})
+export class MessageLogNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('MessageLogTestController', MessageLogTestController)
-	.config(MessageLogRoute);
+	.component('tsMessageLogNg1', {
+		template: require('./messageLogTest.html'),
+		controller: 'MessageLogTestController',
+		controllerAs: 'messageLog',
+	})
+	.controller('MessageLogTestController', MessageLogTestController);

@@ -44,6 +44,7 @@ import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
 import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
+import { MessageLogNg1BootstrapperComponent } from './messageLog/messageLogBootstrapper';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -75,11 +76,11 @@ angular.module(moduleName, [
 	inputModuleName,
 	buttonModuleName,
 	popupModuleName,
-	// messageLogModuleName,
 	cardModuleName,
 	tabModuleName,
 	multStepModuleName,
 	formModuleName,
+	messageLogModuleName,
 	miscModuleName,
 	// textModuleName,
 ])
@@ -146,6 +147,10 @@ const appRoutes: Routes = [
 		],
 	},
 	{
+		path: 'messageLog',
+		component: MessageLogNg1BootstrapperComponent,
+	},
+	{
 		path: 'misc',
 		component: MiscRootComponent,
 		children: [
@@ -204,6 +209,9 @@ export const appRoutingProviders: any[] = [
 		FormsNg1BootstrapperComponent,
 		FormsBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsFormsNg1'),
+
+		MessageLogNg1BootstrapperComponent,
+		upgradeAdapter.upgradeNg1Component('tsMessageLogNg1'),
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
