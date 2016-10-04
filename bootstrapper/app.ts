@@ -82,7 +82,7 @@ angular.module(moduleName, [
 	formModuleName,
 	messageLogModuleName,
 	miscModuleName,
-	// textModuleName,
+	textModuleName,
 ])
 	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App));
 	// .directive('tsRouterOutlet', <any>upgradeAdapter.downgradeNg2Component(RouterOutletComponent))
