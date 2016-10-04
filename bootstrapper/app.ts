@@ -22,6 +22,7 @@ import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
 
+import { WelcomeComponent } from './welcome.component';
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
@@ -48,7 +49,7 @@ import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
 import { App } from './app.ng2';
 
-import { appRoutingProviders, routing, WelcomeComponent } from './app.routing';
+import { appRoutingProviders, routing } from './app.routing';
 
 import { ComponentsModule } from'../source/ui.module';
 

@@ -1,6 +1,7 @@
-import { Component, ModuleWithProviders } from '@angular/core';
+import { ModuleWithProviders } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { WelcomeComponent } from './welcome.component'
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
@@ -25,12 +26,6 @@ import { MessageLogNg1BootstrapperComponent } from './messageLog/messageLogBoots
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
-
-@Component({
-	selector: 'tsWelcome',
-	template: '<h3>Welcome to typescript-angular-components</h3>',
-})
-export class WelcomeComponent { }
 
 const appRoutes: Routes = [
 	{ path: '', component: WelcomeComponent },
