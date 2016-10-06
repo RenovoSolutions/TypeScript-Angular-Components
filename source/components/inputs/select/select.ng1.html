@@ -3,8 +3,9 @@
 		{{::select.label}}
 	</label>
 	<div class="form-control rl-select-trigger"
-		 ng-click="select.toggle()"
-		 ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }">
+		 ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }"
+		 ng-focus="select.openOptions()"
+		 ng-blur="select.closeOptions()"
 		<span class="placeholder" ng-hide="select.selection">{{::select.label}}</span>
 		<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
 	</div>
