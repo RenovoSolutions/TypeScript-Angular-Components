@@ -1,12 +1,13 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
-import * as ui from 'angular-ui-router';
-import * as _ from 'lodash';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { each, some, isFunction, isUndefined } from 'lodash';
 
 export interface IStep {
 	title: string;
 	subtitle?: string;
-	onClick?: {(): Promise<any>};
-	stateName?: string;
+	onClick?: {(): Observable<any>};
+	routerLink?: any[];
 	count?: {(): number};
 	isCompleted?: boolean | {(): boolean};
 	isValid?: boolean | {(): boolean};
@@ -29,49 +30,46 @@ export class MultiStepIndicatorComponent implements OnInit {
 	@Input() numbered: boolean;
 	@Input() checked: boolean;
 
-	private _state: ui.IStateService;
+	private router: Router;
 
-	constructor(@Inject('$state') state: ui.IStateService) {
-		this._state = state;
+	constructor(router: Router) {
+		this.router = router;
 	}
 
 	ngOnInit() {
 		this.configureSteps();
 	}
 
-	onClick(step: IConfiguredStep): Promise<void> {
+	onClick(step: IConfiguredStep): Observable<void> {
 		if (!this.anyLoading()) {
 			step.isLoading = true;
 
-			return step.onClick().then((): void => {
-				step.isLoading = false;
-			}).catch((error) => {
-				step.isLoading = false;
-				throw error;
-			});
+			const stream = step.onClick();
+			stream.subscribe({ complete: () => step.isLoading = false });
+			return stream;
 		}
-		return null;
+		return Observable.empty<void>();
 	}
 
 	anyLoading(): boolean {
-		return _.some(this.steps, (step: IConfiguredStep): boolean => {
+		return some(this.steps, (step: IConfiguredStep): boolean => {
 			return step.isLoading;
 		});
 	}
 
 	private configureSteps(): void {
-		_.each(this.steps, (step: IConfiguredStep): void => {
+		each(this.steps, (step: IConfiguredStep): void => {
 			step.getCompleted = (): boolean => this.getIsCompleted(step);
 			step.getValid = (): boolean => this.getIsValid(step);
 			step.isActive = true;
 			step.isCurrent = false;
 			step.isLoading = false;
 
-			if (!_.isFunction(step.onClick)) {
-				if (step.stateName) {
-					step.onClick = (): Promise<void> => this.redirectToState(step);
+			if (!isFunction(step.onClick)) {
+				if (step.routerLink) {
+					step.onClick = (): Observable<void> => this.redirectToState(step);
 
-					if (this._state.includes(step.stateName)) {
+					if (this.router.isActive(this.router.createUrlTree(step.routerLink), false)) {
 						step.isCurrent = true;
 					}
 				}
@@ -82,35 +80,39 @@ export class MultiStepIndicatorComponent implements OnInit {
 		});
 	}
 
-	private redirectToState(step: IConfiguredStep): Promise<void> {
-		return this._state.go(step.stateName).then((): void => {
-			this.clearCurrentState();
-			step.isCurrent = true;
+	private redirectToState(step: IConfiguredStep): Observable<void> {
+		return Observable.create(observer => {
+			this.router.navigate(step.routerLink).then((): void => {
+				this.clearCurrentState();
+				step.isCurrent = true;
+				observer.next();
+				observer.complete();
+			});
 		});
 	}
 
 	private clearCurrentState(): void {
-		_.each(this.steps, (step: IStep): void => {
+		each(this.steps, (step: IStep): void => {
 			step.isCurrent = false;
 		});
 	}
 
 	private getIsCompleted(step: IConfiguredStep): boolean {
-		return _.isFunction(step.isCompleted)
+		return isFunction(step.isCompleted)
 			? (<{(): boolean}>step.isCompleted)()
 			: <boolean>step.isCompleted;
 	}
 
 	private setIsCompleted(step: IConfiguredStep, isCompleted: boolean): void {
-		if (!_.isFunction(step.isCompleted)) {
+		if (!isFunction(step.isCompleted)) {
 			step.isCompleted = isCompleted;
 		}
 	}
 
 	private getIsValid(step: IConfiguredStep): boolean {
-		if (_.isFunction(step.isValid)) {
+		if (isFunction(step.isValid)) {
 			return (<{(): boolean}>step.isValid)();
-		} else if (!_.isUndefined(step.isValid != null)) {
+		} else if (!isUndefined(step.isValid != null)) {
 			return <boolean>step.isValid;
 		} else {
 			return true;

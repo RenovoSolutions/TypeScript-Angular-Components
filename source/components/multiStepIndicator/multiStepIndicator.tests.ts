@@ -1,19 +1,25 @@
-import * as ui from 'angular-ui-router';
 import { rlFakeAsync, mock, IMockedPromise } from 'rl-async-testing';
 
 import { MultiStepIndicatorComponent, IStep, IConfiguredStep } from './multiStepIndicator';
 
+interface IRouterMock {
+	navigate: IMockedPromise<void>;
+	isActive: Sinon.SinonSpy;
+	createUrlTree: Sinon.SinonSpy;
+}
+
 describe('MultiStepIndicatorComponent', () => {
 	let msi: MultiStepIndicatorComponent;
-	let stateMock: any;
+	let routerMock: IRouterMock;
 
 	beforeEach(() => {
-		stateMock = {
-			go: mock.promise(),
-			includes: sinon.spy(),
+		routerMock = {
+			navigate: mock.promise(),
+			isActive: sinon.spy(() => true),
+			createUrlTree: sinon.spy(array => array[0]),
 		};
 
-		msi = new MultiStepIndicatorComponent(stateMock);
+		msi = new MultiStepIndicatorComponent(<any>routerMock);
 	});
 
 	it('should set isActive to false if neither a click handler nor state name are provided', (): void => {
@@ -42,10 +48,10 @@ describe('MultiStepIndicatorComponent', () => {
 
 		step.onClick();
 
-		sinon.assert.calledOnce(stateMock.go);
-		sinon.assert.calledWith(stateMock.go, 'state');
+		sinon.assert.calledOnce(routerMock.navigate);
+		sinon.assert.calledWith(routerMock.navigate, 'state');
 
-		stateMock.go.flush();
+		routerMock.navigate.flush();
 
 		expect(step.isCurrent).to.be.true;
 	}));
@@ -55,7 +61,7 @@ describe('MultiStepIndicatorComponent', () => {
 		let step1: IStep = <any>{ stateName: activeState };
 		let step2: IStep = <any>{ stateName: 'inactiveState' };
 
-		stateMock.includes = sinon.spy((name: string): boolean => name === activeState);
+		routerMock.isActive = sinon.spy((name: string): boolean => name === activeState);
 		msi.steps = <IConfiguredStep[]>[step1, step2];
 		msi.ngOnInit();
 
@@ -107,6 +113,7 @@ describe('MultiStepIndicatorComponent', () => {
 
 		msi.onClick(<IConfiguredStep>step).catch((error) => {
 			expect(error).to.equal(fakeError);
+			return null;
 		});
 
 		expect((<IConfiguredStep>step).isLoading).to.be.true;
