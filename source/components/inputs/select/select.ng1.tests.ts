@@ -111,7 +111,7 @@ describe('SelectController', () => {
 
 			dropdown.toggle();
 
-			expect(dropdown.showOptions).to.be.true;
+			expect(dropdown.showOptions).to.be.false;
 		});
 
 		it('should close the options', (): void => {
