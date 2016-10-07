@@ -96,10 +96,6 @@ export class SelectController extends InputController {
 		this.showOptions = true;
 	}
 
-	close: { (): void } = () => {
-		if (this.showOptions) {
-			this.showOptions = false;
-		}
 	closeOptions(): void {
 		this.showOptions = false;
 	}
