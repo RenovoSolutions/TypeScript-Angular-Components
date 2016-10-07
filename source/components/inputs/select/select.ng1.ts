@@ -92,11 +92,11 @@ export class SelectController extends InputController {
 		return promise;
 	}
 
-	openOptions(): void {
-		this.showOptions = true;
+	toggle(): void {
+		this.showOptions = !this.showOptions;
 	}
 
-	closeOptions(): void {
+	close(): void {
 		this.showOptions = false;
 	}
 
