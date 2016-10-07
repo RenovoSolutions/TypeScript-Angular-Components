@@ -92,14 +92,16 @@ export class SelectController extends InputController {
 		return promise;
 	}
 
-	toggle(): void {
-		this.showOptions = !this.showOptions;
+	openOptions(): void {
+		this.showOptions = true;
 	}
 
 	close: { (): void } = () => {
 		if (this.showOptions) {
 			this.showOptions = false;
 		}
+	closeOptions(): void {
+		this.showOptions = false;
 	}
 
 	selectOption(value: any): void {
