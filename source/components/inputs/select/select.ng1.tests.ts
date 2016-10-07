@@ -102,23 +102,17 @@ describe('SelectController', () => {
 			buildController();
 		});
 
-		it('should toggle the options', (): void => {
-			expect(dropdown.showOptions).to.be.undefined;
-
-			dropdown.toggle();
+		it('should open the options', (): void => {
+			dropdown.openOptions();
 
 			expect(dropdown.showOptions).to.be.true;
-
-			dropdown.toggle();
-
-			expect(dropdown.showOptions).to.be.false;
 		});
 
 		it('should close the options', (): void => {
-			dropdown.showOptions = true;
-			dropdown.close();
+			dropdown.closeOptions();
+
 			expect(dropdown.showOptions).to.be.false;
-		});
+		})
 
 		it('should do nothing if the options are already closed', (): void => {
 			dropdown.showOptions = false;
