@@ -12,10 +12,10 @@
 		<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
 	</div>
 	<ul class="rl-select-list" ng-if="select.showOptions">
-		<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-click="select.selectOption(null)">{{::select.nullOption}}</li>
+		<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-mousedown="select.selectOption(null)">{{::select.nullOption}}</li>
 		<li class="rl-select-option"
 			ng-repeat="$item in select.options"
-			ng-click="select.selectOption($item)">
+			ng-mousedown="select.selectOption($item)">
 			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
 		</li>
 	</ul>
