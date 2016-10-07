@@ -12,6 +12,7 @@ import {
 	ButtonAsyncComponent,
 	ButtonLinkComponent,
 	ButtonLongClickComponent,
+	ButtonRouteComponent,
 	ButtonSubmitComponent,
 	ButtonToggleComponent,
 } from './components/buttons/index';
@@ -76,6 +77,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlButtonAsyncNg', <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
 	componentsDowngradeModule.directive('rlButtonLinkNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLinkComponent));
 	componentsDowngradeModule.directive('rlButtonLongClickNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLongClickComponent));
+	componentsDowngradeModule.directive('rlButtonRouteNg', <any>upgradeAdapter.downgradeNg2Component(ButtonRouteComponent));
 	componentsDowngradeModule.directive('rlButtonSubmitNg', <any>upgradeAdapter.downgradeNg2Component(ButtonSubmitComponent));
 	componentsDowngradeModule.directive('rlButtonToggleNg', <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
 	componentsDowngradeModule.directive('rlCheckboxNg', <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));
