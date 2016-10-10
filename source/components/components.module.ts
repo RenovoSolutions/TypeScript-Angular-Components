@@ -43,6 +43,7 @@ import * as commaList from './commaList/commaList';
 import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
 import * as form from './form/index';
+import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as simpleCardList from './simpleCardList/index';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
@@ -96,6 +97,7 @@ export {
 	dialog,
 	inputs,
 	form,
+	multiStepIndicator,
 	ratingBar,
 	simpleCardList,
 	stringWithWatermark,
