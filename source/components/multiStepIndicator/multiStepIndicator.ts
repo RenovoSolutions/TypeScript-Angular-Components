@@ -44,7 +44,7 @@ export class MultiStepIndicatorComponent implements OnInit {
 		if (!this.anyLoading()) {
 			step.isLoading = true;
 
-			const stream = step.onClick();
+			const stream = Observable.from(step.onClick());
 			stream.subscribe({ complete: () => step.isLoading = false });
 			return stream;
 		}
