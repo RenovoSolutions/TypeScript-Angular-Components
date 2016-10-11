@@ -49,7 +49,7 @@ export class FormComponent {
 		this.form = <IControlGroup>new FormGroup({});
 		this.form.rlNestedFormGroups = [];
 		if (!this.save) {
-			this.save = <ISaveAction>() => Promise.resolve();
+			this.save = <ISaveAction>() => null;
 		}
 
 		if (parentForm) {
