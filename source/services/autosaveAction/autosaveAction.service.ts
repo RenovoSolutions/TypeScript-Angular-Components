@@ -10,9 +10,9 @@ export const COMPLETE_MESSAGE_DURATION: number = 1000;
 
 export interface IAutosaveActionService {
 	trigger(waitOn: IWaitValue<any>): void;
-	saving: Observable<boolean>;
-	complete: Observable<boolean>;
-	successful: Observable<boolean>;
+	saving$: Observable<boolean>;
+	complete$: Observable<boolean>;
+	successful$: Observable<boolean>;
 }
 
 @Injectable()
@@ -24,29 +24,29 @@ export class AutosaveActionService implements IAutosaveActionService {
 			, asyncService: AsyncHelper) {
 		this.timeoutService = timeoutService;
 		this.asyncService = asyncService;
-		this._saving = new BehaviorSubject(false);
-		this._complete = new BehaviorSubject(false);
-		this._successful = new BehaviorSubject(false);
+		this._saving$ = new BehaviorSubject(false);
+		this._complete$ = new BehaviorSubject(false);
+		this._successful$ = new BehaviorSubject(false);
 	}
 
-	private _saving: BehaviorSubject<boolean>;
-	private _complete: BehaviorSubject<boolean>;
-	private _successful: BehaviorSubject<boolean>;
+	private _saving$: BehaviorSubject<boolean>;
+	private _complete$: BehaviorSubject<boolean>;
+	private _successful$: BehaviorSubject<boolean>;
 
-	get saving(): Observable<boolean> {
-		return this._saving.asObservable();
+	get saving$(): Observable<boolean> {
+		return this._saving$.asObservable();
 	}
 
-	get complete(): Observable<boolean> {
-		return this._complete.asObservable();
+	get complete$(): Observable<boolean> {
+		return this._complete$.asObservable();
 	}
 
-	get successful(): Observable<boolean> {
-		return this._successful.asObservable();
+	get successful$(): Observable<boolean> {
+		return this._successful$.asObservable();
 	}
 
 	trigger(waitOn: IWaitValue<any>): void {
-		this._saving.next(true);
+		this._saving$.next(true);
 		this.asyncService.waitAsObservable(waitOn)
 			.subscribe(this.autosaveSuccessful, this.autosaveFailed);
 	}
@@ -60,10 +60,10 @@ export class AutosaveActionService implements IAutosaveActionService {
 	}
 
 	private resolveAutosave = (success: boolean): void => {
-		this._saving.next(false);
-		this._complete.next(true);
-		this._successful.next(success);
+		this._saving$.next(false);
+		this._complete$.next(true);
+		this._successful$.next(success);
 
-		this.timeoutService.setTimeout(() => this._complete.next(false), COMPLETE_MESSAGE_DURATION);
+		this.timeoutService.setTimeout(() => this._complete$.next(false), COMPLETE_MESSAGE_DURATION);
 	}
 }

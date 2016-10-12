@@ -19,9 +19,9 @@ describe('AutosaveActionService', () => {
 
 		autosaveAction = new AutosaveActionService(new services.timeout.TimeoutService(), new AsyncHelper());
 
-		autosaveAction.saving.subscribe(_saving => saving = _saving);
-		autosaveAction.complete.subscribe(_complete => complete = _complete);
-		autosaveAction.successful.subscribe(_successful => successful = _successful);
+		autosaveAction.saving$.subscribe(_saving => saving = _saving);
+		autosaveAction.complete$.subscribe(_complete => complete = _complete);
+		autosaveAction.successful$.subscribe(_successful => successful = _successful);
 
 		mockAction = mock.request();
 		autosaveAction.trigger(mockAction());
