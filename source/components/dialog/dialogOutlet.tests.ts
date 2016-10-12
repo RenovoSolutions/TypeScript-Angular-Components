@@ -52,6 +52,26 @@ describe('DialogOutletComponent', (): void => {
 		sinon.assert.calledOnce(closeSpy);
 	});
 
+	describe('dialogSize$', () => {
+		it('should return the current dialog size prefixed with \'model-\'', () => {
+			let size: string;
+			dialogOutlet.dialogSize$.subscribe(_size => size = _size);
+
+			dialogRoot.openDialog.next({ size: 'sm' });
+
+			expect(size).to.equal('modal-sm');
+		});
+
+		it('should default to an empty string', () => {
+			let size: string;
+			dialogOutlet.dialogSize$.subscribe(_size => size = _size);
+
+			dialogRoot.openDialog.next({});
+
+			expect(size).to.be.empty;
+		});
+	});
+
 	describe('onClosing', (): void => {
 		beforeEach((): void => {
 			dialogOutlet.ngAfterViewInit();
