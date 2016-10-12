@@ -69,7 +69,6 @@ const appRoutes: Routes = [
 	},
 	{
 		path: 'msi',
-		redirectTo: 'ng2',
 		children: [
 			{ path: 'ng2', component: MsiBootstrapperComponent },
 		],
