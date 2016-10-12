@@ -1,52 +1,52 @@
 import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
-import __timeout = services.timeout;
-import __digest = services.digestService;
+import TimeoutService = services.timeout.TimeoutService;
 
 import { AsyncHelper, IWaitValue } from '../async/async.service';
 
 export const COMPLETE_MESSAGE_DURATION: number = 1000;
 
 export interface IAutosaveActionService {
-	trigger(promise: Promise<any>): void;
-	saving: boolean;
-	complete: boolean;
-	successful: boolean;
+	trigger(waitOn: IWaitValue<any>): void;
+	saving: Observable<boolean>;
+	complete: Observable<boolean>;
+	successful: Observable<boolean>;
 }
 
 @Injectable()
 export class AutosaveActionService implements IAutosaveActionService {
-	timeoutService: __timeout.TimeoutService;
+	timeoutService: TimeoutService;
 	asyncService: AsyncHelper;
-	digestService: __digest.IDigestService;
 
-	constructor(timeoutService: __timeout.TimeoutService
-			, asyncService: AsyncHelper
-			, digestService: __digest.DigestService) {
+	constructor(timeoutService: TimeoutService
+			, asyncService: AsyncHelper) {
 		this.timeoutService = timeoutService;
 		this.asyncService = asyncService;
-		this.digestService = digestService;
+		this._saving = new BehaviorSubject(false);
+		this._complete = new BehaviorSubject(false);
+		this._successful = new BehaviorSubject(false);
 	}
 
-	private _saving: boolean;
-	private _complete: boolean;
-	private _successful: boolean;
+	private _saving: BehaviorSubject<boolean>;
+	private _complete: BehaviorSubject<boolean>;
+	private _successful: BehaviorSubject<boolean>;
 
-	get saving(): boolean {
-		return this._saving;
+	get saving(): Observable<boolean> {
+		return this._saving.asObservable();
 	}
 
-	get complete(): boolean {
-		return this._complete;
+	get complete(): Observable<boolean> {
+		return this._complete.asObservable();
 	}
 
-	get successful(): boolean {
-		return this._successful;
+	get successful(): Observable<boolean> {
+		return this._successful.asObservable();
 	}
 
 	trigger(waitOn: IWaitValue<any>): void {
-		this._saving = true;
+		this._saving.next(true);
 		this.asyncService.waitAsObservable(waitOn)
 			.subscribe(this.autosaveSuccessful, this.autosaveFailed);
 	}
@@ -60,14 +60,10 @@ export class AutosaveActionService implements IAutosaveActionService {
 	}
 
 	private resolveAutosave = (success: boolean): void => {
-		this._saving = false;
-		this._complete = true;
-		this._successful = success;
+		this._saving.next(false);
+		this._complete.next(true);
+		this._successful.next(success);
 
-		this.timeoutService.setTimeout(() => {
-			this._complete = false;
-			// remove this once ng1 goes away
-			this.digestService.runDigestCycle();
-		}, COMPLETE_MESSAGE_DURATION);
+		this.timeoutService.setTimeout(() => this._complete.next(false), COMPLETE_MESSAGE_DURATION);
 	}
 }
