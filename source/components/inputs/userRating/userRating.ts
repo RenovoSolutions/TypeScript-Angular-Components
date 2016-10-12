@@ -49,11 +49,11 @@ export class UserRatingComponent extends InputComponent<number> implements OnIni
 			};
 		});
 		this.updateStarView(this.value);
+		this.control.valueChanges.subscribe(value => this.updateStarView(value));
 	}
 
 	setRating(rating: number): void {
 		this.setValue(rating);
-		this.updateStarView(rating);
 	}
 
 	private updateStarView(rating: number): void {
