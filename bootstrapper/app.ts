@@ -37,8 +37,6 @@ import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
 import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
-import { MsiRootComponent } from './msi/msiRoot';
-import { MsiNg1BootstrapperComponent } from './msi/msiBootstrapper.ng1';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
 import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
@@ -110,10 +108,7 @@ angular.module(moduleName, [
 		TabsBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsTabsNg1'),
 
-		MsiRootComponent,
-		MsiNg1BootstrapperComponent,
 		MsiBootstrapperComponent,
-		upgradeAdapter.upgradeNg1Component('tsMsiNg1'),
 
 		FormsRootComponent,
 		FormsNg1BootstrapperComponent,

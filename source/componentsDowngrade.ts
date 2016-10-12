@@ -50,7 +50,6 @@ export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
-export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
@@ -62,8 +61,6 @@ export function PipeDowngrader(pipe: PipeTransform) {
 }
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
-	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
-
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));

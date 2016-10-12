@@ -16,8 +16,6 @@ import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
 import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
-import { MsiRootComponent } from './msi/msiRoot';
-import { MsiNg1BootstrapperComponent } from './msi/msiBootstrapper.ng1';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
 import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
@@ -71,9 +69,8 @@ const appRoutes: Routes = [
 	},
 	{
 		path: 'msi',
-		component: MsiRootComponent,
+		redirectTo: 'ng2',
 		children: [
-			{ path: 'ng1', component: MsiNg1BootstrapperComponent },
 			{ path: 'ng2', component: MsiBootstrapperComponent },
 		],
 	},
