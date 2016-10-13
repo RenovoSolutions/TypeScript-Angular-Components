@@ -17,7 +17,6 @@ import { moduleName as popupModuleName } from './popup/popupBootstrapper';
 import { moduleName as messageLogModuleName } from './messageLog/messageLogBootstrapper';
 import { moduleName as cardModuleName } from './cards/cardContainerBootstrapper';
 import { moduleName as tabModuleName } from './tabs/tabsBootstrapper';
-import { moduleName as multStepModuleName } from './msi/msiBootstrapper.ng1';
 import { moduleName as formModuleName } from './forms/formsBootstrapper';
 import { moduleName as miscModuleName } from './misc/miscBootstrapper';
 import { moduleName as textModuleName } from './text/text';
@@ -66,7 +65,6 @@ angular.module(moduleName, [
 	popupModuleName,
 	cardModuleName,
 	tabModuleName,
-	multStepModuleName,
 	formModuleName,
 	messageLogModuleName,
 	miscModuleName,
