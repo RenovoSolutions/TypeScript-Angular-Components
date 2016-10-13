@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 
 export const moduleName: string = 'ButtonTestModule';
@@ -19,27 +20,27 @@ class ButtonTestController {
 	}
 }
 
-ButtonRoute.$inject = ['$stateProvider'];
-function ButtonRoute($stateProvider) {
-	$stateProvider
-		.state('buttons', {
-			url: '/buttons',
-			template: require('./buttons.html'),
-		})
-		.state('buttons.ng1', {
-			url: '/ng1',
-			template: require('./buttonsNg1.html'),
-			controller: 'ButtonTestController',
-			controllerAs: 'button',
-		})
-		.state('buttons.ng2', {
-			url: '/ng2',
-			template: require('./buttonsNg2.html'),
-			controller: 'ButtonTestController',
-			controllerAs: 'button',
-		});
-}
+@Component({
+	selector: 'tsButtonsNg1',
+	template: '<ts-buttons-ng1></ts-buttons-ng1>'
+})
+export class ButtonsNg1BootstrapperComponent { }
+
+@Component({
+	selector: 'tsButtonsNg2',
+	template: '<ts-buttons-ng2></ts-buttons-ng2>'
+})
+export class ButtonsNg2BootstrapperComponent {}
 
 angular.module(moduleName, [])
-	.controller('ButtonTestController', ButtonTestController)
-	.config(ButtonRoute);
+	.component('tsButtonsNg1', {
+		template: require('./buttonsNg1.html'),
+		controller: 'ButtonTestController',
+		controllerAs: 'button',
+	})
+	.component('tsButtonsNg2', {
+		template: require('./buttonsNg2.html'),
+		controller: 'ButtonTestController',
+		controllerAs: 'button',
+	})
+	.controller('ButtonTestController', ButtonTestController);

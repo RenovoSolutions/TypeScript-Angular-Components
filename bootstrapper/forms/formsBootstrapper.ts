@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
@@ -30,25 +31,16 @@ class FormTestController {
 	}
 }
 
-FormRoute.$inject = ['$stateProvider'];
-function FormRoute($stateProvider) {
-	$stateProvider
-		.state('forms', {
-			url: '/forms',
-			template: require('./forms.html'),
-		})
-		.state('forms.ng1', {
-			url: '/ng1',
-			template: require('./formsNg1.html'),
-			controller: 'FormTestController',
-			controllerAs: 'forms',
-		})
-		.state('forms.ng2', {
-			url: '/ng2',
-			template: '<ts-forms-bootstrapper></ts-forms-bootstrapper>',
-		});
-}
+@Component({
+	selector: 'tsFormsNg1',
+	template: '<ts-forms-ng1></ts-forms-ng1>'
+})
+export class FormsNg1BootstrapperComponent { }
 
 angular.module(moduleName, [])
-	.controller('FormTestController', FormTestController)
-	.config(FormRoute);
+	.component('tsFormsNg1', {
+		template: require('./formsNg1.html'),
+		controller: 'FormTestController',
+		controllerAs: 'forms',
+	})
+	.controller('FormTestController', FormTestController);

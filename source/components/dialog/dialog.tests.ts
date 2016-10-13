@@ -20,6 +20,7 @@ describe('DialogComponent', (): void => {
 		dialog.content = <any>{};
 		dialog.footer = <any>{};
 		dialog.autosave = true;
+		dialog.size = 'sm';
 		const openSpy = sinon.spy();
 		dialogRoot.openDialog.subscribe(openSpy);
 
@@ -32,6 +33,7 @@ describe('DialogComponent', (): void => {
 		expect(arg.content).to.equal(dialog.content);
 		expect(arg.footer).to.equal(dialog.footer);
 		expect(arg.autosave).to.equal(dialog.autosave);
+		expect(arg.size).to.equal(dialog.size);
 		expect(isFunction(arg.submitAndClose));
 	});
 

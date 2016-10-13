@@ -2,12 +2,6 @@ import * as angular from 'angular';
 
 export const moduleName: string = 'TextModule';
 
-const textComponent: angular.IComponentOptions = {
-	transclude: true,
-	template: '<span>{{$ctrl.text}}</span>',
-	controller: TextController,
-};
-
 class TextController {
 	text: string;
 
@@ -20,6 +14,12 @@ class TextController {
 		});
 	}
 }
+
+const textComponent: angular.IComponentOptions = {
+	transclude: true,
+	template: '<span>{{$ctrl.text}}</span>',
+	controller: TextController,
+};
 
 angular.module(moduleName, [])
 	.component('tsText', textComponent);

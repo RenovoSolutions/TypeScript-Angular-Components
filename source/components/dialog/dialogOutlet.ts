@@ -1,5 +1,6 @@
 import 'bootstrap';
 import { Component, AfterViewInit, Inject } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { DialogRootService } from './dialogRoot.service';
 import { JQueryProvider } from '../../services/jquery/jquery.provider';
@@ -11,6 +12,7 @@ import { JQueryProvider } from '../../services/jquery/jquery.provider';
 export class DialogOutletComponent implements AfterViewInit {
 	dialogRoot: DialogRootService;
 	jquery: JQueryStatic;
+	dialogSize$: Observable<string>;
 
 	constructor(dialogRoot: DialogRootService
 			, jquery: JQueryProvider) {
@@ -21,6 +23,9 @@ export class DialogOutletComponent implements AfterViewInit {
 		});
 		dialogRoot.closeDialog.subscribe((): void => {
 			this.jquery('.rlModal').modal('hide');
+		});
+		this.dialogSize$ = dialogRoot.openDialog.map(dialog => {
+			return dialog.size ? `modal-${dialog.size}` : '';
 		});
 	}
 

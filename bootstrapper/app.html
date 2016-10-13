@@ -1,20 +1,20 @@
 <div class="row">
 	<div class="col-xs-2">
 		<ul class="nav nav-pills nav-stacked">
-			<li><a ui-sref="/">Home</a></li>
-			<li><a ui-sref="inputs.ng2">Inputs</a></li>
-			<li><a ui-sref="buttons.ng2">Buttons</a></li>
-			<li><a ui-sref="popup.ng2">Popup content</a></li>
-			<li><a ui-sref="cards.ng2">Cards</a></li>
-			<li><a ui-sref="tabs">Tabs</a></li>
-			<li><a ui-sref="msi.ng1">Multi Step Indicator</a></li>
-			<li><a ui-sref="forms.ng2">Forms</a></li>
-			<li><a ui-sref="messageLog">Message log</a></li>
-			<li><a ui-sref="misc.ng2">Misc</a></li>
+			<li><a routerLink="/">Home</a></li>
+			<li><a routerLink="/inputs/ng2">Inputs</a></li>
+			<li><a routerLink="/buttons/ng2">Buttons</a></li>
+			<li><a routerLink="/popup/ng2">Popup content</a></li>
+			<li><a routerLink="/cards/ng2">Cards</a></li>
+			<li><a routerLink="/tabs/ng2">Tabs</a></li>
+			<li><a routerLink="/msi/ng2">Multi Step Indicator</a></li>
+			<li><a routerLink="/forms/ng2">Forms</a></li>
+			<li><a routerLink="/messageLog">Message log</a></li>
+			<li><a routerLink="/misc/ng2">Misc</a></li>
 		</ul>
 	</div>
 
 	<div class="col-xs-10">
-		<div ui-view class="view-window"></div>
+		<router-outlet></router-outlet>
 	</div>
 </div>

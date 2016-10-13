@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import * as angular from 'angular';
 import * as moment from 'moment';
 
@@ -45,27 +46,27 @@ class MiscTestController {
 	}
 }
 
-MiscRoute.$inject = ['$stateProvider'];
-function MiscRoute($stateProvider) {
-	$stateProvider
-		.state('misc', {
-			url: '/misc',
-			template: require('./misc.html'),
-		})
-		.state('misc.ng1', {
-			url: '/ng1',
-			template: require('./miscNg1.html'),
-			controller: 'MiscTestController',
-			controllerAs: 'misc',
-		})
-		.state('misc.ng2', {
-			url: '/ng2',
-			template: require('./miscNg2.html'),
-			controller: 'MiscTestController',
-			controllerAs: 'misc',
-		});
-}
+@Component({
+	selector: 'tsMiscNg1',
+	template: '<ts-misc-ng1></ts-misc-ng1>'
+})
+export class MiscNg1BootstrapperComponent { }
+
+@Component({
+	selector: 'tsMiscNg2',
+	template: '<ts-misc-ng2></ts-misc-ng2>'
+})
+export class MiscNg2BootstrapperComponent {}
 
 angular.module(moduleName, [])
-	.controller('MiscTestController', MiscTestController)
-	.config(MiscRoute);
+	.component('tsMiscNg1', {
+		template: require('./miscNg1.html'),
+		controller: 'MiscTestController',
+		controllerAs: 'misc',
+	})
+	.component('tsMiscNg2', {
+		template: require('./miscNg2.html'),
+		controller: 'MiscTestController',
+		controllerAs: 'misc',
+	})
+	.controller('MiscTestController', MiscTestController);

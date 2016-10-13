@@ -23,6 +23,7 @@ import { FormService } from '../../services/form/form.service';
 export class DialogComponent extends FormComponent {
 	@Input() onClosing: IDialogClosingHandler;
 	@Input() autosave: boolean;
+	@Input() size: string;
 
 	@ContentChild(DialogHeaderTemplate) header: DialogHeaderTemplate;
 	@ContentChild(DialogContentTemplate) content: DialogContentTemplate;
@@ -46,6 +47,7 @@ export class DialogComponent extends FormComponent {
 			footer: this.footer,
 			autosave: this.autosave,
 			submitAndClose: () => this.submitAndClose(),
+			size: this.size,
 		});
 	}
 

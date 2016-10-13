@@ -9,6 +9,7 @@ export interface IDialogContent {
 	footer?: DialogFooterTemplate;
 	autosave?: boolean;
 	submitAndClose?: { (): void };
+	size?: string;
 }
 
 export interface IDialogClosingHandler {
