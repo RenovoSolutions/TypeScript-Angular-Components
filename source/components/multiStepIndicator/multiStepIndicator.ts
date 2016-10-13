@@ -81,14 +81,12 @@ export class MultiStepIndicatorComponent implements OnInit {
 	}
 
 	private redirectToState(step: IConfiguredStep): Observable<void> {
-		return Observable.create(observer => {
-			this.router.navigate(step.routerLink).then((): void => {
-				this.clearCurrentState();
-				step.isCurrent = true;
-				observer.next();
-				observer.complete();
-			});
+		const stream = Observable.fromPromise(this.router.navigate(step.routerLink));
+		stream.subscribe((): void => {
+			this.clearCurrentState();
+			step.isCurrent = true;
 		});
+		return stream.map(() => null);
 	}
 
 	private clearCurrentState(): void {
