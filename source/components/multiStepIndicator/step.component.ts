@@ -8,6 +8,5 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 export class StepComponent {
 	@Input() title: string;
 	@Input() link: any[] | string;
-	@Input() activeClass: string = 'active';
 	@Input() valid: boolean;
 }
