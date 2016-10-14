@@ -1,8 +1,9 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
 	selector: 'rlStep',
 	template: require('./step.component.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StepComponent {
 	@Input() title: string;
