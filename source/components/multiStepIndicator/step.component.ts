@@ -9,4 +9,5 @@ export class StepComponent {
 	@Input() title: string;
 	@Input() link: any[] | string;
 	@Input() activeClass: string = 'active';
+	@Input() valid: boolean;
 }
