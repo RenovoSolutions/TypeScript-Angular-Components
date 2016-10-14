@@ -1,7 +1,7 @@
-.rl-multi-step-item.error {
+.rl-tab-item.error {
 	color: red;
 }
 
-.rl-multi-step-item.current {
+.rl-tab-item.current {
 	color: blue;
 }
