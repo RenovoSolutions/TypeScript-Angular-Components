@@ -44,13 +44,6 @@ export function sort<TDataType>(data$: Observable<TDataType[]>, sorts$: Observab
 		});
 }
 
-export function page<TDataType>(data$: Observable<TDataType[]>, pager: IDataPager): Observable<TDataType[]> {
-	if (pager) {
-		return pager.filter(data$);
-	}
-	return data$;
-}
-
 export function filter<TDataType>(data$: Observable<TDataType[]>, filters$: Observable<IFilter[]>): Observable<TDataType[]> {
 	return data$.combineLatest(filters$)
 				.map(([data, filters]) => {
@@ -59,4 +52,11 @@ export function filter<TDataType>(data$: Observable<TDataType[]>, filters$: Obse
 			}
 			return data;
 		});
+}
+
+export function page<TDataType>(data$: Observable<TDataType[]>, pager: IDataPager): Observable<TDataType[]> {
+	if (pager) {
+		return pager.filter(data$);
+	}
+	return data$;
 }
