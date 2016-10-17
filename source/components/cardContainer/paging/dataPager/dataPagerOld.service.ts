@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import * as Rx from 'rxjs';
 
-export const defaultPageSize: number = 10;
+import { defaultPageSize } from './dataPager.service';
 
 export interface IDataPagerOld {
 	pageNumber: number;

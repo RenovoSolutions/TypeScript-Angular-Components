@@ -5,7 +5,7 @@ import { filters } from 'typescript-angular-utilities';
 import IFilter = filters.IFilter;
 
 import { ISort } from '../../sorts/sort';
-import { IDataPagerOld } from '../../paging/index';
+import { IDataPager } from '../../paging/index';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
@@ -55,9 +55,9 @@ export function sort<TDataType>(data$: Observable<TDataType[]>, sorts$: Observab
 		});
 }
 
-// export function page<TDataType>(data$: Observable<TDataType[]>, pager: IDataPager): TDataType[] {
-// 	if (pager != null) {
-// 		return pager.filter(data$);
-// 	}
-// 	return data$;
-// }
+export function page<TDataType>(data$: Observable<TDataType[]>, pager: IDataPager): Observable<TDataType[]> {
+	if (pager) {
+		return pager.filter(data$);
+	}
+	return data$;
+}
