@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { reduce, filter } from 'lodash';
+import { filter as _filter, some } from 'lodash';
 
 import { filters } from 'typescript-angular-utilities';
 import IFilter = filters.IFilter;
@@ -14,36 +14,25 @@ export interface IProcessResult<TDataType> {
 	dataSet: Observable<TDataType[]>;
 }
 
-export interface IWrappedItem<TItemType> {
-	data: TItemType;
-	filterData: any; //*filterData
+export function process<TDataType>(sorts$: Observable<ISort[]>
+								, filters$: Observable<IFilter[]>
+								, pager: IDataPager
+								, data$: Observable<TDataType[]>
+								, sorter: Sorter): IProcessResult<TDataType> {
+	const sorted = sort(data$, sorts$, sorter);
+	const filtered = filter(sorted, filters$);
+	const paged = page(filtered, pager);
+
+	return {
+		count: count(filtered),
+		filteredDataSet: filtered,
+		dataSet: paged,
+	};
 }
 
-// export function process<TDataType>(sorts$: Observable<ISort[]>
-// 								, filters: IFilter[]
-// 								, pager: IDataPager
-// 								, data$: Observable<TDataType[]>
-// 								, sorter: Sorter): IProcessResult<TDataType> {
-// 	let processedData: Observable<TDataType[]> = data$;
-
-// 	processedData = sort(processedData, sorts$, sorter);
-
-// 	if (this.object.isNullOrEmpty(filters) === false) {
-// 		processedData = reduce(filters, (filteredData: TDataType[], filter: IFilter): TDataType[] => {
-// 			// Filter the data set using the filter function on the filter
-// 			return filter(filteredData, filter.filter.bind(filter));
-// 		}, processedData);
-// 	}
-
-// 	var result: IProcessResult<TDataType> = {
-// 		count: (processedData != null ? processedData.length : 0),
-// 		filteredDataSet: processedData,
-// 		dataSet: processedData,
-// 	};
-
-// 	result.dataSet = this.page(processedData, pager);
-// 	return result;
-// }
+export function count(data$: Observable<any[]>): Observable<number> {
+	return data$.map(data => data ? data.length : 0);
+}
 
 export function sort<TDataType>(data$: Observable<TDataType[]>, sorts$: Observable<ISort[]>, sorter: Sorter): Observable<TDataType[]> {
 	return data$.combineLatest(sorts$)
@@ -60,4 +49,14 @@ export function page<TDataType>(data$: Observable<TDataType[]>, pager: IDataPage
 		return pager.filter(data$);
 	}
 	return data$;
+}
+
+export function filter<TDataType>(data$: Observable<TDataType[]>, filters$: Observable<IFilter[]>): Observable<TDataType[]> {
+	return data$.combineLatest(filters$)
+				.map(([data, filters]) => {
+			if (filters && filters.length) {
+				return _filter(data, item => some(filters, filterItem => filterItem.filter(item)));
+			}
+			return data;
+		});
 }
