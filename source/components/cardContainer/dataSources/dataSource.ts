@@ -21,6 +21,7 @@ export interface IDataSource<TDataType> {
 	needsRefinedSearch$: Observable<boolean>;
 	isEmpty$: Observable<boolean>;
 
+	init(): void;
 	clear(): void;
 
 	add(data: TDataType): void;

@@ -72,6 +72,10 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 		});
 	}
 
+	init(): void {
+		// override with any init logic in children
+	}
+
 	clear() {
 		this._rawDataSet.next([]);
 		this._dataSet.next([]);
