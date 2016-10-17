@@ -9,7 +9,7 @@ import __transform = services.transform;
 
 import { ClientServerDataSource } from './clientServerDataSource.service';
 
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
@@ -25,7 +25,7 @@ interface ITestFilterModel {
 }
 
 describe('ClientServerDataSource', () => {
-	let dataSourceProcessor: DataSourceProcessor;
+	let dataSourceProcessor: DataSourceProcessorOld;
 	let dataService: IDataServiceMock;
 	let searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	let source: ClientServerDataSource<number>;
@@ -33,7 +33,7 @@ describe('ClientServerDataSource', () => {
 	let changedSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 		searchFilter = new __genericSearchFilter.GenericSearchFilter(__object.objectUtility, __string.stringUtility, false);
 

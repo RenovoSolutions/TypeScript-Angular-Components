@@ -7,7 +7,7 @@ import __object = services.object;
 
 import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor } from '../dataSourceProcessor.service';
+import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 
 export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
@@ -22,7 +22,7 @@ export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
 	private throttleLimit: number = 200;
 
 	constructor(getDataSet: IServerSearchFunction<TDataType>
-			, dataSourceProcessor: IDataSourceProcessor
+			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility) {
 		super(<any>getDataSet, dataSourceProcessor, array);

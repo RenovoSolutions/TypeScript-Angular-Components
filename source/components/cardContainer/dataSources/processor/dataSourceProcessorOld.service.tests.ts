@@ -4,7 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
+import { DataSourceProcessorOld, IProcessResult } from './dataSourceProcessorOld.service';
 import { DataPager } from '../../paging/index';
 import { ISort, SortDirection, Sorter, MergeSort } from '../../sorts/index';
 
@@ -20,11 +20,11 @@ interface IFilterMock {
 }
 
 describe('DataSourceProcessor', () => {
-	let dataSourceProcessor: DataSourceProcessor;
+	let dataSourceProcessor: DataSourceProcessorOld;
 	let pager: DataPager;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
 		pager = new DataPager();
 	});
 

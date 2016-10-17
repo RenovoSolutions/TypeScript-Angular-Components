@@ -7,15 +7,15 @@ import __transform = services.transform;
 
 import { SimpleDataSource, IDataSourceOld } from './simpleDataSource.service';
 
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 describe('SimpleDataSource', () => {
-	let processor: DataSourceProcessor;
+	let processor: DataSourceProcessorOld;
 
 	beforeEach((): void => {
-		processor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		processor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 	});
 
 	it('should set data set and filter count settings on base', (): void => {

@@ -7,7 +7,7 @@ import __transform = services.transform;
 
 import { SmartDataSource } from './smartDataSource.service';
 
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
@@ -73,7 +73,7 @@ describe('SmartDataSource', () => {
 			get: mock.promise({ dataSet: data, count: 2 }),
 		};
 
-		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor = <any>new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
 		dataSourceProcessor.sort = sinon.spy();
 		dataSourceProcessor.page = sinon.spy();

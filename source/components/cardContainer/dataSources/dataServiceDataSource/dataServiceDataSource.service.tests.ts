@@ -8,7 +8,7 @@ import __transform = services.transform;
 
 import { DataServiceDataSource, IAsyncDataSource } from './dataServiceDataSource.service';
 
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
@@ -19,12 +19,12 @@ interface IDataServiceMock {
 }
 
 describe('DataServiceDataSource', () => {
-	let dataSourceProcessor: DataSourceProcessor;
+	let dataSourceProcessor: DataSourceProcessorOld;
 	let dataService: IDataServiceMock;
 	let arrayUtility: __array.ArrayUtility;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 		arrayUtility = __array.arrayUtility;
 

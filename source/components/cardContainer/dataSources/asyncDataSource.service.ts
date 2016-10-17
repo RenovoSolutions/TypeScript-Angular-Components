@@ -5,7 +5,7 @@ import __array = services.array;
 
 import { IDataSourceOld } from './dataSource';
 import { DataSourceBase } from './dataSourceBase.service';
-import { IDataSourceProcessor } from './dataSourceProcessor.service';
+import { IDataSourceProcessorOld } from './processor/dataSourceProcessorOld.service';
 
 export { IDataSourceOld };
 
@@ -25,7 +25,7 @@ export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implem
 	getDataSet: IDataSetFunction<TDataType>;
 
 	constructor(getDataSet: IDataSetFunction<TDataType>
-			, dataSourceProcessor: IDataSourceProcessor
+			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility) {
 		super(dataSourceProcessor, array);
 		this.getDataSet = getDataSet;

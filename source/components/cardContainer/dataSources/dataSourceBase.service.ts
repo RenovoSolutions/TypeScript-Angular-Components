@@ -5,7 +5,7 @@ import __array = services.array;
 import __object = services.object;
 
 import { IDataSourceOld } from './dataSource';
-import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
+import { IDataSourceProcessorOld, IProcessResult } from './processor/dataSourceProcessorOld.service';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from '../paging/index';
 
@@ -39,7 +39,7 @@ export class DataSourceBase<TDataType> implements IDataSourceOld<TDataType> {
 		this.countChanges.next(value);
 	}
 
-	constructor(private dataSourceProcessor: IDataSourceProcessor
+	constructor(private dataSourceProcessor: IDataSourceProcessorOld
 			, protected array: __array.IArrayUtility) {
 		this.countChanges = new Subject<number>();
 		this.redrawing = new Subject<void>();

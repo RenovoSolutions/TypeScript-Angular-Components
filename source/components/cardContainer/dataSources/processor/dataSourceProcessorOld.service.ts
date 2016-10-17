@@ -19,7 +19,7 @@ export interface IWrappedItem<TItemType> {
 	filterData: any; //*filterData
 }
 
-export interface IDataSourceProcessor {
+export interface IDataSourceProcessorOld {
 	process<TDataType>(sorts: ISort[]
 					, filters: filters.IFilter[]
 					, pager: IDataPager
@@ -33,7 +33,7 @@ export interface IDataSourceProcessor {
 }
 
 @Injectable()
-export class DataSourceProcessor implements IDataSourceProcessor{
+export class DataSourceProcessorOld implements IDataSourceProcessorOld{
 	constructor(private object: __object.ObjectUtility
 			, private sorter: Sorter) { }
 
