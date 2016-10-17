@@ -3,7 +3,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { ICardContainerBuilder } from '../../source/components/cardContainer/builder/index';
+import { ICardContainerBuilderOld } from '../../source/components/cardContainer/builder/index';
 import { IDataSourceOld } from '../../source/components/cardContainer/dataSources/index';
 import { ISelectFilter,	IDateFilter } from '../../source/components/cardContainer/filters/index';
 import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
@@ -17,10 +17,10 @@ interface ICardItem {
 }
 
 class CardTestController {
-	builder: ICardContainerBuilder;
-	builderWithSelectFilter: ICardContainerBuilder;
-	builderWithDateFilter: ICardContainerBuilder;
-	builderWithSearch: ICardContainerBuilder;
+	builder: ICardContainerBuilderOld;
+	builderWithSelectFilter: ICardContainerBuilderOld;
+	builderWithDateFilter: ICardContainerBuilderOld;
+	builderWithSearch: ICardContainerBuilderOld;
 	options: number[];
 	selectFilter: ISelectFilter<number>;
 	dateFilter: IDateFilter;

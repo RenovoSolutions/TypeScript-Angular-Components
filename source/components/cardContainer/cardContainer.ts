@@ -18,7 +18,7 @@ import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate
 import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { ISaveAction } from '../form/form';
 
-import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
+import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerType } from './builder/cardContainerBuilderOld.service';
 
 export const cardContainerInputs = {
 	builder: 'builder',
@@ -39,7 +39,7 @@ export const defaultMaxColumnSorts: number = 2;
 	providers: [DataPagerOld, SortManagerService],
 })
 export class CardContainerComponent<T> implements OnInit {
-	builder: CardContainerBuilder;
+	builder: CardContainerBuilderOld;
 	save: ISaveAction<any>;
 	searchPlaceholder: string;
 

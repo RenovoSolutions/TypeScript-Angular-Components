@@ -42,13 +42,13 @@ interface IFilterMock {
 
 describe('SelectableCardContainerComponent', () => {
 	let cardContainer: SelectableCardContainerComponent<any>;
-	let builder: __builder.CardContainerBuilder;
+	let builder: __builder.CardContainerBuilderOld;
 	let mockedDataSource: IDataSourceMock;
 
 	beforeEach(() => {
 		cardContainer = new SelectableCardContainerComponent(__array.arrayUtility, new DataPagerOld(), new SortManagerService());
 
-		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
+		builder = new __builder.CardContainerBuilderOld(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
 		cardContainer.builder = builder;
 
 		mockedDataSource = buildMockedDataSource();

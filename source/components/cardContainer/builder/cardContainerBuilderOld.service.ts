@@ -11,8 +11,8 @@ import { IColumn } from '../column';
 import * as dataSources from '../dataSources/index';
 import * as paging from '../paging/index';
 
-import { IDataSourceBuilder, DataSourceBuilder } from './dataSourceBuilder.service';
-import { IFilterBuilder, FilterBuilder } from './filterBuilder.service';
+import { IDataSourceBuilderOld, DataSourceBuilderOld } from './dataSourceBuilderOld.service';
+import { IFilterBuilderOld, FilterBuilderOld } from './filterBuilderOld.service';
 
 export enum CardContainerType {
 	old,
@@ -20,9 +20,9 @@ export enum CardContainerType {
 	selectable,
 }
 
-export interface ICardContainerBuilder {
-	dataSource: IDataSourceBuilder;
-	filters: IFilterBuilder;
+export interface ICardContainerBuilderOld {
+	dataSource: IDataSourceBuilderOld;
+	filters: IFilterBuilderOld;
 
 	containerData: any;
 	cardController: string;
@@ -44,7 +44,7 @@ export interface ICardContainerBuilder {
 
 
 @Injectable()
-export class CardContainerBuilder implements ICardContainerBuilder {
+export class CardContainerBuilderOld implements ICardContainerBuilderOld {
 	_dataSource: dataSources.IDataSourceOld<any>;
 	_filters: filters.IFilter[];
 	_paging: boolean;
@@ -58,8 +58,8 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_renderFilters: boolean;
 	_saveWhenInvalid: boolean;
 
-	dataSource: DataSourceBuilder;
-	filters: FilterBuilder;
+	dataSource: DataSourceBuilderOld;
+	filters: FilterBuilderOld;
 
 	maxColumnSorts: number;
 
@@ -72,8 +72,8 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	private injector: Injector;
 
 	constructor(injector: Injector
-			, dataSourceBuilder: DataSourceBuilder
-			, filterBuilder: FilterBuilder) {
+			, dataSourceBuilder: DataSourceBuilderOld
+			, filterBuilder: FilterBuilderOld) {
 		this.injector = injector;
 		this.dataSource = clone(dataSourceBuilder);
 		this.dataSource.init(this);

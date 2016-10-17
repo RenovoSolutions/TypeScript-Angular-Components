@@ -16,7 +16,7 @@ import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { SelectableCardComponent } from './card/selectableCard';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
-import { CardContainerType } from './builder/cardContainerBuilder.service';
+import { CardContainerType } from './builder/cardContainerBuilderOld.service';
 
 export const defaultSelectionTitle: string = 'Select card';
 

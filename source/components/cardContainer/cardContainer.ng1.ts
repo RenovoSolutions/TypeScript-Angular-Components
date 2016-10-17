@@ -17,7 +17,7 @@ import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
+import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerType } from './builder/cardContainerBuilderOld.service';
 
 export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
@@ -33,7 +33,7 @@ export interface ICardContainerBindings {
 	/**
 	 * A builder for the card container
 	 */
-	builder: ICardContainerBuilder;
+	builder: ICardContainerBuilderOld;
 
 	/**
 	 * Controller shared by all components on a card
@@ -86,7 +86,7 @@ export interface ISelectionViewData {
 
 export class CardContainerController {
 	// bindings
-	builder: CardContainerBuilder;
+	builder: CardContainerBuilderOld;
 
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;

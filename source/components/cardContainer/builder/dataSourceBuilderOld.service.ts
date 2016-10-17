@@ -7,9 +7,9 @@ import __array = services.array;
 
 import * as dataSources from '../dataSources/index';
 import { ISorter, Sorter } from '../sorts/index';
-import { CardContainerBuilder } from './cardContainerBuilder.service';
+import { CardContainerBuilderOld } from './cardContainerBuilderOld.service';
 
-export interface IDataSourceBuilder {
+export interface IDataSourceBuilderOld {
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
@@ -21,9 +21,9 @@ export interface IDataSourceBuilder {
 }
 
 @Injectable()
-export class DataSourceBuilder implements IDataSourceBuilder {
+export class DataSourceBuilderOld implements IDataSourceBuilderOld {
 	private injector: Injector;
-	private parent: CardContainerBuilder;
+	private parent: CardContainerBuilderOld;
 	private object: __object.ObjectUtility;
 	private array: __array.IArrayUtility;
 	private sorter: Sorter;
@@ -38,7 +38,7 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		this.sorter = sorter;
 	}
 
-	init(parent: CardContainerBuilder): void {
+	init(parent: CardContainerBuilderOld): void {
 		this.parent = parent;
 
 		parent._dataSource = this.buildSimpleDataSource([]);

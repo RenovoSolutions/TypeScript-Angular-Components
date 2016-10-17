@@ -7,9 +7,9 @@ import __string = services.string;
 import __transform = services.transform;
 
 import * as cardFilters from '../filters/index';
-import { CardContainerBuilder } from './cardContainerBuilder.service';
+import { CardContainerBuilderOld } from './cardContainerBuilderOld.service';
 
-export interface IFilterBuilder {
+export interface IFilterBuilderOld {
 	buildFilterGroup(settings: cardFilters.IFilterGroupSettings): cardFilters.IFilterGroup;
 	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup;
 	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup;
@@ -20,9 +20,9 @@ export interface IFilterBuilder {
 }
 
 @Injectable()
-export class FilterBuilder implements IFilterBuilder {
+export class FilterBuilderOld implements IFilterBuilderOld {
 	private injector: Injector;
-	private parent: CardContainerBuilder;
+	private parent: CardContainerBuilderOld;
 	private object: __object.ObjectUtility;
 	private string: __string.StringUtility;
 	private date: __date.DateUtility;
@@ -39,7 +39,7 @@ export class FilterBuilder implements IFilterBuilder {
 		this.transformService = transform;
 	}
 
-	init(parent: CardContainerBuilder): void {
+	init(parent: CardContainerBuilderOld): void {
 		this.parent = parent;
 
 		this.parent._filters = [];

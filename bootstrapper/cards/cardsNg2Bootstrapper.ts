@@ -38,8 +38,8 @@ const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardI
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
-	builder: builder.CardContainerBuilder;
-	builderWithFilters: builder.CardContainerBuilder;
+	builder: builder.CardContainerBuilderOld;
+	builderWithFilters: builder.CardContainerBuilderOld;
 	options: number[];
 	dateFilter: DateFilter;
 	modeFilterGroup: IModeFilterGroup;

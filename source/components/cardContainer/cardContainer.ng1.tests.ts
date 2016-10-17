@@ -48,7 +48,7 @@ interface IFilterMock {
 describe('CardContainerController', () => {
 	let scope: ICardContainerScope;
 	let cardContainer: CardContainerController;
-	let builder: __builder.CardContainerBuilder;
+	let builder: __builder.CardContainerBuilderOld;
 	let mockedDataSource: IDataSourceMock;
 	let $attrs: ICardContainerAttrs;
 
