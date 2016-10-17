@@ -13,7 +13,7 @@ interface IDataSourceProcessorMock {
 	page: Sinon.SinonSpy;
 }
 
-describe('DataSourceBase', () => {
+describe('DataSourceBaseOld', () => {
 	let dataSourceBase: DataSourceBaseOld<number>;
 	let dataSourceProcessor: IDataSourceProcessorMock;
 
