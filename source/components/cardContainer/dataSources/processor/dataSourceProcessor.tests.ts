@@ -10,14 +10,14 @@ describe('data source processor', () => {
 			const filtered = [2, 3, 4];
 			const paged = [2, 3];
 			const sorts = [<any>{}];
-			const filters = [{ filter: item => item > 1 }];
+			const filters = [{ filter: () => Observable.of(filtered) }];
 			const pager = { filter: () => Observable.of(paged) };
 			const sorter = { sort: () => sorted };
 			let dataCount;
 			let filteredDataSet;
 			let dataSet;
 
-			const result = process(Observable.of(sorts), Observable.of(filters), <any>pager, Observable.of(unprocessed), <any>sorter);
+			const result = process(Observable.of(sorts), <any>filters, <any>pager, Observable.of(unprocessed), <any>sorter);
 
 			result.count.subscribe(count => dataCount = count);
 			result.filteredDataSet.subscribe(data => filteredDataSet = data);
@@ -72,13 +72,13 @@ describe('data source processor', () => {
 		it('should filter out items that don\'t pass all the filters', () => {
 			const unfiltered = [1, 2, 3, 4];
 			const filtered = [4];
-			const evenFilter = item => (item % 2) === 0;
-			const greaterThan2Filter = item => item > 2;
-			const filters = [{ filter: evenFilter }, { filter: greaterThan2Filter }];
+			const dataFilter = { filter: sinon.spy(() => Observable.of(filtered)) };
 			let result;
 
-			filter(Observable.of(unfiltered), Observable.of(filters)).subscribe(data => result = data);
+			filter(Observable.of(unfiltered), [<any>dataFilter]).subscribe(data => result = data);
 
+			sinon.assert.calledOnce(dataFilter.filter);
+			sinon.assert.calledWith(dataFilter.filter, Observable.of(unfiltered));
 			expect(result).to.deep.equal(filtered);
 		});
 
@@ -86,7 +86,7 @@ describe('data source processor', () => {
 			const unfiltered = [1, 2, 3, 4];
 			let result;
 
-			filter(Observable.of(unfiltered), Observable.of(null)).subscribe(data => result = data);
+			filter(Observable.of(unfiltered), null).subscribe(data => result = data);
 
 			expect(result).to.equal(unfiltered);
 		});
