@@ -2,12 +2,12 @@ import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
 import { IDataSourceOld } from '../dataSource';
-import { DataSourceBase } from '../dataSourceBase.service';
+import { DataSourceBaseOld } from '../dataSourceBaseOld.service';
 import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 
 export { IDataSourceOld };
 
-export class SimpleDataSource<TDataType> extends DataSourceBase<TDataType> {
+export class SimpleDataSource<TDataType> extends DataSourceBaseOld<TDataType> {
 	constructor(data: TDataType[]
 			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility) {

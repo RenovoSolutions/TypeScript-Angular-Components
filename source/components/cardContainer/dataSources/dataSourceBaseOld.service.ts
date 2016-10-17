@@ -9,7 +9,7 @@ import { IDataSourceProcessorOld, IProcessResult } from './processor/dataSourceP
 import { ISort } from '../sorts/sort';
 import { IDataPagerOld } from '../paging/index';
 
-export class DataSourceBase<TDataType> implements IDataSourceOld<TDataType> {
+export class DataSourceBaseOld<TDataType> implements IDataSourceOld<TDataType> {
 	dataSet: TDataType[];
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];

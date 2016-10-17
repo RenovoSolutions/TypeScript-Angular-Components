@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { DataSourceBase } from './dataSourceBase.service';
+import { DataSourceBaseOld } from './dataSourceBaseOld.service';
 import { IDataSourceOld } from './dataSource';
 
 interface IDataSourceProcessorMock {
@@ -14,7 +14,7 @@ interface IDataSourceProcessorMock {
 }
 
 describe('DataSourceBase', () => {
-	let dataSourceBase: DataSourceBase<number>;
+	let dataSourceBase: DataSourceBaseOld<number>;
 	let dataSourceProcessor: IDataSourceProcessorMock;
 
 	beforeEach(() => {
@@ -37,7 +37,7 @@ describe('DataSourceBase', () => {
 			page: sinon.spy((data: any): any => { return data; }),
 		};
 
-		dataSourceBase = new DataSourceBase<number>(dataSourceProcessor, __array.arrayUtility);
+		dataSourceBase = new DataSourceBaseOld<number>(dataSourceProcessor, __array.arrayUtility);
 	});
 
 	describe('count', (): void => {

@@ -4,7 +4,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 
 import { IDataSourceOld } from './dataSource';
-import { DataSourceBase } from './dataSourceBase.service';
+import { DataSourceBaseOld } from './dataSourceBaseOld.service';
 import { IDataSourceProcessorOld } from './processor/dataSourceProcessorOld.service';
 
 export { IDataSourceOld };
@@ -19,7 +19,7 @@ export interface IAsyncDataSource<TDataType> extends IDataSourceOld<TDataType> {
 	reloaded: Subject<void>;
 }
 
-export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implements IAsyncDataSource<TDataType> {
+export class AsyncDataSource<TDataType> extends DataSourceBaseOld<TDataType> implements IAsyncDataSource<TDataType> {
 	protected synchronizedRequests: Subject<Observable<TDataType[]>> = new Subject<Observable<TDataType[]>>();
 	reloaded: Subject<void>;
 	getDataSet: IDataSetFunction<TDataType>;
