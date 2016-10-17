@@ -3,15 +3,16 @@ import { Subject, Observable } from 'rxjs';
 import { filters } from 'typescript-angular-utilities';
 
 import { ISort } from '../sorts/sort';
-import { IDataPagerOld } from '../paging/index';
+import { IFilter } from '../filters/index';
+import { IDataPagerOld, IDataPager } from '../paging/index';
 
 export interface IDataSource<TDataType> {
 	dataSet: Observable<TDataType[]>;
 	filteredDataSet: Observable<TDataType[]>;
 	rawDataSet: Observable<TDataType[]>;
-	// sorts: ISort[];
-	// filters: filters.IFilter[];
-	// pager: IDataPager;
+	sorts: Observable<ISort[]>;
+	filters: IFilter<TDataType, any>[];
+	pager: IDataPager;
 	count: Observable<number>;
 
 	redrawing: Observable<void>;
