@@ -10,14 +10,14 @@ import { ISorter, Sorter } from '../sorts/index';
 import { CardContainerBuilder } from './cardContainerBuilder.service';
 
 export interface IDataSourceBuilder {
-	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
 											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
 											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>;
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSourceOld<TDataType>): dataSources.IDataSourceOld<TDataType>;
 }
 
 @Injectable()
@@ -44,7 +44,7 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		parent._dataSource = this.buildSimpleDataSource([]);
 	}
 
-	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType> {
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType> {
 		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.SimpleDataSource(data, processor, this.array);
 		return this.parent._dataSource;
@@ -80,7 +80,7 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		return <any>this.parent._dataSource;
 	}
 
-	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>{
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSourceOld<TDataType>): dataSources.IDataSourceOld<TDataType>{
 		this.parent._dataSource = dataSource;
 		return this.parent._dataSource;
 	}

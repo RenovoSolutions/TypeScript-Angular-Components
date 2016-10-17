@@ -5,7 +5,7 @@ import __array = services.array;
 import __object = services.object;
 import __transform = services.transform;
 
-import { SimpleDataSource, IDataSource } from './simpleDataSource.service';
+import { SimpleDataSource, IDataSourceOld } from './simpleDataSource.service';
 
 import { DataSourceProcessor } from '../dataSourceProcessor.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
@@ -19,7 +19,7 @@ describe('SimpleDataSource', () => {
 	});
 
 	it('should set data set and filter count settings on base', (): void => {
-		const source: IDataSource<number> = new SimpleDataSource([1, 2, 3], processor, __array.arrayUtility);
+		const source: IDataSourceOld<number> = new SimpleDataSource([1, 2, 3], processor, __array.arrayUtility);
 
 		// inherit functionality from the dataSourceBase
 		expect(_.isFunction(source.refresh)).to.be.true;

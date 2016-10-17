@@ -4,7 +4,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { filters } from 'typescript-angular-utilities';
-import { IDataSource } from '../dataSources/dataSource';
+import { IDataSourceOld } from '../dataSources/dataSource';
 import { ITemplateObject } from '../../templateRenderer/templateRenderer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.filters.cardContainerFilters';
@@ -17,17 +17,17 @@ export interface IRenderableFilter extends filters.IFilter {
 
 export interface IFilterScope extends angular.IScope {
 	filter: filters.IFilter;
-	dataSource: IDataSource<any>;
+	dataSource: IDataSourceOld<any>;
 }
 
 export interface ICardContainerFiltersBindings {
 	filters: filters.IFilter[];
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 }
 
 export class CardContainerFiltersController implements ICardContainerFiltersBindings {
 	filters: filters.IFilter[];
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	renderableFilters: IRenderableFilter[];
 
 	static $inject: string[] = ['$rootScope'];

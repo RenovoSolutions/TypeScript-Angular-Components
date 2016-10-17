@@ -6,7 +6,7 @@ import __date = services.date;
 import __logger = services.logger;
 
 import { IDateFilter } from './dateFilter.service';
-import { IDataSource } from '../../dataSources/dataSource';
+import { IDataSourceOld } from '../../dataSources/dataSource';
 
 const type: moment.UnitOfTime = 'days';
 
@@ -16,7 +16,7 @@ const type: moment.UnitOfTime = 'days';
 })
 export class DateFilterComponent implements OnInit {
 	@Input() filter: IDateFilter;
-	@Input() dataSource: IDataSource<any>;
+	@Input() dataSource: IDataSourceOld<any>;
 	@Input() label: string;
 	@Input() showClear: boolean;
 	@Input() useDateRange: boolean;

@@ -1,7 +1,7 @@
 import { Component, Inject, forwardRef } from '@angular/core';
 
 import { CardContainerComponent } from '../../cardContainer';
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 
 @Component({
 	selector: 'rlItemCount',
@@ -10,7 +10,7 @@ import { IDataSource } from '../../dataSources/index';
 export class ItemCountComponent<T> {
 	cardContainer: CardContainerComponent<T>;
 
-	get dataSource(): IDataSource<T> {
+	get dataSource(): IDataSourceOld<T> {
 		return this.cardContainer && this.cardContainer.dataSource
 			? this.cardContainer.dataSource
 			: null;

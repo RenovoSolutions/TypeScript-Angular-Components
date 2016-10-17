@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { IDataPager } from '../dataPager/dataPager.service';
 import { CardContainerController } from '../../cardContainer.ng1';
 
@@ -26,7 +26,7 @@ export class PagerController {
 	pages: number[];
 	private cardContainer: CardContainerController;
 	private pager: IDataPager;
-	private dataSource: IDataSource<any>;
+	private dataSource: IDataSourceOld<any>;
 	private lastPage: number;
 	private visiblePageCount: number;
 

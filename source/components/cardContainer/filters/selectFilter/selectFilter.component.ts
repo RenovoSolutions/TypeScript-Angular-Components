@@ -6,7 +6,7 @@ import __transform = services.transform;
 import __logger = services.logger;
 
 import { ISelectFilter } from './selectFilter.service';
-import { IDataSource } from '../../datasources/dataSource';
+import { IDataSourceOld } from '../../datasources/dataSource';
 
 @Component({
 	selector: 'rlSelectFilter',
@@ -14,7 +14,7 @@ import { IDataSource } from '../../datasources/dataSource';
 })
 export class SelectFilterComponent<T> {
 	@Input() filter: ISelectFilter<T>;
-	@Input() dataSource: IDataSource<T>;
+	@Input() dataSource: IDataSourceOld<T>;
 	@Input() label: string;
 	@Input() options: T[] | Observable<T[]>;
 	@Input() transform: __transform.ITransform<T, string>;

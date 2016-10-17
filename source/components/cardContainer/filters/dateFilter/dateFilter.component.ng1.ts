@@ -7,7 +7,7 @@ import { services, downgrade } from 'typescript-angular-utilities';
 import __date = services.date;
 
 import {IDateFilter} from './dateFilter.service';
-import {IDataSource} from '../../dataSources/dataSource';
+import {IDataSourceOld} from '../../dataSources/dataSource';
 
 export let componentName: string = 'rlDateFilter';
 export let controllerName: string = 'rlDateFilterController';
@@ -23,7 +23,7 @@ export interface IDateFilterBindings {
 	label: string;
 	dateFrom: moment.Moment;
 	dateTo: moment.Moment;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	type: string;
 }
 
@@ -34,7 +34,7 @@ export class DateFilterController implements IDateFilterBindings {
 	includeDateRange: boolean;
 	includeTime: boolean;
 	label: string;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	type: moment.UnitOfTime = 'days';
 	private inputField: angular.IAugmentedJQuery;
 

@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 import { ISelectFilter } from './selectFilter.service';
-import { IDataSource } from '../../datasources/dataSource';
+import { IDataSourceOld } from '../../datasources/dataSource';
 import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../../../services/jquery/jquery.service';
 
 export let componentName: string = 'rlSelectFilter';
@@ -13,7 +13,7 @@ export interface ISelectFilterBindings {
 	filter: ISelectFilter<any>;
 	options?: any[];
 	getOptions?: { (): angular.IPromise<any[]> };
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	label: string;
 	transform: string | { (item: any): string };
 	nullOption: string;
@@ -30,7 +30,7 @@ export class SelectFilterController implements ISelectFilterController {
 	filter: ISelectFilter<any>;
 	options: any[];
 	getOptions: { (): angular.IPromise<any[]> };
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	label: string;
 	transform: string | { (item: any): string };
 	nullOption: string;

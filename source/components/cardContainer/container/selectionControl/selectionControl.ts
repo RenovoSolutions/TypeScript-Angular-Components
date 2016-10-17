@@ -4,7 +4,7 @@ import { each } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { SelectableCardContainerComponent, ISelectableItem } from '../../selectableCardContainer';
 
 @Component({
@@ -14,7 +14,7 @@ import { SelectableCardContainerComponent, ISelectableItem } from '../../selecta
 export class SelectionComponent<T extends ISelectableItem> implements OnInit {
 	selectedItems: number;
 	pagingEnabled: boolean;
-	dataSource: IDataSource<T>;
+	dataSource: IDataSourceOld<T>;
 
 	cardContainer: SelectableCardContainerComponent<T>;
 	boolean: __boolean.IBooleanUtility;

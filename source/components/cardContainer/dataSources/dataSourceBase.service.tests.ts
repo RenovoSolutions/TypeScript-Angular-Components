@@ -4,7 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
 import { DataSourceBase } from './dataSourceBase.service';
-import { IDataSource } from './dataSource';
+import { IDataSourceOld } from './dataSource';
 
 interface IDataSourceProcessorMock {
 	process: Sinon.SinonSpy;

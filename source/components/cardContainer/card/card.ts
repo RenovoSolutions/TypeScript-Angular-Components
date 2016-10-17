@@ -5,7 +5,7 @@ import { isFunction, assign } from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
-import { IDataSource } from '../dataSources/dataSource';
+import { IDataSourceOld } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerComponent } from '../cardContainer';
 import { FormComponent, baseInputs, IBaseFormInputs } from '../../form/form';

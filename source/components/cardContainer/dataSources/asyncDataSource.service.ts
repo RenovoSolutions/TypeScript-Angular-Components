@@ -3,17 +3,17 @@ import { Subject, Observable } from 'rxjs';
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { IDataSource } from './dataSource';
+import { IDataSourceOld } from './dataSource';
 import { DataSourceBase } from './dataSourceBase.service';
 import { IDataSourceProcessor } from './dataSourceProcessor.service';
 
-export { IDataSource };
+export { IDataSourceOld };
 
 export interface IDataSetFunction<TDataType> {
 	(params: any): Promise<TDataType[]> | Observable<TDataType[]>;
 }
 
-export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
+export interface IAsyncDataSource<TDataType> extends IDataSourceOld<TDataType> {
 	reload();
 	getDataSet: IDataSetFunction<TDataType>;
 	reloaded: Subject<void>;

@@ -45,7 +45,7 @@ export interface ICardContainerBuilder {
 
 @Injectable()
 export class CardContainerBuilder implements ICardContainerBuilder {
-	_dataSource: dataSources.IDataSource<any>;
+	_dataSource: dataSources.IDataSourceOld<any>;
 	_filters: filters.IFilter[];
 	_paging: boolean;
 	_columns: IColumn<any>[];

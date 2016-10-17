@@ -7,7 +7,7 @@ import __array = services.array;
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSource } from './dataSources/index';
+import { IDataSourceOld } from './dataSources/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections, SortManagerService } from './sorts/index';
@@ -43,7 +43,7 @@ export class CardContainerComponent<T> implements OnInit {
 	save: ISaveAction<any>;
 	searchPlaceholder: string;
 
-	dataSource: IDataSource<T>;
+	dataSource: IDataSourceOld<T>;
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	paging: boolean;

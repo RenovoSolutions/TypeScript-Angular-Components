@@ -6,7 +6,7 @@ import __array = services.array;
 import __object = services.object;
 import __transform = services.transform;
 
-import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
+import { AsyncDataSource, IDataSourceOld } from './asyncDataSource.service';
 
 import { DataSourceProcessor } from './dataSourceProcessor.service';
 import { Sorter } from '../sorts/sorter/sorter.service';

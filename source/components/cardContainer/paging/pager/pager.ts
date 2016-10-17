@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
 import { range } from 'lodash';
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { IDataPager } from '../dataPager/dataPager.service';
 import { CardContainerComponent } from '../../cardContainer';
 
@@ -20,7 +20,7 @@ export class PagerComponent<T> implements OnInit {
 
 	cardContainer: CardContainerComponent<T>;
 	pager: IDataPager;
-	dataSource: IDataSource<any>;
+	dataSource: IDataSourceOld<any>;
 
 	get canGoBack(): boolean {
 		return this.pager.pageNumber > 1;

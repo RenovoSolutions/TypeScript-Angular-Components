@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 import { services } from 'typescript-angular-utilities';
 import __logger = services.logger;
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { IFilterGroup, IFilterOption } from './filterGroup.service';
 })
 export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup;
-	@Input() dataSource: IDataSource<T>;
+	@Input() dataSource: IDataSourceOld<T>;
 	@Input() icon: string;
 	@Input() disabled: boolean;
 

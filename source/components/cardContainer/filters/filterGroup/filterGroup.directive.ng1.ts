@@ -3,7 +3,7 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
 
 export var componentName: string = 'rlFilterGroup';
@@ -12,14 +12,14 @@ export var controllerName: string = 'FilterGroupController';
 export interface IFilterGroupBindings {
 	icon: string;
 	filterGroup: IFilterGroup;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 }
 
 export class FilterGroupController {
 	// bindings
 	icon: string;
 	filterGroup: IFilterGroup;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	disabled: boolean;
 
 	hasIcon: boolean;

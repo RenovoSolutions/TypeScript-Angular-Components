@@ -1,11 +1,11 @@
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { IDataSource } from '../dataSource';
+import { IDataSourceOld } from '../dataSource';
 import { DataSourceBase } from '../dataSourceBase.service';
 import { IDataSourceProcessor } from '../dataSourceProcessor.service';
 
-export { IDataSource };
+export { IDataSourceOld };
 
 export class SimpleDataSource<TDataType> extends DataSourceBase<TDataType> {
 	constructor(data: TDataType[]

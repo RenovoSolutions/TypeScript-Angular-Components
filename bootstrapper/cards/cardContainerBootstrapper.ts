@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 import { ICardContainerBuilder } from '../../source/components/cardContainer/builder/index';
-import { IDataSource } from '../../source/components/cardContainer/dataSources/index';
+import { IDataSourceOld } from '../../source/components/cardContainer/dataSources/index';
 import { ISelectFilter,	IDateFilter } from '../../source/components/cardContainer/filters/index';
 import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
 
@@ -24,7 +24,7 @@ class CardTestController {
 	options: number[];
 	selectFilter: ISelectFilter<number>;
 	dateFilter: IDateFilter;
-	dataSource: IDataSource<ICardItem>;
+	dataSource: IDataSourceOld<ICardItem>;
 
 	static $inject: string[] = [cardContainerBuilderServiceName];
 	constructor(cardContainerBuilderFactory: any) {

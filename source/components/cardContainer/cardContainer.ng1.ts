@@ -9,7 +9,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSource } from './dataSources/index';
+import { IDataSourceOld } from './dataSources/index';
 import { DataPager } from './paging/index';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
@@ -107,7 +107,7 @@ export class CardContainerController {
 	searchPlaceholder: string;
 	focusSearchOn: boolean;
 
-	dataSource: IDataSource<any>;
+	dataSource: IDataSourceOld<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
 	numberSelectedChanges: Rx.Subject<number>;

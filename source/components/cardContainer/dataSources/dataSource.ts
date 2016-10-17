@@ -5,7 +5,7 @@ import { filters } from 'typescript-angular-utilities';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from '../paging/index';
 
-export interface IDataSource<TDataType> {
+export interface IDataSourceOld<TDataType> {
 	dataSet: TDataType[];
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];

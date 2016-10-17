@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { ISort } from '../sorts/sort';
-import { IDataPager } from '../paging/index';
-import { Sorter } from '../sorts/sorter/sorter.service';
+import { ISort } from '../../sorts/sort';
+import { IDataPager } from '../../paging/index';
+import { Sorter } from '../../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
 	count: number;

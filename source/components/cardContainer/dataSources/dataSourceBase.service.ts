@@ -4,12 +4,12 @@ import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 
-import { IDataSource } from './dataSource';
+import { IDataSourceOld } from './dataSource';
 import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
 import { ISort } from '../sorts/sort';
 import { IDataPager } from '../paging/index';
 
-export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
+export class DataSourceBase<TDataType> implements IDataSourceOld<TDataType> {
 	dataSet: TDataType[];
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];
