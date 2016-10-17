@@ -7,27 +7,25 @@ import { IFilter } from '../filters/index';
 import { IDataPagerOld, IDataPager } from '../paging/index';
 
 export interface IDataSource<TDataType> {
-	dataSet: Observable<TDataType[]>;
-	filteredDataSet: Observable<TDataType[]>;
-	rawDataSet: Observable<TDataType[]>;
-	sorts: Observable<ISort[]>;
+	dataSet$: Observable<TDataType[]>;
+	filteredDataSet$: Observable<TDataType[]>;
+	rawDataSet$: Observable<TDataType[]>;
+	sorts$: Observable<ISort[]>;
 	filters: IFilter<TDataType, any>[];
 	pager: IDataPager;
-	count: Observable<number>;
+	count$: Observable<number>;
 
-	redrawing: Observable<void>;
-	changed: Observable<void>;
-	added: Observable<void>;
-	removed: Observable<void>;
-	replaced: Observable<void>;
+	redrawing$: Observable<void>;
+	changed$: Observable<void>;
+	added$: Observable<void>;
+	removed$: Observable<void>;
+	replaced$: Observable<void>;
 
 	countFilterGroups: boolean;
 
-	loadingDataSet: boolean;
-	needsRefinedSearch: boolean;
-	isEmpty: boolean;
-
-	initPager(): void;
+	loadingDataSet$: Observable<boolean>;
+	needsRefinedSearch$: Observable<boolean>;
+	isEmpty$: Observable<boolean>;
 
 	onSortChange(): void;
 	onPagingChange(): void;

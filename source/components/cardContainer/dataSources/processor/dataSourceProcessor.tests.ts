@@ -19,9 +19,9 @@ describe('data source processor', () => {
 
 			const result = process(Observable.of(sorts), <any>filters, <any>pager, Observable.of(unprocessed), <any>sorter);
 
-			result.count.subscribe(count => dataCount = count);
-			result.filteredDataSet.subscribe(data => filteredDataSet = data);
-			result.dataSet.subscribe(data => dataSet = data);
+			result.count$.subscribe(count => dataCount = count);
+			result.filteredDataSet$.subscribe(data => filteredDataSet = data);
+			result.dataSet$.subscribe(data => dataSet = data);
 
 			expect(dataCount).to.equal(3);
 			expect(filteredDataSet).to.deep.equal(filtered);

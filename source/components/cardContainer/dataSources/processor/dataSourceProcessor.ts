@@ -7,9 +7,9 @@ import { IDataPager } from '../../paging/index';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
-	count: Observable<number>;
-	filteredDataSet: Observable<TDataType[]>;
-	dataSet: Observable<TDataType[]>;
+	count$: Observable<number>;
+	filteredDataSet$: Observable<TDataType[]>;
+	dataSet$: Observable<TDataType[]>;
 }
 
 export function process<TDataType>(sorts$: Observable<ISort[]>
@@ -22,9 +22,9 @@ export function process<TDataType>(sorts$: Observable<ISort[]>
 	const paged = page(filtered, pager);
 
 	return {
-		count: count(filtered),
-		filteredDataSet: filtered,
-		dataSet: paged,
+		count$: count(filtered),
+		filteredDataSet$: filtered,
+		dataSet$: paged,
 	};
 }
 
