@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
 
-import { DataPager } from './paging/index';
+import { DataPagerOld } from './paging/index';
 import { SortManagerService } from './sorts/index';
 
 import { CardContainerComponent	} from './cardContainer';
@@ -47,7 +47,7 @@ describe('CardContainerComponent', () => {
 	let mockedDataSource: IDataSourceMock;
 
 	beforeEach(() => {
-		cardContainer = new CardContainerComponent(__array.arrayUtility, new DataPager(), new SortManagerService());
+		cardContainer = new CardContainerComponent(__array.arrayUtility, new DataPagerOld(), new SortManagerService());
 
 		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
 		cardContainer.builder = builder;

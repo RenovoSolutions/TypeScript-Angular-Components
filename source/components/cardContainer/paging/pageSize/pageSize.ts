@@ -1,6 +1,6 @@
 import { Component, Inject, forwardRef } from '@angular/core';
 
-import { IDataPager } from '../dataPager/dataPager.service';
+import { IDataPagerOld } from '../dataPager/dataPagerOld.service';
 import { CardContainerComponent } from '../../cardContainer';
 
 export const availablePageSizes: number[] = [10, 15, 20, 25];
@@ -13,7 +13,7 @@ export class PageSizeComponent<T> {
 	pageSizes: number[];
 
 	cardContainer: CardContainerComponent<T>;
-	pager: IDataPager;
+	pager: IDataPagerOld;
 
 	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;

@@ -5,7 +5,7 @@ import __object = services.object;
 import __transform = services.transform;
 
 import { DataSourceProcessorOld, IProcessResult } from './dataSourceProcessorOld.service';
-import { DataPager } from '../../paging/index';
+import { DataPagerOld } from '../../paging/index';
 import { ISort, SortDirection, Sorter, MergeSort } from '../../sorts/index';
 
 interface ITestObject {
@@ -19,13 +19,13 @@ interface IFilterMock {
 	type?: string;
 }
 
-describe('DataSourceProcessor', () => {
+describe('DataSourceProcessorOld', () => {
 	let dataSourceProcessor: DataSourceProcessorOld;
-	let pager: DataPager;
+	let pager: DataPagerOld;
 
 	beforeEach(() => {
 		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
-		pager = new DataPager();
+		pager = new DataPagerOld();
 	});
 
 	it('should sort the data', (): void => {

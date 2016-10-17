@@ -4,7 +4,7 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 
 import { IDataSourceOld } from '../../dataSources/index';
-import { IDataPager } from '../dataPager/dataPager.service';
+import { IDataPagerOld } from '../dataPager/dataPagerOld.service';
 import { CardContainerController } from '../../cardContainer.ng1';
 
 export let moduleName: string = 'rl.ui.components.cardContainer.pager';
@@ -25,7 +25,7 @@ export class PagerController {
 	canGoForward: boolean = false;
 	pages: number[];
 	private cardContainer: CardContainerController;
-	private pager: IDataPager;
+	private pager: IDataPagerOld;
 	private dataSource: IDataSourceOld<any>;
 	private lastPage: number;
 	private visiblePageCount: number;

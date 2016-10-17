@@ -1,10 +1,10 @@
-import { DataPager } from './dataPager.service';
+import { DataPagerOld } from './dataPagerOld.service';
 
-describe('DataPager', () => {
-	let dataPager: DataPager;
+describe('DataPagerOld', () => {
+	let dataPager: DataPagerOld;
 
 	beforeEach(() => {
-		dataPager = new DataPager();
+		dataPager = new DataPagerOld();
 	});
 
 	it('should restrict data set to page size', (): void => {

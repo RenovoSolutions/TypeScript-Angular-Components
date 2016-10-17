@@ -54,7 +54,7 @@ export class CardContainerBuilder implements ICardContainerBuilder {
 	_selectableCards: boolean;
 	_disableSelection: { (item: any): string };
 	_searchFilter: __genericSearchFilter.IGenericSearchFilter;
-	_pager: paging.IDataPager;
+	_pager: paging.IDataPagerOld;
 	_renderFilters: boolean;
 	_saveWhenInvalid: boolean;
 

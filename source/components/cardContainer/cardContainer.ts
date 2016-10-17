@@ -8,7 +8,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSourceOld } from './dataSources/index';
-import { DataPager } from './paging/dataPager/dataPager.service';
+import { DataPagerOld } from './paging/dataPager/dataPagerOld.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 
@@ -36,7 +36,7 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.save,
 		cardContainerInputs.searchPlaceholder
 	],
-	providers: [DataPager, SortManagerService],
+	providers: [DataPagerOld, SortManagerService],
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: CardContainerBuilder;
@@ -58,7 +58,7 @@ export class CardContainerComponent<T> implements OnInit {
 	numberSelectedChanges: Subject<number> = new Subject<number>();
 
 	arrayUtility: __array.IArrayUtility;
-	injectedPager: DataPager;
+	injectedPager: DataPagerOld;
 	sortManager: SortManagerService;
 
 	type: CardContainerType = CardContainerType.standard;
@@ -80,7 +80,7 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.dataSource.dataSet && !!this.dataSource.dataSet.length;
 	}
 
-	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
+	constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
 		this.arrayUtility = array;
 		this.injectedPager = pager;
 		this.sortManager = sortManager;

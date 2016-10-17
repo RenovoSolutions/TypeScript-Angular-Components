@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
 import { range } from 'lodash';
 
 import { IDataSourceOld } from '../../dataSources/index';
-import { IDataPager } from '../dataPager/dataPager.service';
+import { IDataPagerOld } from '../dataPager/dataPagerOld.service';
 import { CardContainerComponent } from '../../cardContainer';
 
 export const defaultVisiblePageCount: number = 5;
@@ -19,7 +19,7 @@ export class PagerComponent<T> implements OnInit {
 	visiblePageCount: number;
 
 	cardContainer: CardContainerComponent<T>;
-	pager: IDataPager;
+	pager: IDataPagerOld;
 	dataSource: IDataSourceOld<any>;
 
 	get canGoBack(): boolean {

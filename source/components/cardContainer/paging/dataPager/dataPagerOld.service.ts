@@ -3,7 +3,7 @@ import * as Rx from 'rxjs';
 
 export const defaultPageSize: number = 10;
 
-export interface IDataPager {
+export interface IDataPagerOld {
 	pageNumber: number;
 	pageSize: number;
 
@@ -14,7 +14,7 @@ export interface IDataPager {
 	filter<T>(dataSet: T[]): T[];
 }
 
-export class DataPager implements IDataPager {
+export class DataPagerOld implements IDataPagerOld {
 	private _pageNumber: number = 1;
 	private _pageSize: number = defaultPageSize;
 

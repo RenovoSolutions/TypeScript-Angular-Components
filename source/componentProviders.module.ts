@@ -9,7 +9,7 @@ import { DialogRootService } from './components/dialog/dialogRoot.service';
 
 import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
-import { DataPager } from './components/cardContainer/paging/index';
+import { DataPagerOld } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
@@ -36,9 +36,9 @@ const cardContainerBuilderFactoryProvider: FactoryProvider = {
 	},
 };
 const dataPagerFactoryProvider: ValueProvider = {
-	provide: DataPager,
+	provide: DataPagerOld,
 	useValue: {
-		getInstance: () => new DataPager(),
+		getInstance: () => new DataPagerOld(),
 	},
 };
 const columnSearchFactoryProvider: ValueProvider = {

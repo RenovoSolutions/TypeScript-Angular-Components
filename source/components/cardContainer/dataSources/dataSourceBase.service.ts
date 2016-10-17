@@ -7,7 +7,7 @@ import __object = services.object;
 import { IDataSourceOld } from './dataSource';
 import { IDataSourceProcessorOld, IProcessResult } from './processor/dataSourceProcessorOld.service';
 import { ISort } from '../sorts/sort';
-import { IDataPager } from '../paging/index';
+import { IDataPagerOld } from '../paging/index';
 
 export class DataSourceBase<TDataType> implements IDataSourceOld<TDataType> {
 	dataSet: TDataType[];
@@ -15,7 +15,7 @@ export class DataSourceBase<TDataType> implements IDataSourceOld<TDataType> {
 	rawDataSet: TDataType[];
 	sorts: ISort[] = [];
 	filters: filters.IFilter[] = [];
-	pager: IDataPager;
+	pager: IDataPagerOld;
 	private _count: number = 0;
 
 	countFilterGroups: boolean = false;

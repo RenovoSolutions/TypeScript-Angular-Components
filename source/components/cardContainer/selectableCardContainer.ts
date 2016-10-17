@@ -7,7 +7,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IColumn } from './column';
 import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
-import { DataPager } from './paging/dataPager/dataPager.service';
+import { DataPagerOld } from './paging/dataPager/dataPagerOld.service';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
 import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
@@ -39,7 +39,7 @@ export interface ISelectionViewData {
 		cardContainerInputs.searchPlaceholder
 	],
 	providers: [
-		DataPager,
+		DataPagerOld,
 		SortManagerService,
 		{
 			provide: CardContainerComponent,
@@ -61,7 +61,7 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
+	constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
 		super(array, pager, sortManager);
 		this.type = CardContainerType.selectable;
 	}

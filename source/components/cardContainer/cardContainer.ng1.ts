@@ -10,7 +10,7 @@ import __genericSearchFilter = services.genericSearchFilter;
 import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
 import { IDataSourceOld } from './dataSources/index';
-import { DataPager } from './paging/index';
+import { DataPagerOld } from './paging/index';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 import { dataPagerFactoryName } from '../../componentsDowngrade';
