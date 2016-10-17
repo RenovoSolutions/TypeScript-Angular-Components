@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { filter as _filter, some } from 'lodash';
+import { filter as _filter, every } from 'lodash';
 
 import { filters } from 'typescript-angular-utilities';
 import IFilter = filters.IFilter;
@@ -48,7 +48,7 @@ export function filter<TDataType>(data$: Observable<TDataType[]>, filters$: Obse
 	return data$.combineLatest(filters$)
 				.map(([data, filters]) => {
 			if (filters && filters.length) {
-				return _filter(data, item => some(filters, filterItem => filterItem.filter(item)));
+				return _filter(data, item => every(filters, filterItem => filterItem.filter(item)));
 			}
 			return data;
 		});
