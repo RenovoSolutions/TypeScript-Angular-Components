@@ -15,25 +15,16 @@ export interface IDataSource<TDataType> {
 	pager: IDataPager;
 	count$: Observable<number>;
 
-	redrawing$: Observable<void>;
-	changed$: Observable<void>;
-	added$: Observable<void>;
-	removed$: Observable<void>;
-	replaced$: Observable<void>;
-
 	countFilterGroups: boolean;
 
 	loadingDataSet$: Observable<boolean>;
 	needsRefinedSearch$: Observable<boolean>;
 	isEmpty$: Observable<boolean>;
 
-	onSortChange(): void;
-	onPagingChange(): void;
-	refresh(): void;
 	clear(): void;
 
+	add(data: TDataType): void;
 	remove(data: TDataType): void;
-	push(data: TDataType): void;
 	replace(oldData: TDataType, newData: TDataType): void;
 }
 
