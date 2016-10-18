@@ -1,16 +1,13 @@
 import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
-import { services, filters } from 'typescript-angular-utilities';
-import __array = services.array;
-import __genericSearchFilter = services.genericSearchFilter;
-
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSourceOld } from './dataSources/index';
-import { DataPagerOld } from './paging/dataPager/dataPagerOld.service';
+import { IDataSource } from './dataSources/index';
+import { DataPager } from './paging/dataPager/dataPager.service';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections, SortManagerService } from './sorts/index';
+import { IFilter, SearchFilter } from './filters/index';
 
 import { CardComponent } from './card/card';
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
@@ -18,7 +15,7 @@ import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate
 import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { ISaveAction } from '../form/form';
 
-import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerType } from './builder/cardContainerBuilderOld.service';
+import { ICardContainerConstructor, CardContainerBuilderService, CardContainerType } from './builder/cardContainerBuilder.service';
 
 export const cardContainerInputs = {
 	builder: 'builder',
@@ -36,16 +33,16 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.save,
 		cardContainerInputs.searchPlaceholder
 	],
-	providers: [DataPagerOld, SortManagerService],
+	providers: [DataPager, SortManagerService],
 })
 export class CardContainerComponent<T> implements OnInit {
-	builder: CardContainerBuilderOld;
+	builder: ICardContainerConstructor<T>;
 	save: ISaveAction<any>;
 	searchPlaceholder: string;
 
-	dataSource: IDataSourceOld<T>;
-	filters: filters.IFilter[];
-	searchFilter: __genericSearchFilter.IGenericSearchFilter;
+	dataSource: IDataSource<T>;
+	filters: IFilter<T, any>[];
+	searchFilter: SearchFilter;
 	paging: boolean;
 	columns: IColumn<any>[];
 	clickableCards: boolean;
@@ -54,11 +51,11 @@ export class CardContainerComponent<T> implements OnInit {
 	saveWhenInvalid: boolean;
 	sortDirection: ISortDirections;
 
-	numberSelected: number = 0;
-	numberSelectedChanges: Subject<number> = new Subject<number>();
+	private _numberSelected: BehaviorSubject<number>;
+	numberSelected$: Observable<number>;
 
-	arrayUtility: __array.IArrayUtility;
-	injectedPager: DataPagerOld;
+	injectedPager: DataPager;
+	injectedSearchFilter: SearchFilter;
 	sortManager: SortManagerService;
 
 	type: CardContainerType = CardContainerType.standard;
@@ -76,20 +73,33 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.cardChildren.toArray();
 	}
 
-	get hasItems(): boolean {
-		return this.dataSource.dataSet && !!this.dataSource.dataSet.length;
+	get hasItems$(): Observable<boolean> {
+		return this.dataSource.dataSet$.map(dataSet => dataSet && !!dataSet.length);
 	}
 
-	constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
-		this.arrayUtility = array;
+	constructor(pager: DataPager
+			, searchFilter: SearchFilter
+			, sortManager: SortManagerService) {
 		this.injectedPager = pager;
+		this.injectedSearchFilter = searchFilter;
 		this.sortManager = sortManager;
 		this.save = <ISaveAction>() => null;
+		this._numberSelected = new BehaviorSubject(0);
 	}
 
 	ngOnInit(): void {
 		if (this.builder != null) {
-			this.builder.setCardContainerProperties(this);
+			this.paging = this.builder.paging;
+			this.maxColumnSorts = this.builder.maxColumnSorts;
+			this.permanentFooters = this.builder.permanentFooters;
+			this.columns = this.builder.columns;
+			this.dataSource = this.builder.dataSource;
+			this.filters = this.builder.filters;
+
+			if (this.builder.search) {
+				this.searchFilter = this.injectedSearchFilter;
+				this.filters.push(this.searchFilter);
+			}
 		}
 
 		this.permanentFooters = isUndefined(this.permanentFooters) ? false : this.permanentFooters;
@@ -100,14 +110,12 @@ export class CardContainerComponent<T> implements OnInit {
 
 		this.setupPaging();
 
-		if (this.dataSource.sorts == null) {
-			this.dataSource.sorts = [];
-		}
+		// need a way to customize the sorts?
+		this.sortManager.setup([], name => this.lookupColumn(name), this.maxColumnSorts);
 
-		this.sortManager.setup(this.dataSource.sorts, name => this.lookupColumn(name), this.maxColumnSorts);
+		this.dataSource.sorts$ = this.sortManager.sortList$;
 
-		this.sortManager.sortList$.subscribe(sorts => this.dataSource.sorts = sorts);
-		this.sortManager.sortChange$.subscribe(() => this.dataSource.onSortChange());
+		this.dataSource.init();
 	}
 
 	openCard(): boolean {
@@ -125,7 +133,6 @@ export class CardContainerComponent<T> implements OnInit {
 	private syncFilters(): void {
 		if (this.filters) {
 			this.dataSource.filters = this.filters;
-			this.dataSource.refresh();
 		} else if (this.dataSource.filters != null) {
 			this.filters = this.dataSource.filters;
 		}
@@ -137,15 +144,9 @@ export class CardContainerComponent<T> implements OnInit {
 			if (this.paging === false) {
 				this.dataSource.pager = null;
 			} else {
-				this.builder._pager = this.injectedPager;
-				this.dataSource.pager = this.builder._pager;
+				this.dataSource.pager = this.injectedPager;
 			}
-		} else if (this.dataSource.pager) {
-			// If the paging flag is not set and the dataSource has a pager, save a reference here
-			this.builder._pager = this.dataSource.pager;
 		}
-
-		this.dataSource.initPager();
 	}
 
 	private lookupColumn(label: string): IColumn<any> {

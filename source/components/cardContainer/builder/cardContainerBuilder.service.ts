@@ -2,8 +2,9 @@ import { Injector, Injectable } from '@angular/core';
 
 import { IColumn } from '../column';
 import { IDataSource, SimpleDataSource } from '../dataSources/index';
-import {} from '../paging/index';
 import { Sorter } from '../sorts/index';
+import { IFilter } from '../filters/index';
+import {} from '../paging/index';
 
 export enum CardContainerType {
 	standard,
@@ -28,6 +29,7 @@ export interface ICardContainerConstructor<TDataType> {
 	disableSelection?: { (item: any): string };
 	columns: IColumn<TDataType>[];
 	dataSource: IDataSource<TDataType>;
+	filters: IFilter<TDataType, any>[];
 }
 
 @Injectable()
