@@ -1,4 +1,4 @@
-import { Component, Optional, Input, OnInit, trigger, state, style, transition, animate } from '@angular/core';
+import { Component, Optional, Input, OnInit } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -9,25 +9,15 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { labelSlide } from '../input.animations';
+
 @Component({
 	selector: 'rlTextbox',
 	template: require('./textbox.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	animations: [
-		trigger('labelSlide', [
-			state('hideLabel', style({
-				opacity: 0,
-				transform: 'translateY(100%)',
-			})),
-			state('showLabel', style({
-				opacity: 1,
-				transform: 'translateY(0)',
-			})),
-			transition('hideLabel <=> showLabel', animate('250ms ease')),
-		])
-	],
+	animations: [ labelSlide ],
 })
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
