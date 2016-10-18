@@ -26,6 +26,10 @@ export class DataPager implements IDataPager {
 		this._pageNumber.next(page);
 	}
 
+	setPageSize(size: number): void {
+		this._pageSize.next(size);
+	}
+
 	get pageNumber$(): Observable<number> {
 		return this._pageNumber.asObservable();
 	}

@@ -1,5 +1,6 @@
 <div *ngIf="pager">
 	<rlSelect title="Cards per page"
-			  [(value)]="pager.pageSize"
+			  [value]="pager.pageSize$ | async"
+			  (valueChange)="pager.setPageSize($event)"
 			  [options]="pageSizes"></rlSelect>
 </div>
