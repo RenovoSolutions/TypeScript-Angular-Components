@@ -17,10 +17,11 @@ import { labelSlide } from '../input.animations';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	animations: [ labelSlide ],
+	animations: [labelSlide],
 })
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
+
 	labelState: string = 'hideLabel';
 
 	constructor( @Optional() rlForm: FormComponent
