@@ -2,7 +2,7 @@
 	[class.error]="!control.valid">
 	<label [@labelSlide]="labelState">{{label}}</label>
 	<input type="text"
-		   class="form-control angular-animate"
+		   class="form-control"
 		   [value]="value"
 		   (input)="onChange($event.target.value)"
 		   (focus)="showLabel()"
