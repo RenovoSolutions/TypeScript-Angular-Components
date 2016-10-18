@@ -1,4 +1,4 @@
-import { Component, Optional, Input, OnInit } from '@angular/core';
+import { Component, Optional, Input, OnInit, trigger, state, style, transition, animate } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -15,9 +15,23 @@ import { FormComponent } from '../../form/form';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: [
+		trigger('labelSlide', [
+			state('hideLabel', style({
+				opacity: 0,
+				transform: 'translateY(100%)',
+			})),
+			state('showLabel', style({
+				opacity: 1,
+				transform: 'translateY(0)',
+			})),
+			transition('hideLabel <=> showLabel', animate('250ms ease')),
+		])
+	],
 })
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
+	labelState: string = 'hideLabel';
 
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
@@ -35,5 +49,15 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 
 	onChange(text: string): void {
 		this.setValue(text);
+	}
+
+	showLabel(): string {
+		return this.labelState = 'showLabel';
+	}
+
+	hideLabel(): string {
+		if (this.value == '') {
+			return this.labelState = 'hideLabel';
+		}
 	}
 }
