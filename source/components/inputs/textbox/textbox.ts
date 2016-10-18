@@ -45,6 +45,10 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 		this.value = this.value || '';
+
+		if (this.value !== '') {
+			this.showLabel();
+		}
 	}
 
 	onChange(text: string): void {
