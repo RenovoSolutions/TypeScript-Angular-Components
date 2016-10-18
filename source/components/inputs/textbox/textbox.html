@@ -1,10 +1,12 @@
 <div class="field"
 	[class.error]="!control.valid">
-	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<label [@labelSlide]="labelState">{{label}}</label>
 	<input type="text"
 		   class="form-control angular-animate"
 		   [value]="value"
 		   (input)="onChange($event.target.value)"
+		   (focus)="showLabel()"
+		   (blur)="hideLabel()"
 		   [placeholder]="label"
 		   [attr.maxlength]="maxlength"
 		   [disabled]="disabled" />
