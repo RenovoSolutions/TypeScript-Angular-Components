@@ -4,10 +4,12 @@ import { Observable, BehaviorSubject } from 'rxjs';
 export const defaultPageSize: number = 10;
 
 export interface IDataPager {
-	pageNumber: Observable<number>;
-	pageSize: Observable<number>;
+	pageNumber$: Observable<number>;
+	pageSize$: Observable<number>;
 
-	startItem: Observable<number>;
+	setPage(page: number): void;
+
+	startItem$: Observable<number>;
 	filter<T>(dataSet$: Observable<T[]>): Observable<T[]>;
 }
 
@@ -20,21 +22,25 @@ export class DataPager implements IDataPager {
 		this._pageSize = new BehaviorSubject<number>(defaultPageSize);
 	}
 
-	get pageNumber(): Observable<number> {
+	setPage(page: number): void {
+		this._pageNumber.next(page);
+	}
+
+	get pageNumber$(): Observable<number> {
 		return this._pageNumber.asObservable();
 	}
 
-	get pageSize(): Observable<number> {
+	get pageSize$(): Observable<number> {
 		return this._pageSize.asObservable();
 	}
 
-	get startItem(): Observable<number> {
-		return this.pageNumber.combineLatest(this.pageSize)
+	get startItem$(): Observable<number> {
+		return this.pageNumber$.combineLatest(this.pageSize$)
 							  .map(([pageNumber, pageSize]) => (pageNumber - 1) * pageSize);
 	}
 
 	filter(dataSet$: Observable<any[]>): Observable<any[]> {
-		return dataSet$.combineLatest(this.startItem, this.pageSize)
+		return dataSet$.combineLatest(this.startItem$, this.pageSize$)
 					   .map(([dataSet, startItem, pageSize]) => {
 				return take(drop(dataSet, startItem), pageSize);
 			});
