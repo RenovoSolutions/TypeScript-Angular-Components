@@ -7,7 +7,7 @@ import __guid = services.guid;
 
 import { FormComponent } from '../form/form';
 
-export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled', 'labelState'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 
 export class InputComponent<T> implements AfterViewInit, OnInit {
@@ -15,6 +15,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	label: string = '';
 	disabled: boolean;
 	value: T;
+	labelState: string = 'hideLabel';
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
 
@@ -35,6 +36,10 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	ngOnInit(): void {
 		if (this.object.isNullOrEmpty(this.name)) {
 			this.name = this.inputType + '-' + this.guid.random();
+		}
+
+		if (!this.object.isNullOrEmpty(this.value)) {
+			this.showLabel();
 		}
 	}
 
@@ -60,6 +65,16 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 			this.control.markAsDirty();
 			this.control.setValue(this.value);
 			this.change.emit(value);
+		}
+	}
+
+	showLabel(): string {
+		return this.labelState = 'showLabel';
+	}
+
+	hideLabel(): string {
+		if (this.object.isNullOrEmpty(this.value)) {
+			return this.labelState = 'hideLabel';
 		}
 	}
 }

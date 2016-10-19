@@ -22,8 +22,6 @@ import { labelSlide } from '../input.animations';
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
 
-	labelState: string = 'hideLabel';
-
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, object: __object.ObjectUtility
@@ -36,23 +34,9 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 		this.value = this.value || '';
-
-		if (this.value !== '') {
-			this.showLabel();
-		}
 	}
 
 	onChange(text: string): void {
 		this.setValue(text);
-	}
-
-	showLabel(): string {
-		return this.labelState = 'showLabel';
-	}
-
-	hideLabel(): string {
-		if (this.value == '') {
-			return this.labelState = 'hideLabel';
-		}
 	}
 }
