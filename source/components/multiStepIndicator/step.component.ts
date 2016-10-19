@@ -9,10 +9,10 @@ export class StepComponent {
 	@Input() title: string;
 	@Input() link: any[] | string;
 	@Input() valid: boolean;
-	@Input() msiStyling: boolean;
+	@Input() useMsiStyling: boolean;
 
 	get stepClass(): string {
-		return this.msiStyling
+		return this.useMsiStyling
 			? 'rl-multi-step-item'
 			: 'rl-tab-item';
 	}
