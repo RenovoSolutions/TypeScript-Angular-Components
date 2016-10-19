@@ -5,10 +5,11 @@ import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 
-import { baseAnimations } from '../input';
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
+
+import { baseAnimations } from '../input';
 
 @Component({
 	selector: 'rlTextarea',

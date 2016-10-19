@@ -1,10 +1,12 @@
 <div class="field input-group"
 	[class.error]="!control.valid"
 	(offClick)="closeTimes()">
-	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<label [@slide]="labelState">{{label}}</label>
 	<input type="text"
-		   class="form-control angular-animate"
+		   class="form-control"
 		   [value]="displayTime"
+		   (focus)="showLabel()"
+		   (blur)="hideLabel()"
 		   (click)="toggleTimes()"
 		   [placeholder]="label"
 		   [disabled]="disabled" />

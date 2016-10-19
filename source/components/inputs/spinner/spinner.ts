@@ -13,6 +13,8 @@ import { ValidatedInputComponent, validationInputs, baseOutputs, IInputChanges }
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { baseAnimations } from '../input';
+
 export const defaultMaxValue: number = 100000000000000000000;
 
 export interface ISpinnerChanges extends IInputChanges {
@@ -25,6 +27,7 @@ export interface ISpinnerChanges extends IInputChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: baseAnimations,
 })
 export class SpinnerComponent extends ValidatedInputComponent<number> implements AfterViewInit, OnChanges, AfterViewChecked {
 	@Input() min: number;

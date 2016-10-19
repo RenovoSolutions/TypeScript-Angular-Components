@@ -2,24 +2,28 @@
 	<div *ngSwitchDefault
 		 class="field"
 		 [class.error]="!control.valid">
-		 <label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+		 <label [@slide]="labelState">{{label}}</label>
 		 <input type="text"
 		 		#spinner
 				[id]="spinnerId"
-				[placeholder]="label" />
+				[placeholder]="label"
+				(focus)="showLabel()"
+				(blur)="hideLabel()" />
 		<div [hidden]="control.valid" class="error-string">
 			{{componentValidator.error}}
 		</div>
 	</div>
 	<div *ngSwitchCase="'true'">
 		<div class="input-group field">
-			<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+			<label [@slide]="labelState">{{label}}</label>
 			<span class="input-group-addon" *ngIf="prefix">{{prefix}}</span>
 			<input class="form-control"
 				   disabled="true"
 				   type="text"
 				   [value]="value"
-				   [placeholder]="label" />
+				   [placeholder]="label"
+				   (focus)="showLabel()"
+				   (blur)="hideLabel()" />
 			<span class="input-group-addon" *ngIf="postfix">{{postfix}}</span>
 		</div>
 	</div>
