@@ -96,7 +96,6 @@ export class MessageLogController implements IMessageLogBindings {
 		});
 
 		this.$scope.$watch((): IMessageLogDataService => { return this.service; }, (service: IMessageLogDataService): void => {
-			debugger;
 			this.messageLog.dataService = service;
 			this.loadingInitial = true;
 		});
