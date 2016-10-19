@@ -50,6 +50,20 @@ describe('InputComponent', (): void => {
 		expect(input.name).to.equal('name');
 	});
 
+	it('should show the label if the form control already has a value set', (): void => {
+		input.value = 12345;
+		input.ngOnInit();
+
+		expect(input.labelState).to.equal('show');
+	});
+
+	it('should hide the label if the form control has no value already set', (): void => {
+		input.value = null;
+		input.ngOnInit();
+
+		expect(input.labelState).to.equal('hide');
+	});
+
 	it('should add the control to the form using the name if a form is present', (): void => {
 		const control: any = { valueChanges: new Subject<number>() };
 		input.control = control;
@@ -100,4 +114,24 @@ describe('InputComponent', (): void => {
 		input.setValue(4);
 		expect(input.value).to.be.undefined;
 	});
+
+	it('should show the label', (): void => {
+		input.showLabel();
+
+		expect(input.labelState).to.equal('show');
+	});
+
+	it('should hide the label if the form control is empty', (): void => {
+		input.value = null;
+		input.hideLabel();
+
+		expect(input.labelState).to.equal('hide');
+	});
+
+	it('should not hide the label if the form control has a value', (): void => {
+		input.value = 12345;
+		input.hideLabel();
+
+		expect(input.labelState).to.equal('show');
+	})
 });
