@@ -75,8 +75,8 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	}
 
 	hideLabel(): string {
-		if (this.object.isNullOrEmpty(this.value)) {
-			return this.labelState = 'hide';
-		}
+		return this.object.isNullOrEmpty(this.value)
+			? this.labelState = 'hide'
+			: this.showLabel();
 	}
 }
