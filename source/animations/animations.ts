@@ -2,6 +2,7 @@ import { AnimationEntryMetadata, trigger, state, style, transition, animate } fr
 
 export const slide = trigger('slide', [
 	state('hide', style({
+		zIndex: 1,
 		opacity: 0,
 		transform: 'translateY(100%)',
 	})),
