@@ -5,11 +5,10 @@ import __object = services.object;
 import __array = services.array;
 import __guid = services.guid;
 
+import { baseAnimations } from '../input';
 import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
-
-import { labelSlide } from '../input.animations';
 
 @Component({
 	selector: 'rlTextbox',
@@ -17,7 +16,7 @@ import { labelSlide } from '../input.animations';
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
-	animations: [labelSlide],
+	animations: baseAnimations,
 })
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;

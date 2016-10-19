@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnInit, EventEmitter, AnimationEntryMetadata } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
@@ -6,16 +6,18 @@ import __object = services.object;
 import __guid = services.guid;
 
 import { FormComponent } from '../form/form';
+import { slide } from '../../animations/animations';
 
 export const baseInputs: string[] = ['name', 'label', 'value', 'disabled', 'labelState'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
+export const baseAnimations = [slide];
 
 export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
 	label: string = '';
 	disabled: boolean;
 	value: T;
-	labelState: string = 'hideLabel';
+	labelState: string = 'hide';
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
 
@@ -69,12 +71,12 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	}
 
 	showLabel(): string {
-		return this.labelState = 'showLabel';
+		return this.labelState = 'show';
 	}
 
 	hideLabel(): string {
 		if (this.object.isNullOrEmpty(this.value)) {
-			return this.labelState = 'hideLabel';
+			return this.labelState = 'hide';
 		}
 	}
 }
