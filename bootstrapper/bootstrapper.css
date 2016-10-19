@@ -1,0 +1,7 @@
+.rl-tab-item.error {
+	color: red;
+}
+
+.rl-tab-item.current {
+	color: blue;
+}
