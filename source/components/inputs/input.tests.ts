@@ -133,5 +133,5 @@ describe('InputComponent', (): void => {
 		input.hideLabel();
 
 		expect(input.labelState).to.equal('show');
-	})
+	});
 });
