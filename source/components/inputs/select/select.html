@@ -6,7 +6,7 @@
 		 [class.disabled]="disabled"
 		 [class.rl-select-open]="list.showOptions"
 		 (focus)="showLabel()"
-		 (blur)="hideLabel()"
+		 (blur)="hideLabelIfEmpty()"
 		 tabindex="0"
 		 rlPopoutTrigger>
 		<span class="placeholder" [hidden]="value">{{label}}</span>

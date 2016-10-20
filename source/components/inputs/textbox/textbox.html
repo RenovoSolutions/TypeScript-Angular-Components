@@ -6,7 +6,7 @@
 		   [value]="value"
 		   (input)="onChange($event.target.value)"
 		   (focus)="showLabel()"
-		   (blur)="hideLabel()"
+		   (blur)="hideLabelIfEmpty()"
 		   [placeholder]="label"
 		   [attr.maxlength]="maxlength"
 		   [disabled]="disabled" />

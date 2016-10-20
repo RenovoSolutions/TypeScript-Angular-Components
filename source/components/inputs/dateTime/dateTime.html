@@ -8,7 +8,7 @@
 			   #dateinput
 			   class="form-control"
 			   (focus)="showLabel()"
-			   (blur)="hideLabel()"
+			   (blur)="hideLabelIfEmpty()"
 			   [value]="valueAsString"
 			   [placeholder]="label"
 			   [disabled]="disabled" />

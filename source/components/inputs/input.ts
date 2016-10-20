@@ -74,7 +74,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		return this.labelState = slide.show;
 	}
 
-	hideLabel(): string {
+	hideLabelIfEmpty(): string {
 		return this.value
 			? this.showLabel()
 			: this.labelState = slide.hide;

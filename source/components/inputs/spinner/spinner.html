@@ -8,7 +8,7 @@
 				[id]="spinnerId"
 				[placeholder]="label"
 				(focus)="showLabel()"
-				(blur)="hideLabel()" />
+				(blur)="hideLabelIfEmpty()" />
 		<div [hidden]="control.valid" class="error-string">
 			{{componentValidator.error}}
 		</div>
@@ -23,7 +23,7 @@
 				   [value]="value"
 				   [placeholder]="label"
 				   (focus)="showLabel()"
-				   (blur)="hideLabel()" />
+				   (blur)="hideLabelIfEmpty()" />
 			<span class="input-group-addon" *ngIf="postfix">{{postfix}}</span>
 		</div>
 	</div>

@@ -9,7 +9,7 @@
 			   [placeholder]="placeholder"
 			   [value]="search"
 			   (focus)="showLabel()"
-			   (blur)="hideLabel()"
+			   (blur)="hideLabelIfEmpty()"
 			   rlPopoutTrigger
 			   (input)="searchStream.next($event.target.value)" />
 		<rlPopoutList [disabled]="!canShowOptions"
