@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { FormComponent } from '../../source/components/form/form';
 import { AutosaveActionService } from '../../source/services/autosaveAction/autosaveAction.service';
@@ -12,6 +13,7 @@ export class FormsBootstrapper {
 	rating: number;
 	validator: any;
 	brokenValidator: any;
+	rating$: BehaviorSubject<any>;
 
 	@ViewChild('testForm') testForm: FormComponent;
 
@@ -20,14 +22,19 @@ export class FormsBootstrapper {
 	constructor(autosaveAction: AutosaveActionService) {
 		this.autosaveAction = autosaveAction;
 
+		this.rating$ = new BehaviorSubject(null);
+
 		this.validator = {
-			validate: () => this.rating >= 3,
-			errorMessage: 'You must give at least 3 stars',
+			validate: () => this.rating$.map(rating => rating >= 3 ? null : 'You must give at least 3 stars'),
 		};
 		this.brokenValidator = {
-			validate: () => false,
-			errorMessage: null,
+			validate: () => Observable.of('error'),
 		};
+	}
+
+	setRating(rating): void {
+		this.rating = rating;
+		this.rating$.next(rating);
 	}
 
 	waitCallback: { (data: any): Promise<void> } = (data: any) => {

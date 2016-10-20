@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { first, values, each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -9,48 +10,32 @@ import { IControlValidator } from '../../types/formValidators';
 
 @Injectable()
 export class ComponentValidator {
-	validator: __validation.ISimpleValidator;
-	error: string;
-	errorType: string;
+	validator: __validation.ObservableValidator;
+	value$: Observable<any>;
 
-	validationService: __validation.IValidationService;
 
 	constructor(validationService: __validation.ValidationService) {
-		this.validationService = validationService;
-		this.validator = this.validationService.buildCustomValidator((error: string, name: string): void => {
-			this.error = error;
-			this.errorType = name || 'customValidation';
-		});
+		this.validator = validationService.buildObservableValidator();
 	}
 
-	setValidators(validators: __validation.IValidationHandler[]): void {
-		each(validators, (customValidator: __validation.IValidationHandler): void => {
+	initValidator(validators: __validation.IObservableValidationHandler[], value$: Observable<any>, control: IControlValidator): void {
+		each(validators, (customValidator: __validation.IObservableValidationHandler): void => {
 			this.validator.registerValidationHandler(customValidator);
 		});
+		this.value$ = value$;
+		this.error$.subscribe(error => control.rlErrorMessage = error);
 	}
 
-	afterInit(control: FormControl): void {
-		control.statusChanges.subscribe((value: any): void => {
-			this.setError(control);
-		});
-		this.setError(control);
+	get error$(): Observable<string> {
+		return this.validator.validate(this.value$);
 	}
 
-	validate(control: FormControl): any {
-		if (this.validator.validate(control.value)) {
+	validate(control: FormControl): Observable<any> {
+		return this.validator.validate(control.valueChanges).map(validation => {
+			if (validation) {
+				return { validationError: validation };
+			}
 			return null;
-		}
-		let errors: any = {};
-		errors[this.errorType] = this.error;
-		return errors;
-	}
-
-	setError(control: IControlValidator): string {
-		if (!control) {
-			return;
-		}
-
-		this.error = <any>first(values(control.errors));
-		control.rlErrorMessage = this.error;
+		});
 	}
 }

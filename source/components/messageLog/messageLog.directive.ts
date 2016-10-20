@@ -68,23 +68,25 @@ export class MessageLogController implements IMessageLogBindings {
 
 
 	static $inject: string[] = [__dialog.serviceName, '$scope', factoryName];
-	constructor(private dialog: __dialog.IDialogService<any>, $scope: ng.IScope, messageLogFactory: IMessageLogFactory) {
-		this.messageLog = this.messageLogBinding || messageLogFactory.getInstance();
+	constructor(private dialog: __dialog.IDialogService<any>, private $scope: ng.IScope, private messageLogFactory: IMessageLogFactory) {}
 
-		$scope.$watch((): IMessage[] => { return this.messageLog.visibleMessages; }
+	$onInit() {
+		this.messageLog = this.messageLogBinding || this.messageLogFactory.getInstance();
+
+		this.$scope.$watch((): IMessage[] => { return this.messageLog.visibleMessages; }
 			, (value: IMessage[]): void => {
 				this.messages = value;
 			});
 
-		$scope.$watch((): boolean => { return this.messageLog.hasForwardMessages; }, (value: boolean): void => {
+		this.$scope.$watch((): boolean => { return this.messageLog.hasForwardMessages; }, (value: boolean): void => {
 			this.hasNextPage = value;
 		});
 
-		$scope.$watch((): boolean => { return this.messageLog.hasBackwardMessages; }, (value: boolean): void => {
+		this.$scope.$watch((): boolean => { return this.messageLog.hasBackwardMessages; }, (value: boolean): void => {
 			this.hasPreviousPage = value;
 		});
 
-		$scope.$watch((): boolean => { return this.messageLog.busy; }, (value: boolean): void => {
+		this.$scope.$watch((): boolean => { return this.messageLog.busy; }, (value: boolean): void => {
 			if (!value) {
 				this.loading = false;
 				this.loadingInitial = false;
@@ -93,7 +95,7 @@ export class MessageLogController implements IMessageLogBindings {
 			}
 		});
 
-		$scope.$watch((): IMessageLogDataService => { return this.service; }, (service: IMessageLogDataService): void => {
+		this.$scope.$watch((): IMessageLogDataService => { return this.service; }, (service: IMessageLogDataService): void => {
 			this.messageLog.dataService = service;
 			this.loadingInitial = true;
 		});

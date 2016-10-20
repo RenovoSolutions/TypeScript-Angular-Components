@@ -1,6 +1,6 @@
 <div class="field date-time"
 	 [class.has-warning]="!validFormat"
-	 [class.error]="!control.valid"
+	 [class.error]="componentValidator.error$ | async"
 	 [class.datepicker-with-clear]="showClear">
 	<span #datepicker class="datepicker-input-group">
 		<label [@slide]="labelState">{{label}}</label>
@@ -23,7 +23,7 @@
 			<i class="fa fa-times"></i>
 		</rlButton>
 	</span>
-	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
+		{{componentValidator.error$ | async}}
 	</div>
 </div>

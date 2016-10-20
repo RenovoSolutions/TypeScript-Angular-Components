@@ -1,5 +1,5 @@
 <div class="field"
-	[class.error]="!control.valid">
+	[class.error]="componentValidator.error$ | async">
 	<label [@slide]="labelState">{{label}}</label>
 	<textarea type="text"
 			  class="form-control"
@@ -11,7 +11,7 @@
 			  [attr.maxlength]="maxlength"
 			  [attr.rows]="rows"
 			  [disabled]="disabled"></textarea>
-	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
+		{{componentValidator.error$ | async}}
 	</div>
 </div>

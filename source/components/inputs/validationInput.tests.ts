@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __array = services.array;
@@ -14,8 +14,7 @@ interface IControlMock {
 }
 
 interface IComponentValidatorMock {
-	setValidators: Sinon.SinonSpy;
-	afterInit: Sinon.SinonSpy;
+	initValidator: Sinon.SinonSpy;
 	validate: Sinon.SinonSpy;
 }
 
@@ -25,9 +24,8 @@ describe('ValidatedInputComponent', (): void => {
 
 	beforeEach((): void => {
 		componentValidator = {
-			setValidators: sinon.spy(),
-			afterInit: sinon.spy(),
-			validate: sinon.spy(),
+			initValidator: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		input = new ValidatedInputComponent<number>(null, <any>componentValidator, __object.objectUtility, __array.arrayUtility, __guid.guid);
@@ -41,8 +39,8 @@ describe('ValidatedInputComponent', (): void => {
 
 		input.ngOnInit();
 
-		sinon.assert.calledOnce(componentValidator.setValidators);
-		sinon.assert.calledWith(componentValidator.setValidators, [1, 2, 3, 4]);
+		sinon.assert.calledOnce(componentValidator.initValidator);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2, 3, 4]);
 	});
 
 	it('should arrayify the validators if necessary', (): void => {
@@ -51,8 +49,8 @@ describe('ValidatedInputComponent', (): void => {
 
 		input.ngOnInit();
 
-		sinon.assert.calledOnce(componentValidator.setValidators);
-		sinon.assert.calledWith(componentValidator.setValidators, [1, 2]);
+		sinon.assert.calledOnce(componentValidator.initValidator);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2]);
 	});
 
 	it('should build a required validator if rlRequired is specified', (): void => {
@@ -60,10 +58,9 @@ describe('ValidatedInputComponent', (): void => {
 
 		input.ngOnInit();
 
-		sinon.assert.calledOnce(componentValidator.setValidators);
-		const validator: __validation.IValidationHandler = componentValidator.setValidators.firstCall.args[0][0];
+		sinon.assert.calledOnce(componentValidator.initValidator);
+		const validator: __validation.IObservableValidationHandler = componentValidator.initValidator.firstCall.args[0][0];
 		expect(validator.name).to.equal('rlRequired');
-		expect(validator.errorMessage).to.equal('This is required');
 	});
 
 	it('should set the control on the component validator and update the validity of the control', (): void => {
@@ -76,8 +73,6 @@ describe('ValidatedInputComponent', (): void => {
 
 		input.ngAfterViewInit();
 
-		sinon.assert.calledOnce(componentValidator.afterInit);
-		sinon.assert.calledWith(componentValidator.afterInit, control);
 		sinon.assert.calledOnce(control.updateValueAndValidity);
 		sinon.assert.calledWith(control.updateValueAndValidity, 4);
 	});

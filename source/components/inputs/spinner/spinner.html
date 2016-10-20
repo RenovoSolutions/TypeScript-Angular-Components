@@ -1,7 +1,7 @@
 <span [ngSwitch]="disabled">
 	<div *ngSwitchDefault
 		 class="field"
-		 [class.error]="!control.valid">
+		 [class.error]="componentValidator.error$ | async">
 		 <label [@slide]="labelState">{{label}}</label>
 		 <input type="text"
 		 		#spinner
@@ -9,8 +9,8 @@
 				[placeholder]="label"
 				(focus)="showLabel()"
 				(blur)="hideLabelIfEmpty()" />
-		<div [hidden]="control.valid" class="error-string">
-			{{componentValidator.error}}
+		<div *ngIf="componentValidator.error$ | async" class="error-string">
+			{{componentValidator.error$ | async}}
 		</div>
 	</div>
 	<div *ngSwitchCase="'true'">
