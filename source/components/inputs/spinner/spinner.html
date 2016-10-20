@@ -1,13 +1,13 @@
 <span [ngSwitch]="disabled">
 	<div *ngSwitchDefault
 		 class="field"
-		 [class.error]="!control.valid">
+		 [class.error]="componentValidator.error$ | async">
 		 <label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 		 <input type="text"
 		 		#spinner
 				[id]="spinnerId"
 				[placeholder]="label" />
-		<div [hidden]="control.valid" class="error-string">
+		<div *ngIf="componentValidator.error$ | async" class="error-string">
 			{{componentValidator.error$ | async}}
 		</div>
 	</div>

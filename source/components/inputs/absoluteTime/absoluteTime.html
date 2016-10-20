@@ -1,5 +1,5 @@
 <div class="field input-group"
-	[class.error]="!control.valid"
+	[class.error]="componentValidator.error$ | async"
 	(offClick)="closeTimes()">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<input type="text"
@@ -42,7 +42,7 @@
 			</div>
 		</div>
 	</div>
-	<div [hidden]="control.valid" class="error-string">
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}
 	</div>
 </div>

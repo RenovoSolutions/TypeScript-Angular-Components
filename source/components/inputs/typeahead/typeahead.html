@@ -1,5 +1,5 @@
 <div class="field typeahead"
-	 [class.error]="!control.valid">
+	 [class.error]="componentValidator.error$ | async">
 	<label class="label-slide angular-animate" [hidden]="hideFlowerup">{{label}}</label>
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
@@ -25,7 +25,7 @@
 		</rlButton>
 	</div>
 	<rlBusy></rlBusy>
-	<div [hidden]="control.valid" class="error-string">
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}
 	</div>
 </div>

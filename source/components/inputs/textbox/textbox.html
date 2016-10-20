@@ -1,5 +1,5 @@
 <div class="field"
-	[class.error]="!control.valid">
+	[class.error]="componentValidator.error$ | async">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<input type="text"
 		   class="form-control angular-animate"
@@ -8,7 +8,7 @@
 		   [placeholder]="label"
 		   [attr.maxlength]="maxlength"
 		   [disabled]="disabled" />
-	<div [hidden]="control.valid" class="error-string">
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}
 	</div>
 </div>
