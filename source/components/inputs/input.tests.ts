@@ -123,14 +123,14 @@ describe('InputComponent', (): void => {
 
 	it('should hide the label if the form control is empty', (): void => {
 		input.value = null;
-		input.hideLabel();
+		input.hideLabelIfEmpty();
 
 		expect(input.labelState).to.equal('hide');
 	});
 
 	it('should not hide the label if the form control has a value', (): void => {
 		input.value = 12345;
-		input.hideLabel();
+		input.hideLabelIfEmpty();
 
 		expect(input.labelState).to.equal('show');
 	});
