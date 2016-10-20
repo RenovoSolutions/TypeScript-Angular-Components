@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { rlFakeAsync, mock, IMockedRequest } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
@@ -24,9 +25,8 @@ describe('TypeaheadListComponent', () => {
 
 	beforeEach(() => {
 		const validator: any = {
-			setValidators: sinon.spy(),
-			validate: sinon.spy(),
-			afterInit: sinon.spy(),
+			initValidator: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		items = [
