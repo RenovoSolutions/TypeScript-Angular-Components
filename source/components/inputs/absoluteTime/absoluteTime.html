@@ -6,7 +6,7 @@
 		   class="form-control"
 		   [value]="displayTime"
 		   (focus)="showLabel()"
-		   (blur)="hideLabel()"
+		   (blur)="hideLabelIfEmpty()"
 		   (click)="toggleTimes()"
 		   [placeholder]="label"
 		   [disabled]="disabled" />
