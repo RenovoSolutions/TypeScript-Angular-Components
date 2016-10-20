@@ -9,6 +9,6 @@
 		   [attr.maxlength]="maxlength"
 		   [disabled]="disabled" />
 	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+		{{componentValidator.error$ | async}}
 	</div>
 </div>

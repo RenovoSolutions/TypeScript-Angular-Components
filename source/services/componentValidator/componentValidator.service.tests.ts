@@ -23,7 +23,7 @@ describe('ComponentValidator', () => {
 		componentValidator.validator.registerValidationHandler = registerSpy;
 		const validators: any[] = [{}, {}];
 
-		componentValidator.setValidators(validators);
+		componentValidator.initValidator(validators);
 
 		sinon.assert.calledTwice(registerSpy);
 		sinon.assert.calledWith(registerSpy, validators[0]);
