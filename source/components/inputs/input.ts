@@ -40,7 +40,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 			this.name = this.inputType + '-' + this.guid.random();
 		}
 
-		if (!this.object.isNullOrEmpty(this.value)) {
+		if (this.value) {
 			this.showLabel();
 		}
 	}
