@@ -29,6 +29,7 @@ export class ComponentValidator {
 	get error$(): Observable<string> {
 		return this.validator.validate(this.value$);
 	}
+
 	validate(control: FormControl): Observable<any> {
 		return this.validator.validate(control.valueChanges).map(validation => {
 			if (validation) {
