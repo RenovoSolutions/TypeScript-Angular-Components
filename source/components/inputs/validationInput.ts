@@ -1,5 +1,6 @@
 import { AfterViewInit, OnInit, OnChanges, SimpleChange } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __validation = services.validation;
@@ -20,8 +21,9 @@ export interface IInputChanges {
 }
 
 export class ValidatedInputComponent<T> extends InputComponent<T> implements AfterViewInit, OnInit, OnChanges {
-	validator: __validation.IValidationHandler;
-	validators: __validation.IValidationHandler[];
+	value$: BehaviorSubject<T>;
+	validator: __validation.IObservableValidationHandler;
+	validators: __validation.IObservableValidationHandler[];
 	rlRequired: string;
 
 	protected componentValidator: ComponentValidator;
@@ -35,14 +37,17 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 		super(rlForm, object, guid);
 		this.array = array;
 		this.componentValidator = componentValidator;
-		this.control = new FormControl('', this.componentValidator.validate.bind(this.componentValidator));
+		this.control = new FormControl('', null, this.componentValidator.validate.bind(this.componentValidator));
 		this.initControl();
 	}
 
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		let validators: __validation.IValidationHandler[] = [];
+		this.value$ = new BehaviorSubject(this.value);
+		this.control.valueChanges.subscribe(this.value$);
+
+		let validators: __validation.IObservableValidationHandler[] = [];
 
 		if (this.validator) {
 			validators = validators.concat(this.array.arrayify(this.validator));
@@ -55,16 +60,15 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 		if (this.rlRequired) {
 			validators.push({
 				name: 'rlRequired',
-				validate: (value: any): boolean => { return !this.object.isNullOrEmpty(value); },
-				errorMessage: this.rlRequired,
+				validate: (value$: Observable<any>): Observable<string> => {
+					return value$.map(value => value ? null : this.rlRequired);
+				},
 			});
 		}
-
-		this.componentValidator.setValidators(validators);
+		this.componentValidator.initValidator(validators, this.value$, this.control);
 	}
 
 	ngAfterViewInit(): void {
-		this.componentValidator.afterInit(this.control);
 		this.control.updateValueAndValidity(this.value || undefined);
 
 		super.ngAfterViewInit();

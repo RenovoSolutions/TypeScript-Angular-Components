@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __time = services.time;
 import __object = services.object;
@@ -14,8 +15,8 @@ describe('AbsoluteTimeComponent', () => {
 
 	beforeEach(() => {
 		const validator: any = {
-			validate: sinon.spy(),
-			setValidators: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
+			initValidator: sinon.spy(),
 		};
 		setValue = sinon.spy();
 

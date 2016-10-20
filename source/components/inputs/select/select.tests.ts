@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 import { SelectComponent } from './select';
 
@@ -24,8 +24,7 @@ describe('SelectComponent', () => {
 	beforeEach(() => {
 		transformService = { getValue: sinon.spy() };
 		const validator: any = {
-			validate: sinon.spy(),
-			afterInit: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		dropdown = new SelectComponent<ITestOption>(transformService, null, validator, null, null, null);

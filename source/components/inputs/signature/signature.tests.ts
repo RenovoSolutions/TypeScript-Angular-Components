@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
 
 import { SignatureComponent } from './signature';
@@ -14,8 +15,7 @@ describe('SignatureComponent', () => {
 
 	beforeEach(() => {
 		const validator: any = {
-			validate: sinon.spy(),
-			afterInit: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 		jqueryMock = sinon.spy(x => x);
 

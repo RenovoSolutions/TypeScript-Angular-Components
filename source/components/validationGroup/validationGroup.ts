@@ -20,8 +20,8 @@ export interface IGroupChanges {
 	providers: [ComponentValidator],
 })
 export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChanges {
-	@Input() validator: __validation.IValidationHandler;
-	@Input() validators: __validation.IValidationHandler[];
+	@Input() validator: __validation.IObservableValidationHandler;
+	@Input() validators: __validation.IObservableValidationHandler[];
 	@Input() model: any;
 
 	groupValidator: ComponentValidator;
@@ -34,7 +34,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 			, arrayUtility: __array.ArrayUtility) {
 		this.arrayUtility = arrayUtility;
 		this.groupValidator = componentValidator;
-		this.validationControl = new FormControl('', this.groupValidator.validate.bind(this.groupValidator));
+		this.validationControl = new FormControl('', null, this.groupValidator.validate.bind(this.groupValidator));
 		this.formGroup = <IControlGroup>new FormGroup({ validation: this.validationControl });
 		if (rlForm) {
 			rlForm.form.rlNestedFormGroups.push(this.formGroup);
@@ -42,7 +42,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 	}
 
 	ngOnInit(): void {
-		let validators: __validation.IValidationHandler[] = [];
+		let validators: __validation.IObservableValidationHandler[] = [];
 
 		if (this.validator) {
 			validators = validators.concat(this.arrayUtility.arrayify(this.validator));
@@ -52,11 +52,10 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 			validators = validators.concat(this.arrayUtility.arrayify(this.validators));
 		}
 
-		this.groupValidator.setValidators(validators);
+		this.groupValidator.initValidator(validators, this.validationControl.valueChanges, this.validationControl);
 	}
 
 	ngAfterViewInit(): void {
-		this.groupValidator.afterInit(this.validationControl);
 		this.validationControl.updateValueAndValidity(this.model || undefined);
 	}
 

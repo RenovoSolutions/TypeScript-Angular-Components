@@ -1,5 +1,5 @@
 <div class="field rl-select"
-	 [class.error]="!control.valid"
+	 [class.error]="componentValidator.error$ | async"
 	 [class.rl-select-loading]="busy?.loading">
 	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
 	<div class="form-control rl-select-trigger"
@@ -18,7 +18,7 @@
 		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
 	</rlPopoutList>
 	<rlBusy></rlBusy>
-	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
+		{{componentValidator.error$ | async}}
 	</div>
 </div>

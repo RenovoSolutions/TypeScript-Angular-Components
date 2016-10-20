@@ -4,7 +4,7 @@
 <rlForm [save]="waitCallback">
 	<rlTextbox rlRequired="This is a required field" label="Required textbox" maxlength="10"></rlTextbox>
 	<rlValidationGroup [model]="rating" [validator]="validator">
-		<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+		<rlUserRating [value]="rating" (valueChange)="setRating($event)" [range]="3"></rlUserRating>
 	</rlValidationGroup>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 </rlForm>
