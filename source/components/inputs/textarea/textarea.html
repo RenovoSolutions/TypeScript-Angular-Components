@@ -10,6 +10,6 @@
 			  [attr.rows]="rows"
 			  [disabled]="disabled"></textarea>
 	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+		{{componentValidator.error$ | async}}
 	</div>
 </div>

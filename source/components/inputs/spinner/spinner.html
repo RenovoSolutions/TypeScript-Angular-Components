@@ -8,7 +8,7 @@
 				[id]="spinnerId"
 				[placeholder]="label" />
 		<div [hidden]="control.valid" class="error-string">
-			{{componentValidator.error}}
+			{{componentValidator.error$ | async}}
 		</div>
 	</div>
 	<div *ngSwitchCase="'true'">

@@ -22,6 +22,6 @@
 		</rlButton>
 	</span>
 	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+		{{componentValidator.error$ | async}}
 	</div>
 </div>
