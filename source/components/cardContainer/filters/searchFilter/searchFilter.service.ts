@@ -1,3 +1,4 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
@@ -5,6 +6,7 @@ import SearchUtility = services.search.SearchUtility;
 
 import { Filter, IFilter } from '../filter';
 
+@Injectable()
 export class SearchFilter extends Filter<any, string> implements IFilter<any, string> {
 	minSearchLength: number;
 	caseSensitive: boolean;
