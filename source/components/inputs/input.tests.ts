@@ -137,14 +137,14 @@ describe('InputComponent', (): void => {
 
 	it('should show the placeholder if the label is hidden', (): void => {
 		input.labelState = 'hide';
-		input.checkPlaceholder();
+		input.isLabelShowing();
 
 		expect(input.hidePlaceholder).to.be.false;
 	});
 
 	it('should hide the placeholder if the label is shown', (): void => {
 		input.labelState = 'show';
-		input.checkPlaceholder();
+		input.isLabelShowing();
 
 		expect(input.hidePlaceholder).to.be.true;
 	});
