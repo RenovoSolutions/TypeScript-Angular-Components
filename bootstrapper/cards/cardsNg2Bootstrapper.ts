@@ -9,7 +9,7 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
-import { builder } from '../../source/components/cardContainer/index';
+import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
 	DateFilter,
 	IFilterGroup,
@@ -38,8 +38,8 @@ const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardI
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
-	builder: builder.CardContainerBuilderOld;
-	builderWithFilters: builder.CardContainerBuilderOld;
+	builder: ICardContainerInstance;
+	builderWithFilters: ICardContainerInstance;
 	options: number[];
 	dateFilter: DateFilter;
 	modeFilterGroup: IModeFilterGroup;
@@ -48,32 +48,34 @@ export class CardsBootstrapper {
 	selectFilter: SelectFilter<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService
-			, cardContainerBuilder: builder.CardContainerBuilder) {
+			, cardContainerBuilder: CardContainerBuilderService) {
 		timezone.setCurrentTimezone('-05:00');
 
 		this.options = [1, 2, 3, 4, 5];
 
-		this.builder = cardContainerBuilder;
+		this.builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
 		this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
 
-		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
-		this.builder.usePaging();
-		this.builder.addColumn({
+		cardContainerBuilder.buildSimpleDataSource(this.builder, items);
+		// this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(this.builder, {
 			name: 'name',
 			label: 'Name',
 			size: 6,
 			getValue: 'name',
 		});
-		this.builder.addColumn({
+		cardContainerBuilder.addColumn(this.builder, {
 			name: 'value',
 			label: 'Value',
 			size: 6,
 			getValue: 'value',
-			template: '<b>{{myItem.value}}</b>',
 		});
 
-		const searchFilter = this.builder.useSearch();
-		searchFilter.minSearchLength = 5;
+		// const searchFilter = this.builder.useSearch();
+		// searchFilter.minSearchLength = 5;
 
 		this.initFilteredCardContainer();
 
@@ -91,84 +93,84 @@ export class CardsBootstrapper {
 	}
 
 	initFilteredCardContainer() {
-		this.builderWithFilters.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
-		this.builderWithFilters.usePaging();
-		this.builderWithFilters.addColumn({
-			name: 'name',
-			label: 'Name',
-			size: 6,
-			getValue: 'name',
-		});
-		this.builderWithFilters.addColumn({
-			name: 'value',
-			label: 'Value',
-			size: 6,
-			getValue: 'value',
-			template: '<b>{{myItem.value}}</b>',
-		});
+		// this.builderWithFilters.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
+		// this.builderWithFilters.usePaging();
+		// this.builderWithFilters.addColumn({
+		// 	name: 'name',
+		// 	label: 'Name',
+		// 	size: 6,
+		// 	getValue: 'name',
+		// });
+		// this.builderWithFilters.addColumn({
+		// 	name: 'value',
+		// 	label: 'Value',
+		// 	size: 6,
+		// 	getValue: 'value',
+		// 	template: '<b>{{myItem.value}}</b>',
+		// });
 
-		this.rangeFilterGroup = this.builderWithFilters.filters.buildRangeFilterGroup({
-			type: 'testRangeGroup',
-			label: 'Range Filter Group',
-			getValue: 'value',
-			options: [
-				{
-					label: 'All',
-					highInclusive: rangeHigh,
-					lowInclusive: 0
-				},
-				{
-					label: '5 - 10',
-					highInclusive: 10,
-					lowInclusive: 5,
-				},
-				{
-					label: '< 5',
-					highExclusive: 5,
-				},
-			],
-		});
+		// this.rangeFilterGroup = this.builderWithFilters.filters.buildRangeFilterGroup({
+		// 	type: 'testRangeGroup',
+		// 	label: 'Range Filter Group',
+		// 	getValue: 'value',
+		// 	options: [
+		// 		{
+		// 			label: 'All',
+		// 			highInclusive: rangeHigh,
+		// 			lowInclusive: 0
+		// 		},
+		// 		{
+		// 			label: '5 - 10',
+		// 			highInclusive: 10,
+		// 			lowInclusive: 5,
+		// 		},
+		// 		{
+		// 			label: '< 5',
+		// 			highExclusive: 5,
+		// 		},
+		// 	],
+		// });
 
-		this.modeFilterGroup = this.builderWithFilters.filters.buildModeFilterGroup({
-			type: 'testModeGroup',
-			label: 'Mode Filter Group',
-			getValue: 'value',
-			options: [
-				{
-					label: 'All',
-					displayAll: true,
-				},
-				{
-					label: 'Value Equals 3',
-					value: 3,
-				},
-				{
-					label: 'Value Equals 10',
-					value: 10,
-				},
-			],
-		});
+		// this.modeFilterGroup = this.builderWithFilters.filters.buildModeFilterGroup({
+		// 	type: 'testModeGroup',
+		// 	label: 'Mode Filter Group',
+		// 	getValue: 'value',
+		// 	options: [
+		// 		{
+		// 			label: 'All',
+		// 			displayAll: true,
+		// 		},
+		// 		{
+		// 			label: 'Value Equals 3',
+		// 			value: 3,
+		// 		},
+		// 		{
+		// 			label: 'Value Equals 10',
+		// 			value: 10,
+		// 		},
+		// 	],
+		// });
 
-		this.disabledFilterGroup = this.builderWithFilters.filters.buildFilterGroup({
-			type: 'testGroup',
-			label: 'Disabled Filter Group',
-			options: [
-				{
-					label: 'Show',
-					filter: item => true,
-					serialize: () => 'show',
-				},
-				{
-					label: 'Hide',
-					filter: item => false,
-					serialize: () => 'hide',
-				},
-			],
-		});
+		// this.disabledFilterGroup = this.builderWithFilters.filters.buildFilterGroup({
+		// 	type: 'testGroup',
+		// 	label: 'Disabled Filter Group',
+		// 	options: [
+		// 		{
+		// 			label: 'Show',
+		// 			filter: item => true,
+		// 			serialize: () => 'show',
+		// 		},
+		// 		{
+		// 			label: 'Hide',
+		// 			filter: item => false,
+		// 			serialize: () => 'hide',
+		// 		},
+		// 	],
+		// });
 
-		this.modeFilterGroup.subscribe(value => console.log('mode filter change', value));
-		this.rangeFilterGroup.subscribe(value => console.log('range filter change', value));
-		this.disabledFilterGroup.subscribe(value => console.log('disabled filter change', value));
+		// this.modeFilterGroup.subscribe(value => console.log('mode filter change', value));
+		// this.rangeFilterGroup.subscribe(value => console.log('range filter change', value));
+		// this.disabledFilterGroup.subscribe(value => console.log('disabled filter change', value));
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {
