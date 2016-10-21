@@ -240,10 +240,6 @@ export class CardContainerController {
 		this.selectionChangedEvent();
 	}
 
-	get hasItems(): boolean {
-		return this.dataSource.dataSet && !!this.dataSource.dataSet.length;
-	}
-
 	private syncFilters(): void {
 		if (!this.object.isNullOrEmpty(this.filters)) {
 			this.dataSource.filters = this.filters;
