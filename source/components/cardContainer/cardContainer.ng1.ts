@@ -17,7 +17,7 @@ import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerType } from './builder/cardContainerBuilderOld.service';
+import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerTypeOld } from './builder/cardContainerBuilderOld.service';
 
 export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
@@ -116,7 +116,7 @@ export class CardContainerController {
 	private disablingSelections: boolean;
 
 	makeCard: angular.ITranscludeFunction;
-	type: CardContainerType = CardContainerType.old;
+	type: CardContainerTypeOld = CardContainerTypeOld.old;
 
 	static $inject: string[] = ['$scope', '$attrs', '$transclude', dataPagerFactoryName, downgrade.objectServiceName, downgrade.arrayServiceName, parentChildServiceName];
 	constructor(private $scope: ICardContainerScope

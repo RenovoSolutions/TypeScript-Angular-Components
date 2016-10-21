@@ -14,7 +14,7 @@ import * as paging from '../paging/index';
 import { IDataSourceBuilderOld, DataSourceBuilderOld } from './dataSourceBuilderOld.service';
 import { IFilterBuilderOld, FilterBuilderOld } from './filterBuilderOld.service';
 
-export enum CardContainerType {
+export enum CardContainerTypeOld {
 	old,
 	standard,
 	selectable,
@@ -129,7 +129,7 @@ export class CardContainerBuilderOld implements ICardContainerBuilderOld {
 		this._disableSelection = value;
 	}
 
-	setCardContainerProperties(cardContainer: CardContainerComponent<any>): void {
+	setCardContainerProperties(cardContainer: CardContainerController): void {
 		if (this._searchFilter != null) {
 			this._filters.push(this._searchFilter);
 		}
@@ -146,12 +146,12 @@ export class CardContainerBuilderOld implements ICardContainerBuilderOld {
 
 		// cardContainer.renderFilters = this._renderFilters;
 
-		if (cardContainer.type === CardContainerType.selectable) {
-			const selectableCardContainer: SelectableCardContainerComponent<any> = <SelectableCardContainerComponent<any>>cardContainer;
-			selectableCardContainer.disableSelection = this._disableSelection;
-		}
+		// if (cardContainer.type === CardContainerType.selectable) {
+		// 	const selectableCardContainer: SelectableCardContainerComponent<any> = <SelectableCardContainerComponent<any>>cardContainer;
+		// 	selectableCardContainer.disableSelection = this._disableSelection;
+		// }
 
-		if (cardContainer.type === CardContainerType.old) {
+		if (cardContainer.type === CardContainerTypeOld.old) {
 			const cardContainerOld: CardContainerController = <any>cardContainer;
 			cardContainerOld.selectableCards = this._selectableCards;
 			cardContainerOld.disableSelection = this._disableSelection;
