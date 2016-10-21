@@ -8,7 +8,7 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form';
 import { slide } from '../../animations/index';
 
-export const baseInputs: string[] = ['name', 'label', 'value', 'disabled', 'labelState'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled', 'labelState', 'hidePlaceholder'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 export const baseAnimations = [slide.animation];
 
@@ -18,6 +18,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	disabled: boolean;
 	value: T;
 	labelState: string = slide.hide;
+	hidePlaceholder: boolean = false;
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
 
@@ -70,13 +71,21 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		}
 	}
 
-	showLabel(): string {
-		return this.labelState = slide.show;
+	isLabelShowing(): boolean {
+		return this.labelState == slide.show
+			? this.hidePlaceholder = true
+			: this.hidePlaceholder = false;
 	}
 
-	hideLabelIfEmpty(): string {
-		return this.value
+	showLabel(): void {
+		this.labelState = slide.show;
+		this.isLabelShowing();
+	}
+
+	hideLabelIfEmpty(): void {
+		this.value
 			? this.showLabel()
 			: this.labelState = slide.hide;
+		this.isLabelShowing();
 	}
 }
