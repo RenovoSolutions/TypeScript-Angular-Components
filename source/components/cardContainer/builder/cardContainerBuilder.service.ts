@@ -48,6 +48,7 @@ export class CardContainerBuilderService {
 			permanentFooters: settings.permanentFooters,
 			disableSelection: settings.disableSelection,
 			columns: [],
+			filters: [],
 		};
 	}
 
