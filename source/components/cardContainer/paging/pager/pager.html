@@ -10,7 +10,7 @@
 			[class.disabled]="!(canGoBack$ | async)">
 			<a><i class="fa fa-angle-left"></i></a>
 		</li>
-		<li *ngFor="let page of pages | async"
+		<li *ngFor="let page of pages$ | async"
 			title="Go to page {{page}}"
 			(click)="goto(page)"
 			[class.active]="isCurrent(page) | async">
