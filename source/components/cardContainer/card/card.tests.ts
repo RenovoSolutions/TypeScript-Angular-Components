@@ -21,7 +21,6 @@ describe('CardComponent', () => {
 		cardContainer = {
 			openCard: sinon.spy((): boolean => { return true; }),
 			dataSource: {
-				refresh: sinon.spy(),
 				remove: sinon.spy(),
 			},
 		};
@@ -39,11 +38,6 @@ describe('CardComponent', () => {
 
 		sinon.assert.calledOnce(saveSpy);
 		sinon.assert.calledWith(saveSpy, item);
-	});
-
-	it('should provide a function for refreshing the data source', (): void => {
-		card.refresh.next(null);
-		sinon.assert.calledOnce(<Sinon.SinonSpy>cardContainer.dataSource.refresh);
 	});
 
 	it('should provide a function for removing the current item from the data source', (): void => {

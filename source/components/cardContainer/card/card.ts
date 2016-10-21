@@ -41,7 +41,6 @@ export class CardComponent<T> extends FormComponent {
 	clickCard: { (): void } = () => null;
 
 	showContent: boolean = false;
-	refresh: Subject<void> = new Subject<void>();
 
 	cardContainer: CardContainerComponent<T>;
 
@@ -52,7 +51,6 @@ export class CardComponent<T> extends FormComponent {
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.cardContainer = cardContainer;
-		this.refresh.subscribe(() => this.cardContainer.dataSource.refresh());
 	}
 
 	toggleContent(): void {
