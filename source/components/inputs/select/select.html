@@ -9,7 +9,9 @@
 		 (blur)="hideLabelIfEmpty()"
 		 tabindex="0"
 		 rlPopoutTrigger>
-		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="placeholder"
+			  [class.hide-placeholder]="hidePlaceholder"
+			  [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<rlPopoutList #list

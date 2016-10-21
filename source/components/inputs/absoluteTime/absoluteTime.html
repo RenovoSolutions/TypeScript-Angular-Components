@@ -4,6 +4,7 @@
 	<label [@slide]="labelState">{{label}}</label>
 	<input type="text"
 		   class="form-control"
+		   [class.hide-placeholder]="hidePlaceholder"
 		   [value]="displayTime"
 		   (focus)="showLabel()"
 		   (blur)="hideLabelIfEmpty()"

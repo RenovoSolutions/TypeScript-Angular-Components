@@ -5,6 +5,7 @@
 		 <label [@slide]="labelState">{{label}}</label>
 		 <input type="text"
 		 		#spinner
+				[class.hide-placeholder]="hidePlaceholder"
 				[id]="spinnerId"
 				[placeholder]="label"
 				(focus)="showLabel()"

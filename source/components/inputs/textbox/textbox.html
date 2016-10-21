@@ -3,6 +3,7 @@
 	<label [@slide]="labelState">{{label}}</label>
 	<input type="text"
 		   class="form-control"
+		   [class.hide-placeholder]="hidePlaceholder"
 		   [value]="value"
 		   (input)="onChange($event.target.value)"
 		   (focus)="showLabel()"
