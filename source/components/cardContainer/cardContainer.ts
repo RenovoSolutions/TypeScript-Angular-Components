@@ -33,7 +33,7 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.save,
 		cardContainerInputs.searchPlaceholder
 	],
-	providers: [DataPager, SortManagerService],
+	providers: [DataPager, SearchFilter, SortManagerService],
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: ICardContainerConstructor<T>;
