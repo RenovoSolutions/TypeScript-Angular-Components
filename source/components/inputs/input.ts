@@ -8,7 +8,7 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form';
 import { slide } from '../../animations/index';
 
-export const baseInputs: string[] = ['name', 'label', 'value', 'disabled', 'labelState', 'hidePlaceholder'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 export const baseAnimations = [slide.animation];
 
