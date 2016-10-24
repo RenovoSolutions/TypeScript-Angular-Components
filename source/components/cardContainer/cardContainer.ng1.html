@@ -39,7 +39,7 @@
 					</template>
 				</rl-generic-container>
 
-				<div class="alert alert-info" ng-show="!cardContainer.hasItems">
+				<div class="alert alert-info" ng-show="cardContainer.dataSource.needsRefinedSearch">
 					Please refine your search results
 				</div>
 				<div class="alert alert-info" ng-show="cardContainer.dataSource.isEmpty">

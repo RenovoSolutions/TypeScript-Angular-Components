@@ -14,6 +14,7 @@ export class SimpleDataSource<TDataType> extends DataSourceBase<TDataType> {
 		super(dataSourceProcessor, array);
 		this.countFilterGroups = false;
 		this.rawDataSet = data;
+		this.isEmpty = !(data && data.length);
 		this.processData();
 	}
 }
