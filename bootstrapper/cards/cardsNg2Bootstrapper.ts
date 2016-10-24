@@ -59,8 +59,7 @@ export class CardsBootstrapper {
 		});
 		this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
 
-		cardContainerBuilder.buildSimpleDataSource(this.builder, items);
-		// this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
+		cardContainerBuilder.buildObservableDataSource(this.builder, Observable.of(items).delay(1000));
 		cardContainerBuilder.addColumn(this.builder, {
 			name: 'name',
 			label: 'Name',

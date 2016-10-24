@@ -1,7 +1,8 @@
 import { Injector, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { IColumn } from '../column';
-import { IDataSource, SimpleDataSource } from '../dataSources/index';
+import { IDataSource, ObservableDataSource } from '../dataSources/index';
 import { Sorter } from '../sorts/index';
 import { IFilter } from '../filters/index';
 import {} from '../paging/index';
@@ -54,5 +55,12 @@ export class CardContainerBuilderService {
 
 	addColumn<TItemType>(container: ICardContainerInstance, column: IColumn<TItemType>): void {
 		(container as ICardContainerConstructor<TItemType>).columns.push(column);
+	}
+
+	buildObservableDataSource<TDataType>(container: ICardContainerInstance, data$: Observable<TDataType[]>): IDataSource<TDataType> {
+		const sorter: Sorter = this.injector.get(Sorter);
+		const dataSource = new ObservableDataSource(data$, sorter);
+		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
+		return dataSource;
 	}
 }
