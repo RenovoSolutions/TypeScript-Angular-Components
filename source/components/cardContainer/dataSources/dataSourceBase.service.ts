@@ -87,14 +87,14 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	processData(): void {
 		let processedData: IProcessResult<TDataType>;
 
-		if (this.countFilterGroups) {
+		// if (this.countFilterGroups) {
 			// processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
 			// 																, <filters.IFilterWithCounts[]>this.filters
 			// 																, this.pager
 			// 																, this.rawDataSet);
-		} else {
+		// } else {
 			processedData = process<TDataType>(this.sorts$, this.filters, this.pager, this.rawDataSet$, this.sorter);
-		}
+		// }
 		this.setProcessedData(processedData);
 	}
 
