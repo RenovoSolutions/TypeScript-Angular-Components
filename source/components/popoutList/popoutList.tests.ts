@@ -30,7 +30,7 @@ describe('PopoutListComponent', () => {
 		list = new PopoutListComponent<string>(transformService, <any>listService);
 
 		options = ['Option 1', 'Option 2', 'Option 3'];
-		list.options = Observable.of(options);
+		list.options = options;
 	});
 
 	it('should emit a select event when a select is triggered on the list service', (): void => {
