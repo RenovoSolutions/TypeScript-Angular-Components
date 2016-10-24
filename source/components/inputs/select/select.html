@@ -15,13 +15,13 @@
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<rlPopoutList #list
-				  [options]="wrappedOptions"
+				  [options]="options"
 				  [template]="template"
 				  [transform]="transform"
 				  (select)="select($event)">
 		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
 	</rlPopoutList>
-	<rlBusy></rlBusy>
+	<rlBusy [loading]="!options"></rlBusy>
 	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}
 	</div>
