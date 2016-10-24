@@ -1,13 +1,16 @@
 <div class="field typeahead"
 	 [class.error]="componentValidator.error$ | async">
-	<label class="label-slide angular-animate" [hidden]="hideFlowerup">{{label}}</label>
+	<label [@slide]="labelState">{{label}}</label>
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
 			   type="text"
 			   [disabled]="disabled"
 			   [class.rl-select-open]="list.showOptions"
+			   [class.hide-placeholder]="hidePlaceholder"
 			   [placeholder]="placeholder"
 			   [value]="search"
+			   (focus)="showLabel()"
+			   (blur)="hideLabelIfEmpty()"
 			   rlPopoutTrigger
 			   (input)="searchStream.next($event.target.value)" />
 		<rlPopoutList [disabled]="!canShowOptions"

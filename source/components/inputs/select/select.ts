@@ -14,12 +14,15 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlSelect',
 	template: require('./select.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	animations: baseAnimations,
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
 	@Input() options: T[] | Observable<T[]>;

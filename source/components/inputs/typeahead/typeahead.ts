@@ -15,6 +15,8 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
+import { baseAnimations } from '../input';
+
 export const DEFAULT_SERVER_SEARCH_DEBOUNCE: number = 500;
 export const DEFAULT_CLIENT_SEARCH_DEBOUNCE: number = 100;
 
@@ -29,6 +31,7 @@ export interface ITypeaheadChanges {
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	animations: baseAnimations,
 })
 export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements OnInit, OnChanges {
 	@Input() transform: __transform.ITransform<T, string>;

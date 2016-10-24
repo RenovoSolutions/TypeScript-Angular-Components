@@ -1,4 +1,4 @@
-import { AfterViewInit, OnInit, EventEmitter } from '@angular/core';
+import { Component, AfterViewInit, OnInit, EventEmitter, AnimationEntryMetadata } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
@@ -6,15 +6,19 @@ import __object = services.object;
 import __guid = services.guid;
 
 import { FormComponent } from '../form/form';
+import { slide } from '../../animations/index';
 
 export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
+export const baseAnimations = [slide.animation];
 
 export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
 	label: string = '';
 	disabled: boolean;
 	value: T;
+	labelState: string = slide.hide;
+	hidePlaceholder: boolean = false;
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
 
@@ -35,6 +39,10 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	ngOnInit(): void {
 		if (this.object.isNullOrEmpty(this.name)) {
 			this.name = this.inputType + '-' + this.guid.random();
+		}
+
+		if (this.value) {
+			this.showLabel();
 		}
 	}
 
@@ -61,5 +69,23 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 			this.control.setValue(this.value);
 			this.change.emit(value);
 		}
+	}
+
+	isLabelShowing(): boolean {
+		return this.labelState == slide.show
+			? this.hidePlaceholder = true
+			: this.hidePlaceholder = false;
+	}
+
+	showLabel(): void {
+		this.labelState = slide.show;
+		this.isLabelShowing();
+	}
+
+	hideLabelIfEmpty(): void {
+		this.value
+			? this.showLabel()
+			: this.labelState = slide.hide;
+		this.isLabelShowing();
 	}
 }
