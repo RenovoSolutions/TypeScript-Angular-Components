@@ -14,7 +14,7 @@
 			   rlPopoutTrigger
 			   (input)="searchStream.next($event.target.value)" />
 		<rlPopoutList [disabled]="!canShowOptions"
-					  [options]="visibleItems | async"
+					  [options]="visibleItems$ | async"
 					  [template]="template"
 					  [transform]="transform"
 					  (select)="selectItem($event)">
