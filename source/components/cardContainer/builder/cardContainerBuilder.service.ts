@@ -55,11 +55,4 @@ export class CardContainerBuilderService {
 	addColumn<TItemType>(container: ICardContainerInstance, column: IColumn<TItemType>): void {
 		(container as ICardContainerConstructor<TItemType>).columns.push(column);
 	}
-
-	buildSimpleDataSource<TDataType>(container: ICardContainerInstance, data: TDataType[]): IDataSource<TDataType> {
-		const sorter: Sorter = this.injector.get(Sorter);
-		const dataSource = new SimpleDataSource(data, sorter);
-		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
-		return dataSource;
-	}
 }

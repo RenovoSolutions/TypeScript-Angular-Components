@@ -46,7 +46,7 @@ export class DataSourceBuilderOld implements IDataSourceBuilderOld {
 
 	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType> {
 		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.SimpleDataSourceOld(data, processor, this.array);
+		this.parent._dataSource = new dataSources.SimpleDataSource(data, processor, this.array);
 		return this.parent._dataSource;
 	}
 

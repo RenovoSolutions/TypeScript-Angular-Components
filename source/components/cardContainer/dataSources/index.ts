@@ -2,7 +2,6 @@ export * from './clientServerDataSource/clientServerDataSource.service';
 export * from './dataServiceDataSource/dataServiceDataSource.service';
 export * from './serverSideDataSource/serverSideDataSource.service';
 export * from './simpleDataSource/simpleDataSource.service';
-export * from './simpleDataSource/simpleDataSourceOld.service';
 export * from './smartDataSource/smartDataSource.service';
 export * from './asyncDataSource.service';
 export * from './asyncTypes';

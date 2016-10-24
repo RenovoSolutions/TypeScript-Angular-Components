@@ -1,17 +1,19 @@
-import { DataSourceBase } from '../dataSourceBase.service';
-import { Sorter } from '../../sorts/index';
+import { services } from 'typescript-angular-utilities';
+import __array = services.array;
 
-export { IDataSource } from '../dataSource';
+import { IDataSourceOld } from '../dataSource';
+import { DataSourceBaseOld } from '../dataSourceBaseOld.service';
+import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 
-export class SimpleDataSource<TDataType> extends DataSourceBase<TDataType> {
+export { IDataSourceOld };
+
+export class SimpleDataSource<TDataType> extends DataSourceBaseOld<TDataType> {
 	constructor(data: TDataType[]
-			, sorter: Sorter) {
-		super(sorter);
+			, dataSourceProcessor: IDataSourceProcessorOld
+			, array: __array.IArrayUtility) {
+		super(dataSourceProcessor, array);
 		this.countFilterGroups = false;
-		this._rawDataSet.next(data);
-	}
-
-	init(): void {
+		this.rawDataSet = data;
 		this.processData();
 	}
 }
