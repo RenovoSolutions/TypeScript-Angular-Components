@@ -1,14 +1,14 @@
 <div class="select-group">
 	<div class="select-column">
 		<rlCheckbox class="stand-alone-checkbox"
-					[value]="item?.viewData?.selected"
+					[value]="selection.selected"
 					(change)="toggleSelected()"
-					[disabled]="item?.viewData?.disabledSelection"
-					[title]="item?.viewData?.selectionTitle"></rlCheckbox>
+					[disabled]="selection.disabledSelection"
+					[title]="selection.selectionTitle"></rlCheckbox>
 	</div>
 	<div class="select-content">
 		<div class="card selectable"
-			 [class.selected]="item?.viewData?.selected">
+			 [class.selected]="selection.selected">
 			<div class="header"
 				(click)="toggleContent()"
 				[class.active]="hasBody || !permanentFooter">

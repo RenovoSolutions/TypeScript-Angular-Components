@@ -51,7 +51,7 @@ export class CardContainerComponent<T> implements OnInit {
 	saveWhenInvalid: boolean;
 	sortDirection: ISortDirections;
 
-	private _numberSelected: BehaviorSubject<number>;
+	protected _numberSelected: BehaviorSubject<number>;
 	numberSelected$: Observable<number>;
 
 	injectedPager: DataPager;

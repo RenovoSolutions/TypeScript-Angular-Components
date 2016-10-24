@@ -1,13 +1,11 @@
 import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
-import { each, isUndefined, filter, difference } from 'lodash';
-
-import { services, filters } from 'typescript-angular-utilities';
-import __array = services.array;
-import __genericSearchFilter = services.genericSearchFilter;
+import { map, find, clone, filter, includes } from 'lodash';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { IColumn } from './column';
 import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
-import { DataPagerOld } from './paging/dataPager/dataPagerOld.service';
+import { DataPager } from './paging/dataPager/dataPager.service';
+import { IFilter, SearchFilter } from './filters/index';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
 import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
@@ -16,15 +14,16 @@ import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { SelectableCardComponent } from './card/selectableCard';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
-import { CardContainerTypeOld } from './builder/cardContainerBuilderOld.service';
+import { CardContainerType } from './builder/cardContainerBuilder.service';
 
 export const defaultSelectionTitle: string = 'Select card';
 
-export interface ISelectableItem {
-	viewData?: ISelectionViewData;
+export interface IdentityItem {
+	id?: number;
 }
 
-export interface ISelectionViewData {
+export interface ISelectionWrappedItem<T> {
+	item: T;
 	selected?: boolean;
 	disabledSelection?: boolean;
 	selectionTitle?: string;
@@ -39,7 +38,8 @@ export interface ISelectionViewData {
 		cardContainerInputs.searchPlaceholder
 	],
 	providers: [
-		DataPagerOld,
+		DataPager,
+		SearchFilter,
 		SortManagerService,
 		{
 			provide: CardContainerComponent,
@@ -47,8 +47,11 @@ export interface ISelectionViewData {
 		},
 	],
 })
-export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
+export class SelectableCardContainerComponent<T extends IdentityItem> extends CardContainerComponent<T> {
 	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
+
+	selectionFilteredData$: BehaviorSubject<ISelectionWrappedItem<T>[]>;
+	selectionData$: BehaviorSubject<ISelectionWrappedItem<T>[]>;
 
 	selectionColumn: IColumn<any>;
 	sortDirections: ISortDirections = SortDirection;
@@ -61,78 +64,95 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	// constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
-	// 	super(array, pager, sortManager);
-	// 	this.type = CardContainerType.selectable;
-	// }
+	constructor(pager: DataPager, searchFilter: SearchFilter, sortManager: SortManagerService) {
+		super(pager, searchFilter, sortManager);
+		this.type = CardContainerType.selectable;
+		this.selectionFilteredData$ = new BehaviorSubject(null);
+		this.selectionData$ = new BehaviorSubject(null);
+	}
 
-	// ngOnInit(): void {
-	// 	super.ngOnInit();
+	ngOnInit(): void {
+		super.ngOnInit();
 
-	// 	this.dataSource.changed.subscribe(this.addViewData);
-	// 	this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
+		this.dataSource.filteredDataSet$.subscribe(filteredData => {
+			const selectionData = this.selectionFilteredData$.getValue();
+			this.selectionFilteredData$.next(this.buildSelectionData(filteredData, selectionData));
+		});
 
-	// 	this.addViewData();
+		this.dataSource.dataSet$.combineLatest(this.selectionFilteredData$).subscribe(([data, selectionFilteredData]) => {
+			this.selectionData$.next(filter(selectionFilteredData, selection => includes(data, selection.item)));
+		});
 
-	// 	this.selectionChanged.subscribe(this.updateSelected);
+		this.selectionFilteredData$.subscribe(selectionFilteredData => {
+			const numberSelected = filter(selectionFilteredData, (selection: ISelectionWrappedItem<T>): boolean => {
+				return selection.selected;
+			}).length;
+			this._numberSelected.next(numberSelected);
+		});
 
-	// 	this.selectionColumn = {
-	// 		label: null,
-	// 		size: null,
-	// 		getValue(item: any): boolean {
-	// 			return item.viewData.selected;
-	// 		},
-	// 		flipSort: true,
-	// 	};
-	// }
+		this.selectionColumn = {
+			label: null,
+			size: null,
+			getValue(item: T): boolean {
+				const selection = this.getSelection(item);
+				return selection.selected;
+			},
+			flipSort: true,
+		};
+	}
 
-	// sortSelected(): void {
-	// 	this.sort(this.selectionColumn);
-	// }
+	sortSelected(): void {
+		this.sort(this.selectionColumn);
+	}
 
-	// private addViewData: {(): void} = (): void => {
-	// 	each(this.dataSource.rawDataSet, (item: T): void => {
-	// 		if (isUndefined(item.viewData)) {
-	// 			item.viewData = {
-	// 				selected: false,
-	// 			};
-	// 		}
-	// 	});
+	setSelected(selection: ISelectionWrappedItem<T>, value: boolean): void {
+		const subscription = this.dataSource.filteredDataSet$.subscribe(filteredData => {
+			let updatedSelection = clone(selection);
+			updatedSelection.selected = value;
 
-	// 	this.updateDisabledSelections();
-	// }
+			const selectionFilteredData = this.selectionFilteredData$.getValue();
+			this.selectionFilteredData$.next(map(selectionFilteredData, oldSelection => {
+				return oldSelection.item.id === updatedSelection.item.id
+					? updatedSelection
+					: oldSelection;
+			}));
 
-	// private clearFilteredSelections: {(): void} = (): void => {
-	// 	let nonVisibleItems: any[] = difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
+			this.selectionChanged.emit(null);
 
-	// 	each(nonVisibleItems, (item: T): void => {
-	// 		if (isUndefined(item.viewData)) {
-	// 			item.viewData = {
-	// 				selected: false,
-	// 			};
-	// 		}
+			setTimeout(() => subscription.unsubscribe());
+		});
+	}
 
-	// 		item.viewData.selected = false;
-	// 		item.viewData.selectionTitle = defaultSelectionTitle;
-	// 	});
+	private getSelection(item: T): ISelectionWrappedItem<T> {
+		const selectionFilteredData = this.selectionFilteredData$.getValue();
+		return find(selectionFilteredData, x => x.item.id === item.id);
+	}
 
-	// 	this.updateSelected();
-	// }
+	private buildSelectionData(data: T[], selectionData: ISelectionWrappedItem<T>[]): ISelectionWrappedItem<T>[] {
+		return map(data, (item: T): ISelectionWrappedItem<T> => {
+			let selection = clone(find(selectionData, x => x.item.id === item.id));
 
-	// private updateSelected: {(): void} = (): void => {
-	// 	this.numberSelected = filter(this.dataSource.filteredDataSet, (item: T): boolean => {
-	// 		return item.viewData != null && item.viewData.selected;
-	// 	}).length;
-	// 	this.numberSelectedChanges.next(this.numberSelected);
-	// }
+			if (!selection) {
+				selection = {
+					item: item,
+					selected: false,
+				};
+			} else {
+				selection.item = item;
+			}
 
-	// private updateDisabledSelections: {(): void} = (): void => {
-	// 	if (this.disableSelection) {
-	// 		each(this.dataSource.rawDataSet, (item: T): void => {
-	// 			let disabledReason: string = this.disableSelection({ item: item });
-	// 			item.viewData.disabledSelection = (disabledReason != null);
-	// 			item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
-	// 		});
-	// 	}
-	// }
+			selection = this.setDisableSelection(selection);
+
+			return selection;
+		});
+	}
+
+	private setDisableSelection(selection: ISelectionWrappedItem<T>): ISelectionWrappedItem<T> {
+		if (this.disableSelection) {
+			const disabledReason: string = this.disableSelection({ item: selection.item });
+			selection.disabledSelection = (disabledReason != null);
+			selection.selectionTitle = (selection.disabledSelection ? disabledReason : defaultSelectionTitle);
+		}
+		return selection;
+	}
 }

@@ -19,6 +19,7 @@ import {
 } from '../../source/components/cardContainer/filters/index';
 
 interface ICardItem {
+	id: number;
 	name: string;
 	value: number;
 }
@@ -27,6 +28,7 @@ const rangeLow: number = 1;
 const rangeHigh: number = 101;
 const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardItem => {
 	return {
+		id: num,
 		name: 'Item' + num,
 		value: num,
 	};
