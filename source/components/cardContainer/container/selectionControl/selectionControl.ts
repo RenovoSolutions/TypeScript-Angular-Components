@@ -1,10 +1,8 @@
 import { Component, Inject, OnInit, forwardRef } from '@angular/core';
+import { Observable } from 'rxjs';
 import { each } from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
-
-import { IDataSourceOld } from '../../dataSources/index';
+import { IDataSource } from '../../dataSources/index';
 import { SelectableCardContainerComponent, ISelectableItem } from '../../selectableCardContainer';
 
 @Component({
@@ -12,56 +10,51 @@ import { SelectableCardContainerComponent, ISelectableItem } from '../../selecta
 	template: require('./selectionControl.html'),
 })
 export class SelectionComponent<T extends ISelectableItem> implements OnInit {
-	selectedItems: number;
 	pagingEnabled: boolean;
-	dataSource: IDataSourceOld<T>;
+	dataSource: IDataSource<T>;
 
 	cardContainer: SelectableCardContainerComponent<T>;
-	boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(forwardRef(() => SelectableCardContainerComponent)) cardContainer: SelectableCardContainerComponent<T>
-			, boolean: __boolean.BooleanUtility) {
+	constructor(@Inject(forwardRef(() => SelectableCardContainerComponent)) cardContainer: SelectableCardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
-		this.boolean = boolean;
 	}
+
+	// get selectedItems$(): Observable<number> {
+	// 	return this.cardContainer.numberSelected$;
+	// }
 
 	ngOnInit(): void {
-		this.selectedItems = this.cardContainer.numberSelected;
-		this.pagingEnabled = this.boolean.toBool(this.cardContainer.dataSource.pager);
+		this.pagingEnabled = !!this.cardContainer.dataSource.pager;
 		this.dataSource = this.cardContainer.dataSource;
-
-		this.cardContainer.numberSelectedChanges.subscribe((value: number): void => {
-			this.selectedItems = value;
-		});
 	}
 
-	selectPage(): void {
-		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = true;
-		});
-		this.cardContainer.selectionChanged.emit(null);
-	}
+	// selectPage(): void {
+	// 	each(this.dataSource.dataSet, item => {
+	// 		item.viewData.selected = true;
+	// 	});
+	// 	this.cardContainer.selectionChanged.emit(null);
+	// }
 
-	selectAll(): void {
-		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = true;
-		});
-		this.cardContainer.selectionChanged.emit(null);
-	}
+	// selectAll(): void {
+	// 	each(this.dataSource.filteredDataSet, item => {
+	// 		item.viewData.selected = true;
+	// 	});
+	// 	this.cardContainer.selectionChanged.emit(null);
+	// }
 
-	clearPage(): void {
-		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = false;
-		});
+	// clearPage(): void {
+	// 	each(this.dataSource.dataSet, item => {
+	// 		item.viewData.selected = false;
+	// 	});
 
-		this.cardContainer.selectionChanged.emit(null);
-	}
+	// 	this.cardContainer.selectionChanged.emit(null);
+	// }
 
-	clearAll(): void {
-		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = false;
-		});
+	// clearAll(): void {
+	// 	each(this.dataSource.filteredDataSet, item => {
+	// 		item.viewData.selected = false;
+	// 	});
 
-		this.cardContainer.selectionChanged.emit(null);
-	}
+	// 	this.cardContainer.selectionChanged.emit(null);
+	// }
 }

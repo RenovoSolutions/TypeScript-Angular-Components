@@ -16,7 +16,7 @@ import { ColumnHeaderTemplate } from './templates/columnHeader.template';
 import { SelectableCardComponent } from './card/selectableCard';
 import { CardContainerComponent, cardContainerInputs } from './cardContainer';
 
-import { CardContainerType } from './builder/cardContainerBuilderOld.service';
+import { CardContainerTypeOld } from './builder/cardContainerBuilderOld.service';
 
 export const defaultSelectionTitle: string = 'Select card';
 
@@ -61,78 +61,78 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
-		super(array, pager, sortManager);
-		this.type = CardContainerType.selectable;
-	}
+	// constructor(array: __array.ArrayUtility, pager: DataPagerOld, sortManager: SortManagerService) {
+	// 	super(array, pager, sortManager);
+	// 	this.type = CardContainerType.selectable;
+	// }
 
-	ngOnInit(): void {
-		super.ngOnInit();
+	// ngOnInit(): void {
+	// 	super.ngOnInit();
 
-		this.dataSource.changed.subscribe(this.addViewData);
-		this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
+	// 	this.dataSource.changed.subscribe(this.addViewData);
+	// 	this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
 
-		this.addViewData();
+	// 	this.addViewData();
 
-		this.selectionChanged.subscribe(this.updateSelected);
+	// 	this.selectionChanged.subscribe(this.updateSelected);
 
-		this.selectionColumn = {
-			label: null,
-			size: null,
-			getValue(item: any): boolean {
-				return item.viewData.selected;
-			},
-			flipSort: true,
-		};
-	}
+	// 	this.selectionColumn = {
+	// 		label: null,
+	// 		size: null,
+	// 		getValue(item: any): boolean {
+	// 			return item.viewData.selected;
+	// 		},
+	// 		flipSort: true,
+	// 	};
+	// }
 
-	sortSelected(): void {
-		this.sort(this.selectionColumn);
-	}
+	// sortSelected(): void {
+	// 	this.sort(this.selectionColumn);
+	// }
 
-	private addViewData: {(): void} = (): void => {
-		each(this.dataSource.rawDataSet, (item: T): void => {
-			if (isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
-		});
+	// private addViewData: {(): void} = (): void => {
+	// 	each(this.dataSource.rawDataSet, (item: T): void => {
+	// 		if (isUndefined(item.viewData)) {
+	// 			item.viewData = {
+	// 				selected: false,
+	// 			};
+	// 		}
+	// 	});
 
-		this.updateDisabledSelections();
-	}
+	// 	this.updateDisabledSelections();
+	// }
 
-	private clearFilteredSelections: {(): void} = (): void => {
-		let nonVisibleItems: any[] = difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
+	// private clearFilteredSelections: {(): void} = (): void => {
+	// 	let nonVisibleItems: any[] = difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
 
-		each(nonVisibleItems, (item: T): void => {
-			if (isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
+	// 	each(nonVisibleItems, (item: T): void => {
+	// 		if (isUndefined(item.viewData)) {
+	// 			item.viewData = {
+	// 				selected: false,
+	// 			};
+	// 		}
 
-			item.viewData.selected = false;
-			item.viewData.selectionTitle = defaultSelectionTitle;
-		});
+	// 		item.viewData.selected = false;
+	// 		item.viewData.selectionTitle = defaultSelectionTitle;
+	// 	});
 
-		this.updateSelected();
-	}
+	// 	this.updateSelected();
+	// }
 
-	private updateSelected: {(): void} = (): void => {
-		this.numberSelected = filter(this.dataSource.filteredDataSet, (item: T): boolean => {
-			return item.viewData != null && item.viewData.selected;
-		}).length;
-		this.numberSelectedChanges.next(this.numberSelected);
-	}
+	// private updateSelected: {(): void} = (): void => {
+	// 	this.numberSelected = filter(this.dataSource.filteredDataSet, (item: T): boolean => {
+	// 		return item.viewData != null && item.viewData.selected;
+	// 	}).length;
+	// 	this.numberSelectedChanges.next(this.numberSelected);
+	// }
 
-	private updateDisabledSelections: {(): void} = (): void => {
-		if (this.disableSelection) {
-			each(this.dataSource.rawDataSet, (item: T): void => {
-				let disabledReason: string = this.disableSelection({ item: item });
-				item.viewData.disabledSelection = (disabledReason != null);
-				item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
-			});
-		}
-	}
+	// private updateDisabledSelections: {(): void} = (): void => {
+	// 	if (this.disableSelection) {
+	// 		each(this.dataSource.rawDataSet, (item: T): void => {
+	// 			let disabledReason: string = this.disableSelection({ item: item });
+	// 			item.viewData.disabledSelection = (disabledReason != null);
+	// 			item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
+	// 		});
+	// 	}
+	// }
 }

@@ -1,214 +1,214 @@
-import * as _ from 'lodash';
-import { Subject } from 'rxjs';
+// import * as _ from 'lodash';
+// import { Subject } from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __array = services.array;
+// import { services } from 'typescript-angular-utilities';
+// import __array = services.array;
 
-import { DataPagerOld } from './paging/index';
-import { SortManagerService } from './sorts/index';
+// import { DataPagerOld } from './paging/index';
+// import { SortManagerService } from './sorts/index';
 
-import { SelectableCardContainerComponent	} from './selectableCardContainer';
-import {
-	IBreakpointSize,
-	IColumn,
-	CardComponent,
-	sorts,
-	builder as __builder,
-} from './index';
+// import { SelectableCardContainerComponent	} from './selectableCardContainer';
+// import {
+// 	IBreakpointSize,
+// 	IColumn,
+// 	CardComponent,
+// 	sorts,
+// 	builder as __builder,
+// } from './index';
 
-interface IDataSourceMock {
-	refresh: Sinon.SinonSpy;
-	onSortChange?: Sinon.SinonSpy;
-	pager?: IDataPagerMock;
-	filters?: IFilterMock[];
-	rawDataSet?: any[];
-	dataSet?: any[];
-	filteredDataSet?: any[];
-	initPager: Sinon.SinonSpy;
-	changed: Subject<void>;
-	redrawing: Subject<void>;
-}
+// interface IDataSourceMock {
+// 	refresh: Sinon.SinonSpy;
+// 	onSortChange?: Sinon.SinonSpy;
+// 	pager?: IDataPagerMock;
+// 	filters?: IFilterMock[];
+// 	rawDataSet?: any[];
+// 	dataSet?: any[];
+// 	filteredDataSet?: any[];
+// 	initPager: Sinon.SinonSpy;
+// 	changed: Subject<void>;
+// 	redrawing: Subject<void>;
+// }
 
-interface IDataPagerMock {
-	pageSize: number;
-	pageNumber: number;
-	filter: Sinon.SinonSpy;
-}
+// interface IDataPagerMock {
+// 	pageSize: number;
+// 	pageNumber: number;
+// 	filter: Sinon.SinonSpy;
+// }
 
-interface IFilterMock {
-	type: string;
-	filter: Sinon.SinonSpy;
-}
+// interface IFilterMock {
+// 	type: string;
+// 	filter: Sinon.SinonSpy;
+// }
 
-describe('SelectableCardContainerComponent', () => {
-	let cardContainer: SelectableCardContainerComponent<any>;
-	let builder: __builder.CardContainerBuilderOld;
-	let mockedDataSource: IDataSourceMock;
+// describe('SelectableCardContainerComponent', () => {
+// 	let cardContainer: SelectableCardContainerComponent<any>;
+// 	let builder: __builder.CardContainerBuilderOld;
+// 	let mockedDataSource: IDataSourceMock;
 
-	beforeEach(() => {
-		cardContainer = new SelectableCardContainerComponent(__array.arrayUtility, new DataPagerOld(), new SortManagerService());
+// 	beforeEach(() => {
+// 		cardContainer = new SelectableCardContainerComponent(__array.arrayUtility, new DataPagerOld(), new SortManagerService());
 
-		builder = new __builder.CardContainerBuilderOld(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
-		cardContainer.builder = builder;
+// 		builder = new __builder.CardContainerBuilderOld(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
+// 		cardContainer.builder = builder;
 
-		mockedDataSource = buildMockedDataSource();
-		cardContainer.dataSource = <any>mockedDataSource;
-		builder._dataSource = <any>mockedDataSource;
-	});
+// 		mockedDataSource = buildMockedDataSource();
+// 		cardContainer.dataSource = <any>mockedDataSource;
+// 		builder._dataSource = <any>mockedDataSource;
+// 	});
 
-	let dataSource: IDataSourceMock;
-	beforeEach((): void => {
-		dataSource = buildMockedDataSource();
-		dataSource.rawDataSet = [
-			{ id: 0 },
-			{ id: 1 },
-		];
+// 	let dataSource: IDataSourceMock;
+// 	beforeEach((): void => {
+// 		dataSource = buildMockedDataSource();
+// 		dataSource.rawDataSet = [
+// 			{ id: 0 },
+// 			{ id: 1 },
+// 		];
 
-		builder._dataSource = <any>dataSource;
-		builder.useSelection();
-	});
+// 		builder._dataSource = <any>dataSource;
+// 		builder.useSelection();
+// 	});
 
-	it('should add view data to all data items', (): void => {
-		dataSource.redrawing.subscribe = sinon.spy();
-		dataSource.changed.subscribe = sinon.spy();
-		cardContainer.ngOnInit()
+// 	it('should add view data to all data items', (): void => {
+// 		dataSource.redrawing.subscribe = sinon.spy();
+// 		dataSource.changed.subscribe = sinon.spy();
+// 		cardContainer.ngOnInit()
 
-		expect(dataSource.rawDataSet).to.have.length(2);
-		expect(dataSource.rawDataSet[0].viewData).to.exist;
-		expect(dataSource.rawDataSet[1].viewData).to.exist;
+// 		expect(dataSource.rawDataSet).to.have.length(2);
+// 		expect(dataSource.rawDataSet[0].viewData).to.exist;
+// 		expect(dataSource.rawDataSet[1].viewData).to.exist;
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.redrawing.subscribe);
-		sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.changed.subscribe);
-	});
+// 		sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.redrawing.subscribe);
+// 		sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.changed.subscribe);
+// 	});
 
-	it('should add view data to new items when changed is fire', (): void => {
-		cardContainer.ngOnInit()
+// 	it('should add view data to new items when changed is fire', (): void => {
+// 		cardContainer.ngOnInit()
 
-		dataSource.rawDataSet.push({ id: 3 });
+// 		dataSource.rawDataSet.push({ id: 3 });
 
-		expect(dataSource.rawDataSet).to.have.length(3);
-		expect(dataSource.rawDataSet[0].viewData).to.exist;
-		expect(dataSource.rawDataSet[1].viewData).to.exist;
-		expect(dataSource.rawDataSet[2].viewData).to.not.exist;
+// 		expect(dataSource.rawDataSet).to.have.length(3);
+// 		expect(dataSource.rawDataSet[0].viewData).to.exist;
+// 		expect(dataSource.rawDataSet[1].viewData).to.exist;
+// 		expect(dataSource.rawDataSet[2].viewData).to.not.exist;
 
-		dataSource.changed.next(null);
+// 		dataSource.changed.next(null);
 
-		expect(dataSource.rawDataSet[2].viewData).to.exist;
-	});
+// 		expect(dataSource.rawDataSet[2].viewData).to.exist;
+// 	});
 
-	it('should update count of selected items when selection changes', (): void => {
-		dataSource.rawDataSet = [
-			{ id: 0 },
-			{ id: 1 },
-		];
-		dataSource.dataSet = dataSource.rawDataSet;
-		dataSource.filteredDataSet = dataSource.rawDataSet;
-		cardContainer.ngOnInit()
-		const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
-		cardContainer.numberSelectedChanges.subscribe(numberSelectedSpy);
+// 	it('should update count of selected items when selection changes', (): void => {
+// 		dataSource.rawDataSet = [
+// 			{ id: 0 },
+// 			{ id: 1 },
+// 		];
+// 		dataSource.dataSet = dataSource.rawDataSet;
+// 		dataSource.filteredDataSet = dataSource.rawDataSet;
+// 		cardContainer.ngOnInit()
+// 		const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
+// 		cardContainer.numberSelectedChanges.subscribe(numberSelectedSpy);
 
-		_.each(dataSource.dataSet, (item: any): void => {
-			item.viewData.selected = true;
-		});
+// 		_.each(dataSource.dataSet, (item: any): void => {
+// 			item.viewData.selected = true;
+// 		});
 
-		expect(cardContainer.numberSelected).to.equal(0);
+// 		expect(cardContainer.numberSelected).to.equal(0);
 
-		cardContainer.selectionChanged.next(null);
+// 		cardContainer.selectionChanged.next(null);
 
-		sinon.assert.calledOnce(numberSelectedSpy);
-		expect(cardContainer.numberSelected).to.equal(2);
+// 		sinon.assert.calledOnce(numberSelectedSpy);
+// 		expect(cardContainer.numberSelected).to.equal(2);
 
-		_.each(dataSource.dataSet, (item: any): void => {
-			item.viewData.selected = false;
-		});
+// 		_.each(dataSource.dataSet, (item: any): void => {
+// 			item.viewData.selected = false;
+// 		});
 
-		expect(cardContainer.numberSelected).to.equal(2);
+// 		expect(cardContainer.numberSelected).to.equal(2);
 
-		cardContainer.selectionChanged.next(null);
+// 		cardContainer.selectionChanged.next(null);
 
-		sinon.assert.calledTwice(numberSelectedSpy);
-		expect(cardContainer.numberSelected).to.equal(0);
-	});
+// 		sinon.assert.calledTwice(numberSelectedSpy);
+// 		expect(cardContainer.numberSelected).to.equal(0);
+// 	});
 
-	it('should clear selected items that are not in the filtered data set when collection is redrawn', (): void => {
-		dataSource.rawDataSet = [
-			{ id: 0 },
-			{ id: 1 },
-			{ id: 2 },
-			{ id: 3 },
-		];
-		dataSource.dataSet = _.clone(dataSource.rawDataSet);
-		dataSource.filteredDataSet = dataSource.dataSet;
-		cardContainer.ngOnInit()
+// 	it('should clear selected items that are not in the filtered data set when collection is redrawn', (): void => {
+// 		dataSource.rawDataSet = [
+// 			{ id: 0 },
+// 			{ id: 1 },
+// 			{ id: 2 },
+// 			{ id: 3 },
+// 		];
+// 		dataSource.dataSet = _.clone(dataSource.rawDataSet);
+// 		dataSource.filteredDataSet = dataSource.dataSet;
+// 		cardContainer.ngOnInit()
 
-		_.each(dataSource.dataSet, (item: any): void => {
-			item.viewData.selected = true;
-		});
+// 		_.each(dataSource.dataSet, (item: any): void => {
+// 			item.viewData.selected = true;
+// 		});
 
-		dataSource.redrawing.next(null);
+// 		dataSource.redrawing.next(null);
 
-		expect(cardContainer.numberSelected).to.equal(4);
+// 		expect(cardContainer.numberSelected).to.equal(4);
 
-		dataSource.dataSet.pop();
-		dataSource.dataSet.pop();
-		dataSource.filteredDataSet = dataSource.dataSet;
+// 		dataSource.dataSet.pop();
+// 		dataSource.dataSet.pop();
+// 		dataSource.filteredDataSet = dataSource.dataSet;
 
-		dataSource.redrawing.next(null);
+// 		dataSource.redrawing.next(null);
 
-		expect(cardContainer.numberSelected).to.equal(2);
-	});
+// 		expect(cardContainer.numberSelected).to.equal(2);
+// 	});
 
-	it('should apply a sort in the select column', (): void => {
-		cardContainer.ngOnInit()
+// 	it('should apply a sort in the select column', (): void => {
+// 		cardContainer.ngOnInit()
 
-		cardContainer.sortSelected();
+// 		cardContainer.sortSelected();
 
-		expect(cardContainer.dataSource.sorts).to.have.length(1);
-		expect(cardContainer.dataSource.sorts[0].column).to.equal(cardContainer.selectionColumn);
-		expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-	});
+// 		expect(cardContainer.dataSource.sorts).to.have.length(1);
+// 		expect(cardContainer.dataSource.sorts[0].column).to.equal(cardContainer.selectionColumn);
+// 		expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
+// 	});
 
-	it('should allow individual items to disable selection if a disable selection function is provided', (): void => {
-		builder.disableSelection = (): string => {
-			return 'disabled';
-		};
-		dataSource.rawDataSet = [
-			{ id: 0 },
-			{ id: 1 },
-		];
-		dataSource.dataSet = _.clone(dataSource.rawDataSet);
-		dataSource.filteredDataSet = dataSource.dataSet;
-		cardContainer.ngOnInit()
+// 	it('should allow individual items to disable selection if a disable selection function is provided', (): void => {
+// 		builder.disableSelection = (): string => {
+// 			return 'disabled';
+// 		};
+// 		dataSource.rawDataSet = [
+// 			{ id: 0 },
+// 			{ id: 1 },
+// 		];
+// 		dataSource.dataSet = _.clone(dataSource.rawDataSet);
+// 		dataSource.filteredDataSet = dataSource.dataSet;
+// 		cardContainer.ngOnInit()
 
-		expect(dataSource.rawDataSet[0].viewData.disabledSelection).to.be.true;
-		expect(dataSource.rawDataSet[0].viewData.selectionTitle).to.equal('disabled');
-		expect(dataSource.rawDataSet[1].viewData.disabledSelection).to.be.true;
-		expect(dataSource.rawDataSet[1].viewData.selectionTitle).to.equal('disabled');
-	});
+// 		expect(dataSource.rawDataSet[0].viewData.disabledSelection).to.be.true;
+// 		expect(dataSource.rawDataSet[0].viewData.selectionTitle).to.equal('disabled');
+// 		expect(dataSource.rawDataSet[1].viewData.disabledSelection).to.be.true;
+// 		expect(dataSource.rawDataSet[1].viewData.selectionTitle).to.equal('disabled');
+// 	});
 
-	it('should allow items to enable selection via a disable selection function if disable reason is null', (): void => {
-		builder.disableSelection = (): string => {
-			return null;
-		};
-		dataSource.rawDataSet = [
-			{ id: 0 },
-			{ id: 1 },
-		];
-		dataSource.dataSet = _.clone(dataSource.rawDataSet);
-		dataSource.filteredDataSet = dataSource.dataSet;
-		cardContainer.ngOnInit()
+// 	it('should allow items to enable selection via a disable selection function if disable reason is null', (): void => {
+// 		builder.disableSelection = (): string => {
+// 			return null;
+// 		};
+// 		dataSource.rawDataSet = [
+// 			{ id: 0 },
+// 			{ id: 1 },
+// 		];
+// 		dataSource.dataSet = _.clone(dataSource.rawDataSet);
+// 		dataSource.filteredDataSet = dataSource.dataSet;
+// 		cardContainer.ngOnInit()
 
-		expect(dataSource.rawDataSet[0].viewData.disabledSelection).to.be.false;
-		expect(dataSource.rawDataSet[1].viewData.disabledSelection).to.be.false;
-	});
+// 		expect(dataSource.rawDataSet[0].viewData.disabledSelection).to.be.false;
+// 		expect(dataSource.rawDataSet[1].viewData.disabledSelection).to.be.false;
+// 	});
 
-	function buildMockedDataSource(): IDataSourceMock {
-		return <any>{
-			refresh: sinon.spy(),
-			onSortChange: sinon.spy(),
-			initPager: sinon.spy(),
-			changed: new Subject<void>(),
-			redrawing: new Subject<void>(),
-		};
-	}
-});
+// 	function buildMockedDataSource(): IDataSourceMock {
+// 		return <any>{
+// 			refresh: sinon.spy(),
+// 			onSortChange: sinon.spy(),
+// 			initPager: sinon.spy(),
+// 			changed: new Subject<void>(),
+// 			redrawing: new Subject<void>(),
+// 		};
+// 	}
+// });
