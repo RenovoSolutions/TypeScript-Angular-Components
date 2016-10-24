@@ -8,7 +8,8 @@ import __guid = services.guid;
 
 import { DefaultTheme } from '../../componentsDefaultTheme';
 
-import { InputComponent, baseInputs, baseOutputs } from '../input';
+import { ValidatedInputComponent, validationInputs, baseOutputs } from '../validationInput';
+import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
 export interface IStar {
@@ -19,10 +20,11 @@ export interface IStar {
 @Component({
 	selector: 'rlUserRating',
 	template: require('./userRating.html'),
-	inputs: baseInputs,
+	inputs: validationInputs,
 	outputs: baseOutputs,
+	providers: [ComponentValidator],
 })
-export class UserRatingComponent extends InputComponent<number> implements OnInit {
+export class UserRatingComponent extends ValidatedInputComponent<number> implements OnInit {
 	@Input() range: number;
 
 	stars: IStar[];
@@ -31,9 +33,11 @@ export class UserRatingComponent extends InputComponent<number> implements OnIni
 
 	constructor(defaultTheme: DefaultTheme
 			, @Optional() rlForm: FormComponent
+			, componentValidator: ComponentValidator
 			, object: __object.ObjectUtility
+			, array: __array.ArrayUtility
 			, guid: __guid.GuidService) {
-		super(rlForm, object, guid);
+		super(rlForm, componentValidator, object, array, guid);
 		this.inputType = 'userRating';
 		this.initControl();
 		this.useDefaultTheme = defaultTheme.useDefaultTheme;
