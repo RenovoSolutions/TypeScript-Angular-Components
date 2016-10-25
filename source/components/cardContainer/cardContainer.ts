@@ -113,7 +113,7 @@ export class CardContainerComponent<T> implements OnInit {
 		// need a way to customize the sorts?
 		this.sortManager.setup([], name => this.lookupColumn(name), this.maxColumnSorts);
 
-		this.dataSource.sorts$ = this.sortManager.sortList$;
+		this.dataSource.sorter = this.sortManager;
 
 		this.dataSource.init();
 	}
@@ -123,7 +123,7 @@ export class CardContainerComponent<T> implements OnInit {
 	}
 
 	sort(column: IColumn<any>): void {
-		this.sortManager.sort(column);
+		this.sortManager.updateSorts(column);
 	}
 
 	getColumnTemplate(columnName: string): ColumnHeaderTemplate {

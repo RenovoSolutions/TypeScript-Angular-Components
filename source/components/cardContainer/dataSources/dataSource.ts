@@ -2,7 +2,7 @@ import { Subject, Observable } from 'rxjs';
 
 import { filters } from 'typescript-angular-utilities';
 
-import { ISort } from '../sorts/sort';
+import { ISort, SortManagerService } from '../sorts/index';
 import { IFilter } from '../filters/index';
 import { IDataPagerOld, IDataPager } from '../paging/index';
 
@@ -10,7 +10,7 @@ export interface IDataSource<TDataType> {
 	dataSet$: Observable<TDataType[]>;
 	filteredDataSet$: Observable<TDataType[]>;
 	rawDataSet$: Observable<TDataType[]>;
-	sorts$: Observable<ISort[]>;
+	sorter: SortManagerService;
 	filters: IFilter<TDataType, any>[];
 	pager: IDataPager;
 	count$: Observable<number>;

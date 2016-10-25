@@ -35,14 +35,14 @@ describe('SortManagerService', () => {
 		];
 		sortManager.maxColumnSorts = 2;
 
-		sortManager.sort(columns[0]);
+		sortManager.updateSorts(columns[0]);
 
 		expect(sorts).to.have.length(1);
 		expect(sorts[0].direction).to.equal(SortDirection.ascending);
 		expect(sorts[0].column).to.equal(columns[0]);
 		expect(columns[0].sortDirection).to.equal(SortDirection.ascending);
 
-		sortManager.sort(columns[1]);
+		sortManager.updateSorts(columns[1]);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].direction).to.equal(SortDirection.ascending);
@@ -52,7 +52,7 @@ describe('SortManagerService', () => {
 		expect(columns[1].sortDirection).to.equal(SortDirection.ascending);
 		expect(columns[0].sortDirection).to.be.null;
 
-		sortManager.sort(columns[2]);
+		sortManager.updateSorts(columns[2]);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].direction).to.equal(SortDirection.ascending);
@@ -78,22 +78,22 @@ describe('SortManagerService', () => {
 			},
 		];
 
-		sortManager.sort(columns[1]);
-		sortManager.sort(columns[0]);
+		sortManager.updateSorts(columns[1]);
+		sortManager.updateSorts(columns[0]);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].direction).to.equal(SortDirection.ascending);
 		expect(sorts[0].column).to.equal(columns[0]);
 		expect(columns[0].sortDirection).to.equal(SortDirection.ascending);
 
-		sortManager.sort(columns[0]);
+		sortManager.updateSorts(columns[0]);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].direction).to.equal(SortDirection.descending);
 		expect(sorts[0].column).to.equal(columns[0]);
 		expect(columns[0].sortDirection).to.equal(SortDirection.descending);
 
-		sortManager.sort(columns[0]);
+		sortManager.updateSorts(columns[0]);
 
 		expect(sorts).to.have.length(1);
 		expect(sorts[0].direction).to.equal(SortDirection.ascending);
@@ -139,10 +139,10 @@ describe('SortManagerService', () => {
 						, column => column.label === name);
 		};
 
-		sortManager.sort(colWithoutSecondary1);
-		sortManager.sort(colWithoutSecondary2);
+		sortManager.updateSorts(colWithoutSecondary1);
+		sortManager.updateSorts(colWithoutSecondary2);
 
-		sortManager.sort(columnWithSecondarySorts);
+		sortManager.updateSorts(columnWithSecondarySorts);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].column).to.equal(columnWithSecondarySorts);
@@ -150,7 +150,7 @@ describe('SortManagerService', () => {
 		expect(sorts[1].column).to.equal(secondarySortColumn);
 		expect(sorts[1].direction).to.equal(SortDirection.descending);
 
-		sortManager.sort(columnWithSecondarySorts);
+		sortManager.updateSorts(columnWithSecondarySorts);
 
 		expect(sorts).to.have.length(2);
 		expect(sorts[0].column).to.equal(columnWithSecondarySorts);
@@ -158,7 +158,7 @@ describe('SortManagerService', () => {
 		expect(sorts[1].column).to.equal(secondarySortColumn);
 		expect(sorts[1].direction).to.equal(SortDirection.ascending);
 
-		sortManager.sort(columnWithSecondarySorts);
+		sortManager.updateSorts(columnWithSecondarySorts);
 
 		expect(sorts).to.be.empty;
 
@@ -178,8 +178,8 @@ describe('SortManagerService', () => {
 			},
 		];
 
-		sortManager.sort(columns[0]);
-		sortManager.sort(columns[1]);
+		sortManager.updateSorts(columns[0]);
+		sortManager.updateSorts(columns[1]);
 
 		expect(sorts).to.have.length(1);
 		expect(sorts[0].column).to.equal(columns[1]);

@@ -1,10 +1,9 @@
 import { Observable } from 'rxjs';
 import { reduce } from 'lodash';
 
-import { ISort } from '../../sorts/sort';
+import { ISort, SortManagerService } from '../../sorts/index';
 import { IFilter } from '../../filters/index';
 import { IDataPager } from '../../paging/index';
-import { Sorter } from '../../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
 	count$: Observable<number>;
@@ -12,12 +11,11 @@ export interface IProcessResult<TDataType> {
 	dataSet$: Observable<TDataType[]>;
 }
 
-export function process<TDataType>(sorts$: Observable<ISort[]>
+export function process<TDataType>(sorter: SortManagerService
 								, filters: IFilter<TDataType, any>[]
 								, pager: IDataPager
-								, data$: Observable<TDataType[]>
-								, sorter: Sorter): IProcessResult<TDataType> {
-	const sorted = sort(data$, sorts$, sorter);
+								, data$: Observable<TDataType[]>): IProcessResult<TDataType> {
+	const sorted = sort(data$, sorter);
 	const filtered = filter(sorted, filters);
 	const paged = page(filtered, pager);
 
@@ -32,14 +30,19 @@ export function count(data$: Observable<any[]>): Observable<number> {
 	return data$.map(data => data ? data.length : 0);
 }
 
-export function sort<TDataType>(data$: Observable<TDataType[]>, sorts$: Observable<ISort[]>, sorter: Sorter): Observable<TDataType[]> {
-	return data$.combineLatest(sorts$)
-				.map(([data, sorts]) => {
-			if (sorts && sorts.length) {
-				return sorter.sort(data, sorts);
-			}
-			return data;
-		});
+export function sort<TDataType>(data$: Observable<TDataType[]>, sorter: SortManagerService): Observable<TDataType[]> {
+	if (sorter) {
+		return sorter.sort(data$);
+	}
+	return data$;
+
+	// return data$.combineLatest(sorts$)
+	// 			.map(([data, sorts]) => {
+	// 		if (sorts && sorts.length) {
+	// 			return sorter.sort(data, sorts);
+	// 		}
+	// 		return data;
+	// 	});
 }
 
 export function filter<TDataType>(data$: Observable<TDataType[]>, filters: IFilter<TDataType, any>[]): Observable<TDataType[]> {

@@ -3,12 +3,12 @@ import { without, map } from 'lodash';
 
 import { IDataSource } from './dataSource';
 import { IProcessResult, process } from './processor/dataSourceProcessor';
-import { ISort, Sorter } from '../sorts/index';
+import { ISort, SortManagerService } from '../sorts/index';
 import { IFilter } from '../filters/index';
 import { IDataPager } from '../paging/index';
 
 export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
-	sorts$: Observable<ISort[]>;
+	sorter: SortManagerService;
 	filters: IFilter<TDataType, any>[];
 	pager: IDataPager;
 
@@ -22,11 +22,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	protected _loadingDataSet: BehaviorSubject<boolean>;
 	protected subscription: Subscription;
 
-	sorter: Sorter;
-
-	constructor(sorter: Sorter) {
-		this.sorter = sorter;
-
+	constructor() {
 		this._dataSet = new BehaviorSubject(null);
 		this._filteredDataSet = new BehaviorSubject(null);
 		this._rawDataSet = new BehaviorSubject(null);
@@ -93,7 +89,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 			// 																, this.pager
 			// 																, this.rawDataSet);
 		// } else {
-			processedData = process<TDataType>(this.sorts$, this.filters, this.pager, this.rawDataSet$, this.sorter);
+			processedData = process<TDataType>(this.sorter, this.filters, this.pager, this.rawDataSet$);
 		// }
 		this.setProcessedData(processedData);
 	}
@@ -108,7 +104,7 @@ export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
 			// 																, this.pager
 			// 																, this.rawDataSet);
 		} else {
-			processedData = process<TDataType>(this.sorts$, null, this.pager, this.rawDataSet$, this.sorter);
+			processedData = process<TDataType>(this.sorter, null, this.pager, this.rawDataSet$);
 		}
 		this.setProcessedData(processedData);
 	}
