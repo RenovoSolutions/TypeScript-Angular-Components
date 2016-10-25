@@ -74,8 +74,9 @@ export class SortManagerService {
 				} else { // otehrwise, clear the primary sort and fallback to previous sort
 					updatedSortList = drop(sortList, 1);
 				}
+			} else {
+				updatedSortList = sortList;
 			}
-			updatedSortList = sortList;
 		} else {
 			// Else make column primary ascending sort
 
