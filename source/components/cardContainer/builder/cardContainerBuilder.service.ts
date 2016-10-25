@@ -58,8 +58,7 @@ export class CardContainerBuilderService {
 	}
 
 	buildObservableDataSource<TDataType>(container: ICardContainerInstance, data$: Observable<TDataType[]>): IDataSource<TDataType> {
-		const sorter: Sorter = this.injector.get(Sorter);
-		const dataSource = new ObservableDataSource(data$, sorter);
+		const dataSource = new ObservableDataSource(data$);
 		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
 		return dataSource;
 	}
