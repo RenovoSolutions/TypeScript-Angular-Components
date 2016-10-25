@@ -7,7 +7,7 @@ describe('DataSourceBase', () => {
 	let dataSourceBase: DataSourceBase<number>;
 
 	beforeEach(() => {
-		dataSourceBase = new DataSourceBase<number>(<any>{});
+		dataSourceBase = new DataSourceBase<number>();
 	});
 
 	describe('needsRefinedSearch', (): void => {
