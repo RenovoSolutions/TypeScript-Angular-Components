@@ -48,10 +48,8 @@ export interface ISelectionWrappedItem<T> {
 	],
 })
 export class SelectableCardContainerComponent<T extends IdentityItem> extends CardContainerComponent<T> {
-	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
-
-	selectionFilteredData$: BehaviorSubject<ISelectionWrappedItem<T>[]>;
-	selectionData$: BehaviorSubject<ISelectionWrappedItem<T>[]>;
+	private _selectionFilteredData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
+	private _selectionData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
 
 	selectionColumn: IColumn<any>;
 	sortDirections: ISortDirections = SortDirection;
@@ -67,23 +65,31 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 	constructor(pager: DataPager, searchFilter: SearchFilter, sortManager: SortManagerService) {
 		super(pager, searchFilter, sortManager);
 		this.type = CardContainerType.selectable;
-		this.selectionFilteredData$ = new BehaviorSubject(null);
-		this.selectionData$ = new BehaviorSubject(null);
+		this._selectionFilteredData = new BehaviorSubject(null);
+		this._selectionData = new BehaviorSubject(null);
+	}
+
+	get selectionFilteredData$(): Observable<ISelectionWrappedItem<T>[]> {
+		return this._selectionFilteredData.asObservable();
+	}
+
+	get selectionData$(): Observable<ISelectionWrappedItem<T>[]> {
+		return this._selectionData.asObservable();
 	}
 
 	ngOnInit(): void {
 		super.ngOnInit();
 
 		this.dataSource.filteredDataSet$.subscribe(filteredData => {
-			const selectionData = this.selectionFilteredData$.getValue();
-			this.selectionFilteredData$.next(this.buildSelectionData(filteredData, selectionData));
+			const selectionData = this._selectionFilteredData.getValue();
+			this._selectionFilteredData.next(this.buildSelectionData(filteredData, selectionData));
 		});
 
-		this.dataSource.dataSet$.combineLatest(this.selectionFilteredData$).subscribe(([data, selectionFilteredData]) => {
-			this.selectionData$.next(filter(selectionFilteredData, selection => includes(data, selection.item)));
+		this.dataSource.dataSet$.combineLatest(this._selectionFilteredData).subscribe(([data, selectionFilteredData]) => {
+			this._selectionData.next(filter(selectionFilteredData, selection => includes(data, selection.item)));
 		});
 
-		this.selectionFilteredData$.subscribe(selectionFilteredData => {
+		this._selectionFilteredData.subscribe(selectionFilteredData => {
 			const numberSelected = filter(selectionFilteredData, (selection: ISelectionWrappedItem<T>): boolean => {
 				return selection.selected;
 			}).length;
@@ -113,20 +119,18 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 				return selection;
 			});
 
-			const selectionFilteredData = this.selectionFilteredData$.getValue();
-			this.selectionFilteredData$.next(map(selectionFilteredData, oldSelection => {
+			const selectionFilteredData = this._selectionFilteredData.getValue();
+			this._selectionFilteredData.next(map(selectionFilteredData, oldSelection => {
 				const updatedSelection = find(updatedSelections, selection => oldSelection.item.id === selection.item.id);
 				return updatedSelection	|| oldSelection;
 			}));
-
-			this.selectionChanged.emit(null);
 
 			setTimeout(() => subscription.unsubscribe());
 		});
 	}
 
 	private getSelection(item: T): ISelectionWrappedItem<T> {
-		const selectionFilteredData = this.selectionFilteredData$.getValue();
+		const selectionFilteredData = this._selectionFilteredData.getValue();
 		return find(selectionFilteredData, x => x.item.id === item.id);
 	}
 
