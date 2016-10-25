@@ -114,7 +114,7 @@ export class SortManagerService {
 			direction: SortDirection.ascending,
 		};
 
-		return [newSort, ...sortList];
+		return [newSort, ...listWithSortRemoved];
 	}
 
 	private buildSecondarySorts(direction: SortDirection, secondarySorts: ISecondarySorts): ISort[] {
