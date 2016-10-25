@@ -1,12 +1,6 @@
 import { Subject } from 'rxjs';
 
-import { services } from 'typescript-angular-utilities';
-import __transform = services.transform;
-
 import { ObservableDataSource } from './observableDataSource.service';
-
-import { Sorter } from '../../sorts/sorter/sorter.service';
-import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
 describe('ObservableDataSource', () => {
 	let dataSource: ObservableDataSource<any>;
@@ -18,7 +12,7 @@ describe('ObservableDataSource', () => {
 
 	beforeEach(() => {
 		stream = new Subject();
-		dataSource = new ObservableDataSource<any>(stream, new Sorter(new MergeSort(), __transform.transform));
+		dataSource = new ObservableDataSource<any>(stream);
 
 		processSpy = sinon.spy();
 		dataSource.processData = processSpy;

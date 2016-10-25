@@ -9,9 +9,8 @@ export { IDataSource };
 export class ObservableDataSource<TDataType> extends DataSourceBase<TDataType> implements IDataSource<TDataType> {
 	private dataStream$: Observable<TDataType[]>;
 
-	constructor(dataSet$: Observable<TDataType[]>
-			, sorter: Sorter) {
-		super(sorter);
+	constructor(dataSet$: Observable<TDataType[]>) {
+		super();
 		this.countFilterGroups = true;
 		this.dataStream$ = dataSet$;
 	}
