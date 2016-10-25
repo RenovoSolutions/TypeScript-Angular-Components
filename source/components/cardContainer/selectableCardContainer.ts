@@ -93,7 +93,7 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 		this.selectionColumn = {
 			label: null,
 			size: null,
-			getValue(item: T): boolean {
+			getValue: (item: T): boolean => {
 				const selection = this.getSelection(item);
 				return selection.selected;
 			},
