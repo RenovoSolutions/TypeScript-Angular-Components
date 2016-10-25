@@ -27,14 +27,14 @@ describe('SelectableCardComponent', () => {
 		card.setSelected(true);
 
 		sinon.assert.calledOnce(cardContainer.setSelected);
-		sinon.assert.calledWith(cardContainer.setSelected, card.selection, true);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], true);
 
 		cardContainer.setSelected.reset();
 
 		card.setSelected(false);
 
 		sinon.assert.calledOnce(cardContainer.setSelected);
-		sinon.assert.calledWith(cardContainer.setSelected, card.selection, false);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], false);
 	});
 
 	it('should toggle the selection', (): void => {
@@ -43,7 +43,7 @@ describe('SelectableCardComponent', () => {
 		card.toggleSelected();
 
 		sinon.assert.calledOnce(cardContainer.setSelected);
-		sinon.assert.calledWith(cardContainer.setSelected, card.selection, true);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], true);
 
 		card.selection.selected = true;
 		cardContainer.setSelected.reset();
@@ -51,6 +51,6 @@ describe('SelectableCardComponent', () => {
 		card.toggleSelected();
 
 		sinon.assert.calledOnce(cardContainer.setSelected);
-		sinon.assert.calledWith(cardContainer.setSelected, card.selection, false);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], false);
 	});
 });

@@ -43,7 +43,7 @@ export class SelectableCardComponent<T> extends CardComponent<T> {
 	}
 
 	setSelected(value: boolean): void {
-		this.selectableCardContainer.setSelected(this.selection, value);
+		this.selectableCardContainer.setSelected([this.selection], value);
 	}
 
 	toggleSelected(): void {

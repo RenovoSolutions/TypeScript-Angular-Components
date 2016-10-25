@@ -105,16 +105,18 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 		this.sort(this.selectionColumn);
 	}
 
-	setSelected(selection: ISelectionWrappedItem<T>, value: boolean): void {
+	setSelected(selections: ISelectionWrappedItem<T>[], value: boolean): void {
 		const subscription = this.dataSource.filteredDataSet$.subscribe(filteredData => {
-			let updatedSelection = clone(selection);
-			updatedSelection.selected = value;
+			let updatedSelections = map(selections, selection => {
+				clone(selection);
+				selection.selected = value;
+				return selection;
+			});
 
 			const selectionFilteredData = this.selectionFilteredData$.getValue();
 			this.selectionFilteredData$.next(map(selectionFilteredData, oldSelection => {
-				return oldSelection.item.id === updatedSelection.item.id
-					? updatedSelection
-					: oldSelection;
+				const updatedSelection = find(updatedSelections, selection => oldSelection.item.id === selection.item.id);
+				return updatedSelection	|| oldSelection;
 			}));
 
 			this.selectionChanged.emit(null);
