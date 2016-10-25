@@ -1,6 +1,6 @@
 <div class="selection-control">
 	<div class="selection-control-count">
-		<span><strong>{{selectedItems}}</strong> items selected</span>
+		<span><strong>{{selectedItems$ | async}}</strong> items selected</span>
 	</div>
 	<div class="selection-control-buttons" *ngIf="pagingEnabled">
 		<rlButton (trigger)="selectPage()">Select page</rlButton>

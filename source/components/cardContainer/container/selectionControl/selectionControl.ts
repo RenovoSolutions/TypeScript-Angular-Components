@@ -3,15 +3,14 @@ import { Observable } from 'rxjs';
 import { each } from 'lodash';
 
 import { IDataSource } from '../../dataSources/index';
-import { SelectableCardContainerComponent, ISelectableItem } from '../../selectableCardContainer';
+import { SelectableCardContainerComponent, ISelectionWrappedItem } from '../../selectableCardContainer';
 
 @Component({
 	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
 })
-export class SelectionComponent<T extends ISelectableItem> implements OnInit {
+export class SelectionComponent<T> implements OnInit {
 	pagingEnabled: boolean;
-	dataSource: IDataSource<T>;
 
 	cardContainer: SelectableCardContainerComponent<T>;
 
@@ -19,42 +18,47 @@ export class SelectionComponent<T extends ISelectableItem> implements OnInit {
 		this.cardContainer = cardContainer;
 	}
 
-	// get selectedItems$(): Observable<number> {
-	// 	return this.cardContainer.numberSelected$;
-	// }
+	get selectedItems$(): Observable<number> {
+		return this.cardContainer.numberSelected$;
+	}
 
 	ngOnInit(): void {
 		this.pagingEnabled = !!this.cardContainer.dataSource.pager;
-		this.dataSource = this.cardContainer.dataSource;
 	}
 
-	// selectPage(): void {
-	// 	each(this.dataSource.dataSet, item => {
-	// 		item.viewData.selected = true;
-	// 	});
-	// 	this.cardContainer.selectionChanged.emit(null);
-	// }
+	selectPage(): void {
+		const subscription = this.cardContainer.selectionData$.subscribe(data => {
+			setTimeout(() => {
+				subscription.unsubscribe()
+				this.cardContainer.setSelected(data, true);
+			});
+		});
+	}
 
-	// selectAll(): void {
-	// 	each(this.dataSource.filteredDataSet, item => {
-	// 		item.viewData.selected = true;
-	// 	});
-	// 	this.cardContainer.selectionChanged.emit(null);
-	// }
+	selectAll(): void {
+		const subscription = this.cardContainer.selectionFilteredData$.subscribe(data => {
+			setTimeout(() => {
+				subscription.unsubscribe()
+				this.cardContainer.setSelected(data, true);
+			});
+		});
+	}
 
-	// clearPage(): void {
-	// 	each(this.dataSource.dataSet, item => {
-	// 		item.viewData.selected = false;
-	// 	});
+	clearPage(): void {
+		const subscription = this.cardContainer.selectionData$.subscribe(data => {
+			setTimeout(() => {
+				subscription.unsubscribe()
+				this.cardContainer.setSelected(data, false);
+			});
+		});
+	}
 
-	// 	this.cardContainer.selectionChanged.emit(null);
-	// }
-
-	// clearAll(): void {
-	// 	each(this.dataSource.filteredDataSet, item => {
-	// 		item.viewData.selected = false;
-	// 	});
-
-	// 	this.cardContainer.selectionChanged.emit(null);
-	// }
+	clearAll(): void {
+		const subscription = this.cardContainer.selectionFilteredData$.subscribe(data => {
+			setTimeout(() => {
+				subscription.unsubscribe()
+				this.cardContainer.setSelected(data, false);
+			});
+		});
+	}
 }
