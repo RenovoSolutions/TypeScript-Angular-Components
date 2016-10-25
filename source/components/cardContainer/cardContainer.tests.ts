@@ -53,7 +53,6 @@ describe('CardContainerComponent', () => {
 
 		dataSource = buildMockedDataSource();
 		cardContainer.dataSource = <any>dataSource;
-		// builder._dataSource = <any>mockedDataSource;
 	});
 
 	function buildMockedDataSource(): IDataSourceMock {
