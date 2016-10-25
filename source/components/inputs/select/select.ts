@@ -57,6 +57,7 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 			this.setValue(value);
 		}
 		this.list.close();
+		this.hideLabelIfEmpty();
 	}
 
 	getDisplayName(item: T): string {
