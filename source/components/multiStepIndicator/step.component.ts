@@ -29,8 +29,8 @@ export class StepComponent {
 		this.checkIfValid();
 	}
 
-	setStepType(): boolean {
-		return this.useMsiStyling
+	setStepType() {
+		this.useMsiStyling
 			? this.useMsi = true
 			: this.useTab = true;
 	}
