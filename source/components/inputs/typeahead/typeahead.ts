@@ -50,15 +50,20 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	searchStream: Subject<string> = new Subject<string>();
 	cachedItems: any[];
 	getItemsRequest: Observable<T[]>;
-	visibleItems: Observable<T[]>;
 	loading: boolean = false;
 	loadDelay: number;
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
 
+	private _visibleItems: BehaviorSubject<T[]>;
+
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
+
+	get visibleItems$(): Observable<T[]> {
+		return this._visibleItems.asObservable();
+	}
 
 	get canShowOptions(): boolean {
 		return !(this.busy.loading || !this.search);
@@ -80,6 +85,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.searchUtility = searchService;
 		this.inputType = 'typeahead';
 		this.search = '';
+		this._visibleItems = new BehaviorSubject(null);
 	}
 
 	add(item: T): void {
@@ -120,13 +126,15 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	refresh(search: string): Observable<T[]> {
 		this.search = search;
 		if (this.object.isNullOrEmpty(search)) {
-			this.visibleItems = Observable.empty<T[]>();
-			return this.visibleItems;
+			this._visibleItems.next([]);
+			return Observable.empty<T[]>();
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		this.busy.trigger(loadRequest);
-		this.visibleItems = loadRequest;
-		loadRequest.subscribe(() => this.list.open());
+		loadRequest.subscribe(data => {
+			this.list.open();
+			this._visibleItems.next(data);
+		});
 		return loadRequest;
 	}
 
@@ -202,7 +210,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 	private showCustomSearch(search: string): boolean {
 		return this.allowCustomOption
-			&& !find(this.visibleItems, (item: any): boolean => {
+			&& !find(this._visibleItems.getValue(), (item: any): boolean => {
 			return this.getDisplayName(item) === search;
 		});
 	}
