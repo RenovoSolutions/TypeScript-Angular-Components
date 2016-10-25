@@ -58,44 +58,13 @@ export class SortManagerService {
 		let firstSort: ISort = sortList[0];
 
 		// If column is already the primary sort, change the direction
-		if (firstSort != null
-			&& firstSort.column === column) {
-			firstSort.direction = SortDirection.toggle(firstSort.direction);
-
-			// Clear sort
-			if (firstSort.direction === SortDirection.none) {
-				this.clearVisualSortIndicator(firstSort);
-				firstSort = null;
-
-				// If the column has secondary sorts don't fall back to a
-				//  secondary sort, instead just clear all sorts
-				if (column.secondarySorts != null) {
-					updatedSortList = [];
-				} else { // otehrwise, clear the primary sort and fallback to previous sort
-					updatedSortList = drop(sortList, 1);
-				}
-			} else {
-				updatedSortList = sortList;
-			}
+		if (firstSort != null && firstSort.column === column) {
+			updatedSortList = this.toggleFirstSort(firstSort, column.secondarySorts != null, sortList);
 		} else {
-			// Else make column primary ascending sort
-
-			// Remove any existing non-primary sorts on column
-			const listWithSortRemoved = reject(sortList, (sort: ISort): boolean => {
-				return column === sort.column;
-			});
-
-			// Build ascending sort for column
-			let newSort: ISort = {
-				column: column,
-				direction: SortDirection.ascending,
-			};
-
-			updatedSortList = [newSort, ...sortList];
-
-			firstSort = newSort;
+			updatedSortList = this.setFirstSort(column, sortList);
 		}
 
+		firstSort = updatedSortList[0];
 		this.updateVisualColumnSorting(updatedSortList);
 
 		// If column has secondary sorts, wipe the sort order and just apply the secondary sorts
@@ -109,6 +78,43 @@ export class SortManagerService {
 		}
 
 		this._sortList.next(updatedSortList);
+	}
+
+	toggleFirstSort(firstSort: ISort, hasSecondarySorts: boolean, sortList: ISort[]): ISort[] {
+		firstSort.direction = SortDirection.toggle(firstSort.direction);
+
+		// Clear sort
+		if (firstSort.direction === SortDirection.none) {
+			this.clearVisualSortIndicator(firstSort);
+			firstSort = null;
+
+			// If the column has secondary sorts don't fall back to a
+			//  secondary sort, instead just clear all sorts
+			if (hasSecondarySorts) {
+				return [];
+			} else { // otehrwise, clear the primary sort and fallback to previous sort
+				return drop(sortList, 1);
+			}
+		} else {
+			return sortList;
+		}
+	}
+
+	setFirstSort(column: IColumn<any>, sortList: ISort[]): ISort[] {
+		// Make column primary ascending sort
+
+		// Remove any existing non-primary sorts on column
+		const listWithSortRemoved = reject(sortList, (sort: ISort): boolean => {
+			return column === sort.column;
+		});
+
+		// Build ascending sort for column
+		let newSort: ISort = {
+			column: column,
+			direction: SortDirection.ascending,
+		};
+
+		return [newSort, ...sortList];
 	}
 
 	private buildSecondarySorts(direction: SortDirection, secondarySorts: ISecondarySorts): ISort[] {
