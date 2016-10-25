@@ -9,15 +9,14 @@ describe('data source processor', () => {
 			const sorted = [1, 2, 3, 4];
 			const filtered = [2, 3, 4];
 			const paged = [2, 3];
-			const sorts = [<any>{}];
+			const sorter = { sort: () => Observable.of(sorted) };
 			const filters = [{ filter: () => Observable.of(filtered) }];
 			const pager = { filter: () => Observable.of(paged) };
-			const sorter = { sort: () => sorted };
 			let dataCount;
 			let filteredDataSet;
 			let dataSet;
 
-			const result = process(Observable.of(sorts), <any>filters, <any>pager, Observable.of(unprocessed), <any>sorter);
+			const result = process(<any>sorter, <any>filters, <any>pager, Observable.of(unprocessed));
 
 			result.count$.subscribe(count => dataCount = count);
 			result.filteredDataSet$.subscribe(data => filteredDataSet = data);
@@ -47,22 +46,21 @@ describe('data source processor', () => {
 		it('should return the result of sorting against the data if sorts are specified', () => {
 			const unsorted = [2, 3, 1, 4];
 			const sorted = [1, 2, 3, 4];
-			const sorts = [<any>{}];
-			const sorter = { sort: sinon.spy(() => sorted) };
+			const sorter = { sort: sinon.spy(() => Observable.of(sorted)) };
 			let result;
 
-			sort(Observable.of(unsorted), Observable.of(sorts), <any>sorter).subscribe(data => result = data);
+			sort(Observable.of(unsorted), <any>sorter).subscribe(data => result = data);
 
 			sinon.assert.calledOnce(sorter.sort);
-			sinon.assert.calledWith(sorter.sort, unsorted, sorts);
+			sinon.assert.calledWith(sorter.sort, Observable.of(unsorted));
 			expect(result).to.deep.equal(sorted);
 		});
 
-		it('should return the data if no sorts are specified', () => {
+		it('should return the data if no sorter is specified', () => {
 			const unsorted = [2, 3, 1, 4];
 			let result;
 
-			sort(Observable.of(unsorted), Observable.of(null), null).subscribe(data => result = data);
+			sort(Observable.of(unsorted), null).subscribe(data => result = data);
 
 			expect(result).to.equal(unsorted);
 		});
