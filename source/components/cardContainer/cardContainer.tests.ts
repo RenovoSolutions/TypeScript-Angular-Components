@@ -32,7 +32,7 @@ interface IFilterMock {
 }
 
 interface SortManagerMock {
-	sort: Sinon.SinonSpy;
+	updateSorts: Sinon.SinonSpy;
 	setup: Sinon.SinonSpy;
 }
 
@@ -43,7 +43,7 @@ describe('CardContainerComponent', () => {
 
 	beforeEach(() => {
 		sortManager = {
-			sort: sinon.spy(),
+			updateSorts: sinon.spy(),
 			setup: sinon.spy(),
 		};
 
@@ -150,8 +150,8 @@ describe('CardContainerComponent', () => {
 
 			cardContainer.sort(column);
 
-			sinon.assert.calledOnce(sortManager.sort);
-			expect(sortManager.sort.firstCall.args[0]).to.equal(column);
+			sinon.assert.calledOnce(sortManager.updateSorts);
+			expect(sortManager.updateSorts.firstCall.args[0]).to.equal(column);
 		});
 	});
 
