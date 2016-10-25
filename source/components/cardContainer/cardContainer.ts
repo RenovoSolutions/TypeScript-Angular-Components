@@ -52,7 +52,6 @@ export class CardContainerComponent<T> implements OnInit {
 	sortDirection: ISortDirections;
 
 	protected _numberSelected: BehaviorSubject<number>;
-	numberSelected$: Observable<number>;
 
 	injectedPager: DataPager;
 	injectedSearchFilter: SearchFilter;
@@ -75,6 +74,10 @@ export class CardContainerComponent<T> implements OnInit {
 
 	get hasItems$(): Observable<boolean> {
 		return this.dataSource.dataSet$.map(dataSet => dataSet && !!dataSet.length);
+	}
+
+	get numberSelected$(): Observable<number> {
+		return this._numberSelected.asObservable();
 	}
 
 	constructor(pager: DataPager
