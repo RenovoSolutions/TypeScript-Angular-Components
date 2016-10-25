@@ -41,6 +41,8 @@ const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardI
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
 	builder: ICardContainerInstance;
+	selectBuilder: ICardContainerInstance;
+	searchBuilder: ICardContainerInstance;
 	builderWithFilters: ICardContainerInstance;
 	options: number[];
 	dateFilter: DateFilter;
@@ -55,25 +57,10 @@ export class CardsBootstrapper {
 
 		this.options = [1, 2, 3, 4, 5];
 
-		this.builder = cardContainerBuilder.getInstance({
-			paging: true,
-			search: true,
-		});
-		this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
-
-		cardContainerBuilder.buildObservableDataSource(this.builder, Observable.of(items).delay(1000));
-		cardContainerBuilder.addColumn(this.builder, {
-			name: 'name',
-			label: 'Name',
-			size: 6,
-			getValue: 'name',
-		});
-		cardContainerBuilder.addColumn(this.builder, {
-			name: 'value',
-			label: 'Value',
-			size: 6,
-			getValue: 'value',
-		});
+		this.builder = this.setupCardContainer(cardContainerBuilder);
+		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);
+		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
+		// this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
 
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
@@ -91,6 +78,27 @@ export class CardsBootstrapper {
 
 		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
 		this.selectFilter.subscribe(value => console.log(value));
+	}
+
+	setupCardContainer(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+		});
+		return builder;
 	}
 
 	initFilteredCardContainer() {

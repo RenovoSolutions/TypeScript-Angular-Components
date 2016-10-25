@@ -39,7 +39,7 @@
 </div>
 <div>
 	<label>Selectable card container:</label>
-	<rlSelectableCardContainer [builder]="builder">
+	<rlSelectableCardContainer [builder]="selectBuilder">
 		<div *rlColumnHeader="let value; name 'value'">Number</div>
 		<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
 		<div *rlCardContent="let myItem">
@@ -50,7 +50,7 @@
 </div>
 <div>
 	<label>Card container with search:</label>
-	<rlCardContainer [builder]="builder" [searchPlaceholder]="'Custom Placeholder'">
+	<rlCardContainer [builder]="searchBuilder" [searchPlaceholder]="'Custom Placeholder'">
 		<div *rlColumnHeader="let value; name 'value'">Number</div>
 		<div *rlColumnContent="let value; name 'value'">#{{value}}</div>
 		<div *rlCardContent="let myItem">
