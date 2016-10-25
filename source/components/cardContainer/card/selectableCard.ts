@@ -44,10 +44,6 @@ export class SelectableCardComponent<T> extends CardComponent<T> {
 
 	setSelected(value: boolean): void {
 		this.selectableCardContainer.setSelected(this.selection, value);
-
-		// this.item.viewData.selected = value;
-
-		// this.selectableCardContainer.selectionChanged.emit(null);
 	}
 
 	toggleSelected(): void {
