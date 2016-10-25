@@ -35,14 +35,6 @@ export function sort<TDataType>(data$: Observable<TDataType[]>, sorter: SortMana
 		return sorter.sort(data$);
 	}
 	return data$;
-
-	// return data$.combineLatest(sorts$)
-	// 			.map(([data, sorts]) => {
-	// 		if (sorts && sorts.length) {
-	// 			return sorter.sort(data, sorts);
-	// 		}
-	// 		return data;
-	// 	});
 }
 
 export function filter<TDataType>(data$: Observable<TDataType[]>, filters: IFilter<TDataType, any>[]): Observable<TDataType[]> {
