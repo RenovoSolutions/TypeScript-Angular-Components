@@ -51,8 +51,6 @@ export class CardContainerComponent<T> implements OnInit {
 	saveWhenInvalid: boolean;
 	sortDirection: ISortDirections;
 
-	protected _numberSelected: BehaviorSubject<number>;
-
 	injectedPager: DataPager;
 	injectedSearchFilter: SearchFilter;
 	sortManager: SortManagerService;
@@ -76,10 +74,6 @@ export class CardContainerComponent<T> implements OnInit {
 		return this.dataSource.dataSet$.map(dataSet => dataSet && !!dataSet.length);
 	}
 
-	get numberSelected$(): Observable<number> {
-		return this._numberSelected.asObservable();
-	}
-
 	constructor(pager: DataPager
 			, searchFilter: SearchFilter
 			, sortManager: SortManagerService) {
@@ -87,7 +81,6 @@ export class CardContainerComponent<T> implements OnInit {
 		this.injectedSearchFilter = searchFilter;
 		this.sortManager = sortManager;
 		this.save = <ISaveAction>() => null;
-		this._numberSelected = new BehaviorSubject(0);
 	}
 
 	ngOnInit(): void {

@@ -48,6 +48,7 @@ export interface ISelectionWrappedItem<T> {
 	],
 })
 export class SelectableCardContainerComponent<T extends IdentityItem> extends CardContainerComponent<T> {
+	private _numberSelected: BehaviorSubject<number>;
 	private _selectionFilteredData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
 	private _selectionData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
 
@@ -65,8 +66,13 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 	constructor(pager: DataPager, searchFilter: SearchFilter, sortManager: SortManagerService) {
 		super(pager, searchFilter, sortManager);
 		this.type = CardContainerType.selectable;
+		this._numberSelected = new BehaviorSubject(0);
 		this._selectionFilteredData = new BehaviorSubject(null);
 		this._selectionData = new BehaviorSubject(null);
+	}
+
+	get numberSelected$(): Observable<number> {
+		return this._numberSelected.asObservable();
 	}
 
 	get selectionFilteredData$(): Observable<ISelectionWrappedItem<T>[]> {
