@@ -7,18 +7,20 @@ describe('StepComponent', () => {
 		step = new StepComponent;
 	});
 
-	it('should set the step styling to be a multi-step if using msi styling', (): void => {
+	it('should set the step styling to be a multi-step', (): void => {
 		step.useMsiStyling = true;
 		step.setStepType();
 
-		expect(step.setStepType).to.be.true;
+		expect(step.useMsi).to.be.true;
+		expect(step.useTab).to.be.false;
 	});
 
-	it('should set the step styling to be a tab if not using msi styling', (): void => {
+	it('should set the step styling to be a tab', (): void => {
 		step.useMsiStyling = false;
 		step.setStepType();
 
-		expect(step.setStepType).to.be.false;
+		expect(step.useTab).to.be.true;
+		expect(step.useMsi).to.be.false;
 	});
 
 	it('should set error styling on the step if it isn\'t valid', (): void => {
