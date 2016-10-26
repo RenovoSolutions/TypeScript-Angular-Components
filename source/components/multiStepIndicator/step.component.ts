@@ -13,15 +13,15 @@ export class StepComponent {
 	@Input() useMsiStyling: boolean = false;
 
 	// Default classes
-	@HostBinding('class.active') hasActive: boolean = true;
+	@HostBinding('class.active') activeStyle: boolean = true;
 
 	// Conditional classes
-	@HostBinding('class.rl-multi-step-item') useMsi: boolean = false;
-	@HostBinding('class.rl-tab-item') useTab: boolean = false;
-	@HostBinding('class.error') hasError: boolean = false;
+	@HostBinding('class.rl-multi-step-item') msiStyle: boolean = false;
+	@HostBinding('class.rl-tab-item') tabStyle: boolean = false;
+	@HostBinding('class.error') errorStyle: boolean = false;
 
 	ngOnInit() {
-		this.setStepType();
+		this.setStepStyle();
 		this.checkIfValid();
 	}
 
@@ -29,15 +29,15 @@ export class StepComponent {
 		this.checkIfValid();
 	}
 
-	setStepType() {
+	setStepStyle() {
 		this.useMsiStyling
-			? this.useMsi = true
-			: this.useTab = true;
+			? this.msiStyle = true
+			: this.tabStyle = true;
 	}
 
 	checkIfValid() {
 		this.valid
-			? this.hasError = false
-			: this.hasError = true;
+			? this.errorStyle = false
+			: this.errorStyle = true;
 	}
 }
