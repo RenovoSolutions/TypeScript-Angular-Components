@@ -1,23 +1,27 @@
 <div class="field rl-select"
 	 [class.error]="componentValidator.error$ | async"
 	 [class.rl-select-loading]="busy?.loading">
-	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<label [@slide]="labelState">{{label}}</label>
 	<div class="form-control rl-select-trigger"
 		 [class.disabled]="disabled"
 		 [class.rl-select-open]="list.showOptions"
+		 (focus)="showLabel()"
+		 (blur)="hideLabelIfEmpty()"
 		 tabindex="0"
 		 rlPopoutTrigger>
-		<span class="placeholder" [hidden]="value">{{label}}</span>
+		<span class="placeholder"
+			  [class.hide-placeholder]="hidePlaceholder"
+			  [hidden]="value">{{label}}</span>
 		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
 	</div>
 	<rlPopoutList #list
-				  [options]="wrappedOptions"
+				  [options]="options"
 				  [template]="template"
 				  [transform]="transform"
 				  (select)="select($event)">
 		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
 	</rlPopoutList>
-	<rlBusy></rlBusy>
+	<rlBusy [loading]="!options"></rlBusy>
 	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}
 	</div>

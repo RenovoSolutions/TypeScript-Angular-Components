@@ -1,10 +1,13 @@
 <div class="field"
 	[class.error]="componentValidator.error$ | async">
-	<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+	<label [@slide]="labelState">{{label}}</label>
 	<input type="text"
-		   class="form-control angular-animate"
+		   class="form-control"
+		   [class.hide-placeholder]="hidePlaceholder"
 		   [value]="value"
 		   (input)="onChange($event.target.value)"
+		   (focus)="showLabel()"
+		   (blur)="hideLabelIfEmpty()"
 		   [placeholder]="label"
 		   [attr.maxlength]="maxlength"
 		   [disabled]="disabled" />

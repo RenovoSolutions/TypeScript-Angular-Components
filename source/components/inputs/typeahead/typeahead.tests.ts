@@ -315,7 +315,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.searchStream.next('search');
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
-			typeahead.visibleItems.subscribe(data => visibleItems = data);
+			typeahead.visibleItems$.subscribe(data => visibleItems = data);
 			loadItems.flush();
 			loadItems.reset();
 			busy.trigger.reset();
@@ -353,7 +353,6 @@ describe('TypeaheadComponent', () => {
 			flushMicrotasks();
 
 			sinon.assert.calledTwice(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, typeahead.visibleItems);
 			sinon.assert.calledOnce(loadItems);
 			sinon.assert.calledWith(loadItems, 'search2');
 

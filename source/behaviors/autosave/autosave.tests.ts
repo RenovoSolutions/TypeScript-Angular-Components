@@ -6,7 +6,8 @@ import { services } from 'typescript-angular-utilities';
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 
 interface IFormMock {
-	form: { statusChanges: Subject<void> };
+	dirty: boolean;
+	form: {	statusChanges: Subject<void> };
 	validate: Sinon.SinonSpy;
 	submitAndWait: Sinon.SinonSpy;
 	saveForm: Sinon.SinonSpy;
@@ -23,7 +24,10 @@ describe('AutosaveDirective', () => {
 
 	beforeEach(() => {
 		form = {
-			form: { statusChanges: new Subject<void>() },
+			dirty: true,
+			form: {
+				statusChanges: new Subject<void>(),
+			},
 			validate: sinon.spy(() => true),
 			submitAndWait: sinon.spy(),
 			saveForm: sinon.spy(),
@@ -80,6 +84,19 @@ describe('AutosaveDirective', () => {
 			const autosaveSpy = sinon.spy();
 			autosave.autosave = autosaveSpy;
 			form.validate = sinon.spy(() => false);
+
+			autosave.setDebounce();
+
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.notCalled(autosaveSpy);
+		}));
+
+		it('should not trigger an autosave if the form is pristine', rlFakeAsync(() => {
+			const autosaveSpy = sinon.spy();
+			autosave.autosave = autosaveSpy;
+			form.dirty = false;
 
 			autosave.setDebounce();
 
