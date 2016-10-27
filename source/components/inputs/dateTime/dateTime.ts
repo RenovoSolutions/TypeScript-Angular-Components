@@ -2,6 +2,7 @@ import { Component, Optional, Input, Output, EventEmitter, AfterViewInit, OnInit
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import { Observable } from 'rxjs';
 import '../../../../libraries/bootstrap-datetimepicker/index';
 
 import { services } from 'typescript-angular-utilities';
@@ -62,6 +63,15 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	}
 
 	ngOnInit(): void {
+		this.internalValidators = [
+			{
+				name: 'rlRequired',
+				validate: (value$: Observable<moment.Moment>): Observable<string> => {
+					return value$.map(() => this.validFormat ? null : 'Date is not in a valid format');
+				},
+			}
+		];
+
 		super.ngOnInit();
 
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
