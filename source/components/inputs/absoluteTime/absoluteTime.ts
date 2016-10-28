@@ -12,12 +12,15 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlAbsoluteTime',
 	template: require('./absoluteTime.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: baseAnimations,
 })
 export class AbsoluteTimeComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() minuteInterval: number = 15;

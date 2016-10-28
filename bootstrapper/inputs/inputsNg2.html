@@ -34,7 +34,7 @@
 	<rlSelect [(value)]="selection" label="Select" [options]="options" transform="value">
 		<template let-option>#{{option.value}}</template>
 	</rlSelect>
-	<rlSelect name="select1" label="Select" [options]="optionsAsync" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
+	<rlSelect name="select1" label="Select" [options]="optionsAsync | async" transform="value" rlRequired="Required select" nullOption="None"></rlSelect>
 	<rlSelect [value]="selection" (change)="log($event)" label="Output event" [options]="options" transform="value"></rlSelect>
 </div>
 <div>

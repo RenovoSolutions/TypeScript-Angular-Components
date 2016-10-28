@@ -12,6 +12,7 @@ import {
 	ButtonAsyncComponent,
 	ButtonLinkComponent,
 	ButtonLongClickComponent,
+	ButtonRouteComponent,
 	ButtonSubmitComponent,
 	ButtonToggleComponent,
 } from './components/buttons/index';
@@ -49,7 +50,6 @@ export const documentServiceName: string = 'documentWrapper';
 export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
-export const uiRouterServiceName: string = '$state';
 
 const componentsDowngradeModule = angular.module(moduleName, []);
 
@@ -61,8 +61,6 @@ export function PipeDowngrader(pipe: PipeTransform) {
 }
 
 export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
-	upgradeAdapter.upgradeNg1Provider(uiRouterServiceName);
-
 	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
 
 	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
@@ -76,6 +74,7 @@ export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
 	componentsDowngradeModule.directive('rlButtonAsyncNg', <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
 	componentsDowngradeModule.directive('rlButtonLinkNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLinkComponent));
 	componentsDowngradeModule.directive('rlButtonLongClickNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLongClickComponent));
+	componentsDowngradeModule.directive('rlButtonRouteNg', <any>upgradeAdapter.downgradeNg2Component(ButtonRouteComponent));
 	componentsDowngradeModule.directive('rlButtonSubmitNg', <any>upgradeAdapter.downgradeNg2Component(ButtonSubmitComponent));
 	componentsDowngradeModule.directive('rlButtonToggleNg', <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
 	componentsDowngradeModule.directive('rlCheckboxNg', <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));

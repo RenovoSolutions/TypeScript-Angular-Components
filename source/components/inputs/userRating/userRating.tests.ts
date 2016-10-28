@@ -1,5 +1,8 @@
-﻿import { services } from 'typescript-angular-utilities';
+﻿import { Observable, Subject } from 'rxjs';
+
+import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __array = services.array;
 import __guid = services.guid;
 
 import { UserRatingComponent } from './userRating';
@@ -7,11 +10,18 @@ import { UserRatingComponent } from './userRating';
 describe('UserRatingComponent', () => {
 	let userRating: UserRatingComponent;
 	let setValue: Sinon.SinonSpy;
+	let control: any;
 
 	beforeEach(() => {
-		userRating = new UserRatingComponent(<any>{}, null, __object.objectUtility, __guid.guid);
+		const validator = {
+			validate: sinon.spy(() => Observable.empty()),
+			initValidator: sinon.spy(),
+		};
+		userRating = new UserRatingComponent(<any>{}, null, <any>validator, __object.objectUtility, __array.arrayUtility, __guid.guid);
 
-		setValue = sinon.spy();
+		control = { valueChanges: new Subject() };
+		userRating.control = <any>control;
+		setValue = sinon.spy(value => control.valueChanges.next(value));
 		userRating.setValue = setValue;
 	});
 
@@ -44,6 +54,18 @@ describe('UserRatingComponent', () => {
 	it('should set the initial view state based on the initial view value', (): void => {
 		userRating.value = 2;
 		userRating.ngOnInit();
+
+		expect(userRating.stars[0].filled).to.be.false;
+		expect(userRating.stars[1].filled).to.be.false;
+		expect(userRating.stars[2].filled).to.be.false;
+		expect(userRating.stars[3].filled).to.be.true;
+		expect(userRating.stars[4].filled).to.be.true;
+	});
+
+	it('should update the view state with external changes', () => {
+		userRating.ngOnInit();
+
+		control.valueChanges.next(2);
 
 		expect(userRating.stars[0].filled).to.be.false;
 		expect(userRating.stars[1].filled).to.be.false;

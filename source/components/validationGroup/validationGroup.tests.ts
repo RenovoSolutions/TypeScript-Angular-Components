@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import __validation = services.validation;
@@ -9,8 +10,7 @@ interface IControlMock {
 }
 
 interface IComponentValidatorMock {
-	setValidators: Sinon.SinonSpy;
-	afterInit: Sinon.SinonSpy;
+	initValidator: Sinon.SinonSpy;
 	validate: Sinon.SinonSpy;
 }
 
@@ -20,9 +20,8 @@ describe('ValidationGroupComponent', (): void => {
 
 	beforeEach((): void => {
 		componentValidator = {
-			setValidators: sinon.spy(),
-			afterInit: sinon.spy(),
-			validate: sinon.spy(),
+			initValidator: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		group = new ValidationGroupComponent(null, <any>componentValidator, __array.arrayUtility);
@@ -48,8 +47,8 @@ describe('ValidationGroupComponent', (): void => {
 
 		group.ngOnInit();
 
-		sinon.assert.calledOnce(componentValidator.setValidators);
-		sinon.assert.calledWith(componentValidator.setValidators, [1, 2, 3, 4]);
+		sinon.assert.calledOnce(componentValidator.initValidator);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2, 3, 4]);
 	});
 
 	it('should arrayify the validators if necessary', (): void => {
@@ -58,8 +57,8 @@ describe('ValidationGroupComponent', (): void => {
 
 		group.ngOnInit();
 
-		sinon.assert.calledOnce(componentValidator.setValidators);
-		sinon.assert.calledWith(componentValidator.setValidators, [1, 2]);
+		sinon.assert.calledOnce(componentValidator.initValidator);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2]);
 	});
 
 	it('should set the control on the component validator and update the validity of the control', (): void => {
@@ -69,8 +68,6 @@ describe('ValidationGroupComponent', (): void => {
 
 		group.ngAfterViewInit();
 
-		sinon.assert.calledOnce(componentValidator.afterInit);
-		sinon.assert.calledWith(componentValidator.afterInit, control);
 		sinon.assert.calledOnce(control.updateValueAndValidity);
 		sinon.assert.calledWith(control.updateValueAndValidity, 4);
 	});

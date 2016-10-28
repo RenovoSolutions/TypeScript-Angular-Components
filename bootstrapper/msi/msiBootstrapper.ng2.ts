@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { IStep } from '../../source/components/multiStepIndicator/multiStepIndicator';
 
@@ -20,33 +21,22 @@ export class MsiBootstrapperComponent implements OnInit {
 		this.steps = [
 			{
 				title: 'Step 1',
-				stateName: 'ng2',
-				subtitle: 'Do something',
-				onClick: (): Promise<{}> => {
-					return new Promise(
-						function (resolve, reject) {
-							console.log('Processing step 1');
-							setTimeout(() => {
-								console.log('Step 1 processed');
-								resolve();
-							}, 1000);
-						}
-					);
-				},
+				routerLink: ['/msi/ng1'],
+				subtitle: 'Angular 1',
 			},
 			{
 				title: 'Step 2',
+				routerLink: ['/msi/ng2'],
+				subtitle: 'Angular 2',
+			},
+			{
+				title: 'Step 3',
 				subtitle: 'Do more work',
-				onClick: (): Promise<{}> => {
-					return new Promise(
-						function (resolve, reject) {
-							console.log('Processing step 2');
-							setTimeout(() => {
-								console.log('Step 2 processed');
-								resolve();
-							}, 1000);
-						}
-					);
+				onClick: (): Observable<void> => {
+					return Observable.of(null)
+									.do(() => console.log('Processing step 3'))
+									.delay(1000)
+									.do(() => console.log('Step 3 processed'));
 				},
 			},
 		];

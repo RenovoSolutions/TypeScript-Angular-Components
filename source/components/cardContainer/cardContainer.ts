@@ -84,7 +84,7 @@ export class CardContainerComponent<T> implements OnInit {
 		this.arrayUtility = array;
 		this.injectedPager = pager;
 		this.sortManager = sortManager;
-		this.save = <ISaveAction>() => Promise.resolve();
+		this.save = <ISaveAction>() => null;
 	}
 
 	ngOnInit(): void {

@@ -1,6 +1,4 @@
 import { Component, Optional, Input, Output, ViewChild, ContentChild, AfterViewInit, TemplateRef } from '@angular/core';
-import { Observable } from 'rxjs';
-import { isArray } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -14,15 +12,18 @@ import { FormComponent } from '../../form/form';
 import { BusyComponent } from '../../busy/busy';
 import { POPOUT_LIST_PROVIDERS, PopoutListComponent } from '../../popoutList/index';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlSelect',
 	template: require('./select.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator, POPOUT_LIST_PROVIDERS],
+	animations: baseAnimations,
 })
 export class SelectComponent<T> extends ValidatedInputComponent<T> implements AfterViewInit {
-	@Input() options: T[] | Observable<T[]>;
+	@Input() options: T[];
 	@Input() transform: __transform.ITransform<T, string>;
 	@Input() nullOption: string;
 
@@ -33,7 +34,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
-	wrappedOptions: Observable<T[]>;
 	private transformService: __transform.ITransformService;
 
 	constructor(transformService: __transform.TransformService
@@ -50,10 +50,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
 		this.template = this.template || this.externalTemplate;
-		this.wrappedOptions = isArray(this.options)
-							? Observable.of(<T[]>this.options)
-							: <Observable<T[]>>this.options;
-		this.busy.trigger(this.wrappedOptions);
 	}
 
 	select(value: T): void {

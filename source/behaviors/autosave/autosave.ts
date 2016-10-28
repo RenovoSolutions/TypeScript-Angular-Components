@@ -34,7 +34,7 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	setDebounce = (): void => {
-		if (!this.timer && (this.saveWhenInvalid || this.form.validate())) {
+		if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
 			this.timer = this.timeoutService.setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
 											.catch(() => null);
 		}
@@ -50,7 +50,9 @@ export class AutosaveDirective implements AfterViewInit {
 
 	autosave = (): void => {
 		const waitOn = this.submitAndWait();
-		this.autosaveAction.trigger(waitOn);
+		if (waitOn) {
+			this.autosaveAction.trigger(waitOn);
+		}
 		this.timer = null;
 	}
 

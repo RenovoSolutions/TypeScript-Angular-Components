@@ -117,14 +117,9 @@ describe('SelectController', () => {
 		it('should close the options', (): void => {
 			dropdown.showOptions = true;
 			dropdown.close();
-			expect(dropdown.showOptions).to.be.false;
-		});
 
-		it('should do nothing if the options are already closed', (): void => {
-			dropdown.showOptions = false;
-			dropdown.close();
 			expect(dropdown.showOptions).to.be.false;
-		});
+		})
 
 		it('should set the value and close the options', (): void => {
 			dropdown.showOptions = true;

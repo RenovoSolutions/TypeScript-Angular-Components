@@ -301,6 +301,7 @@ describe('messageLog', () => {
 
 			scope = controllerResult.scope;
 			log = controllerResult.controller;
+			log.$onInit();
 		}
 	});
 

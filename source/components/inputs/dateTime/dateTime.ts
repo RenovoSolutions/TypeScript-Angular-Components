@@ -1,4 +1,4 @@
-import { Component, Optional, Input, Output, EventEmitter, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Optional, Input, Output, EventEmitter, AfterViewInit, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
@@ -16,14 +16,17 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlDateTime',
 	template: require('./dateTime.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: baseAnimations,
 })
-export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements AfterViewInit {
+export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements OnInit, AfterViewInit {
 	@Input() useDate: boolean;
 	@Input() useTime: boolean;
 	@Input() min: string | Date | moment.Moment;
@@ -58,8 +61,8 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.timezone = this.timezoneService.currentTimezone;
 	}
 
-	ngAfterViewInit(): void {
-		super.ngAfterViewInit();
+	ngOnInit(): void {
+		super.ngOnInit();
 
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
@@ -76,6 +79,10 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.control.valueChanges.subscribe(value => {
 			this.valueAsString = this.formatDate(value);
 		});
+	}
+
+	ngAfterViewInit(): void {
+		super.ngAfterViewInit();
 
 		$(this.datepicker.nativeElement).datetimepicker({
 			stepping: this.minuteStepping || 1,

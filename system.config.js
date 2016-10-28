@@ -6,7 +6,6 @@ const map = {
 	'angular-mocks': 'node_modules/angular-mocks/angular-mocks',
 	'angular-animate': 'node_modules/angular-animate/angular-animate.js',
 	'angular-ui-bootstrap': 'node_modules/angular-ui-bootstrap/index.js',
-	'angular-ui-router': 'node_modules/angular-ui-router/release/angular-ui-router.min.js',
 	'angular-sanitize': 'node_modules/angular-sanitize/index.js',
 	'angular2-uuid': 'node_modules/angular2-uuid',
 	'bootstrap': 'node_modules/bootstrap/dist/js/bootstrap.js',
@@ -62,6 +61,9 @@ var packages = {
 	'node_modules': {
 		defaultExtension: 'js',
 	},
+		'@angular/router': {
+			main: 'index.js',
+		},
 	'angular2-uuid': {
 		main: 'index.js',
 	},

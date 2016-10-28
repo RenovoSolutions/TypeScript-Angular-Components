@@ -18,7 +18,6 @@ import * as inputNg1 from './inputs/input.ng1';
 import * as lazyLoadNg1 from './lazyLoad/lazyLoad';
 import * as longClickButtonNg1 from './buttons/buttonLongClick/buttonLongClick.ng1';
 import * as messageLogNg1 from './messageLog/messageLog.module';
-import * as multiStepIndicatorNg1 from './multiStepIndicator/multiStepIndicator.ng1';
 import * as radioNg1 from './inputs/radio/radio.module';
 import * as ratingBarNg1 from './ratingBar/ratingBar.ng1';
 import * as richTextEditorNg1 from './richTextEditor/richTextEditor';
@@ -43,6 +42,7 @@ import * as commaList from './commaList/commaList';
 import * as dialog from './dialog/index';
 import * as inputs from './inputs/index';
 import * as form from './form/index';
+import * as multiStepIndicator from './multiStepIndicator/multiStepIndicator';
 import * as ratingBar from './ratingBar/ratingBar';
 import * as simpleCardList from './simpleCardList/index';
 import * as stringWithWatermark from './stringWithWatermark/stringWithWatermark';
@@ -71,7 +71,6 @@ export {
 	lazyLoadNg1,
 	longClickButtonNg1,
 	messageLogNg1,
-	multiStepIndicatorNg1,
 	radioNg1,
 	ratingBarNg1,
 	richTextEditorNg1,
@@ -96,6 +95,7 @@ export {
 	dialog,
 	inputs,
 	form,
+	multiStepIndicator,
 	ratingBar,
 	simpleCardList,
 	stringWithWatermark,
@@ -122,7 +122,6 @@ angular.module(moduleName, [
 	lazyLoadNg1.moduleName,
 	longClickButtonNg1.moduleName,
 	messageLogNg1.moduleName,
-	multiStepIndicatorNg1.moduleName,
 	radioNg1.moduleName,
 	ratingBarNg1.moduleName,
 	richTextEditorNg1.moduleName,

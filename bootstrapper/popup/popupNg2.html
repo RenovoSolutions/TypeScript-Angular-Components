@@ -9,7 +9,7 @@
 	<rlButton (trigger)="dialog1.open()">Open Dialog 1</rlButton>
 	<rlButton (trigger)="dialog2.open()">Open Dialog 2</rlButton>
 	<rlButton (trigger)="prompt.open()">Open prompt</rlButton>
-	<rlDialog #dialog1 [onClosing]="onClosing">
+	<rlDialog #dialog1 [onClosing]="onClosing" size="sm">
 		<div *rlDialogHeader>Header</div>
 		<div *rlDialogContent>Content</div>
 		<div *rlDialogFooter>Footer</div>

@@ -4,7 +4,7 @@
 <rlForm [save]="waitCallback">
 	<rlTextbox rlRequired="This is a required field" label="Required textbox" maxlength="10"></rlTextbox>
 	<rlValidationGroup [model]="rating" [validator]="validator">
-		<rlUserRating [(value)]="rating" [range]="3"></rlUserRating>
+		<rlUserRating [value]="rating" (valueChange)="setRating($event)" [range]="3"></rlUserRating>
 	</rlValidationGroup>
 	<rlButtonSubmit>Submit</rlButtonSubmit>
 </rlForm>
@@ -27,7 +27,7 @@
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
 <h5>Autosave form</h5>
-<rlBusy [loading]="autosaveAction.saving || autosaveAction.complete"></rlBusy>
+<rlBusy [loading]="(autosaveAction.saving$ | async) || (autosaveAction.complete$ | async)"></rlBusy>
 <rlForm #autosaveForm [save]="waitCallback" rlAutosave [saveWhenInvalid]="true">
 	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
 </rlForm>

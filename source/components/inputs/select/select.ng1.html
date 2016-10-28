@@ -1,18 +1,20 @@
-<div class="field rl-select" ng-class="{ 'error': select.ngModel.$invalid, 'rl-select-loading': select.loading }" rl-off-click="select.close">
+<div class="field rl-select" ng-class="{ 'error': select.ngModel.$invalid, 'rl-select-loading': select.loading }">
 	<label ng-show="select.selection" class="label-slide angular-animate">
 		{{::select.label}}
 	</label>
 	<div class="form-control rl-select-trigger"
-		 ng-click="select.toggle()"
-		 ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }">
+		ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }"
+		ng-mousedown="select.toggle()"
+		ng-blur="select.close()"
+		tabindex="0">
 		<span class="placeholder" ng-hide="select.selection">{{::select.label}}</span>
 		<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
 	</div>
 	<ul class="rl-select-list" ng-if="select.showOptions">
-		<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-click="select.selectOption(null)">{{::select.nullOption}}</li>
+		<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-mousedown="select.selectOption(null)">{{::select.nullOption}}</li>
 		<li class="rl-select-option"
 			ng-repeat="$item in select.options"
-			ng-click="select.selectOption($item)">
+			ng-mousedown="select.selectOption($item)">
 			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
 		</li>
 	</ul>

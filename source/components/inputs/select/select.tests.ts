@@ -1,4 +1,4 @@
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { SelectComponent } from './select';
 
@@ -24,8 +24,7 @@ describe('SelectComponent', () => {
 	beforeEach(() => {
 		transformService = { getValue: sinon.spy() };
 		const validator: any = {
-			validate: sinon.spy(),
-			afterInit: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		dropdown = new SelectComponent<ITestOption>(transformService, null, validator, null, null, null);
@@ -43,36 +42,6 @@ describe('SelectComponent', () => {
 			{ value: 4 },
 			{ value: 5 },
 		];
-	});
-
-	describe('after init', (): void => {
-		afterEach((): void => {
-			sinon.assert.calledOnce(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, dropdown.wrappedOptions);
-		});
-
-		it('should wrap the array in an observable', (): void => {
-			const unwrapper: Sinon.SinonSpy = sinon.spy();
-			dropdown.options = options;
-
-			dropdown.ngAfterViewInit();
-			dropdown.wrappedOptions.subscribe(unwrapper);
-
-			sinon.assert.calledOnce(unwrapper);
-			sinon.assert.calledWith(unwrapper, options);
-		});
-
-		it('should leave the options untouched if already an observable', (): void => {
-			const unwrapper: Sinon.SinonSpy = sinon.spy();
-			const optionsStream: BehaviorSubject<ITestOption[]> = new BehaviorSubject(options);
-			dropdown.options = optionsStream;
-
-			dropdown.ngAfterViewInit();
-			dropdown.wrappedOptions.subscribe(unwrapper);
-
-			sinon.assert.calledOnce(unwrapper);
-			sinon.assert.calledWith(unwrapper, options);
-		});
 	});
 
 	it('should set the value and close the options', (): void => {
