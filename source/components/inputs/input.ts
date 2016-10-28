@@ -14,6 +14,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
 	label: string = '';
 	disabled: boolean;
+	warning: boolean;
 	value: T;
 	change: EventEmitter<T> = new EventEmitter<T>();
 	valueChange: EventEmitter<T> = this.change;
