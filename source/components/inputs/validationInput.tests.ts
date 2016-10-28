@@ -18,14 +18,8 @@ interface IComponentValidatorMock {
 	validate: Sinon.SinonSpy;
 }
 
-class InputMock extends ValidatedInputComponent<number> {
-	setInternalValidators(internalValidators: __validation.IObservableValidationHandler[]) {
-		this.internalValidators = internalValidators;
-	}
-}
-
 describe('ValidatedInputComponent', (): void => {
-	let input: InputMock;
+	let input: ValidatedInputComponent<number>;
 	let componentValidator: IComponentValidatorMock;
 
 	beforeEach((): void => {
@@ -34,7 +28,7 @@ describe('ValidatedInputComponent', (): void => {
 			validate: sinon.spy(() => Observable.empty()),
 		};
 
-		input = new InputMock(null, <any>componentValidator, __object.objectUtility, __array.arrayUtility, __guid.guid);
+		input = new ValidatedInputComponent<number>(null, <any>componentValidator, __object.objectUtility, __array.arrayUtility, __guid.guid);
 
 		expect(input.value).to.be.undefined;
 	});
@@ -42,23 +36,21 @@ describe('ValidatedInputComponent', (): void => {
 	it('should concatenate the specified validators and pass them to the component validator', (): void => {
 		input.validator = <any>[1, 2];
 		input.validators = <any>[3, 4];
-		input.setInternalValidators(<any>[5, 6]);
 
 		input.ngOnInit();
 
 		sinon.assert.calledOnce(componentValidator.initValidator);
-		sinon.assert.calledWith(componentValidator.initValidator, [1, 2, 3, 4, 5, 6]);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2, 3, 4]);
 	});
 
 	it('should arrayify the validators if necessary', (): void => {
 		input.validator = <any>1;
 		input.validators = <any>2;
-		input.setInternalValidators(<any>3);
 
 		input.ngOnInit();
 
 		sinon.assert.calledOnce(componentValidator.initValidator);
-		sinon.assert.calledWith(componentValidator.initValidator, [1, 2, 3]);
+		sinon.assert.calledWith(componentValidator.initValidator, [1, 2]);
 	});
 
 	it('should build a required validator if rlRequired is specified', (): void => {

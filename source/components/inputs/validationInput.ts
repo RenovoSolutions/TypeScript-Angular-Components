@@ -26,8 +26,6 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 	validators: __validation.IObservableValidationHandler[];
 	rlRequired: string;
 
-	protected internalValidators: __validation.IObservableValidationHandler[];
-
 	protected componentValidator: ComponentValidator;
 	protected array: __array.IArrayUtility;
 
@@ -57,10 +55,6 @@ export class ValidatedInputComponent<T> extends InputComponent<T> implements Aft
 
 		if (this.validators) {
 			validators = validators.concat(this.array.arrayify(this.validators));
-		}
-
-		if (this.internalValidators) {
-			validators = validators.concat(this.array.arrayify(this.internalValidators));
 		}
 
 		if (this.rlRequired) {

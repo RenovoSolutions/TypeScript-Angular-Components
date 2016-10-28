@@ -45,8 +45,6 @@ export class InputController {
 	label: string;
 	name: string;
 
-	protected internalValidators: __validation.IValidationHandler[];
-
 	ngModel: INgModelValidator;
 	required: RequiredController;
 	inputValidator: IComponentValidator;
@@ -74,10 +72,6 @@ export class InputController {
 
 		if (!_.isUndefined(this.validators)) {
 			validators = validators.concat(__array.arrayUtility.arrayify(this.validators));
-		}
-
-		if (!_.isUndefined(this.internalValidators)) {
-			validators = validators.concat(__array.arrayUtility.arrayify(this.internalValidators));
 		}
 
 		if (__object.objectUtility.isNullOrEmpty(this.$attrs.name)) {

@@ -76,13 +76,15 @@ export class DateTimeController extends InputController {
 	}
 
 	$onInit(): void {
-		this.internalValidators = [
-			{
-				name: 'dateValid',
-				validate: (): boolean => { return this.validFormat; },
-				errorMessage: 'Date is not in a valid format',
-			}
-		];
+		if (this.validators == null) {
+			this.validators = [];
+		}
+
+		this.validators.push({
+			name: 'dateValid',
+			validate: (): boolean => { return this.validFormat; },
+			errorMessage: 'Date is not in a valid format',
+		});
 
 		super.$onInit();
 	}
