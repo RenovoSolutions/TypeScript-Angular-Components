@@ -1,4 +1,5 @@
 <div class="field input-group"
+	[class.warning]="warning"
 	[class.error]="componentValidator.error$ | async"
 	(offClick)="closeTimes()">
 	<label [@slide]="labelState">{{label}}</label>
