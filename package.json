@@ -47,7 +47,7 @@
     "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.3.0",
+    "@renovolive/gulp-utilities": "~2.4.0",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "del": "^2.2.0",
