@@ -11,8 +11,8 @@ import { CardContainerBuilderOld } from './cardContainerBuilderOld.service';
 
 export interface IFilterBuilderOld {
 	buildFilterGroup(settings: cardFilters.IFilterGroupSettingsOld): cardFilters.IFilterGroupOld;
-	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup;
-	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup;
+	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettingsOld<TItemType>): cardFilters.IModeFilterGroupOld;
+	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettingsOld<TItemType>): cardFilters.IRangeFilterGroupOld;
 	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType>;
 	buildDateFilter(valueSelector:cardFilters.IDateFilterSettings): cardFilters.IDateFilter;
 	buildColumnSearchFilter(): cardFilters.ColumnSearchFilter;
@@ -51,14 +51,14 @@ export class FilterBuilderOld implements IFilterBuilderOld {
 		return filter;
 	}
 
-	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup {
-		let filter: cardFilters.IModeFilterGroup = new cardFilters.ModeFilterGroup(settings, this.object, this.transformService);
+	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettingsOld<TItemType>): cardFilters.IModeFilterGroupOld {
+		let filter: cardFilters.IModeFilterGroupOld = new cardFilters.ModeFilterGroupOld(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}
 
-	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup {
-		let filter: cardFilters.IRangeFilterGroup = new cardFilters.RangeFilterGroup(settings, this.object, this.transformService);
+	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettingsOld<TItemType>): cardFilters.IRangeFilterGroupOld {
+		let filter: cardFilters.IRangeFilterGroupOld = new cardFilters.RangeFilterGroupOld(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

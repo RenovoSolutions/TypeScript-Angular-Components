@@ -13,8 +13,8 @@ import { CardContainerBuilderService, ICardContainerInstance } from '../../sourc
 import {
 	DateFilter,
 	IFilterGroupOld,
-	IModeFilterGroup,
-	IRangeFilterGroup,
+	IModeFilterGroupOld,
+	IRangeFilterGroupOld,
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 
@@ -43,11 +43,11 @@ export class CardsBootstrapper {
 	builder: ICardContainerInstance;
 	selectBuilder: ICardContainerInstance;
 	searchBuilder: ICardContainerInstance;
-	builderWithFilters: ICardContainerInstance;
+	builderWithFiltersIRangeFilterGroupOldnstance;
 	options: number[];
 	dateFilter: DateFilter;
-	modeFilterGroup: IModeFilterGroup;
-	rangeFilterGroup: IRangeFilterGroup;
+	modeFilterGroup: IModeFilterGroupOld;
+	rangeFilterGroup: IRangeFilterGroupOld;
 	disabledFilterGroup: IFilterGroupOld;
 	selectFilter: SelectFilter<any, any>;
 

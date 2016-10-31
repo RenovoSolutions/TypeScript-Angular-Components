@@ -6,14 +6,14 @@ import __transform = services.transform;
 
 import { IFilterOptionOld, IFilterGroupOld, FilterGroupOld } from '../filterGroupOld.service';
 
-export interface IRangeFilterGroupSettings<TItemType> {
+export interface IRangeFilterGroupSettingsOld<TItemType> {
 	label: string;
 	type: string;
 	getValue: { (item: TItemType): number } | string;
-	options: IRangeFilterOptionSettings[];
+	options: IRangeFilterOptionSettingsOld[];
 }
 
-export interface IRangeFilterOptionSettings {
+export interface IRangeFilterOptionSettingsOld {
 	label: string;
 	highInclusive?: number;
 	highExclusive?: number;
@@ -21,43 +21,43 @@ export interface IRangeFilterOptionSettings {
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterOption extends IFilterOptionOld {
+export interface IRangeFilterOptionOld extends IFilterOptionOld {
 	highInclusive?: number;
 	highExclusive?: number;
 	lowInclusive?: number;
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterGroup extends IFilterGroupOld {
-	options: IRangeFilterOption[];
-	serialize(): IRangeFilterValue;
+export interface IRangeFilterGroupOld extends IFilterGroupOld {
+	options: IRangeFilterOptionOld[];
+	serialize(): IRangeFilterValueOld;
 }
 
-export interface IRangeFilterValue {
+export interface IRangeFilterValueOld {
 	highInclusive?: number;
 	highExclusive?: number;
 	lowInclusive?: number;
 	lowExclusive?: number;
 }
 
-export class RangeFilterGroup extends FilterGroupOld implements IRangeFilterGroup {
+export class RangeFilterGroupOld extends FilterGroupOld implements IRangeFilterGroupOld {
 	private getValue: { (item: any): number } | string;
 
 	transformService: __transform.ITransformService;
 
-	constructor(settings: IRangeFilterGroupSettings<any>
+	constructor(settings: IRangeFilterGroupSettingsOld<any>
 			, object: __object.IObjectUtility
 			, transformService: __transform.ITransformService) {
 		super(<any>settings, object);
 		this.transformService = transformService;
 
 		this.getValue = settings.getValue;
-		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
+		settings.options = _.map<IRangeFilterOptionSettingsOld, IRangeFilterOptionOld>(settings.options, this.buildRangeOption.bind(this));
 		this.initOptions();
 	}
 
-	serialize(): IRangeFilterValue {
-		let activeOption: IRangeFilterOption = <any>this.activeOption;
+	serialize(): IRangeFilterValueOld {
+		let activeOption: IRangeFilterOptionOld = <any>this.activeOption;
 		if (this.isNullOption(activeOption)) {
 			return null;
 		}
@@ -69,8 +69,8 @@ export class RangeFilterGroup extends FilterGroupOld implements IRangeFilterGrou
 		};
 	}
 
-	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
-		var modeOption: IRangeFilterOption = <any>option;
+	private buildRangeOption(option: IRangeFilterOptionSettingsOld): IRangeFilterOptionOld {
+		var modeOption: IRangeFilterOptionOld = <any>option;
 		modeOption.filter = (item: any): boolean => {
 			var value: number = this.transformService.getValue(item, this.getValue);
 
@@ -94,7 +94,7 @@ export class RangeFilterGroup extends FilterGroupOld implements IRangeFilterGrou
 		return modeOption;
 	}
 
-	private isNullOption(option: IRangeFilterOption): boolean {
+	private isNullOption(option: IRangeFilterOptionOld): boolean {
 		return option.highInclusive == null
 			&& option.highExclusive == null
 			&& option.lowInclusive == null

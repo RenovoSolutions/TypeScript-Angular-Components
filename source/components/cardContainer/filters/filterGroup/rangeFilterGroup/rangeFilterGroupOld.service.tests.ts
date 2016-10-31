@@ -2,7 +2,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { RangeFilterGroup } from './rangeFilterGroup.service';
+import { RangeFilterGroupOld } from './rangeFilterGroupOld.service';
 
 interface IRangeFilterOptionMock {
 	highInclusive?: number;
@@ -17,9 +17,9 @@ interface ITestObject {
 }
 
 describe('rangeFilterGroup', () => {
-	let rangeFilterGroup: RangeFilterGroup;
+	let rangeFilterGroup: RangeFilterGroupOld;
 
-	const buildFilter = settings => new RangeFilterGroup(settings, __object.objectUtility, __transform.transform);
+	const buildFilter = settings => new RangeFilterGroupOld(settings, __object.objectUtility, __transform.transform);
 
 	it('should build an option filter functin that filters out items that arent in the range', (): void => {
 		let lowAndHighInclusiveOption: IRangeFilterOptionMock = {
