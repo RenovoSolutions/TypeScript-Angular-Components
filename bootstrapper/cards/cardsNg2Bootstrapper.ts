@@ -15,7 +15,7 @@ import {
 	IFilterGroup,
 	IModeFilterGroup,
 	IRangeFilterGroup,
-	SelectFilter,
+	SelectFilterOld,
 } from '../../source/components/cardContainer/filters/index';
 
 interface ICardItem {
@@ -49,7 +49,7 @@ export class CardsBootstrapper {
 	modeFilterGroup: IModeFilterGroup<any>;
 	rangeFilterGroup: IRangeFilterGroup<any>;
 	disabledFilterGroup: IFilterGroup<any>;
-	selectFilter: SelectFilter<any, any>;
+	selectFilter: SelectFilterOld<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService
 			, cardContainerBuilder: CardContainerBuilderService) {
@@ -70,7 +70,7 @@ export class CardsBootstrapper {
 			valueSelector: 'date',
 		}, __date.dateUtility, __transform.transform);
 
-		this.selectFilter = new SelectFilter({
+		this.selectFilter = new SelectFilterOld({
 			valueSelector: 'value',
 		}, __object.objectUtility, __transform.transform);
 

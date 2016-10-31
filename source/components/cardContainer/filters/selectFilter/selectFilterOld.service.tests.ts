@@ -2,17 +2,17 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { SelectFilter } from './selectFilter.module';
+import { SelectFilterOld } from './selectFilter.module';
 
 interface ITestObj {
 	value: number;
 }
 
 describe('SelectFilter', (): void => {
-	let selectFilter: SelectFilter<ITestObj, any>;
+	let selectFilter: SelectFilterOld<ITestObj, any>;
 
 	beforeEach(() => {
-		selectFilter = new SelectFilter({ valueSelector: 'value' }, __object.objectUtility, __transform.transform);
+		selectFilter = new SelectFilterOld({ valueSelector: 'value' }, __object.objectUtility, __transform.transform);
 	});
 
 	it('should return true if the items value equal the selected value', (): void => {
@@ -44,7 +44,7 @@ describe('SelectFilter', (): void => {
 		let item1: any = { value: { prop: 2 } };
 		let item2: any = { prop: 2, otherProp: 3 };
 
-		selectFilter = new SelectFilter({
+		selectFilter = new SelectFilterOld({
 			valueSelector: 'value',
 			comparer: (item1: any, item2: any): boolean => { return item1.prop === item2.prop; },
 		}, __object.objectUtility, __transform.transform);

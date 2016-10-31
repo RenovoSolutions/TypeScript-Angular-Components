@@ -1,7 +1,7 @@
 // /// <reference path='../../../../../typings/commonjs.d.ts' />
 
 import * as angular from 'angular';
-import { ISelectFilter } from './selectFilter.service';
+import { ISelectFilterOld } from './selectFilterOld.service';
 import { IDataSourceOld } from '../../datasources/dataSource';
 import { IJQueryUtility, serviceName as jqueryServiceName, moduleName as jqueryModule } from '../../../../services/jquery/jquery.service';
 
@@ -10,7 +10,7 @@ export let controllerName: string = 'SelectFilterController';
 
 
 export interface ISelectFilterBindings {
-	filter: ISelectFilter<any>;
+	filter: ISelectFilterOld<any>;
 	options?: any[];
 	getOptions?: { (): angular.IPromise<any[]> };
 	source: IDataSourceOld<any>;
@@ -27,7 +27,7 @@ export interface ISelectFilterController extends ISelectFilterBindings {
 }
 
 export class SelectFilterController implements ISelectFilterController {
-	filter: ISelectFilter<any>;
+	filter: ISelectFilterOld<any>;
 	options: any[];
 	getOptions: { (): angular.IPromise<any[]> };
 	source: IDataSourceOld<any>;

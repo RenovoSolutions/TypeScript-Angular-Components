@@ -13,7 +13,7 @@ export interface IFilterBuilderOld {
 	buildFilterGroup(settings: cardFilters.IFilterGroupSettingsOld): cardFilters.IFilterGroupOld;
 	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettingsOld<TItemType>): cardFilters.IModeFilterGroupOld;
 	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettingsOld<TItemType>): cardFilters.IRangeFilterGroupOld;
-	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType>;
+	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettingsOld<TDataType, TFilterType>): cardFilters.ISelectFilterOld<TDataType>;
 	buildDateFilter(valueSelector:cardFilters.IDateFilterSettings): cardFilters.IDateFilter;
 	buildColumnSearchFilter(): cardFilters.ColumnSearchFilter;
 	addCustomFilter(filter: filters.IFilter): void;
@@ -63,8 +63,8 @@ export class FilterBuilderOld implements IFilterBuilderOld {
 		return filter;
 	}
 
-	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType> {
-		let filter: cardFilters.ISelectFilter<TDataType> = new cardFilters.SelectFilter(settings, this.object, this.transformService);
+	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettingsOld<TDataType, TFilterType>): cardFilters.ISelectFilterOld<TDataType> {
+		let filter: cardFilters.ISelectFilterOld<TDataType> = new cardFilters.SelectFilterOld(settings, this.object, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

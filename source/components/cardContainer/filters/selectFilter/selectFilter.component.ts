@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
 import __logger = services.logger;
 
-import { ISelectFilter } from './selectFilter.service';
+import { ISelectFilterOld } from './selectFilterOld.service';
 import { IDataSourceOld } from '../../datasources/dataSource';
 
 @Component({
@@ -13,7 +13,7 @@ import { IDataSourceOld } from '../../datasources/dataSource';
 	template: require('./selectFilter.html'),
 })
 export class SelectFilterComponent<T> {
-	@Input() filter: ISelectFilter<T>;
+	@Input() filter: ISelectFilterOld<T>;
 	@Input() dataSource: IDataSourceOld<T>;
 	@Input() label: string;
 	@Input() options: T[] | Observable<T[]>;

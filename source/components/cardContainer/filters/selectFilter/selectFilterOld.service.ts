@@ -3,9 +3,9 @@ import * as angular from 'angular';
 import __object = services.object;
 import __transform = services.transform;
 
-export interface ISelectFilterSettings<TDataType, TFilterType> {
+export interface ISelectFilterSettingsOld<TDataType, TFilterType> {
 	valueSelector: string | { (item: TDataType): any };
-	comparer?: IEqualityFunction<TFilterType>;
+	comparer?: IEqualityFunctionOld<TFilterType>;
 
 	// component settings
 	options?: any[];
@@ -15,20 +15,20 @@ export interface ISelectFilterSettings<TDataType, TFilterType> {
 	nullOption?: string;
 }
 
-export interface ISelectFilter<T> extends filters.ISerializableFilter<any> {
+export interface ISelectFilterOld<T> extends filters.ISerializableFilter<any> {
 	selectedValue: any;
 }
 
-export interface IEqualityFunction<TFilterType> {
+export interface IEqualityFunctionOld<TFilterType> {
 	(item1: TFilterType, item2: TFilterType): boolean;
 }
 
-export class SelectFilter<TDataType, TFilterType> extends filters.SerializableFilter<TFilterType> implements ISelectFilter<TDataType> {
+export class SelectFilterOld<TDataType, TFilterType> extends filters.SerializableFilter<TFilterType> implements ISelectFilterOld<TDataType> {
 	type: string = 'selectFilter';
 
 	private _selectedValue: TFilterType;
 	private valueSelector: string | { (item: TDataType): any };
-	private comparer: IEqualityFunction<TFilterType>;
+	private comparer: IEqualityFunctionOld<TFilterType>;
 
 	// component settings
 	options: any[];
@@ -52,7 +52,7 @@ export class SelectFilter<TDataType, TFilterType> extends filters.SerializableFi
 		}
 	}
 
-	constructor(settings: ISelectFilterSettings<TDataType, TFilterType>
+	constructor(settings: ISelectFilterSettingsOld<TDataType, TFilterType>
 			, object: __object.IObjectUtility
 			, transformService: __transform.ITransformService) {
 		super();
