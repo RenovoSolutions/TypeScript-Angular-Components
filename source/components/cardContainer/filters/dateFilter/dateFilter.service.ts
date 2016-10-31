@@ -113,6 +113,15 @@ export class DateFilter<TDataType> extends Filter<TDataType, IDateFilterValue> i
 		}
 	}
 
+	serialize(): Observable<IDateFilterValue> {
+		return this.value$.asObservable().map(value => {
+			if (!value || !(value.dateFrom || value.dateTo)) {
+				return null;
+			}
+			return value;
+		});
+	}
+
 	private getValue(item: any): moment.Moment {
 		return this.transformService.getValue(item, this.valueSelector);
 	}

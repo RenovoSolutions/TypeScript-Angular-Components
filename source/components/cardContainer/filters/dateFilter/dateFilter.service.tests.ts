@@ -105,4 +105,40 @@ describe('DateFilter', (): void => {
 			expect(dateFilter.predicate(itemOnOtherDate, filterValue)).to.be.false;
 		});
 	});
+
+	describe('serialize', () => {
+		it('should return null if the filter value is null', () => {
+			(dateFilter as any).value$.next(null);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
+
+			expect(value).to.be.null;
+		});
+
+		it('should return null if the date from and to are both empty', () => {
+			(dateFilter as any).value$.next({});
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
+
+			expect(value).to.be.null;
+		});
+
+		it('should return the value if the date from is specified', () => {
+			const filterValue = { dateFrom: {} };
+			(dateFilter as any).value$.next(filterValue);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
+
+			expect(value).to.equal(filterValue);
+		});
+
+		it('should return the value if the date to is specified', () => {
+			const filterValue = { dateTo: {} };
+			(dateFilter as any).value$.next(filterValue);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
+
+			expect(value).to.equal(filterValue);
+		});
+	});
 });
