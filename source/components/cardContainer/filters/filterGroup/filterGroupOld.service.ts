@@ -3,14 +3,14 @@ import * as _ from 'lodash';
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
 
-export interface IFilterGroupSettings {
+export interface IFilterGroupSettingsOld {
 	label: string;
 	type: string;
-	options: IFilterOption[];
+	options: IFilterOptionOld[];
 	serialize?: {(): any};
 }
 
-export interface IFilterOption {
+export interface IFilterOptionOld {
 	active?: boolean;
 	label: string;
 	type?: string;
@@ -19,31 +19,31 @@ export interface IFilterOption {
 	serialize?: {(): any};
 }
 
-interface IConfiguredFilterOption extends IFilterOption {
+interface IConfiguredFilterOption extends IFilterOptionOld {
 	count?: number;
 }
 
-export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter<any> {
+export interface IFilterGroupOld extends filters.IFilterWithCounts, filters.ISerializableFilter<any> {
 	label: string;
 	type: string;
-	options: IFilterOption[];
-	activeOption: IFilterOption;
+	options: IFilterOptionOld[];
+	activeOption: IFilterOptionOld;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
 }
 
-export class FilterGroup extends filters.SerializableFilter<any> implements IFilterGroup {
+export class FilterGroupOld extends filters.SerializableFilter<any> implements IFilterGroupOld {
 	label: string;
 	type: string;
-	options: IFilterOption[];
+	options: IFilterOptionOld[];
 	template: string = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
-	settings: IFilterGroupSettings;
+	settings: IFilterGroupSettingsOld;
 
-	private _activeOption: IFilterOption;
+	private _activeOption: IFilterOptionOld;
 
 	object: __object.IObjectUtility;
 
-	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(settings: IFilterGroupSettingsOld, object: __object.IObjectUtility) {
 		super();
 		this.object = object;
 
@@ -57,7 +57,7 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 		this.options = this.settings.options;
 		this.activeOption = this.setDefaultOption();
 
-		_.each(this.options, (option: IFilterOption): void => {
+		_.each(this.options, (option: IFilterOptionOld): void => {
 			if (_.isUndefined(option.type)) {
 				option.type = option.label;
 			}
@@ -66,18 +66,18 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 		});
 	}
 
-	get activeOption(): IFilterOption {
+	get activeOption(): IFilterOptionOld {
 		return this._activeOption;
 	}
 
-	set activeOption(value: IFilterOption) {
+	set activeOption(value: IFilterOptionOld) {
 		this._activeOption = value;
 		this.onChange(false);
 	}
 
-	private setDefaultOption(): IFilterOption {
-		let defaultOption: IFilterOption = this.options[0];
-		_.each(this.options, (item: IFilterOption): void => {
+	private setDefaultOption(): IFilterOptionOld {
+		let defaultOption: IFilterOptionOld = this.options[0];
+		_.each(this.options, (item: IFilterOptionOld): void => {
 			if (item.active != null && item.active === true) {
 				defaultOption = item;
 			}

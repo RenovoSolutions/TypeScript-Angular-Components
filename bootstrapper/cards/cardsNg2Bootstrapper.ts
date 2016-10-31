@@ -12,7 +12,7 @@ import __object = services.object;
 import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
 	DateFilter,
-	IFilterGroup,
+	IFilterGroupOld,
 	IModeFilterGroup,
 	IRangeFilterGroup,
 	SelectFilter,
@@ -48,7 +48,7 @@ export class CardsBootstrapper {
 	dateFilter: DateFilter;
 	modeFilterGroup: IModeFilterGroup;
 	rangeFilterGroup: IRangeFilterGroup;
-	disabledFilterGroup: IFilterGroup;
+	disabledFilterGroup: IFilterGroupOld;
 	selectFilter: SelectFilter<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService

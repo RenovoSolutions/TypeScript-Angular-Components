@@ -1,7 +1,7 @@
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { FilterGroup } from './filterGroup.service';
+import { FilterGroupOld } from './filterGroupOld.service';
 
 import * as _ from 'lodash';
 
@@ -16,9 +16,9 @@ interface IFilterOptionMock {
 }
 
 describe('FilterGroup', () => {
-	let filterGroup: FilterGroup;
+	let filterGroup: FilterGroupOld;
 
-	const buildFilter = settings => new FilterGroup(settings, __object.objectUtility);
+	const buildFilter = settings => new FilterGroupOld(settings, __object.objectUtility);
 
 	it('should filter on the active option', (): void => {
 		let option1: IFilterOptionMock = { filter: sinon.spy() };

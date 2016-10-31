@@ -4,14 +4,14 @@ import { services } from 'typescript-angular-utilities';
 import __logger = services.logger;
 
 import { IDataSourceOld } from '../../dataSources/index';
-import { IFilterGroup, IFilterOption } from './filterGroup.service';
+import { IFilterGroupOld, IFilterOptionOld } from './filterGroupOld.service';
 
 @Component({
 	selector: 'rlFilterGroup',
 	template: require('./filterGroup.component.html'),
 })
 export class FilterGroupComponent<T> {
-	@Input() filterGroup: IFilterGroup;
+	@Input() filterGroup: IFilterGroupOld;
 	@Input() dataSource: IDataSourceOld<T>;
 	@Input() icon: string;
 	@Input() disabled: boolean;
@@ -39,7 +39,7 @@ export class FilterGroupComponent<T> {
 		return this.expanded && !this.disabled;
 	}
 
-	selectOption(option: IFilterOption): void {
+	selectOption(option: IFilterOptionOld): void {
 		this.filterGroup.activeOption = option;
 		this.expanded = false;
 

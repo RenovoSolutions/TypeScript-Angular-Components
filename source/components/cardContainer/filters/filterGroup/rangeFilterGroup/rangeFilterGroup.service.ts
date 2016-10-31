@@ -4,7 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
+import { IFilterOptionOld, IFilterGroupOld, FilterGroupOld } from '../filterGroupOld.service';
 
 export interface IRangeFilterGroupSettings<TItemType> {
 	label: string;
@@ -21,14 +21,14 @@ export interface IRangeFilterOptionSettings {
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterOption extends IFilterOption {
+export interface IRangeFilterOption extends IFilterOptionOld {
 	highInclusive?: number;
 	highExclusive?: number;
 	lowInclusive?: number;
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterGroup extends IFilterGroup {
+export interface IRangeFilterGroup extends IFilterGroupOld {
 	options: IRangeFilterOption[];
 	serialize(): IRangeFilterValue;
 }
@@ -40,7 +40,7 @@ export interface IRangeFilterValue {
 	lowExclusive?: number;
 }
 
-export class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
+export class RangeFilterGroup extends FilterGroupOld implements IRangeFilterGroup {
 	private getValue: { (item: any): number } | string;
 
 	transformService: __transform.ITransformService;

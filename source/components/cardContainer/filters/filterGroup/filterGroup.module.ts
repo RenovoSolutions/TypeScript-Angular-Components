@@ -14,7 +14,7 @@ export {
 import { componentName, filterGroup, controllerName, FilterGroupController } from './filterGroup.directive.ng1';
 
 export * from './filterGroup.directive.ng1';
-export * from './filterGroup.service';
+export * from './filterGroupOld.service';
 
 export const moduleName: string = 'rl.ui.components.cardContainer.filters.filterGroup';
 

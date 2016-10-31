@@ -10,7 +10,7 @@ import * as cardFilters from '../filters/index';
 import { CardContainerBuilderOld } from './cardContainerBuilderOld.service';
 
 export interface IFilterBuilderOld {
-	buildFilterGroup(settings: cardFilters.IFilterGroupSettings): cardFilters.IFilterGroup;
+	buildFilterGroup(settings: cardFilters.IFilterGroupSettingsOld): cardFilters.IFilterGroupOld;
 	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettings<TItemType>): cardFilters.IModeFilterGroup;
 	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettings<TItemType>): cardFilters.IRangeFilterGroup;
 	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettings<TDataType, TFilterType>): cardFilters.ISelectFilter<TDataType>;
@@ -45,8 +45,8 @@ export class FilterBuilderOld implements IFilterBuilderOld {
 		this.parent._filters = [];
 	}
 
-	buildFilterGroup(settings: cardFilters.IFilterGroupSettings): cardFilters.IFilterGroup {
-		let filter: cardFilters.IFilterGroup = new cardFilters.FilterGroup(settings, this.object);
+	buildFilterGroup(settings: cardFilters.IFilterGroupSettingsOld): cardFilters.IFilterGroupOld {
+		let filter: cardFilters.IFilterGroupOld = new cardFilters.FilterGroupOld(settings, this.object);
 		this.parent._filters.push(filter);
 		return filter;
 	}

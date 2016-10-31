@@ -4,7 +4,7 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
+import { IFilterOptionOld, IFilterGroupOld, FilterGroupOld } from '../filterGroupOld.service';
 
 export interface IModeFilterGroupSettings<TItemType> {
 	label: string;
@@ -19,17 +19,17 @@ export interface IModeFilterOptionSettings {
 	value?: number | string | boolean;
 }
 
-export interface IModeFilterOption extends IFilterOption {
+export interface IModeFilterOption extends IFilterOptionOld {
 	displayAll?: boolean;
 	value?: number | string | boolean;
 }
 
-export interface IModeFilterGroup extends IFilterGroup {
+export interface IModeFilterGroup extends IFilterGroupOld {
 	options: IModeFilterOption[];
 	serialize(): number | string | boolean;
 }
 
-export class ModeFilterGroup extends FilterGroup implements IModeFilterGroup {
+export class ModeFilterGroup extends FilterGroupOld implements IModeFilterGroup {
 	private getValue: { (item: any): string | number | boolean } | string;
 
 	transformService: __transform.ITransformService;
