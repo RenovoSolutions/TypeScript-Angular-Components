@@ -12,9 +12,9 @@ import __object = services.object;
 import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
 	DateFilter,
-	IFilterGroupOld,
-	IModeFilterGroupOld,
-	IRangeFilterGroupOld,
+	IFilterGroup,
+	IModeFilterGroup,
+	IRangeFilterGroup,
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 
@@ -43,12 +43,12 @@ export class CardsBootstrapper {
 	builder: ICardContainerInstance;
 	selectBuilder: ICardContainerInstance;
 	searchBuilder: ICardContainerInstance;
-	builderWithFiltersIRangeFilterGroupOldnstance;
+	builderWithFilters: ICardContainerInstance;
 	options: number[];
 	dateFilter: DateFilter;
-	modeFilterGroup: IModeFilterGroupOld;
-	rangeFilterGroup: IRangeFilterGroupOld;
-	disabledFilterGroup: IFilterGroupOld;
+	modeFilterGroup: IModeFilterGroup<any>;
+	rangeFilterGroup: IRangeFilterGroup<any>;
+	disabledFilterGroup: IFilterGroup<any>;
 	selectFilter: SelectFilter<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService
@@ -60,12 +60,10 @@ export class CardsBootstrapper {
 		this.builder = this.setupCardContainer(cardContainerBuilder);
 		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);
 		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
-		// this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
+		this.builderWithFilters = this.setupCardContainerWithFilters(cardContainerBuilder);
 
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
-
-		this.initFilteredCardContainer();
 
 		this.dateFilter = new DateFilter({
 			type: 'dateFilter',
@@ -101,85 +99,88 @@ export class CardsBootstrapper {
 		return builder;
 	}
 
-	initFilteredCardContainer() {
-		// this.builderWithFilters.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
-		// this.builderWithFilters.usePaging();
-		// this.builderWithFilters.addColumn({
-		// 	name: 'name',
-		// 	label: 'Name',
-		// 	size: 6,
-		// 	getValue: 'name',
-		// });
-		// this.builderWithFilters.addColumn({
-		// 	name: 'value',
-		// 	label: 'Value',
-		// 	size: 6,
-		// 	getValue: 'value',
-		// 	template: '<b>{{myItem.value}}</b>',
-		// });
+	setupCardContainerWithFilters(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
 
-		// this.rangeFilterGroup = this.builderWithFilters.filters.buildRangeFilterGroup({
-		// 	type: 'testRangeGroup',
-		// 	label: 'Range Filter Group',
-		// 	getValue: 'value',
-		// 	options: [
-		// 		{
-		// 			label: 'All',
-		// 			highInclusive: rangeHigh,
-		// 			lowInclusive: 0
-		// 		},
-		// 		{
-		// 			label: '5 - 10',
-		// 			highInclusive: 10,
-		// 			lowInclusive: 5,
-		// 		},
-		// 		{
-		// 			label: '< 5',
-		// 			highExclusive: 5,
-		// 		},
-		// 	],
-		// });
+		this.rangeFilterGroup = cardContainerBuilder.buildRangeFilterGroup(builder, {
+			type: 'testRangeGroup',
+			label: 'Range Filter Group',
+			getValue: 'value',
+			options: [
+				{
+					label: 'All',
+				},
+				{
+					label: '5 - 10',
+					highInclusive: 10,
+					lowInclusive: 5,
+				},
+				{
+					label: '< 5',
+					highExclusive: 5,
+				},
+			],
+		});
 
-		// this.modeFilterGroup = this.builderWithFilters.filters.buildModeFilterGroup({
-		// 	type: 'testModeGroup',
-		// 	label: 'Mode Filter Group',
-		// 	getValue: 'value',
-		// 	options: [
-		// 		{
-		// 			label: 'All',
-		// 			displayAll: true,
-		// 		},
-		// 		{
-		// 			label: 'Value Equals 3',
-		// 			value: 3,
-		// 		},
-		// 		{
-		// 			label: 'Value Equals 10',
-		// 			value: 10,
-		// 		},
-		// 	],
-		// });
+		this.modeFilterGroup = cardContainerBuilder.buildModeFilterGroup(builder, {
+			type: 'testModeGroup',
+			label: 'Mode Filter Group',
+			getValue: 'value',
+			options: [
+				{
+					label: 'All',
+					displayAll: true,
+				},
+				{
+					label: 'Value Equals 3',
+					value: 3,
+				},
+				{
+					label: 'Value Equals 10',
+					value: 10,
+				},
+			],
+		});
 
-		// this.disabledFilterGroup = this.builderWithFilters.filters.buildFilterGroup({
-		// 	type: 'testGroup',
-		// 	label: 'Disabled Filter Group',
-		// 	options: [
-		// 		{
-		// 			label: 'Show',
-		// 			filter: item => true,
-		// 			serialize: () => 'show',
-		// 		},
-		// 		{
-		// 			label: 'Hide',
-		// 			filter: item => false,
-		// 			serialize: () => 'hide',
-		// 		},
-		// 	],
-		// });
+		this.disabledFilterGroup = cardContainerBuilder.buildFilterGroup(builder, {
+			type: 'testGroup',
+			label: 'Disabled Filter Group',
+			options: [
+				{
+					label: 'Show',
+					predicate: item => true,
+					serialize: () => 'show',
+				},
+				{
+					label: 'Hide',
+					predicate: item => false,
+					serialize: () => 'hide',
+				},
+			],
+		});
 
-		// this.modeFilterGroup.subscribe(value => console.log('mode filter change', value));
-		// this.rangeFilterGroup.subscribe(value => console.log('range filter change', value));
-		// this.disabledFilterGroup.subscribe(value => console.log('disabled filter change', value));
+		this.modeFilterGroup.serialize().skip(1).subscribe(value => console.log('mode filter change', value));
+		this.rangeFilterGroup.serialize().skip(1).subscribe(value => console.log('range filter change', value));
+		this.disabledFilterGroup.serialize().skip(1).subscribe(value => console.log('disabled filter change', value));
+
+		return builder;
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {
