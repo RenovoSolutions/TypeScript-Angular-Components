@@ -9,8 +9,8 @@ import __transform = services.transform;
 import { IFilter, Filter } from '../filter';
 
 export interface IDateFilterValue {
-	dateFrom: moment.Moment;
-	dateTo: moment.Moment;
+	dateFrom?: moment.Moment;
+	dateTo?: moment.Moment;
 }
 
 export interface IDateFilterSettings<TDataType> {
@@ -49,11 +49,11 @@ export class DateFilter<TDataType> extends Filter<TDataType, IDateFilterValue> i
 	private transformService: __transform.ITransformService;
 
 	get dateFrom$(): Observable<moment.Moment> {
-		return this.value$.asObservable().map(value => value.dateFrom);
+		return this.value$.asObservable().map(value => value ? value.dateFrom : null);
 	}
 
 	get dateTo$(): Observable<moment.Moment> {
-		return this.value$.asObservable().map(value => value.dateTo);
+		return this.value$.asObservable().map(value => value ? value.dateTo : null);
 	}
 
 	constructor(settings: IDateFilterSettings<TDataType>
@@ -75,13 +75,13 @@ export class DateFilter<TDataType> extends Filter<TDataType, IDateFilterValue> i
 	}
 
 	setDateFrom(value: moment.Moment): void {
-		const updatedValue = clone(this.value$.getValue());
+		const updatedValue = clone(this.value$.getValue()) || {};
 		updatedValue.dateFrom = value;
 		this.value$.next(updatedValue);
 	}
 
 	setDateTo(value: moment.Moment): void {
-		const updatedValue = clone(this.value$.getValue());
+		const updatedValue = clone(this.value$.getValue()) || {};
 		updatedValue.dateTo = value;
 		this.value$.next(updatedValue);
 	}
