@@ -76,7 +76,7 @@ export class DataSourceBuilderOld implements IDataSourceBuilderOld {
 
 	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, this.array, this.object);
+		this.parent._dataSource = new dataSources.SmartDataSourceOld(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 

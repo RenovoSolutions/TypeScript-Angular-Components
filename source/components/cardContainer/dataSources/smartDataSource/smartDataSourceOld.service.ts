@@ -10,11 +10,11 @@ import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDat
 import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 
-export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
+export interface ISmartDataSourceOld<TDataType> extends IAsyncDataSource<TDataType> {
 	filters: filters.ISerializableFilter<any>[];
 }
 
-export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
+export class SmartDataSourceOld<TDataType> extends AsyncDataSource<TDataType> {
 	throttled: boolean = true;
 	appliedFilters: { [index: string]: any };
 	private _filters: filters.IFilter[];

@@ -3,7 +3,7 @@ export * from './dataServiceDataSource/dataServiceDataSource.service';
 export * from './observableDataSource/observableDataSource.service';
 export * from './serverSideDataSource/serverSideDataSource.service';
 export * from './simpleDataSource/simpleDataSource.service';
-export * from './smartDataSource/smartDataSource.service';
+export * from './smartDataSource/smartDataSourceOld.service';
 export * from './asyncDataSource.service';
 export * from './asyncTypes';
 export * from './dataSource';

@@ -5,7 +5,7 @@ import __object = services.object;
 import __array = services.array;
 import __transform = services.transform;
 
-import { SmartDataSource } from './smartDataSource.service';
+import { SmartDataSourceOld } from './smartDataSourceOld.service';
 
 import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
@@ -34,7 +34,7 @@ describe('SmartDataSource', () => {
 	let dataService: IDataServiceMock;
 	let appliedFilter: ITestFilter;
 	let unappliedFilter: ITestFilter;
-	let source: SmartDataSource<number>;
+	let source: SmartDataSourceOld<number>;
 	let data: number[];
 
 	beforeEach(() => {
@@ -77,7 +77,7 @@ describe('SmartDataSource', () => {
 		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
 		dataSourceProcessor.sort = sinon.spy();
 		dataSourceProcessor.page = sinon.spy();
-		source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
+		source = new SmartDataSourceOld<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 
 		source.filters = <any>[appliedFilter, unappliedFilter];
 		source.sorts = <any>[{
