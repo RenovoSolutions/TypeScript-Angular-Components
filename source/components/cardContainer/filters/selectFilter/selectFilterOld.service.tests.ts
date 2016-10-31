@@ -8,7 +8,7 @@ interface ITestObj {
 	value: number;
 }
 
-describe('SelectFilter', (): void => {
+describe('SelectFilterOld', (): void => {
 	let selectFilter: SelectFilterOld<ITestObj, any>;
 
 	beforeEach(() => {

@@ -18,7 +18,7 @@ interface ITestObject {
 	flag?: boolean;
 }
 
-describe('modeFilterGroup', () => {
+describe('ModeFilterGroupOld', () => {
 	let modeFilterGroup: ModeFilterGroupOld;
 
 	const buildFilter = settings => new ModeFilterGroupOld(settings, __object.objectUtility, __transform.transform);

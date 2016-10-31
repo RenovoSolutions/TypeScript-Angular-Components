@@ -16,7 +16,7 @@ interface ITestObject {
 	value?: number;
 }
 
-describe('rangeFilterGroup', () => {
+describe('RangeFilterGroupOld', () => {
 	let rangeFilterGroup: RangeFilterGroupOld;
 
 	const buildFilter = settings => new RangeFilterGroupOld(settings, __object.objectUtility, __transform.transform);

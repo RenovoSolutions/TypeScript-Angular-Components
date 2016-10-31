@@ -15,7 +15,7 @@ interface IFilterOptionMock {
 	value?: number;
 }
 
-describe('FilterGroup', () => {
+describe('FilterGroupOld', () => {
 	let filterGroup: FilterGroupOld;
 
 	const buildFilter = settings => new FilterGroupOld(settings, __object.objectUtility);
