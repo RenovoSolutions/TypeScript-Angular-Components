@@ -10,10 +10,10 @@ interface ITestObj {
 }
 
 describe('DateFilterComponent', (): void => {
-	let dateFilter: DateFilterComponent;
+	let dateFilter: DateFilterComponent<any>;
 
 	beforeEach(() => {
-		dateFilter = new DateFilterComponent(__date.dateUtility, <any>{ log: sinon.spy() });
+		dateFilter = new DateFilterComponent(__date.dateUtility);
 		dateFilter.filter = <any>{};
 	});
 
@@ -25,14 +25,6 @@ describe('DateFilterComponent', (): void => {
 		dateFilter.ngOnInit();
 
 		expect(dateFilter.filter.useTime).to.be.true;
-	});
-
-	it('should set dateRange to false on the filter', (): void => {
-		expect(dateFilter.filter.dateRange).to.be.undefined;
-
-		dateFilter.ngOnInit();
-
-		expect(dateFilter.filter.dateRange).to.be.false;
 	});
 
 	it('should default showClear to true', (): void => {
@@ -50,43 +42,37 @@ describe('DateFilterComponent', (): void => {
 	});
 
 	it('should set the date on the filter and refresh the data source', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
 		const date: moment.Moment = moment('2000-01-01T05:16:00.000');
+		let dateFrom;
+		dateFilter.filter.dateFrom$.subscribe(value => dateFrom = value);
 
 		dateFilter.setDate(date);
 
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateFrom).to.equal(date);
+		expect(dateFrom).to.equal(date);
 	});
 
 	it('should set the dateTo to a number days equal to the count before the dateFrom', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
 		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
-		dateFilter.filter.dateFrom = dateFrom;
+		dateFilter.filter.setDateFrom(dateFrom);
+		let dateTo;
+		dateFilter.filter.dateTo$.subscribe(value => dateTo = value);
 
 		dateFilter.setCount(4);
 
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateRange).to.be.true;
-		expect(dateFilter.filter.dateTo).to.equalMoment(moment('2000-01-01T05:16:00.000'));
+		expect(dateTo).to.equalMoment(dateFrom.add('days', 4));
 	});
 
-	it('should clear the dateTo and set dateRange to false if the count is 0', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
-		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
-		const dateTo: moment.Moment = moment('2000-01-01T05:16:00.000');
-		dateFilter.filter.dateFrom = dateFrom;
-		dateFilter.filter.dateTo = dateTo;
-		dateFilter.filter.dateRange = true;
+	it('should clear the dateTo if the count is 0', (): void => {
+		const originalDateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
+		const originalDateTo: moment.Moment = moment('2000-01-01T05:16:00.000');
+		dateFilter.filter.setDateFrom(originalDateFrom);
+		dateFilter.filter.setDateTo(originalDateTo);
+		let dateTo;
+		dateFilter.filter.dateTo$.subscribe(value => dateTo = value);
 
 		dateFilter.setCount(0);
 
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateRange).to.be.false;
-		expect(dateFilter.filter.dateTo).to.be.null;
+		expect(dateTo).to.be.null;
 	});
 
 	it('should set the date to null and count to 0', (): void => {

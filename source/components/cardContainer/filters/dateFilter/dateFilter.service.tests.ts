@@ -11,7 +11,7 @@ interface ITestObj {
 }
 
 describe('DateFilter', (): void => {
-	let dateFilter: DateFilter;
+	let dateFilter: DateFilter<any>;
 
 	beforeEach(() => {
 		dateFilter = new DateFilter({
@@ -82,7 +82,6 @@ describe('DateFilter', (): void => {
 				dateFrom: moment('2000-01-01T05:16:00.000'),
 				dateTo: moment('1999-11-15T05:16:00.000'),
 			};
-			dateFilter.dateRange = true;
 
 			expect(dateFilter.predicate(itemInRange, filterValue)).to.be.true;
 			expect(dateFilter.predicate(itemOnFromDate, filterValue)).to.be.true;

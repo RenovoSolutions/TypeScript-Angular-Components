@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { clone } from 'lodash';
 import * as moment from 'moment';
 
@@ -13,9 +13,9 @@ export interface IDateFilterValue {
 	dateTo: moment.Moment;
 }
 
-export interface IDateFilterSettings{
+export interface IDateFilterSettings<TDataType> {
 	type: string;
-	valueSelector: { (item: any): moment.Moment } | string;
+	valueSelector: { (item: TDataType): moment.Moment } | string;
 
 	// // component settings
 	// showClear?: boolean;
@@ -24,21 +24,19 @@ export interface IDateFilterSettings{
 	// label?: string;
 }
 
-export interface IDateFilter extends IFilter<any, IDateFilterValue> {
+export interface IDateFilter<TDataType> extends IFilter<TDataType, IDateFilterValue> {
 	dateFrom$: Observable<moment.Moment>;
 	dateTo$: Observable<moment.Moment>;
 	useTime: boolean;
 	type: string;
-	dateRange: boolean;
 }
 
-export class DateFilter extends Filter<any, IDateFilterValue> implements IDateFilter {
+export class DateFilter<TDataType> extends Filter<TDataType, IDateFilterValue> implements IDateFilter<TDataType> {
 	useTime: boolean;
-	dateRange: boolean;
 
 	private _dateFrom: moment.Moment;
 	private _dateTo: moment.Moment;
-	private valueSelector: { (item: any): moment.Moment } | string;
+	private valueSelector: { (item: TDataType): moment.Moment } | string;
 	public type: string;
 
 	// component settings
@@ -58,7 +56,7 @@ export class DateFilter extends Filter<any, IDateFilterValue> implements IDateFi
 		return this.value$.asObservable().map(value => value.dateTo);
 	}
 
-	constructor(settings: IDateFilterSettings
+	constructor(settings: IDateFilterSettings<TDataType>
 			, dateUtility: __date.IDateUtility
 			, transformService: __transform.ITransformService) {
 		super();
@@ -88,12 +86,12 @@ export class DateFilter extends Filter<any, IDateFilterValue> implements IDateFi
 		this.value$.next(updatedValue);
 	}
 
-	predicate = (item: any, filterValue: IDateFilterValue): boolean => {
+	predicate = (item: TDataType, filterValue: IDateFilterValue): boolean => {
 		if (!this.date.isDate(filterValue.dateFrom)) {
 			return true;
 		}
 
-		if (this.dateRange) {
+		if (filterValue.dateTo) {
 			let itemDate: moment.Moment = this.getValue(item)
 			let dateFrom: moment.Moment;
 
