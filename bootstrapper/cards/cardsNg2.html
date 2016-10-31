@@ -103,3 +103,21 @@
 		</rlCardContainer>
 	</div>
 </div>
+<div class="row">
+	<div class="col-sm-2">
+		<rlDateFilter [filter]="dateFilter"
+					  label="Date filter"
+					  [showClear]="true"
+					  [useDateRange]="true"
+					  [useTime]="true"></rlDateFilter>
+	</div>
+	<div class="col-sm-10">
+		<label>Card Container with date filter:</label>
+		<rlCardContainer [builder]="builderWithDateFilter">
+			<div *rlCardContent="let myItem">
+				Name: {{myItem.name}}
+				Date: {{myItem.date}}
+			</div>
+		</rlCardContainer>
+	</div>
+</div>

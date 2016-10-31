@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { mapValues, map, range } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -11,7 +12,7 @@ import __object = services.object;
 
 import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
-	DateFilterOld,
+	IDateFilter,
 	IFilterGroup,
 	IModeFilterGroup,
 	IRangeFilterGroup,
@@ -22,6 +23,7 @@ interface ICardItem {
 	id: number;
 	name: string;
 	value: number;
+	date?: moment.Moment;
 }
 
 const rangeLow: number = 1;
@@ -45,8 +47,9 @@ export class CardsBootstrapper {
 	searchBuilder: ICardContainerInstance;
 	builderWithFilterGroups: ICardContainerInstance;
 	builderWithSelectFilter: ICardContainerInstance;
+	builderWithDateFilter: ICardContainerInstance;
 	options: number[];
-	dateFilter: DateFilterOld;
+	dateFilter: IDateFilter<any>;
 	modeFilterGroup: IModeFilterGroup<any>;
 	rangeFilterGroup: IRangeFilterGroup<any>;
 	disabledFilterGroup: IFilterGroup<any>;
@@ -63,16 +66,10 @@ export class CardsBootstrapper {
 		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
 		this.builderWithFilterGroups = this.setupCardContainerWithFilterGroups(cardContainerBuilder);
 		this.builderWithSelectFilter = this.setupCardContainerWithSelectFilter(cardContainerBuilder);
+		this.builderWithDateFilter = this.setupCardContainerWithDateFilter(cardContainerBuilder);
 
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
-
-		this.dateFilter = new DateFilterOld({
-			type: 'dateFilter',
-			valueSelector: 'date',
-		}, __date.dateUtility, __transform.transform);
-
-		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
 	}
 
 	setupCardContainer(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
@@ -204,7 +201,41 @@ export class CardsBootstrapper {
 			valueSelector: 'value',
 		});
 
-		this.selectFilter.serialize().subscribe(value => console.log('select filter change', value));
+		this.selectFilter.serialize().skip(1).subscribe(value => console.log('select filter change', value));
+
+		return builder;
+	}
+
+	setupCardContainerWithDateFilter(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		const itemsWithDates = map(items, item => {
+			item.date = moment().subtract(item.value, 'days');
+			return item;
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(itemsWithDates).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'date',
+			label: 'Date',
+			size: 6,
+			getValue: 'date',
+			template: '<b>{{myItem.date}}</b>',
+		});
+
+		this.dateFilter = cardContainerBuilder.buildDateFilter<any>(builder, {
+			type: 'dateFilter',
+			valueSelector: 'date',
+		});
+
+		this.dateFilter.serialize().skip(1).subscribe(value => console.log('date filter change', mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
 
 		return builder;
 	}

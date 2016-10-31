@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import ObjectUtility = services.object.ObjectUtility;
+import DateUtility = services.date.DateUtility;
 import TransformService = services.transform.TransformService;
 
 import { IColumn } from '../column';
@@ -19,8 +20,11 @@ import {
 	RangeFilterGroup,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
-	ISelectFilterSettings,
 	SelectFilter,
+	ISelectFilterSettings,
+	IDateFilter,
+	DateFilter,
+	IDateFilterSettings,
 } from '../filters/index';
 import {} from '../paging/index';
 
@@ -74,12 +78,14 @@ export class CardContainerBuilderService {
 		(container as ICardContainerConstructor<TDataType>).columns.push(column);
 	}
 
+	// data sources
 	buildObservableDataSource<TDataType>(container: ICardContainerInstance, data$: Observable<TDataType[]>): IDataSource<TDataType> {
 		const dataSource = new ObservableDataSource(data$);
 		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
 		return dataSource;
 	}
 
+	// filters
 	buildFilterGroup<TDataType>(container: ICardContainerInstance, settings: IFilterGroupSettings<TDataType>): IFilterGroup<TDataType> {
 		const filter: IFilterGroup<TDataType> = new FilterGroup<TDataType>(settings);
 		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
@@ -104,6 +110,14 @@ export class CardContainerBuilderService {
 		const transformService: TransformService = this.injector.get(TransformService);
 		const objectUtility: ObjectUtility = this.injector.get(ObjectUtility);
 		const filter: SelectFilter<TDataType, TFilterType> = new SelectFilter(settings, objectUtility, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
+	}
+
+	buildDateFilter<TDataType>(container: ICardContainerInstance, settings: IDateFilterSettings<TDataType>): IDateFilter<TDataType> {
+		const dateUtility: DateUtility = this.injector.get(DateUtility);
+		const transformService: TransformService = this.injector.get(TransformService);
+		const filter: IDateFilter<TDataType> = new DateFilter<TDataType>(settings, dateUtility, transformService);
 		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
 		return filter;
 	}
