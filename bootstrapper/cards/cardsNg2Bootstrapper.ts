@@ -43,7 +43,7 @@ export class CardsBootstrapper {
 	builder: ICardContainerInstance;
 	selectBuilder: ICardContainerInstance;
 	searchBuilder: ICardContainerInstance;
-	builderWithFilters: ICardContainerInstance;
+	builderWithFilterGroups: ICardContainerInstance;
 	options: number[];
 	dateFilter: DateFilter;
 	modeFilterGroup: IModeFilterGroup<any>;
@@ -60,7 +60,7 @@ export class CardsBootstrapper {
 		this.builder = this.setupCardContainer(cardContainerBuilder);
 		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);
 		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
-		this.builderWithFilters = this.setupCardContainerWithFilters(cardContainerBuilder);
+		this.builderWithFilterGroups = this.setupCardContainerWithFilterGroups(cardContainerBuilder);
 
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
@@ -99,7 +99,7 @@ export class CardsBootstrapper {
 		return builder;
 	}
 
-	setupCardContainerWithFilters(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+	setupCardContainerWithFilterGroups(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
 		const builder = cardContainerBuilder.getInstance({
 			paging: true,
 			search: true,

@@ -9,7 +9,6 @@ import { IFilterGroup, IFilterOption } from './filterGroup.service';
 })
 export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup<T>;
-	@Input() dataSource: IDataSource<T>;
 	@Input() icon: string;
 	@Input() disabled: boolean;
 

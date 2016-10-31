@@ -45,8 +45,6 @@ describe('FilterGroupComponent', (): void => {
 	});
 
 	it('should set the active option and refresh the data source', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		filterGroupComponent.dataSource = dataSource;
 		const option: any = { prop: 4 };
 
 		filterGroupComponent.selectOption(option);
