@@ -65,6 +65,11 @@ describe('DateFilter', (): void => {
 	});
 
 	describe('predicate', (): void => {
+		it('should return true if the filter value is null', (): void => {
+			const item: any = {};
+			expect(dateFilter.predicate(item, null)).to.be.true;
+		});
+
 		it('should return true if the from date is empty', (): void => {
 			const item: any = {};
 			const filterValue = {

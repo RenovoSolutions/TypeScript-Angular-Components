@@ -87,7 +87,7 @@ export class DateFilter<TDataType> extends Filter<TDataType, IDateFilterValue> i
 	}
 
 	predicate = (item: TDataType, filterValue: IDateFilterValue): boolean => {
-		if (!this.date.isDate(filterValue.dateFrom)) {
+		if (!filterValue || !this.date.isDate(filterValue.dateFrom)) {
 			return true;
 		}
 
