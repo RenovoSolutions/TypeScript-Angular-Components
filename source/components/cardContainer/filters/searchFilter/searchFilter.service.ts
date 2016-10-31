@@ -8,6 +8,7 @@ import { Filter, IFilter } from '../filter';
 
 @Injectable()
 export class SearchFilter extends Filter<any, string> implements IFilter<any, string> {
+	type: string;
 	minSearchLength: number;
 	caseSensitive: boolean;
 	tokenized: boolean;
@@ -17,6 +18,7 @@ export class SearchFilter extends Filter<any, string> implements IFilter<any, st
 	constructor(searchUtility: SearchUtility) {
 		super();
 		this.searchUtility = searchUtility;
+		this.type = 'search';
 		this.minSearchLength = 1;
 		this.caseSensitive = false;
 		this.tokenized = false;

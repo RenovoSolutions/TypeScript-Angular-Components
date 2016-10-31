@@ -2,6 +2,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { filter } from 'lodash';
 
 export interface IFilter<TDataType, TFilterData> {
+	type?: string;
 	serialize(): Observable<TFilterData>;
 	filter(data$: Observable<TDataType[]>): Observable<TDataType[]>;
 }
