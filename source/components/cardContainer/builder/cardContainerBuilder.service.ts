@@ -2,6 +2,7 @@ import { Injector, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
+import ObjectUtility = services.object.ObjectUtility;
 import TransformService = services.transform.TransformService;
 
 import { IColumn } from '../column';
@@ -18,6 +19,8 @@ import {
 	RangeFilterGroup,
 	IRangeFilterGroup,
 	IRangeFilterGroupSettings,
+	ISelectFilterSettings,
+	SelectFilter,
 } from '../filters/index';
 import {} from '../paging/index';
 
@@ -93,6 +96,14 @@ export class CardContainerBuilderService {
 	buildRangeFilterGroup<TDataType>(container: ICardContainerInstance, settings: IRangeFilterGroupSettings<TDataType>): IRangeFilterGroup<TDataType> {
 		const transformService: TransformService = this.injector.get(TransformService);
 		const filter: IRangeFilterGroup<TDataType> = new RangeFilterGroup<TDataType>(settings, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
+	}
+
+	buildSelectFilter<TDataType, TFilterType>(container: ICardContainerInstance, settings: ISelectFilterSettings<TDataType, TFilterType>): SelectFilter<TDataType, TFilterType> {
+		const transformService: TransformService = this.injector.get(TransformService);
+		const objectUtility: ObjectUtility = this.injector.get(ObjectUtility);
+		const filter: SelectFilter<TDataType, TFilterType> = new SelectFilter(settings, objectUtility, transformService);
 		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
 		return filter;
 	}

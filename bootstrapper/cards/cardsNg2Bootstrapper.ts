@@ -15,7 +15,7 @@ import {
 	IFilterGroup,
 	IModeFilterGroup,
 	IRangeFilterGroup,
-	SelectFilterOld,
+	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 
 interface ICardItem {
@@ -44,12 +44,13 @@ export class CardsBootstrapper {
 	selectBuilder: ICardContainerInstance;
 	searchBuilder: ICardContainerInstance;
 	builderWithFilterGroups: ICardContainerInstance;
+	builderWithSelectFilter: ICardContainerInstance;
 	options: number[];
 	dateFilter: DateFilter;
 	modeFilterGroup: IModeFilterGroup<any>;
 	rangeFilterGroup: IRangeFilterGroup<any>;
 	disabledFilterGroup: IFilterGroup<any>;
-	selectFilter: SelectFilterOld<any, any>;
+	selectFilter: SelectFilter<any, any>;
 
 	constructor(timezone: __timezone.TimezoneService
 			, cardContainerBuilder: CardContainerBuilderService) {
@@ -61,6 +62,7 @@ export class CardsBootstrapper {
 		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);
 		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
 		this.builderWithFilterGroups = this.setupCardContainerWithFilterGroups(cardContainerBuilder);
+		this.builderWithSelectFilter = this.setupCardContainerWithSelectFilter(cardContainerBuilder);
 
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
@@ -70,12 +72,7 @@ export class CardsBootstrapper {
 			valueSelector: 'date',
 		}, __date.dateUtility, __transform.transform);
 
-		this.selectFilter = new SelectFilterOld({
-			valueSelector: 'value',
-		}, __object.objectUtility, __transform.transform);
-
 		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
-		this.selectFilter.subscribe(value => console.log(value));
 	}
 
 	setupCardContainer(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
@@ -179,6 +176,35 @@ export class CardsBootstrapper {
 		this.modeFilterGroup.serialize().skip(1).subscribe(value => console.log('mode filter change', value));
 		this.rangeFilterGroup.serialize().skip(1).subscribe(value => console.log('range filter change', value));
 		this.disabledFilterGroup.serialize().skip(1).subscribe(value => console.log('disabled filter change', value));
+
+		return builder;
+	}
+
+	setupCardContainerWithSelectFilter(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
+
+		this.selectFilter = cardContainerBuilder.buildSelectFilter<any, any>(builder, {
+			valueSelector: 'value',
+		});
+
+		this.selectFilter.serialize().subscribe(value => console.log('select filter change', value));
 
 		return builder;
 	}
