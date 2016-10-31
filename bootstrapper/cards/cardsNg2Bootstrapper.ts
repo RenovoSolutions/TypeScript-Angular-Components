@@ -11,7 +11,7 @@ import __object = services.object;
 
 import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
-	DateFilter,
+	DateFilterOld,
 	IFilterGroup,
 	IModeFilterGroup,
 	IRangeFilterGroup,
@@ -46,7 +46,7 @@ export class CardsBootstrapper {
 	builderWithFilterGroups: ICardContainerInstance;
 	builderWithSelectFilter: ICardContainerInstance;
 	options: number[];
-	dateFilter: DateFilter;
+	dateFilter: DateFilterOld;
 	modeFilterGroup: IModeFilterGroup<any>;
 	rangeFilterGroup: IRangeFilterGroup<any>;
 	disabledFilterGroup: IFilterGroup<any>;
@@ -67,7 +67,7 @@ export class CardsBootstrapper {
 		// const searchFilter = this.builder.useSearch();
 		// searchFilter.minSearchLength = 5;
 
-		this.dateFilter = new DateFilter({
+		this.dateFilter = new DateFilterOld({
 			type: 'dateFilter',
 			valueSelector: 'date',
 		}, __date.dateUtility, __transform.transform);

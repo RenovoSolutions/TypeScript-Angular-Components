@@ -5,7 +5,7 @@ import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 import __logger = services.logger;
 
-import { IDateFilter } from './dateFilter.service';
+import { IDateFilterOld } from './dateFilterOld.service';
 import { IDataSourceOld } from '../../dataSources/dataSource';
 
 const type: moment.UnitOfTime = 'days';
@@ -15,7 +15,7 @@ const type: moment.UnitOfTime = 'days';
 	template: require('./dateFilter.html'),
 })
 export class DateFilterComponent implements OnInit {
-	@Input() filter: IDateFilter;
+	@Input() filter: IDateFilterOld;
 	@Input() dataSource: IDataSourceOld<any>;
 	@Input() label: string;
 	@Input() showClear: boolean;

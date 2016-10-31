@@ -5,7 +5,7 @@ import * as moment from 'moment';
 
 import { ICardContainerBuilderOld } from '../../source/components/cardContainer/builder/index';
 import { IDataSourceOld } from '../../source/components/cardContainer/dataSources/index';
-import { ISelectFilterOld,	IDateFilter } from '../../source/components/cardContainer/filters/index';
+import { ISelectFilterOld, IDateFilterOld, } from '../../source/components/cardContainer/filters/index';
 import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
 
 export const moduleName: string = 'CardTestModule';
@@ -23,7 +23,7 @@ class CardTestController {
 	builderWithSearch: ICardContainerBuilderOld;
 	options: number[];
 	selectFilter: ISelectFilterOld<number>;
-	dateFilter: IDateFilter;
+	dateFilter: IDateFilterOld;
 	dataSource: IDataSourceOld<ICardItem>;
 
 	static $inject: string[] = [cardContainerBuilderServiceName];

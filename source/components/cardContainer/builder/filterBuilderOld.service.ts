@@ -14,7 +14,7 @@ export interface IFilterBuilderOld {
 	buildModeFilterGroup<TItemType>(settings: cardFilters.IModeFilterGroupSettingsOld<TItemType>): cardFilters.IModeFilterGroupOld;
 	buildRangeFilterGroup<TItemType>(settings: cardFilters.IRangeFilterGroupSettingsOld<TItemType>): cardFilters.IRangeFilterGroupOld;
 	buildSelectFilter<TDataType, TFilterType>(settings: cardFilters.ISelectFilterSettingsOld<TDataType, TFilterType>): cardFilters.ISelectFilterOld<TDataType>;
-	buildDateFilter(valueSelector:cardFilters.IDateFilterSettings): cardFilters.IDateFilter;
+	buildDateFilter(valueSelector:cardFilters.IDateFilterSettingsOld): cardFilters.IDateFilterOld;
 	buildColumnSearchFilter(): cardFilters.ColumnSearchFilter;
 	addCustomFilter(filter: filters.IFilter): void;
 }
@@ -69,8 +69,8 @@ export class FilterBuilderOld implements IFilterBuilderOld {
 		return filter;
 	}
 
-	buildDateFilter(settings: cardFilters.IDateFilterSettings): cardFilters.IDateFilter {
-		let filter: cardFilters.IDateFilter = new cardFilters.DateFilter(settings, this.date, this.transformService);
+	buildDateFilter(settings: cardFilters.IDateFilterSettingsOld): cardFilters.IDateFilterOld {
+		let filter: cardFilters.IDateFilterOld = new cardFilters.DateFilterOld(settings, this.date, this.transformService);
 		this.parent._filters.push(filter);
 		return filter;
 	}

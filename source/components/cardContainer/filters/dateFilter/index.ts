@@ -1,2 +1,2 @@
 export * from './dateFilter.component';
-export * from './dateFilter.service';
+export * from './dateFilterOld.service';

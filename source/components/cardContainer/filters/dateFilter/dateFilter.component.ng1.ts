@@ -6,7 +6,7 @@ import * as moment from 'moment';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __date = services.date;
 
-import {IDateFilter} from './dateFilter.service';
+import {IDateFilterOld} from './dateFilterOld.service';
 import {IDataSourceOld} from '../../dataSources/dataSource';
 
 export let componentName: string = 'rlDateFilter';
@@ -17,7 +17,7 @@ enum DateOptions { Day, Week, Month };
 export interface IDateFilterBindings {
 	clearButton: boolean;
 	count: number;
-	filter: IDateFilter;
+	filter: IDateFilterOld;
 	includeTime: boolean;
 	includeDateRange: boolean;
 	label: string;
@@ -30,7 +30,7 @@ export interface IDateFilterBindings {
 export class DateFilterController implements IDateFilterBindings {
 	clearButton: boolean;
 	count: number = 0;
-	filter: IDateFilter;
+	filter: IDateFilterOld;
 	includeDateRange: boolean;
 	includeTime: boolean;
 	label: string;

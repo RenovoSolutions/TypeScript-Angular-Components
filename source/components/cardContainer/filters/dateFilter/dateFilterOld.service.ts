@@ -5,12 +5,12 @@ import {filters, services, downgrade} from 'typescript-angular-utilities';
 import __date = services.date;
 import __transform = services.transform;
 
-export interface IDateFilterValue {
+export interface IDateFilterValueOld {
 	dateFrom: moment.Moment;
 	dateTo: moment.Moment;
 }
 
-export interface IDateFilterSettings{
+export interface IDateFilterSettingsOld{
 	type: string;
 	valueSelector: { (item: any): moment.Moment } | string;
 
@@ -21,7 +21,7 @@ export interface IDateFilterSettings{
 	label?: string;
 }
 
-export interface IDateFilter extends filters.ISerializableFilter<IDateFilterValue> {
+export interface IDateFilterOld extends filters.ISerializableFilter<IDateFilterValueOld> {
 	dateFrom: moment.Moment;
 	dateTo: moment.Moment;
 	useTime: boolean;
@@ -31,7 +31,7 @@ export interface IDateFilter extends filters.ISerializableFilter<IDateFilterValu
 	filter(item: any): boolean;
 }
 
-export class DateFilter extends filters.SerializableFilter<IDateFilterValue> implements IDateFilter {
+export class DateFilterOld extends filters.SerializableFilter<IDateFilterValueOld> implements IDateFilterOld {
 	useTime: boolean;
 	dateRange: boolean;
 
@@ -71,7 +71,7 @@ export class DateFilter extends filters.SerializableFilter<IDateFilterValue> imp
 		}
 	}
 
-	constructor(settings: IDateFilterSettings
+	constructor(settings: IDateFilterSettingsOld
 			, dateUtility: __date.IDateUtility
 			, transformService: __transform.ITransformService) {
 		super();
@@ -116,7 +116,7 @@ export class DateFilter extends filters.SerializableFilter<IDateFilterValue> imp
 		}
 	}
 
-	serialize(): IDateFilterValue {
+	serialize(): IDateFilterValueOld {
 		return {
 			dateFrom: this.dateFrom,
 			dateTo: this.dateTo,

@@ -4,17 +4,17 @@ import { services } from 'typescript-angular-utilities';
 import __date = services.date;
 import __transform = services.transform;
 
-import { DateFilter, IDateFilterValue } from './dateFilter.service';
+import { DateFilterOld, IDateFilterValueOld } from './dateFilterOld.service';
 
 interface ITestObj {
 	value: moment.Moment;
 }
 
-describe('DateFilter', (): void => {
-	let dateFilter: DateFilter;
+describe('DateFilterOld', (): void => {
+	let dateFilter: DateFilterOld;
 
 	beforeEach(() => {
-		dateFilter = new DateFilter({
+		dateFilter = new DateFilterOld({
 			type: 'dateFilter',
 			valueSelector: 'value',
 		}, __date.dateUtility, __transform.transform);
@@ -61,7 +61,7 @@ describe('DateFilter', (): void => {
 			dateFilter.dateTo = dateTo;
 			dateFilter.dateRange = true;
 
-			const filterValue: IDateFilterValue = dateFilter.serialize();
+			const filterValue: IDateFilterValueOld = dateFilter.serialize();
 
 			expect(filterValue.dateFrom).to.equal(dateFrom);
 			expect(filterValue.dateTo).to.equal(dateTo);
