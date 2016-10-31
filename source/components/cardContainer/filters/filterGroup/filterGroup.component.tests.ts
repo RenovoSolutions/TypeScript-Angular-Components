@@ -10,7 +10,7 @@ describe('FilterGroupComponent', (): void => {
 	};
 
 	beforeEach(() => {
-		filterGroupComponent = new FilterGroupComponent(<any>{ log: sinon.spy() });
+		filterGroupComponent = new FilterGroupComponent();
 		filterGroupComponent.filterGroup = filterGroup;
 	});
 
@@ -51,7 +51,6 @@ describe('FilterGroupComponent', (): void => {
 
 		filterGroupComponent.selectOption(option);
 
-		sinon.assert.calledOnce(dataSource.refresh);
 		expect(filterGroupComponent.filterGroup.activeOption).to.equal(option);
 		expect(filterGroupComponent.expanded).to.be.false;
 	});
