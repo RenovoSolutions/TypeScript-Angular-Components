@@ -3,6 +3,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { SortDirection } from '../../sorts/index';
 import {
 	IFilterWithValue,
+	throttled,
 	unthrottled,
 	toFiltersWithValues,
 	suppressInactiveFilters,
@@ -14,6 +15,111 @@ import {
 } from './smartDataActions';
 
 describe('smart data source actions', () => {
+	describe('throttled', () => {
+		it('should fire an event for every filter that changes whether active or inactive', () => {
+			const filters = [
+				{
+					type: 'one',
+					subject: new BehaviorSubject('Filter 1'),
+					serialize: () => filters[0].subject,
+				},
+				{
+					type: 'two',
+					subject: new BehaviorSubject('Filter 2'),
+					serialize: () => filters[1].subject,
+				},
+				{
+					type: 'three',
+					subject: new BehaviorSubject(null),
+					serialize: () => filters[2].subject,
+				},
+			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			const appliedFiltersSpy = sinon.spy();
+
+			throttled(filters, Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
+
+			let expected: any = {
+				filters: { one: 'Filter 1', two: 'Filter 2' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			filters[2].subject.next('Filter 3');
+
+			expected = {
+				filters: { one: 'Filter 1', two: 'Filter 2', three: 'Filter 3' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			filters[1].subject.next('Filter 2 changed');
+
+			expected = {
+				filters: { one: 'Filter 1', two: 'Filter 2 changed', three: 'Filter 3' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+		});
+
+		it('should fire an event for every sort change', () => {
+			const filters = [
+				{
+					type: 'one',
+					serialize: () => Observable.of('value1'),
+				},
+				{
+					type: 'two',
+					serialize: () => Observable.of('value2'),
+				},
+			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			const sorts$: BehaviorSubject<any> = new BehaviorSubject(sorts);
+			const appliedFiltersSpy = sinon.spy();
+
+			throttled(<any>filters, sorts$).subscribe(appliedFiltersSpy);
+
+			let expected = {
+				filters: { one: 'value1', two: 'value2' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			const newSorts = [
+				{
+					column: { label: 'col2' },
+					direction: SortDirection.ascending,
+				},
+			];
+
+			sorts$.next(newSorts);
+
+			expected = {
+				filters: { one: 'value1', two: 'value2' },
+				sorts: [{ column: 'col2', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+		});
+	});
+
 	describe('unthrottled', () => {
 		it('should fire an event for every active filter that changes', () => {
 			const filters = [

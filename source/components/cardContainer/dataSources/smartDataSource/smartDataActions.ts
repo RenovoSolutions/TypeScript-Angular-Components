@@ -21,7 +21,11 @@ export function process(throttled$: Observable<boolean>, filters: IFilter<any, a
 }
 
 export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<any> {
-	return null;
+	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
+		filters => Observable.of(filters),
+		toFilterChanges,
+		filterValues$ => combineWithSorts(filterValues$, sorts$),
+	]);
 }
 
 export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): any {
