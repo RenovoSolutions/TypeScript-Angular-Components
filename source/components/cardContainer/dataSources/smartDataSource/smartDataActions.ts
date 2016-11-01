@@ -14,20 +14,23 @@ export interface ITypeWithValue {
 	value: any;
 }
 
-export function process(throttled$: Observable<boolean>, filters: IFilter<any, any>[]) {
-	return throttled$.switchMap(isThrottled => isThrottled ? throttled(filters) : unthrottled(filters));
+export function process(throttled$: Observable<boolean>, filters: IFilter<any, any>[], sorts$: Observable<ISort[]>) {
+	return throttled$.switchMap(isThrottled => isThrottled
+			? throttled(filters, sorts$)
+			: unthrottled(filters, sorts$));
 }
 
-export function throttled(filters: IFilter<any, any>[]): Observable<any> {
+export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<any> {
 	return null;
 }
 
-export function unthrottled(filters: IFilter<any, any>[]): any {
+export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): any {
 	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
 		toFiltersWithValues,
 		suppressInactiveFilters,
 		toTypesWithValues,
 		toActiveFilterChanges,
+		filterValues$ => combineWithSorts(filterValues$, sorts$.first()),
 	]);
 }
 

@@ -33,12 +33,22 @@ describe('smart data source actions', () => {
 					serialize: () => filters[2].subject,
 				},
 			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
 			const appliedFiltersSpy = sinon.spy();
 
-			unthrottled(filters).subscribe(appliedFiltersSpy);
+			unthrottled(filters, Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
 
+			let expected = {
+				filters: { one: 'Filter 1', two: 'Filter 2' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
-			sinon.assert.calledWith(appliedFiltersSpy, { one: 'Filter 1', two: 'Filter 2' });
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
 			appliedFiltersSpy.reset();
 
 			filters[2].subject.next('Filter 3');
@@ -47,8 +57,54 @@ describe('smart data source actions', () => {
 
 			filters[1].subject.next('Filter 2 changed');
 
+			expected = {
+				filters: { one: 'Filter 1', two: 'Filter 2 changed' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
-			sinon.assert.calledWith(appliedFiltersSpy, { one: 'Filter 1', two: 'Filter 2 changed' });
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+		});
+
+		it('should suppress sort changes', () => {
+			const filters = [
+				{
+					type: 'one',
+					serialize: () => Observable.of('value1'),
+				},
+				{
+					type: 'two',
+					serialize: () => Observable.of('value2'),
+				},
+			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			const sorts$: BehaviorSubject<any> = new BehaviorSubject(sorts);
+			const appliedFiltersSpy = sinon.spy();
+
+			unthrottled(<any>filters, sorts$).subscribe(appliedFiltersSpy);
+
+			let expected = {
+				filters: { one: 'value1', two: 'value2' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			const newSorts = [
+				{
+					column: { label: 'col2' },
+					direction: SortDirection.ascending,
+				},
+			];
+
+			sorts$.next(newSorts);
+
+			sinon.assert.notCalled(appliedFiltersSpy);
 		});
 	});
 
