@@ -36,17 +36,17 @@ export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IF
 	})));
 }
 
-export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<ITypeWithValue[]> {
-	return filters$.switchMap(filters => Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
-		return { type: filter.type, value };
-	}))));
-}
-
 export function suppressInactiveFilters(filtersWithValues$: Observable<IFilterWithValue[]>): Observable<IFilter<any, any>[]> {
 	return filtersWithValues$
 		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
 		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
 		.first();
+}
+
+export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<ITypeWithValue[]> {
+	return filters$.switchMap(filters => Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
+		return { type: filter.type, value };
+	}))));
 }
 
 export function toActiveFilterChanges(filterTypesWithValues$: Observable<ITypeWithValue[]>): Observable<any> {
