@@ -116,4 +116,19 @@ describe('smart data source actions', () => {
 			expect(typesWithValues[1].value).to.equal('Value 2');
 		});
 	});
+
+	describe('toActiveFilterChanges', () => {
+		it('should map the types and values to an object mapping', () => {
+			const typesWithValues = [
+				{ type: 'type1', value: 'value1' },
+				{ type: 'type2', value: 'value2' },
+			];
+			const activeFilterChanges = sinon.spy();
+
+			toActiveFilterChanges(Observable.of(typesWithValues)).subscribe(activeFilterChanges);
+
+			sinon.assert.calledOnce(activeFilterChanges);
+			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
+		});
+	});
 });
