@@ -108,7 +108,9 @@ describe('SmartDataSource', () => {
 			const rawDataSetSpy = sinon.spy();
 			const loadingDataSetSpy = sinon.spy();
 			source.rawDataSet$.subscribe(rawDataSetSpy);
-			source.loadingDataSet$.subscribe(rawDataSetSpy);
+			source.loadingDataSet$.subscribe(loadingDataSetSpy);
+			rawDataSetSpy.reset();
+			loadingDataSetSpy.reset();
 
 			source.startLoading();
 
