@@ -7,7 +7,7 @@ import DateUtility = services.date.DateUtility;
 import TransformService = services.transform.TransformService;
 
 import { IColumn } from '../column';
-import { IDataSource, ObservableDataSource } from '../dataSources/index';
+import { IDataSource, ObservableDataSource, SmartDataSource, IServerSearchFunction } from '../dataSources/index';
 import { Sorter } from '../sorts/index';
 import {
 	IFilter,
@@ -81,6 +81,12 @@ export class CardContainerBuilderService {
 	// data sources
 	buildObservableDataSource<TDataType>(container: ICardContainerInstance, data$: Observable<TDataType[]>): IDataSource<TDataType> {
 		const dataSource = new ObservableDataSource(data$);
+		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
+		return dataSource;
+	}
+
+	buildSmartDataSource<TDataType>(container: ICardContainerInstance, getDataSet: IServerSearchFunction<TDataType>): IDataSource<TDataType> {
+		const dataSource = new SmartDataSource(getDataSet);
 		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
 		return dataSource;
 	}
