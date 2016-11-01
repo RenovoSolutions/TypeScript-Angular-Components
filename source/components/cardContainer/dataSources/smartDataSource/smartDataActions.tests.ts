@@ -1,6 +1,15 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 
-import { unthrottled, toFiltersWithValues } from './smartDataActions';
+import {
+	IFilterWithValue,
+	unthrottled,
+	toFiltersWithValues,
+	suppressInactiveFilters,
+	toTypesWithValues,
+	toActiveFilterChanges,
+	toObservableArray,
+	pipe,
+} from './smartDataActions';
 
 describe('smart data source actions', () => {
 	describe('unthrottled', () => {
@@ -52,6 +61,38 @@ describe('smart data source actions', () => {
 			expect(filtersWithValues[0].value).to.equal('Filter 1');
 			expect(filtersWithValues[1].filter).to.equal(filters[1]);
 			expect(filtersWithValues[1].value).to.equal('Filter 2');
+		});
+	});
+
+	describe('suppressInactiveFilters', () => {
+		it('should drop filters with a null current value', () => {
+			const filtersWithValues = [
+				{ filter: {}, value: 'Filter 1' },
+				{ filter: {}, value: null },
+			];
+			let activeFilters;
+
+			suppressInactiveFilters(Observable.of(<any>filtersWithValues)).subscribe(result => activeFilters = result);
+
+			expect(activeFilters).to.have.length(1);
+			expect(activeFilters[0]).to.equal(filtersWithValues[0].filter);
+		});
+
+		it('should suppress changes to inactive filters', () => {
+			const activeFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: <any>{}, value: 'Filter 1' });
+			const inactiveFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: <any>{}, value: null });
+			const filtersWithValues$ = Observable.combineLatest(activeFilter$, inactiveFilter$);
+			let activeFilters;
+
+			suppressInactiveFilters(filtersWithValues$).subscribe(result => activeFilters = result);
+
+			expect(activeFilters).to.have.length(1);
+			expect(activeFilters[0]).to.equal(activeFilter$.getValue().filter);
+
+			inactiveFilter$.next({ filter: <any>{}, value: 'Filter 2' });
+
+			expect(activeFilters).to.have.length(1);
+			expect(activeFilters[0]).to.equal(activeFilter$.getValue().filter);
 		});
 	});
 });
