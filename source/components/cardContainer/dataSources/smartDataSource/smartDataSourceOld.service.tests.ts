@@ -29,7 +29,7 @@ interface IDataSourceProcessorMock {
 	page: Sinon.SinonSpy;
 }
 
-describe('SmartDataSource', () => {
+describe('SmartDataSourceOld', () => {
 	let dataSourceProcessor: IDataSourceProcessorMock;
 	let dataService: IDataServiceMock;
 	let appliedFilter: ITestFilter;
