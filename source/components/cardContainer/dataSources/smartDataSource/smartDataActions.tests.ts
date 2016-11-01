@@ -15,7 +15,7 @@ import {
 
 describe('smart data source actions', () => {
 	describe('unthrottled', () => {
-		it('should log for every active filter that changes', () => {
+		it('should fire an event for every active filter that changes', () => {
 			const filters = [
 				{
 					type: 'one',
