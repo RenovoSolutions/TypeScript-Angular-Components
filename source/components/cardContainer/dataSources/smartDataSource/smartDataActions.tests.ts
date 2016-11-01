@@ -31,19 +31,22 @@ describe('smart data source actions', () => {
 					serialize: () => filters[2].subject,
 				},
 			];
-			let appliedFilters;
+			const appliedFiltersSpy = sinon.spy();
 
-			unthrottled(filters).subscribe(result => appliedFilters = result);
+			unthrottled(filters).subscribe(appliedFiltersSpy);
 
-			expect(appliedFilters).to.deep.equal({ one: 'Filter 1', two: 'Filter 2' });
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, { one: 'Filter 1', two: 'Filter 2' });
+			appliedFiltersSpy.reset();
 
 			filters[2].subject.next('Filter 3');
 
-			expect(appliedFilters).to.deep.equal({ one: 'Filter 1', two: 'Filter 2' });
+			sinon.assert.notCalled(appliedFiltersSpy);
 
 			filters[1].subject.next('Filter 2 changed');
 
-			expect(appliedFilters).to.deep.equal({ one: 'Filter 1', two: 'Filter 2 changed' });
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, { one: 'Filter 1', two: 'Filter 2 changed' });
 		});
 	});
 
@@ -67,32 +70,33 @@ describe('smart data source actions', () => {
 	describe('suppressInactiveFilters', () => {
 		it('should drop filters with a null current value', () => {
 			const filtersWithValues = [
-				{ filter: {}, value: 'Filter 1' },
+				{ filter: { type: 'Type1' }, value: 'Filter 1' },
 				{ filter: {}, value: null },
 			];
-			let activeFilters;
+			const activeFiltersSpy = sinon.spy();
 
-			suppressInactiveFilters(Observable.of(<any>filtersWithValues)).subscribe(result => activeFilters = result);
+			suppressInactiveFilters(Observable.of(<any>filtersWithValues)).subscribe(activeFiltersSpy);
 
-			expect(activeFilters).to.have.length(1);
-			expect(activeFilters[0]).to.equal(filtersWithValues[0].filter);
+			sinon.assert.calledOnce(activeFiltersSpy);
+			sinon.assert.calledWith(activeFiltersSpy, [filtersWithValues[0].filter]);
 		});
 
 		it('should suppress changes to inactive filters', () => {
-			const activeFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: <any>{}, value: 'Filter 1' });
+			const activeFilter: any = { type: 'Type1' };
+			const activeFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: activeFilter, value: 'Filter 1' });
 			const inactiveFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: <any>{}, value: null });
 			const filtersWithValues$ = Observable.combineLatest(activeFilter$, inactiveFilter$);
-			let activeFilters;
+			const activeFiltersSpy = sinon.spy();
 
-			suppressInactiveFilters(filtersWithValues$).subscribe(result => activeFilters = result);
+			suppressInactiveFilters(filtersWithValues$).subscribe(activeFiltersSpy);
 
-			expect(activeFilters).to.have.length(1);
-			expect(activeFilters[0]).to.equal(activeFilter$.getValue().filter);
+			sinon.assert.calledOnce(activeFiltersSpy);
+			sinon.assert.calledWith(activeFiltersSpy, [activeFilter]);
+			activeFiltersSpy.reset();
 
 			inactiveFilter$.next({ filter: <any>{}, value: 'Filter 2' });
 
-			expect(activeFilters).to.have.length(1);
-			expect(activeFilters[0]).to.equal(activeFilter$.getValue().filter);
+			sinon.assert.notCalled(activeFiltersSpy);
 		});
 	});
 });
