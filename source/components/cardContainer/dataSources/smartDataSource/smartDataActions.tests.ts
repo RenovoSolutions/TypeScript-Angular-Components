@@ -2,7 +2,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 
 import { unthrottled, toFiltersWithValues } from './smartDataActions';
 
-describe('rxjs testing', () => {
+describe('smart data source actions', () => {
 	describe('unthrottled', () => {
 		it('should log for every active filter that changes', () => {
 			const filters = [
