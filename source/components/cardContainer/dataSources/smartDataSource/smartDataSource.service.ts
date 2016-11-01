@@ -51,7 +51,6 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 	}
 
 	startLoading(): void {
-		this._dataSet.next(null);
 		this._rawDataSet.next(null);
 		this._loadingDataSet.next(true);
 	}
