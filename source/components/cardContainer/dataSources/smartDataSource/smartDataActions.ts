@@ -24,9 +24,9 @@ export function throttled(filters: IFilter<any, any>[]): Observable<any> {
 export function unthrottled(filters: IFilter<any, any>[]): any {
 	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
 		toFiltersWithValues,
-		dropEmptyValues,
+		suppressInactiveFilters,
 		toTypesWithValues,
-		activeFilterChanges,
+		toActiveFilterChanges,
 	]);
 }
 
@@ -42,14 +42,14 @@ export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Ob
 	}))));
 }
 
-export function dropEmptyValues(filtersWithValues$: Observable<IFilterWithValue[]>): Observable<IFilter<any, any>[]> {
+export function suppressInactiveFilters(filtersWithValues$: Observable<IFilterWithValue[]>): Observable<IFilter<any, any>[]> {
 	return filtersWithValues$
 		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
 		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
 		.first();
 }
 
-export function activeFilterChanges(filterTypesWithValues$: Observable<ITypeWithValue[]>): Observable<any> {
+export function toActiveFilterChanges(filterTypesWithValues$: Observable<ITypeWithValue[]>): Observable<any> {
 	return filterTypesWithValues$
 		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
 			dictionary[typeAndValue.type] = typeAndValue.value;
