@@ -57,7 +57,7 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 
 	resolveReload(data: IDataResult<TDataType>): void {
 		this.throttled$.next((data.count > data.dataSet.length));
-		this._loadingDataSet.next(false);
+		this._loadingDataSet.next(!data.dataSet);
 		this._rawDataSet.next(data.dataSet);
 
 		this.processData();
