@@ -120,4 +120,95 @@ describe('SmartDataSource', () => {
 			sinon.assert.calledWith(loadingDataSetSpy, true);
 		});
 	});
+
+	describe('resolveReload', () => {
+		let throttledSpy;
+		let loadingDataSetSpy;
+		let rawDataSetSpy;
+		let processSpy;
+		let countSpy;
+		let isEmptySpy;
+
+		beforeEach(() => {
+			throttledSpy = sinon.spy();
+			loadingDataSetSpy = sinon.spy();
+			rawDataSetSpy = sinon.spy();
+			processSpy = sinon.spy();
+			countSpy = sinon.spy();
+			isEmptySpy = sinon.spy();
+
+			source.throttled$.subscribe(throttledSpy);
+			source.loadingDataSet$.subscribe(loadingDataSetSpy);
+			source.rawDataSet$.subscribe(rawDataSetSpy);
+			source.processData = processSpy;
+			source.count$.subscribe(countSpy);
+			(source as any)._isEmpty.subscribe(isEmptySpy);
+
+			throttledSpy.reset();
+			loadingDataSetSpy.reset();
+			rawDataSetSpy.reset();
+			countSpy.reset();
+			isEmptySpy.reset();
+		});
+
+		it('should set the raw data set, loading, and isEmpty with the properties from the request', () => {
+			const dataSet = [{}];
+			const count = 5;
+			const isEmpty = false;
+			source.resolveReload({ dataSet, count, isEmpty });
+
+			sinon.assert.calledOnce(rawDataSetSpy);
+			sinon.assert.calledWith(rawDataSetSpy, dataSet);
+			sinon.assert.calledOnce(countSpy);
+			sinon.assert.calledWith(countSpy, count);
+			sinon.assert.calledOnce(isEmptySpy);
+			sinon.assert.calledWith(isEmptySpy, isEmpty);
+		});
+
+		it('should set loading to false of the data set is present', () => {
+			source.resolveReload(<any>{ dataSet: [] });
+
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, false);
+		});
+
+		it('should set loading to true if the data set is null', () => {
+			source.resolveReload(<any>{ dataSet: null });
+
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, true);
+		});
+
+		it('should process the data', () => {
+			source.resolveReload(<any>{});
+			sinon.assert.calledOnce(processSpy);
+		});
+
+		it('should set throttled to true if the count is greater than the data set length', () => {
+			source.resolveReload(<any>{
+				dataSet: [1, 2, 3],
+				count: 5,
+			});
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, true);
+		});
+
+		it('should set throttled to false if the count is equal to the data set length', () => {
+			source.resolveReload(<any>{
+				dataSet: [1, 2, 3],
+				count: 3,
+			});
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, false);
+		});
+
+		it('should set throttled to true data set is null', () => {
+			source.resolveReload(<any>{ dataSet: null });
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, true);
+		});
+	});
 });
