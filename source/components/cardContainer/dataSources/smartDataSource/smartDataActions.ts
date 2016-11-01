@@ -1,0 +1,69 @@
+import { Observable } from 'rxjs';
+import { map, filter, reduce } from 'lodash';
+
+import { IFilter } from '../../filters/index';
+
+export interface IFilterWithValue {
+	filter: IFilter<any, any>;
+	value: any;
+}
+
+export interface ITypeWithValue {
+	type: string;
+	value: any;
+}
+
+export function process(throttled$: Observable<boolean>, filters: IFilter<any, any>[]) {
+	return throttled$.switchMap(isThrottled => isThrottled ? throttled(filters) : unthrottled(filters));
+}
+
+export function throttled(filters: IFilter<any, any>[]): Observable<any> {
+	return null;
+}
+
+export function unthrottled(filters: IFilter<any, any>[]): any {
+	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
+		toFiltersWithValues,
+		dropEmptyValues,
+		toTypesWithValues,
+		activeFilterChanges,
+	]);
+}
+
+export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IFilterWithValue[]> {
+	return Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
+		return { filter, value };
+	})));
+}
+
+export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<ITypeWithValue[]> {
+	return filters$.switchMap(filters => Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
+		return { type: filter.type, value };
+	}))));
+}
+
+export function dropEmptyValues(filtersWithValues$: Observable<IFilterWithValue[]>): Observable<IFilter<any, any>[]> {
+	return filtersWithValues$
+		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
+		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
+		.first();
+}
+
+export function activeFilterChanges(filterTypesWithValues$: Observable<ITypeWithValue[]>): Observable<any> {
+	return filterTypesWithValues$
+		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
+			dictionary[typeAndValue.type] = typeAndValue.value;
+			return dictionary;
+		}, {}))
+		.distinctUntilChanged();
+}
+
+export function toObservableArray<TListType, TReturnType>(list: TListType[], transform: { (item: TListType): Observable<TReturnType> }): Observable<TReturnType>[] {
+	return map(list, (item: TListType) => {
+		return transform(item);
+	});
+}
+
+export function pipe<TInputType, TReturnType>(input: TInputType, actions: { (input: any): any }[]): TReturnType {
+	return <any>reduce(actions, (data, action) => action(data), input);
+}
