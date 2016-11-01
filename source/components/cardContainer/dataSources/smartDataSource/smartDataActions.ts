@@ -47,6 +47,7 @@ export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IF
 
 export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Observable<any> {
 	return toTypesWithValues(filters$)
+		.map(typeAndValues => filter(typeAndValues, typeAndValue => !!typeAndValue.value))
 		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
 			dictionary[typeAndValue.type] = typeAndValue.value;
 			return dictionary;

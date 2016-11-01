@@ -176,6 +176,18 @@ describe('smart data source actions', () => {
 			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
 		});
 
+		it('should filter out null values', () => {
+			const filters = [
+				{ type: 'type1', serialize: () => Observable.of('value1') },
+				{ type: 'type2', serialize: () => Observable.of(null) },
+			];
+			const activeFilterChanges = sinon.spy();
+
+			toFilterChanges(Observable.of(<any>filters)).subscribe(activeFilterChanges);
+
+			sinon.assert.calledOnce(activeFilterChanges);
+			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1' });
+		});
 	});
 
 	describe('toTypesWithValues', () => {
