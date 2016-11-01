@@ -17,39 +17,38 @@ export interface ITypeWithValue {
 
 export const defaultThrottleLimit: number = 200;
 
-export function toRequestStream(throttled$: Observable<boolean>, filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+export function toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
 	return throttled$.switchMap(isThrottled => isThrottled
-			? throttled(filters, sorts$)
-			: unthrottled(filters, sorts$));
+			? throttled(filters$, sorts$)
+			: unthrottled(filters$, sorts$));
 }
 
-export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
-	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
-		filters => Observable.of(filters),
+export function throttled(filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+	return pipe<Observable<IFilter<any, any>[]>, Observable<any>>(filters$, [
 		toFilterChanges,
 		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$),
 	]);
 }
 
-export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
-	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
+export function unthrottled(filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+	return pipe<Observable<IFilter<any, any>[]>, Observable<any>>(filters$, [
 		suppressInactiveFilters,
 		toFilterChanges,
 		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$.first()),
 	]);
 }
 
-export function suppressInactiveFilters(filters: IFilter<any, any>[]): Observable<IFilter<any, any>[]> {
-	return toFiltersWithValues(filters)
+export function suppressInactiveFilters(filters$: Observable<IFilter<any, any>[]>): Observable<IFilter<any, any>[]> {
+	return toFiltersWithValues(filters$)
 		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
 		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
 		.first();
 }
 
-export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IFilterWithValue[]> {
-	return Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
+export function toFiltersWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<IFilterWithValue[]> {
+	return filters$.switchMap(filters => Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
 		return { filter, value };
-	})));
+	}))));
 }
 
 export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Observable<{[index: string]: any}> {

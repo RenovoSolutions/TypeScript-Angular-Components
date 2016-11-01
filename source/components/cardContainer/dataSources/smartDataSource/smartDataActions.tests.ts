@@ -48,7 +48,7 @@ describe('smart data source actions', () => {
 			];
 			const appliedFiltersSpy = sinon.spy();
 
-			throttled(filters, Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
+			throttled(Observable.of(<any>filters), Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
 
 			let expected: any = {
 				filters: { one: 'Filter 1', two: 'Filter 2' },
@@ -101,7 +101,7 @@ describe('smart data source actions', () => {
 			const sorts$: BehaviorSubject<any> = new BehaviorSubject(sorts);
 			const appliedFiltersSpy = sinon.spy();
 
-			throttled(<any>filters, sorts$).subscribe(appliedFiltersSpy);
+			throttled(Observable.of(<any>filters), sorts$).subscribe(appliedFiltersSpy);
 
 			let expected = {
 				filters: { one: 'value1', two: 'value2' },
@@ -158,7 +158,7 @@ describe('smart data source actions', () => {
 			];
 			const appliedFiltersSpy = sinon.spy();
 
-			unthrottled(filters, Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
+			unthrottled(Observable.of(filters), Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
 
 			let expected = {
 				filters: { one: 'Filter 1', two: 'Filter 2' },
@@ -204,7 +204,7 @@ describe('smart data source actions', () => {
 			const sorts$: BehaviorSubject<any> = new BehaviorSubject(sorts);
 			const appliedFiltersSpy = sinon.spy();
 
-			unthrottled(<any>filters, sorts$).subscribe(appliedFiltersSpy);
+			unthrottled(Observable.of(<any>filters), sorts$).subscribe(appliedFiltersSpy);
 
 			let expected = {
 				filters: { one: 'value1', two: 'value2' },
@@ -236,7 +236,7 @@ describe('smart data source actions', () => {
 			];
 			const activeFiltersSpy = sinon.spy();
 
-			suppressInactiveFilters(<any>filters).subscribe(activeFiltersSpy);
+			suppressInactiveFilters(Observable.of(<any>filters)).subscribe(activeFiltersSpy);
 
 			sinon.assert.calledOnce(activeFiltersSpy);
 			sinon.assert.calledWith(activeFiltersSpy, [filters[0]]);
@@ -253,7 +253,7 @@ describe('smart data source actions', () => {
 			};
 			const activeFiltersSpy = sinon.spy();
 
-			suppressInactiveFilters(<any>[activeFilter, inactiveFilter]).subscribe(activeFiltersSpy);
+			suppressInactiveFilters(Observable.of(<any>[activeFilter, inactiveFilter])).subscribe(activeFiltersSpy);
 
 			sinon.assert.calledOnce(activeFiltersSpy);
 			sinon.assert.calledWith(activeFiltersSpy, [activeFilter]);
@@ -273,7 +273,7 @@ describe('smart data source actions', () => {
 			];
 			let filtersWithValues;
 
-			toFiltersWithValues(<any>filters).subscribe(result => filtersWithValues = result);
+			toFiltersWithValues(Observable.of(<any>filters)).subscribe(result => filtersWithValues = result);
 
 			expect(filtersWithValues[0].filter).to.equal(filters[0]);
 			expect(filtersWithValues[0].value).to.equal('Filter 1');
