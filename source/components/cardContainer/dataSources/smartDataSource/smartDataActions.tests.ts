@@ -99,4 +99,21 @@ describe('smart data source actions', () => {
 			sinon.assert.notCalled(activeFiltersSpy);
 		});
 	});
+
+	describe('toTypesWithValues', () => {
+		it('should map to an array of types and values', () => {
+			const filters = [
+				{ type: 'Type1', serialize: () => Observable.of('Value 1') },
+				{ type: 'Type2', serialize: () => Observable.of('Value 2') },
+			];
+			let typesWithValues;
+
+			toTypesWithValues(Observable.of(<any>filters)).subscribe(result => typesWithValues = result);
+
+			expect(typesWithValues[0].type).to.equal('Type1');
+			expect(typesWithValues[0].value).to.equal('Value 1');
+			expect(typesWithValues[1].type).to.equal('Type2');
+			expect(typesWithValues[1].value).to.equal('Value 2');
+		});
+	});
 });
