@@ -15,8 +15,8 @@ export interface IDataSourceBuilderOld {
 	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
 											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
 											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSourceOld<TDataType>): dataSources.IDataSourceOld<TDataType>;
 }
 
@@ -68,13 +68,13 @@ export class DataSourceBuilderOld implements IDataSourceBuilderOld {
 		return <any>this.parent._dataSource;
 	}
 
-	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
-	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType> {
 		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.SmartDataSourceOld(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;

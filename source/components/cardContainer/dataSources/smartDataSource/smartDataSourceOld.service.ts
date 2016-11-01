@@ -5,7 +5,7 @@ import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 
-import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
+import { IServerSearchFunctionOld, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { ISort, SortDirection } from '../../sorts/sort';
@@ -21,7 +21,7 @@ export class SmartDataSourceOld<TDataType> extends AsyncDataSource<TDataType> {
 	private subscriptions: Rx.Subscription[];
 	private throttleLimit: number = 200;
 
-	constructor(getDataSet: IServerSearchFunction<TDataType>
+	constructor(getDataSet: IServerSearchFunctionOld<TDataType>
 			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility) {

@@ -4,7 +4,7 @@ import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 import __object = services.object;
 
-import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
+import { IServerSearchFunctionOld, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
 import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { ISort, SortDirection } from '../../sorts/sort';
@@ -14,7 +14,7 @@ export interface IServerSideDataSource<TDataType> extends IAsyncDataSource<TData
 }
 
 export class ServerSideDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	constructor(getDataSet: IServerSearchFunction<TDataType>
+	constructor(getDataSet: IServerSearchFunctionOld<TDataType>
 			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility) {
