@@ -6,6 +6,8 @@ import { DataSourceBase } from '../dataSourceBase.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 import { toRequestStream } from './smartDataActions';
 
+export const defaultDebounce = 1000;
+
 export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 	throttled$: BehaviorSubject<boolean>;
 	private filters$: BehaviorSubject<IFilter<TDataType, any>[]>;
@@ -24,7 +26,10 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 			this.reload(requestData).subscribe(result => {
 				subscription.unsubscribe();
 				this.resolveReload(result);
-				toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$).subscribe(requestData => {
+				toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$)
+					.debounceTime(defaultDebounce)
+					.distinctUntilChanged()
+					.subscribe(requestData => {
 					this.reload(requestData).subscribe(result => {
 						this.resolveReload(result);
 					});
