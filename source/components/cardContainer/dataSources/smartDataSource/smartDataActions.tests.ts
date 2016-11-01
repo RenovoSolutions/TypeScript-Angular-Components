@@ -131,4 +131,34 @@ describe('smart data source actions', () => {
 			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
 		});
 	});
+
+	describe('toObservableArray', () => {
+		it('should map the array to an array of observables using the specified transform', () => {
+			const array = [1, 2, 3];
+			const transform = item => Observable.of(item);
+			const expectedResult = [Observable.of(1), Observable.of(2), Observable.of(3)];
+
+			const observableArray = toObservableArray(array, transform);
+
+			expect(observableArray).to.deep.equal(expectedResult);
+		});
+	});
+
+	describe('pipe', () => {
+		it('should run the actions in order and pipe the result of each action to the next', () => {
+			const one = sinon.spy(() => 1);
+			const two = sinon.spy(() => 2);
+			const three = sinon.spy(() => 3);
+
+			const result = pipe(0, [one, two, three]);
+
+			sinon.assert.calledOnce(one);
+			sinon.assert.calledWith(one, 0);
+			sinon.assert.calledOnce(two);
+			sinon.assert.calledWith(two, 1);
+			sinon.assert.calledOnce(three);
+			sinon.assert.calledWith(three, 2);
+			expect(result).to.equal(3);
+		});
+	});
 });

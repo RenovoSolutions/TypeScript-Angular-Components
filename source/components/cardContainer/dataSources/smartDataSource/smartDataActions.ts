@@ -58,6 +58,7 @@ export function toActiveFilterChanges(filterTypesWithValues$: Observable<ITypeWi
 		.distinctUntilChanged();
 }
 
+// these two could become reusable utility functions
 export function toObservableArray<TListType, TReturnType>(list: TListType[], transform: { (item: TListType): Observable<TReturnType> }): Observable<TReturnType>[] {
 	return map(list, (item: TListType) => {
 		return transform(item);
