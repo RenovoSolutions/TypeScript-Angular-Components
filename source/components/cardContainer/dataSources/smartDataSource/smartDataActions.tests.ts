@@ -3,16 +3,22 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { SortDirection } from '../../sorts/index';
 import {
 	IFilterWithValue,
+	defaultThrottleLimit,
 	throttled,
 	unthrottled,
 	toFiltersWithValues,
 	suppressInactiveFilters,
 	toTypesWithValues,
 	toFilterChanges,
-	combineWithSorts,
+	combineWithSortsAndPaging,
 	toObservableArray,
 	pipe,
 } from './smartDataActions';
+
+const pagingParams = {
+	pageNumber: 1,
+	pageSize: defaultThrottleLimit,
+};
 
 describe('smart data source actions', () => {
 	describe('throttled', () => {
@@ -47,6 +53,7 @@ describe('smart data source actions', () => {
 			let expected: any = {
 				filters: { one: 'Filter 1', two: 'Filter 2' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -57,6 +64,7 @@ describe('smart data source actions', () => {
 			expected = {
 				filters: { one: 'Filter 1', two: 'Filter 2', three: 'Filter 3' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -67,6 +75,7 @@ describe('smart data source actions', () => {
 			expected = {
 				filters: { one: 'Filter 1', two: 'Filter 2 changed', three: 'Filter 3' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -97,6 +106,7 @@ describe('smart data source actions', () => {
 			let expected = {
 				filters: { one: 'value1', two: 'value2' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -114,6 +124,7 @@ describe('smart data source actions', () => {
 			expected = {
 				filters: { one: 'value1', two: 'value2' },
 				sorts: [{ column: 'col2', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -152,6 +163,7 @@ describe('smart data source actions', () => {
 			let expected = {
 				filters: { one: 'Filter 1', two: 'Filter 2' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -166,6 +178,7 @@ describe('smart data source actions', () => {
 			expected = {
 				filters: { one: 'Filter 1', two: 'Filter 2 changed' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -196,6 +209,7 @@ describe('smart data source actions', () => {
 			let expected = {
 				filters: { one: 'value1', two: 'value2' },
 				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
 			};
 			sinon.assert.calledOnce(appliedFiltersSpy);
 			sinon.assert.calledWith(appliedFiltersSpy, expected);
@@ -324,7 +338,7 @@ describe('smart data source actions', () => {
 			];
 			let filtersAndSorts;
 
-			combineWithSorts(Observable.of(filterValues), Observable.of(<any>sorts)).subscribe(result => filtersAndSorts = result);
+			combineWithSortsAndPaging(Observable.of(filterValues), Observable.of(<any>sorts)).subscribe(result => filtersAndSorts = result);
 
 			expect(filtersAndSorts.filters).to.equal(filterValues);
 			expect(filtersAndSorts.sorts).to.have.length(1);

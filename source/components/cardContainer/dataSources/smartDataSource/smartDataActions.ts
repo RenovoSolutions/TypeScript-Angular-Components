@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 import { map, filter, reduce } from 'lodash';
 
+import { IServerSearchParams } from '../asyncTypes';
 import { IFilter } from '../../filters/index';
 import { ISort, SortDirection } from '../../sorts/index';
 
@@ -14,25 +15,27 @@ export interface ITypeWithValue {
 	value: any;
 }
 
-export function process(throttled$: Observable<boolean>, filters: IFilter<any, any>[], sorts$: Observable<ISort[]>) {
+export const defaultThrottleLimit: number = 200;
+
+export function toRequestStream(throttled$: Observable<boolean>, filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
 	return throttled$.switchMap(isThrottled => isThrottled
 			? throttled(filters, sorts$)
 			: unthrottled(filters, sorts$));
 }
 
-export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<any> {
+export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
 	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
 		filters => Observable.of(filters),
 		toFilterChanges,
-		filterValues$ => combineWithSorts(filterValues$, sorts$),
+		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$),
 	]);
 }
 
-export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): any {
+export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
 	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
 		suppressInactiveFilters,
 		toFilterChanges,
-		filterValues$ => combineWithSorts(filterValues$, sorts$.first()),
+		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$.first()),
 	]);
 }
 
@@ -49,7 +52,7 @@ export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IF
 	})));
 }
 
-export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Observable<any> {
+export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Observable<{[index: string]: any}> {
 	return toTypesWithValues(filters$)
 		.map(typeAndValues => filter(typeAndValues, typeAndValue => !!typeAndValue.value))
 		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
@@ -65,7 +68,7 @@ export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Ob
 	}))));
 }
 
-export function combineWithSorts(filterValues$: Observable<any>, sorts$: Observable<ISort[]>): Observable<any> {
+export function combineWithSortsAndPaging(filterValues$: Observable<{[index: string]: any}>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
 	return Observable.combineLatest(filterValues$, sorts$)
 		.map(([filterValues, sorts]) => {
 			return {
@@ -76,6 +79,10 @@ export function combineWithSorts(filterValues$: Observable<any>, sorts$: Observa
 						direction: SortDirection.getFullName(sort.direction),
 					};
 				}),
+				paging: {
+					pageNumber: 1,
+					pageSize: defaultThrottleLimit,
+				},
 			};
 		});
 }
