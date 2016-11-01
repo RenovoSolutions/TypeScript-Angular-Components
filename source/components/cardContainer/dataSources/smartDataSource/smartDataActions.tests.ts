@@ -7,7 +7,7 @@ import {
 	toFiltersWithValues,
 	suppressInactiveFilters,
 	toTypesWithValues,
-	toActiveFilterChanges,
+	toFilterChanges,
 	combineWithSorts,
 	toObservableArray,
 	pipe,
@@ -108,6 +108,43 @@ describe('smart data source actions', () => {
 		});
 	});
 
+	describe('suppressInactiveFilters', () => {
+		it('should drop filters with a null current value', () => {
+			const filters = [
+				{ serialize: () => Observable.of('Filter 1') },
+				{ serialize: () => Observable.of(null) },
+			];
+			const activeFiltersSpy = sinon.spy();
+
+			suppressInactiveFilters(<any>filters).subscribe(activeFiltersSpy);
+
+			sinon.assert.calledOnce(activeFiltersSpy);
+			sinon.assert.calledWith(activeFiltersSpy, [filters[0]]);
+		});
+
+		it('should suppress changes to inactive filters', () => {
+			const activeFilter = {
+				serialize: () => activeFilter.stream,
+				stream: new BehaviorSubject('Filter 1'),
+			};
+			const inactiveFilter = {
+				serialize: () => inactiveFilter.stream,
+				stream: new BehaviorSubject(null),
+			};
+			const activeFiltersSpy = sinon.spy();
+
+			suppressInactiveFilters(<any>[activeFilter, inactiveFilter]).subscribe(activeFiltersSpy);
+
+			sinon.assert.calledOnce(activeFiltersSpy);
+			sinon.assert.calledWith(activeFiltersSpy, [activeFilter]);
+			activeFiltersSpy.reset();
+
+			inactiveFilter.stream.next('Filter 2');
+
+			sinon.assert.notCalled(activeFiltersSpy);
+		});
+	});
+
 	describe('toFiltersWithValues', () => {
 		it('should map to an array of filters and values', () => {
 			const filters = [
@@ -125,68 +162,36 @@ describe('smart data source actions', () => {
 		});
 	});
 
-	describe('suppressInactiveFilters', () => {
-		it('should drop filters with a null current value', () => {
-			const filtersWithValues = [
-				{ filter: { type: 'Type1' }, value: 'Filter 1' },
-				{ filter: {}, value: null },
+	describe('toFilterChanges', () => {
+		it('should map the types and values to an object mapping', () => {
+			const filters = [
+				{ type: 'type1', serialize: () => Observable.of('value1') },
+				{ type: 'type2', serialize: () => Observable.of('value2') },
 			];
-			const activeFiltersSpy = sinon.spy();
+			const activeFilterChanges = sinon.spy();
 
-			suppressInactiveFilters(Observable.of(<any>filtersWithValues)).subscribe(activeFiltersSpy);
+			toFilterChanges(Observable.of(<any>filters)).subscribe(activeFilterChanges);
 
-			sinon.assert.calledOnce(activeFiltersSpy);
-			sinon.assert.calledWith(activeFiltersSpy, [filtersWithValues[0].filter]);
+			sinon.assert.calledOnce(activeFilterChanges);
+			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
 		});
 
-		it('should suppress changes to inactive filters', () => {
-			const activeFilter: any = { type: 'Type1' };
-			const activeFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: activeFilter, value: 'Filter 1' });
-			const inactiveFilter$: BehaviorSubject<IFilterWithValue> = new BehaviorSubject({ filter: <any>{}, value: null });
-			const filtersWithValues$ = Observable.combineLatest(activeFilter$, inactiveFilter$);
-			const activeFiltersSpy = sinon.spy();
-
-			suppressInactiveFilters(filtersWithValues$).subscribe(activeFiltersSpy);
-
-			sinon.assert.calledOnce(activeFiltersSpy);
-			sinon.assert.calledWith(activeFiltersSpy, [activeFilter]);
-			activeFiltersSpy.reset();
-
-			inactiveFilter$.next({ filter: <any>{}, value: 'Filter 2' });
-
-			sinon.assert.notCalled(activeFiltersSpy);
-		});
 	});
 
 	describe('toTypesWithValues', () => {
 		it('should map to an array of types and values', () => {
 			const filters = [
-				{ type: 'Type1', serialize: () => Observable.of('Value 1') },
-				{ type: 'Type2', serialize: () => Observable.of('Value 2') },
+				{ type: 'type1', serialize: () => Observable.of('Value 1') },
+				{ type: 'type2', serialize: () => Observable.of('Value 2') },
 			];
 			let typesWithValues;
 
 			toTypesWithValues(Observable.of(<any>filters)).subscribe(result => typesWithValues = result);
 
-			expect(typesWithValues[0].type).to.equal('Type1');
+			expect(typesWithValues[0].type).to.equal('type1');
 			expect(typesWithValues[0].value).to.equal('Value 1');
-			expect(typesWithValues[1].type).to.equal('Type2');
+			expect(typesWithValues[1].type).to.equal('type2');
 			expect(typesWithValues[1].value).to.equal('Value 2');
-		});
-	});
-
-	describe('toActiveFilterChanges', () => {
-		it('should map the types and values to an object mapping', () => {
-			const typesWithValues = [
-				{ type: 'type1', value: 'value1' },
-				{ type: 'type2', value: 'value2' },
-			];
-			const activeFilterChanges = sinon.spy();
-
-			toActiveFilterChanges(Observable.of(typesWithValues)).subscribe(activeFilterChanges);
-
-			sinon.assert.calledOnce(activeFilterChanges);
-			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
 		});
 	});
 

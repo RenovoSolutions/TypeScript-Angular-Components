@@ -26,12 +26,17 @@ export function throttled(filters: IFilter<any, any>[], sorts$: Observable<ISort
 
 export function unthrottled(filters: IFilter<any, any>[], sorts$: Observable<ISort[]>): any {
 	return pipe<IFilter<any, any>[], Observable<any>>(filters, [
-		toFiltersWithValues,
 		suppressInactiveFilters,
-		toTypesWithValues,
-		toActiveFilterChanges,
+		toFilterChanges,
 		filterValues$ => combineWithSorts(filterValues$, sorts$.first()),
 	]);
+}
+
+export function suppressInactiveFilters(filters: IFilter<any, any>[]): Observable<IFilter<any, any>[]> {
+	return toFiltersWithValues(filters)
+		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
+		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
+		.first();
 }
 
 export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IFilterWithValue[]> {
@@ -40,26 +45,19 @@ export function toFiltersWithValues(filters: IFilter<any, any>[]): Observable<IF
 	})));
 }
 
-export function suppressInactiveFilters(filtersWithValues$: Observable<IFilterWithValue[]>): Observable<IFilter<any, any>[]> {
-	return filtersWithValues$
-		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
-		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
-		.first();
+export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Observable<any> {
+	return toTypesWithValues(filters$)
+		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
+			dictionary[typeAndValue.type] = typeAndValue.value;
+			return dictionary;
+		}, {}))
+		.distinctUntilChanged();
 }
 
 export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<ITypeWithValue[]> {
 	return filters$.switchMap(filters => Observable.combineLatest(toObservableArray(filters, filter => filter.serialize().map(value => {
 		return { type: filter.type, value };
 	}))));
-}
-
-export function toActiveFilterChanges(filterTypesWithValues$: Observable<ITypeWithValue[]>): Observable<any> {
-	return filterTypesWithValues$
-		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
-			dictionary[typeAndValue.type] = typeAndValue.value;
-			return dictionary;
-		}, {}))
-		.distinctUntilChanged();
 }
 
 export function combineWithSorts(filterValues$: Observable<any>, sorts$: Observable<ISort[]>): Observable<any> {
