@@ -25,7 +25,7 @@ export class ItemCountComponent<T> {
 
 	get visibleCount$(): Observable<number> {
 		return this.dataSource && this.dataSource.dataSet$
-			? this.dataSource.dataSet$.map(dataSet => dataSet.length)
+			? this.dataSource.dataSet$.map(dataSet => dataSet ? dataSet.length : 0)
 			: Observable.of(0);
 	}
 
