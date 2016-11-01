@@ -4,6 +4,7 @@ import { SortDirection } from '../../sorts/index';
 import {
 	IFilterWithValue,
 	defaultThrottleLimit,
+	toRequestStream,
 	throttled,
 	unthrottled,
 	toFiltersWithValues,
@@ -21,6 +22,92 @@ const pagingParams = {
 };
 
 describe('smart data source actions', () => {
+	describe('toRequestStream', () => {
+		it('should fire one request to bootstrap the data source', () => {
+			const filters = [
+				{
+					type: 'one',
+					subject: new BehaviorSubject('Filter 1'),
+					serialize: () => filters[0].subject,
+				},
+			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			const throttled$ = new BehaviorSubject(false);
+			const appliedFiltersSpy = sinon.spy();
+
+			toRequestStream(throttled$, Observable.of(<any>filters), Observable.of(<any>sorts), true).subscribe(appliedFiltersSpy);
+
+			let expected: any = {
+				filters: { one: 'Filter 1' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			filters[0].subject.next('Filter 1 changed');
+
+			sinon.assert.notCalled(appliedFiltersSpy);
+
+			throttled$.next(true);
+
+			sinon.assert.notCalled(appliedFiltersSpy);
+		});
+
+		it('should skip the first event on each throttle change', () => {
+			const filters = [
+				{
+					type: 'one',
+					subject: new BehaviorSubject('Filter 1'),
+					serialize: () => filters[0].subject,
+				},
+			];
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			const throttled$ = new BehaviorSubject(false);
+			const appliedFiltersSpy = sinon.spy();
+
+			toRequestStream(throttled$, Observable.of(<any>filters), Observable.of(<any>sorts)).subscribe(appliedFiltersSpy);
+
+			sinon.assert.notCalled(appliedFiltersSpy);
+
+			filters[0].subject.next('Filter 1 changed');
+
+			let expected: any = {
+				filters: { one: 'Filter 1 changed' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+			appliedFiltersSpy.reset();
+
+			throttled$.next(true);
+
+			sinon.assert.notCalled(appliedFiltersSpy);
+
+			filters[0].subject.next('Filter 1 changed again');
+
+			expected = {
+				filters: { one: 'Filter 1 changed again' },
+				sorts: [{ column: 'col1', direction: SortDirection.getFullName(SortDirection.ascending) }],
+				paging: pagingParams,
+			};
+			sinon.assert.calledOnce(appliedFiltersSpy);
+			sinon.assert.calledWith(appliedFiltersSpy, expected);
+		});
+	});
+
 	describe('throttled', () => {
 		it('should fire an event for every filter that changes whether active or inactive', () => {
 			const filters = [

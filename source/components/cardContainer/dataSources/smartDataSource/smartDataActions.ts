@@ -17,10 +17,21 @@ export interface ITypeWithValue {
 
 export const defaultThrottleLimit: number = 200;
 
-export function toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
-	return throttled$.switchMap(isThrottled => isThrottled
-			? throttled(filters$, sorts$)
-			: unthrottled(filters$, sorts$));
+export function toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>, initial: boolean = false): Observable<IServerSearchParams> {
+	let stream = throttled$.switchMap(isThrottled => isThrottled
+			? skipIfNotInitial(throttled(filters$, sorts$), initial)
+			: skipIfNotInitial(unthrottled(filters$, sorts$), initial));
+	if (initial) {
+		stream = stream.first();
+	}
+	return stream;
+}
+
+export function skipIfNotInitial(params$: Observable<IServerSearchParams>, initial: boolean): Observable<IServerSearchParams> {
+	if (!initial) {
+		return params$.skip(1);
+	}
+	return params$;
 }
 
 export function throttled(filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
