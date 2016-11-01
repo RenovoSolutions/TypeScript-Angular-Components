@@ -102,4 +102,20 @@ describe('SmartDataSource', () => {
 			sinon.assert.calledWith(nextSpy, filters);
 		});
 	});
+
+	describe('startLoading', () => {
+		it('should clear the dataSet and rawDataSet and set loading to true', () => {
+			const rawDataSetSpy = sinon.spy();
+			const loadingDataSetSpy = sinon.spy();
+			source.rawDataSet$.subscribe(rawDataSetSpy);
+			source.loadingDataSet$.subscribe(rawDataSetSpy);
+
+			source.startLoading();
+
+			sinon.assert.calledOnce(rawDataSetSpy);
+			sinon.assert.calledWith(rawDataSetSpy, null);
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, true);
+		});
+	});
 });
