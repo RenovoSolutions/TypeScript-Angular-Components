@@ -1,5 +1,6 @@
 import { Observable, BehaviorSubject } from 'rxjs';
 
+import { SortDirection } from '../../sorts/index';
 import {
 	IFilterWithValue,
 	unthrottled,
@@ -7,6 +8,7 @@ import {
 	suppressInactiveFilters,
 	toTypesWithValues,
 	toActiveFilterChanges,
+	combineWithSorts,
 	toObservableArray,
 	pipe,
 } from './smartDataActions';
@@ -129,6 +131,26 @@ describe('smart data source actions', () => {
 
 			sinon.assert.calledOnce(activeFilterChanges);
 			sinon.assert.calledWith(activeFilterChanges, { type1: 'value1', type2: 'value2' });
+		});
+	});
+
+	describe('combineWithSorts', () => {
+		it('should combine the filter values and sorts into a single event object', () => {
+			const filterValues = { type1: 'value1' };
+			const sorts = [
+				{
+					column: { label: 'col1' },
+					direction: SortDirection.ascending,
+				},
+			];
+			let filtersAndSorts;
+
+			combineWithSorts(Observable.of(filterValues), Observable.of(<any>sorts)).subscribe(result => filtersAndSorts = result);
+
+			expect(filtersAndSorts.filters).to.equal(filterValues);
+			expect(filtersAndSorts.sorts).to.have.length(1);
+			expect(filtersAndSorts.sorts[0].column).to.equal('col1');
+			expect(filtersAndSorts.sorts[0].direction).to.equal(SortDirection.getFullName(SortDirection.ascending));
 		});
 	});
 

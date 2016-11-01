@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { map, filter, reduce } from 'lodash';
 
 import { IFilter } from '../../filters/index';
+import { ISort, SortDirection } from '../../sorts/index';
 
 export interface IFilterWithValue {
 	filter: IFilter<any, any>;
@@ -56,6 +57,21 @@ export function toActiveFilterChanges(filterTypesWithValues$: Observable<ITypeWi
 			return dictionary;
 		}, {}))
 		.distinctUntilChanged();
+}
+
+export function combineWithSorts(filterValues$: Observable<any>, sorts$: Observable<ISort[]>): Observable<any> {
+	return Observable.combineLatest(filterValues$, sorts$)
+		.map(([filterValues, sorts]) => {
+			return {
+				filters: filterValues,
+				sorts: map(sorts, sort => {
+					return {
+						column: sort.column.label,
+						direction: SortDirection.getFullName(sort.direction),
+					};
+				}),
+			};
+		});
 }
 
 // these two could become reusable utility functions
