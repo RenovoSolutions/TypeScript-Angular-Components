@@ -60,9 +60,10 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 		this.throttled$.next((data.count > data.dataSet.length));
 		this._loadingDataSet.next(false);
 		this._rawDataSet.next(data.dataSet);
-		this._count.next(data.count);
-		this._isEmpty.next(data.isEmpty);
 
 		this.processData();
+
+		this._count.next(data.count);
+		this._isEmpty.next(data.isEmpty);
 	}
 }
