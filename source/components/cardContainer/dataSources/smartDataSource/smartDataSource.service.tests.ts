@@ -14,22 +14,22 @@ describe('SmartDataSource', () => {
 		let toRequestStreamSpy: Sinon.SinonSpy;
 		let initRequestStream: Subject<any>;
 		let requestStream: Subject<any>;
-		let reloadSpy: Sinon.SinonSpy;
-		let reloadStream: Subject<any>;
+		let getDataSetSpy: Sinon.SinonSpy;
+		let getDataStream: Subject<any>;
 		let resolveReloadSpy: Sinon.SinonSpy;
 		let sortList$: any;
 
 		beforeEach(() => {
 			initRequestStream = new Subject();
 			requestStream = new Subject();
-			reloadStream = new Subject();
+			getDataStream = new Subject();
 			toRequestStreamSpy = sinon.spy((...args) => args[3] ? initRequestStream : requestStream);
-			reloadSpy = sinon.spy(() => reloadStream);
+			getDataSetSpy = sinon.spy(() => getDataStream);
 			resolveReloadSpy = sinon.spy();
 			sortList$ = new Subject();
 
 			source.toRequestStream = toRequestStreamSpy;
-			source.reload = reloadSpy;
+			source.getDataSet = getDataSetSpy;
 			source.resolveReload = resolveReloadSpy;
 			source.sorter = <any>{ sortList$: sortList$ };
 		});
@@ -44,10 +44,10 @@ describe('SmartDataSource', () => {
 
 			initRequestStream.next(requestData);
 
-			sinon.assert.calledOnce(reloadSpy);
-			expect(reloadSpy.firstCall.args[0]).to.equal(requestData);
+			sinon.assert.calledOnce(getDataSetSpy);
+			expect(getDataSetSpy.firstCall.args[0]).to.equal(requestData);
 
-			reloadStream.next(data);
+			getDataStream.next(data);
 
 			sinon.assert.calledOnce(resolveReloadSpy);
 			expect(resolveReloadSpy.firstCall.args[0]).to.equal(data);
@@ -59,25 +59,25 @@ describe('SmartDataSource', () => {
 			source.init();
 			toRequestStreamSpy.reset();
 			initRequestStream.next({});
-			reloadStream.next({});
-			reloadSpy.reset();
+			getDataStream.next({});
+			getDataSetSpy.reset();
 			resolveReloadSpy.reset();
-			reloadStream = new Subject();
+			getDataStream = new Subject();
 
 			sinon.assert.calledOnce(toRequestStreamSpy);
 			sinon.assert.calledWith(toRequestStreamSpy, source.throttled$, (source as any).filters$, sortList$);
 
 			requestStream.next(requestData);
 
-			sinon.assert.notCalled(reloadSpy);
+			sinon.assert.notCalled(getDataSetSpy);
 
 			rlTick(defaultDebounce);
 			rlTick();
 
-			sinon.assert.calledOnce(reloadSpy);
-			expect(reloadSpy.firstCall.args[0]).to.equal(requestData);
+			sinon.assert.calledOnce(getDataSetSpy);
+			expect(getDataSetSpy.firstCall.args[0]).to.equal(requestData);
 
-			reloadStream.next(data);
+			getDataStream.next(data);
 
 			sinon.assert.calledOnce(resolveReloadSpy);
 			expect(resolveReloadSpy.firstCall.args[0]).to.equal(data);
