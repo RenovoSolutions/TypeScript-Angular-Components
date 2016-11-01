@@ -27,8 +27,8 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 				subscription.unsubscribe();
 				this.resolveReload(result);
 				toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$)
+					.do(() => this.startLoading())
 					.debounceTime(defaultDebounce)
-					.distinctUntilChanged()
 					.subscribe(requestData => {
 					this.reload(requestData).subscribe(result => {
 						this.resolveReload(result);
@@ -46,11 +46,13 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 		this.filters$.next(value);
 	}
 
-	reload(params: any): Observable<IDataResult<TDataType>> {
+	startLoading(): void {
 		this._dataSet.next(null);
 		this._rawDataSet.next(null);
 		this._loadingDataSet.next(true);
+	}
 
+	reload(params: any): Observable<IDataResult<TDataType>> {
 		return Observable.from(this.getDataSet(params));
 	}
 
