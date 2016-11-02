@@ -118,7 +118,7 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 	}
 
 	setSelected(selections: ISelectionWrappedItem<T>[], value: boolean): void {
-		this.dataSource.filteredDataSet$.first().subscribe(filteredData => {
+		this.dataSource.filteredDataSet$.first().delay(0).subscribe(filteredData => {
 			let updatedSelections = map(selections, selection => {
 				clone(selection);
 				selection.selected = value;
