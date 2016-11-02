@@ -8,7 +8,7 @@ import __guid = services.guid;
 import { FormComponent } from '../form/form';
 import { slide } from '../../animations/index';
 
-export const baseInputs: string[] = ['name', 'label', 'value', 'disabled'];
+export const baseInputs: string[] = ['name', 'label', 'value', 'disabled','warning'];
 export const baseOutputs: string[] = ['change', 'valueChange'];
 export const baseAnimations = [slide.animation];
 
@@ -16,6 +16,7 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 	name: string;
 	label: string = '';
 	disabled: boolean;
+	warning: boolean;
 	value: T;
 	labelState: string = slide.hide;
 	hidePlaceholder: boolean = false;

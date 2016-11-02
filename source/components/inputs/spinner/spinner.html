@@ -1,6 +1,7 @@
 <span [ngSwitch]="disabled">
 	<div *ngSwitchDefault
 		 class="field"
+		 [class.warning]="warning"
 		 [class.error]="componentValidator.error$ | async">
 		 <label [@slide]="labelState">{{label}}</label>
 		 <input type="text"

@@ -44,6 +44,7 @@ export class InputController {
 	validators: __validation.IValidationHandler[];
 	label: string;
 	name: string;
+	warning: boolean;
 
 	ngModel: INgModelValidator;
 	required: RequiredController;
@@ -109,6 +110,7 @@ let baseInputOptions: angular.IComponentOptions = {
 		validators: '<?',
 		label: '@',
 		name: '@',
+		warning:'<?'
 	},
 };
 

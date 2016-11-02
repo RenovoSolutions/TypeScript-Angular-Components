@@ -1,4 +1,4 @@
-<div class="field" ng-class="{ 'error': input.ngModel.$invalid }">
+<div class="field" ng-class="{ 'error': input.ngModel.$invalid, 'warning': input.warning }">
 	<label ng-show="input.inputValue && input.label" class="label-slide angular-animate">{{::input.label}}</label>
 	<textarea class="form-control" ng-model="input.inputValue" rows="{{::input.rows}}" maxlength="{{::input.maxlength}}" ng-disabled="input.ngDisabled" placeholder="{{::input.label}}"></textarea>
 	<span class="error-string angular-animate" ng-if="input.inputValidator.error | isEmpty:false">{{input.inputValidator.error}}</span>

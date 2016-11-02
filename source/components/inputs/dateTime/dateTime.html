@@ -1,4 +1,5 @@
 <div class="field date-time"
+	 [class.warning]="warning"
 	 [class.has-warning]="!validFormat"
 	 [class.error]="componentValidator.error$ | async"
 	 [class.datepicker-with-clear]="showClear">
