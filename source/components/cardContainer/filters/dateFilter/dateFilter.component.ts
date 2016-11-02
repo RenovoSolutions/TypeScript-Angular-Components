@@ -36,11 +36,8 @@ export class DateFilterComponent<T> implements OnInit {
 		this.count = count || 0;
 
 		if (this.count > 0) {
-			const subscription = this.filter.dateFrom$.subscribe(dateFrom => {
-				setTimeout(() => {
-					subscription.unsubscribe();
-					this.filter.setDateTo(moment(dateFrom).subtract((this.count), type));
-				});
+			this.filter.dateFrom$.first().subscribe(dateFrom => {
+				this.filter.setDateTo(moment(dateFrom).subtract((this.count), type));
 			});
 		} else if (this.count == 0) {
 			this.filter.setDateTo(null);

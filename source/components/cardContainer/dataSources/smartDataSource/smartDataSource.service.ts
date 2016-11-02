@@ -22,9 +22,8 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 
 	init(): void {
 		// initial request
-		const subscription = this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$, true).subscribe(requestData => {
+		this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$, true).subscribe(requestData => {
 			this.getDataSet(requestData).subscribe(result => {
-				subscription.unsubscribe();
 				this.resolveReload(result);
 				this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$)
 					.do(() => this.startLoading())

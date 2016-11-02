@@ -3,7 +3,6 @@ import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
 import { PagerComponent } from './pager';
 
-
 interface IDataPagerMock {
 	pageSize$: BehaviorSubject<number>;
 	pageNumber$: BehaviorSubject<number>;
@@ -178,7 +177,6 @@ describe('PagerComponent', () => {
 			dataPager.pageNumber$.next(5);
 
 			pager.previous();
-
 			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(4);
@@ -188,7 +186,6 @@ describe('PagerComponent', () => {
 			dataPager.pageNumber$.next(1);
 
 			pager.previous();
-
 			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(1);
@@ -206,7 +203,6 @@ describe('PagerComponent', () => {
 			dataPager.pageNumber$.next(1);
 
 			pager.next();
-
 			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(2);
@@ -216,7 +212,6 @@ describe('PagerComponent', () => {
 			dataPager.pageNumber$.next(5);
 
 			pager.next();
-
 			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(5);

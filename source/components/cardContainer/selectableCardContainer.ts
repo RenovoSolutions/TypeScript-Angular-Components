@@ -118,7 +118,7 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 	}
 
 	setSelected(selections: ISelectionWrappedItem<T>[], value: boolean): void {
-		const subscription = this.dataSource.filteredDataSet$.subscribe(filteredData => {
+		this.dataSource.filteredDataSet$.first().subscribe(filteredData => {
 			let updatedSelections = map(selections, selection => {
 				clone(selection);
 				selection.selected = value;
@@ -130,8 +130,6 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 				const updatedSelection = find(updatedSelections, selection => oldSelection.item.id === selection.item.id);
 				return updatedSelection	|| oldSelection;
 			}));
-
-			setTimeout(() => subscription.unsubscribe());
 		});
 	}
 

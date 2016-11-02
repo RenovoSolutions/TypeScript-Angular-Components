@@ -1,5 +1,4 @@
 import { BehaviorSubject } from 'rxjs';
-import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
 import { SelectionComponent } from './selectionControl';
 
@@ -48,48 +47,44 @@ describe('SelectionComponent', () => {
 	});
 
 	describe('selection', (): void => {
-		it('should select all items on the page', rlFakeAsync(() => {
+		it('should select all items on the page', () => {
 			const items = [1, 2, 3, 4];
 			cardContainer.selectionData$.next(items);
 
 			selection.selectPage();
-			rlTick();
 
 			sinon.assert.calledOnce(cardContainer.setSelected);
 			sinon.assert.calledWith(cardContainer.setSelected, items, true);
-		}));
+		});
 
-		it('should select all items on all pages', rlFakeAsync(() => {
+		it('should select all items on all pages', () => {
 			const items = [1, 2, 3, 4];
 			cardContainer.selectionFilteredData$.next(items);
 
 			selection.selectAll();
-			rlTick();
 
 			sinon.assert.calledOnce(cardContainer.setSelected);
 			sinon.assert.calledWith(cardContainer.setSelected, items, true);
-		}));
+		});
 
-		it('should clear selection of all items on the page', rlFakeAsync(() => {
+		it('should clear selection of all items on the page', () => {
 			const items = [1, 2, 3, 4];
 			cardContainer.selectionData$.next(items);
 
 			selection.clearPage();
-			rlTick();
 
 			sinon.assert.calledOnce(cardContainer.setSelected);
 			sinon.assert.calledWith(cardContainer.setSelected, items, false);
-		}));
+		});
 
-		it('should clear selection of all items on all pages', rlFakeAsync(() => {
+		it('should clear selection of all items on all pages', () => {
 			const items = [1, 2, 3, 4];
 			cardContainer.selectionFilteredData$.next(items);
 
 			selection.clearAll();
-			rlTick();
 
 			sinon.assert.calledOnce(cardContainer.setSelected);
 			sinon.assert.calledWith(cardContainer.setSelected, items, false);
-		}));
+		});
 	});
 });

@@ -81,42 +81,36 @@ export class PagerComponent<T> implements OnInit {
 	}
 
 	previous(): void {
-		const subscription = this.pager.pageNumber$.subscribe(pageNumber => {
-			setTimeout(() => {
-				subscription.unsubscribe();
-				if (pageNumber > 1) {
-					this.pager.setPage(pageNumber - 1);
-				}
-			});
+		this.pager.pageNumber$.first().delay(0).subscribe(pageNumber => {
+			if (pageNumber > 1) {
+				this.pager.setPage(pageNumber - 1);
+			}
 		});
 	}
 
 	goto(page: number): void {
-		const subscription = this.lastPage$.subscribe(lastPage => {
+		this.lastPage$.first().subscribe(lastPage => {
 			if (page >= 1 && page <= lastPage) {
 				this.pager.setPage(page);
 			}
-			setTimeout(() => subscription.unsubscribe());
 		});
 	}
 
 	next(): void {
-		const subscription = this.pager.pageNumber$.combineLatest(this.lastPage$)
-												  .subscribe(([pageNumber, lastPage]) => {
-			setTimeout(() => {
-				subscription.unsubscribe();
-				if (pageNumber < lastPage) {
-					this.pager.setPage(pageNumber + 1);
-				}
-			});
+		this.pager.pageNumber$.combineLatest(this.lastPage$)
+							  .first()
+							  .delay(0)
+							  .subscribe(([pageNumber, lastPage]) => {
+			if (pageNumber < lastPage) {
+				this.pager.setPage(pageNumber + 1);
+			}
 		});
 
 	}
 
 	last(): void {
-		const subscription = this.lastPage$.subscribe(lastPage => {
+		this.lastPage$.first().subscribe(lastPage => {
 			this.pager.setPage(lastPage);
-			setTimeout(() => subscription.unsubscribe());
 		});
 	}
 }

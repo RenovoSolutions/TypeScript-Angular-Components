@@ -1,6 +1,5 @@
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
-import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -63,16 +62,15 @@ describe('DateFilterComponent', (): void => {
 		sinon.assert.calledWith(filterService.setDateFrom, date);
 	});
 
-	it('should set the dateTo to a number days equal to the count before the dateFrom', rlFakeAsync((): void => {
+	it('should set the dateTo to a number days equal to the count before the dateFrom', (): void => {
 		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
 		filterService.dateFrom$ = Observable.of(dateFrom);
 
 		dateFilter.setCount(4);
-		rlTick();
 
 		sinon.assert.calledOnce(filterService.setDateTo);
 		expect(filterService.setDateTo.firstCall.args[0]).to.equalMoment(moment('2000-01-01T05:16:00.000'));
-	}));
+	});
 
 	it('should clear the dateTo if the count is 0', (): void => {
 		dateFilter.setCount(0);
