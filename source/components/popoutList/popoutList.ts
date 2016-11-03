@@ -13,7 +13,7 @@ import { PopoutListService } from './popoutList.service';
 	template: require('./popoutList.html'),
 })
 export class PopoutListComponent<T> {
-	@Input() options: Observable<T[]>;
+	@Input() options: T[];
 	@Input() template: TemplateRef<any>;
 	@Input() transform: __transform.ITransform<T, string>;
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
@@ -39,10 +39,8 @@ export class PopoutListComponent<T> {
 		popoutListService.select.subscribe(value => this.select.emit(value));
 	}
 
-	get isEmpty(): Observable<boolean> {
-		return this.options
-			? this.options.map(x => !(x || x.length))
-			: Observable.of(true);
+	get isEmpty(): boolean {
+		return !(this.options && this.options.length);
 	}
 
 	get showOptions(): boolean {

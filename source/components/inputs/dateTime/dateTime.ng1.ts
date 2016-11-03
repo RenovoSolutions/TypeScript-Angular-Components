@@ -75,6 +75,20 @@ export class DateTimeController extends InputController {
 		this.useTime = _.isUndefined(this.useTime) ? true : this.useTime;
 	}
 
+	$onInit(): void {
+		if (this.validators == null) {
+			this.validators = [];
+		}
+
+		this.validators.push({
+			name: 'dateValid',
+			validate: (): boolean => { return this.validFormat; },
+			errorMessage: 'Date is not in a valid format',
+		});
+
+		super.$onInit();
+	}
+
 	onClearClick(): void {
 		this.ngModel.$setViewValue(null);
 		this.onClearEvent();

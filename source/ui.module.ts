@@ -14,7 +14,8 @@ import { INPUT_DIRECTIVES } from'./components/inputs/index';
 import { MultiStepIndicatorComponent } from'./components/multiStepIndicator/multiStepIndicator';
 import { RatingBarComponent } from'./components/ratingBar/ratingBar';
 import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardContainer';
-import { SIMPLE_CARD_DIRECTIVES } from'./components/simpleCardList/index';
+import { SIMPLE_CARD_DIRECTIVES } from './components/simpleCardList/index';
+import { StepComponent } from './components/multiStepIndicator/step.component';
 import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
 import { TABS_COMPONENT } from'./components/tabs/index';
 import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
@@ -45,6 +46,7 @@ export const componentsList: any[] = [
 	RatingBarComponent,
 	SimpleCardContainer,
 	SIMPLE_CARD_DIRECTIVES,
+	StepComponent,
 	StringWithWatermarkComponent,
 	TABS_COMPONENT,
 	ValidationGroupComponent,

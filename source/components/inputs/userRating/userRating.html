@@ -1,8 +1,12 @@
-<span class="rating"
-	  [class.default-theme]="useDefaultTheme">
+<span class="rating field"
+	  [class.default-theme]="useDefaultTheme"
+	  [class.error]="componentValidator.error$ | async">
 	<span class="star"
 		  *ngFor="let star of stars"
 		  [class.filled]="star.filled"
 		  (click)="setRating(star.value)"
 		  [class.disabled]="disabled"></span>
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
+		{{componentValidator.error$ | async}}
+	</div>
 </span>

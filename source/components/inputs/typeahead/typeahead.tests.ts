@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { rlFakeAsync, mock, IMockedRequest, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
@@ -30,9 +31,8 @@ describe('TypeaheadComponent', () => {
 
 	beforeEach(() => {
 		const validator: any = {
-			setValidators: sinon.spy(),
-			validate: sinon.spy(),
-			afterInit: sinon.spy(),
+			initValidator: sinon.spy(),
+			validate: sinon.spy(() => Observable.empty()),
 		};
 
 		typeahead = new TypeaheadComponent(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
@@ -315,7 +315,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.searchStream.next('search');
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
-			typeahead.visibleItems.subscribe(data => visibleItems = data);
+			typeahead.visibleItems$.subscribe(data => visibleItems = data);
 			loadItems.flush();
 			loadItems.reset();
 			busy.trigger.reset();
@@ -353,7 +353,6 @@ describe('TypeaheadComponent', () => {
 			flushMicrotasks();
 
 			sinon.assert.calledTwice(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, typeahead.visibleItems);
 			sinon.assert.calledOnce(loadItems);
 			sinon.assert.calledWith(loadItems, 'search2');
 

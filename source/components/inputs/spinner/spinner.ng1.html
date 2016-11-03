@@ -1,6 +1,6 @@
 <rl-generic-container selector="spinner.ngDisabled" class="spinner-container">
 	<template default>
-		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid }">
+		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid, 'warning': input.warning }">
 			<label class="label-slide angular-animate" ng-show="spinner.ngModel.$viewValue | isEmpty:false && spinner.label">{{spinner.label}}</label>
 			<input name="{{::spinner.name}}" class="spinner" id="{{::spinner.spinnerId}}" type="text" placeholder="{{spinner.label}}"/>
 			<span class="error-string" ng-if="spinner.inputValidator.error | isEmpty:false">{{spinner.inputValidator.error}}</span>

@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "3.3.0",
+  "version": "3.7.2",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -47,7 +47,7 @@
     "bundle-deps": "gulp bundle-bootstrapper-vendor && gulp bundle-bootstrapper-renovo && gulp bundle-tests-vendor && gulp bundle-tests-renovo"
   },
   "devDependencies": {
-    "@renovolive/gulp-utilities": "~2.3.0",
+    "@renovolive/gulp-utilities": "~2.4.0",
     "chai": "~3.5.0",
     "concurrently": "~2.0.0",
     "del": "^2.2.0",
@@ -93,7 +93,7 @@
     "@types/jquery": "^2.0.32",
     "@types/jquery.jsignature": "^2.0.28",
     "@types/lodash": "^4.14.36",
-    "@types/moment-timezone": "^0.2.31",
+    "@types/moment-timezone": "0.2.31",
     "@types/sinon": "^1.16.31",
     "angular": "~1.5.3",
     "angular-animate": "~1.5.3",
@@ -112,8 +112,7 @@
     "rl-http": "~1.2.0",
     "rxjs": "5.0.0-beta.12",
     "systemjs": "^0.19.28",
-    "typescript": "^2.0.3",
-    "typescript-angular-utilities": "~3.8.0",
+    "typescript-angular-utilities": "~3.9.0",
     "ui-select": "~0.14.7",
     "zone.js": "~0.6.25"
   },

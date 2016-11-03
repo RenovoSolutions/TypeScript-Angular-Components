@@ -1,7 +1,8 @@
-﻿import { Subject } from 'rxjs';
+﻿import { Observable, Subject } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
+import __array = services.array;
 import __guid = services.guid;
 
 import { UserRatingComponent } from './userRating';
@@ -12,7 +13,11 @@ describe('UserRatingComponent', () => {
 	let control: any;
 
 	beforeEach(() => {
-		userRating = new UserRatingComponent(<any>{}, null, __object.objectUtility, __guid.guid);
+		const validator = {
+			validate: sinon.spy(() => Observable.empty()),
+			initValidator: sinon.spy(),
+		};
+		userRating = new UserRatingComponent(<any>{}, null, <any>validator, __object.objectUtility, __array.arrayUtility, __guid.guid);
 
 		control = { valueChanges: new Subject() };
 		userRating.control = <any>control;

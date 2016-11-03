@@ -9,12 +9,15 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlTextarea',
 	template: require('./textarea.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: baseAnimations,
 })
 export class TextareaComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;

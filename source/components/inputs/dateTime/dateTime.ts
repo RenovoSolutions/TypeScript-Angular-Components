@@ -2,6 +2,7 @@ import { Component, Optional, Input, Output, EventEmitter, AfterViewInit, OnInit
 import { isUndefined } from 'lodash';
 import * as moment from 'moment';
 import * as $ from 'jquery';
+import { Observable } from 'rxjs';
 import '../../../../libraries/bootstrap-datetimepicker/index';
 
 import { services } from 'typescript-angular-utilities';
@@ -16,12 +17,15 @@ import { ValidatedInputComponent, validationInputs, baseOutputs } from '../valid
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 import { FormComponent } from '../../form/form';
 
+import { baseAnimations } from '../input';
+
 @Component({
 	selector: 'rlDateTime',
 	template: require('./dateTime.html'),
 	inputs: validationInputs,
 	outputs: baseOutputs,
 	providers: [ComponentValidator],
+	animations: baseAnimations,
 })
 export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> implements OnInit, AfterViewInit {
 	@Input() useDate: boolean;
@@ -59,6 +63,26 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	}
 
 	ngOnInit(): void {
+		if (this.validators == null) {
+			this.validators = [];
+		}
+
+		this.validators.push({
+				name: 'valiDate',
+				validate: (value$: Observable<moment.Moment>): Observable<string> => {
+					return value$.map(() => this.validFormat ? null : 'Date is not in a valid format');
+				},
+			});
+
+		if (this.max != null) {
+			this.validators.push({
+				name: 'maxDate',
+				validate: (value$: Observable<moment.Moment>): Observable<string> => {
+					return value$.map(date => date > this.max ? null : 'Date is greater than the greatest allowed date: ' + this.max);
+				},
+			})
+		}
+
 		super.ngOnInit();
 
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;

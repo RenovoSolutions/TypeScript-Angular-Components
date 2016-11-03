@@ -1,12 +1,16 @@
 <div class="field date-time"
+	 [class.warning]="warning"
 	 [class.has-warning]="!validFormat"
-	 [class.error]="!control.valid"
+	 [class.error]="componentValidator.error$ | async"
 	 [class.datepicker-with-clear]="showClear">
 	<span #datepicker class="datepicker-input-group">
-		<label class="label-slide angular-animate" [hidden]="!(value && label)">{{label}}</label>
+		<label [@slide]="labelState">{{label}}</label>
 		<input type="text"
 			   #dateinput
 			   class="form-control"
+			   [class.hide-placeholder]="hidePlaceholder"
+			   (focus)="showLabel()"
+			   (blur)="hideLabelIfEmpty()"
 			   [value]="valueAsString"
 			   [placeholder]="label"
 			   [disabled]="disabled" />
@@ -21,7 +25,7 @@
 			<i class="fa fa-times"></i>
 		</rlButton>
 	</span>
-	<div [hidden]="control.valid" class="error-string">
-		{{componentValidator.error}}
+	<div *ngIf="componentValidator.error$ | async" class="error-string">
+		{{componentValidator.error$ | async}}
 	</div>
 </div>
