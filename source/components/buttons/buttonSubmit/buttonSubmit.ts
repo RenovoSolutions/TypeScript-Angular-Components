@@ -21,7 +21,8 @@ export class ButtonSubmitComponent extends BaseButtonComponent {
 	}
 
 	submit(): void {
+		// subscribes to kick off the action
 		const waitValue: IWaitValue<any> = this.form.submitAndWait();
-		this.busySpinner.trigger(waitValue);
+		this.busySpinner.waitOn(waitValue).subscribe();
 	}
 }
