@@ -11,8 +11,9 @@ describe('SmartDataSource', () => {
 	});
 
 	describe('init', () => {
-		let toRequestStreamSpy: Sinon.SinonSpy;
+		let initialRequestSpy: Sinon.SinonSpy;
 		let initRequestStream: Subject<any>;
+		let toRequestStreamSpy: Sinon.SinonSpy;
 		let requestStream: Subject<any>;
 		let getDataSetSpy: Sinon.SinonSpy;
 		let getDataStream: Subject<any>;
@@ -23,11 +24,13 @@ describe('SmartDataSource', () => {
 			initRequestStream = new Subject();
 			requestStream = new Subject();
 			getDataStream = new Subject();
-			toRequestStreamSpy = sinon.spy((...args) => args[3] ? initRequestStream : requestStream);
+			initialRequestSpy = sinon.spy(() => initRequestStream);
+			toRequestStreamSpy = sinon.spy(() => requestStream);
 			getDataSetSpy = sinon.spy(() => getDataStream);
 			resolveReloadSpy = sinon.spy();
 			sortList$ = new Subject();
 
+			source.initialRequest = initialRequestSpy;
 			source.toRequestStream = toRequestStreamSpy;
 			source.getDataSet = getDataSetSpy;
 			source.resolveReload = resolveReloadSpy;
@@ -39,8 +42,8 @@ describe('SmartDataSource', () => {
 			const data = {};
 			source.init();
 
-			sinon.assert.calledOnce(toRequestStreamSpy);
-			sinon.assert.calledWith(toRequestStreamSpy, source.throttled$, (source as any).filters$, sortList$, true);
+			sinon.assert.calledOnce(initialRequestSpy);
+			sinon.assert.calledWith(initialRequestSpy, (source as any).filters$, sortList$);
 
 			initRequestStream.next(requestData);
 
@@ -57,7 +60,6 @@ describe('SmartDataSource', () => {
 			const requestData = {};
 			const data = {};
 			source.init();
-			toRequestStreamSpy.reset();
 			initRequestStream.next({});
 			getDataStream.next({});
 			getDataSetSpy.reset();

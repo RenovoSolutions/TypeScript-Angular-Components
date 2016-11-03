@@ -4,7 +4,7 @@ import { IServerSearchFunction, IServerSearchParams, IDataResult } from '../asyn
 import { IFilter } from '../../filters/index';
 import { DataSourceBase } from '../dataSourceBase.service';
 import { ISort, SortDirection } from '../../sorts/sort';
-import { toRequestStream } from './smartDataActions';
+import { toRequestStream, throttled } from './smartDataActions';
 
 export const defaultDebounce = 1000;
 
@@ -22,7 +22,7 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 
 	init(): void {
 		// initial request
-		this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$, true).switchMap(requestData => {
+		this.initialRequest(this.filters$, this.sorter.sortList$).switchMap(requestData => {
 			return this.getDataSet(requestData);
 		}).switchMap(result => {
 			this.resolveReload(result);
@@ -45,8 +45,12 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 		this.filters$.next(value);
 	}
 
-	toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>, initial?: boolean): Observable<IServerSearchParams> {
-		return toRequestStream(throttled$, filters$, sorts$, initial);
+	initialRequest(filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+		return throttled(filters$, sorts$).take(1);
+	}
+
+	toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+		return toRequestStream(throttled$, filters$, sorts$);
 	}
 
 	startLoading(): void {
