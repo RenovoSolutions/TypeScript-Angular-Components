@@ -68,27 +68,22 @@ describe('CardSearchComponent', () => {
 		it('should lookup the search filter from the card container', (): void => {
 			cardSearch.ngOnInit();
 			expect(cardSearch.hasSearchFilter).to.be.true;
-			expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 		});
 
 		it('should set hasSearchFilter to false if no search filter exists on the card container', (): void => {
 			cardContainer.searchFilter = null;
 			cardSearch.ngOnInit();
 			expect(cardSearch.hasSearchFilter).to.be.false;
-			expect(cardSearch.searchPlaceholder).to.not.exist;
 		});
 
 		it('should still init the search filter if it was specified with an attribute binding', (): void => {
 			let filter: any = {};
 			cardSearch.searchFilter = filter;
 			cardSearch.ngOnInit();
-			expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 		});
 
-		it('should lookup the search placeholder from the card container', (): void => {
-			cardSearch.ngOnInit();
-			cardContainer.searchPlaceholder = 'custom placeholder';
-			expect(cardSearch.searchPlaceholder).to.equal(cardContainer.searchPlaceholder);
+		it('should set a default search placeholder if none is specified', () => {
+			expect(cardSearch.searchPlaceholder).to.equal(defaultSearchPlaceholder);
 		});
 	});
 
