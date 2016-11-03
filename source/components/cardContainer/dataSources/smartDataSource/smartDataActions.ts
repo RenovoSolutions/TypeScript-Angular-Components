@@ -68,8 +68,7 @@ export function toFilterChanges(filters$: Observable<IFilter<any, any>[]>): Obse
 		.map(typeAndValues => reduce(typeAndValues, (dictionary, typeAndValue) => {
 			dictionary[typeAndValue.type] = typeAndValue.value;
 			return dictionary;
-		}, {}))
-		.distinctUntilChanged();
+		}, {}));
 }
 
 export function toTypesWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<ITypeWithValue[]> {
