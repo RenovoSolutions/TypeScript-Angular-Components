@@ -1,7 +1,8 @@
+import { Observable } from 'rxjs';
+import { isFunction } from 'lodash';
 import { rlFakeAsync, mock } from 'rl-async-testing';
 
 import { FormComponent } from './form';
-import { isFunction } from 'lodash';
 
 import { AsyncHelper } from '../../services/async/async.service';
 
@@ -75,7 +76,7 @@ describe('FormComponent', (): void => {
 			formService.isFormValid = <any>(() => true);
 			form.form.markAsPristine = setPristineSpy;
 
-			form.saveForm();
+			form.saveForm().subscribe();
 
 			sinon.assert.notCalled(setPristineSpy);
 
@@ -90,7 +91,7 @@ describe('FormComponent', (): void => {
 			formService.isFormValid = <any>(() => true);
 			form.form.markAsPristine = setPristineSpy;
 
-			form.saveForm();
+			form.saveForm().subscribe();
 
 			sinon.assert.calledOnce(setPristineSpy);
 		}));
@@ -98,7 +99,7 @@ describe('FormComponent', (): void => {
 
 	describe('submit', (): void => {
 		it('should save the form if valid', (): void => {
-			const saveSpy = sinon.spy();
+			const saveSpy = sinon.spy(() => Observable.empty());
 			form.saveForm = saveSpy;
 			const isValidSpy = sinon.spy(() => true);
 			formService.isFormValid = isValidSpy;
@@ -128,7 +129,7 @@ describe('FormComponent', (): void => {
 		});
 
 		it('should return true if validation passes', (): void => {
-			const saveSpy = sinon.spy();
+			const saveSpy = sinon.spy(() => Observable.empty());
 			form.saveForm = saveSpy;
 			form.validate = sinon.spy(() => true);
 
@@ -138,13 +139,13 @@ describe('FormComponent', (): void => {
 		});
 
 		it('should return the wait value for saving the form', (): void => {
-			const saveSpy = sinon.spy(() => 'waiting');
+			const saveSpy = sinon.spy(() => Observable.of('waiting'));
 			form.saveForm = saveSpy;
 			form.validate = sinon.spy(() => true);
 
 			const waitOn = form.submitAndWait();
 
-			expect(waitOn).to.equal('waiting');
+			expect(waitOn).to.deep.equal(Observable.of('waiting'));
 		});
 	});
 });

@@ -59,7 +59,8 @@ export class FormComponent {
 
 	submit(): boolean {
 		if (this.validate()) {
-			this.saveForm();
+			// kicks off the subscription since no observable is returned
+			this.saveForm().subscribe();
 			return true;
 		} else {
 			this.showErrors();
@@ -67,12 +68,12 @@ export class FormComponent {
 		}
 	}
 
-	submitAndWait(): IWaitValue<any> {
+	submitAndWait(): Observable<any> {
 		if (this.validate()) {
 			return this.saveForm();
 		} else {
 			this.showErrors();
-			return false;
+			return Observable.of(false);
 		}
 	}
 
@@ -84,10 +85,10 @@ export class FormComponent {
 		this.form.reset();
 	}
 
-	saveForm(): IWaitValue<any> {
+	saveForm(): Observable<any> {
 		const waitOn = this.save(this.form.value);
-		this.resetAfterSubmit(waitOn);
-		return waitOn;
+		const request = this.asyncHelper.waitAsObservable(waitOn);
+		return this.resetAfterSubmit(request);
 	}
 
 	private showErrors(): void {
@@ -99,7 +100,7 @@ export class FormComponent {
 		}
 	}
 
-	private resetAfterSubmit(waitOn: IWaitValue<any>): void {
-		this.asyncHelper.waitAsObservable(waitOn).subscribe(() => this.form.markAsPristine());
+	private resetAfterSubmit(request: Observable<any>): Observable<any> {
+		return request.do(() => this.form.markAsPristine());
 	}
 }

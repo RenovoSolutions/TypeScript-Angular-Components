@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -68,7 +69,7 @@ describe('CardComponent', () => {
 
 	describe('toggle', (): void => {
 		it('should toggle the card content', (): void => {
-
+			card.saveForm = sinon.spy(() => Observable.empty());
 			expect(card.showContent).to.be.false;
 
 			card.toggleContent();
