@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { IDataSource } from '../../dataSources/index';
 import { IFilterGroup, IFilterOption } from './filterGroup.service';
@@ -6,6 +6,7 @@ import { IFilterGroup, IFilterOption } from './filterGroup.service';
 @Component({
 	selector: 'rlFilterGroup',
 	template: require('./filterGroup.component.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterGroupComponent<T> {
 	@Input() filterGroup: IFilterGroup<T>;

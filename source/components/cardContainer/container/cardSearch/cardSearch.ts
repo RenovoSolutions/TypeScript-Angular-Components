@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { CardContainerComponent } from '../../cardContainer';
@@ -10,6 +10,7 @@ export const defaultSearchDelay: number = 1000;
 @Component({
 	selector: 'rlCardSearch',
 	template: require('./cardSearch.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;

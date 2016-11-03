@@ -1,4 +1,4 @@
-import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit } from '@angular/core';
+import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
@@ -34,6 +34,7 @@ export const defaultMaxColumnSorts: number = 2;
 		cardContainerInputs.searchPlaceholder
 	],
 	providers: [DataPager, SearchFilter, SortManagerService],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardContainerComponent<T> implements OnInit {
 	builder: ICardContainerConstructor<T>;

@@ -1,4 +1,4 @@
-import { Component, Input, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, ContentChild, TemplateRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { services } from 'typescript-angular-utilities';
@@ -10,6 +10,7 @@ import { IDataSource } from '../../datasources/dataSource';
 @Component({
 	selector: 'rlSelectFilter',
 	template: require('./selectFilter.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectFilterComponent<T> {
 	@Input() filter: SelectFilter<T, any>;

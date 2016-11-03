@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { range } from 'lodash';
 
@@ -11,6 +11,7 @@ export const defaultVisiblePageCount: number = 5;
 @Component({
 	selector: 'rlPager',
 	template: require('./pager.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PagerComponent<T> implements OnInit {
 	@Input() pageCount: number;

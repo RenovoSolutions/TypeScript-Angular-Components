@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
+import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList, ChangeDetectionStrategy } from '@angular/core';
 import { map, find, clone, filter, includes } from 'lodash';
 import { Observable, BehaviorSubject } from 'rxjs';
 
@@ -46,6 +46,7 @@ export interface ISelectionWrappedItem<T> {
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectableCardContainerComponent<T extends IdentityItem> extends CardContainerComponent<T> {
 	private _numberSelected: BehaviorSubject<number>;

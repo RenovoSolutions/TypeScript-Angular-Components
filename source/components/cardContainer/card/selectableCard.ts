@@ -1,4 +1,4 @@
-import { Component, Input, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Input, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -26,6 +26,7 @@ import { CardComponent, cardInputs } from './card';
 			useExisting: forwardRef(() => SelectableCardComponent),
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectableCardComponent<T> extends CardComponent<T> {
 	@Input() selection: ISelectionWrappedItem<T>;

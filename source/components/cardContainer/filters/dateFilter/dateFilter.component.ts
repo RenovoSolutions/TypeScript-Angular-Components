@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
@@ -12,6 +12,7 @@ const type: moment.UnitOfTime = 'days';
 @Component({
 	selector: 'rlDateFilter',
 	template: require('./dateFilter.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DateFilterComponent<T> implements OnInit {
 	@Input() filter: DateFilter<T>;

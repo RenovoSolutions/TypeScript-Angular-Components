@@ -1,4 +1,4 @@
-import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
@@ -32,6 +32,7 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 			useExisting: forwardRef(() => CardComponent),
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardComponent<T> extends FormComponent {
 	item: T;

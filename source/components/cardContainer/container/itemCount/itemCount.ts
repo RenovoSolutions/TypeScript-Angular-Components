@@ -1,4 +1,4 @@
-import { Component, Inject, forwardRef } from '@angular/core';
+import { Component, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CardContainerComponent } from '../../cardContainer';
@@ -7,6 +7,7 @@ import { IDataSource } from '../../dataSources/index';
 @Component({
 	selector: 'rlItemCount',
 	template: require('./itemCount.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCountComponent<T> {
 	cardContainer: CardContainerComponent<T>;

@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, forwardRef } from '@angular/core';
+import { Component, Inject, OnInit, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { each } from 'lodash';
 
@@ -8,6 +8,7 @@ import { SelectableCardContainerComponent, ISelectionWrappedItem } from '../../s
 @Component({
 	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectionComponent<T> implements OnInit {
 	pagingEnabled: boolean;
