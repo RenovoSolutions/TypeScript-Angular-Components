@@ -15,6 +15,7 @@ export const defaultSearchDelay: number = 1000;
 export class CardSearchComponent<T> implements OnInit {
 	@Input() delay: number;
 	@Input() searchFilter: SearchFilter;
+	@Input() searchPlaceholder: string;
 
 	hasSearchFilter: boolean = true;
 	searchChanges$: Subject<string> = new Subject<string>();
@@ -23,6 +24,7 @@ export class CardSearchComponent<T> implements OnInit {
 
 	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
+		this.searchPlaceholder = defaultSearchPlaceholder;
 	}
 
 	get searchLengthError$(): Observable<boolean> {
@@ -51,12 +53,6 @@ export class CardSearchComponent<T> implements OnInit {
 							   .distinctUntilChanged()
 							   .subscribe(search => this.searchFilter.setSearch(search));
 		}
-	}
-
-	get searchPlaceholder(): string {
- 		if (this.hasSearchFilter) {
- 			return this.cardContainer.searchPlaceholder || defaultSearchPlaceholder;
- 		}
 	}
 
 	get minSearchError(): string {

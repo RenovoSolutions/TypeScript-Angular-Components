@@ -20,7 +20,6 @@ import { ICardContainerConstructor, CardContainerBuilderService, CardContainerTy
 export const cardContainerInputs = {
 	builder: 'builder',
 	save: 'save',
-	searchPlaceholder: 'searchPlaceholder'
 };
 
 export const defaultMaxColumnSorts: number = 2;
@@ -31,7 +30,6 @@ export const defaultMaxColumnSorts: number = 2;
 	inputs: [
 		cardContainerInputs.builder,
 		cardContainerInputs.save,
-		cardContainerInputs.searchPlaceholder
 	],
 	providers: [DataPager, SearchFilter, SortManagerService],
 	changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +37,6 @@ export const defaultMaxColumnSorts: number = 2;
 export class CardContainerComponent<T> implements OnInit {
 	builder: ICardContainerConstructor<T>;
 	save: ISaveAction<any>;
-	searchPlaceholder: string;
 
 	dataSource: IDataSource<T>;
 	filters: IFilter<T, any>[];

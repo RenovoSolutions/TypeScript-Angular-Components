@@ -35,7 +35,6 @@ export interface ISelectionWrappedItem<T> {
 	inputs: [
 		cardContainerInputs.builder,
 		cardContainerInputs.save,
-		cardContainerInputs.searchPlaceholder
 	],
 	providers: [
 		DataPager,
