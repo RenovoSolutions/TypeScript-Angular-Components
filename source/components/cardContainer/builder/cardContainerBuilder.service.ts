@@ -33,7 +33,7 @@ export enum CardContainerType {
 	selectable,
 }
 
-export interface ICardContainerProperties {
+export interface ICardContainerSettings {
 	search?: boolean;
 	paging?: boolean;
 	maxColumnSorts?: number;
@@ -62,7 +62,7 @@ export class CardContainerBuilderService {
 		this.injector = injector;
 	}
 
-	getInstance(settings: ICardContainerProperties): ICardContainerInstance {
+	getInstance(settings: ICardContainerSettings): ICardContainerInstance {
 		return <any>{
 			search: settings.search,
 			paging: settings.paging,
