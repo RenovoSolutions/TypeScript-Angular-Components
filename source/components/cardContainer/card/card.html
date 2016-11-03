@@ -12,7 +12,7 @@
 		</div>
 	</div>
 
-	<div [hidden]="!showContent">
+	<div [hidden]="!(showContent$ | async)">
 		<div class="body"
 			 *ngIf="cardContainer.cardContent"
 			 [class.active]="cardContainer.clickableCards"
@@ -21,7 +21,7 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>
-	<div [hidden]="!cardContainer.cardFooter || !(showContent || permanentFooter)">
+	<div [hidden]="!cardContainer.cardFooter || !((showContent$ | async) || permanentFooter)">
 		<div class="footer" *ngIf="cardContainer.cardFooter">
 			<template [ngTemplateOutlet]="cardContainer.cardFooter.template" [ngOutletContext]="{ $implicit: item }"></template>
 			<div class="clearfix"></div>

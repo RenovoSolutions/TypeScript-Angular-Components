@@ -1,5 +1,5 @@
 import { Component, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -41,7 +41,7 @@ export class CardComponent<T> extends FormComponent {
 	initCard: { (): void } = () => null;
 	clickCard: { (): void } = () => null;
 
-	showContent: boolean = false;
+	showContent$: BehaviorSubject<boolean>;
 
 	cardContainer: CardContainerComponent<T>;
 
@@ -52,10 +52,11 @@ export class CardComponent<T> extends FormComponent {
 			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		super(notification, asyncHelper, formService, parentForm);
 		this.cardContainer = cardContainer;
+		this.showContent$ = new BehaviorSubject(false);
 	}
 
 	toggleContent(): void {
-		if (this.showContent) {
+		if (this.showContent$.getValue()) {
 			this.close();
 		} else {
 			this.open();
@@ -68,19 +69,19 @@ export class CardComponent<T> extends FormComponent {
 		}
 
 		if (this.cardContainer.openCard()) {
-			this.showContent = true;
+			this.showContent$.next(true);
 		}
 	}
 
 	close(): boolean {
-		if (!this.showContent) {
+		if (!this.showContent$.getValue()) {
 			return true;
 		}
 
 		const canClose: boolean = !!this.submit();
 
 		if (canClose) {
-			this.showContent = false;
+			this.showContent$.next(false);
 		}
 
 		return canClose;

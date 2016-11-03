@@ -62,16 +62,15 @@ describe('CardComponent', () => {
 
 	describe('toggle', (): void => {
 		it('should toggle the card content', (): void => {
-
-			expect(card.showContent).to.be.false;
-
-			card.toggleContent();
-
-			expect(card.showContent).to.be.true;
+			expect(card.showContent$.getValue()).to.be.false;
 
 			card.toggleContent();
 
-			expect(card.showContent).to.be.false;
+			expect(card.showContent$.getValue()).to.be.true;
+
+			card.toggleContent();
+
+			expect(card.showContent$.getValue()).to.be.false;
 		});
 	});
 
@@ -88,12 +87,12 @@ describe('CardComponent', () => {
 
 	describe('close', (): void => {
 		it('should close the card content if the submit is successful', (): void => {
-			card.showContent = true;
+			card.showContent$.next(true);
 			card.submit = sinon.spy(() => true);
 
 			const closed = card.close();
 
-			expect(card.showContent).to.be.false;
+			expect(card.showContent$.getValue()).to.be.false;
 			expect(closed).to.be.true;
 		});
 
@@ -107,12 +106,12 @@ describe('CardComponent', () => {
 		});
 
 		it('should not close the card if submit fails', (): void => {
-			card.showContent = true;
+			card.showContent$.next(true);
 			card.submit = sinon.spy(() => false);
 
 			const closed = card.close();
 
-			expect(card.showContent).to.be.true;
+			expect(card.showContent$.getValue()).to.be.true;
 			expect(closed).to.be.false;
 		});
 	});
