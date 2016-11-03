@@ -79,10 +79,6 @@ export class SelectFilter<TDataType, TFilterType> extends Filter<TDataType, TFil
 		return this.objectUtility.areEqual(this.getValue(item), selectedValue);
 	}
 
-	serialize(): Observable<TFilterType> {
-		return this.value$.asObservable();
-	}
-
 	private getValue(item: TDataType): any {
 		return this.transformService.getValue(item, this.valueSelector);
 	}
