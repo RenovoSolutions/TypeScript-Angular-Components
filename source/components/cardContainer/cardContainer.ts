@@ -107,9 +107,13 @@ export class CardContainerComponent<T> implements OnInit, AfterContentInit {
 		this.maxColumnSorts = this.maxColumnSorts || defaultMaxColumnSorts;
 		this.sortDirection = SortDirection;
 
-		this.syncFilters();
+		if (this.filters) {
+			this.dataSource.filters = this.filters;
+		}
 
-		this.setupPaging();
+		if (this.paging) {
+			this.dataSource.pager = this.injectedPager;
+		}
 
 		// need a way to customize the sorts?
 		this.sortManager.setup([], name => this.lookupColumn(name), this.maxColumnSorts);
@@ -142,25 +146,6 @@ export class CardContainerComponent<T> implements OnInit, AfterContentInit {
 
 	getColumnTemplate(columnName: string): ColumnHeaderTemplate {
 		return this.columnHeaders.filter(column => column.name === columnName)[0];
-	}
-
-	private syncFilters(): void {
-		if (this.filters) {
-			this.dataSource.filters = this.filters;
-		} else if (this.dataSource.filters != null) {
-			this.filters = this.dataSource.filters;
-		}
-	}
-
-	private setupPaging(): void {
-		// If paging flag is specified, card container controls pager instance
-		if (this.paging != null) {
-			if (this.paging === false) {
-				this.dataSource.pager = null;
-			} else {
-				this.dataSource.pager = this.injectedPager;
-			}
-		}
 	}
 
 	private lookupColumn(label: string): IColumn<any> {

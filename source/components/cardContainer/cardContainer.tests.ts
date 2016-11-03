@@ -64,6 +64,21 @@ describe('CardContainerComponent', () => {
 		};
 	}
 
+	it('should set the filters on the data source', (): void => {
+		let filters: IFilterMock[] = [{
+			filter: sinon.spy(),
+		}];
+
+		let dataSource: IDataSourceMock = buildMockedDataSource();
+
+		cardContainer.builder.dataSource = <any>dataSource;
+		cardContainer.builder.filters = <any>filters;
+
+		cardContainer.ngOnInit();
+
+		expect(dataSource.filters).to.equal(filters);
+	});
+
 	describe('hasItems', () => {
 		it('should return true if the data set is not empty', () => {
 			dataSource.dataSet$.next([]);
@@ -104,20 +119,6 @@ describe('CardContainerComponent', () => {
 			cardContainer.ngOnInit();
 			expect(cardContainer.dataSource.pager).to.not.exist;
 		});
-
-		it('should use the data source\'s pager if paging is not specified', (): void => {
-			let pager: IDataPagerMock = <any>{
-				filter: sinon.spy(),
-			};
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.pager = pager;
-
-			cardContainer.builder.dataSource = <any>dataSource;
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.dataSource.pager).to.equal(pager);
-		});
 	});
 
 	describe('card coordination', (): void => {
@@ -151,38 +152,6 @@ describe('CardContainerComponent', () => {
 
 			sinon.assert.calledOnce(sortManager.updateSorts);
 			expect(sortManager.updateSorts.firstCall.args[0]).to.equal(column);
-		});
-	});
-
-	describe('syncFilters', (): void => {
-		it('should set the filters on the data source', (): void => {
-			let filters: IFilterMock[] = [{
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-
-			cardContainer.builder.dataSource = <any>dataSource;
-			cardContainer.builder.filters = <any>filters;
-
-			cardContainer.ngOnInit();
-
-			expect(dataSource.filters).to.equal(filters);
-		});
-
-		it('should init filters from data source filters if no filters are specified', (): void => {
-			let filters: IFilterMock[] = [{
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.filters = filters;
-
-			cardContainer.builder.dataSource = <any>dataSource;
-
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.filters).to.equal(filters);
 		});
 	});
 });
