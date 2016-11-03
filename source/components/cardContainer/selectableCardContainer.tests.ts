@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { DataPager } from './paging/index';
 import { SortManagerService } from './sorts/index';
@@ -6,8 +6,8 @@ import { SortManagerService } from './sorts/index';
 import { SelectableCardContainerComponent	} from './selectableCardContainer';
 
 interface IDataSourceMock {
-	dataSet$: Subject<any>;
-	filteredDataSet$: Subject<any>;
+	dataSet$: BehaviorSubject<any>;
+	filteredDataSet$: BehaviorSubject<any>;
 	init: Sinon.SinonSpy;
 }
 
@@ -28,8 +28,8 @@ describe('SelectableCardContainerComponent', () => {
 	function buildMockedDataSource(): IDataSourceMock {
 		return <any>{
 			init: sinon.spy(),
-			filteredDataSet$: new Subject<void>(),
-			dataSet$: new Subject<void>(),
+			filteredDataSet$: new BehaviorSubject<void>(null),
+			dataSet$: new BehaviorSubject<void>(null),
 		};
 	}
 
@@ -118,6 +118,36 @@ describe('SelectableCardContainerComponent', () => {
 
 			sinon.assert.calledOnce(sortSpy);
 			expect(sortSpy.firstCall.args[0]).to.equal(cardContainer.selectionColumn);
+		});
+	});
+
+	describe('setSelected', () => {
+		it('should set selection to true for the specified items', () => {
+			cardContainer.ngOnInit()
+			let selectionData;
+			const data = [{ id: 1 }, { id: 2 }];
+			cardContainer.selectionFilteredData$.subscribe(result => selectionData = result);
+			dataSource.filteredDataSet$.next(data);
+
+			cardContainer.setSelected([selectionData[0]], true);
+
+			expect(selectionData[0].selected).to.be.true;
+			expect(selectionData[1].selected).to.be.false;
+		});
+
+		it('should set selection to false for the specified items', () => {
+			cardContainer.ngOnInit()
+			let selectionData;
+			const data = [{ id: 1 }, { id: 2 }];
+			cardContainer.selectionFilteredData$.subscribe(result => selectionData = result);
+			dataSource.filteredDataSet$.next(data);
+			selectionData[0].selected = true;
+			selectionData[1].selected = true;
+
+			cardContainer.setSelected([selectionData[0]], false);
+
+			expect(selectionData[0].selected).to.be.false;
+			expect(selectionData[1].selected).to.be.true;
 		});
 	});
 
