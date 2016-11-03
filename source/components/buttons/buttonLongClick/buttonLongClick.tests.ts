@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { rlFakeAsync, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { services } from 'typescript-angular-utilities';
@@ -6,7 +7,7 @@ import __timeout = services.timeout;
 import { ButtonLongClickComponent } from './buttonLongClick';
 
 interface IMockBusy {
-	trigger: Sinon.SinonSpy;
+	waitOn: Sinon.SinonSpy;
 }
 
 interface IMockNotification {
@@ -27,7 +28,7 @@ describe('ButtonLongClickComponent', () => {
 		button = new ButtonLongClickComponent(<any>notification, new __timeout.TimeoutService());
 
 		busy = {
-			trigger: sinon.spy(),
+			waitOn: sinon.spy(() => Observable.empty()),
 		};
 		button.busySpinner = <any>busy;
 	});
@@ -46,8 +47,8 @@ describe('ButtonLongClickComponent', () => {
 
 		sinon.assert.calledOnce(action);
 		sinon.assert.calledWith(action, event);
-		sinon.assert.calledOnce(busy.trigger);
-		sinon.assert.calledWith(busy.trigger, 5);
+		sinon.assert.calledOnce(busy.waitOn);
+		sinon.assert.calledWith(busy.waitOn, 5);
 	}));
 
 	it('should cancel and show a warning if the user stops the action before the time is up', rlFakeAsync((): void => {
