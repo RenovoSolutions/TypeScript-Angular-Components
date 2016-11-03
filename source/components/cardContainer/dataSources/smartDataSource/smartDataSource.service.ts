@@ -22,18 +22,18 @@ export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 
 	init(): void {
 		// initial request
-		this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$, true).subscribe(requestData => {
-			this.getDataSet(requestData).subscribe(result => {
-				this.resolveReload(result);
-				this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$)
-					.do(() => this.startLoading())
-					.debounceTime(defaultDebounce)
-					.subscribe(requestData => {
-					this.getDataSet(requestData).subscribe(result => {
-						this.resolveReload(result);
-					});
-				});
-			});
+		this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$, true).switchMap(requestData => {
+			return this.getDataSet(requestData);
+		}).switchMap(result => {
+			this.resolveReload(result);
+			return this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$);
+		})
+			.do(() => this.startLoading())
+			.debounceTime(defaultDebounce)
+			.switchMap(requestData => {
+			return this.getDataSet(requestData);
+		}).subscribe(result => {
+			this.resolveReload(result);
 		});
 	}
 
