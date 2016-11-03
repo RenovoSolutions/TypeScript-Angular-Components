@@ -22,7 +22,7 @@ export function toRequestStream(throttled$: Observable<boolean>, filters$: Obser
 			? skipIfNotInitial(throttled(filters$, sorts$), initial)
 			: skipIfNotInitial(unthrottled(filters$, sorts$), initial));
 	if (initial) {
-		stream = stream.first();
+		stream = stream.take(1);
 	}
 	return stream;
 }
@@ -45,7 +45,7 @@ export function unthrottled(filters$: Observable<IFilter<any, any>[]>, sorts$: O
 	return pipe<Observable<IFilter<any, any>[]>, Observable<any>>(filters$, [
 		suppressInactiveFilters,
 		toFilterChanges,
-		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$.first()),
+		filterValues$ => combineWithSortsAndPaging(filterValues$, sorts$.take(1)),
 	]);
 }
 
@@ -53,7 +53,7 @@ export function suppressInactiveFilters(filters$: Observable<IFilter<any, any>[]
 	return toFiltersWithValues(filters$)
 		.map(filtersWithValues => filter(filtersWithValues, x => !!x.value))
 		.map(filtersWithValues => map(filtersWithValues, x => x.filter))
-		.first();
+		.take(1);
 }
 
 export function toFiltersWithValues(filters$: Observable<IFilter<any, any>[]>): Observable<IFilterWithValue[]> {

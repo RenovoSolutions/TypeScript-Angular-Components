@@ -36,7 +36,7 @@ export class DateFilterComponent<T> implements OnInit {
 		this.count = count || 0;
 
 		if (this.count > 0) {
-			this.filter.dateFrom$.first().subscribe(dateFrom => {
+			this.filter.dateFrom$.take(1).subscribe(dateFrom => {
 				this.filter.setDateTo(moment(dateFrom).subtract((this.count), type));
 			});
 		} else if (this.count == 0) {

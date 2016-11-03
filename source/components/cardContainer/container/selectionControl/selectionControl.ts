@@ -27,25 +27,25 @@ export class SelectionComponent<T> implements OnInit {
 	}
 
 	selectPage(): void {
-		this.cardContainer.selectionData$.first().subscribe(data => {
+		this.cardContainer.selectionData$.take(1).subscribe(data => {
 			this.cardContainer.setSelected(data, true);
 		});
 	}
 
 	selectAll(): void {
-		this.cardContainer.selectionFilteredData$.first().subscribe(data => {
+		this.cardContainer.selectionFilteredData$.take(1).subscribe(data => {
 			this.cardContainer.setSelected(data, true);
 		});
 	}
 
 	clearPage(): void {
-		this.cardContainer.selectionData$.first().subscribe(data => {
+		this.cardContainer.selectionData$.take(1).subscribe(data => {
 			this.cardContainer.setSelected(data, false);
 		});
 	}
 
 	clearAll(): void {
-		this.cardContainer.selectionFilteredData$.first().subscribe(data => {
+		this.cardContainer.selectionFilteredData$.take(1).subscribe(data => {
 			this.cardContainer.setSelected(data, false);
 		});
 	}

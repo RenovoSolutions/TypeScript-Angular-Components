@@ -81,7 +81,7 @@ export class PagerComponent<T> implements OnInit {
 	}
 
 	previous(): void {
-		this.pager.pageNumber$.first().delay(0).subscribe(pageNumber => {
+		this.pager.pageNumber$.take(1).subscribe(pageNumber => {
 			if (pageNumber > 1) {
 				this.pager.setPage(pageNumber - 1);
 			}
@@ -89,7 +89,7 @@ export class PagerComponent<T> implements OnInit {
 	}
 
 	goto(page: number): void {
-		this.lastPage$.first().subscribe(lastPage => {
+		this.lastPage$.take(1).subscribe(lastPage => {
 			if (page >= 1 && page <= lastPage) {
 				this.pager.setPage(page);
 			}
@@ -98,8 +98,7 @@ export class PagerComponent<T> implements OnInit {
 
 	next(): void {
 		this.pager.pageNumber$.combineLatest(this.lastPage$)
-							  .first()
-							  .delay(0)
+							  .take(1)
 							  .subscribe(([pageNumber, lastPage]) => {
 			if (pageNumber < lastPage) {
 				this.pager.setPage(pageNumber + 1);
@@ -109,7 +108,7 @@ export class PagerComponent<T> implements OnInit {
 	}
 
 	last(): void {
-		this.lastPage$.first().subscribe(lastPage => {
+		this.lastPage$.take(1).subscribe(lastPage => {
 			this.pager.setPage(lastPage);
 		});
 	}

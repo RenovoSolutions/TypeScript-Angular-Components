@@ -1,5 +1,4 @@
 import { BehaviorSubject } from 'rxjs';
-import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
 import { PagerComponent } from './pager';
 
@@ -173,23 +172,21 @@ describe('PagerComponent', () => {
 	});
 
 	describe('previous', (): void => {
-		it('should decrement the current page if it is not on the first page', rlFakeAsync((): void => {
+		it('should decrement the current page if it is not on the first page', (): void => {
 			dataPager.pageNumber$.next(5);
 
 			pager.previous();
-			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(4);
-		}));
+		});
 
-		it('should stay on the current page if it is on the first page', rlFakeAsync((): void => {
+		it('should stay on the current page if it is on the first page', (): void => {
 			dataPager.pageNumber$.next(1);
 
 			pager.previous();
-			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(1);
-		}));
+		});
 	});
 
 	describe('next', (): void => {
@@ -199,23 +196,21 @@ describe('PagerComponent', () => {
 			pager.ngOnInit();
 		});
 
-		it('should increment the current page if it is not on the last page', rlFakeAsync((): void => {
+		it('should increment the current page if it is not on the last page', (): void => {
 			dataPager.pageNumber$.next(1);
 
 			pager.next();
-			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(2);
-		}));
+		});
 
-		it('should stay on the current page if it is on the last page', rlFakeAsync((): void => {
+		it('should stay on the current page if it is on the last page', (): void => {
 			dataPager.pageNumber$.next(5);
 
 			pager.next();
-			rlTick();
 
 			expect(dataPager.pageNumber$.getValue()).to.equal(5);
-		}));
+		});
 	});
 
 	describe('goto', (): void => {
