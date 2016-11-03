@@ -32,10 +32,6 @@
 <rlForm #autosaveForm [save]="saveRequest" rlAutosave [saveWhenInvalid]="true">
 	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
 </rlForm>
-<rlBusy [loading]="(autosaveAction.saving$ | async) || (autosaveAction.complete$ | async)"></rlBusy>
-<rlForm [save]="saveRequest" rlAutosave [saveWhenInvalid]="true">
-	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
-</rlForm>
 {{autosaveForm.form.pristine ? 'Pristine' : 'Dirty'}}
 <rlButton (click)="autosaveForm.form.markAsPristine()">Mark as pristine</rlButton>
 <rlButton (click)="autosaveForm.reset()">Reset</rlButton>
