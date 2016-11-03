@@ -142,6 +142,7 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 				selection = {
 					item: item,
 					selected: false,
+					selectionTitle: '',
 				};
 			} else {
 				selection.item = item;
@@ -157,7 +158,7 @@ export class SelectableCardContainerComponent<T extends IdentityItem> extends Ca
 		if (this.disableSelection) {
 			const disabledReason: string = this.disableSelection({ item: selection.item });
 			selection.disabledSelection = (disabledReason != null);
-			selection.selectionTitle = (selection.disabledSelection ? disabledReason : defaultSelectionTitle);
+			selection.selectionTitle = (selection.disabledSelection ? disabledReason : defaultSelectionTitle) || '';
 		}
 		return selection;
 	}
