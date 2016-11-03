@@ -10,6 +10,7 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
+import { IColumn } from '../../source/components/cardContainer/index';
 import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
 	IDateFilter,
@@ -19,7 +20,7 @@ import {
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 
-interface ICardItem {
+export interface ICardItem {
 	id: number;
 	name: string;
 	value: number;
@@ -55,11 +56,29 @@ export class CardsBootstrapper {
 	disabledFilterGroup: IFilterGroup<any>;
 	selectFilter: SelectFilter<any, any>;
 
+	columns: IColumn<ICardItem>[];
+	data: ICardItem[] = items;
+
 	constructor(timezone: __timezone.TimezoneService
 			, cardContainerBuilder: CardContainerBuilderService) {
 		timezone.setCurrentTimezone('-05:00');
 
 		this.options = [1, 2, 3, 4, 5];
+
+		this.columns = [
+			{
+				name: 'name',
+				label: 'Name',
+				size: 6,
+				getValue: 'name',
+			},
+			{
+				name: 'value',
+				label: 'Value',
+				size: 6,
+				getValue: 'value',
+			},
+		];
 
 		this.builder = this.setupCardContainer(cardContainerBuilder);
 		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);

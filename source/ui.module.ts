@@ -13,6 +13,7 @@ import { FormComponent } from'./components/form/form';
 import { INPUT_DIRECTIVES } from'./components/inputs/index';
 import { MultiStepIndicatorComponent } from'./components/multiStepIndicator/multiStepIndicator';
 import { RatingBarComponent } from'./components/ratingBar/ratingBar';
+import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardContainer';
 import { SIMPLE_CARD_DIRECTIVES } from'./components/simpleCardList/index';
 import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
 import { TABS_COMPONENT } from'./components/tabs/index';
@@ -42,6 +43,7 @@ export const componentsList: any[] = [
 	INPUT_DIRECTIVES,
 	MultiStepIndicatorComponent,
 	RatingBarComponent,
+	SimpleCardContainer,
 	SIMPLE_CARD_DIRECTIVES,
 	StringWithWatermarkComponent,
 	TABS_COMPONENT,

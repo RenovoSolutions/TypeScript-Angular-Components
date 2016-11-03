@@ -1,4 +1,4 @@
-import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ContentChild, ContentChildren, ViewChildren, QueryList, OnInit, AfterContentInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { isUndefined, isObject, each, map, find, take, every } from 'lodash';
 
@@ -34,7 +34,7 @@ export const defaultMaxColumnSorts: number = 2;
 	providers: [DataPager, SearchFilter, SortManagerService],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardContainerComponent<T> implements OnInit {
+export class CardContainerComponent<T> implements OnInit, AfterContentInit {
 	builder: ICardContainerConstructor<T>;
 	save: ISaveAction<any>;
 
@@ -61,6 +61,13 @@ export class CardContainerComponent<T> implements OnInit {
 	@ContentChild(CardFooterTemplate) cardFooter: CardFooterTemplate;
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
+
+	@Input() externalContainerHeader: ContainerHeaderTemplate;
+	@Input() externalContainerFooter: ContainerFooterTemplate;
+	@Input() externalCardContent: CardContentTemplate;
+	@Input() externalCardFooter: CardFooterTemplate;
+	@Input() externalColumnTemplates: QueryList<ColumnContentTemplate>;
+	@Input() externalColumnHeaders: QueryList<ColumnHeaderTemplate>;
 
 	@ViewChildren(CardComponent) cardChildren: QueryList<CardComponent<T>>;
 
@@ -110,6 +117,19 @@ export class CardContainerComponent<T> implements OnInit {
 		this.dataSource.sorter = this.sortManager;
 
 		this.dataSource.init();
+	}
+
+	ngAfterContentInit(): void {
+		this.containerHeader = this.containerHeader || this.externalContainerHeader;
+		this.containerFooter = this.containerFooter || this.externalContainerFooter;
+		this.cardContent = this.cardContent || this.externalCardContent;
+		this.cardFooter = this.cardFooter || this.externalCardFooter;
+		if (!this.columnHeaders.length && this.externalColumnHeaders) {
+			this.columnHeaders = this.externalColumnHeaders;
+		}
+		if (!this.columnTemplates.length && this.externalColumnTemplates) {
+			this.columnTemplates = this.externalColumnTemplates;
+		}
 	}
 
 	openCard(): boolean {
