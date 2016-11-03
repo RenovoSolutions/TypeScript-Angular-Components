@@ -9,7 +9,7 @@ import { AsyncHelper, IWaitValue } from '../async/async.service';
 export const COMPLETE_MESSAGE_DURATION: number = 1000;
 
 export interface IAutosaveActionService {
-	trigger(waitOn: IWaitValue<any>): void;
+	waitOn(waitOn: IWaitValue<any>): Observable<any>;
 	saving$: Observable<boolean>;
 	complete$: Observable<boolean>;
 	successful$: Observable<boolean>;
@@ -45,10 +45,10 @@ export class AutosaveActionService implements IAutosaveActionService {
 		return this._successful$.asObservable();
 	}
 
-	trigger(waitOn: IWaitValue<any>): void {
+	waitOn(waitOn: IWaitValue<any>): Observable<any> {
 		this._saving$.next(true);
-		this.asyncService.waitAsObservable(waitOn)
-			.subscribe(this.autosaveSuccessful, this.autosaveFailed);
+		return this.asyncService.waitAsObservable(waitOn)
+			.do(this.autosaveSuccessful, this.autosaveFailed);
 	}
 
 	private autosaveSuccessful = (): void => {

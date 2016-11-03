@@ -51,7 +51,8 @@ export class AutosaveDirective implements AfterViewInit {
 	autosave = (): void => {
 		const waitOn = this.submitAndWait();
 		if (waitOn) {
-			this.autosaveAction.trigger(waitOn);
+			// subscribes to kick off the stream
+			this.autosaveAction.waitOn(waitOn).subscribe();
 		}
 		this.timer = null;
 	}
