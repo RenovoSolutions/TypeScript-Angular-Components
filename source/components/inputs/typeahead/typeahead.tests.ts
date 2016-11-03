@@ -21,7 +21,7 @@ interface ITestOption {
 }
 
 interface IBusyMock {
-	trigger: Sinon.SinonSpy;
+	waitOn: Sinon.SinonSpy;
 }
 
 describe('TypeaheadComponent', () => {
@@ -40,7 +40,7 @@ describe('TypeaheadComponent', () => {
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
 
-		busy = { trigger: sinon.spy() };
+		busy = { waitOn: sinon.spy(x => x) };
 		typeahead.busy = <any>busy;
 		typeahead.list = <any>{
 			open: sinon.spy(),
@@ -66,9 +66,10 @@ describe('TypeaheadComponent', () => {
 		it('should return an empty list if no text is entered', rlFakeAsync((): void => {
 			let getItemsMock: IMockedRequest<string> = mock.request(items);
 			typeahead.getItems = getItemsMock;
-
 			let visibleItems: string[];
-			typeahead.refresh('').subscribe(result => visibleItems = result);
+			typeahead.visibleItems$.subscribe(result => visibleItems = result);
+
+			typeahead.refresh('');
 
 			sinon.assert.notCalled(getItemsMock);
 			expect(visibleItems).to.be.empty;
@@ -80,9 +81,10 @@ describe('TypeaheadComponent', () => {
 			// simulate a server-side search
 			let getItemsMock: IMockedRequest<string[]> = mock.request([items[0], items[1]]);
 			typeahead.getItems = getItemsMock;
-
 			let visibleItems: string[];
-			typeahead.refresh('Item ').subscribe(result => visibleItems = result);
+			typeahead.visibleItems$.subscribe(result => visibleItems = result);
+
+			typeahead.refresh('Item ');
 
 			sinon.assert.calledOnce(getItemsMock);
 			sinon.assert.calledWith(getItemsMock, 'Item ');
@@ -99,9 +101,10 @@ describe('TypeaheadComponent', () => {
 
 			let getItemsMock: IMockedRequest<string[]> = mock.request(items);
 			typeahead.getItems = getItemsMock;
-
 			let visibleItems: string[];
-			typeahead.refresh('A').subscribe(result => visibleItems = result);
+			typeahead.visibleItems$.subscribe(result => visibleItems = result);
+
+			typeahead.refresh('A');
 
 			sinon.assert.calledOnce(getItemsMock);
 			expect(getItemsMock.firstCall.args).to.be.empty;
@@ -120,12 +123,13 @@ describe('TypeaheadComponent', () => {
 				let getItemsMock: IMockedRequest<string> = mock.request(items);
 				typeahead.getItems = getItemsMock;
 				let visibleItems: string[];
-				typeahead.refresh('A').subscribe(result => visibleItems = result);
+				typeahead.visibleItems$.subscribe(result => visibleItems = result);
+				typeahead.refresh('A');
 				getItemsMock.flush();
 
 				getItemsMock.reset();
 
-				typeahead.refresh('2').subscribe(result => visibleItems = result);
+				typeahead.refresh('2');
 
 				flushMicrotasks();
 
@@ -318,7 +322,7 @@ describe('TypeaheadComponent', () => {
 			typeahead.visibleItems$.subscribe(data => visibleItems = data);
 			loadItems.flush();
 			loadItems.reset();
-			busy.trigger.reset();
+			busy.waitOn.reset();
 
 			expect(visibleItems).to.equal(items);
 		}));
@@ -326,33 +330,33 @@ describe('TypeaheadComponent', () => {
 		it('should show a busy spinner while the debounce is pending', rlFakeAsync(() => {
 			typeahead.searchStream.next('search2');
 
-			sinon.assert.calledOnce(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, true);
+			sinon.assert.calledOnce(busy.waitOn);
+			sinon.assert.calledWith(busy.waitOn, true);
 			expect(typeahead.search).to.equal('search2');
 
 			typeahead.searchStream.next('search');
 
-			sinon.assert.calledTwice(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, true);
+			sinon.assert.calledTwice(busy.waitOn);
+			sinon.assert.calledWith(busy.waitOn, true);
 			expect(typeahead.search).to.equal('search');
-			busy.trigger.reset();
+			busy.waitOn.reset();
 
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
 
-			sinon.assert.calledOnce(busy.trigger);
-			sinon.assert.calledWith(busy.trigger, false);
+			sinon.assert.calledOnce(busy.waitOn);
+			sinon.assert.calledWith(busy.waitOn, false);
 			sinon.assert.notCalled(loadItems)
 		}));
 
 		it('should make a request to refresh the visible items', rlFakeAsync(() => {
 			typeahead.searchStream.next('search2');
 
-			busy.trigger.reset();
+			busy.waitOn.reset();
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
 
-			sinon.assert.calledTwice(busy.trigger);
+			sinon.assert.calledTwice(busy.waitOn);
 			sinon.assert.calledOnce(loadItems);
 			sinon.assert.calledWith(loadItems, 'search2');
 
