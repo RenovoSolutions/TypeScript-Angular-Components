@@ -130,6 +130,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			return;
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
+		// triggers the subscription
 		this.busy.waitOn(loadRequest).subscribe(data => {
 			this.list.open();
 			this._visibleItems.next(data);
