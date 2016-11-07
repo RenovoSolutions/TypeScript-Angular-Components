@@ -1,4 +1,4 @@
-import { Directive, Input, Self, AfterViewInit, HostListener, ElementRef } from '@angular/core';
+import { Directive, Input, Self, AfterViewInit, HostListener } from '@angular/core';
 
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
