@@ -33,6 +33,12 @@ export class AutosaveDirective implements AfterViewInit {
 		this.form.form.statusChanges.subscribe(this.setDebounce);
 	}
 
+	ngOnDestroy(): void {
+		if (this.timer) {
+			this.timer.cancel();
+		}
+	}
+
 	setDebounce = (): void => {
 		if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
 			this.timer = this.timeoutService.setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
