@@ -1,8 +1,6 @@
 import { Subject } from 'rxjs';
 import { rlFakeAsync, mock, rlTick, flushMicrotasks } from 'rl-async-testing';
 
-import { services } from 'typescript-angular-utilities';
-
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 
 interface IFormMock {
@@ -35,7 +33,7 @@ describe('AutosaveDirective', () => {
 
 		autosaveAction = { trigger: sinon.spy() };
 
-		autosave = new AutosaveDirective(<any>form, new services.timeout.TimeoutService(), <any>autosaveAction);
+		autosave = new AutosaveDirective(<any>form, <any>autosaveAction);
 	});
 
 	describe('ngAfterViewInit', (): void => {
@@ -177,6 +175,16 @@ describe('AutosaveDirective', () => {
 
 			sinon.assert.calledOnce(autosaveAction.trigger);
 			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
+		});
+
+		it('should not save if the form becomes pristine immediately before saving', () => {
+			const waitValue = mock.request()();
+			form.submitAndWait = sinon.spy(() => waitValue);
+			form.dirty = false;
+
+			autosave.autosave();
+
+			sinon.assert.notCalled(autosaveAction.trigger);
 		});
 	});
 });

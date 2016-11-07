@@ -1,7 +1,5 @@
 import { Directive, Input, Self, AfterViewInit, HostListener } from '@angular/core';
-
-import { services } from 'typescript-angular-utilities';
-import __timeout = services.timeout;
+import { Observable, Subject } from 'rxjs';
 
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
@@ -16,16 +14,15 @@ export class AutosaveDirective implements AfterViewInit {
 	@Input() saveWhenInvalid: boolean;
 	@HostListener('keyup') keyupListener = this.resetDebounce;
 
-	timer: __timeout.ITimeout;
 	form: FormComponent;
-	timeoutService: __timeout.TimeoutService;
 	autosaveAction: AutosaveActionService;
 
+	autosaveStart$: Subject<void> = new Subject<void>();
+	autosaveCancel$: Subject<void> = new Subject<void>();
+
 	constructor( @Self() form: FormComponent
-			, timeoutService: __timeout.TimeoutService
 			, autosaveAction: AutosaveActionService) {
 		this.form = form;
-		this.timeoutService = timeoutService;
 		this.autosaveAction = autosaveAction;
 	}
 
@@ -34,32 +31,34 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	ngOnDestroy(): void {
-		if (this.timer) {
-			this.timer.cancel();
-		}
+		this.autosaveCancel$.next();
 	}
 
 	setDebounce = (): void => {
-		if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
-			this.timer = this.timeoutService.setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
-											.catch(() => null);
+		if (this.canAutosave()) {
+			this.autosaveCancel$.next();
+			this.autosaveStart$.debounceTime(DEFAULT_AUTOSAVE_DEBOUNCE).takeUntil(this.autosaveCancel$).subscribe(() => this.autosave());
+			this.autosaveStart$.next();
+		} else {
+			this.autosaveCancel$.next();
 		}
 	}
 
 	resetDebounce(): void {
-		if (this.timer) {
-			this.timer.cancel();
-			this.timer = null;
-			this.setDebounce();
+		if (this.canAutosave()) {
+			this.autosaveStart$.next();
 		}
 	}
 
 	autosave = (): void => {
+		if (!this.canAutosave()) {
+			return;
+		}
+
 		const waitOn = this.submitAndWait();
 		if (waitOn) {
 			this.autosaveAction.trigger(waitOn);
 		}
-		this.timer = null;
 	}
 
 	submitAndWait(): IWaitValue<any> {
@@ -68,5 +67,9 @@ export class AutosaveDirective implements AfterViewInit {
 		} else {
 			return this.form.submitAndWait();
 		}
+	}
+
+	private canAutosave(): boolean {
+		return this.form.dirty && (this.saveWhenInvalid || this.form.validate());
 	}
 }
