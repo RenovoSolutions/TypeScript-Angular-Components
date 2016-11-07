@@ -48,6 +48,21 @@ describe('AutosaveDirective', () => {
 		});
 	});
 
+	describe('ngOnDestroy', () => {
+		it('should cancel the current autosave on destroy', rlFakeAsync((): void => {
+			const autosaveSpy = sinon.spy();
+			autosave.autosave = autosaveSpy;
+			autosave.setDebounce();
+
+			autosave.ngOnDestroy();
+
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.notCalled(autosaveSpy);
+		}));
+	});
+
 	describe('setDebounce', () => {
 		it('should set a timer to autosave after the specified duration', rlFakeAsync((): void => {
 			const autosaveSpy = sinon.spy();
