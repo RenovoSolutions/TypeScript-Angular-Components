@@ -192,14 +192,5 @@ describe('AutosaveDirective', () => {
 			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
 		});
 
-		it('should not save if the form becomes pristine immediately before saving', () => {
-			const waitValue = mock.request()();
-			form.submitAndWait = sinon.spy(() => waitValue);
-			form.dirty = false;
-
-			autosave.autosave();
-
-			sinon.assert.notCalled(autosaveAction.trigger);
-		});
 	});
 });
