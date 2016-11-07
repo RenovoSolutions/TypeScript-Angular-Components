@@ -1,4 +1,4 @@
-import { Directive, Input, Self, AfterViewInit, HostListener } from '@angular/core';
+import { Directive, Input, Self, AfterViewInit, HostListener, ElementRef } from '@angular/core';
 
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
@@ -34,13 +34,15 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	setDebounce = (): void => {
-		if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
-			this.timer = setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
+		if (this.canAutosave()) {
+			if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
+				this.timer = setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
+			}
 		}
 	}
 
 	resetDebounce(): void {
-		if (this.timer) {
+		if (this.timer && this.canAutosave()) {
 			clearTimeout(this.timer);
 			this.timer = null;
 			this.setDebounce();
@@ -48,11 +50,13 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	autosave = (): void => {
-		const waitOn = this.submitAndWait();
-		if (waitOn) {
-			this.autosaveAction.trigger(waitOn);
+		if (this.canAutosave()) {
+			const waitOn = this.submitAndWait();
+			if (waitOn) {
+				this.autosaveAction.trigger(waitOn);
+			}
+			clearTimeout(this.timer);
 		}
-		clearTimeout(this.timer);
 	}
 
 	submitAndWait(): IWaitValue<any> {
@@ -62,4 +66,8 @@ export class AutosaveDirective implements AfterViewInit {
 			return this.form.submitAndWait();
 		}
 	}
+
+	private canAutosave(): boolean {
+ 		return this.form.dirty && (this.saveWhenInvalid || this.form.validate());
+ 	}
 }
