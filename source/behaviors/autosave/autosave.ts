@@ -1,5 +1,4 @@
 import { Directive, Input, Self, AfterViewInit, HostListener } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
 
 import { FormComponent } from '../../components/form/form';
 import { AutosaveActionService } from '../../services/autosaveAction/autosaveAction.service';
@@ -14,11 +13,9 @@ export class AutosaveDirective implements AfterViewInit {
 	@Input() saveWhenInvalid: boolean;
 	@HostListener('keyup') keyupListener = this.resetDebounce;
 
+	timer: any;
 	form: FormComponent;
 	autosaveAction: AutosaveActionService;
-
-	autosaveStart$: Subject<void> = new Subject<void>();
-	autosaveCancel$: Subject<void> = new Subject<void>();
 
 	constructor( @Self() form: FormComponent
 			, autosaveAction: AutosaveActionService) {
@@ -31,34 +28,31 @@ export class AutosaveDirective implements AfterViewInit {
 	}
 
 	ngOnDestroy(): void {
-		this.autosaveCancel$.next();
+		if (this.timer) {
+			clearTimeout(this.timer);
+		}
 	}
 
 	setDebounce = (): void => {
-		if (this.canAutosave()) {
-			this.autosaveCancel$.next();
-			this.autosaveStart$.debounceTime(DEFAULT_AUTOSAVE_DEBOUNCE).takeUntil(this.autosaveCancel$).subscribe(() => this.autosave());
-			this.autosaveStart$.next();
-		} else {
-			this.autosaveCancel$.next();
+		if (!this.timer && this.form.dirty && (this.saveWhenInvalid || this.form.validate())) {
+			this.timer = setTimeout(this.autosave, DEFAULT_AUTOSAVE_DEBOUNCE)
 		}
 	}
 
 	resetDebounce(): void {
-		if (this.canAutosave()) {
-			this.autosaveStart$.next();
+		if (this.timer) {
+			clearTimeout(this.timer);
+			this.timer = null;
+			this.setDebounce();
 		}
 	}
 
 	autosave = (): void => {
-		if (!this.canAutosave()) {
-			return;
-		}
-
 		const waitOn = this.submitAndWait();
 		if (waitOn) {
 			this.autosaveAction.trigger(waitOn);
 		}
+		clearTimeout(this.timer);
 	}
 
 	submitAndWait(): IWaitValue<any> {
@@ -67,9 +61,5 @@ export class AutosaveDirective implements AfterViewInit {
 		} else {
 			return this.form.submitAndWait();
 		}
-	}
-
-	private canAutosave(): boolean {
-		return this.form.dirty && (this.saveWhenInvalid || this.form.validate());
 	}
 }
