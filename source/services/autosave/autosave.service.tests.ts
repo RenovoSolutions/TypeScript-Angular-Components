@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { services, downgrade } from 'typescript-angular-utilities';
 import test = services.test;
 
@@ -8,7 +9,7 @@ import * as ng from 'angular';
 import 'angular-mocks';
 
 interface IAutosaveActionMock {
-	trigger(promise: ng.IPromise<void>): ng.IPromise<void>;
+	waitOn(promise: ng.IPromise<void>): Observable<void>;
 }
 
 interface IMockFormController {
@@ -26,7 +27,7 @@ describe('autosave', () => {
 	let autosave: IAutosaveService;
 	let autosaveFactory: IAutosaveServiceFactory;
 	let saveSpy: Sinon.SinonSpy;
-	let triggerSpy: Sinon.SinonSpy;
+	let waitOnSpy: Sinon.SinonSpy;
 	let setPristineSpy: Sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
@@ -35,8 +36,8 @@ describe('autosave', () => {
 	beforeEach(() => {
 		ng.mock.module(moduleName);
 
-		triggerSpy = sinon.spy((promise: ng.IPromise<void>): ng.IPromise<void> => { return promise; });
-		let autosaveActionService: IAutosaveActionMock = { trigger: triggerSpy };
+		waitOnSpy = sinon.spy((promise: ng.IPromise<void>): Observable<void> => { return Observable.from(promise); });
+		let autosaveActionService: IAutosaveActionMock = { waitOn: waitOnSpy };
 
 		notification = {
 			warning: sinon.spy(),

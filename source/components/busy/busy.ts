@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { isBoolean } from 'lodash';
+import { Observable } from 'rxjs';
 
 import { DefaultTheme } from '../componentsDefaultTheme';
 import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
@@ -26,18 +27,18 @@ export class BusyComponent {
 	/*
 	 * Public API for triggering the rlBusy to wait on a promise
 	 */
-	trigger(waitOn: IWaitValue<any>): void {
+	waitOn(waitOn: IWaitValue<any>): Observable<any> {
 		if (waitOn == null) {
-			return;
+			return Observable.empty();
 		}
 
 		if (isBoolean(waitOn)) {
 			this.loading = waitOn;
-			return;
+			return Observable.of(waitOn);
 		}
 
 		this.loading = true;
-		this.asyncHelper.waitAsObservable(waitOn)
-			.subscribe(null, () => this.loading = false, () => this.loading = false);
+		return this.asyncHelper.waitAsObservable(waitOn)
+			.do(null, () => this.loading = false, () => this.loading = false);
 	}
 }

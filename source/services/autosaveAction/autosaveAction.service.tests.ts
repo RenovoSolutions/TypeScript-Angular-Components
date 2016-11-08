@@ -24,7 +24,7 @@ describe('AutosaveActionService', () => {
 		autosaveAction.successful$.subscribe(_successful => successful = _successful);
 
 		mockAction = mock.request();
-		autosaveAction.trigger(mockAction());
+		autosaveAction.waitOn(mockAction()).subscribe();
 
 		expect(saving).to.be.true;
 	});
@@ -42,7 +42,7 @@ describe('AutosaveActionService', () => {
 
 	it('should set successful to false if the promise fails', rlFakeAsync((): void => {
 		mockAction = mock.rejectedRequest();
-		autosaveAction.trigger(mockAction());
+		autosaveAction.waitOn(mockAction()).subscribe({ error: () => null });
 		mockAction.flush();
 
 		expect(saving).to.be.false;

@@ -72,7 +72,7 @@ describe('DialogComponent', (): void => {
 		});
 
 		it('should close the dialog when the submit completes', (): void => {
-			dialog.submitAndClose();
+			dialog.submitAndClose().subscribe();
 
 			sinon.assert.calledOnce(submitAndWaitSpy);
 			sinon.assert.notCalled(closeSpy);
@@ -83,7 +83,7 @@ describe('DialogComponent', (): void => {
 		});
 
 		it('should not close the dialog if the submit returns false', (): void => {
-			dialog.submitAndClose();
+			dialog.submitAndClose().subscribe();
 
 			sinon.assert.calledOnce(submitAndWaitSpy);
 			sinon.assert.notCalled(closeSpy);

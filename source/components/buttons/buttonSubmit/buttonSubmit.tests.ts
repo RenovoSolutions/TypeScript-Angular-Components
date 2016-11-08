@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { ButtonSubmitComponent } from './buttonSubmit';
 
 interface IMockForm {
@@ -5,14 +6,14 @@ interface IMockForm {
 }
 
 interface IMockBusy {
-	trigger: Sinon.SinonSpy;
+	waitOn: Sinon.SinonSpy;
 }
 
 interface IMockExceptionHandler {
 	call: Sinon.SinonSpy;
 }
 
-describe('button submit', (): void => {
+describe('ButtonSubmitComponent', (): void => {
 	let buttonSubmit: ButtonSubmitComponent;
 	let form: IMockForm;
 	let busy: IMockBusy;
@@ -24,7 +25,7 @@ describe('button submit', (): void => {
 		buttonSubmit = new ButtonSubmitComponent(<any>form);
 
 		busy = {
-			trigger: sinon.spy(),
+			waitOn: sinon.spy(() => Observable.empty()),
 		};
 		buttonSubmit.busySpinner = <any>busy;
 	});
@@ -33,7 +34,7 @@ describe('button submit', (): void => {
 		buttonSubmit.submit();
 
 		sinon.assert.calledOnce(form.submitAndWait);
-		sinon.assert.calledOnce(busy.trigger);
-		sinon.assert.calledWith(busy.trigger, 5);
+		sinon.assert.calledOnce(busy.waitOn);
+		sinon.assert.calledWith(busy.waitOn, 5);
 	});
 });

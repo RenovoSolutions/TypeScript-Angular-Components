@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpUtility } from 'rl-http';
 
+import { BusyComponent } from '../../source/components/busy/busy';
 import { FormComponent } from '../../source/components/form/form';
 import { AutosaveActionService } from '../../source/services/autosaveAction/autosaveAction.service';
 
@@ -16,11 +18,15 @@ export class FormsBootstrapper {
 	rating$: BehaviorSubject<any>;
 
 	@ViewChild('testForm') testForm: FormComponent;
+	@ViewChild('testBusy') testBusy: BusyComponent;
 
 	autosaveAction: AutosaveActionService;
+	http: HttpUtility;
 
-	constructor(autosaveAction: AutosaveActionService) {
+	constructor(autosaveAction: AutosaveActionService
+			, http: HttpUtility) {
 		this.autosaveAction = autosaveAction;
+		this.http = http;
 
 		this.rating$ = new BehaviorSubject(null);
 
@@ -45,6 +51,11 @@ export class FormsBootstrapper {
 			}, 1000);
 		});
 	}
+
+	saveRequest = data => {
+		const request = this.http.post('http://localhost:8000/test', data).delay(1000);
+		this.testBusy.waitOn(request).subscribe(response => console.log(response));
+	};
 
 	saveTestForm = (data): any => {
 		if (this.testForm.form.dirty) {

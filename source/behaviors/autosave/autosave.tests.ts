@@ -1,4 +1,4 @@
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { rlFakeAsync, mock, rlTick, flushMicrotasks } from 'rl-async-testing';
 
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
@@ -12,7 +12,7 @@ interface IFormMock {
 }
 
 interface IAutosaveActionMock {
-	trigger: Sinon.SinonSpy;
+	waitOn: Sinon.SinonSpy;
 }
 
 describe('AutosaveDirective', () => {
@@ -31,7 +31,7 @@ describe('AutosaveDirective', () => {
 			saveForm: sinon.spy(),
 		};
 
-		autosaveAction = { trigger: sinon.spy() };
+		autosaveAction = { waitOn: sinon.spy(() => Observable.empty()) };
 
 		autosave = new AutosaveDirective(<any>form, <any>autosaveAction);
 	});
@@ -177,8 +177,8 @@ describe('AutosaveDirective', () => {
 
 			autosave.autosave();
 
-			sinon.assert.calledOnce(autosaveAction.trigger);
-			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
+			sinon.assert.calledOnce(autosaveAction.waitOn);
+			sinon.assert.calledWith(autosaveAction.waitOn, waitValue);
 		});
 
 		it('should save the form directly if saveWhenInvalid is true', () => {
@@ -188,8 +188,8 @@ describe('AutosaveDirective', () => {
 
 			autosave.autosave();
 
-			sinon.assert.calledOnce(autosaveAction.trigger);
-			sinon.assert.calledWith(autosaveAction.trigger, waitValue);
+			sinon.assert.calledOnce(autosaveAction.waitOn);
+			sinon.assert.calledWith(autosaveAction.waitOn, waitValue);
 		});
 
 		it('should not save if the form becomes pristine immediately before saving', () => {

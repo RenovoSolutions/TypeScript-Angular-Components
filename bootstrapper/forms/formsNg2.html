@@ -27,8 +27,9 @@
 	<rlButtonSubmit rightAligned="true">Submit right</rlButtonSubmit>
 </rlForm>
 <h5>Autosave form</h5>
+<rlBusy #testBusy></rlBusy>
 <rlBusy [loading]="(autosaveAction.saving$ | async) || (autosaveAction.complete$ | async)"></rlBusy>
-<rlForm #autosaveForm [save]="waitCallback" rlAutosave [saveWhenInvalid]="true">
+<rlForm #autosaveForm [save]="saveRequest" rlAutosave [saveWhenInvalid]="true">
 	<rlTextbox name="textbox1" label="Autosave textbox" rlRequired="Required textbox"></rlTextbox>
 </rlForm>
 {{autosaveForm.form.pristine ? 'Pristine' : 'Dirty'}}

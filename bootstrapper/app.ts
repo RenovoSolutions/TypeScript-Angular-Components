@@ -71,7 +71,8 @@ angular.module(moduleName, [
 	miscModuleName,
 	textModuleName,
 ])
-	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App));
+	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
+	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper));
 
 @NgModule({
 	imports: [
