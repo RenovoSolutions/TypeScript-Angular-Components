@@ -2,7 +2,7 @@
 	<div class="content-group">
 		<rlDateTime class="pull-left"
 					[label]="label"
-					[value]="filter?.dateFrom"
+					[value]="filter?.dateFrom$ | async"
 					(change)="setDate($event)"
 					[useTime]="useTime"
 					[showClear]="showClear"

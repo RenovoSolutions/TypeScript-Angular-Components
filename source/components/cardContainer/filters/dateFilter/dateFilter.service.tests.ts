@@ -11,7 +11,7 @@ interface ITestObj {
 }
 
 describe('DateFilter', (): void => {
-	let dateFilter: DateFilter;
+	let dateFilter: DateFilter<any>;
 
 	beforeEach(() => {
 		dateFilter = new DateFilter({
@@ -20,88 +20,125 @@ describe('DateFilter', (): void => {
 		}, __date.dateUtility, __transform.transform);
 	});
 
-	describe('filter', (): void => {
+	describe('filter value', () => {
+		let filterValue: IDateFilterValue;
+
+		beforeEach(() => {
+			filterValue = {
+				dateFrom: moment('2000-01-01T05:16:00.000'),
+				dateTo: moment('1999-11-15T05:16:00.000'),
+			};
+			(dateFilter as any).value$.next(filterValue);
+		});
+
+		it('should get the current date from', () => {
+			let dateFrom;
+			dateFilter.dateFrom$.subscribe(value => dateFrom = value);
+			expect(dateFrom).to.equalMoment(filterValue.dateFrom);
+		});
+
+		it('should get the current date to', () => {
+			let dateTo;
+			dateFilter.dateTo$.subscribe(value => dateTo = value);
+			expect(dateTo).to.equalMoment(filterValue.dateTo);
+		});
+
+		it('should set the date from', () => {
+			let dateFrom;
+			dateFilter.dateFrom$.subscribe(value => dateFrom = value);
+			let newDateFrom = moment('2016-01-01T05:16:00.000');
+
+			dateFilter.setDateFrom(newDateFrom);
+
+			expect(dateFrom).to.equalMoment(newDateFrom);
+		});
+
+		it('should set the date to', () => {
+			let dateTo;
+			dateFilter.dateTo$.subscribe(value => dateTo = value);
+			let newDateTo = moment('2016-01-01T05:16:00.000');
+
+			dateFilter.setDateTo(newDateTo);
+
+			expect(dateTo).to.equalMoment(newDateTo);
+		});
+	});
+
+	describe('predicate', (): void => {
+		it('should return true if the filter value is null', (): void => {
+			const item: any = {};
+			expect(dateFilter.predicate(item, null)).to.be.true;
+		});
+
 		it('should return true if the from date is empty', (): void => {
 			const item: any = {};
-			dateFilter.dateFrom = null;
-			expect(dateFilter.filter(item)).to.be.true;
+			const filterValue = {
+				dateFrom: null,
+				dateTo: moment('1999-11-15T05:16:00.000'),
+			};
+			expect(dateFilter.predicate(item, filterValue)).to.be.true;
 		});
 
 		it('should return true if the date falls in the range', (): void => {
 			let itemInRange: ITestObj = { value: moment('1999-11-25T08:00:00.000') };
 			let itemOnFromDate: ITestObj = { value: moment('2000-01-01T05:16:00.000') };
 			let itemOutsideOfRange: ITestObj = { value: moment('2000-03-01T00:00:00.000') };
+			const filterValue = {
+				dateFrom: moment('2000-01-01T05:16:00.000'),
+				dateTo: moment('1999-11-15T05:16:00.000'),
+			};
 
-			dateFilter.dateFrom = moment('2000-01-01T05:16:00.000');
-			dateFilter.dateTo = moment('1999-11-15T05:16:00.000');
-			dateFilter.dateRange = true;
-
-			expect(dateFilter.filter(itemInRange)).to.be.true;
-			expect(dateFilter.filter(itemOnFromDate)).to.be.true;
-			expect(dateFilter.filter(itemOutsideOfRange)).to.be.false;
+			expect(dateFilter.predicate(itemInRange, filterValue)).to.be.true;
+			expect(dateFilter.predicate(itemOnFromDate, filterValue)).to.be.true;
+			expect(dateFilter.predicate(itemOutsideOfRange, filterValue)).to.be.false;
 		});
 
 		it('should return true if item is the same date if no range is specified', (): void => {
 			let itemOnSameDate: ITestObj = { value: moment('2000-01-01T05:16:00.000') };
 			let itemOnOtherDate: ITestObj = { value: moment('1999-11-25T08:00:00.000') };
+			const filterValue = {
+				dateFrom: moment('2000-01-01T05:16:00.000'),
+				dateTo: null,
+			};
 
-			dateFilter.dateFrom = moment('2000-01-01T05:16:00.000');
-
-			expect(dateFilter.filter(itemOnSameDate)).to.be.true;
-			expect(dateFilter.filter(itemOnOtherDate)).to.be.false;
+			expect(dateFilter.predicate(itemOnSameDate, filterValue)).to.be.true;
+			expect(dateFilter.predicate(itemOnOtherDate, filterValue)).to.be.false;
 		});
 	});
 
-	describe('serialize', (): void => {
-		it('should serialize to a date range', (): void => {
-			const dateFrom: moment.Moment = moment('2000-01-01T05:16:00.000');
-			const dateTo: moment.Moment = moment('1999-11-15T05:16:00.000');
+	describe('serialize', () => {
+		it('should return null if the filter value is null', () => {
+			(dateFilter as any).value$.next(null);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
 
-			dateFilter.dateFrom = dateFrom;
-			dateFilter.dateTo = dateTo;
-			dateFilter.dateRange = true;
-
-			const filterValue: IDateFilterValue = dateFilter.serialize();
-
-			expect(filterValue.dateFrom).to.equal(dateFrom);
-			expect(filterValue.dateTo).to.equal(dateTo);
-		});
-	});
-
-	describe('trigger change', (): void => {
-		it('should trigger a change when dateFrom or dateTo changes', (): void => {
-			const onChangeSpy: Sinon.SinonSpy = sinon.spy();
-			dateFilter.onChange = onChangeSpy;
-
-			dateFilter.dateFrom = moment('2000-01-01T05:16:00.000');
-
-			sinon.assert.calledOnce(onChangeSpy);
-			onChangeSpy.reset();
-
-			dateFilter.dateTo = moment('2000-01-01T05:16:00.000');
-
-			sinon.assert.calledOnce(onChangeSpy);
+			expect(value).to.be.null;
 		});
 
-		it('should not trigger a change when dateFrom or dateTo is set without changing', (): void => {
-			const onChangeSpy: Sinon.SinonSpy = sinon.spy();
+		it('should return null if the date from and to are both empty', () => {
+			(dateFilter as any).value$.next({});
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
 
-			const dateFrom: moment.Moment = moment('2000-01-01T05:16:00.000');
-			const dateTo: moment.Moment = moment('1999-11-15T05:16:00.000');
+			expect(value).to.be.null;
+		});
 
-			dateFilter.dateFrom = dateFrom;
-			dateFilter.dateTo = dateTo;
+		it('should return the value if the date from is specified', () => {
+			const filterValue = { dateFrom: {} };
+			(dateFilter as any).value$.next(filterValue);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
 
-			dateFilter.onChange = onChangeSpy;
+			expect(value).to.equal(filterValue);
+		});
 
-			dateFilter.dateFrom = dateFrom;
+		it('should return the value if the date to is specified', () => {
+			const filterValue = { dateTo: {} };
+			(dateFilter as any).value$.next(filterValue);
+			let value;
+			dateFilter.serialize().subscribe(result => value = result);
 
-			sinon.assert.notCalled(onChangeSpy);
-			dateFilter.onChange = onChangeSpy;
-
-			dateFilter.dateTo = dateTo;
-
-			sinon.assert.notCalled(onChangeSpy);
+			expect(value).to.equal(filterValue);
 		});
 	});
 });

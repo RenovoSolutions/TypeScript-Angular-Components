@@ -33,6 +33,7 @@ import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { CardsRootComponent } from './cards/cardRoot';
 import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
+import { CardsSmartDataBootstrapper } from './cards/cardsSmartDataBootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
 import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
@@ -99,6 +100,7 @@ angular.module(moduleName, [
 		CardsRootComponent,
 		CardsNg1BootstrapperComponent,
 		CardsBootstrapper,
+		CardsSmartDataBootstrapper,
 		upgradeAdapter.upgradeNg1Component('tsCardsNg1'),
 
 		TabsRootComponent,

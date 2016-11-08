@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
@@ -12,6 +12,7 @@ import { SizeForBreakpoints } from '../../card/headerColumn/sizeForBreakpoints';
 	selector: 'rlColumnHeader',
 	template: require('./columnHeader.html'),
 	providers: [SizeForBreakpoints],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColumnHeaderComponent<T> {
 	@Input() column: IColumn<T>;

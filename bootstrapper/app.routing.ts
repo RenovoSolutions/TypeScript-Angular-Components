@@ -13,6 +13,7 @@ import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { CardsRootComponent } from './cards/cardRoot';
 import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
+import { CardsSmartDataBootstrapper } from './cards/cardsSmartDataBootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
 import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
@@ -57,6 +58,7 @@ const appRoutes: Routes = [
 		children: [
 			{ path: 'ng1', component: CardsNg1BootstrapperComponent },
 			{ path: 'ng2', component: CardsBootstrapper },
+			{ path: 'smart', component: CardsSmartDataBootstrapper },
 		],
 	},
 	{

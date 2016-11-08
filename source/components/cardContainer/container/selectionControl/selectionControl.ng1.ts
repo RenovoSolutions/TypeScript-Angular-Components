@@ -6,7 +6,7 @@ import * as _ from 'lodash';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __boolean = services.boolean;
 
-import { IDataSource } from '../../dataSources/index';
+import { IDataSourceOld } from '../../dataSources/index';
 import { CardContainerController } from '../../cardContainer.ng1';
 
 export var moduleName: string = 'rl.ui.components.cardContainer.selectionControl';
@@ -16,7 +16,7 @@ export var controllerName: string = 'SelectionControlController';
 export class SelectionControlController {
 	selectedItems: number;
 	pagingEnabled: boolean;
-	dataSource: IDataSource<any>;
+	dataSource: IDataSourceOld<any>;
 	private cardContainer: CardContainerController;
 
 	static $inject: string[] = [downgrade.booleanServiceName];

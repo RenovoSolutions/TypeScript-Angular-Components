@@ -11,7 +11,7 @@ import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceN
 
 import { moduleName as headerColumnModuleName } from './headerColumn/headerColumn.module';
 import { IAutosaveBehavior } from '../../../behaviors/autosave/autosave.ng1';
-import { IDataSource } from '../dataSources/dataSource';
+import { IDataSourceOld } from '../dataSources/dataSource';
 import { IColumn } from '../column';
 import { CardContainerController } from '../cardContainer.ng1';
 
@@ -23,7 +23,7 @@ export interface ICardBindings {
 	columns: IColumn<any>[];
 	item: any;
 	clickable: boolean;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	containerData: any;
 	cardController: string;
 	cardControllerAs: string;
@@ -57,7 +57,7 @@ export class CardController {
 	columns: IColumn<any>[];
 	item: any;
 	clickable: boolean;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	containerData: any;
 	cardController: string;
 	cardControllerAs: string;

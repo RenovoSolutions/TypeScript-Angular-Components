@@ -1,5 +1,4 @@
 import { services } from 'typescript-angular-utilities';
-import __object = services.object;
 import __transform = services.transform;
 
 import { ModeFilterGroup } from './modeFilterGroup.service';
@@ -18,10 +17,10 @@ interface ITestObject {
 	flag?: boolean;
 }
 
-describe('modeFilterGroup', () => {
-	let modeFilterGroup: ModeFilterGroup;
+describe('ModeFilterGroup', () => {
+	let modeFilterGroup: ModeFilterGroup<any>;
 
-	const buildFilter = settings => new ModeFilterGroup(settings, __object.objectUtility, __transform.transform);
+	const buildFilter = settings => new ModeFilterGroup<any>(settings, __transform.transform);
 
 	it('should build an option filter function that filters out items with a value not matching the mode', (): void => {
 		let trueModeOption: IModeFilterOptionMock = {
@@ -43,14 +42,14 @@ describe('modeFilterGroup', () => {
 		let emptyObj: ITestObject = {};
 
 		modeFilterGroup.activeOption = <any>trueModeOption;
-		expect(modeFilterGroup.filter(trueObj)).to.be.true;
-		expect(modeFilterGroup.filter(falseObj)).to.be.false;
-		expect(modeFilterGroup.filter(emptyObj)).to.be.false;
+		expect(modeFilterGroup.predicate(trueObj)).to.be.true;
+		expect(modeFilterGroup.predicate(falseObj)).to.be.false;
+		expect(modeFilterGroup.predicate(emptyObj)).to.be.false;
 
 		modeFilterGroup.activeOption = <any>falseModeOption;
-		expect(modeFilterGroup.filter(falseObj)).to.be.true;
-		expect(modeFilterGroup.filter(trueObj)).to.be.false;
-		expect(modeFilterGroup.filter(emptyObj)).to.be.false;
+		expect(modeFilterGroup.predicate(falseObj)).to.be.true;
+		expect(modeFilterGroup.predicate(trueObj)).to.be.false;
+		expect(modeFilterGroup.predicate(emptyObj)).to.be.false;
 	});
 
 	it('should serialize to the value of the active option', (): void => {
@@ -65,8 +64,11 @@ describe('modeFilterGroup', () => {
 		modeFilterGroup = buildFilter({
 			options: [inactiveOption, activeOption],
 		});
+		let value;
 
-		expect(modeFilterGroup.serialize()).to.equal(2);
+		modeFilterGroup.serialize().subscribe(result => value = result);
+
+		expect(value).to.equal(2);
 	});
 
 	it('should return null if the default option is selected', (): void => {
@@ -78,7 +80,10 @@ describe('modeFilterGroup', () => {
 		modeFilterGroup = buildFilter({
 			options: [defaultOption],
 		});
+		let value;
 
-		expect(modeFilterGroup.serialize()).to.be.null;
+		modeFilterGroup.serialize().subscribe(result => value = result);
+
+		expect(value).to.be.null;
 	});
 });

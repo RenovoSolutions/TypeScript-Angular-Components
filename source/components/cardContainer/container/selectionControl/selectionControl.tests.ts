@@ -1,46 +1,29 @@
-import { Subject } from 'rxjs';
-import { each, take } from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
+import { BehaviorSubject } from 'rxjs';
 
 import { SelectionComponent } from './selectionControl';
 
-interface IItemMock {
-	viewData: ISelectionViewData;
-}
-
-interface ISelectionViewData {
-	selected: boolean;
-}
-
 interface ICardContainerMock {
-	numberSelected: number;
-	numberSelectedChanges: Subject<number>;
-	dataSource: any;
-	selectionChanged: IEventEmitterMock;
-}
-
-interface IEventEmitterMock {
-	emit: Sinon.SinonSpy;
+	numberSelected$: any;
+	selectionData$: BehaviorSubject<any>;
+	selectionFilteredData$: BehaviorSubject<any>;
+	dataSource: { pager?: any };
+	setSelected: Sinon.SinonSpy;
 }
 
 describe('SelectionComponent', () => {
-	let selection: SelectionComponent<IItemMock>;
+	let selection: SelectionComponent<any>;
 	let cardContainer: ICardContainerMock;
-	let items: IItemMock[];
 
 	beforeEach(() => {
 		cardContainer = {
-			numberSelected: 0,
-			numberSelectedChanges: new Subject<number>(),
-			dataSource: {
-				pager: null,
-			},
-			selectionChanged: { emit: sinon.spy() },
+			numberSelected$: {},
+			selectionData$: new BehaviorSubject(null),
+			selectionFilteredData$: new BehaviorSubject(null),
+			dataSource: {},
+			setSelected: sinon.spy(),
 		};
 
-		selection = new SelectionComponent<IItemMock>(<any>cardContainer, new __boolean.BooleanUtility());
+		selection = new SelectionComponent<any>(<any>cardContainer);
 	});
 
 	describe('pagingEnabled', (): void => {
@@ -58,93 +41,50 @@ describe('SelectionComponent', () => {
 		});
 	});
 
-	it('should update the selectedItems when the cardContainer numberSelected changes', (): void => {
+	it('should return the card container numberSelected stream', (): void => {
 		selection.ngOnInit();
-
-		cardContainer.numberSelectedChanges.next(2);
-
-		expect(selection.selectedItems).to.equal(2);
-
-		cardContainer.numberSelectedChanges.next(4);
-
-		expect(selection.selectedItems).to.equal(4);
+		expect(selection.selectedItems$).to.equal(cardContainer.numberSelected$);
 	});
 
 	describe('selection', (): void => {
-		beforeEach(() => {
-			items = [
-				{
-					viewData: {
-						selected: false,
-					},
-				},
-				{
-					viewData: {
-						selected: false,
-					},
-				},
-				{
-					viewData: {
-						selected: false,
-					},
-				},
-				{
-					viewData: {
-						selected: false,
-					},
-				},
-			];
+		it('should select all items on the page', () => {
+			const items = [1, 2, 3, 4];
+			cardContainer.selectionData$.next(items);
 
-			cardContainer.dataSource = {
-				dataSet: take(items, 2),
-				filteredDataSet: items,
-			};
-
-			selection.ngOnInit();
-		});
-
-		it('should select all items on the page', (): void => {
 			selection.selectPage();
 
-			expect(items[0].viewData.selected).to.be.true;
-			expect(items[1].viewData.selected).to.be.true;
-			expect(items[2].viewData.selected).to.be.false;
-			expect(items[3].viewData.selected).to.be.false;
+			sinon.assert.calledOnce(cardContainer.setSelected);
+			sinon.assert.calledWith(cardContainer.setSelected, items, true);
 		});
 
-		it('should select all items on all pages', (): void => {
+		it('should select all items on all pages', () => {
+			const items = [1, 2, 3, 4];
+			cardContainer.selectionFilteredData$.next(items);
+
 			selection.selectAll();
 
-			expect(items[0].viewData.selected).to.be.true;
-			expect(items[1].viewData.selected).to.be.true;
-			expect(items[2].viewData.selected).to.be.true;
-			expect(items[3].viewData.selected).to.be.true;
+			sinon.assert.calledOnce(cardContainer.setSelected);
+			sinon.assert.calledWith(cardContainer.setSelected, items, true);
 		});
 
-		it('should clear selection of all items on the page', (): void => {
-			setAllSelected(items);
+		it('should clear selection of all items on the page', () => {
+			const items = [1, 2, 3, 4];
+			cardContainer.selectionData$.next(items);
 
 			selection.clearPage();
 
-			expect(items[0].viewData.selected).to.be.false;
-			expect(items[1].viewData.selected).to.be.false;
-			expect(items[2].viewData.selected).to.be.true;
-			expect(items[3].viewData.selected).to.be.true;
+			sinon.assert.calledOnce(cardContainer.setSelected);
+			sinon.assert.calledWith(cardContainer.setSelected, items, false);
 		});
 
-		it('should clear selection of all items on all pages', (): void => {
-			setAllSelected(items);
+		it('should clear selection of all items on all pages', () => {
+			const items = [1, 2, 3, 4];
+			cardContainer.selectionFilteredData$.next(items);
 
 			selection.clearAll();
 
-			expect(items[0].viewData.selected).to.be.false;
-			expect(items[1].viewData.selected).to.be.false;
-			expect(items[2].viewData.selected).to.be.false;
-			expect(items[3].viewData.selected).to.be.false;
+			sinon.assert.calledOnce(cardContainer.setSelected);
+			sinon.assert.calledWith(cardContainer.setSelected, items, false);
 		});
 	});
-
-	function setAllSelected(items: IItemMock[]): void {
-		each(items, (item: IItemMock): void => { item.viewData.selected = true; });
-	}
 });

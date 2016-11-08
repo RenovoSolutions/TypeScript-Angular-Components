@@ -2,28 +2,28 @@
 	<ul class="pagination">
 		<li title="Go to first page"
 			(click)="first()"
-			[class.disabled]="!canGoBack">
+			[class.disabled]="!(canGoBack$ | async)">
 			<a><i class="fa fa-angle-double-left"></i></a>
 		</li>
 		<li title="Go to previous page"
 			(click)="previous()"
-			[class.disabled]="!canGoBack">
+			[class.disabled]="!(canGoBack$ | async)">
 			<a><i class="fa fa-angle-left"></i></a>
 		</li>
-		<li *ngFor="let page of pages"
+		<li *ngFor="let page of pages$ | async"
 			title="Go to page {{page}}"
 			(click)="goto(page)"
-			[class.active]="pager.pageNumber == page">
+			[class.active]="isCurrent(page) | async">
 			<a>{{page}}</a>
 		</li>
 		<li title="Go to next page"
 			(click)="next()"
-			[class.disabled]="!canGoForward">
+			[class.disabled]="!(canGoForward$ | async)">
 			<a><i class="fa fa-angle-right"></i></a>
 		</li>
 		<li title="Go to last page"
 			(click)="last()"
-			[class.disabled]="!canGoForward">
+			[class.disabled]="!(canGoForward$ | async)">
 			<a><i class="fa fa-angle-double-right"></i></a>
 		</li>
 	</ul>

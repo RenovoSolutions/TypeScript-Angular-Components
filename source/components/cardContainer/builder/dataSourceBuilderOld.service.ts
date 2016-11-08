@@ -7,23 +7,23 @@ import __array = services.array;
 
 import * as dataSources from '../dataSources/index';
 import { ISorter, Sorter } from '../sorts/index';
-import { CardContainerBuilder } from './cardContainerBuilder.service';
+import { CardContainerBuilderOld } from './cardContainerBuilderOld.service';
 
-export interface IDataSourceBuilder {
-	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType>;
+export interface IDataSourceBuilderOld {
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType>;
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
 	buildClientServerDataSource<TDataType>(getDataSet: dataSources.IDataServiceSearchFunction<TDataType>
 											, getFilterModel?: dataSources.IGetFilterModel<TDataType>
 											, validateModel?: dataSources.IValidateFilterModel<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType>;
-	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>;
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType>;
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSourceOld<TDataType>): dataSources.IDataSourceOld<TDataType>;
 }
 
 @Injectable()
-export class DataSourceBuilder implements IDataSourceBuilder {
+export class DataSourceBuilderOld implements IDataSourceBuilderOld {
 	private injector: Injector;
-	private parent: CardContainerBuilder;
+	private parent: CardContainerBuilderOld;
 	private object: __object.ObjectUtility;
 	private array: __array.IArrayUtility;
 	private sorter: Sorter;
@@ -38,20 +38,20 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 		this.sorter = sorter;
 	}
 
-	init(parent: CardContainerBuilder): void {
+	init(parent: CardContainerBuilderOld): void {
 		this.parent = parent;
 
 		parent._dataSource = this.buildSimpleDataSource([]);
 	}
 
-	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
+	buildSimpleDataSource<TDataType>(data: TDataType[]): dataSources.IDataSourceOld<TDataType> {
+		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.SimpleDataSource(data, processor, this.array);
 		return this.parent._dataSource;
 	}
 
 	buildDataServiceDataSource<TDataType>(getDataSet: dataSources.IDataServiceFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
+		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.DataServiceDataSource(getDataSet, processor, this.array);
 		return <any>this.parent._dataSource;
 	}
@@ -63,24 +63,24 @@ export class DataSourceBuilder implements IDataSourceBuilder {
 			this.parent.useSearch();
 		}
 
-		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
+		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.ClientServerDataSource(getDataSet, this.parent._searchFilter, getFilterModel, validateModel, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
-	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
+	buildServerSideDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType> {
+		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
 		this.parent._dataSource = new dataSources.ServerSideDataSource(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
-	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunction<TDataType>): dataSources.IAsyncDataSource<TDataType> {
-		let processor: dataSources.IDataSourceProcessor = new dataSources.DataSourceProcessor(this.object, this.sorter);
-		this.parent._dataSource = new dataSources.SmartDataSource(getDataSet, processor, this.array, this.object);
+	buildSmartDataSource<TDataType>(getDataSet: dataSources.IServerSearchFunctionOld<TDataType>): dataSources.IAsyncDataSource<TDataType> {
+		let processor: dataSources.IDataSourceProcessorOld = new dataSources.DataSourceProcessorOld(this.object, this.sorter);
+		this.parent._dataSource = new dataSources.SmartDataSourceOld(getDataSet, processor, this.array, this.object);
 		return <any>this.parent._dataSource;
 	}
 
-	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSource<TDataType>): dataSources.IDataSource<TDataType>{
+	buildCustomDataSource<TDataType>(dataSource: dataSources.IDataSourceOld<TDataType>): dataSources.IDataSourceOld<TDataType>{
 		this.parent._dataSource = dataSource;
 		return this.parent._dataSource;
 	}

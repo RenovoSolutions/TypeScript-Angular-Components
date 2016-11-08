@@ -1,15 +1,15 @@
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { IDataSource } from '../dataSource';
-import { DataSourceBase } from '../dataSourceBase.service';
-import { IDataSourceProcessor } from '../dataSourceProcessor.service';
+import { IDataSourceOld } from '../dataSource';
+import { DataSourceBaseOld } from '../dataSourceBaseOld.service';
+import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 
-export { IDataSource };
+export { IDataSourceOld };
 
-export class SimpleDataSource<TDataType> extends DataSourceBase<TDataType> {
+export class SimpleDataSource<TDataType> extends DataSourceBaseOld<TDataType> {
 	constructor(data: TDataType[]
-			, dataSourceProcessor: IDataSourceProcessor
+			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility) {
 		super(dataSourceProcessor, array);
 		this.countFilterGroups = false;

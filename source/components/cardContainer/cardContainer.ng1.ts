@@ -9,15 +9,15 @@ import __genericSearchFilter = services.genericSearchFilter;
 
 import { IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 import { IViewDataEntity } from '../../types/viewData';
-import { IDataSource } from './dataSources/index';
-import { DataPager } from './paging/index';
+import { IDataSourceOld } from './dataSources/index';
+import { DataPagerOld } from './paging/index';
 import { IColumn, ISecondarySorts, IBreakpointSize } from './column';
 import { ISort, IPartialSort, SortDirection, ISortDirections } from './sorts/index';
 import { dataPagerFactoryName } from '../../componentsDowngrade';
 
 import { xs, sm, md, lg } from '../../services/breakpoints/breakpoint';
 
-import { ICardContainerBuilder, CardContainerBuilder, CardContainerType } from './builder/cardContainerBuilder.service';
+import { ICardContainerBuilderOld, CardContainerBuilderOld, CardContainerTypeOld } from './builder/cardContainerBuilderOld.service';
 
 export let componentName: string = 'rlCardContainer';
 export let controllerName: string = 'CardContainerController';
@@ -33,7 +33,7 @@ export interface ICardContainerBindings {
 	/**
 	 * A builder for the card container
 	 */
-	builder: ICardContainerBuilder;
+	builder: ICardContainerBuilderOld;
 
 	/**
 	 * Controller shared by all components on a card
@@ -86,7 +86,7 @@ export interface ISelectionViewData {
 
 export class CardContainerController {
 	// bindings
-	builder: CardContainerBuilder;
+	builder: CardContainerBuilderOld;
 
 	filters: filters.IFilter[];
 	searchFilter: __genericSearchFilter.IGenericSearchFilter;
@@ -107,7 +107,7 @@ export class CardContainerController {
 	searchPlaceholder: string;
 	focusSearchOn: boolean;
 
-	dataSource: IDataSource<any>;
+	dataSource: IDataSourceOld<any>;
 	sortDirection: ISortDirections;
 	numberSelected: number = 0;
 	numberSelectedChanges: Rx.Subject<number>;
@@ -116,7 +116,7 @@ export class CardContainerController {
 	private disablingSelections: boolean;
 
 	makeCard: angular.ITranscludeFunction;
-	type: CardContainerType = CardContainerType.old;
+	type: CardContainerTypeOld = CardContainerTypeOld.old;
 
 	static $inject: string[] = ['$scope', '$attrs', '$transclude', dataPagerFactoryName, downgrade.objectServiceName, downgrade.arrayServiceName, parentChildServiceName];
 	constructor(private $scope: ICardContainerScope

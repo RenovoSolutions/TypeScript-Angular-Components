@@ -7,7 +7,7 @@ import __transform = services.transform;
 
 import { ServerSideDataSource, IServerSideDataSource } from './serverSideDataSource.service';
 
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
+import { DataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 import { Sorter } from '../../sorts/sorter/sorter.service';
 import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 
@@ -22,7 +22,7 @@ interface ITestFilter extends filters.ISerializableFilter<number> {
 }
 
 describe('ServerSideDataSource', () => {
-	let dataSourceProcessor: DataSourceProcessor;
+	let dataSourceProcessor: DataSourceProcessorOld;
 	let dataService: IDataServiceMock;
 	let filter: ITestFilter;
 	let source: IServerSideDataSource<number>;
@@ -39,7 +39,7 @@ describe('ServerSideDataSource', () => {
 			get: mock.promise({ dataSet: [1, 2], count: 2 }),
 		};
 
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
 		sinon.spy(dataSourceProcessor, 'processAndCount');
 		source = <any>new ServerSideDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
 

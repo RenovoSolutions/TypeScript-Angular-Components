@@ -6,8 +6,8 @@ import * as moment from 'moment';
 import { services, downgrade } from 'typescript-angular-utilities';
 import __date = services.date;
 
-import {IDateFilter} from './dateFilter.service';
-import {IDataSource} from '../../dataSources/dataSource';
+import {IDateFilterOld} from './dateFilterOld.service';
+import {IDataSourceOld} from '../../dataSources/dataSource';
 
 export let componentName: string = 'rlDateFilter';
 export let controllerName: string = 'rlDateFilterController';
@@ -17,24 +17,24 @@ enum DateOptions { Day, Week, Month };
 export interface IDateFilterBindings {
 	clearButton: boolean;
 	count: number;
-	filter: IDateFilter;
+	filter: IDateFilterOld;
 	includeTime: boolean;
 	includeDateRange: boolean;
 	label: string;
 	dateFrom: moment.Moment;
 	dateTo: moment.Moment;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	type: string;
 }
 
 export class DateFilterController implements IDateFilterBindings {
 	clearButton: boolean;
 	count: number = 0;
-	filter: IDateFilter;
+	filter: IDateFilterOld;
 	includeDateRange: boolean;
 	includeTime: boolean;
 	label: string;
-	source: IDataSource<any>;
+	source: IDataSourceOld<any>;
 	type: moment.UnitOfTime = 'days';
 	private inputField: angular.IAugmentedJQuery;
 

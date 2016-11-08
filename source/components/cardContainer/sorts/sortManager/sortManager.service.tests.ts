@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { find } from 'lodash';
 
 import { SortManagerService, ISort, SortDirection } from './sortManager.service';
@@ -10,179 +11,197 @@ describe('SortManagerService', () => {
 	let sortSpy: Sinon.SinonSpy;
 
 	beforeEach(() => {
-		sortManager = new SortManagerService();
+		sortSpy = sinon.spy();
+		const sorter: any = { sort: sortSpy };
+		sortManager = new SortManagerService(sorter);
 		getColumn = sinon.spy();
 		sortManager.setup([], getColumn, 3);
 		sortManager.sortList$.subscribe(value => sorts = value);
-		sortSpy = sinon.spy();
-		sortManager.sortChange$.subscribe(sortSpy);
 	});
 
-	it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
-		let columns: IColumn<any>[] = <any>[
-			{
-				label: 'col1',
-				size: {},
-			},
-			{
-				label: 'col2',
-				size: {},
-			},
-			{
-				label: 'col3',
-				size: {},
-			},
-		];
-		sortManager.maxColumnSorts = 2;
+	describe('sort', () => {
+		it('should sort the data against the current sorts', () => {
+			const data = [1, 2, 3];
+			sortManager.updateSorts(<any>{});
 
-		sortManager.sort(columns[0]);
+			sortManager.sort(Observable.of(data)).subscribe();
 
-		expect(sorts).to.have.length(1);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[0].column).to.equal(columns[0]);
-		expect(columns[0].sortDirection).to.equal(SortDirection.ascending);
-
-		sortManager.sort(columns[1]);
-
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[0].column).to.equal(columns[1]);
-		expect(sorts[1].direction).to.equal(SortDirection.ascending);
-		expect(sorts[1].column).to.equal(columns[0]);
-		expect(columns[1].sortDirection).to.equal(SortDirection.ascending);
-		expect(columns[0].sortDirection).to.be.null;
-
-		sortManager.sort(columns[2]);
-
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[0].column).to.equal(columns[2]);
-		expect(sorts[1].direction).to.equal(SortDirection.ascending);
-		expect(sorts[1].column).to.equal(columns[1]);
-		expect(columns[2].sortDirection).to.equal(SortDirection.ascending);
-		expect(columns[1].sortDirection).to.be.null;
-		expect(columns[0].sortDirection).to.be.null;
-
-		sinon.assert.calledThrice(sortSpy);
+			sinon.assert.calledOnce(sortSpy);
+			sinon.assert.calledWith(sortSpy, data, sorts);
+		});
 	});
 
-	it('should change sort direction if specified column is already at the front of the sort', (): void => {
-		let columns: IColumn<any>[] = <any>[
-			{
-				label: 'col1',
+	describe('updateSorts', () => {
+		it('should replace all sorts with columns secondary sorts if present', (): void => {
+			let columnWithSecondarySorts: IColumn<any> = <any>{
+				label: 'colWithSecondary',
 				size: {},
-			},
-			{
-				label: 'col2',
+				secondarySorts: {
+					ascending: [
+						{
+							column: 'secondarySortCol',
+							direction: SortDirection.descending,
+						},
+					],
+					descending: [
+						{
+							column: 'secondarySortCol',
+							direction: SortDirection.ascending,
+						},
+					],
+				},
+			};
+			let secondarySortColumn: IColumn<any> = <any>{
+				label: 'secondarySortCol',
 				size: {},
-			},
-		];
+			};
+			let colWithoutSecondary1: IColumn<any> = <any>{
+				label: 'colWithoutSecondary1',
+				size: {},
+			};
+			let colWithoutSecondary2: IColumn<any> = <any>{
+				label: 'colWithoutSecondary2',
+				size: {},
+			};
+			sortManager.getColumn = name => {
+				return find([columnWithSecondarySorts, secondarySortColumn, colWithoutSecondary1, colWithoutSecondary2]
+					, column => column.label === name);
+			};
 
-		sortManager.sort(columns[1]);
-		sortManager.sort(columns[0]);
+			sortManager.updateSorts(colWithoutSecondary1);
+			sortManager.updateSorts(colWithoutSecondary2);
 
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[0].column).to.equal(columns[0]);
-		expect(columns[0].sortDirection).to.equal(SortDirection.ascending);
+			sortManager.updateSorts(columnWithSecondarySorts);
 
-		sortManager.sort(columns[0]);
+			expect(sorts).to.have.length(2);
+			expect(sorts[0].column).to.equal(columnWithSecondarySorts);
+			expect(sorts[0].direction).to.equal(SortDirection.ascending);
+			expect(sorts[1].column).to.equal(secondarySortColumn);
+			expect(sorts[1].direction).to.equal(SortDirection.descending);
 
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].direction).to.equal(SortDirection.descending);
-		expect(sorts[0].column).to.equal(columns[0]);
-		expect(columns[0].sortDirection).to.equal(SortDirection.descending);
+			sortManager.updateSorts(columnWithSecondarySorts);
 
-		sortManager.sort(columns[0]);
+			expect(sorts).to.have.length(2);
+			expect(sorts[0].column).to.equal(columnWithSecondarySorts);
+			expect(sorts[0].direction).to.equal(SortDirection.descending);
+			expect(sorts[1].column).to.equal(secondarySortColumn);
+			expect(sorts[1].direction).to.equal(SortDirection.ascending);
 
-		expect(sorts).to.have.length(1);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[0].column).to.equal(columns[1]);
-		expect(columns[0].sortDirection).to.be.null;
+			sortManager.updateSorts(columnWithSecondarySorts);
 
-		sinon.assert.callCount(sortSpy, 4);
+			expect(sorts).to.be.empty;
+		});
+
+		it('should limit to the max column size', () => {
+			sortManager.maxColumnSorts = 1;
+			let columns: IColumn<any>[] = <any>[
+				{
+					label: 'col1',
+					size: {},
+				},
+				{
+					label: 'col2',
+					size: {},
+				},
+			];
+
+			sortManager.updateSorts(columns[0]);
+			sortManager.updateSorts(columns[1]);
+
+			expect(sorts).to.have.length(1);
+			expect(sorts[0].column).to.equal(columns[1]);
+			expect(sorts[0].direction).to.equal(SortDirection.ascending);
+		});
+
+		it('should toggle the first sort if the new sort is on the same column', () => {
+			const column: any = {};
+			const sort: any = { column };
+			(sortManager as any)._sortList.next([sort]);
+			const toggleSpy = sinon.spy(() => []);
+			sortManager.toggleFirstSort = toggleSpy;
+
+			sortManager.updateSorts(column);
+
+			sinon.assert.calledOnce(toggleSpy);
+		});
+
+		it('should set the first sort if the new sort is on a different column', () => {
+			const column: any = {};
+			const otherColumn: any = {};
+			const sort: any = { column };
+			(sortManager as any)._sortList.next([sort]);
+			const setFirstSpy = sinon.spy(() => []);
+			sortManager.setFirstSort = setFirstSpy;
+
+			sortManager.updateSorts(otherColumn);
+
+			sinon.assert.calledOnce(setFirstSpy);
+		});
 	});
 
-	it('should replace all sorts with columns secondary sorts if present', (): void => {
-		let columnWithSecondarySorts: IColumn<any> = <any>{
-			label: 'colWithSecondary',
-			size: {},
-			secondarySorts: {
-				ascending: [
-					{
-						column: 'secondarySortCol',
-						direction: SortDirection.descending,
-					},
-				],
-				descending: [
-					{
-						column: 'secondarySortCol',
-						direction: SortDirection.ascending,
-					},
-				],
-			},
-		};
-		let secondarySortColumn: IColumn<any> = <any>{
-			label: 'secondarySortCol',
-			size: {},
-		};
-		let colWithoutSecondary1: IColumn<any> = <any>{
-			label: 'colWithoutSecondary1',
-			size: {},
-		};
-		let colWithoutSecondary2: IColumn<any> = <any>{
-			label: 'colWithoutSecondary2',
-			size: {},
-		};
-		sortManager.getColumn = name => {
-			return find([columnWithSecondarySorts, secondarySortColumn, colWithoutSecondary1, colWithoutSecondary2]
-						, column => column.label === name);
-		};
+	describe('toggleFirstSort', () => {
+		it('should change sort to descending if currently making an ascending sort on that column', () => {
+			const column: any = {};
+			let sort = {
+				direction: SortDirection.ascending,
+				column: column,
+			};
 
-		sortManager.sort(colWithoutSecondary1);
-		sortManager.sort(colWithoutSecondary2);
+			const newSorts = sortManager.toggleFirstSort(sort, false, [sort]);
 
-		sortManager.sort(columnWithSecondarySorts);
+			expect(newSorts).to.have.length(1);
+			expect(newSorts[0].column).to.equal(column);
+			expect(newSorts[0].direction).to.equal(SortDirection.descending);
+		});
 
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].column).to.equal(columnWithSecondarySorts);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
-		expect(sorts[1].column).to.equal(secondarySortColumn);
-		expect(sorts[1].direction).to.equal(SortDirection.descending);
+		it('should drop the sort from the list if currently making a descending sort on that column', () => {
+			let sort: any = {
+				direction: SortDirection.descending,
+				column: {},
+			};
+			const otherColumn = {};
+			const otherSort: any = { column: otherColumn };
 
-		sortManager.sort(columnWithSecondarySorts);
+			const newSorts = sortManager.toggleFirstSort(sort, false, [sort, otherSort]);
 
-		expect(sorts).to.have.length(2);
-		expect(sorts[0].column).to.equal(columnWithSecondarySorts);
-		expect(sorts[0].direction).to.equal(SortDirection.descending);
-		expect(sorts[1].column).to.equal(secondarySortColumn);
-		expect(sorts[1].direction).to.equal(SortDirection.ascending);
+			expect(newSorts).to.have.length(1);
+			expect(newSorts[0].column).to.equal(otherColumn);
+		});
 
-		sortManager.sort(columnWithSecondarySorts);
+		it('should clear the list if currently making a descending sort on a column with secondary sorts', () => {
+			let sort: any = {
+				direction: SortDirection.descending,
+				column: {},
+			};
+			const otherSort: any = {};
 
-		expect(sorts).to.be.empty;
+			const newSorts = sortManager.toggleFirstSort(sort, true, [sort, otherSort]);
 
-		sinon.assert.callCount(sortSpy, 5);
+			expect(newSorts).to.be.empty;
+		});
 	});
 
-	it('should override the default max column size', (): void => {
-		sortManager.maxColumnSorts = 1;
-		let columns: IColumn<any>[] = <any>[
-			{
-				label: 'col1',
-				size: {},
-			},
-			{
-				label: 'col2',
-				size: {},
-			},
-		];
+	describe('setFirstSort', () => {
+		it('should add new columns to the front', () => {
+			const newSortColumn = {};
+			let previousSorts = [{}];
 
-		sortManager.sort(columns[0]);
-		sortManager.sort(columns[1]);
+			const newSorts = sortManager.setFirstSort(<any>newSortColumn, <any>previousSorts);
 
-		expect(sorts).to.have.length(1);
-		expect(sorts[0].column).to.equal(columns[1]);
-		expect(sorts[0].direction).to.equal(SortDirection.ascending);
+			expect(newSorts).to.have.length(2);
+			expect(newSorts[0].column).to.equal(newSortColumn);
+			expect(newSorts[0].direction).to.equal(SortDirection.ascending);
+		});
+
+		it('should move the column to the front if already present in the sort list', () => {
+			const newSortColumn = {};
+			let previousSorts = [{}, { column: newSortColumn }];
+
+			const newSorts = sortManager.setFirstSort(<any>newSortColumn, <any>previousSorts);
+
+			expect(newSorts).to.have.length(2);
+			expect(newSorts[0].column).to.equal(newSortColumn);
+			expect(newSorts[0].direction).to.equal(SortDirection.ascending);
+		});
 	});
 });

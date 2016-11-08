@@ -3,23 +3,23 @@
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-import { IDataSource } from '../../dataSources/index';
-import { IFilterGroup, IFilterOption } from './filterGroup.service';
+import { IDataSourceOld } from '../../dataSources/index';
+import { IFilterGroupOld, IFilterOptionOld } from './filterGroupOld.service';
 
 export var componentName: string = 'rlFilterGroup';
 export var controllerName: string = 'FilterGroupController';
 
 export interface IFilterGroupBindings {
 	icon: string;
-	filterGroup: IFilterGroup;
-	source: IDataSource<any>;
+	filterGroup: IFilterGroupOld;
+	source: IDataSourceOld<any>;
 }
 
 export class FilterGroupController {
 	// bindings
 	icon: string;
-	filterGroup: IFilterGroup;
-	source: IDataSource<any>;
+	filterGroup: IFilterGroupOld;
+	source: IDataSourceOld<any>;
 	disabled: boolean;
 
 	hasIcon: boolean;
@@ -47,7 +47,7 @@ export class FilterGroupController {
 		return this.expanded && !this.disabled;
 	}
 
-	selectOption(option: IFilterOption): void {
+	selectOption(option: IFilterOptionOld): void {
 		this.filterGroup.activeOption = option;
 		this.expanded = false;
 

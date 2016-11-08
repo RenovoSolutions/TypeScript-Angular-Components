@@ -1,51 +1,47 @@
-import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { each, filter, has, isUndefined, isFunction } from 'lodash';
 
-import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
+import { IFilter, Filter } from '../filter';
 
-export interface IFilterGroupSettings {
+export interface IFilterGroupSettings<TItemType> {
 	label: string;
 	type: string;
-	options: IFilterOption[];
-	serialize?: {(): any};
+	options: IFilterOption<TItemType>[];
+	serialize?: {( activeOption: IFilterOption<TItemType> ): any};
 }
 
-export interface IFilterOption {
+export interface IFilterOption<TItemType> {
 	active?: boolean;
 	label: string;
 	type?: string;
 	value?: any;
-	filter<TItemType>(item: TItemType): boolean;
+	predicate: { (item: TItemType): boolean };
 	serialize?: {(): any};
 }
 
-interface IConfiguredFilterOption extends IFilterOption {
+interface IConfiguredFilterOption<TItemType> extends IFilterOption<TItemType> {
 	count?: number;
 }
 
-export interface IFilterGroup extends filters.IFilterWithCounts, filters.ISerializableFilter<any> {
+export interface IFilterGroup<TItemType> extends IFilter<TItemType, any> {
 	label: string;
 	type: string;
-	options: IFilterOption[];
-	activeOption: IFilterOption;
+	options: IFilterOption<TItemType>[];
+	activeOption: IFilterOption<TItemType>;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
 }
 
-export class FilterGroup extends filters.SerializableFilter<any> implements IFilterGroup {
+export class FilterGroup<TItemType> extends Filter<TItemType, any> implements IFilterGroup<TItemType> {
 	label: string;
 	type: string;
-	options: IFilterOption[];
-	template: string = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
-	settings: IFilterGroupSettings;
+	options: IFilterOption<TItemType>[];
+	settings: IFilterGroupSettings<TItemType>;
 
-	private _activeOption: IFilterOption;
+	private _activeOption: IFilterOption<TItemType>;
 
-	object: __object.IObjectUtility;
-
-	constructor(settings: IFilterGroupSettings, object: __object.IObjectUtility) {
+	constructor(settings: IFilterGroupSettings<TItemType>) {
 		super();
-		this.object = object;
 
 		this.settings = settings;
 		this.label = settings.label;
@@ -57,27 +53,27 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 		this.options = this.settings.options;
 		this.activeOption = this.setDefaultOption();
 
-		_.each(this.options, (option: IFilterOption): void => {
-			if (_.isUndefined(option.type)) {
+		each(this.options, (option: IFilterOption<TItemType>): void => {
+			if (isUndefined(option.type)) {
 				option.type = option.label;
 			}
 
-			option.type = this.object.toString(option.type).toLowerCase();
+			option.type = (option.type || '').toString().toLowerCase();
 		});
 	}
 
-	get activeOption(): IFilterOption {
+	get activeOption(): IFilterOption<TItemType> {
 		return this._activeOption;
 	}
 
-	set activeOption(value: IFilterOption) {
+	set activeOption(value: IFilterOption<TItemType>) {
 		this._activeOption = value;
-		this.onChange(false);
+		this.value$.next(value);
 	}
 
-	private setDefaultOption(): IFilterOption {
-		let defaultOption: IFilterOption = this.options[0];
-		_.each(this.options, (item: IFilterOption): void => {
+	private setDefaultOption(): IFilterOption<TItemType> {
+		let defaultOption: IFilterOption<TItemType> = this.options[0];
+		each(this.options, (item: IFilterOption<TItemType>): void => {
 			if (item.active != null && item.active === true) {
 				defaultOption = item;
 			}
@@ -85,19 +81,21 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 		return defaultOption;
 	}
 
-	filter<TItemType>(item: TItemType): boolean {
-		return this.activeOption.filter(item);
+	predicate = (item: any): boolean => {
+		return this.activeOption.predicate(item);
 	}
 
-	serialize(): any {
-		if (_.isFunction(this.settings.serialize)) {
-			return this.settings.serialize();
-		}
+	serialize(): Observable<any> {
+		return this.value$.asObservable().map(activeOption => {
+			if (isFunction(this.settings.serialize)) {
+				return this.settings.serialize(activeOption);
+			}
 
-		if (_.isFunction(this.activeOption.serialize)) {
-			return this.activeOption.serialize();
-		}
-		return this.activeOption.value;
+			if (isFunction(activeOption.serialize)) {
+				return activeOption.serialize();
+			}
+			return activeOption.value;
+		});
 	}
 
 	setActiveOption(index: number): void {
@@ -106,17 +104,18 @@ export class FilterGroup extends filters.SerializableFilter<any> implements IFil
 		}
 	}
 
+	// filter counts not yet supported in the new card container
 	setOptionCounts(counts: number[]): void {
-		_.each(this.options, (option: IConfiguredFilterOption): void => {
-			if (_.has(counts, option.type)) {
+		each(this.options, (option: IConfiguredFilterOption<TItemType>): void => {
+			if (has(counts, option.type)) {
 				option.count = counts[option.type];
 			}
 		});
 	}
 
 	updateOptionCounts<TDataType>(filteredDataSet: TDataType[]): void {
-		_.each(this.options, (option: IConfiguredFilterOption): void => {
-			option.count = _.filter(filteredDataSet, option.filter.bind(option)).length;
+		each(this.options, (option: IConfiguredFilterOption<TItemType>): void => {
+			option.count = filter(filteredDataSet, option.predicate.bind(option)).length;
 		});
 	}
 }
