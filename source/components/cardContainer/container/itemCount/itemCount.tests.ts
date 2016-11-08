@@ -1,10 +1,12 @@
+import { BehaviorSubject } from 'rxjs';
+
 import { ItemCountComponent } from './itemCount';
 
 interface ICardContainerMock {
 	dataSource: {
-		loadingDataSet?: boolean;
-		dataSet?: { length: number };
-		count?: number;
+		loadingDataSet$: BehaviorSubject<boolean>;
+		dataSet$: BehaviorSubject<{ length: number }>;
+		count$: BehaviorSubject<number>;
 	};
 }
 
@@ -14,23 +16,33 @@ describe('ItemCountComponent', () => {
 
 	beforeEach(() => {
 		cardContainer = {
-			dataSource: {},
+			dataSource: {
+				loadingDataSet$: new BehaviorSubject(false),
+				dataSet$: new BehaviorSubject({ length: 0 }),
+				count$: new BehaviorSubject(0),
+			},
 		};
 		itemCount = new ItemCountComponent<number>(<any>cardContainer);
 	});
 
 	it('should get the data source loading property', () => {
-		cardContainer.dataSource.loadingDataSet = true;
-		expect(itemCount.loadingDataSet).to.be.true;
+		let loadingDataSet;
+		itemCount.loadingDataSet$.subscribe(result => loadingDataSet = result);
+		cardContainer.dataSource.loadingDataSet$.next(true);
+		expect(loadingDataSet).to.be.true;
 	});
 
 	it('should get the count of visible items', () => {
-		cardContainer.dataSource.dataSet = [1, 2, 3];
-		expect(itemCount.visibleCount).to.equal(3);
+		let visibleCount;
+		itemCount.visibleCount$.subscribe(result => visibleCount = result);
+		cardContainer.dataSource.dataSet$.next([1, 2, 3]);
+		expect(visibleCount).to.equal(3);
 	});
 
 	it('should get the total count from the data source', () => {
-		cardContainer.dataSource.count = 5;
-		expect(itemCount.totalCount).to.equal(5);
+		let totalCount;
+		itemCount.totalCount$.subscribe(result => totalCount = result);
+		cardContainer.dataSource.count$.next(5);
+		expect(totalCount).to.equal(5);
 	});
 });

@@ -7,7 +7,7 @@ import __object = services.object;
 import __genericSearchFilter = services.genericSearchFilter;
 
 import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor } from '../dataSourceProcessor.service';
+import { IDataSourceProcessorOld } from '../processor/dataSourceProcessorOld.service';
 
 export interface IClientServerDataSource<TDataType> extends IAsyncDataSource<TDataType> {
 	getFilterModel: IGetFilterModel<any>;
@@ -35,7 +35,7 @@ export class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType
 			, private searchFilter: __genericSearchFilter.IGenericSearchFilter
 			, public getFilterModel: IGetFilterModel<any>
 			, public validateModel: IValidateFilterModel<any>
-			, dataSourceProcessor: IDataSourceProcessor
+			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility
 			, private object: __object.IObjectUtility) {
 		super(getDataSet, dataSourceProcessor, array);

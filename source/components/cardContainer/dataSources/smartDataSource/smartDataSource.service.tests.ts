@@ -1,180 +1,216 @@
-import { rlFakeAsync, mock } from 'rl-async-testing';
+import { Subject } from 'rxjs';
+import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
-import { services, filters } from 'typescript-angular-utilities';
-import __object = services.object;
-import __array = services.array;
-import __transform = services.transform;
-
-import { SmartDataSource } from './smartDataSource.service';
-
-import { DataSourceProcessor } from '../dataSourceProcessor.service';
-import { Sorter } from '../../sorts/sorter/sorter.service';
-import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
-
-import { SortDirection } from '../../sorts/sort';
-
-interface IDataServiceMock {
-	get: Sinon.SinonSpy;
-}
-
-interface ITestFilter extends filters.ISerializableFilter<number> {
-	value: number;
-	trigger: Function;
-	dispose: Sinon.SinonSpy;
-}
-
-interface IDataSourceProcessorMock {
-	process: Sinon.SinonSpy;
-	sort: Sinon.SinonSpy;
-	page: Sinon.SinonSpy;
-}
+import { SmartDataSource, defaultDebounce } from './smartDataSource.service';
 
 describe('SmartDataSource', () => {
-	let dataSourceProcessor: IDataSourceProcessorMock;
-	let dataService: IDataServiceMock;
-	let appliedFilter: ITestFilter;
-	let unappliedFilter: ITestFilter;
-	let source: SmartDataSource<number>;
-	let data: number[];
+	let source: SmartDataSource<any>;
 
 	beforeEach(() => {
-		appliedFilter = <any>{
-			type: 'filter1',
-			filter: (item: number): boolean => { return true; },
-			serialize: (): number => { return appliedFilter.value; },
-			value: 1,
-			trigger: null,
-			dispose: sinon.spy(),
-			subscribe: (callback: Function): any => {
-				appliedFilter.trigger = callback;
-				return {
-					dispose: appliedFilter.dispose,
-				};
-			},
-		};
-		unappliedFilter = <any>{
-			type: 'filter2',
-			filter: (item: number): boolean => { return item === unappliedFilter.value; },
-			serialize: (): number => { return unappliedFilter.value; },
-			value: null,
-			trigger: null,
-			dispose: sinon.spy(),
-			subscribe: (callback: Function): any => {
-				unappliedFilter.trigger = callback;
-				return {
-					dispose: unappliedFilter.dispose,
-				};
-			},
-		};
-
-		data = [1, 2];
-
-		dataService = {
-			get: mock.promise({ dataSet: data, count: 2 }),
-		};
-
-		dataSourceProcessor = <any>new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
-		dataSourceProcessor.process = sinon.spy((data: any): any => { return { dataSet: data }; });
-		dataSourceProcessor.sort = sinon.spy();
-		dataSourceProcessor.page = sinon.spy();
-		source = new SmartDataSource<number>(dataService.get, <any>dataSourceProcessor, __array.arrayUtility, __object.objectUtility);
-
-		source.filters = <any>[appliedFilter, unappliedFilter];
-		source.sorts = <any>[{
-			column: { label: 'col1' },
-			direction: SortDirection.none,
-		}];
-		source.pager = <any>{
-			pageNumber: 1,
-			pageSize: 2,
-			filter: sinon.spy(),
-		};
+		source = new SmartDataSource(sinon.spy());
 	});
 
-	it('should use the count returned by the server when a reload resolves', rlFakeAsync((): void => {
-		let clientCount: number = 2;
-		let serverCount: number = 4;
-		dataSourceProcessor.process = sinon.spy((data: any): any => {
-			return {
-				dataSet: data,
-				count: clientCount,
-			};
+	describe('init', () => {
+		let initialRequestSpy: Sinon.SinonSpy;
+		let initRequestStream: Subject<any>;
+		let toRequestStreamSpy: Sinon.SinonSpy;
+		let requestStream: Subject<any>;
+		let getDataSetSpy: Sinon.SinonSpy;
+		let getDataStream: Subject<any>;
+		let resolveReloadSpy: Sinon.SinonSpy;
+		let sortList$: any;
+
+		beforeEach(() => {
+			initRequestStream = new Subject();
+			requestStream = new Subject();
+			getDataStream = new Subject();
+			initialRequestSpy = sinon.spy(() => initRequestStream);
+			toRequestStreamSpy = sinon.spy(() => requestStream);
+			getDataSetSpy = sinon.spy(() => getDataStream);
+			resolveReloadSpy = sinon.spy();
+			sortList$ = new Subject();
+
+			source.initialRequest = initialRequestSpy;
+			source.toRequestStream = toRequestStreamSpy;
+			source.getDataSet = getDataSetSpy;
+			source.resolveReload = resolveReloadSpy;
+			source.sorter = <any>{ sortList$: sortList$ };
 		});
 
-		data = [1, 2, 3, 4];
-		dataService.get = mock.promise({ dataSet: data, count: serverCount });
-		source.getDataSet = dataService.get;
-		source.reload();
-		mock.flushAll(dataService);
+		it('should make an initial request on init', () => {
+			const requestData = {};
+			const data = {};
+			source.init();
 
-		expect(source.count).to.equal(serverCount);
-	}));
+			sinon.assert.calledOnce(initialRequestSpy);
+			sinon.assert.calledWith(initialRequestSpy, (source as any).filters$, sortList$);
 
-	describe('throttled', (): void => {
-		beforeEach(rlFakeAsync((): void => {
-			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = mock.promise({ dataSet: data, count: 20 });
-			source.getDataSet = dataService.get;
-			source.reload();
-			mock.flushAll(dataService);
-			dataService.get.reset();
+			initRequestStream.next(requestData);
 
-			expect(source.throttled).to.be.true;
+			sinon.assert.calledOnce(getDataSetSpy);
+			expect(getDataSetSpy.firstCall.args[0]).to.equal(requestData);
+
+			getDataStream.next(data);
+
+			sinon.assert.calledOnce(resolveReloadSpy);
+			expect(resolveReloadSpy.firstCall.args[0]).to.equal(data);
+		});
+
+		it('should make a debounced request on subsequent request stream events', rlFakeAsync(() => {
+			const requestData = {};
+			const data = {};
+			source.init();
+			initRequestStream.next({});
+			getDataStream.next({});
+			getDataSetSpy.reset();
+			resolveReloadSpy.reset();
+			getDataStream = new Subject();
+
+			sinon.assert.calledOnce(toRequestStreamSpy);
+			sinon.assert.calledWith(toRequestStreamSpy, source.throttled$, (source as any).filters$, sortList$);
+
+			requestStream.next(requestData);
+
+			sinon.assert.notCalled(getDataSetSpy);
+
+			rlTick(defaultDebounce);
+			rlTick();
+
+			sinon.assert.calledOnce(getDataSetSpy);
+			expect(getDataSetSpy.firstCall.args[0]).to.equal(requestData);
+
+			getDataStream.next(data);
+
+			sinon.assert.calledOnce(resolveReloadSpy);
+			expect(resolveReloadSpy.firstCall.args[0]).to.equal(data);
 		}));
+	});
 
-		it('should make a request when excecuting a full refresh', (): void => {
-			source.refresh();
-			sinon.assert.calledOnce(dataService.get);
+	describe('filters', () => {
+		it('should get the current value of the filters subject', () => {
+			const filters = [{}];
+			(source as any).filters$.next(filters);
+			expect(source.filters).to.equal(filters);
 		});
 
-		it('should make a request if the sorts change', (): void => {
-			source.onSortChange();
-			sinon.assert.calledOnce(dataService.get);
-		});
+		it('should push the filters to the subject', () => {
+			const filters: any[] = [{ type: 'type1' }];
+			const nextSpy = sinon.spy();
+			(source as any).filters$.next = nextSpy;
 
-		it('should handle paging without making a server request', (): void => {
-			source.onPagingChange();
-			sinon.assert.calledOnce(dataSourceProcessor.page);
-			sinon.assert.notCalled(dataService.get);
+			source.filters = filters;
+
+			sinon.assert.calledOnce(nextSpy);
+			sinon.assert.calledWith(nextSpy, filters);
 		});
 	});
 
-	describe('not throttled', (): void => {
-		beforeEach(rlFakeAsync((): void => {
-			data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-			dataService.get = mock.promise({ dataSet: data, count: 10 });
-			source.getDataSet = dataService.get;
-			source.reload();
-			mock.flushAll(dataService);
-			dataService.get.reset();
-			dataSourceProcessor.process.reset();
+	describe('startLoading', () => {
+		it('should clear the dataSet and rawDataSet and set loading to true', () => {
+			const rawDataSetSpy = sinon.spy();
+			const loadingDataSetSpy = sinon.spy();
+			source.rawDataSet$.subscribe(rawDataSetSpy);
+			source.loadingDataSet$.subscribe(loadingDataSetSpy);
+			rawDataSetSpy.reset();
+			loadingDataSetSpy.reset();
 
-			expect(source.throttled).to.be.false;
-		}));
+			source.startLoading();
 
-		it('should make a request if any applied filter changes', (): void => {
-			appliedFilter.trigger();
-			sinon.assert.calledOnce(dataService.get);
+			sinon.assert.calledOnce(rawDataSetSpy);
+			sinon.assert.calledWith(rawDataSetSpy, null);
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, true);
+		});
+	});
+
+	describe('resolveReload', () => {
+		let throttledSpy;
+		let loadingDataSetSpy;
+		let rawDataSetSpy;
+		let processSpy;
+		let countSpy;
+		let isEmptySpy;
+
+		beforeEach(() => {
+			throttledSpy = sinon.spy();
+			loadingDataSetSpy = sinon.spy();
+			rawDataSetSpy = sinon.spy();
+			processSpy = sinon.spy();
+			countSpy = sinon.spy();
+			isEmptySpy = sinon.spy();
+
+			source.throttled$.subscribe(throttledSpy);
+			source.loadingDataSet$.subscribe(loadingDataSetSpy);
+			source.rawDataSet$.subscribe(rawDataSetSpy);
+			source.processData = processSpy;
+			source.count$.subscribe(countSpy);
+			(source as any)._isEmpty.subscribe(isEmptySpy);
+
+			throttledSpy.reset();
+			loadingDataSetSpy.reset();
+			rawDataSetSpy.reset();
+			countSpy.reset();
+			isEmptySpy.reset();
 		});
 
-		it('should handle an unapplied filter on the client', (): void => {
-			unappliedFilter.value = 2;
-			source.refresh();
-			sinon.assert.notCalled(dataService.get);
-			sinon.assert.calledOnce(dataSourceProcessor.process);
+		it('should set the raw data set, loading, and isEmpty with the properties from the request', () => {
+			const dataSet = [{}];
+			const count = 5;
+			const isEmpty = false;
+			source.resolveReload({ dataSet, count, isEmpty });
+
+			sinon.assert.calledOnce(rawDataSetSpy);
+			sinon.assert.calledWith(rawDataSetSpy, dataSet);
+			sinon.assert.calledOnce(countSpy);
+			sinon.assert.calledWith(countSpy, count);
+			sinon.assert.calledOnce(isEmptySpy);
+			sinon.assert.calledWith(isEmptySpy, isEmpty);
 		});
 
-		it('should handle sorting on the client', (): void => {
-			source.onSortChange();
-			sinon.assert.calledOnce(dataSourceProcessor.sort);
-			sinon.assert.calledOnce(dataSourceProcessor.page);
-			sinon.assert.notCalled(dataService.get);
+		it('should set loading to false of the data set is present', () => {
+			source.resolveReload(<any>{ dataSet: [] });
+
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, false);
 		});
 
-		it('should handle paging without making a server request', (): void => {
-			source.onPagingChange();
-			sinon.assert.calledOnce(dataSourceProcessor.page);
-			sinon.assert.notCalled(dataService.get);
+		it('should set loading to true if the data set is null', () => {
+			source.resolveReload(<any>{ dataSet: null });
+
+			sinon.assert.calledOnce(loadingDataSetSpy);
+			sinon.assert.calledWith(loadingDataSetSpy, true);
+		});
+
+		it('should process the data', () => {
+			source.resolveReload(<any>{});
+			sinon.assert.calledOnce(processSpy);
+		});
+
+		it('should set throttled to true if the count is greater than the data set length', () => {
+			source.resolveReload(<any>{
+				dataSet: [1, 2, 3],
+				count: 5,
+			});
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, true);
+		});
+
+		it('should set throttled to false if the count is equal to the data set length', () => {
+			source.resolveReload(<any>{
+				dataSet: [1, 2, 3],
+				count: 3,
+			});
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, false);
+		});
+
+		it('should set throttled to true data set is null', () => {
+			source.resolveReload(<any>{ dataSet: null });
+
+			sinon.assert.calledOnce(throttledSpy);
+			sinon.assert.calledWith(throttledSpy, true);
 		});
 	});
 });

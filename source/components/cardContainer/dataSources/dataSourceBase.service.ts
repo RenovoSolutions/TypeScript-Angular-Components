@@ -1,165 +1,139 @@
-import { Subject } from 'rxjs';
-
-import { services, filters, downgrade } from 'typescript-angular-utilities';
-import __array = services.array;
-import __object = services.object;
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { without, map } from 'lodash';
 
 import { IDataSource } from './dataSource';
-import { IDataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
-import { ISort } from '../sorts/sort';
+import { IProcessResult, process } from './processor/dataSourceProcessor';
+import { ISort, SortManagerService } from '../sorts/index';
+import { IFilter } from '../filters/index';
 import { IDataPager } from '../paging/index';
 
 export class DataSourceBase<TDataType> implements IDataSource<TDataType> {
-	dataSet: TDataType[];
-	filteredDataSet: TDataType[];
-	rawDataSet: TDataType[];
-	sorts: ISort[] = [];
-	filters: filters.IFilter[] = [];
+	sorter: SortManagerService;
+	filters: IFilter<TDataType, any>[];
 	pager: IDataPager;
-	private _count: number = 0;
 
 	countFilterGroups: boolean = false;
 
-	loadingDataSet: boolean = false;
-	private _isEmpty: boolean;
+	protected _dataSet: BehaviorSubject<TDataType[]>;
+	protected _filteredDataSet: BehaviorSubject<TDataType[]>;
+	protected _rawDataSet: BehaviorSubject<TDataType[]>;
+	protected _count: BehaviorSubject<number>;
+	protected _isEmpty: BehaviorSubject<boolean>;
+	protected _loadingDataSet: BehaviorSubject<boolean>;
+	protected subscription: Subscription;
 
-	countChanges: Subject<number>;
-	redrawing: Subject<void>;
-	changed: Subject<void>;
-	added: Subject<void>;
-	removed: Subject<void>;
-	replaced: Subject<void>;
-
-	get count(): number {
-		return this._count;
+	constructor() {
+		this._dataSet = new BehaviorSubject(null);
+		this._filteredDataSet = new BehaviorSubject(null);
+		this._rawDataSet = new BehaviorSubject(null);
+		this._count = new BehaviorSubject(0);
+		this._isEmpty = new BehaviorSubject(null);
+		this._loadingDataSet = new BehaviorSubject(false);
 	}
 
-	set count(value: number) {
-		this._count = value;
-		this.countChanges.next(value);
+	get dataSet$(): Observable<TDataType[]> {
+		return this._dataSet.asObservable();
 	}
 
-	constructor(private dataSourceProcessor: IDataSourceProcessor
-			, protected array: __array.IArrayUtility) {
-		this.countChanges = new Subject<number>();
-		this.redrawing = new Subject<void>();
-		this.changed = new Subject<void>();
-		this.added = new Subject<void>();
-		this.removed = new Subject<void>();
-		this.replaced = new Subject<void>();
+	get filteredDataSet$(): Observable<TDataType[]> {
+		return this._filteredDataSet.asObservable();
 	}
 
-	initPager(): void {
-		if (this.pager) {
-			this.pager.pageSizeChanges.subscribe(this.onPagingChange.bind(this));
-			this.pager.pageNumberChanges.subscribe(this.onPagingChange.bind(this));
-		}
+	get rawDataSet$(): Observable<TDataType[]> {
+		return this._rawDataSet.asObservable();
 	}
 
-	get needsRefinedSearch(): boolean {
-		let noItemsDisplayed = __object.objectUtility.isNullOrEmpty(this.dataSet);
-		let moreItemsOnServer = this._isEmpty === false || (this.rawDataSet != null && this.rawDataSet.length < this.count);
-		return noItemsDisplayed && moreItemsOnServer;
+	get count$(): Observable<number> {
+		return this._count.asObservable();
 	}
 
-	get isEmpty(): boolean {
-		return __object.objectUtility.isNullOrEmpty(this.rawDataSet)
-			&& (this._isEmpty != null ? this._isEmpty : true);
+	get loadingDataSet$(): Observable<boolean> {
+		return this._loadingDataSet.asObservable();
 	}
 
-	set isEmpty(value: boolean) {
-		this._isEmpty = value;
+	get needsRefinedSearch$(): Observable<boolean> {
+		return this.dataSet$.combineLatest(this.rawDataSet$, this.count$, this._isEmpty)
+						   .map(([dataSet, rawDataSet, count, isEmpty]) => {
+				const noItemsDisplayed = !(dataSet && dataSet.length);
+				const moreItemsOnServer = isEmpty === false || (rawDataSet != null && rawDataSet.length < count);
+				return noItemsDisplayed && moreItemsOnServer;
+			});
+	}
+
+	get isEmpty$(): Observable<boolean> {
+		return this.rawDataSet$.combineLatest(this._isEmpty)
+							   .map(([rawDataSet, isEmpty]) => {
+			return !(rawDataSet && rawDataSet.length)
+				&& (isEmpty != null ? isEmpty : true);
+		});
+	}
+
+	init(): void {
+		// override with any init logic in children
 	}
 
 	clear() {
-		this.rawDataSet = [];
-		this.dataSet = [];
-		this.filteredDataSet = [];
-		this.count = 0;
-		this.isEmpty = true;
+		this._rawDataSet.next([]);
+		this._dataSet.next([]);
+		this._filteredDataSet.next([]);
+		this._count.next(0);
+		this._isEmpty.next(true);
 	}
 
 	processData(): void {
-		var processedData: IProcessResult<TDataType>;
+		let processedData: IProcessResult<TDataType>;
 
-		if (this.countFilterGroups) {
-			processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
-																			, <filters.IFilterWithCounts[]>this.filters
-																			, this.pager
-																			, this.rawDataSet);
-		} else {
-			processedData = this.dataSourceProcessor.process<TDataType>(this.sorts, this.filters, this.pager, this.rawDataSet);
-		}
+		// if (this.countFilterGroups) {
+			// processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
+			// 																, <filters.IFilterWithCounts[]>this.filters
+			// 																, this.pager
+			// 																, this.rawDataSet);
+		// } else {
+			processedData = process<TDataType>(this.sorter, this.filters, this.pager, this.rawDataSet$);
+		// }
 		this.setProcessedData(processedData);
 	}
+
 	//used when we need to process data but without client filters.
 	processDataNoClientFilters(): void {
 		var processedData: IProcessResult<TDataType>;
 
 		if (this.countFilterGroups) {
-			processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
-																			, null
-																			, this.pager
-																			, this.rawDataSet);
+			// processedData = this.dataSourceProcessor.processAndCount<TDataType>(this.sorts
+			// 																, null
+			// 																, this.pager
+			// 																, this.rawDataSet);
 		} else {
-			processedData = this.dataSourceProcessor.process<TDataType>(this.sorts, null, this.pager, this.rawDataSet);
+			processedData = process<TDataType>(this.sorter, null, this.pager, this.rawDataSet$);
 		}
 		this.setProcessedData(processedData);
 	}
 
-	setProcessedData( processedData: IProcessResult<TDataType>):void {
-		this.count = processedData.count;
-		this.dataSet = processedData.dataSet;
-		this.filteredDataSet = processedData.filteredDataSet;
+	setProcessedData(processedData: IProcessResult<TDataType>): void {
+		const countSubscription = processedData.count$.subscribe(count => this._count.next(count));
+		const dataSetSubscription = processedData.dataSet$.subscribe(dataSet => this._dataSet.next(dataSet));
+		const filteredDataSetSubscription = processedData.filteredDataSet$.subscribe(filteredDataSet => this._filteredDataSet.next(filteredDataSet));
+
+		this.subscription = countSubscription.add(dataSetSubscription)
+											 .add(filteredDataSetSubscription);
 	}
 
-	onSortChange(): void {
-		if (!this.loadingDataSet) {
-			this.filteredDataSet = this.dataSourceProcessor.sort(this.filteredDataSet, this.sorts);
-			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
-			this.redrawing.next(null);
-		}
-	}
-
-	onPagingChange(): void {
-		if (!this.loadingDataSet) {
-			this.dataSet = this.dataSourceProcessor.page(this.filteredDataSet, this.pager);
-			this.redrawing.next(null);
-		}
-	}
-
-	refresh(): void {
-		if (!this.loadingDataSet) {
-			this.processData();
-			this.redrawing.next(null);
-		}
+	add(data: TDataType): void {
+		const updatedDataSet = [...this._rawDataSet.getValue(), data];
+		this._rawDataSet.next(updatedDataSet);
 	}
 
 	remove(data: TDataType): void {
-		var item: TDataType = this.array.remove(this.rawDataSet, data);
-
-		if (item != null) {
-			this.removed.next(null);
-			this.changed.next(null);
-			this.refresh();
-		}
-	}
-
-	push(data: TDataType): void {
-		this.rawDataSet.push(data);
-		this.added.next(null);
-		this.changed.next(null);
-		this.refresh();
+		const updatedDataSet = without(this._rawDataSet.getValue(), data);
+		this._rawDataSet.next(updatedDataSet);
 	}
 
 	replace(oldData: TDataType, newData: TDataType): void {
-		var locationOfOldData: number = this.rawDataSet.indexOf(oldData);
-
-		if (locationOfOldData >= 0) {
-			this.array.replace(this.rawDataSet, oldData, newData);
-			this.replaced.next(null);
-			this.changed.next(null);
-			this.refresh();
-		}
+		const updatedDataSet = map(this._rawDataSet.getValue(), item => {
+			return item === oldData
+				? newData
+				: item;
+		});
+		this._rawDataSet.next(updatedDataSet);
 	}
 }

@@ -1,3 +1,3 @@
-<p [hidden]="loadingDataSet">
-	Showing <strong>{{visibleCount}} of {{totalCount}}</strong> total items
+<p [hidden]="loadingDataSet$ | async">
+	Showing <strong>{{visibleCount$ | async}} of {{totalCount$ | async}}</strong> total items
 </p>

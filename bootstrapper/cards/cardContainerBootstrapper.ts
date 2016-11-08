@@ -3,9 +3,9 @@ import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
 
-import { ICardContainerBuilder } from '../../source/components/cardContainer/builder/index';
-import { IDataSource } from '../../source/components/cardContainer/dataSources/index';
-import { ISelectFilter,	IDateFilter } from '../../source/components/cardContainer/filters/index';
+import { ICardContainerBuilderOld } from '../../source/components/cardContainer/builder/index';
+import { IDataSourceOld } from '../../source/components/cardContainer/dataSources/index';
+import { ISelectFilterOld, IDateFilterOld, } from '../../source/components/cardContainer/filters/index';
 import { cardContainerBuilderServiceName } from '../../source/componentsDowngrade';
 
 export const moduleName: string = 'CardTestModule';
@@ -17,14 +17,14 @@ interface ICardItem {
 }
 
 class CardTestController {
-	builder: ICardContainerBuilder;
-	builderWithSelectFilter: ICardContainerBuilder;
-	builderWithDateFilter: ICardContainerBuilder;
-	builderWithSearch: ICardContainerBuilder;
+	builder: ICardContainerBuilderOld;
+	builderWithSelectFilter: ICardContainerBuilderOld;
+	builderWithDateFilter: ICardContainerBuilderOld;
+	builderWithSearch: ICardContainerBuilderOld;
 	options: number[];
-	selectFilter: ISelectFilter<number>;
-	dateFilter: IDateFilter;
-	dataSource: IDataSource<ICardItem>;
+	selectFilter: ISelectFilterOld<number>;
+	dateFilter: IDateFilterOld;
+	dataSource: IDataSourceOld<ICardItem>;
 
 	static $inject: string[] = [cardContainerBuilderServiceName];
 	constructor(cardContainerBuilderFactory: any) {

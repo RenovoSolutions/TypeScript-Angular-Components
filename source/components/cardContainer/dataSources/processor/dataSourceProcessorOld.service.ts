@@ -4,9 +4,9 @@ import * as _ from 'lodash';
 import { services, filters, downgrade } from 'typescript-angular-utilities';
 import __object = services.object;
 
-import { ISort } from '../sorts/sort';
-import { IDataPager } from '../paging/index';
-import { Sorter } from '../sorts/sorter/sorter.service';
+import { ISort } from '../../sorts/sort';
+import { IDataPagerOld } from '../../paging/index';
+import { Sorter } from '../../sorts/sorter/sorter.service';
 
 export interface IProcessResult<TDataType> {
 	count: number;
@@ -19,27 +19,27 @@ export interface IWrappedItem<TItemType> {
 	filterData: any; //*filterData
 }
 
-export interface IDataSourceProcessor {
+export interface IDataSourceProcessorOld {
 	process<TDataType>(sorts: ISort[]
 					, filters: filters.IFilter[]
-					, pager: IDataPager
+					, pager: IDataPagerOld
 					, data: TDataType[]): IProcessResult<TDataType>;
 	processAndCount<TDataType>(sorts: ISort[]
 							, filters: filters.IFilterWithCounts[]
-							, pager: IDataPager
+							, pager: IDataPagerOld
 							, data: TDataType[]): IProcessResult<TDataType>;
 	sort<TDataType>(data: TDataType[], sorts: ISort[]): TDataType[];
-	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[];
+	page<TDataType>(data: TDataType[], pager: IDataPagerOld): TDataType[];
 }
 
 @Injectable()
-export class DataSourceProcessor implements IDataSourceProcessor{
+export class DataSourceProcessorOld implements IDataSourceProcessorOld{
 	constructor(private object: __object.ObjectUtility
 			, private sorter: Sorter) { }
 
 	process<TDataType>(sorts: ISort[]
 					, filters: filters.IFilter[]
-					, pager: IDataPager
+					, pager: IDataPagerOld
 					, data: TDataType[]): IProcessResult<TDataType> {
 		var processedData: TDataType[] = data;
 
@@ -64,7 +64,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 
 	processAndCount<TDataType>(sorts: ISort[]
 							, filters: filters.IFilterWithCounts[]
-							, pager: IDataPager
+							, pager: IDataPagerOld
 							, data: TDataType[]): IProcessResult<TDataType> {
 		// If there are no filters that need to updated option counts, use the normal processor
 		if (this.object.isNullOrEmpty(filters)
@@ -123,7 +123,7 @@ export class DataSourceProcessor implements IDataSourceProcessor{
 		return data;
 	}
 
-	page<TDataType>(data: TDataType[], pager: IDataPager): TDataType[] {
+	page<TDataType>(data: TDataType[], pager: IDataPagerOld): TDataType[] {
 		if (pager != null) {
 			return pager.filter(data);
 		}

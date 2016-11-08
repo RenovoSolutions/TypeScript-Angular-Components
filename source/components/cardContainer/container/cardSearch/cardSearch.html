@@ -1,14 +1,14 @@
 <div class="input-group"
 	 *ngIf="hasSearchFilter"
-	 [class.has-error]="searchLengthError"
-	 [class.rl-tooltip]="searchLengthError"
+	 [class.has-error]="searchLengthError$ | async"
+	 [class.rl-tooltip]="searchLengthError$ | async"
 	 [attr.data-tooltip]="minSearchError">
 	<rlTextbox [label]="searchPlaceholder"
-			   [value]="searchFilter.searchText || ''"
-			   (valueChange)="setSearch($event)"></rlTextbox>
+			   [value]="(searchFilter.searchText$ | async) || ''"
+			   (valueChange)="searchChanges$.next($event)"></rlTextbox>
 	<div class="input-group-btn">
-		<rlButton [disabled]="searchFilter.searchText | isEmpty"
-				  (click)="setSearch(null)">
+		<rlButton [disabled]="!(searchFilter.searchText$ | async)"
+				  (trigger)="searchChanges$.next(null)">
 			<i class="fa fa-times"></i>
 		</rlButton>
 	</div>

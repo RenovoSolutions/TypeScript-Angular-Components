@@ -10,7 +10,7 @@ describe('FilterGroupComponent', (): void => {
 	};
 
 	beforeEach(() => {
-		filterGroupComponent = new FilterGroupComponent(<any>{ log: sinon.spy() });
+		filterGroupComponent = new FilterGroupComponent();
 		filterGroupComponent.filterGroup = filterGroup;
 	});
 
@@ -45,13 +45,10 @@ describe('FilterGroupComponent', (): void => {
 	});
 
 	it('should set the active option and refresh the data source', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		filterGroupComponent.dataSource = dataSource;
 		const option: any = { prop: 4 };
 
 		filterGroupComponent.selectOption(option);
 
-		sinon.assert.calledOnce(dataSource.refresh);
 		expect(filterGroupComponent.filterGroup.activeOption).to.equal(option);
 		expect(filterGroupComponent.expanded).to.be.false;
 	});

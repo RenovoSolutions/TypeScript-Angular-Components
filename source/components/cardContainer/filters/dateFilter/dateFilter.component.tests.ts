@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
@@ -9,12 +10,23 @@ interface ITestObj {
 	value: moment.Moment;
 }
 
+interface IDateFilterMock {
+	setDateFrom: Sinon.SinonSpy;
+	setDateTo: Sinon.SinonSpy;
+	dateFrom$?: Observable<moment.Moment>;
+}
+
 describe('DateFilterComponent', (): void => {
-	let dateFilter: DateFilterComponent;
+	let dateFilter: DateFilterComponent<any>;
+	let filterService: IDateFilterMock;
 
 	beforeEach(() => {
-		dateFilter = new DateFilterComponent(__date.dateUtility, <any>{ log: sinon.spy() });
-		dateFilter.filter = <any>{};
+		dateFilter = new DateFilterComponent(__date.dateUtility);
+		filterService = {
+			setDateFrom: sinon.spy(),
+			setDateTo: sinon.spy(),
+		}
+		dateFilter.filter = <any>filterService;
 	});
 
 	it('should set useTime on the filter', (): void => {
@@ -25,14 +37,6 @@ describe('DateFilterComponent', (): void => {
 		dateFilter.ngOnInit();
 
 		expect(dateFilter.filter.useTime).to.be.true;
-	});
-
-	it('should set dateRange to false on the filter', (): void => {
-		expect(dateFilter.filter.dateRange).to.be.undefined;
-
-		dateFilter.ngOnInit();
-
-		expect(dateFilter.filter.dateRange).to.be.false;
 	});
 
 	it('should default showClear to true', (): void => {
@@ -49,44 +53,29 @@ describe('DateFilterComponent', (): void => {
 		expect(dateFilter.showClear).to.be.false;
 	});
 
-	it('should set the date on the filter and refresh the data source', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
+	it('should set the date on the filter', (): void => {
 		const date: moment.Moment = moment('2000-01-01T05:16:00.000');
 
 		dateFilter.setDate(date);
 
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateFrom).to.equal(date);
+		sinon.assert.calledOnce(filterService.setDateFrom);
+		sinon.assert.calledWith(filterService.setDateFrom, date);
 	});
 
 	it('should set the dateTo to a number days equal to the count before the dateFrom', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
 		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
-		dateFilter.filter.dateFrom = dateFrom;
+		filterService.dateFrom$ = Observable.of(dateFrom);
 
 		dateFilter.setCount(4);
 
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateRange).to.be.true;
-		expect(dateFilter.filter.dateTo).to.equalMoment(moment('2000-01-01T05:16:00.000'));
+		sinon.assert.calledOnce(filterService.setDateTo);
+		expect(filterService.setDateTo.firstCall.args[0]).to.equalMoment(moment('2000-01-01T05:16:00.000'));
 	});
 
-	it('should clear the dateTo and set dateRange to false if the count is 0', (): void => {
-		const dataSource: any = { refresh: sinon.spy() };
-		dateFilter.dataSource = dataSource;
-		const dateFrom: moment.Moment = moment('2000-01-05T05:16:00.000');
-		const dateTo: moment.Moment = moment('2000-01-01T05:16:00.000');
-		dateFilter.filter.dateFrom = dateFrom;
-		dateFilter.filter.dateTo = dateTo;
-		dateFilter.filter.dateRange = true;
-
+	it('should clear the dateTo if the count is 0', (): void => {
 		dateFilter.setCount(0);
-
-		sinon.assert.calledOnce(dataSource.refresh);
-		expect(dateFilter.filter.dateRange).to.be.false;
-		expect(dateFilter.filter.dateTo).to.be.null;
+		sinon.assert.calledOnce(filterService.setDateTo);
+		sinon.assert.calledWith(filterService.setDateTo, null);
 	});
 
 	it('should set the date to null and count to 0', (): void => {

@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { filter } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -21,7 +22,6 @@ describe('CardComponent', () => {
 		cardContainer = {
 			openCard: sinon.spy((): boolean => { return true; }),
 			dataSource: {
-				refresh: sinon.spy(),
 				remove: sinon.spy(),
 			},
 		};
@@ -39,11 +39,6 @@ describe('CardComponent', () => {
 
 		sinon.assert.calledOnce(saveSpy);
 		sinon.assert.calledWith(saveSpy, item);
-	});
-
-	it('should provide a function for refreshing the data source', (): void => {
-		card.refresh.next(null);
-		sinon.assert.calledOnce(<Sinon.SinonSpy>cardContainer.dataSource.refresh);
 	});
 
 	it('should provide a function for removing the current item from the data source', (): void => {
@@ -68,16 +63,16 @@ describe('CardComponent', () => {
 
 	describe('toggle', (): void => {
 		it('should toggle the card content', (): void => {
-
-			expect(card.showContent).to.be.false;
-
-			card.toggleContent();
-
-			expect(card.showContent).to.be.true;
+			card.saveForm = sinon.spy(() => Observable.empty());
+			expect(card.showContent$.getValue()).to.be.false;
 
 			card.toggleContent();
 
-			expect(card.showContent).to.be.false;
+			expect(card.showContent$.getValue()).to.be.true;
+
+			card.toggleContent();
+
+			expect(card.showContent$.getValue()).to.be.false;
 		});
 	});
 
@@ -94,12 +89,12 @@ describe('CardComponent', () => {
 
 	describe('close', (): void => {
 		it('should close the card content if the submit is successful', (): void => {
-			card.showContent = true;
+			card.showContent$.next(true);
 			card.submit = sinon.spy(() => true);
 
 			const closed = card.close();
 
-			expect(card.showContent).to.be.false;
+			expect(card.showContent$.getValue()).to.be.false;
 			expect(closed).to.be.true;
 		});
 
@@ -113,12 +108,12 @@ describe('CardComponent', () => {
 		});
 
 		it('should not close the card if submit fails', (): void => {
-			card.showContent = true;
+			card.showContent$.next(true);
 			card.submit = sinon.spy(() => false);
 
 			const closed = card.close();
 
-			expect(card.showContent).to.be.true;
+			expect(card.showContent$.getValue()).to.be.true;
 			expect(closed).to.be.false;
 		});
 	});

@@ -24,24 +24,25 @@
 						</div>
 					</div>
 				</div>
-				<div *ngIf="hasItems">
-					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
-						<rlSelectableCard [item]="card"
+				<div *ngIf="hasItems$ | async">
+					<div class="card-item-repeat" *ngFor="let selection of selectionData$ | async">
+						<rlSelectableCard [selection]="selection"
+										  [item]="selection.item"
 										  [save]="save"></rlSelectableCard>
 					</div>
 				</div>
-				<div class="alert alert-info" *ngIf="dataSource.needsRefinedSearch">
+				<div class="alert alert-info" *ngIf="dataSource.needsRefinedSearch$ | async">
 					Please refine your search results
 				</div>
-				<div class="alert alert-info" *ngIf="dataSource.isEmpty">
+				<div class="alert alert-info" *ngIf="dataSource.isEmpty$ | async">
 					There are no items to show
 				</div>
 
 				<div>
-					<rlBusy [loading]="dataSource.loadingDataSet" size="2x"></rlBusy>
+					<rlBusy [loading]="dataSource.loadingDataSet$ | async" size="2x"></rlBusy>
 				</div>
 
-				<div class="card-container-footer" *ngIf="!dataSource.isEmpty">
+				<div class="card-container-footer" *ngIf="!(dataSource.isEmpty$ | async)">
 					<rlSelectableContainerFooter [footer]="containerFooter"></rlSelectableContainerFooter>
 				</div>
 			</div>

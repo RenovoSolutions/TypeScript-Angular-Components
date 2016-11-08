@@ -1,7 +1,9 @@
-﻿import { ButtonAsyncComponent } from './buttonAsync';
+﻿import { Observable } from 'rxjs';
+
+import { ButtonAsyncComponent } from './buttonAsync';
 
 interface IMockBusy {
-	trigger: Sinon.SinonSpy;
+	waitOn: Sinon.SinonSpy;
 }
 
 describe('ButtonAsyncComponent', () => {
@@ -13,7 +15,7 @@ describe('ButtonAsyncComponent', () => {
 		button = new ButtonAsyncComponent();
 
 		busy = {
-			trigger: sinon.spy(),
+			waitOn: sinon.spy(() => Observable.empty()),
 		};
 		button.busySpinner = <any>busy;
 	});
@@ -27,7 +29,7 @@ describe('ButtonAsyncComponent', () => {
 
 		sinon.assert.calledOnce(action);
 		sinon.assert.calledWith(action, event);
-		sinon.assert.calledOnce(busy.trigger);
-		sinon.assert.calledWith(busy.trigger, 5);
+		sinon.assert.calledOnce(busy.waitOn);
+		sinon.assert.calledWith(busy.waitOn, 5);
 	});
 });

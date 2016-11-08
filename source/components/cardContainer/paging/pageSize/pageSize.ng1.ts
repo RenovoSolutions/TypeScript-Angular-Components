@@ -2,7 +2,7 @@
 
 import * as angular from 'angular';
 
-import { IDataPager } from '../dataPager/dataPager.service';
+import { IDataPagerOld } from '../dataPager/dataPagerOld.service';
 import { CardContainerController } from '../../cardContainer.ng1';
 
 export const moduleName: string = 'rl.ui.components.cardContainer.pageSize';
@@ -15,7 +15,7 @@ export const defaultPageSize: number = 10;
 export class PageSizeController {
 	pageSizes: number[];
 	private cardContainer: CardContainerController;
-	private pager: IDataPager;
+	private pager: IDataPagerOld;
 
 	get selectedPageSize(): number {
 		if (this.pager != null) {

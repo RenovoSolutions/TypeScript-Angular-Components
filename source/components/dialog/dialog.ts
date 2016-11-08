@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Component, Input, ContentChild, forwardRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
@@ -6,7 +7,7 @@ import __notification = services.notification;
 import { DialogRootService, IDialogClosingHandler } from './dialogRoot.service';
 import { DialogHeaderTemplate, DialogContentTemplate, DialogFooterTemplate } from './templates/index';
 import { FormComponent, baseInputs } from '../form/form';
-import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
+import { AsyncHelper } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
 
 @Component({
@@ -60,14 +61,13 @@ export class DialogComponent extends FormComponent {
 		this.dialogRoot.closeDialog.next(null);
 	}
 
-	submitAndClose(): IWaitValue<any> {
+	submitAndClose = (): Observable<any> => {
 		const waitOn = this.submitAndWait();
-		this.asyncHelper.waitAsObservable(waitOn).subscribe((result) => {
+		return this.asyncHelper.waitAsObservable(waitOn).do((result) => {
 			if (result !== false) {
 				this.close();
 			}
 		});
-		return waitOn;
 	}
 
 	wrapOnClosing: IDialogClosingHandler = () => {

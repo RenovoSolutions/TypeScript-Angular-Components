@@ -1,4 +1,5 @@
-import { Component, Inject, forwardRef } from '@angular/core';
+import { Component, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { CardContainerComponent } from '../../cardContainer';
 import { IDataSource } from '../../dataSources/index';
@@ -6,6 +7,7 @@ import { IDataSource } from '../../dataSources/index';
 @Component({
 	selector: 'rlItemCount',
 	template: require('./itemCount.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemCountComponent<T> {
 	cardContainer: CardContainerComponent<T>;
@@ -16,22 +18,22 @@ export class ItemCountComponent<T> {
 			: null;
 	}
 
-	get loadingDataSet(): boolean {
+	get loadingDataSet$(): Observable<boolean> {
 		return this.dataSource
-			? this.dataSource.loadingDataSet
-			: false;
+			? this.dataSource.loadingDataSet$
+			: Observable.of(false);
 	}
 
-	get visibleCount(): number {
-		return this.dataSource && this.dataSource.dataSet
-			? this.dataSource.dataSet.length
-			: null;
+	get visibleCount$(): Observable<number> {
+		return this.dataSource && this.dataSource.dataSet$
+			? this.dataSource.dataSet$.map(dataSet => dataSet ? dataSet.length : 0)
+			: Observable.of(0);
 	}
 
-	get totalCount(): number {
+	get totalCount$(): Observable<number> {
 		return this.dataSource
-			? this.dataSource.count
-			: null;
+			? this.dataSource.count$
+			: Observable.of(0);
 	}
 
 	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {

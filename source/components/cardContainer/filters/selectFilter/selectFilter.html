@@ -1,6 +1,6 @@
 <div class="filter-group">
-	<rlSelect [value]="filter.selectedValue"
-			  (change)="setValue($event)"
+	<rlSelect [value]="filter.selectedValue$ | async"
+			  (valueChange)="filter.select($event)"
 			  [label]="label"
 			  [options]="options"
 			  [transform]="transform"

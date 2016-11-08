@@ -1,111 +1,71 @@
-import * as _ from 'lodash';
-import * as Rx from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
-import { services, filters, downgrade } from 'typescript-angular-utilities';
-import __array = services.array;
-import __object = services.object;
-
-import { IServerSearchFunction, IServerSearchParams, ISortParams, IPagingParams, IDataResult } from '../asyncTypes';
-import { IAsyncDataSource, AsyncDataSource, IDataSetFunction } from '../asyncDataSource.service';
-import { IDataSourceProcessor } from '../dataSourceProcessor.service';
+import { IServerSearchFunction, IServerSearchParams, IDataResult } from '../asyncTypes';
+import { IFilter } from '../../filters/index';
+import { DataSourceBase } from '../dataSourceBase.service';
 import { ISort, SortDirection } from '../../sorts/sort';
+import { toRequestStream, throttled } from './smartDataActions';
 
-export interface ISmartDataSource<TDataType> extends IAsyncDataSource<TDataType> {
-	filters: filters.ISerializableFilter<any>[];
-}
+export const defaultDebounce = 1000;
 
-export class SmartDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	throttled: boolean = true;
-	appliedFilters: { [index: string]: any };
-	private _filters: filters.IFilter[];
-	private subscriptions: Rx.Subscription[];
-	private throttleLimit: number = 200;
+export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
+	throttled$: BehaviorSubject<boolean>;
+	private filters$: BehaviorSubject<IFilter<TDataType, any>[]>;
+	getDataSet: IServerSearchFunction<TDataType>;
 
-	constructor(getDataSet: IServerSearchFunction<TDataType>
-			, dataSourceProcessor: IDataSourceProcessor
-			, array: __array.IArrayUtility
-			, private object: __object.IObjectUtility) {
-		super(<any>getDataSet, dataSourceProcessor, array);
+	constructor(getDataSet: IServerSearchFunction<TDataType>) {
+		super();
+		this.getDataSet = getDataSet;
+		this.filters$ = new BehaviorSubject(null);
+		this.throttled$ = new BehaviorSubject(true);
 	}
 
-	get filters(): filters.IFilter[] {
-		return this._filters;
-	}
-
-	set filters(value: filters.IFilter[]) {
-		this._filters = value;
-		this.setupSubscriptions();
-	}
-
-	onSortChange(): void {
-		if (this.throttled) {
-			this.reload();
-		} else {
-			super.onSortChange();
-		}
-	}
-
-	refresh(): void {
-		if (this.throttled) {
-			this.reload();
-		} else {
-			super.refresh();
-		}
-	}
-
-	protected getParams(): IServerSearchParams {
-		this.updateAppliedFilters();
-		return {
-			filters: this.appliedFilters,
-			sorts: _.map(this.sorts, (sort: ISort): ISortParams => {
-				return {
-					column: sort.column.label,
-					direction: SortDirection.getFullName(sort.direction),
-				};
-			}),
-			paging: {
-				pageNumber: 1,
-				pageSize: this.throttleLimit,
-			},
-		};
-	}
-
-	private updateAppliedFilters(): void {
-		let filterDictionary: { [index: string]: filters.IFilter } = this.array.toDictionary(this.filters, (filter: filters.ISerializableFilter<any>): string => {
-			return filter.type;
-		});
-		this.appliedFilters = _.mapValues(filterDictionary, (filter: filters.ISerializableFilter<any>): any => {
-			if (_.isFunction(filter.serialize)) {
-				return filter.serialize();
-			}
-			return null;
-		});
-		this.appliedFilters = _.omitBy(this.appliedFilters, (value: any): boolean => { return value == null; });
-	}
-
-	private setupSubscriptions() {
-		_.each(this.subscriptions, (subscription: Rx.Subscription): void => {
-			subscription.unsubscribe();
-		});
-		this.subscriptions = [];
-		_.each(this.filters, (filter: filters.ISerializableFilter<any>): void => {
-			if (_.isFunction(filter.subscribe)) {
-				this.subscriptions.push(<any>filter.subscribe((): void => { this.onFilterChange(filter); }));
-			}
+	init(): void {
+		// initial request
+		this.initialRequest(this.filters$, this.sorter.sortList$).switchMap(requestData => {
+			return this.getDataSet(requestData);
+		}).switchMap(result => {
+			this.resolveReload(result);
+			return this.toRequestStream(this.throttled$, this.filters$, this.sorter.sortList$);
+		})
+			.do(() => this.startLoading())
+			.debounceTime(defaultDebounce)
+			.switchMap(requestData => {
+			return this.getDataSet(requestData);
+		}).subscribe(result => {
+			this.resolveReload(result);
 		});
 	}
 
-	private onFilterChange(filter: filters.ISerializableFilter<any>): void {
-		if (_.has(this.appliedFilters, filter.type)) {
-			this.reload();
-		}
+	get filters(): IFilter<TDataType, any>[] {
+		return this.filters$.getValue();
 	}
 
-	protected resolveReload(result: any): void {
-		let data: IDataResult<TDataType> = <IDataResult<TDataType>>result;
-		this.throttled = (data.count > data.dataSet.length);
-		super.resolveReload(data.dataSet);
-		this.count = data.count;
-		this.isEmpty = data.isEmpty;
+	set filters(value: IFilter<TDataType, any>[]) {
+		this.filters$.next(value);
+	}
+
+	initialRequest(filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+		return throttled(filters$, sorts$).take(1);
+	}
+
+	toRequestStream(throttled$: Observable<boolean>, filters$: Observable<IFilter<any, any>[]>, sorts$: Observable<ISort[]>): Observable<IServerSearchParams> {
+		return toRequestStream(throttled$, filters$, sorts$);
+	}
+
+	startLoading(): void {
+		this._rawDataSet.next(null);
+		this._loadingDataSet.next(true);
+	}
+
+	resolveReload(data: IDataResult<TDataType>): void {
+		this.throttled$.next(data.dataSet ? (data.count > data.dataSet.length) : true);
+		this._loadingDataSet.next(!data.dataSet);
+		this._rawDataSet.next(data.dataSet);
+
+		this.processData();
+
+		this._count.next(data.count);
+		this._isEmpty.next(data.isEmpty);
 	}
 }

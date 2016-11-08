@@ -1,0 +1,16 @@
+<h3>Smart Data Source</h3>
+<div class="row">
+	<div class="col-sm-2">
+		<rlFilterGroup [filterGroup]="oddsEvensFilter"></rlFilterGroup>
+		<rlFilterGroup [filterGroup]="rangeFilterGroup"></rlFilterGroup>
+	</div>
+	<div class="col-sm-10">
+		<label>Card Container with smart data source:</label>
+		<rlCardContainer [builder]="builder">
+			<div *rlCardContent="let myItem">
+				Name: {{myItem.name}}
+				Value: {{myItem.value}}
+			</div>
+		</rlCardContainer>
+	</div>
+</div>

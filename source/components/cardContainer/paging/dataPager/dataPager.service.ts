@@ -1,57 +1,52 @@
-import * as _ from 'lodash';
-import * as Rx from 'rxjs';
+import { drop, take } from 'lodash';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 export const defaultPageSize: number = 10;
 
 export interface IDataPager {
-	pageNumber: number;
-	pageSize: number;
+	pageNumber$: Observable<number>;
+	pageSize$: Observable<number>;
 
-	pageNumberChanges: Rx.Subject<number>;
-	pageSizeChanges: Rx.Subject<number>;
+	setPage(page: number): void;
 
-	startItem: number;
-	filter<T>(dataSet: T[]): T[];
+	startItem$: Observable<number>;
+	filter<T>(dataSet$: Observable<T[]>): Observable<T[]>;
 }
 
 export class DataPager implements IDataPager {
-	private _pageNumber: number = 1;
-	private _pageSize: number = defaultPageSize;
-
-	pageNumberChanges: Rx.Subject<number>;
-	pageSizeChanges: Rx.Subject<number>;
+	private _pageNumber: BehaviorSubject<number>;
+	private _pageSize: BehaviorSubject<number>;
 
 	constructor() {
-		this.pageNumberChanges = new Rx.Subject<number>();
-		this.pageSizeChanges = new Rx.Subject<number>();
+		this._pageNumber = new BehaviorSubject<number>(1);
+		this._pageSize = new BehaviorSubject<number>(defaultPageSize);
 	}
 
-	get pageNumber(): number {
-		return this._pageNumber;
+	setPage(page: number): void {
+		this._pageNumber.next(page);
 	}
 
-	set pageNumber(value: number) {
-		this._pageNumber = value;
-		this.pageNumberChanges.next(value);
+	setPageSize(size: number): void {
+		this._pageSize.next(size);
 	}
 
-	get pageSize(): number {
-		return this._pageSize;
+	get pageNumber$(): Observable<number> {
+		return this._pageNumber.asObservable();
 	}
 
-	set pageSize(value: number) {
-		this._pageSize = value;
-		this.pageSizeChanges.next(value);
+	get pageSize$(): Observable<number> {
+		return this._pageSize.asObservable();
 	}
 
-	get startItem(): number {
-		return (this.pageNumber - 1) * this.pageSize;
+	get startItem$(): Observable<number> {
+		return this.pageNumber$.combineLatest(this.pageSize$)
+							  .map(([pageNumber, pageSize]) => (pageNumber - 1) * pageSize);
 	}
 
-	filter(dataSet: any[]): any[] {
-		return _(dataSet)
-			.drop(this.startItem)
-			.take(this.pageSize)
-			.value();
+	filter(dataSet$: Observable<any[]>): Observable<any[]> {
+		return dataSet$.combineLatest(this.startItem$, this.pageSize$)
+					   .map(([dataSet, startItem, pageSize]) => {
+				return take(drop(dataSet, startItem), pageSize);
+			});
 	}
 }

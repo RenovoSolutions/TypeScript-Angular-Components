@@ -4,9 +4,9 @@ import { services } from 'typescript-angular-utilities';
 import __object = services.object;
 import __transform = services.transform;
 
-import { DataSourceProcessor, IProcessResult } from './dataSourceProcessor.service';
-import { DataPager } from '../paging/index';
-import { ISort, SortDirection, Sorter, MergeSort } from '../sorts/index';
+import { DataSourceProcessorOld, IProcessResult } from './dataSourceProcessorOld.service';
+import { DataPagerOld } from '../../paging/index';
+import { ISort, SortDirection, Sorter, MergeSort } from '../../sorts/index';
 
 interface ITestObject {
 	value: number;
@@ -19,13 +19,13 @@ interface IFilterMock {
 	type?: string;
 }
 
-describe('DataSourceProcessor', () => {
-	let dataSourceProcessor: DataSourceProcessor;
-	let pager: DataPager;
+describe('DataSourceProcessorOld', () => {
+	let dataSourceProcessor: DataSourceProcessorOld;
+	let pager: DataPagerOld;
 
 	beforeEach(() => {
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
-		pager = new DataPager();
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
+		pager = new DataPagerOld();
 	});
 
 	it('should sort the data', (): void => {

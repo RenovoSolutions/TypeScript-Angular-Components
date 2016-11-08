@@ -25,7 +25,7 @@ export class Sorter implements ISorter {
 	}
 
 	sort<TDataType>(data: TDataType[], sort: ISort | ISort[]): TDataType[] {
-		if (sort === null) {
+		if (!sort || !data) {
 			return data;
 		}
 

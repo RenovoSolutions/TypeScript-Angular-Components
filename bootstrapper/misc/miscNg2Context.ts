@@ -17,6 +17,6 @@ export class MiscNgContextBootstrapper {
 	}
 
 	toggle(): void {
-		this.busy2.trigger(!this.busy2.loading);
+		this.busy2.waitOn(!this.busy2.loading);
 	}
 }

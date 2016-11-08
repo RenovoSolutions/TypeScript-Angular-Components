@@ -53,7 +53,7 @@ export class AutosaveDirective implements AfterViewInit {
 		if (this.canAutosave()) {
 			const waitOn = this.submitAndWait();
 			if (waitOn) {
-				this.autosaveAction.trigger(waitOn);
+				this.autosaveAction.waitOn(waitOn).subscribe();
 			}
 			clearTimeout(this.timer);
 		}

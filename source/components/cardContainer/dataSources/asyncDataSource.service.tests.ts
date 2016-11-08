@@ -6,9 +6,9 @@ import __array = services.array;
 import __object = services.object;
 import __transform = services.transform;
 
-import { AsyncDataSource, IDataSource } from './asyncDataSource.service';
+import { AsyncDataSource, IDataSourceOld } from './asyncDataSource.service';
 
-import { DataSourceProcessor } from './dataSourceProcessor.service';
+import { DataSourceProcessorOld } from './processor/dataSourceProcessorOld.service';
 import { Sorter } from '../sorts/sorter/sorter.service';
 import { MergeSort } from '../sorts/mergeSort/mergeSort.service';
 
@@ -17,7 +17,7 @@ interface IDataServiceMock {
 }
 
 describe('AsyncDataSource', () => {
-	let dataSourceProcessor: DataSourceProcessor;
+	let dataSourceProcessor: DataSourceProcessorOld;
 	let dataService: IDataServiceMock;
 	let source: AsyncDataSource<number>;
 	let reloadedSpy: Sinon.SinonSpy;
@@ -28,7 +28,7 @@ describe('AsyncDataSource', () => {
 		dataService = {
 			get: mock.promise([1, 2]),
 		};
-		dataSourceProcessor = new DataSourceProcessor(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
+		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort, __transform.transform));
 		source = new AsyncDataSource<number>(dataService.get, dataSourceProcessor, __array.arrayUtility);
 
 		reloadedSpy = sinon.spy();

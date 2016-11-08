@@ -55,7 +55,7 @@ class AutosaveService implements IAutosaveService {
 		if (_.isBoolean(result)) {
 			return result;
 		} else {
-			this.autosaveService.trigger(result);
+			this.autosaveService.waitOn(result).subscribe();
 			return true;
 		}
 	}

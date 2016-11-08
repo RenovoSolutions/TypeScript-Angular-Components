@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Inject, forwardRef } from '@angular/core';
+import { Component, Input, OnInit, Inject, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { range } from 'lodash';
 
 import { IDataSource } from '../../dataSources/index';
@@ -10,106 +11,106 @@ export const defaultVisiblePageCount: number = 5;
 @Component({
 	selector: 'rlPager',
 	template: require('./pager.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PagerComponent<T> implements OnInit {
 	@Input() pageCount: number;
 
-	pages: number[];
-	lastPage: number;
 	visiblePageCount: number;
 
 	cardContainer: CardContainerComponent<T>;
 	pager: IDataPager;
 	dataSource: IDataSource<any>;
 
-	get canGoBack(): boolean {
-		return this.pager.pageNumber > 1;
-	}
-
-	get canGoForward(): boolean {
-		return this.pager.pageNumber < this.lastPage;
-	}
-
 	constructor(@Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
 		this.pager = this.cardContainer.dataSource.pager;
 	}
 
+	get lastPage$(): Observable<number> {
+		return this.dataSource.count$.combineLatest(this.pager.pageSize$)
+									 .map(([count, pageSize]) => {
+				return Math.ceil(count / pageSize);
+			});
+	}
+
+	get canGoBack$(): Observable<boolean> {
+		return this.pager.pageNumber$.map(pageNumber => pageNumber > 1);
+	}
+
+	get canGoForward$(): Observable<boolean> {
+		return this.pager.pageNumber$.combineLatest(this.lastPage$)
+									 .map(([pageNumber, lastPage]) => pageNumber < lastPage);
+	}
+
+	get pages$(): Observable<number[]> {
+		return this.pager.pageNumber$.combineLatest(this.lastPage$)
+									 .map(([page, lastPage]) => {
+				const nonCurrentVisiblePages: number = this.visiblePageCount - 1;
+
+				const before: number = Math.floor(nonCurrentVisiblePages / 2);
+				const after: number = Math.ceil(nonCurrentVisiblePages / 2);
+
+				let startPage: number = page - before;
+				let endPage: number = page + after;
+
+				if (startPage < 1) {
+					startPage = 1;
+					endPage = Math.min(this.visiblePageCount, lastPage);
+				} else if (endPage > lastPage) {
+					endPage = lastPage;
+					startPage = Math.max(lastPage - nonCurrentVisiblePages, 1);
+				}
+
+				return range(startPage, endPage + 1);
+			});
+	}
+
+	isCurrent(page: number): Observable<boolean> {
+		return this.pager.pageNumber$.map(pageNumber => page === pageNumber);
+	}
+
 	ngOnInit(): void {
 		if (this.pager) {
 			this.visiblePageCount = this.pageCount != null ? this.pageCount : defaultVisiblePageCount;
-			this.lastPage = 1;
 			this.dataSource = this.cardContainer.dataSource;
-
-			this.dataSource.countChanges.subscribe(this.updatePageCount);
-			this.pager.pageSizeChanges.subscribe(this.updatePageCount);
-			this.updatePageCount();
 		}
-	}
-
-	setPage(page: number): void {
-		this.pager.pageNumber = page;
-		this.updatePaging();
 	}
 
 	first(): void {
-		this.setPage(1);
+		this.pager.setPage(1);
 	}
 
 	previous(): void {
-		if (this.pager.pageNumber > 1) {
-			this.setPage(this.pager.pageNumber - 1);
-		}
+		this.pager.pageNumber$.take(1).subscribe(pageNumber => {
+			if (pageNumber > 1) {
+				this.pager.setPage(pageNumber - 1);
+			}
+		});
 	}
 
 	goto(page: number): void {
-		if (page >= 1 && page <= this.lastPage) {
-			this.setPage(page);
-		}
+		this.lastPage$.take(1).subscribe(lastPage => {
+			if (page >= 1 && page <= lastPage) {
+				this.pager.setPage(page);
+			}
+		});
 	}
 
 	next(): void {
-		if (this.pager.pageNumber < this.lastPage) {
-			this.setPage(this.pager.pageNumber + 1);
-		}
+		this.pager.pageNumber$.combineLatest(this.lastPage$)
+							  .take(1)
+							  .subscribe(([pageNumber, lastPage]) => {
+			if (pageNumber < lastPage) {
+				this.pager.setPage(pageNumber + 1);
+			}
+		});
+
 	}
 
 	last(): void {
-		this.setPage(this.lastPage);
-	}
-
-	private updatePageCount: {(): void} = (): void => {
-		const totalItems: number = this.dataSource.count;
-
-		const newLastPage: number = Math.ceil(totalItems / this.pager.pageSize);
-
-		if (newLastPage !== this.lastPage) {
-			this.lastPage = newLastPage;
-			this.setPage(1);
-		}
-
-		this.updatePaging();
-	}
-
-	private updatePaging(): void {
-		const page: number = this.pager.pageNumber;
-
-		const nonCurrentVisiblePages: number = this.visiblePageCount - 1;
-
-		const before: number = Math.floor(nonCurrentVisiblePages / 2);
-		const after: number = Math.ceil(nonCurrentVisiblePages / 2);
-
-		let startPage: number = page - before;
-		let endPage: number = page + after;
-
-		if (startPage < 1) {
-			startPage = 1;
-			endPage = Math.min(this.visiblePageCount, this.lastPage);
-		} else if (endPage > this.lastPage) {
-			endPage = this.lastPage;
-			startPage = Math.max(this.lastPage - nonCurrentVisiblePages, 1);
-		}
-
-		this.pages = range(startPage, endPage + 1);
+		this.lastPage$.take(1).subscribe(lastPage => {
+			this.pager.setPage(lastPage);
+		});
 	}
 }

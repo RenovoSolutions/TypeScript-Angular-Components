@@ -16,25 +16,25 @@
 					<div class="clearfix"></div>
 				</div>
 
-				<div class="alert alert-info" [hidden]="hasItems">
+				<div class="alert alert-info" *ngIf="dataSource.needsRefinedSearch$ | async">
 					Please refine your search results
 				</div>
-				<div class="alert alert-info" [hidden]="!dataSource.isEmpty">
+				<div class="alert alert-info" *ngIf="dataSource.isEmpty$ | async">
 					There are no items to show
 				</div>
 
-				<div *ngIf="hasItems">
-					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet">
+				<div *ngIf="hasItems$ | async">
+					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet$ | async">
 						<rlCard [item]="card"
 								[save]="save"></rlCard>
 					</div>
 				</div>
 
 				<div>
-					<rlBusy [loading]="dataSource.loadingDataSet" size="2x"></rlBusy>
+					<rlBusy [loading]="dataSource.loadingDataSet$ | async" size="2x"></rlBusy>
 				</div>
 
-				<div class="card-container-footer" *ngIf="!dataSource.isEmpty">
+				<div class="card-container-footer" *ngIf="!(dataSource.isEmpty$ | async)">
 					<rlContainerFooter [footer]="containerFooter"></rlContainerFooter>
 				</div>
 			</div>

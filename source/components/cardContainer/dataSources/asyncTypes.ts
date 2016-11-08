@@ -1,6 +1,10 @@
 import { Observable } from 'rxjs';
 
 export interface IServerSearchFunction<TDataType> {
+	(searchParams: IServerSearchParams): Observable<IDataResult<TDataType>>;
+}
+
+export interface IServerSearchFunctionOld<TDataType> {
 	(searchParams: IServerSearchParams): Promise<IDataResult<TDataType>> | Observable<IDataResult<TDataType>>;
 }
 

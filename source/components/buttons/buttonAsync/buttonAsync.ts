@@ -23,12 +23,13 @@ export class ButtonAsyncComponent extends BaseButtonComponent {
 	constructor() {
 		super();
 		if (!this.action) {
-			this.action = <IAsyncAction>() => Promise.resolve();
+			this.action = () => Observable.empty();
 		}
 	}
 
 	triggerAction($event: any): void {
+		// subscribes to kick off the action
 		const waitValue: IWaitValue<any> = this.action($event);
-		this.busySpinner.trigger(waitValue);
+		this.busySpinner.waitOn(waitValue).subscribe();
 	}
 }

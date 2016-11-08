@@ -123,19 +123,18 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.selectItem(newItem);
 	}
 
-	refresh(search: string): Observable<T[]> {
+	refresh(search: string): void {
 		this.search = search;
 		if (this.object.isNullOrEmpty(search)) {
 			this._visibleItems.next([]);
-			return Observable.empty<T[]>();
+			return;
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
-		this.busy.trigger(loadRequest);
-		loadRequest.subscribe(data => {
+		// triggers the subscription
+		this.busy.waitOn(loadRequest).subscribe(data => {
 			this.list.open();
 			this._visibleItems.next(data);
 		});
-		return loadRequest;
 	}
 
 	ngOnInit(): void {
@@ -153,14 +152,13 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 		this.searchStream
 			.do(search => {
-				this.busy.trigger(!!search);
+				this.busy.waitOn(!!search);
 				this.search = search;
 			})
 			.debounceTime(this.loadDelay)
-			.do(() => this.busy.trigger(false))
+			.do(() => this.busy.waitOn(false))
 			.distinctUntilChanged()
-			.switchMap(search => this.refresh(search))
-			.subscribe(() => null);
+			.subscribe(search => this.refresh(search));
 	}
 
 	ngOnChanges(changes: ITypeaheadChanges): void {

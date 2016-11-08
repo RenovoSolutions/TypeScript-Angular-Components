@@ -1,13 +1,14 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 
-import { IFilterGroup, IFilterOption } from '../filterGroup.service';
+import { IFilterGroupOld, IFilterOptionOld } from '../filterGroupOld.service';
 
 @Component({
 	selector: 'rlFilterOption',
 	template: require('./filterOption.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FilterOptionComponent {
-	@Input() option: IFilterOption;
+	@Input() option: IFilterOptionOld;
 	@Input() isActive: boolean;
 	@Output() activate: EventEmitter<void> = new EventEmitter<void>();
 }

@@ -11,18 +11,18 @@ describe('busy', () => {
 	});
 
 	it('should not show the spinner after triggering if null', (): void => {
-		busy.trigger(null);
+		busy.waitOn(null);
 		expect(busy.loading).to.not.exist;
 	});
 
 	it('should show the spinner after triggering if true', (): void => {
-		busy.trigger(true);
+		busy.waitOn(true);
 		expect(busy.loading).to.be.true;
 	});
 
 	it('should hide the spinner after triggering if false', (): void => {
 		busy.loading = true;
-		busy.trigger(false);
+		busy.waitOn(false);
 		expect(busy.loading).to.be.false;
 	});
 
@@ -32,7 +32,7 @@ describe('busy', () => {
 		beforeEach((): void => {
 			stream = new Subject<void>();
 
-			busy.trigger(stream);
+			busy.waitOn(stream).subscribe({ error: () => null });
 
 			expect(busy.loading).to.be.true;
 		});
