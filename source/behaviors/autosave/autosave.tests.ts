@@ -199,7 +199,7 @@ describe('AutosaveDirective', () => {
 
 			autosave.autosave();
 
-			sinon.assert.notCalled(autosaveAction.trigger);
+			sinon.assert.notCalled(autosaveAction.waitOn);
 		});
 	});
 });
