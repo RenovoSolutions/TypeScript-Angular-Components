@@ -61,7 +61,7 @@ export class DialogComponent extends FormComponent {
 		this.dialogRoot.closeDialog.next(null);
 	}
 
-	submitAndClose(): Observable<any> {
+	submitAndClose = (): Observable<any> => {
 		const waitOn = this.submitAndWait();
 		return this.asyncHelper.waitAsObservable(waitOn).do((result) => {
 			if (result !== false) {
