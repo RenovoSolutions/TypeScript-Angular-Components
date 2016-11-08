@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { mapValues, map, range } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import { services } from 'typescript-angular-utilities';
 import __date = services.date;
@@ -9,24 +10,28 @@ import __transform = services.transform;
 import __timezone = services.timezone;
 import __object = services.object;
 
-import { builder } from '../../source/components/cardContainer/index';
+import { IColumn } from '../../source/components/cardContainer/index';
+import { CardContainerBuilderService, ICardContainerInstance } from '../../source/components/cardContainer/builder/index';
 import {
-	DateFilter,
+	IDateFilter,
 	IFilterGroup,
 	IModeFilterGroup,
 	IRangeFilterGroup,
 	SelectFilter,
 } from '../../source/components/cardContainer/filters/index';
 
-interface ICardItem {
+export interface ICardItem {
+	id: number;
 	name: string;
 	value: number;
+	date?: moment.Moment;
 }
 
 const rangeLow: number = 1;
 const rangeHigh: number = 101;
 const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardItem => {
 	return {
+		id: num,
 		name: 'Item' + num,
 		value: num,
 	};
@@ -38,68 +43,88 @@ const items: ICardItem[] = map(range(rangeLow, rangeHigh), (num: number): ICardI
 })
 export class CardsBootstrapper {
 	alwaysOpen: boolean = false;
-	builder: builder.CardContainerBuilder;
-	builderWithFilters: builder.CardContainerBuilder;
+	builder: ICardContainerInstance;
+	selectBuilder: ICardContainerInstance;
+	searchBuilder: ICardContainerInstance;
+	builderWithFilterGroups: ICardContainerInstance;
+	builderWithSelectFilter: ICardContainerInstance;
+	builderWithDateFilter: ICardContainerInstance;
 	options: number[];
-	dateFilter: DateFilter;
-	modeFilterGroup: IModeFilterGroup;
-	rangeFilterGroup: IRangeFilterGroup;
-	disabledFilterGroup: IFilterGroup;
+	dateFilter: IDateFilter<any>;
+	modeFilterGroup: IModeFilterGroup<any>;
+	rangeFilterGroup: IRangeFilterGroup<any>;
+	disabledFilterGroup: IFilterGroup<any>;
 	selectFilter: SelectFilter<any, any>;
 
+	columns: IColumn<ICardItem>[];
+	data: ICardItem[] = items;
+
 	constructor(timezone: __timezone.TimezoneService
-			, cardContainerBuilder: builder.CardContainerBuilder) {
+			, cardContainerBuilder: CardContainerBuilderService) {
 		timezone.setCurrentTimezone('-05:00');
 
 		this.options = [1, 2, 3, 4, 5];
 
-		this.builder = cardContainerBuilder;
-		this.builderWithFilters = _.cloneDeep(cardContainerBuilder);
+		this.columns = [
+			{
+				name: 'name',
+				label: 'Name',
+				size: 6,
+				getValue: 'name',
+			},
+			{
+				name: 'value',
+				label: 'Value',
+				size: 6,
+				getValue: 'value',
+			},
+		];
 
-		this.builder.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
-		this.builder.usePaging();
-		this.builder.addColumn({
-			name: 'name',
-			label: 'Name',
-			size: 6,
-			getValue: 'name',
-		});
-		this.builder.addColumn({
-			name: 'value',
-			label: 'Value',
-			size: 6,
-			getValue: 'value',
-			template: '<b>{{myItem.value}}</b>',
-		});
+		this.builder = this.setupCardContainer(cardContainerBuilder);
+		this.selectBuilder = this.setupCardContainer(cardContainerBuilder);
+		this.searchBuilder = this.setupCardContainer(cardContainerBuilder);
+		this.builderWithFilterGroups = this.setupCardContainerWithFilterGroups(cardContainerBuilder);
+		this.builderWithSelectFilter = this.setupCardContainerWithSelectFilter(cardContainerBuilder);
+		this.builderWithDateFilter = this.setupCardContainerWithDateFilter(cardContainerBuilder);
 
-		const searchFilter = this.builder.useSearch();
-		searchFilter.minSearchLength = 5;
-
-		this.initFilteredCardContainer();
-
-		this.dateFilter = new DateFilter({
-			type: 'dateFilter',
-			valueSelector: 'date',
-		}, __date.dateUtility, __transform.transform);
-
-		this.selectFilter = new SelectFilter({
-			valueSelector: 'value',
-		}, __object.objectUtility, __transform.transform);
-
-		this.dateFilter.subscribe(value => console.log(mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
-		this.selectFilter.subscribe(value => console.log(value));
+		// const searchFilter = this.builder.useSearch();
+		// searchFilter.minSearchLength = 5;
 	}
 
-	initFilteredCardContainer() {
-		this.builderWithFilters.dataSource.buildDataServiceDataSource<ICardItem>(() => Observable.of(items).delay(1000));
-		this.builderWithFilters.usePaging();
-		this.builderWithFilters.addColumn({
+	setupCardContainer(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
 			name: 'name',
 			label: 'Name',
 			size: 6,
 			getValue: 'name',
 		});
-		this.builderWithFilters.addColumn({
+		cardContainerBuilder.addColumn(builder, {
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+		});
+		return builder;
+	}
+
+	setupCardContainerWithFilterGroups(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
 			name: 'value',
 			label: 'Value',
 			size: 6,
@@ -107,15 +132,13 @@ export class CardsBootstrapper {
 			template: '<b>{{myItem.value}}</b>',
 		});
 
-		this.rangeFilterGroup = this.builderWithFilters.filters.buildRangeFilterGroup({
+		this.rangeFilterGroup = cardContainerBuilder.buildRangeFilterGroup(builder, {
 			type: 'testRangeGroup',
 			label: 'Range Filter Group',
 			getValue: 'value',
 			options: [
 				{
 					label: 'All',
-					highInclusive: rangeHigh,
-					lowInclusive: 0
 				},
 				{
 					label: '5 - 10',
@@ -129,7 +152,7 @@ export class CardsBootstrapper {
 			],
 		});
 
-		this.modeFilterGroup = this.builderWithFilters.filters.buildModeFilterGroup({
+		this.modeFilterGroup = cardContainerBuilder.buildModeFilterGroup(builder, {
 			type: 'testModeGroup',
 			label: 'Mode Filter Group',
 			getValue: 'value',
@@ -149,26 +172,91 @@ export class CardsBootstrapper {
 			],
 		});
 
-		this.disabledFilterGroup = this.builderWithFilters.filters.buildFilterGroup({
+		this.disabledFilterGroup = cardContainerBuilder.buildFilterGroup(builder, {
 			type: 'testGroup',
 			label: 'Disabled Filter Group',
 			options: [
 				{
 					label: 'Show',
-					filter: item => true,
+					predicate: item => true,
 					serialize: () => 'show',
 				},
 				{
 					label: 'Hide',
-					filter: item => false,
+					predicate: item => false,
 					serialize: () => 'hide',
 				},
 			],
 		});
 
-		this.modeFilterGroup.subscribe(value => console.log('mode filter change', value));
-		this.rangeFilterGroup.subscribe(value => console.log('range filter change', value));
-		this.disabledFilterGroup.subscribe(value => console.log('disabled filter change', value));
+		this.modeFilterGroup.serialize().skip(1).subscribe(value => console.log('mode filter change', value));
+		this.rangeFilterGroup.serialize().skip(1).subscribe(value => console.log('range filter change', value));
+		this.disabledFilterGroup.serialize().skip(1).subscribe(value => console.log('disabled filter change', value));
+
+		return builder;
+	}
+
+	setupCardContainerWithSelectFilter(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(items).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'value',
+			label: 'Value',
+			size: 6,
+			getValue: 'value',
+			template: '<b>{{myItem.value}}</b>',
+		});
+
+		this.selectFilter = cardContainerBuilder.buildSelectFilter<any, any>(builder, {
+			valueSelector: 'value',
+		});
+
+		this.selectFilter.serialize().skip(1).subscribe(value => console.log('select filter change', value));
+
+		return builder;
+	}
+
+	setupCardContainerWithDateFilter(cardContainerBuilder: CardContainerBuilderService): ICardContainerInstance {
+		const builder = cardContainerBuilder.getInstance({
+			paging: true,
+			search: true,
+		});
+		const itemsWithDates = map(items, item => {
+			item.date = moment().subtract(item.value, 'days');
+			return item;
+		});
+		cardContainerBuilder.buildObservableDataSource(builder, Observable.of(itemsWithDates).delay(1000));
+		cardContainerBuilder.addColumn(builder, {
+			name: 'name',
+			label: 'Name',
+			size: 6,
+			getValue: 'name',
+		});
+		cardContainerBuilder.addColumn(builder, {
+			name: 'date',
+			label: 'Date',
+			size: 6,
+			getValue: 'date',
+			template: '<b>{{myItem.date}}</b>',
+		});
+
+		this.dateFilter = cardContainerBuilder.buildDateFilter<any>(builder, {
+			type: 'dateFilter',
+			valueSelector: 'date',
+		});
+
+		this.dateFilter.serialize().skip(1).subscribe(value => console.log('date filter change', mapValues(value, date => date != null ? date.format(__date.defaultFormats.dateTimeFormat) : null)));
+
+		return builder;
 	}
 
 	submitAsync: { (data: any): Promise<void> } = (data: any) => {

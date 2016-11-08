@@ -29,6 +29,18 @@ describe('Sorter', () => {
 			expect(sorter.sort(data, null)).to.equal(data);
 		});
 
+		it('should return the data if null', (): void => {
+			let sort: ISort = {
+				column: <any>{
+					getValue(x: ITestObject): number {
+						return x.value;
+					},
+				},
+				direction: SortDirection.ascending,
+			};
+			expect(sorter.sort(null, sort)).to.be.null;
+		});
+
 		it('should trigger a single sort if parameter is a sort object', (): void => {
 			let sort: ISort = {
 				column: <any>{

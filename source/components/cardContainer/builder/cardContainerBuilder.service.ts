@@ -1,174 +1,130 @@
 import { Injector, Injectable } from '@angular/core';
-import { clone } from 'lodash';
+import { Observable } from 'rxjs';
 
-import { filters, services } from 'typescript-angular-utilities';
-import __genericSearchFilter = services.genericSearchFilter;
+import { services } from 'typescript-angular-utilities';
+import ObjectUtility = services.object.ObjectUtility;
+import DateUtility = services.date.DateUtility;
+import TransformService = services.transform.TransformService;
 
-import { CardContainerComponent } from '../cardContainer';
-import { CardContainerController } from '../cardContainer.ng1';
-import { SelectableCardContainerComponent } from '../selectableCardContainer';
 import { IColumn } from '../column';
-import * as dataSources from '../dataSources/index';
-import * as paging from '../paging/index';
-
-import { IDataSourceBuilder, DataSourceBuilder } from './dataSourceBuilder.service';
-import { IFilterBuilder, FilterBuilder } from './filterBuilder.service';
+import { IDataSource, ObservableDataSource, SmartDataSource, IServerSearchFunction } from '../dataSources/index';
+import { Sorter } from '../sorts/index';
+import {
+	IFilter,
+	FilterGroup,
+	IFilterGroup,
+	IFilterGroupSettings,
+	ModeFilterGroup,
+	IModeFilterGroup,
+	IModeFilterGroupSettings,
+	RangeFilterGroup,
+	IRangeFilterGroup,
+	IRangeFilterGroupSettings,
+	SelectFilter,
+	ISelectFilterSettings,
+	IDateFilter,
+	DateFilter,
+	IDateFilterSettings,
+} from '../filters/index';
+import {} from '../paging/index';
 
 export enum CardContainerType {
-	old,
 	standard,
 	selectable,
 }
 
-export interface ICardContainerBuilder {
-	dataSource: IDataSourceBuilder;
-	filters: IFilterBuilder;
-
-	containerData: any;
-	cardController: string;
-	cardControllerAs: string;
-	cardAs: string;
-	maxColumnSorts: number;
-	disableSelection: { (item: any): string };
-
-	useSearch(tokenized?: boolean): __genericSearchFilter.IGenericSearchFilter;
-	searchFilter(filter: __genericSearchFilter.IGenericSearchFilter): __genericSearchFilter.IGenericSearchFilter;
-	usePaging(): void;
-	addColumn<TItemType>(column: IColumn<TItemType>): void;
-	useClickableCards(): void;
-	usePermanentFooters(): void;
-	useSelection(): void;
-	renderFilters(): void;
-	saveWhenInvalid(): void;
+export interface ICardContainerSettings {
+	search?: boolean;
+	paging?: boolean;
+	maxColumnSorts?: number;
+	permanentFooters?: boolean;
+	disableSelection?: { (item: any): string };
 }
 
+export interface ICardContainerInstance { }
+
+export interface ICardContainerConstructor<TDataType> {
+	search?: boolean;
+	paging?: boolean;
+	maxColumnSorts?: number;
+	permanentFooters?: boolean;
+	disableSelection?: { (item: any): string };
+	columns: IColumn<TDataType>[];
+	dataSource: IDataSource<TDataType>;
+	filters: IFilter<TDataType, any>[];
+}
 
 @Injectable()
-export class CardContainerBuilder implements ICardContainerBuilder {
-	_dataSource: dataSources.IDataSource<any>;
-	_filters: filters.IFilter[];
-	_paging: boolean;
-	_columns: IColumn<any>[];
-	_clickableCards: boolean;
-	_permanentFooters: boolean;
-	_selectableCards: boolean;
-	_disableSelection: { (item: any): string };
-	_searchFilter: __genericSearchFilter.IGenericSearchFilter;
-	_pager: paging.IDataPager;
-	_renderFilters: boolean;
-	_saveWhenInvalid: boolean;
-
-	dataSource: DataSourceBuilder;
-	filters: FilterBuilder;
-
-	maxColumnSorts: number;
-
-	// deprecated
-	containerData: any;
-	cardController: string;
-	cardControllerAs: string;
-	cardAs: string;
-
+export class CardContainerBuilderService {
 	private injector: Injector;
 
-	constructor(injector: Injector
-			, dataSourceBuilder: DataSourceBuilder
-			, filterBuilder: FilterBuilder) {
+	constructor(injector: Injector) {
 		this.injector = injector;
-		this.dataSource = clone(dataSourceBuilder);
-		this.dataSource.init(this);
-		this.filters = clone(filterBuilder);
-		this.filters.init(this);
-		this._columns = [];
 	}
 
-	useSearch(tokenized?: boolean): __genericSearchFilter.IGenericSearchFilter {
-		let factory: __genericSearchFilter.IGenericSearchFilterFactory = this.injector.get(__genericSearchFilter.GenericSearchFilterFactory);
-		this._searchFilter = factory.getInstance(tokenized);
-		return this._searchFilter;
+	getInstance(settings: ICardContainerSettings): ICardContainerInstance {
+		return <any>{
+			search: settings.search,
+			paging: settings.paging,
+			maxColumnSorts: settings.maxColumnSorts,
+			permanentFooters: settings.permanentFooters,
+			disableSelection: settings.disableSelection,
+			columns: [],
+			filters: [],
+		};
 	}
 
-	searchFilter(filter: __genericSearchFilter.IGenericSearchFilter): __genericSearchFilter.IGenericSearchFilter {
-		this._searchFilter = filter;
-		return this._searchFilter;
+	addColumn<TDataType>(container: ICardContainerInstance, column: IColumn<TDataType>): void {
+		(container as ICardContainerConstructor<TDataType>).columns.push(column);
 	}
 
-	usePaging(): void {
-		this._paging = true;
+	// data sources
+	buildObservableDataSource<TDataType>(container: ICardContainerInstance, data$: Observable<TDataType[]>): IDataSource<TDataType> {
+		const dataSource = new ObservableDataSource(data$);
+		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
+		return dataSource;
 	}
 
-	addColumn<TItemType>(column: IColumn<TItemType>): void {
-		this._columns.push(column);
+	buildSmartDataSource<TDataType>(container: ICardContainerInstance, getDataSet: IServerSearchFunction<TDataType>): IDataSource<TDataType> {
+		const dataSource = new SmartDataSource(getDataSet);
+		(container as ICardContainerConstructor<TDataType>).dataSource = dataSource;
+		return dataSource;
 	}
 
-	useClickableCards(): void {
-		this._clickableCards = true;
+	// filters
+	buildFilterGroup<TDataType>(container: ICardContainerInstance, settings: IFilterGroupSettings<TDataType>): IFilterGroup<TDataType> {
+		const filter: IFilterGroup<TDataType> = new FilterGroup<TDataType>(settings);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
 	}
 
-	usePermanentFooters(): void {
-		this._permanentFooters = true;
+	buildModeFilterGroup<TDataType>(container: ICardContainerInstance, settings: IModeFilterGroupSettings<TDataType>): IModeFilterGroup<TDataType> {
+		const transformService: TransformService = this.injector.get(TransformService);
+		const filter: IModeFilterGroup<TDataType> = new ModeFilterGroup<TDataType>(settings, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
 	}
 
-	useSelection(): void {
-		this._selectableCards = true;
+	buildRangeFilterGroup<TDataType>(container: ICardContainerInstance, settings: IRangeFilterGroupSettings<TDataType>): IRangeFilterGroup<TDataType> {
+		const transformService: TransformService = this.injector.get(TransformService);
+		const filter: IRangeFilterGroup<TDataType> = new RangeFilterGroup<TDataType>(settings, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
 	}
 
-	renderFilters(): void {
-		this._renderFilters = true;
+	buildSelectFilter<TDataType, TFilterType>(container: ICardContainerInstance, settings: ISelectFilterSettings<TDataType, TFilterType>): SelectFilter<TDataType, TFilterType> {
+		const transformService: TransformService = this.injector.get(TransformService);
+		const objectUtility: ObjectUtility = this.injector.get(ObjectUtility);
+		const filter: SelectFilter<TDataType, TFilterType> = new SelectFilter(settings, objectUtility, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
 	}
 
-	saveWhenInvalid(): void {
-		this._saveWhenInvalid = true;
-	}
-
-	set disableSelection(value: { (item: any): string }) {
-		if (!this._selectableCards) {
-			this.useSelection();
-		}
-
-		this._disableSelection = value;
-	}
-
-	setCardContainerProperties(cardContainer: CardContainerComponent<any>): void {
-		if (this._searchFilter != null) {
-			this._filters.push(this._searchFilter);
-		}
-
-		cardContainer.dataSource = this._dataSource;
-		cardContainer.filters = this._filters;
-		cardContainer.searchFilter = this._searchFilter;
-		cardContainer.paging = this._paging;
-		cardContainer.columns = this._columns;
-		cardContainer.clickableCards = this._clickableCards;
-		cardContainer.maxColumnSorts = this.maxColumnSorts;
-		cardContainer.permanentFooters = this._permanentFooters;
-		cardContainer.saveWhenInvalid = this._saveWhenInvalid;
-
-		// cardContainer.renderFilters = this._renderFilters;
-
-		if (cardContainer.type === CardContainerType.selectable) {
-			const selectableCardContainer: SelectableCardContainerComponent<any> = <SelectableCardContainerComponent<any>>cardContainer;
-			selectableCardContainer.disableSelection = this._disableSelection;
-		}
-
-		if (cardContainer.type === CardContainerType.old) {
-			const cardContainerOld: CardContainerController = <any>cardContainer;
-			cardContainerOld.selectableCards = this._selectableCards;
-			cardContainerOld.disableSelection = this._disableSelection;
-			cardContainerOld.renderFilters = this._renderFilters;
-			cardContainerOld.saveWhenInvalid = this._saveWhenInvalid;
-
-			cardContainerOld.containerData = this.containerData;
-
-			if (cardContainerOld.cardController == null) {
-				cardContainerOld.cardController = this.cardController;
-			}
-			if (cardContainerOld.cardControllerAs == null) {
-				cardContainerOld.cardControllerAs = this.cardControllerAs;
-			}
-			if (cardContainerOld.cardAs == null) {
-				cardContainerOld.cardAs = this.cardAs;
-			}
-		}
+	buildDateFilter<TDataType>(container: ICardContainerInstance, settings: IDateFilterSettings<TDataType>): IDateFilter<TDataType> {
+		const dateUtility: DateUtility = this.injector.get(DateUtility);
+		const transformService: TransformService = this.injector.get(TransformService);
+		const filter: IDateFilter<TDataType> = new DateFilter<TDataType>(settings, dateUtility, transformService);
+		(container as ICardContainerConstructor<TDataType>).filters.push(filter);
+		return filter;
 	}
 }

@@ -1,17 +1,41 @@
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { filters } from 'typescript-angular-utilities';
 
-import { ISort } from '../sorts/sort';
-import { IDataPager } from '../paging/index';
+import { ISort, SortManagerService } from '../sorts/index';
+import { IFilter } from '../filters/index';
+import { IDataPagerOld, IDataPager } from '../paging/index';
 
 export interface IDataSource<TDataType> {
+	dataSet$: Observable<TDataType[]>;
+	filteredDataSet$: Observable<TDataType[]>;
+	rawDataSet$: Observable<TDataType[]>;
+	sorter: SortManagerService;
+	filters: IFilter<TDataType, any>[];
+	pager: IDataPager;
+	count$: Observable<number>;
+
+	countFilterGroups: boolean;
+
+	loadingDataSet$: Observable<boolean>;
+	needsRefinedSearch$: Observable<boolean>;
+	isEmpty$: Observable<boolean>;
+
+	init(): void;
+	clear(): void;
+
+	add(data: TDataType): void;
+	remove(data: TDataType): void;
+	replace(oldData: TDataType, newData: TDataType): void;
+}
+
+export interface IDataSourceOld<TDataType> {
 	dataSet: TDataType[];
 	filteredDataSet: TDataType[];
 	rawDataSet: TDataType[];
 	sorts: ISort[];
 	filters: filters.IFilter[];
-	pager: IDataPager;
+	pager: IDataPagerOld;
 	count: number;
 
 	countChanges: Subject<number>,

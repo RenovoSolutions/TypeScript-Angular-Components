@@ -1,67 +1,53 @@
-import { Component, Inject, OnInit, forwardRef } from '@angular/core';
+import { Component, Inject, OnInit, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { each } from 'lodash';
 
-import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
-
 import { IDataSource } from '../../dataSources/index';
-import { SelectableCardContainerComponent, ISelectableItem } from '../../selectableCardContainer';
+import { SelectableCardContainerComponent, ISelectionWrappedItem } from '../../selectableCardContainer';
 
 @Component({
 	selector: 'rlSelection',
 	template: require('./selectionControl.html'),
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectionComponent<T extends ISelectableItem> implements OnInit {
-	selectedItems: number;
+export class SelectionComponent<T> implements OnInit {
 	pagingEnabled: boolean;
-	dataSource: IDataSource<T>;
 
 	cardContainer: SelectableCardContainerComponent<T>;
-	boolean: __boolean.IBooleanUtility;
 
-	constructor(@Inject(forwardRef(() => SelectableCardContainerComponent)) cardContainer: SelectableCardContainerComponent<T>
-			, boolean: __boolean.BooleanUtility) {
+	constructor(@Inject(forwardRef(() => SelectableCardContainerComponent)) cardContainer: SelectableCardContainerComponent<T>) {
 		this.cardContainer = cardContainer;
-		this.boolean = boolean;
+	}
+
+	get selectedItems$(): Observable<number> {
+		return this.cardContainer.numberSelected$;
 	}
 
 	ngOnInit(): void {
-		this.selectedItems = this.cardContainer.numberSelected;
-		this.pagingEnabled = this.boolean.toBool(this.cardContainer.dataSource.pager);
-		this.dataSource = this.cardContainer.dataSource;
-
-		this.cardContainer.numberSelectedChanges.subscribe((value: number): void => {
-			this.selectedItems = value;
-		});
+		this.pagingEnabled = !!this.cardContainer.dataSource.pager;
 	}
 
 	selectPage(): void {
-		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = true;
+		this.cardContainer.selectionData$.take(1).subscribe(data => {
+			this.cardContainer.setSelected(data, true);
 		});
-		this.cardContainer.selectionChanged.emit(null);
 	}
 
 	selectAll(): void {
-		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = true;
+		this.cardContainer.selectionFilteredData$.take(1).subscribe(data => {
+			this.cardContainer.setSelected(data, true);
 		});
-		this.cardContainer.selectionChanged.emit(null);
 	}
 
 	clearPage(): void {
-		each(this.dataSource.dataSet, item => {
-			item.viewData.selected = false;
+		this.cardContainer.selectionData$.take(1).subscribe(data => {
+			this.cardContainer.setSelected(data, false);
 		});
-
-		this.cardContainer.selectionChanged.emit(null);
 	}
 
 	clearAll(): void {
-		each(this.dataSource.filteredDataSet, item => {
-			item.viewData.selected = false;
+		this.cardContainer.selectionFilteredData$.take(1).subscribe(data => {
+			this.cardContainer.setSelected(data, false);
 		});
-
-		this.cardContainer.selectionChanged.emit(null);
 	}
 }

@@ -1,11 +1,11 @@
-import { Component, Inject, forwardRef, Optional, SkipSelf } from '@angular/core';
+import { Component, Input, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy } from '@angular/core';
 import { isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
 
 import { CardContainerComponent } from '../cardContainer';
-import { SelectableCardContainerComponent, ISelectableItem } from '../selectableCardContainer';
+import { SelectableCardContainerComponent, ISelectionWrappedItem } from '../selectableCardContainer';
 import { FormComponent } from '../../form/form';
 import { AsyncHelper } from '../../../services/async/async.service';
 import { FormService } from '../../../services/form/form.service';
@@ -15,7 +15,7 @@ import { CardComponent, cardInputs } from './card';
 @Component({
 	selector: 'rlSelectableCard',
 	template: require('./selectableCard.html'),
-	inputs: [cardInputs.item],
+	inputs: [cardInputs.item, cardInputs.save],
 	providers: [
 		{
 			provide: FormComponent,
@@ -26,8 +26,11 @@ import { CardComponent, cardInputs } from './card';
 			useExisting: forwardRef(() => SelectableCardComponent),
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectableCardComponent<T extends ISelectableItem> extends CardComponent<T> {
+export class SelectableCardComponent<T> extends CardComponent<T> {
+	@Input() selection: ISelectionWrappedItem<T>;
+
 	get selectableCardContainer(): SelectableCardContainerComponent<T> {
 		return <SelectableCardContainerComponent<T>>this.cardContainer;
 	}
@@ -41,19 +44,10 @@ export class SelectableCardComponent<T extends ISelectableItem> extends CardComp
 	}
 
 	setSelected(value: boolean): void {
-		if (isUndefined(this.item.viewData)) {
-			this.item.viewData = {};
-		}
-
-		this.item.viewData.selected = value;
-
-		this.selectableCardContainer.selectionChanged.emit(null);
+		this.selectableCardContainer.setSelected([this.selection], value);
 	}
 
 	toggleSelected(): void {
-		if (isUndefined(this.item.viewData)) {
-			this.item.viewData = {};
-		}
-		this.setSelected(!this.item.viewData.selected);
+		this.setSelected(!this.selection.selected);
 	}
 }

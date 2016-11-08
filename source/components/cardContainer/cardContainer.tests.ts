@@ -1,124 +1,123 @@
-import * as _ from 'lodash';
-import { Subject } from 'rxjs';
-
-import { services } from 'typescript-angular-utilities';
-import __object = services.object;
-import __array = services.array;
+import { BehaviorSubject } from 'rxjs';
+import { isFunction } from 'lodash';
 
 import { DataPager } from './paging/index';
-import { SortManagerService } from './sorts/index';
+import { Sorter } from './sorts/index';
 
-import { CardContainerComponent	} from './cardContainer';
+import { CardContainerComponent } from './cardContainer';
 import {
 	IBreakpointSize,
 	IColumn,
 	CardComponent,
 	sorts,
-	builder as __builder,
 } from './index';
 
 interface IDataSourceMock {
-	refresh: Sinon.SinonSpy;
-	onSortChange?: Sinon.SinonSpy;
 	pager?: IDataPagerMock;
 	filters?: IFilterMock[];
-	rawDataSet?: any[];
-	dataSet?: any[];
-	filteredDataSet?: any[];
-	initPager: Sinon.SinonSpy;
-	changed: Subject<void>;
-	redrawing: Subject<void>;
+	rawDataSet$: BehaviorSubject<any>;
+	dataSet$: BehaviorSubject<any>;
+	filteredDataSet$: BehaviorSubject<any>;
+	init: Sinon.SinonSpy;
 }
 
 interface IDataPagerMock {
-	pageSize: number;
-	pageNumber: number;
+	pageSize$: BehaviorSubject<number>;
+	pageNumber$: BehaviorSubject<number>;
 	filter: Sinon.SinonSpy;
 }
 
 interface IFilterMock {
-	type: string;
 	filter: Sinon.SinonSpy;
+}
+
+interface SortManagerMock {
+	updateSorts: Sinon.SinonSpy;
+	setup: Sinon.SinonSpy;
 }
 
 describe('CardContainerComponent', () => {
 	let cardContainer: CardContainerComponent<any>;
-	let builder: __builder.CardContainerBuilder;
-	let mockedDataSource: IDataSourceMock;
+	let dataSource: IDataSourceMock;
+	let sortManager: SortManagerMock;
 
 	beforeEach(() => {
-		cardContainer = new CardContainerComponent(__array.arrayUtility, new DataPager(), new SortManagerService());
+		sortManager = {
+			updateSorts: sinon.spy(),
+			setup: sinon.spy(),
+		};
 
-		builder = new __builder.CardContainerBuilder(<any>{}, <any>{ init: sinon.spy() }, <any>{ init: sinon.spy() });
-		cardContainer.builder = builder;
+		cardContainer = new CardContainerComponent(new DataPager(), <any>{}, <any>sortManager);
 
-		mockedDataSource = buildMockedDataSource();
-		cardContainer.dataSource = <any>mockedDataSource;
-		builder._dataSource = <any>mockedDataSource;
+		cardContainer.builder = <any>{};
+
+		dataSource = buildMockedDataSource();
+		cardContainer.dataSource = <any>dataSource;
 	});
 
 	function buildMockedDataSource(): IDataSourceMock {
 		return <any>{
-			refresh: sinon.spy(),
-			onSortChange: sinon.spy(),
-			initPager: sinon.spy(),
-			changed: new Subject<void>(),
-			redrawing: new Subject<void>(),
+			rawDataSet$: new BehaviorSubject([]),
+			filteredDataSet$: new BehaviorSubject([]),
+			dataSet$: new BehaviorSubject([]),
+			init: sinon.spy(),
 		};
 	}
 
+	it('should set the filters on the data source', (): void => {
+		let filters: IFilterMock[] = [{
+			filter: sinon.spy(),
+		}];
+
+		let dataSource: IDataSourceMock = buildMockedDataSource();
+
+		cardContainer.builder.dataSource = <any>dataSource;
+		cardContainer.builder.filters = <any>filters;
+
+		cardContainer.ngOnInit();
+
+		expect(dataSource.filters).to.equal(filters);
+	});
+
 	describe('hasItems', () => {
 		it('should return true if the data set is not empty', () => {
-			cardContainer.dataSource.dataSet = [];
+			dataSource.dataSet$.next([]);
+			let hasItems;
+			cardContainer.hasItems$.subscribe(result => hasItems = result);
 
-			expect(cardContainer.hasItems).to.be.false;
+			expect(hasItems).to.be.false;
 
-			cardContainer.dataSource.dataSet = [1];
+			dataSource.dataSet$.next([1]);
 
-			expect(cardContainer.hasItems).to.be.true;
+			expect(hasItems).to.be.true;
 		});
 	});
 
 	describe('data source', (): void => {
-		it('should put source on the controller', (): void => {
+		it('should put the source on the controller', (): void => {
+			cardContainer.builder.dataSource = <any>dataSource;
 			cardContainer.ngOnInit();
-			expect(cardContainer.dataSource).to.equal(mockedDataSource);
+			expect(cardContainer.dataSource).to.equal(dataSource);
 		});
 	});
 
 	describe('paging', (): void => {
+		beforeEach(() => {
+			cardContainer.builder.dataSource = <any>dataSource;
+		});
+
 		it('should build a pager and give to the data source if paging is on', (): void => {
-			builder.usePaging();
+			cardContainer.builder.paging = true;
 			cardContainer.ngOnInit();
 
-			expect(cardContainer.builder._pager).to.equal(cardContainer.dataSource.pager);
-			expect(cardContainer.dataSource.pager.pageNumber).to.exist;
-			expect(cardContainer.dataSource.pager.pageSize).to.exist;
-			expect(_.isFunction(cardContainer.dataSource.pager.filter)).to.be.true;
+			expect(cardContainer.dataSource.pager.pageNumber$).to.exist;
+			expect(cardContainer.dataSource.pager.pageSize$).to.exist;
+			expect(isFunction(cardContainer.dataSource.pager.filter)).to.be.true;
 		});
 
 		it('should not have a pager if paging is off', (): void => {
 			cardContainer.ngOnInit();
-
-			expect(cardContainer.builder._pager).to.not.exist;
 			expect(cardContainer.dataSource.pager).to.not.exist;
-		});
-
-		it('should use the data source\'s pager if paging is not specified', (): void => {
-			let pager: IDataPagerMock = {
-				pageNumber: 1,
-				pageSize: 10,
-				filter: sinon.spy(),
-			};
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.pager = pager;
-
-			builder._dataSource = <any>dataSource;
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.builder._pager).to.equal(pager);
-			expect(cardContainer.dataSource.pager).to.equal(pager);
 		});
 	});
 
@@ -135,8 +134,6 @@ describe('CardContainerComponent', () => {
 		});
 
 		it('should signal cards to close before a card opens', (): void => {
-			cardContainer.ngOnInit();
-
 			let okayToOpen: boolean = false;
 
 			okayToOpen = cardContainer.openCard();
@@ -147,218 +144,14 @@ describe('CardContainerComponent', () => {
 		});
 	});
 
-	describe('filters', (): void => {
-		it('should set the filters on the data source and call refresh', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
+	describe('sort', (): void => {
+		it('should sort on the sort manager', () => {
+			const column = <any>{};
 
-			let dataSource: IDataSourceMock = buildMockedDataSource();
+			cardContainer.sort(column);
 
-			builder._dataSource = <any>dataSource;
-			builder._filters = filters;
-
-			cardContainer.ngOnInit();
-
-			expect(dataSource.filters).to.equal(filters);
-			sinon.assert.calledOnce(dataSource.refresh);
-		});
-
-		it('should init filters from data source filters if no filters are specified', (): void => {
-			let filters: IFilterMock[] = [{
-				type: 'type',
-				filter: sinon.spy(),
-			}];
-
-			let dataSource: IDataSourceMock = buildMockedDataSource();
-			dataSource.filters = filters;
-
-			builder._dataSource = <any>dataSource;
-
-			cardContainer.ngOnInit();
-
-			expect(cardContainer.filters).to.equal(filters);
-		});
-	});
-
-	describe('sort - integration with the sortManager', (): void => {
-		it('should add new columns to the front and bump off sorts when greater tham max sorts', (): void => {
-			let columns: IColumn<any>[] = <any>[
-				{
-					label: 'col1',
-					size: {},
-				},
-				{
-					label: 'col2',
-					size: {},
-				},
-				{
-					label: 'col3',
-					size: {},
-				},
-			];
-			builder.addColumn(columns[0]);
-			builder.addColumn(columns[1]);
-			builder.addColumn(columns[2]);
-			cardContainer.maxColumnSorts = 2;
-			cardContainer.ngOnInit();
-
-			cardContainer.sort(columns[0]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(1);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[0]);
-			expect(columns[0].sortDirection).to.equal(sorts.SortDirection.ascending);
-
-			cardContainer.sort(columns[1]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[1]);
-			expect(cardContainer.dataSource.sorts[1].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[1].column).to.equal(columns[0]);
-			expect(columns[1].sortDirection).to.equal(sorts.SortDirection.ascending);
-			expect(columns[0].sortDirection).to.be.null;
-
-			cardContainer.sort(columns[2]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[2]);
-			expect(cardContainer.dataSource.sorts[1].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[1].column).to.equal(columns[1]);
-			expect(columns[2].sortDirection).to.equal(sorts.SortDirection.ascending);
-			expect(columns[1].sortDirection).to.be.null;
-			expect(columns[0].sortDirection).to.be.null;
-
-			sinon.assert.calledThrice(mockedDataSource.onSortChange);
-		});
-
-		it('should change sort direction if specified column is already at the front of the sort', (): void => {
-			let columns: IColumn<any>[] = <any>[
-				{
-					label: 'col1',
-					size: {},
-				},
-				{
-					label: 'col2',
-					size: {},
-				},
-			];
-			cardContainer.columns = columns;
-			cardContainer.ngOnInit();
-
-			cardContainer.sort(columns[1]);
-			cardContainer.sort(columns[0]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[0]);
-			expect(columns[0].sortDirection).to.equal(sorts.SortDirection.ascending);
-
-			cardContainer.sort(columns[0]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.descending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[0]);
-			expect(columns[0].sortDirection).to.equal(sorts.SortDirection.descending);
-
-			cardContainer.sort(columns[0]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(1);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[1]);
-			expect(columns[0].sortDirection).to.be.null;
-
-			sinon.assert.callCount(mockedDataSource.onSortChange, 4);
-		});
-
-		it('should replace all sorts with columns secondary sorts if present', (): void => {
-			let columnWithSecondarySorts: IColumn<any> = <any>{
-				label: 'colWithSecondary',
-				size: {},
-				secondarySorts: {
-					ascending: [
-						{
-							column: 'secondarySortCol',
-							direction: sorts.SortDirection.descending,
-						},
-					],
-					descending: [
-						{
-							column: 'secondarySortCol',
-							direction: sorts.SortDirection.ascending,
-						},
-					],
-				},
-			};
-			let secondarySortColumn: IColumn<any> = <any>{
-				label: 'secondarySortCol',
-				size: {},
-			};
-			let colWithoutSecondary1: IColumn<any> = <any>{
-				label: 'colWithoutSecondary1',
-				size: {},
-			};
-			let colWithoutSecondary2: IColumn<any> = <any>{
-				label: 'colWithoutSecondary2',
-				size: {},
-			};
-			builder.addColumn(colWithoutSecondary1);
-			builder.addColumn(colWithoutSecondary2);
-			builder.addColumn(columnWithSecondarySorts);
-			builder.addColumn(secondarySortColumn);
-			cardContainer.ngOnInit();
-
-			cardContainer.sort(colWithoutSecondary1);
-			cardContainer.sort(colWithoutSecondary2);
-
-			cardContainer.sort(columnWithSecondarySorts);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columnWithSecondarySorts);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
-			expect(cardContainer.dataSource.sorts[1].column).to.equal(secondarySortColumn);
-			expect(cardContainer.dataSource.sorts[1].direction).to.equal(sorts.SortDirection.descending);
-
-			cardContainer.sort(columnWithSecondarySorts);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(2);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columnWithSecondarySorts);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.descending);
-			expect(cardContainer.dataSource.sorts[1].column).to.equal(secondarySortColumn);
-			expect(cardContainer.dataSource.sorts[1].direction).to.equal(sorts.SortDirection.ascending);
-
-			cardContainer.sort(columnWithSecondarySorts);
-
-			expect(cardContainer.dataSource.sorts).to.be.empty;
-
-			sinon.assert.callCount(mockedDataSource.onSortChange, 5);
-		});
-
-		it('should override the default max column size', (): void => {
-			builder.maxColumnSorts = 1;
-			let columns: IColumn<any>[] = <any>[
-				{
-					label: 'col1',
-					size: {},
-				},
-				{
-					label: 'col2',
-					size: {},
-				},
-			];
-			builder.addColumn(columns[0]);
-			builder.addColumn(columns[1]);
-			cardContainer.ngOnInit();
-
-			cardContainer.sort(columns[0]);
-			cardContainer.sort(columns[1]);
-
-			expect(cardContainer.dataSource.sorts).to.have.length(1);
-			expect(cardContainer.dataSource.sorts[0].column).to.equal(columns[1]);
-			expect(cardContainer.dataSource.sorts[0].direction).to.equal(sorts.SortDirection.ascending);
+			sinon.assert.calledOnce(sortManager.updateSorts);
+			expect(sortManager.updateSorts.firstCall.args[0]).to.equal(column);
 		});
 	});
 });

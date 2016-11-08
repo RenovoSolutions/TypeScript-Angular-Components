@@ -1,8 +1,6 @@
 import { Observable, Subject } from 'rxjs';
 import { rlFakeAsync, mock, rlTick, flushMicrotasks } from 'rl-async-testing';
 
-import { services } from 'typescript-angular-utilities';
-
 import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 
 interface IFormMock {
@@ -35,7 +33,7 @@ describe('AutosaveDirective', () => {
 
 		autosaveAction = { waitOn: sinon.spy(() => Observable.empty()) };
 
-		autosave = new AutosaveDirective(<any>form, new services.timeout.TimeoutService(), <any>autosaveAction);
+		autosave = new AutosaveDirective(<any>form, <any>autosaveAction);
 	});
 
 	describe('ngAfterViewInit', (): void => {
@@ -48,6 +46,21 @@ describe('AutosaveDirective', () => {
 
 			sinon.assert.calledOnce(setDebounceSpy);
 		});
+	});
+
+	describe('ngOnDestroy', () => {
+		it('should cancel the current autosave on destroy', rlFakeAsync((): void => {
+			const autosaveSpy = sinon.spy();
+			autosave.autosave = autosaveSpy;
+			autosave.setDebounce();
+
+			autosave.ngOnDestroy();
+
+			rlTick(DEFAULT_AUTOSAVE_DEBOUNCE);
+			flushMicrotasks();
+
+			sinon.assert.notCalled(autosaveSpy);
+		}));
 	});
 
 	describe('setDebounce', () => {
@@ -177,6 +190,16 @@ describe('AutosaveDirective', () => {
 
 			sinon.assert.calledOnce(autosaveAction.waitOn);
 			sinon.assert.calledWith(autosaveAction.waitOn, waitValue);
+		});
+
+		it('should not save if the form becomes pristine immediately before saving', () => {
+			const waitValue = mock.request()();
+			form.submitAndWait = sinon.spy(() => waitValue);
+			form.dirty = false;
+
+			autosave.autosave();
+
+			sinon.assert.notCalled(autosaveAction.trigger);
 		});
 	});
 });

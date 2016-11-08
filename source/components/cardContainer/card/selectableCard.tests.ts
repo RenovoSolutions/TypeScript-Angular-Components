@@ -1,5 +1,4 @@
 import { services } from 'typescript-angular-utilities';
-import __boolean = services.boolean;
 import __notification = services.notification;
 
 import { FormService } from '../../../services/form/form.service';
@@ -7,8 +6,7 @@ import { FormService } from '../../../services/form/form.service';
 import { SelectableCardComponent } from './selectableCard';
 
 interface ICardContainerMock {
-	selectionChanged?: any;
-	registerCard: Sinon.SinonSpy;
+	setSelected: Sinon.SinonSpy;
 }
 
 describe('SelectableCardComponent', () => {
@@ -17,39 +15,42 @@ describe('SelectableCardComponent', () => {
 
 	beforeEach(() => {
 		cardContainer = {
-			selectionChanged: { emit: sinon.spy() },
-			registerCard: sinon.spy(),
+			setSelected: sinon.spy(),
 		};
 
 		card = new SelectableCardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), null, <any>cardContainer);
-		card.item = { viewData: {} };
+		const randomId = 11;
+		card.selection = <any>{ id: randomId };
 	});
 
 	it('should provide a function for setting the selected property', (): void => {
-		expect(card.item.viewData.selected).to.not.be.true;
-
 		card.setSelected(true);
 
-		expect(card.item.viewData.selected).to.be.true;
+		sinon.assert.calledOnce(cardContainer.setSelected);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], true);
+
+		cardContainer.setSelected.reset();
 
 		card.setSelected(false);
 
-		expect(card.item.viewData.selected).to.be.false;
-
-		sinon.assert.calledTwice(cardContainer.selectionChanged.emit);
+		sinon.assert.calledOnce(cardContainer.setSelected);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], false);
 	});
 
 	it('should toggle the selection', (): void => {
-		expect(card.item.viewData.selected).to.not.be.true;
+		expect(card.selection.selected).to.not.be.true;
 
 		card.toggleSelected();
 
-		expect(card.item.viewData.selected).to.be.true;
+		sinon.assert.calledOnce(cardContainer.setSelected);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], true);
+
+		card.selection.selected = true;
+		cardContainer.setSelected.reset();
 
 		card.toggleSelected();
 
-		expect(card.item.viewData.selected).to.be.false;
-
-		sinon.assert.calledTwice(cardContainer.selectionChanged.emit);
+		sinon.assert.calledOnce(cardContainer.setSelected);
+		sinon.assert.calledWith(cardContainer.setSelected, [card.selection], false);
 	});
 });

@@ -7,9 +7,9 @@ import { DIALOG_PROVIDERS } from'./components/dialog/index';
 
 import { DialogRootService } from './components/dialog/dialogRoot.service';
 
-import { CardContainerBuilder, DataSourceBuilder, FilterBuilder } from './components/cardContainer/builder/index';
+import { CardContainerBuilderOld, DataSourceBuilderOld, FilterBuilderOld } from './components/cardContainer/builder/index';
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
-import { DataPager } from './components/cardContainer/paging/index';
+import { DataPagerOld } from './components/cardContainer/paging/index';
 import { Sorter } from './components/cardContainer/sorts/sorter/sorter.service';
 import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.service';
 
@@ -28,17 +28,17 @@ import { DefaultTheme } from './components/componentsDefaultTheme';
 
 const cardContainerBuilderFactoryProvider: FactoryProvider = {
 	provide: cardContainerBuilderServiceName,
-	deps: [Injector, DataSourceBuilder, FilterBuilder],
-	useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilder, filterBuilder: FilterBuilder) => {
+	deps: [Injector, DataSourceBuilderOld, FilterBuilderOld],
+	useFactory: (injector: Injector, dataSourceBuilder: DataSourceBuilderOld, filterBuilder: FilterBuilderOld) => {
 		return {
-			getInstance: () => new CardContainerBuilder(injector, dataSourceBuilder, filterBuilder),
+			getInstance: () => new CardContainerBuilderOld(injector, dataSourceBuilder, filterBuilder),
 		};
 	},
 };
 const dataPagerFactoryProvider: ValueProvider = {
-	provide: DataPager,
+	provide: DataPagerOld,
 	useValue: {
-		getInstance: () => new DataPager(),
+		getInstance: () => new DataPagerOld(),
 	},
 };
 const columnSearchFactoryProvider: ValueProvider = {
@@ -58,8 +58,8 @@ const defaultThemeNg1: FactoryProvider = {
 		CARD_CONTAINER_PROVIDERS,
 		DIALOG_PROVIDERS,
 
-		DataSourceBuilder,
-		FilterBuilder,
+		DataSourceBuilderOld,
+		FilterBuilderOld,
 
 		AsyncHelper,
 		AutosaveActionService,

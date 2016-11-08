@@ -3,29 +3,29 @@ import { Subject, Observable } from 'rxjs';
 import { services, filters } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { IDataSource } from './dataSource';
-import { DataSourceBase } from './dataSourceBase.service';
-import { IDataSourceProcessor } from './dataSourceProcessor.service';
+import { IDataSourceOld } from './dataSource';
+import { DataSourceBaseOld } from './dataSourceBaseOld.service';
+import { IDataSourceProcessorOld } from './processor/dataSourceProcessorOld.service';
 
-export { IDataSource };
+export { IDataSourceOld };
 
 export interface IDataSetFunction<TDataType> {
 	(params: any): Promise<TDataType[]> | Observable<TDataType[]>;
 }
 
-export interface IAsyncDataSource<TDataType> extends IDataSource<TDataType> {
+export interface IAsyncDataSource<TDataType> extends IDataSourceOld<TDataType> {
 	reload();
 	getDataSet: IDataSetFunction<TDataType>;
 	reloaded: Subject<void>;
 }
 
-export class AsyncDataSource<TDataType> extends DataSourceBase<TDataType> implements IAsyncDataSource<TDataType> {
+export class AsyncDataSource<TDataType> extends DataSourceBaseOld<TDataType> implements IAsyncDataSource<TDataType> {
 	protected synchronizedRequests: Subject<Observable<TDataType[]>> = new Subject<Observable<TDataType[]>>();
 	reloaded: Subject<void>;
 	getDataSet: IDataSetFunction<TDataType>;
 
 	constructor(getDataSet: IDataSetFunction<TDataType>
-			, dataSourceProcessor: IDataSourceProcessor
+			, dataSourceProcessor: IDataSourceProcessorOld
 			, array: __array.IArrayUtility) {
 		super(dataSourceProcessor, array);
 		this.getDataSet = getDataSet;

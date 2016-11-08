@@ -1,7 +1,7 @@
-import * as _ from 'lodash';
+import { Observable } from 'rxjs';
+import { map, isUndefined } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
-import __object = services.object;
 import __transform = services.transform;
 
 import { IFilterOption, IFilterGroup, FilterGroup } from '../filterGroup.service';
@@ -21,16 +21,16 @@ export interface IRangeFilterOptionSettings {
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterOption extends IFilterOption {
+export interface IRangeFilterOption<TItemType> extends IFilterOption<TItemType> {
 	highInclusive?: number;
 	highExclusive?: number;
 	lowInclusive?: number;
 	lowExclusive?: number;
 }
 
-export interface IRangeFilterGroup extends IFilterGroup {
-	options: IRangeFilterOption[];
-	serialize(): IRangeFilterValue;
+export interface IRangeFilterGroup<TItemType> extends IFilterGroup<TItemType> {
+	options: IRangeFilterOption<TItemType>[];
+	serialize(): Observable<IRangeFilterValue>;
 }
 
 export interface IRangeFilterValue {
@@ -40,51 +40,51 @@ export interface IRangeFilterValue {
 	lowExclusive?: number;
 }
 
-export class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
+export class RangeFilterGroup<TItemType> extends FilterGroup<TItemType> implements IRangeFilterGroup<TItemType> {
 	private getValue: { (item: any): number } | string;
 
 	transformService: __transform.ITransformService;
 
 	constructor(settings: IRangeFilterGroupSettings<any>
-			, object: __object.IObjectUtility
 			, transformService: __transform.ITransformService) {
-		super(<any>settings, object);
+		super(<any>settings);
 		this.transformService = transformService;
 
 		this.getValue = settings.getValue;
-		settings.options = _.map<IRangeFilterOptionSettings, IRangeFilterOption>(settings.options, this.buildRangeOption.bind(this));
+		settings.options = map<IRangeFilterOptionSettings, IRangeFilterOption<TItemType>>(settings.options, this.buildRangeOption.bind(this));
 		this.initOptions();
 	}
 
-	serialize(): IRangeFilterValue {
-		let activeOption: IRangeFilterOption = <any>this.activeOption;
-		if (this.isNullOption(activeOption)) {
-			return null;
-		}
-		return {
-			highInclusive: activeOption.highInclusive,
-			highExclusive: activeOption.highExclusive,
-			lowInclusive: activeOption.lowInclusive,
-			lowExclusive: activeOption.lowExclusive,
-		};
+	serialize(): Observable<IRangeFilterValue> {
+		return this.value$.asObservable().map((activeOption: IRangeFilterOption<TItemType>) => {
+			if (this.isNullOption(activeOption)) {
+				return null;
+			}
+			return {
+				highInclusive: activeOption.highInclusive,
+				highExclusive: activeOption.highExclusive,
+				lowInclusive: activeOption.lowInclusive,
+				lowExclusive: activeOption.lowExclusive,
+			};
+		});
 	}
 
-	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption {
-		var modeOption: IRangeFilterOption = <any>option;
-		modeOption.filter = (item: any): boolean => {
+	private buildRangeOption(option: IRangeFilterOptionSettings): IRangeFilterOption<TItemType> {
+		var modeOption: IRangeFilterOption<TItemType> = <any>option;
+		modeOption.predicate = (item: TItemType): boolean => {
 			var value: number = this.transformService.getValue(item, this.getValue);
 
 			var result: boolean = true;
 
-			if (_.isUndefined(option.highExclusive) === false) {
+			if (isUndefined(option.highExclusive) === false) {
 				result = value < option.highExclusive;
-			} else if (_.isUndefined(option.highInclusive) === false) {
+			} else if (isUndefined(option.highInclusive) === false) {
 				result = value <= option.highInclusive;
 			}
 
-			if (_.isUndefined(option.lowExclusive) === false) {
+			if (isUndefined(option.lowExclusive) === false) {
 				result = result && value > option.lowExclusive;
-			} else if (_.isUndefined(option.lowInclusive) === false) {
+			} else if (isUndefined(option.lowInclusive) === false) {
 				result = result && value >= option.lowInclusive;
 			}
 
@@ -94,7 +94,7 @@ export class RangeFilterGroup extends FilterGroup implements IRangeFilterGroup {
 		return modeOption;
 	}
 
-	private isNullOption(option: IRangeFilterOption): boolean {
+	private isNullOption(option: IRangeFilterOption<TItemType>): boolean {
 		return option.highInclusive == null
 			&& option.highExclusive == null
 			&& option.lowInclusive == null

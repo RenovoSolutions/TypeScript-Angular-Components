@@ -1,13 +1,11 @@
-import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList } from '@angular/core';
-import { each, isUndefined, filter, difference } from 'lodash';
-
-import { services, filters } from 'typescript-angular-utilities';
-import __array = services.array;
-import __genericSearchFilter = services.genericSearchFilter;
+import { Component, Output, EventEmitter, forwardRef, ContentChild, ContentChildren, QueryList, ChangeDetectionStrategy } from '@angular/core';
+import { map, find, clone, filter, includes } from 'lodash';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 import { IColumn } from './column';
 import { SortDirection, ISortDirections, SortManagerService } from './sorts/index';
 import { DataPager } from './paging/dataPager/dataPager.service';
+import { IFilter, SearchFilter } from './filters/index';
 
 import { CardContentTemplate, CardFooterTemplate } from '../cards/index';
 import { ContainerHeaderTemplate, ContainerFooterTemplate, ColumnContentTemplate } from './templates/index';
@@ -20,11 +18,12 @@ import { CardContainerType } from './builder/cardContainerBuilder.service';
 
 export const defaultSelectionTitle: string = 'Select card';
 
-export interface ISelectableItem {
-	viewData?: ISelectionViewData;
+export interface IdentityItem {
+	id?: number;
 }
 
-export interface ISelectionViewData {
+export interface ISelectionWrappedItem<T> {
+	item: T;
 	selected?: boolean;
 	disabledSelection?: boolean;
 	selectionTitle?: string;
@@ -36,19 +35,21 @@ export interface ISelectionViewData {
 	inputs: [
 		cardContainerInputs.builder,
 		cardContainerInputs.save,
-		cardContainerInputs.searchPlaceholder
 	],
 	providers: [
 		DataPager,
+		SearchFilter,
 		SortManagerService,
 		{
 			provide: CardContainerComponent,
 			useExisting: forwardRef(() => SelectableCardContainerComponent),
 		},
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SelectableCardContainerComponent<T extends ISelectableItem> extends CardContainerComponent<T> {
-	@Output() selectionChanged: EventEmitter<void> = new EventEmitter<void>();
+export class SelectableCardContainerComponent<T extends IdentityItem> extends CardContainerComponent<T> {
+	private _selectionFilteredData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
+	private _selectionData: BehaviorSubject<ISelectionWrappedItem<T>[]>;
 
 	selectionColumn: IColumn<any>;
 	sortDirections: ISortDirections = SortDirection;
@@ -61,26 +62,48 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 	@ContentChildren(ColumnContentTemplate) columnTemplates: QueryList<ColumnContentTemplate>;
 	@ContentChildren(ColumnHeaderTemplate) columnHeaders: QueryList<ColumnHeaderTemplate>;
 
-	constructor(array: __array.ArrayUtility, pager: DataPager, sortManager: SortManagerService) {
-		super(array, pager, sortManager);
+	constructor(pager: DataPager, searchFilter: SearchFilter, sortManager: SortManagerService) {
+		super(pager, searchFilter, sortManager);
 		this.type = CardContainerType.selectable;
+		this._selectionFilteredData = new BehaviorSubject(null);
+		this._selectionData = new BehaviorSubject(null);
+	}
+
+	get numberSelected$(): Observable<number> {
+		return this.selectionFilteredData$.map(selectionFilteredData => {
+			const selectedItems = filter(selectionFilteredData, (selection: ISelectionWrappedItem<T>): boolean => {
+				return selection.selected;
+			});
+			return selectedItems ? selectedItems.length : 0;
+		});
+	}
+
+	get selectionFilteredData$(): Observable<ISelectionWrappedItem<T>[]> {
+		return this._selectionFilteredData.asObservable();
+	}
+
+	get selectionData$(): Observable<ISelectionWrappedItem<T>[]> {
+		return this._selectionData.asObservable();
 	}
 
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		this.dataSource.changed.subscribe(this.addViewData);
-		this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
+		this.dataSource.filteredDataSet$.subscribe(filteredData => {
+			const selectionData = this._selectionFilteredData.getValue();
+			this._selectionFilteredData.next(this.buildSelectionData(filteredData, selectionData));
+		});
 
-		this.addViewData();
-
-		this.selectionChanged.subscribe(this.updateSelected);
+		this.dataSource.dataSet$.combineLatest(this._selectionFilteredData).subscribe(([data, selectionFilteredData]) => {
+			this._selectionData.next(filter(selectionFilteredData, selection => includes(data, selection.item)));
+		});
 
 		this.selectionColumn = {
 			label: null,
 			size: null,
-			getValue(item: any): boolean {
-				return item.viewData.selected;
+			getValue: (item: T): boolean => {
+				const selection = this.getSelection(item);
+				return selection.selected;
 			},
 			flipSort: true,
 		};
@@ -90,49 +113,53 @@ export class SelectableCardContainerComponent<T extends ISelectableItem> extends
 		this.sort(this.selectionColumn);
 	}
 
-	private addViewData: {(): void} = (): void => {
-		each(this.dataSource.rawDataSet, (item: T): void => {
-			if (isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
-		});
-
-		this.updateDisabledSelections();
-	}
-
-	private clearFilteredSelections: {(): void} = (): void => {
-		let nonVisibleItems: any[] = difference(this.dataSource.rawDataSet, this.dataSource.filteredDataSet);
-
-		each(nonVisibleItems, (item: T): void => {
-			if (isUndefined(item.viewData)) {
-				item.viewData = {
-					selected: false,
-				};
-			}
-
-			item.viewData.selected = false;
-			item.viewData.selectionTitle = defaultSelectionTitle;
-		});
-
-		this.updateSelected();
-	}
-
-	private updateSelected: {(): void} = (): void => {
-		this.numberSelected = filter(this.dataSource.filteredDataSet, (item: T): boolean => {
-			return item.viewData != null && item.viewData.selected;
-		}).length;
-		this.numberSelectedChanges.next(this.numberSelected);
-	}
-
-	private updateDisabledSelections: {(): void} = (): void => {
-		if (this.disableSelection) {
-			each(this.dataSource.rawDataSet, (item: T): void => {
-				let disabledReason: string = this.disableSelection({ item: item });
-				item.viewData.disabledSelection = (disabledReason != null);
-				item.viewData.selectionTitle = (item.viewData.disabledSelection ? disabledReason : defaultSelectionTitle);
+	setSelected(selections: ISelectionWrappedItem<T>[], value: boolean): void {
+		this.dataSource.filteredDataSet$.take(1).subscribe(filteredData => {
+			let updatedSelections = map(selections, selection => {
+				const updated = clone(selection);
+				updated.selected = value;
+				return updated;
 			});
+
+			const selectionFilteredData = this._selectionFilteredData.getValue();
+			this._selectionFilteredData.next(map(selectionFilteredData, oldSelection => {
+				const updatedSelection = find(updatedSelections, selection => oldSelection.item.id === selection.item.id);
+				return updatedSelection	|| oldSelection;
+			}));
+		});
+	}
+
+	private getSelection(item: T): ISelectionWrappedItem<T> {
+		const selectionFilteredData = this._selectionFilteredData.getValue();
+		return find(selectionFilteredData, x => x.item.id === item.id);
+	}
+
+	private buildSelectionData(data: T[], selectionData: ISelectionWrappedItem<T>[]): ISelectionWrappedItem<T>[] {
+		return map(data, (item: T): ISelectionWrappedItem<T> => {
+			let selection = clone(find(selectionData, x => x.item.id === item.id));
+
+			if (!selection) {
+				selection = {
+					item: item,
+					selected: false,
+					selectionTitle: '',
+				};
+			} else {
+				selection.item = item;
+			}
+
+			selection = this.setDisableSelection(selection);
+
+			return selection;
+		});
+	}
+
+	private setDisableSelection(selection: ISelectionWrappedItem<T>): ISelectionWrappedItem<T> {
+		if (this.disableSelection) {
+			const disabledReason: string = this.disableSelection({ item: selection.item });
+			selection.disabledSelection = (disabledReason != null);
+			selection.selectionTitle = (selection.disabledSelection ? disabledReason : defaultSelectionTitle) || '';
 		}
+		return selection;
 	}
 }

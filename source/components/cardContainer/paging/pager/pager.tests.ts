@@ -1,18 +1,15 @@
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { PagerComponent } from './pager';
 
-
 interface IDataPagerMock {
-	pageSize: number;
-	pageNumber: number;
-	pageSizeChanges: Subject<number>;
+	pageSize$: BehaviorSubject<number>;
+	pageNumber$: BehaviorSubject<number>;
+	setPage: Sinon.SinonSpy;
 }
 
 interface IDataSourceMock {
-	count: number;
-	countChanges: Subject<number>;
-	setCount(count: number): void;
+	count$: BehaviorSubject<number>;
 	pager: IDataPagerMock;
 }
 
@@ -24,18 +21,13 @@ describe('PagerComponent', () => {
 
 	beforeEach(() => {
 		dataPager = {
-			pageSize: 1,
-			pageNumber: 1,
-			pageSizeChanges: new Subject<number>(),
+			pageSize$: new BehaviorSubject(1),
+			pageNumber$: new BehaviorSubject(1),
+			setPage: sinon.spy(page => dataPager.pageNumber$.next(page)),
 		};
 
 		dataSource = {
-			count: 1,
-			countChanges: new Subject<number>(),
-			setCount(count: number): void {
-				dataSource.count = count;
-				dataSource.countChanges.next(count);
-			},
+			count$: new BehaviorSubject(1),
 			pager: dataPager,
 		};
 
@@ -45,288 +37,217 @@ describe('PagerComponent', () => {
 		pager.ngOnInit();
 	});
 
+	describe('lastPage$', () => {
+		it('should get the total number of pages based on the count and page size', () => {
+			let lastPage;
+			pager.lastPage$.subscribe(result => lastPage = result);
+			dataSource.count$.next(40);
+			dataPager.pageSize$.next(4);
+			expect(lastPage).to.equal(10);
+		});
+
+		it('should round up to the nearest page', () => {
+			let lastPage;
+			pager.lastPage$.subscribe(result => lastPage = result);
+			dataSource.count$.next(41);
+			dataPager.pageSize$.next(4);
+			expect(lastPage).to.equal(11);
+		});
+	});
+
+	describe('canGoBack$', () => {
+		it('should be true if the page number is greater than 1', () => {
+			let canGoBack;
+			pager.canGoBack$.subscribe(result => canGoBack = result);
+			dataPager.pageNumber$.next(4);
+			expect(canGoBack).to.be.true;
+		});
+
+		it('should be false if the page number is 1', () => {
+			let canGoBack;
+			pager.canGoBack$.subscribe(result => canGoBack = result);
+			dataPager.pageNumber$.next(1);
+			expect(canGoBack).to.be.false;
+		});
+	});
+
+	describe('canGoForward$', () => {
+		it('should be true if the page number is less than the last page', () => {
+			let canGoForward;
+			pager.canGoForward$.subscribe(result => canGoForward = result);
+			dataPager.pageNumber$.next(4);
+			dataSource.count$.next(40);
+			dataPager.pageSize$.next(4);
+			expect(canGoForward).to.be.true;
+		});
+
+		it('should be false if the page number equal to the last page', () => {
+			let canGoForward;
+			pager.canGoForward$.subscribe(result => canGoForward = result);
+			dataPager.pageNumber$.next(4);
+			dataSource.count$.next(40);
+			dataPager.pageSize$.next(10);
+			expect(canGoForward).to.be.false;
+		});
+	});
+
+	describe('pages$', () => {
+		it('should generate a range of pages centered around the current page', () => {
+			dataSource.count$.next(5);
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(3);
+
+			expect(pages).to.deep.equal([1, 2, 3, 4, 5]);
+		});
+
+		it('should limit the number of pages to the visible page count', () => {
+			dataSource.count$.next(5);
+			pager.pageCount = 3;
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(3);
+
+			expect(pages).to.deep.equal([2, 3, 4]);
+		});
+
+		it('should show more pages after the current page if too close to the first page', () => {
+			dataSource.count$.next(5);
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(2);
+
+			expect(pages).to.deep.equal([1, 2, 3, 4, 5]);
+		});
+
+		it('should show more pages before the current page if too close to the last page', () => {
+			dataSource.count$.next(8);
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(7);
+
+			expect(pages).to.deep.equal([4, 5, 6, 7, 8]);
+		});
+
+		it('should show all pages if the page count is greater than the number of pages', () => {
+			dataSource.count$.next(3);
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(3);
+
+			expect(pages).to.deep.equal([1, 2, 3]);
+		});
+
+		it('should show an additional page after the current page if an even number of visible pages is specified', () => {
+			dataSource.count$.next(5);
+			pager.pageCount = 4;
+			pager.ngOnInit();
+			let pages;
+			pager.pages$.subscribe(result => pages = result);
+
+			dataPager.pageNumber$.next(3);
+
+			expect(pages).to.deep.equal([2, 3, 4, 5]);
+		});
+	});
+
 	describe('first', (): void => {
 		it('should set the current page to the first page', (): void => {
-			pager.pager.pageNumber = 5;
+			dataPager.pageNumber$.next(5);
 
 			pager.first();
 
-			expect(pager.pager.pageNumber).to.equal(1);
+			expect(dataPager.pageNumber$.getValue()).to.equal(1);
 		});
 	});
 
 	describe('previous', (): void => {
 		it('should decrement the current page if it is not on the first page', (): void => {
-			pager.pager.pageNumber = 5;
+			dataPager.pageNumber$.next(5);
 
 			pager.previous();
 
-			expect(pager.pager.pageNumber).to.equal(4);
+			expect(dataPager.pageNumber$.getValue()).to.equal(4);
 		});
 
 		it('should stay on the current page if it is on the first page', (): void => {
-			pager.pager.pageNumber = 1;
+			dataPager.pageNumber$.next(1);
 
 			pager.previous();
 
-			expect(pager.pager.pageNumber).to.equal(1);
+			expect(dataPager.pageNumber$.getValue()).to.equal(1);
 		});
 	});
 
 	describe('next', (): void => {
 		beforeEach((): void => {
-			dataSource.count = 5;
+			dataSource.count$.next(5);
 			pager = new PagerComponent(cardContainer);
 			pager.ngOnInit();
 		});
 
 		it('should increment the current page if it is not on the last page', (): void => {
-			pager.pager.pageNumber = 1;
+			dataPager.pageNumber$.next(1);
 
 			pager.next();
 
-			expect(pager.pager.pageNumber).to.equal(2);
+			expect(dataPager.pageNumber$.getValue()).to.equal(2);
 		});
 
 		it('should stay on the current page if it is on the last page', (): void => {
-			pager.pager.pageNumber = 5;
+			dataPager.pageNumber$.next(5);
 
 			pager.next();
 
-			expect(pager.pager.pageNumber).to.equal(5);
+			expect(dataPager.pageNumber$.getValue()).to.equal(5);
 		});
 	});
 
 	describe('goto', (): void => {
 		beforeEach((): void => {
-			dataSource.count = 5;
+			dataSource.count$.next(5);
 			pager = new PagerComponent(cardContainer);
 			pager.ngOnInit();
-			pager.pager.pageNumber = 5;
+			dataPager.pageNumber$.next(5);
 		});
 
 		it('should go to the specified page if the page exists', (): void => {
 			pager.goto(3);
-			expect(pager.pager.pageNumber).to.equal(3);
+			expect(dataPager.pageNumber$.getValue()).to.equal(3);
 		});
 
 		it('should stay on the current page if the specified page is before the first page', (): void => {
 			pager.goto(0);
-			expect(pager.pager.pageNumber).to.equal(5);
+			expect(dataPager.pageNumber$.getValue()).to.equal(5);
 		});
 
 		it('should stay on the current page if the specified page is after the last page', (): void => {
 			pager.goto(6);
-			expect(pager.pager.pageNumber).to.equal(5);
+			expect(dataPager.pageNumber$.getValue()).to.equal(5);
 		});
 	});
 
 	describe('last', (): void => {
 		it('should go to the last page', (): void => {
-			dataSource.count = 5;
+			dataSource.count$.next(5);
 			pager = new PagerComponent(cardContainer);
 			pager.ngOnInit();
 
-			pager.pager.pageNumber = 1;
+			dataPager.pageNumber$.next(1);
 
 			pager.last();
 
-			expect(pager.pager.pageNumber).to.equal(5);
-		});
-	});
-
-	describe('setPage', (): void => {
-		it('should update the pageNumber on the pager when the page is set', (): void => {
-			dataSource.count = 5;
-			pager = new PagerComponent(cardContainer);
-			pager.ngOnInit();
-
-			pager.setPage(2);
-
-			expect(dataPager.pageNumber).to.equal(2);
-
-			pager.setPage(4);
-
-			expect(dataPager.pageNumber).to.equal(4);
-		});
-	});
-
-	describe('updatePageCount', (): void => {
-		it('should set the last page to the item count divided by the page size rounded up', (): void => {
-			dataPager.pageSize = 3;
-			dataSource.setCount(10);
-
-			// 10 / 3 = 3.3333...
-			pager.last();
-			expect(pager.pager.pageNumber).to.equal(4);
-		});
-
-		it('should update the last page when the data source count changes', (): void => {
-			dataSource.count = 1;
-			pager = new PagerComponent(cardContainer);
-			pager.ngOnInit();
-			pager.last();
-			expect(pager.pager.pageNumber).to.equal(1);
-
-			dataSource.setCount(5);
-
-			pager.last();
-			expect(pager.pager.pageNumber).to.equal(5);
-		});
-
-		it('should update the last page when the page size changes', (): void => {
-			dataSource.count = 10;
-			pager = new PagerComponent(cardContainer);
-			pager.ngOnInit();
-			pager.last();
-			expect(pager.pager.pageNumber).to.equal(10);
-
-			// increasing the page size to 5 decreases the number of pages to 2
-			dataPager.pageSize = 5;
-			dataPager.pageSizeChanges.next(5);
-
-			pager.last();
-			expect(pager.pager.pageNumber).to.equal(2);
-		});
-
-		it('should update the current page when the last page changes', (): void => {
-			dataSource.count = 5;
-			pager = new PagerComponent(cardContainer);
-			pager.ngOnInit();
-			pager.pager.pageNumber = 5;
-
-			dataSource.setCount(8);
-
-			expect(pager.pager.pageNumber).to.equal(1);
-		});
-	});
-
-	describe('updatePaging', (): void => {
-		describe('canGoBack', (): void => {
-			beforeEach((): void => {
-				dataSource.count = 5;
-				pager = new PagerComponent(cardContainer);
-				pager.ngOnInit();
-			});
-
-			it('should be false if on the first page', (): void => {
-				pager.pager.pageNumber = 1;
-				expect(pager.canGoBack).to.be.false;
-			});
-
-			it('should be true if not on the first page', (): void => {
-				pager.pager.pageNumber = 5;
-				expect(pager.canGoBack).to.be.true;
-			});
-		});
-
-		describe('canGoForward', (): void => {
-			beforeEach((): void => {
-				dataSource.count = 5;
-				pager = new PagerComponent(cardContainer);
-				pager.ngOnInit();
-			});
-
-			it('should be false if on the last page', (): void => {
-				pager.pager.pageNumber = 5;
-				expect(pager.canGoForward).to.be.false;
-			});
-
-			it('should be true if not on the last page', (): void => {
-				pager.pager.pageNumber = 1;
-				expect(pager.canGoForward).to.be.true;
-			});
-		});
-
-		describe('pages', (): void => {
-			it('should generate a range of pages equal to the visible page count centered around the current page', (): void => {
-				dataSource.count = 5;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 5;
-				pager.ngOnInit();
-
-				pager.setPage(3);
-
-				expect(pager.pages).to.have.length(5);
-				expect(pager.pages[0]).to.equal(1);
-				expect(pager.pages[1]).to.equal(2);
-				expect(pager.pages[2]).to.equal(3);
-				expect(pager.pages[3]).to.equal(4);
-				expect(pager.pages[4]).to.equal(5);
-
-				dataSource.count = 5;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 3;
-				pager.ngOnInit();
-
-				pager.setPage(3);
-
-				expect(pager.pages).to.have.length(3);
-				expect(pager.pages[0]).to.equal(2);
-				expect(pager.pages[1]).to.equal(3);
-				expect(pager.pages[2]).to.equal(4);
-			});
-
-			it('should show more pages after the current page if the current page is too close to the first page', (): void => {
-				dataSource.count = 8;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 5
-				pager.ngOnInit();
-
-				pager.setPage(2);
-
-				expect(pager.pages).to.have.length(5);
-				expect(pager.pages[0]).to.equal(1);
-				expect(pager.pages[1]).to.equal(2);
-				expect(pager.pages[2]).to.equal(3);
-				expect(pager.pages[3]).to.equal(4);
-				expect(pager.pages[4]).to.equal(5);
-			});
-
-			it('should show more pages before the current page if the current page is too close to the last page', (): void => {
-				dataSource.count = 8;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 5;
-				pager.ngOnInit();
-
-				pager.setPage(7);
-
-				expect(pager.pages).to.have.length(5);
-				expect(pager.pages[0]).to.equal(4);
-				expect(pager.pages[1]).to.equal(5);
-				expect(pager.pages[2]).to.equal(6);
-				expect(pager.pages[3]).to.equal(7);
-				expect(pager.pages[4]).to.equal(8);
-			});
-
-			it('should show all pages if the page count is greater than the number of pages', (): void => {
-				dataSource.count = 3;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 5;
-				pager.ngOnInit();
-
-				pager.setPage(3);
-
-				expect(pager.pages).to.have.length(3);
-				expect(pager.pages[0]).to.equal(1);
-				expect(pager.pages[1]).to.equal(2);
-				expect(pager.pages[2]).to.equal(3);
-			});
-
-			it('should show an additional page after the current page if an even number of visible pages is specified', (): void => {
-				dataSource.count = 5;
-				pager = new PagerComponent(cardContainer);
-				pager.pageCount = 4;
-				pager.ngOnInit();
-
-				pager.setPage(3);
-
-				expect(pager.pages).to.have.length(4);
-				expect(pager.pages[0]).to.equal(2);
-				expect(pager.pages[1]).to.equal(3);
-				expect(pager.pages[2]).to.equal(4);
-				expect(pager.pages[3]).to.equal(5);
-			});
+			expect(dataPager.pageNumber$.getValue()).to.equal(5);
 		});
 	});
 });

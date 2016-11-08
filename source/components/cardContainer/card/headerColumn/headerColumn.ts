@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __transform = services.transform;
@@ -11,6 +11,7 @@ import { SizeForBreakpoints } from './sizeForBreakpoints';
 	selector: 'rlCardHeaderColumn',
 	template: require('./headerColumn.html'),
 	providers: [SizeForBreakpoints],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardHeaderColumnComponent<T> implements OnInit {
 	@Input() column: IColumn<T>;
