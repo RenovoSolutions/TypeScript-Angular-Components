@@ -1,11 +1,14 @@
 <div class="rl-tab">
-	<ul class="rl-tabset">
-		<li class="rl-tabset-item"
+	<div class="rl-step-list rl-tabset">
+		<div class="rl-step active"
 			ng-repeat="tabHeader in tabset.tabHeaders" ng-click="tabset.select(tabHeader)"
-			ng-class="{ 'active': tabHeader.isVisible, 'error': !tabHeader.isValid }">
-			<a class="rl-tabset-link"><span ng-bind-html="tabHeader.template"></span></a>
-		</li>
-	</ul>
+			ng-class="{ 'error': !tabHeader.isValid }">
+			<div class="rl-step-wrap"
+				 ng-class="{ 'current': tabHeader.isVisible }">
+				<span class="rl-step-title" ng-bind-html="tabHeader.template"></span>
+			</div>
+		</div>
+	</div>
 	<div class="rl-tab-content">
 		<div ng-transclude></div>
 	</div>

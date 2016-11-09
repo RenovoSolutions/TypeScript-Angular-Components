@@ -13,26 +13,18 @@ export class StepComponent {
 	@Input() useMsiStyling: boolean = false;
 
 	// Default classes
+	@HostBinding('class.rl-step') stepStyle: boolean = true;
 	@HostBinding('class.active') activeStyle: boolean = true;
 
 	// Conditional classes
-	@HostBinding('class.rl-multi-step-item') msiStyle: boolean = false;
-	@HostBinding('class.rl-tab-item') tabStyle: boolean = false;
 	@HostBinding('class.error') errorStyle: boolean = false;
 
 	ngOnInit() {
-		this.setStepStyle();
 		this.checkIfValid();
 	}
 
 	ngOnChanges() {
 		this.checkIfValid();
-	}
-
-	setStepStyle() {
-		this.useMsiStyling
-			? this.msiStyle = true
-			: this.tabStyle = true;
 	}
 
 	checkIfValid() {
