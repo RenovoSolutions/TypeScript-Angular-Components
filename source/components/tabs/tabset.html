@@ -1,11 +1,14 @@
 <div class="rl-tab">
-	<ul class="rl-tabset">
-		<li class="rl-tabset-item"
-			*ngFor="let tab of tabs" (click)="select(tab)"
-			[ngClass]="{ 'active': tab.isActive, 'error': !tab.isValid }">
-			<a class="rl-tabset-link"><span [innerHTML]="tab.header.innerHTML"></span></a>
-		</li>
-	</ul>
+	<div class="rl-step-list rl-tabset">
+		<div class="rl-step active"
+			 [class.error]="!tab.isValid"
+			 *ngFor="let tab of tabs" (click)="select(tab)">
+			<div class="rl-step-wrap"
+				 [class.current]="tab.isActive">
+				<span class="rl-step-title" [innerHTML]="tab.header.innerHTML"></span>
+			</div>
+		</div>
+	</div>
 	<div class="rl-tab-content">
 		<ng-content></ng-content>
 	</div>
