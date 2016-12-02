@@ -48,6 +48,15 @@ describe('TypeaheadComponent', () => {
 		};
 	});
 
+	it('should focus the input', () => {
+		const element = { focus: sinon.spy() };
+		typeahead.input = { nativeElement: element };
+
+		typeahead.focus();
+
+		sinon.assert.calledOnce(element.focus);
+	});
+
 	it('should collapse on init if allowCollapse is specified and a model value is present', (): void => {
 		typeahead.allowCollapse = true;
 		typeahead.value = 'Item';
