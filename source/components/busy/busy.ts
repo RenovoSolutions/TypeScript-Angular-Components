@@ -27,14 +27,14 @@ export class BusyComponent {
 	/*
 	 * Public API for triggering the rlBusy to wait on a promise
 	 */
-	waitOn(waitOn: IWaitValue<any>): Observable<any> {
+	waitOn<T>(waitOn: IWaitValue<T>): Observable<T> {
 		if (waitOn == null) {
-			return Observable.empty();
+			return Observable.empty<T>();
 		}
 
 		if (isBoolean(waitOn)) {
 			this.loading = waitOn;
-			return Observable.of(waitOn);
+			return Observable.of<any>(waitOn);
 		}
 
 		this.loading = true;
