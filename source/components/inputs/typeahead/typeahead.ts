@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef, ElementRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { find, filter } from 'lodash';
 
@@ -42,6 +42,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() create: { (value: string): T };
 	@Output() select: EventEmitter<T> = new EventEmitter<T>();
 
+	@ViewChild('input') input: ElementRef;
 	@ViewChild(BusyComponent) busy: BusyComponent;
 	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
@@ -86,6 +87,10 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.inputType = 'typeahead';
 		this.search = '';
 		this._visibleItems = new BehaviorSubject(null);
+	}
+
+	focus(): void {
+		this.input.nativeElement.focus();
 	}
 
 	add(item: T): void {
