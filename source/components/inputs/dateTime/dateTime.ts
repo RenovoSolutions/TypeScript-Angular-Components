@@ -62,6 +62,10 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.timezone = this.timezoneService.currentTimezone;
 	}
 
+	focus(): void {
+		this.dateinput.nativeElement.focus();
+	}
+
 	ngOnInit(): void {
 		if (this.validators == null) {
 			this.validators = [];

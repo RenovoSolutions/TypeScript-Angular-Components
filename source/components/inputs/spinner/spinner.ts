@@ -59,6 +59,10 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		this.stringUtility = string;
 	}
 
+	focus(): void {
+		this.spinner.nativeElement.focus();
+	}
+
 	ngAfterViewInit(): void {
 		super.ngAfterViewInit();
 		this.value = this.value || 0;
