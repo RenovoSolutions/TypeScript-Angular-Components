@@ -17,6 +17,11 @@ export class PopoutListService<T> {
 		return this._showOptions;
 	}
 
+	get isEmpty(): boolean {
+		return !((this.listItems && this.listItems.length)
+			|| this.customItems && this.customItems.length);
+	}
+
 	customItems: QueryList<PopoutItemComponent<T>>;
 	listItems: QueryList<PopoutItemComponent<T>>;
 

@@ -1,4 +1,4 @@
-<ul class="rl-select-list" *ngIf="showOptions && !(isEmpty)">
+<ul class="rl-select-list" *ngIf="showOptions && !popoutListService.isEmpty">
 	<ng-content></ng-content>
 	<rlPopoutItem *ngFor="let option of options"
 				  (trigger)="popoutListService.select.next(option)">
