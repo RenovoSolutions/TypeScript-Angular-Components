@@ -82,7 +82,9 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 			this.validators.push({
 				name: 'maxDate',
 				validate: (value$: Observable<moment.Moment>): Observable<string> => {
-					return value$.map(date => date > this.max ? null : 'Date is greater than the greatest allowed date: ' + this.max);
+					return value$.map(date => date > this.max
+						? 'Date is greater than the greatest allowed date: ' + this.formatDate(moment(this.max))
+						: null);
 				},
 			})
 		}
