@@ -10,6 +10,7 @@ interface IListServiceMock {
 	open: Sinon.SinonSpy;
 	close: Sinon.SinonSpy;
 	select: Subject<any>;
+	customItems: any[];
 }
 
 describe('PopoutListComponent', () => {
@@ -25,12 +26,31 @@ describe('PopoutListComponent', () => {
 			open: sinon.spy(),
 			close: sinon.spy(),
 			select: new Subject(),
+			customItems: [],
 		};
 
 		list = new PopoutListComponent<string>(transformService, <any>listService);
 
 		options = ['Option 1', 'Option 2', 'Option 3'];
 		list.options = options;
+	});
+
+	describe('isEmpty', () => {
+		it('should return false if the list has options', () => {
+			expect(list.isEmpty).to.be.false;
+		});
+
+		it('should return false if the list service has custom options', () => {
+			list.options = [];
+			listService.customItems = ['Custom 1'];
+
+			expect(list.isEmpty).to.be.false;
+		});
+
+		it('should return true if the options and custom options are empty', () => {
+			list.options = [];
+			expect(list.isEmpty).to.be.true;
+		});
 	});
 
 	it('should emit a select event when a select is triggered on the list service', (): void => {
