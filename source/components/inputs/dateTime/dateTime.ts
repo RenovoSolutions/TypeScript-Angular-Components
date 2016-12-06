@@ -92,9 +92,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
 
-		this.valueAsString = this.value != null
-							? this.formatDate(this.value)
-							: '';
+		this.valueAsString = this.formatDate(this.value);
 
 		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.datepicker).datetimepicker.defaults;
 		this.min = this.min != null ? this.min : defaults.minDate;
@@ -132,7 +130,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	private formatDate(value: moment.Moment): string {
 		if (value == null) {
 			this.timezone = this.timezoneService.currentTimezone;
-			return null;
+			return '';
 		}
 
 		const date: moment.Moment = moment(value);
