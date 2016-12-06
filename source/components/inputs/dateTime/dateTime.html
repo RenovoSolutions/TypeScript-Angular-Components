@@ -12,7 +12,7 @@
 			   (focus)="showLabel()"
 			   (blur)="hideLabelIfEmpty()"
 			   [value]="valueAsString"
-			   [placeholder]="label"
+			   [placeholder]="label || ''"
 			   [disabled]="disabled" />
 		<span class="input-group-btn">
 			<rlButton [disabled]="disabled"><i class="fa fa-calendar"></i></rlButton>
