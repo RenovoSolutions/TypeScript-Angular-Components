@@ -39,6 +39,11 @@ export class PopoutListComponent<T> {
 		popoutListService.select.subscribe(value => this.select.emit(value));
 	}
 
+	get isEmpty(): boolean {
+		return !((this.options && this.options.length)
+			|| this.popoutListService.customItems && this.popoutListService.customItems.length);
+	}
+
 	get showOptions(): boolean {
 		return this.popoutListService.showOptions;
 	}
