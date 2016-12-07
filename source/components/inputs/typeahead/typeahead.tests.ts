@@ -22,6 +22,9 @@ interface ITestOption {
 
 interface IBusyMock {
 	waitOn: Sinon.SinonSpy;
+	waitOnObservableNext: Sinon.SinonSpy;
+	waitOnObservableCompletion: Sinon.SinonSpy;
+	setBusy: Sinon.SinonSpy;
 }
 
 describe('TypeaheadComponent', () => {
@@ -40,7 +43,7 @@ describe('TypeaheadComponent', () => {
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
 
-		busy = { waitOn: sinon.spy(x => x) };
+		busy = { waitOn: sinon.spy(x => x), waitOnObservableNext: sinon.spy(x => x), waitOnObservableCompletion: sinon.spy(x => x), setBusy: sinon.spy(x => x)};
 		typeahead.busy = <any>busy;
 		typeahead.list = <any>{
 			open: sinon.spy(),
@@ -330,22 +333,17 @@ describe('TypeaheadComponent', () => {
 		it('should show a busy spinner while the debounce is pending', rlFakeAsync(() => {
 			typeahead.searchStream.next('search2');
 
-			sinon.assert.calledOnce(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, true);
+			sinon.assert.calledThrice(busy.setBusy);
+            sinon.assert.calledWith(busy.setBusy, true);
+			sinon.assert.calledWith(busy.setBusy, false);
 			expect(typeahead.search).to.equal('search2');
 
 			typeahead.searchStream.next('search');
-
-			sinon.assert.calledTwice(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, true);
 			expect(typeahead.search).to.equal('search');
 			busy.waitOn.reset();
 
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
-
-			sinon.assert.calledOnce(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, false);
 			sinon.assert.notCalled(loadItems)
 		}));
 
@@ -356,7 +354,6 @@ describe('TypeaheadComponent', () => {
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
 
-			sinon.assert.calledTwice(busy.waitOn);
 			sinon.assert.calledOnce(loadItems);
 			sinon.assert.calledWith(loadItems, 'search2');
 

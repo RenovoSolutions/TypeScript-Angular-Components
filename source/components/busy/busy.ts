@@ -42,7 +42,7 @@ export class BusyComponent {
 		//check the type and handle it properly
 		switch (typeof waitOn) {
 			case 'object':
-				returnObservable = this.waitOnObservableNext(Observable.from(<any>waitOn));
+				returnObservable = this.waitOnObservableCompletion(Observable.from(<any>waitOn));
 				break;
 			case 'boolean':
 				this.setBusy(<boolean>waitOn);
