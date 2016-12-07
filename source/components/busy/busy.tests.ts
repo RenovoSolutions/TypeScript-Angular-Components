@@ -48,6 +48,7 @@ describe('busy', () => {
 			expect(busy.loading).to.be.false;
 		});
 	});
+
 	describe('with observable on next', (): void => {
 		let stream: Subject<void>;
 		beforeEach(() => {
@@ -69,9 +70,7 @@ describe('busy', () => {
 
 			expect(busy.loading).to.be.false;
 		});
-
 	});
-
 
 	describe('with observable on complete', (): void => {
 		let stream: Subject<void>;
@@ -100,6 +99,5 @@ describe('busy', () => {
 
 			expect(busy.loading).to.be.false;
 		});
-
 	});
 });

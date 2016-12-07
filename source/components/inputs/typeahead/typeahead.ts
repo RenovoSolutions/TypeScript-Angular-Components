@@ -131,7 +131,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		}
 		const loadRequest: Observable<T[]> = this.loadItems(search);
 		// triggers the subscription
-		this.busy.waitOn(loadRequest).subscribe(data => {
+		this.busy.waitOnObservableNext(loadRequest).subscribe(data => {
 			this.list.open();
 			this._visibleItems.next(data);
 		});
@@ -152,11 +152,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 		this.searchStream
 			.do(search => {
-				this.busy.waitOn(!!search);
+				this.busy.setBusy(!!search);
 				this.search = search;
 			})
 			.debounceTime(this.loadDelay)
-			.do(() => this.busy.waitOn(false))
+			.do(() => this.busy.setBusy(false))
 			.distinctUntilChanged()
 			.subscribe(search => this.refresh(search));
 	}
