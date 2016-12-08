@@ -40,7 +40,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() clientSearch: boolean;
 	@Input() allowCollapse: boolean;
 	@Input() create: { (value: string): T };
-	@Output() select: EventEmitter<T> = new EventEmitter<T>();
+	@Output() selector: EventEmitter<T> = new EventEmitter<T>();
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
 	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
@@ -110,7 +110,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.list.close();
 		this.search = '';
 
-		this.select.emit(item);
+		this.selector.emit(item);
 
 		if (this.allowCollapse) {
 			this.collapsed = true;
