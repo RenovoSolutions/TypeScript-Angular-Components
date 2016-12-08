@@ -194,7 +194,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should collapse if allowCollapse is turned on', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
-			typeahead.select = <any>{ emit: selectSpy };
+			typeahead.selector = <any>{ emit: selectSpy };
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
 			initialLoad();
@@ -211,7 +211,7 @@ describe('TypeaheadComponent', () => {
 		it('should call the select function without collapsing', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.clientSearch = true;
-			typeahead.select = <any>{ emit: selectSpy };
+			typeahead.selector = <any>{ emit: selectSpy };
 			initialLoad();
 
 			typeahead.selectItem(items[0]);

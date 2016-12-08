@@ -8,7 +8,7 @@
 				  [disabled]="disabled"></rlSelect>
 	</div>
 	<div *ngSwitchDefault>
-		<rlTypeahead (select)="add($event)"
+		<rlTypeahead (selector)="add($event)"
 					 [allowCollapse]="false"
 					 [transform]="transform"
 					 [getItems]="searchItems"
