@@ -36,7 +36,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	@Input() create: { (value: string): T };
 	@Input() onAdd: { (item: T): Promise<T> | Observable<T> };
 	@Input() onRemove: { (item: T): Promise<void> | Observable<void> };
-	@Output() select: EventEmitter<T> = new EventEmitter<T>();
+	@Input() minRequired: number;
+	@Input() removalButtonText: string = '';
 
 	@ContentChild(ListHeaderTemplate) listHeader: ListHeaderTemplate;
 	@ContentChild(ListItemTemplate) listItem: ListItemTemplate;
@@ -46,6 +47,8 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
+
+	listItemTemplate: string;
 
 	constructor(transformService: __transform.TransformService
 			, @Optional() rlForm: FormComponent
@@ -127,7 +130,7 @@ export class TypeaheadListComponent<T> extends ValidatedInputComponent<T[]> impl
 	}
 
 	ngOnChanges(changes: ITypeaheadListChanges): void {
-		super.ngOnChanges(<any>changes);
+		//super.ngOnChanges(<any>changes);
 		if (changes.disableSearching && changes.disableSearching.currentValue && !this.cachedItems$) {
 			this.loadCachedItems();
 		}
