@@ -2,6 +2,7 @@
 
 const map = {
 	'@angular': 'node_modules/@angular',
+	'app': 'bootstrapper',
 	'angular': 'node_modules/angular',
 	'angular-mocks': 'node_modules/angular-mocks/angular-mocks',
 	'angular-animate': 'node_modules/angular-animate/angular-animate.js',
@@ -21,6 +22,7 @@ const map = {
 	'typescript-angular-utilities': 'node_modules/typescript-angular-utilities/source/main',
 	'ui-select': 'node_modules/ui-select/index',
 	'ui-select/dist': 'node_modules/ui-select/dist',
+	'@angular/upgrade': 'node_modules/@angular/upgrade',
 };
 
 var angularPackageNames = [
@@ -31,7 +33,7 @@ var angularPackageNames = [
 	'platform-browser-dynamic',
 	'http',
 	'forms',
-	'upgrade',
+	// 'upgrade',
 ];
 
 var defaultPackages = [
@@ -49,6 +51,9 @@ const meta = {
 };
 
 var packages = {
+	'app': {
+		main: 'main.js',
+	},
 	'libraries': {
 		defaultExtension: 'js',
 	},
@@ -61,9 +66,12 @@ var packages = {
 	'node_modules': {
 		defaultExtension: 'js',
 	},
-		'@angular/router': {
-			main: 'index.js',
-		},
+	'@angular/router': {
+		main: 'index.js',
+	},
+	'@angular/upgrade': {
+		main: 'bundles/upgrade.umd.js',
+	},
 	'angular2-uuid': {
 		main: 'index.js',
 	},
@@ -96,3 +104,5 @@ System.config({
 	map,
 	packages: packages,
 });
+
+System.registerDynamic('node_modules/angular/index.js', [], true, function() { return window.angular });

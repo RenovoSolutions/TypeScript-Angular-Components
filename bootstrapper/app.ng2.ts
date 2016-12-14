@@ -7,6 +7,6 @@ import { Router } from '@angular/router';
 })
 export class App {
 	constructor(router: Router) {
-		router['initialNavigation']();
+		// router['initialNavigation']();
 	}
 }

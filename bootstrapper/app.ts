@@ -5,6 +5,7 @@ import * as angular from 'angular';
 import { NgModule, forwardRef, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { UpgradeAdapter } from '@angular/upgrade';
+import { UpgradeModule } from '@angular/upgrade/static';
 
 import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
@@ -52,10 +53,10 @@ import { appRoutingProviders, routing } from './app.routing';
 import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
-utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
+// utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
 
-const moduleName: string = 'bootstrapper-app';
+export const moduleName: string = 'bootstrapper-app';
 
 angular.module(moduleName, [
 	componentsModule,
@@ -71,7 +72,7 @@ angular.module(moduleName, [
 	miscModuleName,
 	textModuleName,
 ])
-	.directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
+	// .directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
 	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper));
 
 @NgModule({
@@ -80,6 +81,7 @@ angular.module(moduleName, [
 		routing,
 		UtilitiesModule,
 		ComponentsModule,
+		UpgradeModule,
 	],
 	declarations: [
 		InputsBootstrapper,
@@ -129,16 +131,19 @@ angular.module(moduleName, [
 		WelcomeComponent,
 		App,
 	],
+	bootstrap: [App],
 	providers: [
-		{
-			provide: ApplicationRef,
-			useValue: {
-				componentTypes: [App],
-				registerDisposeListener: () => {},
-			},
-		},
+		// {
+		// 	provide: ApplicationRef,
+		// 	useValue: {
+		// 		componentTypes: [App],
+		// 		registerDisposeListener: () => {},
+		// 	},
+		// },
 	],
 })
-class ComponentsBootstrapperModule {}
+export class ComponentsBootstrapperModule {
+	// ngDoBootstrap() {}
+}
 
-upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });
+// upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });
