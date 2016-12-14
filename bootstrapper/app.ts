@@ -26,7 +26,8 @@ import { WelcomeComponent } from './welcome.component';
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
-import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from './buttons/buttonBootstrapper';
+import { ButtonsNg1BootstrapperComponent, ButtonsNg1Directive } from './buttons/buttonBootstrapper';
+import { ButtonsNg2BootstrapperComponent } from './buttons/buttonsNg2Bootstrapper';
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
@@ -92,8 +93,7 @@ angular.module(moduleName, [
 		ButtonsRootComponent,
 		ButtonsNg1BootstrapperComponent,
 		ButtonsNg2BootstrapperComponent,
-		upgradeAdapter.upgradeNg1Component('tsButtonsNg1'),
-		upgradeAdapter.upgradeNg1Component('tsButtonsNg2'),
+		ButtonsNg1Directive,
 
 		PopupRootComponent,
 		PopupNg1BootstrapperComponent,
@@ -133,6 +133,11 @@ angular.module(moduleName, [
 	],
 	bootstrap: [App],
 	providers: [
+		{
+			provide: '$scope',
+			useFactory: injector => injector.get('$rootScope'),
+			deps: ['$injector']
+		}
 		// {
 		// 	provide: ApplicationRef,
 		// 	useValue: {
