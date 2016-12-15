@@ -117,6 +117,9 @@ export class DateTimeController extends InputController {
 		});
 
 		this.ngModel.$parsers.push((value: string): moment.Moment => {
+			if (this.timezone == null) {
+				this.timezone = __timezone.timezoneService.currentTimezone;
+			}
 			if (__object.objectUtility.isNullOrEmpty(value)) {
 				return null;
 			}
