@@ -4,6 +4,7 @@
 	<label [@slide]="labelState">{{label}}</label>
 	<div [hidden]="collapsed">
 		<input class="form-control rl-select-trigger"
+			   #input
 			   type="text"
 			   [disabled]="disabled"
 			   [class.rl-select-open]="list.showOptions"

@@ -31,18 +31,18 @@ export class BusyComponent {
 	// Generic one to be used when you don't know the type
 	// defaults to waiting for the first next when using Observable or promise
 	//*************************************************************************
-	waitOn(waitOn: Observable<any> | Promise<any> | boolean): Observable<any> {
+	waitOn<T>(waitOn: Observable<T> | Promise<T> | boolean): Observable<T> {
 		//handle if its null
 		if (waitOn == null) {
-			return Observable.empty();
+			return Observable.empty<T>();
 		}
 
-		let returnObservable: Observable<any> = Observable.empty();
+		let returnObservable: Observable<T> = Observable.empty<T>();
 
 		//check the type and handle it properly
 		switch (typeof waitOn) {
 			case 'object':
-				returnObservable = this.waitOnObservableCompletion(Observable.from(<any>waitOn));
+				returnObservable = this.waitOnObservableCompletion(Observable.from<T>(<any>waitOn));
 				break;
 			case 'boolean':
 				this.setBusy(<boolean>waitOn);
@@ -55,7 +55,7 @@ export class BusyComponent {
 	//**************************************************************
 	// used to stop the spinner on every emission through the stream
 	//**************************************************************
-	waitOnObservableNext(waitOn: Observable<any>): Observable<any> {
+	waitOnObservableNext<T>(waitOn: Observable<T>): Observable<T> {
 		this.loading = true;
 		return waitOn.do(
 			() => this.loading = false,
@@ -66,7 +66,7 @@ export class BusyComponent {
 	//**************************************************************
 	// used to stop the spinner when the stream is completed
 	//**************************************************************
-	waitOnObservableCompletion(waitOn: Observable<any>): Observable<any> {
+	waitOnObservableCompletion<T>(waitOn: Observable<T>): Observable<T> {
 		this.loading = true;
 		return waitOn.do(
 			null,

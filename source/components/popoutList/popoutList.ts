@@ -40,7 +40,8 @@ export class PopoutListComponent<T> {
 	}
 
 	get isEmpty(): boolean {
-		return !(this.options && this.options.length);
+		return !((this.options && this.options.length)
+			|| this.popoutListService.customItems && this.popoutListService.customItems.length);
 	}
 
 	get showOptions(): boolean {

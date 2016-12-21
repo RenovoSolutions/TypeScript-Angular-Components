@@ -62,6 +62,10 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.timezone = this.timezoneService.currentTimezone;
 	}
 
+	focus(): void {
+		this.dateinput.nativeElement.focus();
+	}
+
 	ngOnInit(): void {
 		if (this.validators == null) {
 			this.validators = [];
@@ -78,7 +82,9 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 			this.validators.push({
 				name: 'maxDate',
 				validate: (value$: Observable<moment.Moment>): Observable<string> => {
-					return value$.map(date => date > this.max ? null : 'Date is greater than the greatest allowed date: ' + this.max);
+					return value$.map(date => date > this.max
+						? 'Date is greater than the greatest allowed date: ' + this.formatDate(moment(this.max))
+						: null);
 				},
 			})
 		}
@@ -88,9 +94,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 		this.useDate = isUndefined(this.useDate) ? true : this.useDate;
 		this.useTime = isUndefined(this.useTime) ? true : this.useTime;
 
-		this.valueAsString = this.value != null
-							? this.formatDate(this.value)
-							: '';
+		this.valueAsString = this.formatDate(this.value);
 
 		const defaults: bootstrapDateTimePicker.IConfiguration = $(this.datepicker).datetimepicker.defaults;
 		this.min = this.min != null ? this.min : defaults.minDate;
@@ -128,7 +132,7 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	private formatDate(value: moment.Moment): string {
 		if (value == null) {
 			this.timezone = this.timezoneService.currentTimezone;
-			return null;
+			return '';
 		}
 
 		const date: moment.Moment = moment(value);
