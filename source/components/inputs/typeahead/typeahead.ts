@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef, ElementRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
-import { find, filter } from 'lodash';
+import { find, filter, isEqual, cloneDeep } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -40,7 +40,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() clientSearch: boolean;
 	@Input() allowCollapse: boolean;
 	@Input() create: { (value: string): T };
-	@Output() select: EventEmitter<T> = new EventEmitter<T>();
+	@Output() selector: EventEmitter<T> = new EventEmitter<T>();
 
 	@ViewChild('input') input: ElementRef;
 	@ViewChild(BusyComponent) busy: BusyComponent;
@@ -56,6 +56,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	placeholder: string;
 	allowCustomOption: boolean;
 	collapsed: boolean = false;
+	cacheDisplayList = [];
 
 	private _visibleItems: BehaviorSubject<T[]>;
 
@@ -115,7 +116,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.list.close();
 		this.search = '';
 
-		this.select.emit(item);
+		this.selector.emit(item);
 
 		if (this.allowCollapse) {
 			this.collapsed = true;
@@ -131,15 +132,21 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	refresh(search: string): void {
 		this.search = search;
 		if (this.object.isNullOrEmpty(search)) {
-			this._visibleItems.next([]);
-			return;
+			this.cacheDisplayList = [];
+			return this._visibleItems.next(this.cacheDisplayList);
 		}
-		const loadRequest: Observable<T[]> = this.loadItems(search);
-		// triggers the subscription
-		this.busy.waitOn(loadRequest).subscribe(data => {
-			this.list.open();
-			this._visibleItems.next(data);
-		});
+		else {
+			const loadRequest: Observable<T[]> = this.loadItems(search);
+			// triggers the subscription
+			this.busy.waitOnObservableNext(loadRequest).subscribe(data => {
+				if (!isEqual(data, this.cacheDisplayList)) {
+					this.list.open();
+					this.cacheDisplayList = cloneDeep(data);
+					return this._visibleItems.next(this.cacheDisplayList);
+				}
+			});
+		}
+
 	}
 
 	ngOnInit(): void {
@@ -157,11 +164,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 		this.searchStream
 			.do(search => {
-				this.busy.waitOn(!!search);
+				this.busy.setBusy(!!search);
 				this.search = search;
 			})
 			.debounceTime(this.loadDelay)
-			.do(() => this.busy.waitOn(false))
+			.do(() => this.busy.setBusy(false))
 			.distinctUntilChanged()
 			.subscribe(search => this.refresh(search));
 	}

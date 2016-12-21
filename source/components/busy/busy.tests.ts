@@ -1,13 +1,12 @@
 import { Subject, Observable } from 'rxjs';
 
 import { BusyComponent } from './busy';
-import { AsyncHelper } from '../../services/async/async.service';
 
 describe('busy', () => {
 	let busy: BusyComponent;
 
 	beforeEach(() => {
-		busy = new BusyComponent(<any>{}, new AsyncHelper());
+		busy = new BusyComponent(<any>{});
 	});
 
 	it('should not show the spinner after triggering if null', (): void => {
@@ -33,6 +32,58 @@ describe('busy', () => {
 			stream = new Subject<void>();
 
 			busy.waitOn(stream).subscribe({ error: () => null });
+
+			expect(busy.loading).to.be.true;
+		});
+
+		it('should not finish after an event is received', (): void => {
+			stream.next(null);
+
+			expect(busy.loading).to.be.true;
+		});
+
+		it('should finish after an event is completed', (): void => {
+			stream.complete();
+
+			expect(busy.loading).to.be.false;
+		});
+
+		it('should finish after an event errors', (): void => {
+			stream.error(new Error('Error'));
+
+			expect(busy.loading).to.be.false;
+		});
+	});
+
+	describe('with observable on next', (): void => {
+		let stream: Subject<void>;
+		beforeEach(() => {
+			stream = new Subject<void>();
+
+			busy.waitOnObservableNext(stream).subscribe({ error: () => null });
+
+			expect(busy.loading).to.be.true;
+		});
+
+		it('should finish after an event is received', (): void => {
+			stream.next(null);
+
+			expect(busy.loading).to.be.false;
+		});
+
+		it('should finish after an event errors', (): void => {
+			stream.error(new Error('Error'));
+
+			expect(busy.loading).to.be.false;
+		});
+	});
+
+	describe('with observable on complete', (): void => {
+		let stream: Subject<void>;
+		beforeEach(() => {
+			stream = new Subject<void>();
+
+			busy.waitOnObservableCompletion(stream).subscribe({ error: () => null });
 
 			expect(busy.loading).to.be.true;
 		});

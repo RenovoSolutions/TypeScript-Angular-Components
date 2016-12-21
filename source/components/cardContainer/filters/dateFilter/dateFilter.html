@@ -1,7 +1,6 @@
 <div class="filter-group">
 	<div class="content-group">
-		<rlDateTime class="pull-left"
-					[label]="label"
+		<rlDateTime	[label]="label"
 					[value]="filter?.dateFrom$ | async"
 					(change)="setDate($event)"
 					[useTime]="useTime"

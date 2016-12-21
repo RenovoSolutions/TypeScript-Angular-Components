@@ -22,6 +22,9 @@ interface ITestOption {
 
 interface IBusyMock {
 	waitOn: Sinon.SinonSpy;
+	waitOnObservableNext: Sinon.SinonSpy;
+	waitOnObservableCompletion: Sinon.SinonSpy;
+	setBusy: Sinon.SinonSpy;
 }
 
 describe('TypeaheadComponent', () => {
@@ -40,7 +43,7 @@ describe('TypeaheadComponent', () => {
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
 
-		busy = { waitOn: sinon.spy(x => x) };
+		busy = { waitOn: sinon.spy(x => x), waitOnObservableNext: sinon.spy(x => x), waitOnObservableCompletion: sinon.spy(x => x), setBusy: sinon.spy(x => x)};
 		typeahead.busy = <any>busy;
 		typeahead.list = <any>{
 			open: sinon.spy(),
@@ -200,7 +203,7 @@ describe('TypeaheadComponent', () => {
 
 		it('should collapse if allowCollapse is turned on', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
-			typeahead.select = <any>{ emit: selectSpy };
+			typeahead.selector = <any>{ emit: selectSpy };
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
 			initialLoad();
@@ -217,7 +220,7 @@ describe('TypeaheadComponent', () => {
 		it('should call the select function without collapsing', rlFakeAsync((): void => {
 			let selectSpy: Sinon.SinonSpy = sinon.spy();
 			typeahead.clientSearch = true;
-			typeahead.select = <any>{ emit: selectSpy };
+			typeahead.selector = <any>{ emit: selectSpy };
 			initialLoad();
 
 			typeahead.selectItem(items[0]);
@@ -266,6 +269,38 @@ describe('TypeaheadComponent', () => {
 
 			expect(typeahead.search).to.be.empty;
 		});
+
+		it('should only update when new value is emitted', rlFakeAsync(() => {
+			typeahead.clientSearch = true;
+			let listChangeDetector = sinon.spy();
+			let getItemsMock: IMockedRequest<string> = mock.request(items);
+			typeahead.getItems = getItemsMock;
+			typeahead.ngOnInit();
+
+			typeahead.visibleItems$.subscribe((data) => {
+				if (data != null) {
+					listChangeDetector();
+				}
+			});
+
+			//emit value (1)
+			typeahead.refresh('It');
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE + 10);
+			//nothing
+			typeahead.refresh('Ite');
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE + 10);
+			//emit value (2, but empty)
+			typeahead.refresh('sldkj');
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE + 10);
+			//emit value (3)
+			typeahead.refresh('Ite');
+			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE + 10);
+
+			getItemsMock.flush();
+
+			sinon.assert.calledThrice(listChangeDetector);
+
+		}));
 
 		function initialLoad() {
 			let getItemsMock: IMockedRequest<string> = mock.request(items);
@@ -324,38 +359,25 @@ describe('TypeaheadComponent', () => {
 			loadItems = mock.request(items);
 			let visibleItems;
 			typeahead.getItems = loadItems;
-
-			typeahead.searchStream.next('search');
-			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
-			flushMicrotasks();
-			typeahead.visibleItems$.subscribe(data => visibleItems = data);
-			loadItems.flush();
-			loadItems.reset();
-			busy.waitOn.reset();
-
-			expect(visibleItems).to.equal(items);
 		}));
 
 		it('should show a busy spinner while the debounce is pending', rlFakeAsync(() => {
 			typeahead.searchStream.next('search2');
 
-			sinon.assert.calledOnce(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, true);
 			expect(typeahead.search).to.equal('search2');
 
 			typeahead.searchStream.next('search');
-
-			sinon.assert.calledTwice(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, true);
 			expect(typeahead.search).to.equal('search');
 			busy.waitOn.reset();
 
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
 
-			sinon.assert.calledOnce(busy.waitOn);
-			sinon.assert.calledWith(busy.waitOn, false);
-			sinon.assert.notCalled(loadItems)
+			sinon.assert.calledThrice(busy.setBusy);
+			sinon.assert.calledWith(busy.setBusy, true);
+			sinon.assert.calledWith(busy.setBusy, false);
+
+			loadItems.flush();
 		}));
 
 		it('should make a request to refresh the visible items', rlFakeAsync(() => {
@@ -365,11 +387,11 @@ describe('TypeaheadComponent', () => {
 			rlTick(DEFAULT_SERVER_SEARCH_DEBOUNCE);
 			flushMicrotasks();
 
-			sinon.assert.calledTwice(busy.waitOn);
 			sinon.assert.calledOnce(loadItems);
 			sinon.assert.calledWith(loadItems, 'search2');
 
 			loadItems.flush();
 		}));
+
 	});
 });
