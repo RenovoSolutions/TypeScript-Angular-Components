@@ -4,8 +4,8 @@ import * as angular from 'angular';
 
 import { NgModule, forwardRef, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { UpgradeAdapter } from '@angular/upgrade';
-import { UpgradeModule } from '@angular/upgrade/static';
+// import { UpgradeAdapter } from '@angular/upgrade';
+import { UpgradeModule, downgradeComponent } from '@angular/upgrade/static';
 
 import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
 
@@ -46,14 +46,14 @@ import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
 import { MessageLogNg1BootstrapperComponent, MessageLogNg1Directive } from './messageLog/messageLogBootstrapper';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
-import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
+import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent, MiscNg1Directive, MiscNg2Directive } from './misc/miscBootstrapper';
 import { App } from './app.ng2';
 
 import { appRoutingProviders, routing } from './app.routing';
 
 import { ComponentsModule } from'../source/ui.module';
 
-const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
+// const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 // utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
 // componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
 
@@ -74,7 +74,7 @@ angular.module(moduleName, [
 	textModuleName,
 ])
 	// .directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
-	.directive('tsMiscNgContext', <any>upgradeAdapter.downgradeNg2Component(MiscNgContextBootstrapper));
+	.directive('tsMiscNgContext', downgradeComponent({ component: MiscNgContextBootstrapper }));
 
 @NgModule({
 	imports: [
@@ -125,13 +125,14 @@ angular.module(moduleName, [
 		MiscNg1BootstrapperComponent,
 		MiscNg2BootstrapperComponent,
 		MiscNgContextBootstrapper,
-		upgradeAdapter.upgradeNg1Component('tsMiscNg1'),
-		upgradeAdapter.upgradeNg1Component('tsMiscNg2'),
+		MiscNg1Directive,
+		MiscNg2Directive,
 
 		WelcomeComponent,
 		App,
 	],
 	bootstrap: [App],
+	entryComponents: [MiscNgContextBootstrapper],
 	providers: [
 		{
 			provide: '$scope',
