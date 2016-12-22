@@ -1,5 +1,5 @@
 import { PipeTransform, Injector } from '@angular/core';
-import { UpgradeAdapter } from '@angular/upgrade';
+import { downgradeInjectable } from '@angular/upgrade/static';
 
 import * as angular from 'angular';
 
@@ -51,8 +51,6 @@ export const columnSearchFilterName: string = 'columnSearchFilter';
 export const sorterServiceName: string = 'rlSorterService';
 export const windowServiceName: string = 'windowWrapper';
 
-const componentsDowngradeModule = angular.module(moduleName, []);
-
 export function PipeDowngrader(pipe: PipeTransform) {
 	// factory that returns a filter
 	return () => (value: any, ...args: any[]): any => {
@@ -60,36 +58,35 @@ export function PipeDowngrader(pipe: PipeTransform) {
 	};
 }
 
-export function downgradeComponentsToAngular1(upgradeAdapter: UpgradeAdapter) {
-	componentsDowngradeModule.value(defaultThemeValueName, upgradeAdapter.downgradeNg2Provider('defaultThemeNg1'));
+angular.module(moduleName, [])
+	   .value(defaultThemeValueName, downgradeInjectable('defaultThemeNg1'))
 
-	componentsDowngradeModule.filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)));
-	componentsDowngradeModule.filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)));
+	   .filter('isEmpty', PipeDowngrader(new IsEmptyPipe(services.object.objectUtility)))
+	   .filter('truncate', PipeDowngrader(new TruncatePipe(services.object.objectUtility)))
+	   .filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)))
+	   .filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)))
 
-	componentsDowngradeModule.directive('rlAbsoluteTime', <any>upgradeAdapter.downgradeNg2Component(AbsoluteTimeComponent));
-	componentsDowngradeModule.directive('rlBusyNg', <any>upgradeAdapter.downgradeNg2Component(BusyComponent));
-	componentsDowngradeModule.directive('rlButtonNg', <any>upgradeAdapter.downgradeNg2Component(ButtonComponent));
-	componentsDowngradeModule.directive('rlButtonAsyncNg', <any>upgradeAdapter.downgradeNg2Component(ButtonAsyncComponent));
-	componentsDowngradeModule.directive('rlButtonLinkNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLinkComponent));
-	componentsDowngradeModule.directive('rlButtonLongClickNg', <any>upgradeAdapter.downgradeNg2Component(ButtonLongClickComponent));
-	componentsDowngradeModule.directive('rlButtonRouteNg', <any>upgradeAdapter.downgradeNg2Component(ButtonRouteComponent));
-	componentsDowngradeModule.directive('rlButtonSubmitNg', <any>upgradeAdapter.downgradeNg2Component(ButtonSubmitComponent));
-	componentsDowngradeModule.directive('rlButtonToggleNg', <any>upgradeAdapter.downgradeNg2Component(ButtonToggleComponent));
-	componentsDowngradeModule.directive('rlCheckboxNg', <any>upgradeAdapter.downgradeNg2Component(CheckboxComponent));
-	componentsDowngradeModule.directive('rlCommaListNg', <any>upgradeAdapter.downgradeNg2Component(CommaListComponent));
-	componentsDowngradeModule.directive('rlDialogOutlet', <any>upgradeAdapter.downgradeNg2Component(DialogOutletComponent));
-	componentsDowngradeModule.directive('rlFormNg', <any>upgradeAdapter.downgradeNg2Component(FormComponent));
-	componentsDowngradeModule.directive('rlTextboxNg', <any>upgradeAdapter.downgradeNg2Component(TextboxComponent));
-	componentsDowngradeModule.directive('rlStringWithWatermarkNg', <any>upgradeAdapter.downgradeNg2Component(StringWithWatermarkComponent));
+	//    .directive('rlAbsoluteTime', <any>downgradeInjectable(AbsoluteTimeComponent))
+	//    .directive('rlBusyNg', <any>downgradeInjectable(BusyComponent))
+	//    .directive('rlButtonNg', <any>downgradeInjectable(ButtonComponent))
+	//    .directive('rlButtonAsyncNg', <any>downgradeInjectable(ButtonAsyncComponent))
+	//    .directive('rlButtonLinkNg', <any>downgradeInjectable(ButtonLinkComponent))
+	//    .directive('rlButtonLongClickNg', <any>downgradeInjectable(ButtonLongClickComponent))
+	//    .directive('rlButtonRouteNg', <any>downgradeInjectable(ButtonRouteComponent))
+	//    .directive('rlButtonSubmitNg', <any>downgradeInjectable(ButtonSubmitComponent))
+	//    .directive('rlButtonToggleNg', <any>downgradeInjectable(ButtonToggleComponent))
+	//    .directive('rlCheckboxNg', <any>downgradeInjectable(CheckboxComponent))
+	//    .directive('rlCommaListNg', <any>downgradeInjectable(CommaListComponent))
+	//    .directive('rlDialogOutlet', <any>downgradeInjectable(DialogOutletComponent))
+	//    .directive('rlFormNg', <any>downgradeInjectable(FormComponent))
+	//    .directive('rlTextboxNg', <any>downgradeInjectable(TextboxComponent))
+	//    .directive('rlStringWithWatermarkNg', <any>downgradeInjectable(StringWithWatermarkComponent))
 
-	componentsDowngradeModule.factory(autosaveActionServiceName, upgradeAdapter.downgradeNg2Provider(AutosaveActionService));
-	componentsDowngradeModule.factory(cardContainerBuilderServiceName, upgradeAdapter.downgradeNg2Provider(cardContainerBuilderServiceName));
-	componentsDowngradeModule.factory(dataPagerFactoryName, upgradeAdapter.downgradeNg2Provider(DataPagerOld));
-	componentsDowngradeModule.factory(columnSearchFilterName, upgradeAdapter.downgradeNg2Provider(ColumnSearchFilter));
-	componentsDowngradeModule.factory(sorterServiceName, upgradeAdapter.downgradeNg2Provider(Sorter));
-	componentsDowngradeModule.factory(documentServiceName, upgradeAdapter.downgradeNg2Provider(DocumentService));
-	componentsDowngradeModule.factory(visibleBreakpointServiceName, upgradeAdapter.downgradeNg2Provider(VisibleBreakpointService));
-	componentsDowngradeModule.factory(windowServiceName, upgradeAdapter.downgradeNg2Provider(WindowService));
-}
+	   .factory(autosaveActionServiceName, downgradeInjectable(AutosaveActionService))
+	   .factory(cardContainerBuilderServiceName, downgradeInjectable(cardContainerBuilderServiceName))
+	   .factory(dataPagerFactoryName, downgradeInjectable(DataPagerOld))
+	   .factory(columnSearchFilterName, downgradeInjectable(ColumnSearchFilter))
+	   .factory(sorterServiceName, downgradeInjectable(Sorter))
+	   .factory(documentServiceName, downgradeInjectable(DocumentService))
+	   .factory(visibleBreakpointServiceName, downgradeInjectable(VisibleBreakpointService))
+	   .factory(windowServiceName, downgradeInjectable(WindowService));

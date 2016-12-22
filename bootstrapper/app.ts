@@ -55,7 +55,7 @@ import { ComponentsModule } from'../source/ui.module';
 
 const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
 // utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
-componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
+// componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
 
 export const moduleName: string = 'bootstrapper-app';
 
