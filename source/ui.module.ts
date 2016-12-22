@@ -30,9 +30,12 @@ import { SelectableContainerFooterComponent } from'./components/cardContainer/co
 import { ColumnHeaderComponent } from'./components/cardContainer/container/columnHeader/columnHeader';
 import { FilterOptionComponent } from'./components/cardContainer/filters/index';
 import { TypeaheadDataItemComponent } from'./components/inputs/typeaheadList/typeaheadDataItem';
-import { POPOUT_LIST_DIRECTIVES } from'./components/popoutList/index';
+import { POPOUT_LIST_DIRECTIVES } from './components/popoutList/index';
+
+import { downgradedComponents } from './componentsDowngrade';
 
 import { ComponentProvidersModule } from './componentProviders.module';
+
 export const componentsList: any[] = [
 	BEHAVIOR_DIRECTIVES,
 	BusyComponent,
@@ -78,6 +81,7 @@ export * from './componentProviders.module';
 		TypeaheadDataItemComponent,
 		POPOUT_LIST_DIRECTIVES,
 	],
+	entryComponents: downgradedComponents,
 	exports: [
 		...componentsList,
 	],

@@ -1,5 +1,5 @@
 import { PipeTransform, Injector } from '@angular/core';
-import { downgradeInjectable } from '@angular/upgrade/static';
+import { downgradeInjectable, downgradeComponent, } from '@angular/upgrade/static';
 
 import * as angular from 'angular';
 
@@ -21,6 +21,11 @@ import { CommaListComponent } from './components/commaList/commaList';
 import { DialogOutletComponent } from './components/dialog/dialogOutlet';
 import { FormComponent } from './components/form/form';
 import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
+
+import { baseInputs as baseInputInputs, baseOutputs as baseInputOutputs } from './components/inputs/input';
+import { validationInputs } from './components/inputs/validationInput';
+import { baseInputs as baseButtonInputs } from './components/buttons/baseButton';
+import { asyncInputs as asyncButtonInputs } from './components/buttons/buttonAsync/buttonAsync';
 
 import { ColumnSearchFilter } from './components/cardContainer/filters/columnSearchFilter/columnSearchFilter.service';
 import { DataPagerOld } from './components/cardContainer/paging/index';
@@ -58,6 +63,24 @@ export function PipeDowngrader(pipe: PipeTransform) {
 	};
 }
 
+export const downgradedComponents = [
+	AbsoluteTimeComponent,
+	BusyComponent,
+	ButtonComponent,
+	ButtonAsyncComponent,
+	ButtonLinkComponent,
+	ButtonLongClickComponent,
+	ButtonRouteComponent,
+	ButtonSubmitComponent,
+	ButtonToggleComponent,
+	CheckboxComponent,
+	CommaListComponent,
+	DialogOutletComponent,
+	FormComponent,
+	TextboxComponent,
+	StringWithWatermarkComponent,
+];
+
 angular.module(moduleName, [])
 	   .value(defaultThemeValueName, downgradeInjectable('defaultThemeNg1'))
 
@@ -66,22 +89,6 @@ angular.module(moduleName, [])
 	   .filter('rlDate', PipeDowngrader(new DatePipe(services.object.objectUtility)))
 	   .filter('rlLocalizeStringDates', PipeDowngrader(new LocalizeStringDatesPipe(<any>services.timezone.timezoneService)))
 
-	//    .directive('rlAbsoluteTime', <any>downgradeInjectable(AbsoluteTimeComponent))
-	//    .directive('rlBusyNg', <any>downgradeInjectable(BusyComponent))
-	//    .directive('rlButtonNg', <any>downgradeInjectable(ButtonComponent))
-	//    .directive('rlButtonAsyncNg', <any>downgradeInjectable(ButtonAsyncComponent))
-	//    .directive('rlButtonLinkNg', <any>downgradeInjectable(ButtonLinkComponent))
-	//    .directive('rlButtonLongClickNg', <any>downgradeInjectable(ButtonLongClickComponent))
-	//    .directive('rlButtonRouteNg', <any>downgradeInjectable(ButtonRouteComponent))
-	//    .directive('rlButtonSubmitNg', <any>downgradeInjectable(ButtonSubmitComponent))
-	//    .directive('rlButtonToggleNg', <any>downgradeInjectable(ButtonToggleComponent))
-	//    .directive('rlCheckboxNg', <any>downgradeInjectable(CheckboxComponent))
-	//    .directive('rlCommaListNg', <any>downgradeInjectable(CommaListComponent))
-	//    .directive('rlDialogOutlet', <any>downgradeInjectable(DialogOutletComponent))
-	//    .directive('rlFormNg', <any>downgradeInjectable(FormComponent))
-	//    .directive('rlTextboxNg', <any>downgradeInjectable(TextboxComponent))
-	//    .directive('rlStringWithWatermarkNg', <any>downgradeInjectable(StringWithWatermarkComponent))
-
 	   .factory(autosaveActionServiceName, downgradeInjectable(AutosaveActionService))
 	   .factory(cardContainerBuilderServiceName, downgradeInjectable(cardContainerBuilderServiceName))
 	   .factory(dataPagerFactoryName, downgradeInjectable(DataPagerOld))
@@ -89,4 +96,69 @@ angular.module(moduleName, [])
 	   .factory(sorterServiceName, downgradeInjectable(Sorter))
 	   .factory(documentServiceName, downgradeInjectable(DocumentService))
 	   .factory(visibleBreakpointServiceName, downgradeInjectable(VisibleBreakpointService))
-	   .factory(windowServiceName, downgradeInjectable(WindowService));
+	   .factory(windowServiceName, downgradeInjectable(WindowService))
+
+	   .directive('rlAbsoluteTime', downgradeComponent({
+		   component: AbsoluteTimeComponent,
+		   inputs: validationInputs,
+		   outputs: baseInputOutputs,
+		}))
+	   .directive('rlBusyNg', downgradeComponent({
+		   component: BusyComponent,
+		   inputs: ['loading', 'size'],
+		}))
+		.directive('rlButtonNg', downgradeComponent({
+			component: ButtonComponent,
+			inputs: baseButtonInputs,
+			outputs: ['trigger'],
+		}))
+	   .directive('rlButtonAsyncNg', downgradeComponent({
+		   component: ButtonAsyncComponent,
+		   inputs: asyncButtonInputs,
+		}))
+	   .directive('rlButtonLinkNg', downgradeComponent({
+		   component: ButtonLinkComponent,
+		   inputs: [...baseButtonInputs, 'link', 'newTab'],
+		}))
+	   .directive('rlButtonLongClickNg', downgradeComponent({
+		   component: ButtonLongClickComponent,
+		   inputs: [...asyncButtonInputs, 'warning'],
+		}))
+	   .directive('rlButtonRouteNg', downgradeComponent({
+		   component: ButtonRouteComponent,
+		   inputs: [...baseButtonInputs, 'link', 'activeClass', 'newTab'],
+		}))
+	   .directive('rlButtonSubmitNg', downgradeComponent({
+		   component: ButtonSubmitComponent,
+		   inputs: baseButtonInputs,
+		}))
+	   .directive('rlButtonToggleNg', downgradeComponent({
+		   component: ButtonToggleComponent,
+		   inputs: [...baseButtonInputs, 'value'],
+		   outputs: ['change', 'valueChange'],
+		}))
+	   .directive('rlCheckboxNg', downgradeComponent({
+		   component: CheckboxComponent,
+		   inputs: [...baseInputInputs, 'active'],
+		   outputs: baseInputOutputs,
+		}))
+	   .directive('rlCommaListNg', downgradeComponent({
+		   component: CommaListComponent,
+		   inputs: ['list', 'transform', 'max'],
+		}))
+	   .directive('rlDialogOutlet', downgradeComponent({
+		   component: DialogOutletComponent,
+		}))
+	   .directive('rlFormNg', downgradeComponent({
+		   component: FormComponent,
+		   inputs: ['save'],
+		}))
+	   .directive('rlTextboxNg', downgradeComponent({
+		   component: TextboxComponent,
+		   inputs: [...validationInputs, 'maxlength'],
+		   outputs: baseInputOutputs,
+		}))
+	   .directive('rlStringWithWatermarkNg', downgradeComponent({
+		   component: StringWithWatermarkComponent,
+		   inputs: ['string', 'watermark'],
+		}));
