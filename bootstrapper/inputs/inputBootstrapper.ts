@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -86,10 +87,19 @@ class InputTestController {
 }
 
 @Component({
-	selector: 'tsInputsNg1',
-	template: '<ts-inputs-ng1></ts-inputs-ng1>'
+	selector: 'tsInputsNg1Bootstrapper',
+	template: '<tsInputsNg1></tsInputsNg1>'
 })
-export class InputsNg1BootstrapperComponent { }
+export class InputsNg1BootstrapperComponent {}
+
+@Directive({
+	selector: 'tsInputsNg1'
+})
+export class InputsNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsInputsNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsInputsNg1', {

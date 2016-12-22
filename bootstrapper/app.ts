@@ -24,7 +24,7 @@ import { moduleName as textModuleName } from './text/text';
 
 import { WelcomeComponent } from './welcome.component';
 import { InputsRootComponent } from './inputs/inputRoot';
-import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
+import { InputsNg1BootstrapperComponent, InputsNg1Directive } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
 import { ButtonsNg1BootstrapperComponent, ButtonsNg1Directive } from './buttons/buttonBootstrapper';
 import { ButtonsNg2BootstrapperComponent } from './buttons/buttonsNg2Bootstrapper';
@@ -88,7 +88,7 @@ angular.module(moduleName, [
 		InputsBootstrapper,
 		InputsRootComponent,
 		InputsNg1BootstrapperComponent,
-		upgradeAdapter.upgradeNg1Component('tsInputsNg1'),
+		InputsNg1Directive,
 
 		ButtonsRootComponent,
 		ButtonsNg1BootstrapperComponent,
