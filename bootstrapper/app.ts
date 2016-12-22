@@ -30,20 +30,20 @@ import { ButtonsNg1BootstrapperComponent, ButtonsNg1Directive } from './buttons/
 import { ButtonsNg2BootstrapperComponent } from './buttons/buttonsNg2Bootstrapper';
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { PopupRootComponent } from './popup/popupRoot';
-import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';
+import { PopupNg1BootstrapperComponent, PopupNg1Directive } from './popup/popupBootstrapper';
 import { PopupBootstrapper } from './popup/popupNg2Bootstrapper';
 import { CardsRootComponent } from './cards/cardRoot';
-import { CardsNg1BootstrapperComponent } from './cards/cardContainerBootstrapper';
+import { CardsNg1BootstrapperComponent, CardsNg1Directive } from './cards/cardContainerBootstrapper';
 import { CardsBootstrapper } from './cards/cardsNg2Bootstrapper';
 import { CardsSmartDataBootstrapper } from './cards/cardsSmartDataBootstrapper';
 import { TabsRootComponent } from './tabs/tabRoot';
-import { TabsNg1BootstrapperComponent } from './tabs/tabsBootstrapper';
+import { TabsNg1BootstrapperComponent, TabsNg1Directive } from './tabs/tabsBootstrapper';
 import { TabsBootstrapper } from './tabs/tabsNg2Bootstrapper';
 import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
-import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
+import { FormsNg1BootstrapperComponent, FormsNg1Directive } from './forms/formsBootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
-import { MessageLogNg1BootstrapperComponent } from './messageLog/messageLogBootstrapper';
+import { MessageLogNg1BootstrapperComponent, MessageLogNg1Directive } from './messageLog/messageLogBootstrapper';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -98,28 +98,28 @@ angular.module(moduleName, [
 		PopupRootComponent,
 		PopupNg1BootstrapperComponent,
 		PopupBootstrapper,
-		upgradeAdapter.upgradeNg1Component('tsPopupNg1'),
+		PopupNg1Directive,
 
 		CardsRootComponent,
 		CardsNg1BootstrapperComponent,
 		CardsBootstrapper,
 		CardsSmartDataBootstrapper,
-		upgradeAdapter.upgradeNg1Component('tsCardsNg1'),
+		CardsNg1Directive,
 
 		TabsRootComponent,
 		TabsNg1BootstrapperComponent,
 		TabsBootstrapper,
-		upgradeAdapter.upgradeNg1Component('tsTabsNg1'),
+		TabsNg1Directive,
 
 		MsiBootstrapperComponent,
 
 		FormsRootComponent,
 		FormsNg1BootstrapperComponent,
 		FormsBootstrapper,
-		upgradeAdapter.upgradeNg1Component('tsFormsNg1'),
+		FormsNg1Directive,
 
 		MessageLogNg1BootstrapperComponent,
-		upgradeAdapter.upgradeNg1Component('tsMessageLogNg1'),
+		MessageLogNg1Directive,
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,
