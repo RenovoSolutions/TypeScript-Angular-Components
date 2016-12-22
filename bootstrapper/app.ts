@@ -4,7 +4,6 @@ import * as angular from 'angular';
 
 import { NgModule, forwardRef, ApplicationRef } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-// import { UpgradeAdapter } from '@angular/upgrade';
 import { UpgradeModule, downgradeComponent } from '@angular/upgrade/static';
 
 import { downgrade as utilitiesDowngrade, UtilitiesModule } from 'typescript-angular-utilities';
@@ -53,10 +52,6 @@ import { appRoutingProviders, routing } from './app.routing';
 
 import { ComponentsModule } from'../source/ui.module';
 
-// const upgradeAdapter: UpgradeAdapter = new UpgradeAdapter(forwardRef(() => ComponentsBootstrapperModule));
-// utilitiesDowngrade.downgradeUtilitiesToAngular1(upgradeAdapter);
-// componentsDowngrade.downgradeComponentsToAngular1(upgradeAdapter);
-
 export const moduleName: string = 'bootstrapper-app';
 
 angular.module(moduleName, [
@@ -73,7 +68,6 @@ angular.module(moduleName, [
 	miscModuleName,
 	textModuleName,
 ])
-	// .directive('tsApp', <any>upgradeAdapter.downgradeNg2Component(App))
 	.directive('tsMiscNgContext', downgradeComponent({ component: MiscNgContextBootstrapper }));
 
 @NgModule({
@@ -139,17 +133,6 @@ angular.module(moduleName, [
 			useFactory: injector => injector.get('$rootScope'),
 			deps: ['$injector']
 		}
-		// {
-		// 	provide: ApplicationRef,
-		// 	useValue: {
-		// 		componentTypes: [App],
-		// 		registerDisposeListener: () => {},
-		// 	},
-		// },
 	],
 })
-export class ComponentsBootstrapperModule {
-	// ngDoBootstrap() {}
-}
-
-// upgradeAdapter.bootstrap(document.body, [moduleName], { strictDI: true });
+export class ComponentsBootstrapperModule {}
