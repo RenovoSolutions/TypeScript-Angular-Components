@@ -104,5 +104,3 @@ System.config({
 	map,
 	packages: packages,
 });
-
-System.registerDynamic('node_modules/angular/index.js', [], true, function() { return window.angular });

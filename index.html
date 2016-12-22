@@ -23,7 +23,6 @@
 		<script src="/node_modules/traceur/bin/traceur-runtime.js"></script>
 
 		<script src="/node_modules/systemjs/dist/system.js"></script>
-		<script src="/node_modules/angular/angular.js"></script>
 
 		<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.3/angular.js"></script>-->
@@ -40,7 +39,10 @@
 		<script src="/bootstrapper/app.bundle.js"></script>
 
 		<script>
-			System.import('app');
+			System.import('angular').then(angular => {
+				window.angular = angular;
+				System.import('app');
+			});
 		</script>
 	</body>
 </html>
