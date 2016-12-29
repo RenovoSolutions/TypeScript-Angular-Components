@@ -173,7 +173,7 @@ export class MessageLogController implements IMessageLogBindings {
 		return this.messageLog.addMessage(data.entry);
 	}
 
-	setPageSize(pageSize: number) {
+	setPageSize(pageSize: number): void {
 		this.messageLog.pageSize = pageSize;
 	}
 }
