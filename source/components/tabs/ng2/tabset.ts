@@ -4,16 +4,16 @@ import * as _ from 'lodash';
 import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 
-import { TabComponent } from './index';
+import { TabComponent } from './tab/tab';
 
 @Component({
 	selector: 'rlTabset',
 	template: require('./tabset.html'),
 })
 export class TabsetComponent implements AfterContentInit {
-	@ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
-	constructor() { }
+	constructor(){ }
+	@ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
 	select(tab: TabComponent): void {
 		this.tabs.forEach(thisTab => {

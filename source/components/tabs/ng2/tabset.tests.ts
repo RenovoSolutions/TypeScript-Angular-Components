@@ -39,6 +39,10 @@ describe('TabsetComponent', () => {
 		tabset.tabs = <any>mockTabComponentQueryList;
 	});
 
+	it('should have an instance', () => {
+		expect(tabset).to.not.be.null;
+	});
+
 	it('should select the first tab', (): void => {
 		tabset.ngAfterContentInit();
 		expect(tabset.tabs[0].isActive).to.be.true;

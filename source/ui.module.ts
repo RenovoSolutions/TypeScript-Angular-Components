@@ -16,13 +16,19 @@ import { RatingBarComponent } from'./components/ratingBar/ratingBar';
 import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardContainer';
 import { SIMPLE_CARD_DIRECTIVES } from './components/simpleCardList/index';
 import { StepComponent } from './components/multiStepIndicator/step.component';
-import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
+import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
 import { TABS_COMPONENT } from'./components/tabs/ng2/index';
+import { TabsetComponent } from'./components/tabs/ng2/tabset';
 import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
 
 import { DatePipe, IsEmptyPipe, LocalizeStringDatesPipe, TruncatePipe } from './pipes/index';
 
 // internal components
+import { TabComponent } from './components/tabs/ng2/tab/tab';
+import { TabHeaderComponent } from './components/tabs/ng2/tab/tabHeader/tabHeader.component';
+import { TabContentComponent } from './components/tabs/ng2/tab/tabContent/tabContent.component';
+import { TabFooterComponent } from './components/tabs/ng2/tab/tabFooter/tabFooter.component';
+
 import { CardHeaderColumnComponent } from './components/cardContainer/card/headerColumn/headerColumn';
 import { ContainerHeaderComponent } from'./components/cardContainer/container/containerHeader.component';
 import { ContainerFooterComponent } from'./components/cardContainer/container/containerFooter.component';
@@ -48,7 +54,7 @@ export const componentsList: any[] = [
 	SIMPLE_CARD_DIRECTIVES,
 	StepComponent,
 	StringWithWatermarkComponent,
-	TABS_COMPONENT,
+	TabsetComponent,
 	ValidationGroupComponent,
 
 	// pipes
@@ -77,6 +83,11 @@ export * from './componentProviders.module';
 		FilterOptionComponent,
 		TypeaheadDataItemComponent,
 		POPOUT_LIST_DIRECTIVES,
+		TabsetComponent,
+		TabComponent,
+		TabHeaderComponent,
+		TabComponent,
+		TabFooterComponent
 	],
 	exports: [
 		...componentsList,
