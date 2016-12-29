@@ -17,7 +17,7 @@ import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardC
 import { SIMPLE_CARD_DIRECTIVES } from './components/simpleCardList/index';
 import { StepComponent } from './components/multiStepIndicator/step.component';
 import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
-import { TABS_COMPONENT } from'./components/tabs/index';
+import { TABS_COMPONENT } from'./components/tabs/ng2/index';
 import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
 
 import { DatePipe, IsEmptyPipe, LocalizeStringDatesPipe, TruncatePipe } from './pipes/index';
