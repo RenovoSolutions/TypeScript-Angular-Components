@@ -290,7 +290,7 @@ describe('messageLog', () => {
 		});
 
 		it('should change the notes paging size', (): void => {
-			log.pageSize = 23;
+			log.messageLog.pageSize = 23;
 
 			buildController();
 
