@@ -5,7 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { BEHAVIOR_DIRECTIVES } from './behaviors/index';
 import { BusyComponent } from'./components/busy/busy';
-import { BUTTON_DIRECTIVES } from'./components/buttons/index';
+import { ButtonModule } from'./components/buttons/button.module';
 import { CARD_CONTAINER_DIRECTIVES } from'./components/cardContainer/index';
 import { CommaListComponent } from'./components/commaList/commaList';
 import { DIALOG_DIRECTIVES } from'./components/dialog/index';
@@ -36,7 +36,6 @@ import { ComponentProvidersModule } from './componentProviders.module';
 export const componentsList: any[] = [
 	BEHAVIOR_DIRECTIVES,
 	BusyComponent,
-	BUTTON_DIRECTIVES,
 	CARD_CONTAINER_DIRECTIVES,
 	CommaListComponent,
 	DIALOG_DIRECTIVES,
@@ -61,8 +60,14 @@ export const componentsList: any[] = [
 export * from './ui.module.ng1';
 export * from './componentProviders.module';
 
+
+export {
+	ButtonModule
+}
+
 @NgModule({
 	imports: [
+		ButtonModule,
 		CommonModule,
 		ReactiveFormsModule,
 		RouterModule,
@@ -80,6 +85,7 @@ export * from './componentProviders.module';
 	],
 	exports: [
 		...componentsList,
+		ButtonModule
 	],
 })
 export class ComponentsSharedModule { }
