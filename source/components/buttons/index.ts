@@ -6,16 +6,6 @@ import { ButtonRouteComponent } from './buttonRoute/buttonRoute';
 import { ButtonSubmitComponent } from './buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './buttonToggle/buttonToggle';
 
-export const BUTTON_DIRECTIVES: any[] = [
-	ButtonComponent,
-	ButtonAsyncComponent,
-	ButtonLinkComponent,
-	ButtonLongClickComponent,
-	ButtonRouteComponent,
-	ButtonSubmitComponent,
-	ButtonToggleComponent,
-];
-
 export * from './button/button';
 export * from './buttonAsync/buttonAsync';
 export * from './buttonLink/buttonLink';
