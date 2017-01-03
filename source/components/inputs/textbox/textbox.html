@@ -3,6 +3,7 @@
 	[class.error]="componentValidator.error$ | async">
 	<label [@slide]="labelState">{{label}}</label>
 	<input type="text"
+		   #input
 		   class="form-control"
 		   [class.hide-placeholder]="hidePlaceholder"
 		   [value]="value"

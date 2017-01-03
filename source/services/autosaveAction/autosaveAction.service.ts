@@ -45,7 +45,7 @@ export class AutosaveActionService implements IAutosaveActionService {
 		return this._successful$.asObservable();
 	}
 
-	waitOn(waitOn: IWaitValue<any>): Observable<any> {
+	waitOn<T>(waitOn: IWaitValue<T>): Observable<T> {
 		this._saving$.next(true);
 		return this.asyncService.waitAsObservable(waitOn)
 			.do(this.autosaveSuccessful, this.autosaveFailed);

@@ -57,9 +57,18 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		this.inputType = 'spinner';
 		this.numberUtility = number;
 		this.stringUtility = string;
+		this.showLabel();
+	}
+
+	focus(): void {
+		this.spinner.nativeElement.focus();
 	}
 
 	ngAfterViewInit(): void {
+		if (this.roundToStep && this.decimals == null) {
+			throw new Error('You must specify the number of decimals to show when forcing to the step amount');
+		}
+
 		super.ngAfterViewInit();
 		this.value = this.value || 0;
 		this.setDisabled(this.disabled);

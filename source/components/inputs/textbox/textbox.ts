@@ -1,4 +1,4 @@
-import { Component, Optional, Input, OnInit } from '@angular/core';
+import { Component, Optional, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -22,6 +22,8 @@ import { baseAnimations } from '../input';
 export class TextboxComponent extends ValidatedInputComponent<string> implements OnInit {
 	@Input() maxlength: number;
 
+	@ViewChild('input') input: ElementRef;
+
 	constructor( @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, object: __object.ObjectUtility
@@ -38,5 +40,9 @@ export class TextboxComponent extends ValidatedInputComponent<string> implements
 
 	onChange(text: string): void {
 		this.setValue(text);
+	}
+
+	focus(): void {
+		this.input.nativeElement.focus();
 	}
 }

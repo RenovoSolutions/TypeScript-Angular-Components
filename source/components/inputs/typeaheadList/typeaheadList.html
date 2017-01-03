@@ -8,7 +8,7 @@
 				  [disabled]="disabled"></rlSelect>
 	</div>
 	<div *ngSwitchDefault>
-		<rlTypeahead (select)="add($event)"
+		<rlTypeahead (selector)="add($event)"
 					 [allowCollapse]="false"
 					 [transform]="transform"
 					 [getItems]="searchItems"
@@ -26,16 +26,20 @@
 	</div>
 	<div class="row table-row" *ngFor="let item of value">
 		<div [rlTypeaheadDataItem]="item" #data>
-			<div *ngIf="listItem">
-				<div [ngTemplateOutlet]="newItemTemplate()" [ngOutletContext]="data.context"></div>
+			<div class="col-xs-8 form-control-static">{{getDisplayName(item)}}</div>
+			<div class="col-xs-4 text-right" [hidden]="value.length <= minRequired">
+				<rlButtonAsync [action]="data.remove"
+							type="danger"
+							style="margin-top: 4px">
+					<i class="fa fa-remove">
+						<span *ngIf="removalButtonText != ''" class="btn-hide-text">
+							{{removalButtonText}}
+						</span>
+					</i>
+				</rlButtonAsync>
 			</div>
-			<div *ngIf="!listItem">
-				<div class="col-xs-10">{{getDisplayName(item)}}</div>
-				<div class="col-xs-2">
-					<rlButtonAsync type="danger" [action]="data.remove">
-						<i class="fa fa-remove"></i>
-					</rlButtonAsync>
-				</div>
+			<div class="col-xs-4 text-right form-control-static" *ngIf="value.length <= minRequired">
+				<label>required</label>
 			</div>
 		</div>
 	</div>
