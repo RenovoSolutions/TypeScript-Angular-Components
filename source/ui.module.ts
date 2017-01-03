@@ -4,7 +4,7 @@ import { RouterModule } from '@angular/router';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { BEHAVIOR_DIRECTIVES } from './behaviors/index';
-import { BusyComponent } from'./components/busy/busy';
+import { BusyModule } from'./components/busy/busy.module';
 import { BUTTON_DIRECTIVES } from'./components/buttons/index';
 import { CARD_CONTAINER_DIRECTIVES } from'./components/cardContainer/index';
 import { CommaListComponent } from'./components/commaList/commaList';
@@ -35,7 +35,6 @@ import { POPOUT_LIST_DIRECTIVES } from'./components/popoutList/index';
 import { ComponentProvidersModule } from './componentProviders.module';
 export const componentsList: any[] = [
 	BEHAVIOR_DIRECTIVES,
-	BusyComponent,
 	BUTTON_DIRECTIVES,
 	CARD_CONTAINER_DIRECTIVES,
 	CommaListComponent,
@@ -66,6 +65,7 @@ export * from './componentProviders.module';
 		CommonModule,
 		ReactiveFormsModule,
 		RouterModule,
+		BusyModule
 	],
 	declarations: [
 		...componentsList,
@@ -80,6 +80,7 @@ export * from './componentProviders.module';
 	],
 	exports: [
 		...componentsList,
+		BusyModule
 	],
 })
 export class ComponentsSharedModule { }
