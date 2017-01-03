@@ -29,13 +29,11 @@
 			<div class="col-xs-8 form-control-static">{{getDisplayName(item)}}</div>
 			<div class="col-xs-4 text-right" [hidden]="value.length <= minRequired">
 				<rlButtonAsync [action]="data.remove"
-							type="danger"
-							style="margin-top: 4px">
-					<i class="fa fa-remove">
-						<span *ngIf="removalButtonText != ''" class="btn-hide-text">
-							{{removalButtonText}}
-						</span>
-					</i>
+							   type="danger">
+					<i class="fa fa-remove"></i>
+					<span *ngIf="removalButtonText != ''" class="btn-hide-text">
+						{{removalButtonText}}
+					</span>
 				</rlButtonAsync>
 			</div>
 			<div class="col-xs-4 text-right form-control-static" *ngIf="value.length <= minRequired">
