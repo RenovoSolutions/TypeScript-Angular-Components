@@ -289,6 +289,16 @@ describe('messageLog', () => {
 			expect(messageLogService.addMessage.firstCall.args[0]).to.equal(data.entry);
 		});
 
+		it('should change the notes paging size', (): void => {
+			log.messageLog.pageSize = 23;
+
+			buildController();
+
+			log.setPageSize(10);
+
+			expect(log.messageLog.pageSize).to.equal(10);
+		});
+
 		function buildController(pageSize?: number): void {
 			let bindings: any = {
 				pageSize: pageSize,
