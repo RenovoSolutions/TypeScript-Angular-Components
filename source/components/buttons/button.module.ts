@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+
+import { BusyModule } from '../busy/busy.module';
 
 import { ButtonComponent } from './button/button';
 import { ButtonAsyncComponent } from './buttonAsync/buttonAsync';
@@ -9,15 +12,11 @@ import { ButtonRouteComponent } from './buttonRoute/buttonRoute';
 import { ButtonSubmitComponent } from './buttonSubmit/buttonSubmit';
 import { ButtonToggleComponent } from './buttonToggle/buttonToggle';
 
-
-// This is cicular but the button's module needs rlBusy for example.
-// Eventually rlBusy will be in it's own ngModule and we will only import the modules needed for the ButtonsModule
-import { ComponentsSharedModule } from '../../ui.module';
-
 @NgModule({
 	imports: [
 		CommonModule,
-		ComponentsSharedModule
+		BusyModule,
+		RouterModule
 	],
 	exports: [
 		ButtonComponent,
