@@ -59,11 +59,6 @@ export const componentsList: any[] = [
 export * from './ui.module.ng1';
 export * from './componentProviders.module';
 
-
-export {
-	ButtonModule
-}
-
 @NgModule({
 	imports: [
 		ButtonModule,
@@ -85,7 +80,7 @@ export {
 	],
 	exports: [
 		...componentsList,
-		ButtonModule
+		ButtonModule,
 		BusyModule
 	],
 })
