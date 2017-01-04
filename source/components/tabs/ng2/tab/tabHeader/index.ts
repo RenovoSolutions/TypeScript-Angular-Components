@@ -1,0 +1,1 @@
+export { TabHeaderComponent } from './tabHeader.component';

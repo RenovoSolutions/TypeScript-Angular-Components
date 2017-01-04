@@ -16,8 +16,8 @@ import { RatingBarComponent } from'./components/ratingBar/ratingBar';
 import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardContainer';
 import { SIMPLE_CARD_DIRECTIVES } from './components/simpleCardList/index';
 import { StepComponent } from './components/multiStepIndicator/step.component';
-import { StringWithWatermarkComponent } from'./components/stringWithWatermark/stringWithWatermark';
-import { TABS_COMPONENT } from'./components/tabs/index';
+import { StringWithWatermarkComponent } from './components/stringWithWatermark/stringWithWatermark';
+import { TABS_COMPONENT } from'./components/tabs/ng2/index';
 import { ValidationGroupComponent } from'./components/validationGroup/validationGroup';
 
 import { DatePipe, IsEmptyPipe, LocalizeStringDatesPipe, TruncatePipe } from './pipes/index';
@@ -76,7 +76,7 @@ export * from './componentProviders.module';
 		ColumnHeaderComponent,
 		FilterOptionComponent,
 		TypeaheadDataItemComponent,
-		POPOUT_LIST_DIRECTIVES,
+		POPOUT_LIST_DIRECTIVES
 	],
 	exports: [
 		...componentsList,
