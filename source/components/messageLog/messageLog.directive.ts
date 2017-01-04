@@ -47,6 +47,7 @@ export interface IMessageLogBindings {
 export class MessageLogController implements IMessageLogBindings {
 	// bindings
 	pageSize: number;
+	pageSizes: number[];
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
@@ -65,7 +66,6 @@ export class MessageLogController implements IMessageLogBindings {
 	loading: boolean;
 	loadingInitial: boolean;
 	tooltipTemplate: string;
-
 
 	static $inject: string[] = [__dialog.serviceName, '$scope', factoryName];
 	constructor(private dialog: __dialog.IDialogService<any>, private $scope: ng.IScope, private messageLogFactory: IMessageLogFactory) {}
@@ -103,6 +103,8 @@ export class MessageLogController implements IMessageLogBindings {
 		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
 
 		this.tooltipTemplate = require('./editedByPopover.html');
+
+		this.pageSizes = [this.pageSize, 50, 100];
 	}
 
 	getEntrySelector(entry: IMessage): any {
@@ -169,6 +171,10 @@ export class MessageLogController implements IMessageLogBindings {
 
 	saveNote(data: any): ng.IPromise<void> {
 		return this.messageLog.addMessage(data.entry);
+	}
+
+	setPageSize(pageSize: number): void {
+		this.messageLog.pageSize = pageSize;
 	}
 }
 
