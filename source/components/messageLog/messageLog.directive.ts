@@ -44,15 +44,10 @@ export interface IMessageLogBindings {
 	selector: { (IMessage: any): any } | string;
 }
 
-export interface IPageSizeSelection {
-	pageSize: number;
-	isSelected: boolean;
-}
-
 export class MessageLogController implements IMessageLogBindings {
 	// bindings
 	pageSize: number;
-	pageSizes: IPageSizeSelection[];
+	pageSizes: number[];
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
