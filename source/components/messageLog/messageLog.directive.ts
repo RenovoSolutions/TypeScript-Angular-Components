@@ -44,10 +44,15 @@ export interface IMessageLogBindings {
 	selector: { (IMessage: any): any } | string;
 }
 
+export interface IPageSizeSelection {
+	pageSize: number;
+	isSelected: boolean;
+}
+
 export class MessageLogController implements IMessageLogBindings {
 	// bindings
 	pageSize: number;
-	pageSizes: number[];
+	pageSizes: IPageSizeSelection[];
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
@@ -104,7 +109,11 @@ export class MessageLogController implements IMessageLogBindings {
 
 		this.tooltipTemplate = require('./editedByPopover.html');
 
-		this.pageSizes = [this.pageSize, 50, 100];
+		this.pageSizes = [
+			{ "pageSize": this.pageSize, "isSelected": false },
+			{ "pageSize": 50, "isSelected": false },
+			{ "pageSize": 100, "isSelected": false },
+		];
 	}
 
 	getEntrySelector(entry: IMessage): any {
@@ -173,8 +182,16 @@ export class MessageLogController implements IMessageLogBindings {
 		return this.messageLog.addMessage(data.entry);
 	}
 
-	setPageSize(pageSize: number): void {
-		this.messageLog.pageSize = pageSize;
+	setPageSize(selectedSize: IPageSizeSelection): void {
+		this.messageLog.pageSize = selectedSize.pageSize;
+		this.isSelectedSize(selectedSize);
+	}
+
+	isSelectedSize(selectedSize: IPageSizeSelection): void {
+		this.pageSizes.forEach(function (pageSize) {
+			pageSize.isSelected = false;
+		});
+		selectedSize.isSelected = !selectedSize.isSelected;
 	}
 }
 
