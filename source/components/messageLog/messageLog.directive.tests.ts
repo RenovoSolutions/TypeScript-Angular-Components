@@ -289,14 +289,50 @@ describe('messageLog', () => {
 			expect(messageLogService.addMessage.firstCall.args[0]).to.equal(data.entry);
 		});
 
-		it('should change the notes paging size', (): void => {
-			log.messageLog.pageSize = 23;
-
+		it('should set the page size equal to the selected size option', () => {
 			buildController();
 
-			log.setPageSize(10);
+			log.pageSizes = [{
+				pageSize: 25, isSelected: false
+			}];
+			log.messageLog.pageSize = 10;
+			let selectedSize = log.pageSizes[0];
 
-			expect(log.messageLog.pageSize).to.equal(10);
+			log.setPageSize(selectedSize);
+
+			expect(log.messageLog.pageSize).to.equal(selectedSize.pageSize);
+
+		});
+
+		it('should set the selected size option to be selected', () => {
+			buildController();
+
+			log.pageSizes = [{
+				pageSize: 25, isSelected: false
+			}];
+			let selectedSize = log.pageSizes[0];
+
+			log.isSelected(selectedSize);
+
+			expect(selectedSize.isSelected).to.be.true;
+		});
+
+		it('should set the current size option to be selected and the previous option to not be selected', () => {
+			buildController();
+
+			log.pageSizes = [
+				{ pageSize: 25, isSelected: false },
+				{ pageSize: 50, isSelected: false }
+			];
+			let option1 = log.pageSizes[0];
+			let option2 = log.pageSizes[1];
+
+			log.isSelected(option1);
+			expect(option1.isSelected).to.be.true;
+
+			log.isSelected(option2);
+			expect(option1.isSelected).to.be.false;
+			expect(option2.isSelected).to.be.true;
 		});
 
 		function buildController(pageSize?: number): void {
