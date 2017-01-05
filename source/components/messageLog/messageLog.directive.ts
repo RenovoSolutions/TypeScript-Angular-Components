@@ -20,6 +20,8 @@ import { ITemplateLoader, serviceName as templateLoaderService } from '../../ser
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';
 
+export const defaultPageSize: number = 10;
+
 export enum DeletePermissions {
 	deleteMine = 0,
 	deleteAll = 1,
@@ -100,7 +102,11 @@ export class MessageLogController implements IMessageLogBindings {
 			this.loadingInitial = true;
 		});
 
-		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
+		if (this.pageSize == null) {
+			this.pageSize = defaultPageSize;
+		}
+
+		this.messageLog.pageSize = this.pageSize;
 
 		this.tooltipTemplate = require('./editedByPopover.html');
 
