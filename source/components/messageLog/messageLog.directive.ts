@@ -110,9 +110,9 @@ export class MessageLogController implements IMessageLogBindings {
 		this.tooltipTemplate = require('./editedByPopover.html');
 
 		this.pageSizes = [
-			{ "pageSize": this.pageSize, "isSelected": false },
-			{ "pageSize": 50, "isSelected": false },
-			{ "pageSize": 100, "isSelected": false },
+			{ pageSize: this.pageSize, isSelected: true },
+			{ pageSize: 50, isSelected: false },
+			{ pageSize: 100, isSelected: false },
 		];
 	}
 
