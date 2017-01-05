@@ -184,11 +184,11 @@ export class MessageLogController implements IMessageLogBindings {
 
 	setPageSize(selectedSize: IPageSizeSelection): void {
 		this.messageLog.pageSize = selectedSize.pageSize;
-		this.isSelectedSize(selectedSize);
+		this.isSelected(selectedSize);
 	}
 
-	isSelectedSize(selectedSize: IPageSizeSelection): void {
-		this.pageSizes.forEach(function (pageSize) {
+	isSelected(selectedSize: IPageSizeSelection): void {
+		this.pageSizes.forEach((pageSize): void => {
 			pageSize.isSelected = false;
 		});
 		selectedSize.isSelected = !selectedSize.isSelected;
