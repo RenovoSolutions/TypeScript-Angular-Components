@@ -1,7 +1,7 @@
 <div class="rl-page-size-select align-horizontal">
 	Show
-	<rl-button class="rl-page-size-option" type="flat" ng-repeat="size in log.pageSizes" action="log.setPageSize(size)">
-		{{size}}
+	<rl-button class="rl-page-size-option" ng-class="{ 'rl-page-size-option-selected': selectedSize.isSelected }" type="flat" ng-repeat="selectedSize in log.pageSizes" action="log.setPageSize(selectedSize)">
+		{{selectedSize.pageSize}}
 	</rl-button>
 </div>
 
