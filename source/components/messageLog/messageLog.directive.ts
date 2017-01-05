@@ -109,11 +109,7 @@ export class MessageLogController implements IMessageLogBindings {
 
 		this.tooltipTemplate = require('./editedByPopover.html');
 
-		this.pageSizes = [
-			{ pageSize: this.pageSize, isSelected: true },
-			{ pageSize: 50, isSelected: false },
-			{ pageSize: 100, isSelected: false },
-		];
+		this.pageSizes = [ this.pageSize, 50, 100 ];
 	}
 
 	getEntrySelector(entry: IMessage): any {
@@ -182,16 +178,8 @@ export class MessageLogController implements IMessageLogBindings {
 		return this.messageLog.addMessage(data.entry);
 	}
 
-	setPageSize(selectedSize: IPageSizeSelection): void {
-		this.messageLog.pageSize = selectedSize.pageSize;
-		this.isSelected(selectedSize);
-	}
-
-	isSelected(selectedSize: IPageSizeSelection): void {
-		this.pageSizes.forEach((pageSize): void => {
-			pageSize.isSelected = false;
-		});
-		selectedSize.isSelected = !selectedSize.isSelected;
+	setPageSize(selectedSize: number): void {
+		this.messageLog.pageSize = selectedSize;
 	}
 }
 
