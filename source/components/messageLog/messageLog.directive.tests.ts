@@ -130,7 +130,7 @@ describe('messageLog', () => {
 
 		it('should set the page size on initialization', (): void => {
 			buildController();
-			expect(messageLogService.pageSize).to.equal(8);
+			expect(log.pageSize).to.equal(10);
 		});
 
 		it('should set the page size to the value specified on the scope', (): void => {
@@ -292,47 +292,14 @@ describe('messageLog', () => {
 		it('should set the page size equal to the selected size option', () => {
 			buildController();
 
-			log.pageSizes = [{
-				pageSize: 25, isSelected: false
-			}];
+			log.pageSizes = [25];
 			log.messageLog.pageSize = 10;
 			let selectedSize = log.pageSizes[0];
 
 			log.setPageSize(selectedSize);
 
-			expect(log.messageLog.pageSize).to.equal(selectedSize.pageSize);
+			expect(log.messageLog.pageSize).to.equal(selectedSize);
 
-		});
-
-		it('should set the selected size option to be selected', () => {
-			buildController();
-
-			log.pageSizes = [{
-				pageSize: 25, isSelected: false
-			}];
-			let selectedSize = log.pageSizes[0];
-
-			log.isSelected(selectedSize);
-
-			expect(selectedSize.isSelected).to.be.true;
-		});
-
-		it('should set the current size option to be selected and the previous option to not be selected', () => {
-			buildController();
-
-			log.pageSizes = [
-				{ pageSize: 25, isSelected: false },
-				{ pageSize: 50, isSelected: false }
-			];
-			let option1 = log.pageSizes[0];
-			let option2 = log.pageSizes[1];
-
-			log.isSelected(option1);
-			expect(option1.isSelected).to.be.true;
-
-			log.isSelected(option2);
-			expect(option1.isSelected).to.be.false;
-			expect(option2.isSelected).to.be.true;
 		});
 
 		function buildController(pageSize?: number): void {
