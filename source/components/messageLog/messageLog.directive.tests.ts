@@ -130,7 +130,7 @@ describe('messageLog', () => {
 
 		it('should set the page size on initialization', (): void => {
 			buildController();
-			expect(messageLogService.pageSize).to.equal(8);
+			expect(log.pageSize).to.equal(10);
 		});
 
 		it('should set the page size to the value specified on the scope', (): void => {
@@ -289,14 +289,17 @@ describe('messageLog', () => {
 			expect(messageLogService.addMessage.firstCall.args[0]).to.equal(data.entry);
 		});
 
-		it('should change the notes paging size', (): void => {
-			log.messageLog.pageSize = 23;
-
+		it('should set the page size equal to the selected size option', () => {
 			buildController();
 
-			log.setPageSize(10);
+			log.pageSizes = [25];
+			log.messageLog.pageSize = 10;
+			let selectedSize = log.pageSizes[0];
 
-			expect(log.messageLog.pageSize).to.equal(10);
+			log.setPageSize(selectedSize);
+
+			expect(log.messageLog.pageSize).to.equal(selectedSize);
+
 		});
 
 		function buildController(pageSize?: number): void {
