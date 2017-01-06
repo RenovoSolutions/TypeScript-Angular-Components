@@ -20,3 +20,5 @@
 /typings/index.d.ts
 /typings/globals/
 /typings/modules/
+
+debug.log
