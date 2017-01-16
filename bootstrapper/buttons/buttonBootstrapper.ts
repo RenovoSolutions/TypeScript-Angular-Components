@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 
 export const moduleName: string = 'ButtonTestModule';
@@ -21,25 +22,23 @@ class ButtonTestController {
 }
 
 @Component({
-	selector: 'tsButtonsNg1',
-	template: '<ts-buttons-ng1></ts-buttons-ng1>'
+	selector: 'tsButtonsNg1Bootstrapper',
+	template: '<tsButtonsNg1></tsButtonsNg1>'
 })
 export class ButtonsNg1BootstrapperComponent { }
 
-@Component({
-	selector: 'tsButtonsNg2',
-	template: '<ts-buttons-ng2></ts-buttons-ng2>'
+@Directive({
+	selector: 'tsButtonsNg1'
 })
-export class ButtonsNg2BootstrapperComponent {}
+export class ButtonsNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsButtonsNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsButtonsNg1', {
 		template: require('./buttonsNg1.html'),
-		controller: 'ButtonTestController',
-		controllerAs: 'button',
-	})
-	.component('tsButtonsNg2', {
-		template: require('./buttonsNg2.html'),
 		controller: 'ButtonTestController',
 		controllerAs: 'button',
 	})

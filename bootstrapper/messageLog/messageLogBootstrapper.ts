@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
@@ -81,10 +82,19 @@ class MessageLogTestController {
 }
 
 @Component({
-	selector: 'tsMessageLogNg1',
-	template: '<ts-message-log-ng1></ts-message-log-ng1>'
+	selector: 'tsMessageLogNg1Bootstrapper',
+	template: '<tsMessageLogNg1></tsMessageLogNg1>'
 })
 export class MessageLogNg1BootstrapperComponent { }
+
+@Directive({
+	selector: 'tsMessageLogNg1'
+})
+export class MessageLogNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsMessageLogNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsMessageLogNg1', {
