@@ -12,7 +12,8 @@ import { TabComponent } from './tab/tab';
 })
 export class TabsetComponent implements AfterContentInit {
 
-	constructor(){ }
+	constructor() {
+	}
 	@ContentChildren(TabComponent) tabs: QueryList<TabComponent>;
 
 	select(tab: TabComponent): void {

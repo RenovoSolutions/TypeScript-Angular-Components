@@ -47,13 +47,12 @@ export class FormComponent {
 		this.asyncHelper = asyncHelper;
 		this.formService = formService;
 		this.form = <IControlGroup>new FormGroup({});
-		this.form.rlNestedFormGroups = [];
 		if (!this.save) {
 			this.save = <ISaveAction>() => null;
 		}
 
 		if (parentForm) {
-			parentForm.form.rlNestedFormGroups.push(this.form);
+			parentForm.form.addControl('', this.form);
 		}
 	}
 
@@ -78,7 +77,7 @@ export class FormComponent {
 	}
 
 	validate(): boolean {
-		return this.formService.isFormValid(this.form);
+		return this.form.valid;
 	}
 
 	reset(): void {

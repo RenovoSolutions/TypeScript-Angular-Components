@@ -29,7 +29,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 	validationControl: FormControl;
 	arrayUtility: __array.IArrayUtility;
 
-	constructor(rlForm: FormComponent
+	constructor(@Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, arrayUtility: __array.ArrayUtility) {
 		this.arrayUtility = arrayUtility;
@@ -37,7 +37,7 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 		this.validationControl = new FormControl('', null, this.groupValidator.validate.bind(this.groupValidator));
 		this.formGroup = <IControlGroup>new FormGroup({ validation: this.validationControl });
 		if (rlForm) {
-			rlForm.form.rlNestedFormGroups.push(this.formGroup);
+			rlForm.form.addControl('', this.formGroup)
 		}
 	}
 
