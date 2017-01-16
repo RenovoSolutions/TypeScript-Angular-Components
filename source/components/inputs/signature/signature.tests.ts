@@ -93,8 +93,10 @@ describe('SignatureComponent', () => {
 		let canvas: ICanvasMock;
 
 		beforeEach(() => {
-			canvas = {
+			canvas = <any>{
 				jSignature: sinon.spy(),
+				addEventListener: () => null,
+				removeEventListener: () => null,
 			};
 			(signature as any)._canvas = canvas;
 			signature.rendering = true;
