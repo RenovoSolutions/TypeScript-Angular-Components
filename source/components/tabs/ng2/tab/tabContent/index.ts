@@ -1,0 +1,1 @@
+export { TabContentComponent } from './tabContent.component';

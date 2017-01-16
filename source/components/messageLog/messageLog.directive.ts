@@ -20,6 +20,8 @@ import { ITemplateLoader, serviceName as templateLoaderService } from '../../ser
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';
 
+export const defaultPageSize: number = 10;
+
 export enum DeletePermissions {
 	deleteMine = 0,
 	deleteAll = 1,
@@ -47,6 +49,7 @@ export interface IMessageLogBindings {
 export class MessageLogController implements IMessageLogBindings {
 	// bindings
 	pageSize: number;
+	pageSizes: number[];
 	service: IMessageLogDataService;
 	messageLogBinding: IMessageLog;
 	messageAs: string;
@@ -65,7 +68,6 @@ export class MessageLogController implements IMessageLogBindings {
 	loading: boolean;
 	loadingInitial: boolean;
 	tooltipTemplate: string;
-
 
 	static $inject: string[] = [__dialog.serviceName, '$scope', factoryName];
 	constructor(private dialog: __dialog.IDialogService<any>, private $scope: ng.IScope, private messageLogFactory: IMessageLogFactory) {}
@@ -100,9 +102,15 @@ export class MessageLogController implements IMessageLogBindings {
 			this.loadingInitial = true;
 		});
 
-		this.messageLog.pageSize = this.pageSize != null ? this.pageSize : 8;
+		if (this.pageSize == null) {
+			this.pageSize = defaultPageSize;
+		}
+
+		this.messageLog.pageSize = this.pageSize;
 
 		this.tooltipTemplate = require('./editedByPopover.html');
+
+		this.pageSizes = [ this.pageSize, 50, 100 ];
 	}
 
 	getEntrySelector(entry: IMessage): any {
@@ -170,6 +178,10 @@ export class MessageLogController implements IMessageLogBindings {
 	saveNote(data: any): ng.IPromise<void> {
 		return this.messageLog.addMessage(data.entry);
 	}
+
+	setPageSize(selectedSize: number): void {
+		this.messageLog.pageSize = selectedSize;
+	}
 }
 
 messageLog.$inject = [
@@ -195,12 +207,12 @@ export function messageLog($interpolate: ng.IInterpolateService,
 		bindToController: {
 			service: '=',
 			selector: '=',
-			pageSize: '=',
 			messageLogBinding: '=messageLog',
 			messageAs: "@",
 			currentUser: '=?',
 			canDelete: '=?',
 			canEdit: '=?',
+			pageSize: '=?',
 		},
 		link: (scope: ng.IScope,
 			element: ng.IAugmentedJQuery,
