@@ -40,7 +40,9 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() clientSearch: boolean;
 	@Input() allowCollapse: boolean;
 	@Input() create: { (value: string): T };
+	@Input() caseSensitiveSearching: boolean;
 	@Output() selector: EventEmitter<T> = new EventEmitter<T>();
+
 
 	@ViewChild('input') input: ElementRef;
 	@ViewChild(BusyComponent) busy: BusyComponent;
@@ -88,6 +90,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 		this.inputType = 'typeahead';
 		this.search = '';
 		this._visibleItems = new BehaviorSubject(null);
+		this.caseSensitiveSearching = false;
 	}
 
 	focus(): void {
@@ -226,6 +229,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	private filter(list: T[], search: string): T[] {
-		return filter(list, (item: T): boolean => { return this.searchUtility.tokenizedSearch(item, search); });
+		return filter(list, (item: T): boolean => { return this.searchUtility.tokenizedSearch(item, search, this.caseSensitiveSearching); });
 	}
 }
