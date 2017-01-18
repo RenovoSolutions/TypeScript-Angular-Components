@@ -5,7 +5,8 @@ import { WelcomeComponent } from './welcome.component'
 import { InputsRootComponent } from './inputs/inputRoot';
 import { InputsNg1BootstrapperComponent } from './inputs/inputBootstrapper';
 import { InputsBootstrapper } from './inputs/inputsNg2Bootstrapper';
-import { ButtonsNg1BootstrapperComponent, ButtonsNg2BootstrapperComponent } from './buttons/buttonBootstrapper';
+import { ButtonsNg1BootstrapperComponent } from './buttons/buttonBootstrapper';
+import { ButtonsNg2BootstrapperComponent } from './buttons/buttonsNg2Bootstrapper';
 import { ButtonsRootComponent } from './buttons/buttonRoot';
 import { PopupRootComponent } from './popup/popupRoot';
 import { PopupNg1BootstrapperComponent } from './popup/popupBootstrapper';

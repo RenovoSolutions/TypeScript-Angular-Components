@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 
 import { serviceName as dialogService, bootstrapModalDialog } from '../../source/services/dialog/dialog.service.ng1';
@@ -39,10 +40,19 @@ class PopupTestController {
 }
 
 @Component({
-	selector: 'tsPopupNg1',
-	template: '<ts-popup-ng1></ts-popup-ng1>'
+	selector: 'tsPopupNg1Bootstrapper',
+	template: '<tsPopupNg1></tsPopupNg1>'
 })
 export class PopupNg1BootstrapperComponent { }
+
+@Directive({
+	selector: 'tsPopupNg1'
+})
+export class PopupNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsPopupNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsPopupNg1', {
