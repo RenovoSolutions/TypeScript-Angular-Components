@@ -8,7 +8,6 @@ import __notification = services.notification;
 
 import { AsyncHelper, IWaitValue } from '../../services/async/async.service';
 import { FormService } from '../../services/form/form.service';
-import { IControlGroup } from '../../types/formValidators';
 
 export interface IBaseFormInputs {
 	save: string;
@@ -29,7 +28,7 @@ export interface ISaveAction<T> {
 export class FormComponent {
 	@Input() save: ISaveAction<any>;
 
-	form: IControlGroup;
+	form: FormGroup;
 	private notification: __notification.INotificationService;
 	asyncHelper: AsyncHelper;
 	private formService: FormService;
@@ -46,7 +45,7 @@ export class FormComponent {
 		this.notification = notification;
 		this.asyncHelper = asyncHelper;
 		this.formService = formService;
-		this.form = <IControlGroup>new FormGroup({});
+		this.form = new FormGroup({});
 		if (!this.save) {
 			this.save = <ISaveAction>() => null;
 		}

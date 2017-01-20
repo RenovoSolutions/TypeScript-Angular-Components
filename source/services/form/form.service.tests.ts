@@ -1,5 +1,18 @@
 import { FormService } from './form.service';
 
+interface mockForm {
+	FormGroup: mockFormGroup,
+}
+
+interface mockFormGroup {
+	controls: mockFormGroup,
+	validation: mockValidation
+}
+
+interface mockValidation {
+	rlErrorMessage:string
+}
+
 describe('FormService', (): void => {
 	let formService: FormService;
 
@@ -8,25 +21,45 @@ describe('FormService', (): void => {
 	});
 
 	it('should get the first error message from a child of the form', (): void => {
-		const form: any = {
+		const fakeInValidValidation1: mockValidation = <mockValidation>{ rlErrorMessage: "error1" };
+		const fakeInValidValidation2: mockValidation = <mockValidation>{ rlErrorMessage: "error2" };
+		const fakeValidValidation1: mockValidation = <mockValidation>{};
+		const fakeValidValidation2: mockValidation = <mockValidation>{};
+
+
+		const form = {
+			valid:false,
 			controls: [
-				{},
-				{},
-				{ rlErrorMessage: 'error1' },
-				{ rlErrorMessage: 'error2' },
-			],
+				{ validation: fakeValidValidation1 },
+				{ validation: fakeValidValidation2 },
+				{ validation: fakeInValidValidation1 },
+				{ validation:fakeInValidValidation2 }
+			]
 		};
-		expect(formService.getAggregateError(form)).to.equal('error1');
+
+		expect(formService.getAggregateError(<any>form)).to.equal(fakeInValidValidation1.rlErrorMessage);
 	});
 
 	it('should get error messages from nested forms', (): void => {
-		const nestedForm: any = {
-			controls: [{ rlErrorMessage: 'nestedError' }],
+		const fakeInValidValidation1: mockValidation = <mockValidation>{ rlErrorMessage: "error1" };
+		const fakeInValidValidation2: mockValidation = <mockValidation>{ rlErrorMessage: "error2" };
+		const fakeValidValidation1: mockValidation = <mockValidation>{};
+		const fakeValidValidation2: mockValidation = <mockValidation>{};
+
+
+		const nestedForm = {
+			controls: [
+				{ validation: fakeValidValidation1 },
+				{ validation: fakeValidValidation2 },
+				{ validation: fakeInValidValidation1 },
+				{ validation:fakeInValidValidation2 }
+			]
 		};
-		const form: any = {
-			controls: [],
-			rlNestedFormGroups: [nestedForm],
+		const form = {
+			valid:false,
+			controls: [nestedForm],
 		};
-		expect(formService.getAggregateError(form)).to.equal('nestedError');
+
+		expect(formService.getAggregateError(<any>form)).to.equal(fakeInValidValidation1.rlErrorMessage);
 	});
 });

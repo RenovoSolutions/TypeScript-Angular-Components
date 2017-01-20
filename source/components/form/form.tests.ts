@@ -47,16 +47,16 @@ describe('FormComponent', (): void => {
 	});
 
 	it('should nest the form in a parent form if one is found', (): void => {
-		const pushSpy = sinon.spy();
+		const addControlSpy = sinon.spy();
 		const parentForm: any = {
 			form: {
-				rlNestedFormGroups: { push: pushSpy },
+				addControl: addControlSpy,
 			},
 		};
 		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, parentForm);
 
-		sinon.assert.calledOnce(pushSpy);
-		sinon.assert.calledWith(pushSpy, form.form);
+		sinon.assert.calledOnce(addControlSpy);
+		sinon.assert.calledWith(addControlSpy, '', form.form);
 	});
 
 	it('should reset the form', () => {
@@ -101,28 +101,20 @@ describe('FormComponent', (): void => {
 		it('should save the form if valid', (): void => {
 			const saveSpy = sinon.spy(() => Observable.empty());
 			form.saveForm = saveSpy;
-			const isValidSpy = sinon.spy(() => true);
-			formService.isFormValid = isValidSpy;
-			form.form = <any>{};
+			form.form = <any>{valid:true};
 
 			form.submit();
 
-			sinon.assert.calledOnce(isValidSpy);
-			sinon.assert.calledWith(isValidSpy, form.form);
 			sinon.assert.calledOnce(saveSpy);
 		});
 
 		it('should show a warning if invalid', (): void => {
-			const isValidSpy = sinon.spy(() => false);
-			formService.isFormValid = isValidSpy;
 			const getErrorSpy = sinon.spy(() => 'error');
 			formService.getAggregateError = getErrorSpy;
-			form.form = <any>{};
+			form.form = <any>{valid:false};
 
 			form.submit();
 
-			sinon.assert.calledOnce(isValidSpy);
-			sinon.assert.calledWith(isValidSpy, form.form);
 			sinon.assert.calledOnce(getErrorSpy);
 			sinon.assert.calledOnce(notification.warning);
 			sinon.assert.calledWith(notification.warning, 'error');
