@@ -5,12 +5,11 @@ import { IControlValidator} from '../../types/formValidators';
 
 export class FormService {
 	getAggregateError(form: FormGroup): string {
-
 		const filteredForm: any = filter(form.controls, (control: IControlValidator): boolean => {
 			return control != null && !control.valid;
 		});
 
-		const errors: string[] = <any>map(filteredForm, 'validation.rlErrorMessage');
+		const errors: string[] = <any>map(filteredForm, 'rlErrorMessage');
 
 		const filteredErrors = filter(errors, (error: string): boolean => error ? true : false )
 

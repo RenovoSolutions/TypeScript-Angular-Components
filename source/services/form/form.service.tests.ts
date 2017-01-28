@@ -21,45 +21,40 @@ describe('FormService', (): void => {
 	});
 
 	it('should get the first error message from a child of the form', (): void => {
-		const fakeInValidValidation1: mockValidation = <mockValidation>{ rlErrorMessage: "error1" };
-		const fakeInValidValidation2: mockValidation = <mockValidation>{ rlErrorMessage: "error2" };
-		const fakeValidValidation1: mockValidation = <mockValidation>{};
-		const fakeValidValidation2: mockValidation = <mockValidation>{};
-
+		const fakeErrorMessage = "error";
 
 		const form = {
 			valid:false,
 			controls: [
-				{ validation: fakeValidValidation1 },
-				{ validation: fakeValidValidation2 },
-				{ validation: fakeInValidValidation1 },
-				{ validation:fakeInValidValidation2 }
+				{ rlErrorMessage: "" },
+				{
+					rlErrorMessage: fakeErrorMessage},
+				{ rlErrorMessage: "" },
+				{ rlErrorMessage: "" }
 			]
 		};
 
-		expect(formService.getAggregateError(<any>form)).to.equal(fakeInValidValidation1.rlErrorMessage);
+		expect(formService.getAggregateError(<any>form)).to.equal(fakeErrorMessage);
 	});
 
 	it('should get error messages from nested forms', (): void => {
-		const fakeInValidValidation1: mockValidation = <mockValidation>{ rlErrorMessage: "error1" };
-		const fakeInValidValidation2: mockValidation = <mockValidation>{ rlErrorMessage: "error2" };
-		const fakeValidValidation1: mockValidation = <mockValidation>{};
-		const fakeValidValidation2: mockValidation = <mockValidation>{};
-
+		const fakeErrorMessage = "error";
 
 		const nestedForm = {
+			valid:false,
 			controls: [
-				{ validation: fakeValidValidation1 },
-				{ validation: fakeValidValidation2 },
-				{ validation: fakeInValidValidation1 },
-				{ validation:fakeInValidValidation2 }
+				{ rlErrorMessage: "" },
+				{ rlErrorMessage: fakeErrorMessage },
+				{ rlErrorMessage: "" },
+				{ rlErrorMessage: "" }
 			]
 		};
+
 		const form = {
 			valid:false,
 			controls: [nestedForm],
 		};
 
-		expect(formService.getAggregateError(<any>form)).to.equal(fakeInValidValidation1.rlErrorMessage);
+		expect(formService.getAggregateError(<any>form)).to.equal(fakeErrorMessage);
 	});
 });
