@@ -43,23 +43,17 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	validFormat: boolean;
 	format: string;
 	timezone: __timezone.ITimezone;
-	private timezoneService: __timezone.ITimezoneService;
-	private dateService: __date.IDateUtility;
 	private rendering: boolean = false;
 	private touchspin: JQuery;
 
-	constructor(timezoneService: __timezone.TimezoneService
-			, dateService: __date.DateUtility
+	constructor(private timezoneService: __timezone.TimezoneService
+			, private dateService: __date.DateUtility
 			, @Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, object: __object.ObjectUtility
 			, array: __array.ArrayUtility
 			, guid: __guid.GuidService) {
 		super(rlForm, componentValidator, object, array, guid);
-		this.inputType = 'dateTime';
-		this.timezoneService = timezoneService;
-		this.dateService = dateService;
-		this.timezone = this.timezoneService.currentTimezone;
 	}
 
 	focus(): void {
@@ -67,6 +61,9 @@ export class DateTimeComponent extends ValidatedInputComponent<moment.Moment> im
 	}
 
 	ngOnInit(): void {
+		this.inputType = 'dateTime';
+		this.timezone = this.timezoneService.currentTimezone;
+
 		if (this.validators == null) {
 			this.validators = [];
 		}

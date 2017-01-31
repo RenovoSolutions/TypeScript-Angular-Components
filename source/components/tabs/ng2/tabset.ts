@@ -1,8 +1,4 @@
 import { Component, ContentChildren, AfterContentInit, QueryList } from '@angular/core';
-import * as _ from 'lodash';
-
-import { services } from 'typescript-angular-utilities';
-import __array = services.array;
 
 import { TabComponent } from './tab/tab';
 
@@ -26,7 +22,7 @@ export class TabsetComponent implements AfterContentInit {
 
 	ngAfterContentInit() {
 		if (this.tabs) {
-			this.select(this.tabs.first);
+			this.select(this.tabs[0]);
 		}
 	}
 }
