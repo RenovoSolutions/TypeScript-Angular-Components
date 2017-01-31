@@ -11,16 +11,16 @@
 					</div>
 				</div>
 
-				<rl-generic-container selector="cardContainer.selectableCards">
-					<template when-selector="false" default>
+				<div ng-switch="cardContainer.selectableCards">
+					<div ng-switch-when="false" ng-switch-default>
 						<div class="card-columns-header">
 							<div ng-repeat="column in cardContainer.columns">
 								<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>
 							</div>
 							<div class="clearfix"></div>
 						</div>
-					</template>
-					<template when-selector="true">
+					</div>
+					<div ng-switch-when="true">
 						<div class="card-columns-header">
 							<div class="select-group">
 								<div class="select-column">
@@ -36,8 +36,8 @@
 							</div>
 							<div class="clearfix"></div>
 						</div>
-					</template>
-				</rl-generic-container>
+					</div>
+				</div>
 
 				<div class="alert alert-info" ng-show="cardContainer.dataSource.needsRefinedSearch">
 					Please refine your search results

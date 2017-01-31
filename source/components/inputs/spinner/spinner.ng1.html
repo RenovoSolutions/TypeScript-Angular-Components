@@ -1,17 +1,17 @@
-<rl-generic-container selector="spinner.ngDisabled" class="spinner-container">
-	<template default>
+<div ng-switch="spinner.ngDisabled" class="spinner-container">
+	<div ng-switch-when="false">
 		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid, 'warning': spinner.warning }">
 			<label class="label-slide angular-animate" ng-show="spinner.ngModel.$viewValue | isEmpty:false && spinner.label">{{spinner.label}}</label>
 			<input name="{{::spinner.name}}" class="spinner" id="{{::spinner.spinnerId}}" type="text" placeholder="{{spinner.label}}"/>
 			<span class="error-string" ng-if="spinner.inputValidator.error | isEmpty:false">{{spinner.inputValidator.error}}</span>
 		</div>
-	</template>
-	<template when-selector="true">
+	</div>
+	<div ng-switch-when="true">
 		<div class="input-group field">
 			<label class="label-slide angular-animate" ng-show="spinner.ngModel.$viewValue | isEmpty:false && spinner.label">{{spinner.label}}</label>
 			<span class="input-group-addon" ng-if="::spinner.prefix != null">{{::spinner.prefix}}</span>
 			<input class="form-control" disabled="true" type="text" ng-model="spinner.ngModel.$viewValue" placeholder="{{spinner.label}}" />
 			<span class="input-group-addon" ng-if="::spinner.postfix != null">{{::spinner.postfix}}</span>
 		</div>
-	</template>
-</rl-generic-container>
+	</div>
+<div>
