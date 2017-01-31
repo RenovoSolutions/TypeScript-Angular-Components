@@ -1,6 +1,6 @@
 {
   "name": "typescript-angular-components",
-  "version": "3.11.1",
+  "version": "4.1.4",
   "description": "Reusable responsive angular components",
   "author": "Renovo Development Team",
   "keywords": [
@@ -72,18 +72,18 @@
     "system-text": "^0.1.0",
     "systemjs-builder": "^0.15.16",
     "traceur": "0.0.111",
-    "typescript": "~2.0.3"
+    "typescript": "~2.1.0"
   },
   "dependencies": {
-    "@angular/common": "~2.1.0",
-    "@angular/compiler": "~2.1.0",
-    "@angular/core": "~2.1.0",
-    "@angular/forms": "~2.1.0",
-    "@angular/http": "~2.1.0",
-    "@angular/platform-browser": "~2.1.0",
-    "@angular/platform-browser-dynamic": "~2.1.0",
-    "@angular/router": "~3.1.0",
-    "@angular/upgrade": "~2.1.0",
+    "@angular/common": "~2.4.0",
+    "@angular/compiler": "~2.4.0",
+    "@angular/core": "~2.4.0",
+    "@angular/forms": "~2.4.0",
+    "@angular/http": "~2.4.0",
+    "@angular/platform-browser": "~2.4.0",
+    "@angular/platform-browser-dynamic": "~2.4.0",
+    "@angular/router": "~3.4.0",
+    "@angular/upgrade": "~2.4.0",
     "@types/angular": "1.5.16",
     "@types/angular-ui-bootstrap": "~0.13.35",
     "@types/bootstrap": "~3.3.32",
@@ -108,13 +108,13 @@
     "moment": "~2.14.1",
     "moment-timezone": "^0.5.3",
     "ng-wig": "~2.3.4",
-    "rl-async-testing": "~1.4.0",
-    "rl-http": "~1.2.0",
-    "rxjs": "5.0.0-beta.12",
+    "rl-async-testing": "~1.6.1",
+    "rl-http": "~1.5.1",
+    "rxjs": "~5.0.0",
     "systemjs": "^0.19.28",
-    "typescript-angular-utilities": "~3.9.0",
+    "typescript-angular-utilities": "~4.1.1",
     "ui-select": "~0.14.7",
-    "zone.js": "~0.6.25"
+    "zone.js": "~0.7.2"
   },
   "license": "GPL-3.0"
 }

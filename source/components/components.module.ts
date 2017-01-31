@@ -25,7 +25,7 @@ import * as selectNg1 from './inputs/select/select.ng1';
 import * as simpleCardListNg1 from './simpleCardList/simpleCardList.module';
 import * as spinnerNg1 from './inputs/spinner/spinner.ng1';
 import * as stringWithWatermarkNg1 from './stringWithWatermark/stringWithWatermark.ng1';
-import * as tabsNg1 from './tabs/tabs.module';
+import * as tabsNg1 from './tabs/ng1/tabs.module';
 import * as templateRendererNg1 from './templateRenderer/templateRenderer.ng1';
 import * as textareaNg1 from './inputs/textarea/textarea.ng1';
 import * as textboxNg1 from './inputs/textbox/textbox.ng1';

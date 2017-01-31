@@ -6,7 +6,7 @@ export const baseInputs: string[] = ['type', 'disabled', 'size'];
 const buttonClassPrefix: string = 'btn-';
 const defaultButtonType: string = 'default';
 
-export class BaseButtonComponent {
+export abstract class BaseButtonComponent {
 	type: string;
 	disabled: boolean;
 	size: string;

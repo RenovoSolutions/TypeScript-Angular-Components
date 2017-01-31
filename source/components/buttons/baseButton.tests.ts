@@ -1,10 +1,12 @@
 import { BaseButtonComponent } from './baseButton';
 
+class TestButton extends BaseButtonComponent{}
+
 describe('base button', (): void => {
-	let button: BaseButtonComponent;
+	let button: TestButton;
 
 	beforeEach((): void => {
-		button = new BaseButtonComponent();
+		button = new TestButton();
 	});
 
 	it('should append btn- to the size if present', (): void => {

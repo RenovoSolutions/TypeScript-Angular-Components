@@ -6,8 +6,6 @@ import __array = services.array;
 
 export var factoryName: string = 'messageLog';
 
-export var defaultPageSize: number = 10;
-
 export interface IUser {
 	id: number;
 	name: string;
@@ -61,7 +59,7 @@ export class MessageLog {
 	private currentStartingMessage: number = 0;
 	private _hasForwardMessages: boolean = false;
 	private _hasBackwardMessages: boolean = false;
-	private _pageSize: number = defaultPageSize;
+	private _pageSize: number;
 	private _dataService: IMessageLogDataService;
 	busy: boolean;
 	visibleMessages: IMessage[];

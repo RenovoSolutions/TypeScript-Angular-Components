@@ -14,4 +14,6 @@
 		"bootstrapper/**/*.js.map": true,
 		"bootstrapper/**/*.d.ts": true
 	}
+,
+"typescript.check.workspaceVersion": false
 }

@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+
+import { services } from 'typescript-angular-utilities';
+import __timezone = services.timezone;
 
 import { ICardContainerBuilderOld } from '../../source/components/cardContainer/builder/index';
 import { IDataSourceOld } from '../../source/components/cardContainer/dataSources/index';
@@ -28,6 +32,8 @@ class CardTestController {
 
 	static $inject: string[] = [cardContainerBuilderServiceName];
 	constructor(cardContainerBuilderFactory: any) {
+		__timezone.timezoneService.setCurrentTimezone('-08:00');
+
 		const items: ICardItem[] = _.map(_.range(1, 101), (num: number): ICardItem => {
 			const value = Math.floor(Math.random() * 2) + 1;
 			return {
@@ -130,10 +136,19 @@ class CardTestController {
 }
 
 @Component({
-	selector: 'tsCardsNg1',
-	template: '<ts-cards-ng1></ts-cards-ng1>'
+	selector: 'tsCardsNg1Bootstrapper',
+	template: '<tsCardsNg1></tsCardsNg1>'
 })
 export class CardsNg1BootstrapperComponent { }
+
+@Directive({
+	selector: 'tsCardsNg1'
+})
+export class CardsNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsCardsNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsCardsNg1', {

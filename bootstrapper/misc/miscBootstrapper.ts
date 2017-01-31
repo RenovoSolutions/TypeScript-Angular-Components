@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 import * as moment from 'moment';
 
@@ -47,16 +48,34 @@ class MiscTestController {
 }
 
 @Component({
-	selector: 'tsMiscNg1',
-	template: '<ts-misc-ng1></ts-misc-ng1>'
+	selector: 'tsMiscNg1Bootstrapper',
+	template: '<tsMiscNg1></tsMiscNg1>'
 })
 export class MiscNg1BootstrapperComponent { }
 
 @Component({
-	selector: 'tsMiscNg2',
-	template: '<ts-misc-ng2></ts-misc-ng2>'
+	selector: 'tsMiscNg2Bootstrapper',
+	template: '<tsMiscNg2></tsMiscNg2>'
 })
 export class MiscNg2BootstrapperComponent {}
+
+@Directive({
+	selector: 'tsMiscNg1'
+})
+export class MiscNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsMiscNg1', elementRef, injector);
+	}
+}
+
+@Directive({
+	selector: 'tsMiscNg2'
+})
+export class MiscNg2Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsMiscNg2', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsMiscNg1', {

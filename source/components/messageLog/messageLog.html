@@ -1,3 +1,10 @@
+<div class="rl-page-size-select align-horizontal">
+	Show
+	<rl-button class="rl-page-size-option" ng-class="{ 'rl-page-size-option-selected': log.messageLog.pageSize == size }" type="flat" ng-repeat="size in log.pageSizes" action="log.setPageSize(size)">
+		{{size}}
+	</rl-button>
+</div>
+
 <div>
 	<rl-busy loading="log.loadingInitial" size="2x"></rl-busy>
 	<div class="content-group" ng-repeat="entry in log.messages" rl-alias="entry as {{log.messageAs}}" ng-class="{ 'system-note': entry.isSystemNote }">

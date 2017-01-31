@@ -1,22 +1,20 @@
 var moduleName = require('source/ui.module').moduleName;
-var UpgradeAdapter = require('@angular/upgrade').UpgradeAdapter;
+var UpgradeModule = require('@angular/upgrade/static').UpgradeModule;
 var core = require('@angular/core');
+var testingBrowser = require('@angular/platform-browser-dynamic/testing');
 var browser = require('@angular/platform-browser');
 var forms = require('@angular/forms');
 var utilities = require('typescript-angular-utilities');
-var downgrade = utilities.downgrade;
-var downgradeComponents = require('./source/componentsDowngrade');
 var ComponentsModule = require('./source/ui.module').ComponentsModule;
 
-var upgrade = new UpgradeAdapter(core.forwardRef(function () { return TestModule; }));
-
-class TestModule { }
+class TestModule { ngDoBootstrap() { } }
 core.NgModule({
 	imports: [
 		browser.BrowserModule,
 		forms.ReactiveFormsModule,
 		utilities.UtilitiesModule,
 		ComponentsModule,
+		UpgradeModule,
 	],
 })(TestModule)
 
@@ -26,21 +24,20 @@ function setup() {
 	});
 
 	return new Promise(function (resolve) {
-		downgrade.downgradeUtilitiesToAngular1(upgrade);
-		downgradeComponents.downgradeComponentsToAngular1(upgrade);
-
 		var ng2Injector = null;
 
 		angular.module(moduleName)
-			.factory('ng2.Injector', function () {
-				return ng2Injector;
+			.factory('$$angularInjector', function () {
+				return {
+					get: function (token) {
+						return ng2Injector.get(token);
+					},
+				};
 			});
-
-		upgrade.bootstrap(document.body, [moduleName])
-			.ready(function (ref) {
-				ng2Injector = ref.ng2Injector;
-				resolve();
-			});
+		testingBrowser.platformBrowserDynamicTesting().bootstrapModule(TestModule).then(function(platformRef) {
+			ng2Injector = platformRef.injector;
+			resolve();
+		});
 	});
 }
 

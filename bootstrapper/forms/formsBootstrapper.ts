@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Directive, ElementRef, Injector } from '@angular/core';
+import { UpgradeComponent } from '@angular/upgrade/static';
 import * as angular from 'angular';
 
 import { services } from 'typescript-angular-utilities';
@@ -32,10 +33,19 @@ class FormTestController {
 }
 
 @Component({
-	selector: 'tsFormsNg1',
-	template: '<ts-forms-ng1></ts-forms-ng1>'
+	selector: 'tsFormsNg1Bootstrapper',
+	template: '<tsFormsNg1></tsFormsNg1>'
 })
 export class FormsNg1BootstrapperComponent { }
+
+@Directive({
+	selector: 'tsFormsNg1'
+})
+export class FormsNg1Directive extends UpgradeComponent {
+	constructor(elementRef: ElementRef, injector: Injector) {
+		super('tsFormsNg1', elementRef, injector);
+	}
+}
 
 angular.module(moduleName, [])
 	.component('tsFormsNg1', {

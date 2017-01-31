@@ -27,7 +27,7 @@ export interface IValidateFilterModel<TFilterModelType> {
 }
 
 export class ClientServerDataSource<TDataType> extends AsyncDataSource<TDataType> {
-	private minSearchLength: number = 4;
+	private minSearchLength: number = 3;
 	private search: string;
 	private filterModel: any;
 
