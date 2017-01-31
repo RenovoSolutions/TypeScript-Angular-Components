@@ -85,7 +85,9 @@ export class CardController {
 		if (this.cardAs) {
 			$scope[this.cardAs] = this.item;
 		}
-
+		if (!this.selectable) {
+			this.selectable = false;
+		}
 		$scope.collapse = this.autosave;
 		$scope.setSelected = this.setSelected.bind(this);
 		this.refresh = new Rx.Subject<void>();
