@@ -12,7 +12,7 @@
 				</div>
 
 				<div ng-switch="cardContainer.selectableCards">
-					<div ng-switch-when="false" ng-switch-default>
+					<div ng-switch-when="false">
 						<div class="card-columns-header">
 							<div ng-repeat="column in cardContainer.columns">
 								<rl-column-header sort="cardContainer.sort(column)" sorting="column.sortDirection" column="column"></rl-column-header>

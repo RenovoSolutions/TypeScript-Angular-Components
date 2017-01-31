@@ -129,6 +129,9 @@ export class CardContainerController {
 		if (this.builder != null) {
 			this.builder.setCardContainerProperties(<any>this);
 		}
+		if (!this.selectableCards) {
+			this.selectableCards = false;
+		}
 
 		this.makeCard = $transclude;
 		this.permanentFooters = _.isUndefined(this.permanentFooters) ? false : this.permanentFooters;
