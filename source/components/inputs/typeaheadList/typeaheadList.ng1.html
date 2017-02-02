@@ -1,14 +1,14 @@
-<rl-generic-container selector="list.disableSearching">
-	<template when-selector="true">
+<div ng-switch="list.disableSearching">
+	<div ng-switch-when="true">
 		<rl-select ng-if="list.cachedItems | isEmpty:false" ng-model="list.model" select="list.addItem(item)" transform="list.transform"
 				   options="list.cachedItems" label="{{list.label}}" ng-disabled="list.ngDisabled"></rl-select>
-	</template>
-	<template default>
+	</div>
+	<div ng-switch-default>
 		<rl-typeahead ng-model="list.model" select="list.addItem(value)" allow-collapse="false"
 					  transform="list.transform" get-items="list.searchItems(search)" label="{{list.label}}"
 					  prefix="{{list.prefix}}" ng-disabled="list.ngDisabled"></rl-typeahead>
-	</template>
-</rl-generic-container>
+	</div>
+</div>
 <div class="table-container">
 	<div class="row table-header" ng-show="list.ngModel.$viewValue | isEmpty:false">
 		<div ng-transclude="headerSlot">
