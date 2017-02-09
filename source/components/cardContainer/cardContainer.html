@@ -26,7 +26,8 @@
 				<div *ngIf="hasItems$ | async">
 					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet$ | async">
 						<rlCard [item]="card"
-								[save]="save"></rlCard>
+								[save]="save"
+								[permanentFooter]="permanentFooters"></rlCard>
 					</div>
 				</div>
 
@@ -34,7 +35,7 @@
 					<rlBusy [loading]="dataSource.loadingDataSet$ | async" size="2x"></rlBusy>
 				</div>
 
-				<div class="card-container-footer" *ngIf="!(dataSource.isEmpty$ | async)">
+				<div class="card-container-footer">
 					<rlContainerFooter [footer]="containerFooter"></rlContainerFooter>
 				</div>
 			</div>
