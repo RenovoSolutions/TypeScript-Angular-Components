@@ -40,7 +40,7 @@
 <div>
 	<label><a href="https://github.com/SamGraber/TypeScript-Angular-Components/tree/master/source/components/inputs/typeahead/typeahead.md">Typeahead</a>:</label>
 	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead collapsable" [getItems]="searchOptions" transform="value" allowCollapse="true"></rlTypeahead>
-	<rlTypeahead (select)="log($event)" prefix="Search for a" label="Typeahead client searching" [getItems]="getOptions" clientSearch="true" transform="value">
+	<rlTypeahead (selector)="log($event)" prefix="Search for a" label="Typeahead client searching" [getItems]="getOptions" clientSearch="true" transform="value">
 		<template let-option>Value - {{option.value}}</template>
 	</rlTypeahead>
 	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>

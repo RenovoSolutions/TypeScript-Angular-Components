@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, ContentChild } from '@angular/core';
+import { Component, ContentChild } from '@angular/core';
 
 import { TabHeaderComponent } from './tabHeader/index';
 import { TabContentComponent } from './tabContent/index';
@@ -11,7 +11,7 @@ import { FormComponent } from '../../../form/form';
 	selector: 'rlTab',
 	template: require('./tab.html'),
 })
-export class TabComponent implements AfterContentInit {
+export class TabComponent {
 	@ContentChild(TabHeaderComponent)
 	header: TabHeaderComponent;
 
@@ -19,17 +19,15 @@ export class TabComponent implements AfterContentInit {
 	childForm: FormComponent;
 
 	isActive: boolean;
-	isValid: boolean = true;
 
-	constructor() { }
+	constructor() {
+	}
 
-	ngAfterContentInit() {
+	get isValid(): boolean{
 		let hasChildForm: boolean = this.childForm != null;
 		if (hasChildForm) {
-			this.childForm.form.statusChanges.subscribe(isValid => {
-				this.isValid = (isValid == 'VALID');
-			});
-			this.isValid = this.childForm.form.valid;
+			return this.childForm.form.valid;
 		}
+		return true;
 	}
 }

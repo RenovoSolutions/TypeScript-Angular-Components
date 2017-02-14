@@ -1,4 +1,4 @@
-import { Component, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Inject, forwardRef, Optional, SkipSelf, ChangeDetectionStrategy, Input } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { isFunction, assign } from 'lodash';
 
@@ -37,6 +37,8 @@ export const cardInputs: ICardInputs = <ICardInputs>assign({}, baseInputs, {
 export class CardComponent<T> extends FormComponent {
 	item: T;
 
+	@Input() permanentFooter:boolean = false;
+
 	// consumer properties
 	initCard: { (): void } = () => null;
 	clickCard: { (): void } = () => null;
@@ -56,6 +58,7 @@ export class CardComponent<T> extends FormComponent {
 	}
 
 	toggleContent(): void {
+
 		if (this.showContent$.getValue()) {
 			this.close();
 		} else {
@@ -78,7 +81,11 @@ export class CardComponent<T> extends FormComponent {
 			return true;
 		}
 
-		const canClose: boolean = !!this.submit();
+		let canClose = true;
+
+		//hack to stop auto save when non needed or available
+		let obs = this.saveForm()
+		if (obs) { canClose = !!this.submit(); }
 
 		if (canClose) {
 			this.showContent$.next(false);

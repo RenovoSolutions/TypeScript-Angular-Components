@@ -1,29 +1,22 @@
 import { FormGroup, FormControl } from '@angular/forms';
-import { filter, first, every, map } from 'lodash';
+import { filter, first, map } from 'lodash';
 
-import { IControlValidator, IControlGroup } from '../../types/formValidators';
+import { IControlValidator} from '../../types/formValidators';
 
 export class FormService {
-	isFormValid(form: IControlGroup): boolean {
-		const allControlsValid = every(form.controls, (control: FormControl): boolean => {
-			return control.valid;
-		})
-		const nestedFormsValid = every(form.rlNestedFormGroups, (nestedForm: IControlGroup): boolean => {
-			return this.isFormValid(nestedForm);
-		});
-		return allControlsValid && nestedFormsValid;
-	}
-
-	getAggregateError(form: IControlGroup): string {
+	getAggregateError(form: FormGroup): string {
 		const filteredForm: any = filter(form.controls, (control: IControlValidator): boolean => {
-			return control != null && control.rlErrorMessage != null;
+			return control != null && !control.valid;
 		});
+
 		const errors: string[] = <any>map(filteredForm, 'rlErrorMessage');
 
-		if (errors.length > 0) {
-			return first(errors);
-		} else {
-			return first(map(form.rlNestedFormGroups, nestedForm => this.getAggregateError(nestedForm)));
+		const filteredErrors = filter(errors, (error: string): boolean => error ? true : false )
+
+		if (filteredErrors.length > 0) {
+			return first(filteredErrors);
+		}else {
+			return first(map(form.controls, nestedForm => this.getAggregateError(<any>nestedForm)));
 		}
 	}
 }

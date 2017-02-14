@@ -6,7 +6,6 @@ import __validation = services.validation;
 import __array = services.array;
 
 import { FormComponent } from '../form/form';
-import { IControlGroup } from '../../types/formValidators';
 import { ComponentValidator } from '../../services/componentValidator/componentValidator.service';
 
 export interface IGroupChanges {
@@ -25,19 +24,19 @@ export class ValidationGroupComponent implements OnInit, AfterViewInit, OnChange
 	@Input() model: any;
 
 	groupValidator: ComponentValidator;
-	formGroup: IControlGroup;
+	formGroup: FormGroup;
 	validationControl: FormControl;
 	arrayUtility: __array.IArrayUtility;
 
-	constructor(rlForm: FormComponent
+	constructor(@Optional() rlForm: FormComponent
 			, componentValidator: ComponentValidator
 			, arrayUtility: __array.ArrayUtility) {
 		this.arrayUtility = arrayUtility;
 		this.groupValidator = componentValidator;
 		this.validationControl = new FormControl('', null, this.groupValidator.validate.bind(this.groupValidator));
-		this.formGroup = <IControlGroup>new FormGroup({ validation: this.validationControl });
+		this.formGroup = new FormGroup({ validation: this.validationControl });
 		if (rlForm) {
-			rlForm.form.rlNestedFormGroups.push(this.formGroup);
+			rlForm.form.addControl('', this.formGroup)
 		}
 	}
 

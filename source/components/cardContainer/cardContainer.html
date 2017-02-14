@@ -26,7 +26,8 @@
 				<div *ngIf="hasItems$ | async">
 					<div class="card-item-repeat" *ngFor="let card of dataSource.dataSet$ | async">
 						<rlCard [item]="card"
-								[save]="save"></rlCard>
+								[save]="save"
+								[permanentFooter]="permanentFooters"></rlCard>
 					</div>
 				</div>
 

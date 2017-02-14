@@ -28,17 +28,17 @@ describe('ValidationGroupComponent', (): void => {
 	});
 
 	it('should nest the form group in a parent form if one is found', (): void => {
-		const pushSpy = sinon.spy();
+		const addControlSpy = sinon.spy();
 		const form: any = {
 			form: {
-				rlNestedFormGroups: { push: pushSpy },
-			},
+				addControl: addControlSpy,
+			}
 		};
 		group = new ValidationGroupComponent(form, <any>componentValidator, __array.arrayUtility);
 
 		expect(group.formGroup.controls['validation']).to.equal(group.validationControl);
-		sinon.assert.calledOnce(pushSpy);
-		sinon.assert.calledWith(pushSpy, group.formGroup);
+		sinon.assert.calledOnce(addControlSpy);
+		sinon.assert.calledWith(addControlSpy, '', group.formGroup);
 	});
 
 	it('should concatenate the specified validators and pass them to the component validator', (): void => {

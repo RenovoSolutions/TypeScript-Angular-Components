@@ -1,5 +1,5 @@
 <div ng-switch="spinner.ngDisabled" class="spinner-container">
-	<div ng-switch-when="false">
+	<div ng-switch-default>
 		<div class="field" ng-class="{ 'error': spinner.ngModel.$invalid, 'warning': spinner.warning }">
 			<label class="label-slide angular-animate" ng-show="spinner.ngModel.$viewValue | isEmpty:false && spinner.label">{{spinner.label}}</label>
 			<input name="{{::spinner.name}}" class="spinner" id="{{::spinner.spinnerId}}" type="text" placeholder="{{spinner.label}}"/>
