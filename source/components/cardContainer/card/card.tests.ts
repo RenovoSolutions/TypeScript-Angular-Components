@@ -108,6 +108,7 @@ describe('CardComponent', () => {
 		});
 
 		it('should not close the card if submit fails', (): void => {
+			card.saveForm = () => true;
 			card.showContent$.next(true);
 			card.submit = sinon.spy(() => false);
 
@@ -115,6 +116,16 @@ describe('CardComponent', () => {
 
 			expect(card.showContent$.getValue()).to.be.true;
 			expect(closed).to.be.false;
+		});
+
+		it('should close the card if there is no submit', (): void => {
+			card.showContent$.next(true);
+			card.submit = sinon.spy(() => false);
+
+			const closed = card.close();
+
+			expect(card.showContent$.getValue()).to.be.false;
+			expect(closed).to.be.true;
 		});
 	});
 });
