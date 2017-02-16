@@ -2,22 +2,22 @@
 	<label ng-show="select.selection" class="label-slide angular-animate">
 		{{::select.label}}
 	</label>
-	<div class="form-control rl-select-trigger"
-		ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }"
-		ng-mousedown="select.toggle()"
-		ng-blur="select.close()"
-		tabindex="0">
-		<span class="placeholder" ng-hide="select.selection">{{::select.label}}</span>
-		<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
+	<div class="rl-select-wrap" tabindex="0" ng-blur="select.close()">
+		<div class="form-control rl-select-trigger"
+			ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }"
+			ng-mousedown="select.toggle()">
+			<span class="placeholder" ng-hide="select.selection">{{::select.label}}</span>
+			<span class="rl-select-choice">{{select.getDisplayName(select.selection)}}</span>
+		</div>
+		<ul class="rl-select-list" ng-if="select.showOptions">
+			<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-mousedown="select.selectOption(null)">{{::select.nullOption}}</li>
+			<li class="rl-select-option"
+				ng-repeat="$item in select.options"
+				ng-mousedown="select.selectOption($item)">
+				<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
+			</li>
+		</ul>
 	</div>
-	<ul class="rl-select-list" ng-if="select.showOptions">
-		<li class="rl-select-option rl-select-option-null" ng-if="::select.nullOption" ng-mousedown="select.selectOption(null)">{{::select.nullOption}}</li>
-		<li class="rl-select-option"
-			ng-repeat="$item in select.options"
-			ng-mousedown="select.selectOption($item)">
-			<rl-template-renderer template="select.template" rl-alias="$item as {{select.itemAs}}"></rl-template-renderer>
-		</li>
-	</ul>
 	<rl-busy loading="select.loading"></rl-busy>
 	<span class="error-string angular-animate" ng-if="select.inputValidator.error | isEmpty:false">{{select.inputValidator.error}}</span>
 </div>
