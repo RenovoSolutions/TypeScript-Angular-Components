@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { Component, Input, ContentChild, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, Output, ContentChild, forwardRef, EventEmitter } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
 import __notification = services.notification;
@@ -21,10 +21,11 @@ import { FormService } from '../../services/form/form.service';
 		},
 	],
 })
-export class DialogComponent extends FormComponent {
+export class DialogComponent extends FormComponent implements OnInit {
 	@Input() onClosing: IDialogClosingHandler;
 	@Input() autosave: boolean;
 	@Input() size: string;
+	@Output() dialogOpenStatus: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	@ContentChild(DialogHeaderTemplate) header: DialogHeaderTemplate;
 	@ContentChild(DialogContentTemplate) content: DialogContentTemplate;
@@ -40,6 +41,10 @@ export class DialogComponent extends FormComponent {
 		this.dialogRoot = dialogRoot;
 	}
 
+	ngOnInit() {
+		this.dialogOpenStatus.emit(false);
+	}
+
 	open(): void {
 		this.dialogRoot.openDialog.next({
 			onClosing: this.wrapOnClosing,
@@ -50,15 +55,18 @@ export class DialogComponent extends FormComponent {
 			submitAndClose: () => this.submitAndClose(),
 			size: this.size,
 		});
+		this.dialogOpenStatus.emit(true);
 	}
 
 	close(): void {
 		this.dialogRoot.closeDialog.next(null);
+		this.dialogOpenStatus.emit(false);
 	}
 
 	dismiss(): void {
 		this.dialogRoot.dismissing = true;
 		this.dialogRoot.closeDialog.next(null);
+		this.dialogOpenStatus.emit(false);
 	}
 
 	submitAndClose = (): Observable<any> => {
