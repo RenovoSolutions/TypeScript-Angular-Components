@@ -44,29 +44,18 @@ describe('SelectComponent', () => {
 		];
 	});
 
-	it('should set the value and close the options', (): void => {
-		const closeSpy = sinon.spy();
-		dropdown.list = <any>{
-			close: closeSpy,
-		};
-
+	it('should set the value', (): void => {
 		dropdown.select(options[1]);
 
-		sinon.assert.calledOnce(closeSpy);
 		sinon.assert.calledOnce(setValue);
 		sinon.assert.calledWith(setValue, options[1]);
 	});
 
-	it('should close the options without setting the value if the current value is reselected', (): void => {
-		const closeSpy = sinon.spy();
-		dropdown.list = <any>{
-			close: closeSpy,
-		};
+	it('should not set the value if the current value is reselected', (): void => {
 		dropdown.value = options[1];
 
 		dropdown.select(options[1]);
 
-		sinon.assert.calledOnce(closeSpy);
 		sinon.assert.notCalled(setValue);
 	});
 

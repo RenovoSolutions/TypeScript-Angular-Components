@@ -116,7 +116,6 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	}
 
 	selectItem(item: T): void {
-		this.list.close();
 		this.search = '';
 
 		this.selector.emit(item);
