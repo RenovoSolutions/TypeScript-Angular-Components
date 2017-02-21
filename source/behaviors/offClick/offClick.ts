@@ -3,6 +3,8 @@ import { Directive, Host, Input, Output, EventEmitter, OnInit, OnDestroy, Simple
 import { services } from 'typescript-angular-utilities';
 import __guid = services.guid;
 
+import { DocumentWrapper } from '../../services/document/document.provider';
+
 export interface IOffClickEvent extends MouseEvent {
 	rlEventIdentifier: string;
 }
@@ -34,9 +36,12 @@ export class OffClickDirective implements OnInit, OnDestroy {
 	};
 
 	identifier: string;
+	document: Document;
 
-	constructor(guidService: __guid.GuidService) {
+	constructor(guidService: __guid.GuidService
+			, document: DocumentWrapper) {
 		this.identifier = guidService.random();
+		this.document = <any>document;
 	}
 
 	ngOnInit() {
@@ -48,11 +53,11 @@ export class OffClickDirective implements OnInit, OnDestroy {
 	}
 
 	addListener(): void {
-		document.addEventListener('click', this.listener);
+		this.document.addEventListener('click', this.listener);
 	}
 
 	removeListener(): void {
-		document.removeEventListener('click', this.listener);
+		this.document.removeEventListener('click', this.listener);
 	}
 
 	ngOnDestroy() {
