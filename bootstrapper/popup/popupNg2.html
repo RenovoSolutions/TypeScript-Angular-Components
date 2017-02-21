@@ -18,6 +18,8 @@
 		<div *rlDialogHeader>Header 2</div>
 		<div *rlDialogContent>
 			<rlTextbox label="Textbox" name="textbox" rlRequired="Required"></rlTextbox>
+			<rlSelect label="Select" name="select" [options]="options" rlRequired="Required"></rlSelect>
+			<rlTypeahead label="Typeahead" name="typeahead" [getItems]="getOptions" rlRequired="Required" allowCollapse="true"></rlTypeahead>
 		</div>
 	</rlDialog>
 	<rlPromptDialog #prompt
