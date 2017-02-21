@@ -1,4 +1,4 @@
-import { Directive, HostListener, ElementRef } from '@angular/core';
+import { Directive, HostListener } from '@angular/core';
 
 import { PopoutListService } from './popoutList.service';
 
@@ -8,22 +8,21 @@ import { PopoutListService } from './popoutList.service';
 export class PopoutTriggerDirective {
 	@HostListener('keyup.arrowdown') downArrow = () => this.next();
 	@HostListener('keyup.arrowup') upArrow = () => this.previous();
-	@HostListener('blur') onBlur = () => this.select();
-	@HostListener('focus') onFocus = () => this.show();
-	@HostListener('keyup.enter') onEnter = () => this.elementRef.nativeElement.blur();
+	@HostListener('click') toggle = () => this.toggleList();
+	@HostListener('keyup.enter') onEnter = () => this.select();
 
 	popoutListService: PopoutListService<any>;
-	elementRef: ElementRef;
 
-	constructor(popoutListService: PopoutListService<any>
-			, elementRef: ElementRef) {
+	constructor(popoutListService: PopoutListService<any>) {
 		this.popoutListService = popoutListService;
-		this.elementRef = elementRef;
-		popoutListService.select.subscribe(() => elementRef.nativeElement.blur());
 	}
 
-	show(): void {
-		this.popoutListService.open();
+	toggleList(): void {
+		if (this.popoutListService.showOptions) {
+			this.popoutListService.close();
+		} else {
+			this.popoutListService.open();
+		}
 	}
 
 	next(): void {

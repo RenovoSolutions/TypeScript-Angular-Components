@@ -3,25 +3,29 @@
 	 [class.error]="componentValidator.error$ | async"
 	 [class.rl-select-loading]="busy?.loading">
 	<label [@slide]="labelState">{{label}}</label>
-	<div class="form-control rl-select-trigger"
-		 [class.disabled]="disabled"
-		 [class.rl-select-open]="list.showOptions"
-		 (focus)="showLabel()"
-		 (blur)="hideLabelIfEmpty()"
-		 tabindex="0"
-		 rlPopoutTrigger>
-		<span class="placeholder"
-			  [class.hide-placeholder]="hidePlaceholder"
-			  [hidden]="value">{{label}}</span>
-		<span class="rl-select-choice">{{getDisplayName(value)}}</span>
+	<div class="rl-select-wrap"
+	 	 (offClick)="list.close()"
+	 	 [offClickActive]="list.showOptions">
+		<div class="form-control rl-select-trigger"
+			 [class.disabled]="disabled"
+			 [class.rl-select-open]="list.showOptions"
+			 (focus)="showLabel()"
+			 (blur)="hideLabelIfEmpty()"
+			 tabindex="0"
+			 rlPopoutTrigger>
+			<span class="placeholder"
+				  [class.hide-placeholder]="hidePlaceholder"
+				  [hidden]="value">{{label}}</span>
+			<span class="rl-select-choice">{{getDisplayName(value)}}</span>
+		</div>
+		<rlPopoutList #list
+					  [options]="options"
+					  [template]="template"
+					  [transform]="transform"
+					  (select)="select($event)">
+			<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
+		</rlPopoutList>
 	</div>
-	<rlPopoutList #list
-				  [options]="options"
-				  [template]="template"
-				  [transform]="transform"
-				  (select)="select($event)">
-		<rlPopoutItem class="rl-select-option-null" *ngIf="nullOption" (trigger)="select(null)">{{nullOption}}</rlPopoutItem>
-	</rlPopoutList>
 	<rlBusy [loading]="!options"></rlBusy>
 	<div *ngIf="componentValidator.error$ | async" class="error-string">
 		{{componentValidator.error$ | async}}

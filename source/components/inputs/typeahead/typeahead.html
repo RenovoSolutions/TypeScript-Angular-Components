@@ -3,25 +3,29 @@
 	 [class.error]="componentValidator.error$ | async">
 	<label [@slide]="labelState">{{label}}</label>
 	<div [hidden]="collapsed">
-		<input class="form-control rl-select-trigger"
-			   #input
-			   type="text"
-			   [disabled]="disabled"
-			   [class.rl-select-open]="list.showOptions"
-			   [class.hide-placeholder]="hidePlaceholder"
-			   [placeholder]="placeholder"
-			   [value]="search"
-			   (focus)="showLabel()"
-			   (blur)="hideLabelIfEmpty()"
-			   rlPopoutTrigger
-			   (input)="searchStream.next($event.target.value)" />
-		<rlPopoutList [disabled]="!canShowOptions"
-					  [options]="visibleItems$ | async"
-					  [template]="template"
-					  [transform]="transform"
-					  (select)="selectItem($event)">
-			<rlPopoutItem class="rl-select-option-custom" *ngIf="allowCustomOption" (trigger)="selectCustom()">{{search}}</rlPopoutItem>
-		</rlPopoutList>
+		<div class="rl-select-wrap"
+			 (offClick)="list.close()"
+			 [offClickActive]="list.showOptions || false">
+			<input class="form-control rl-select-trigger"
+				   #input
+				   type="text"
+				   [disabled]="disabled"
+				   [class.rl-select-open]="list.showOptions"
+				   [class.hide-placeholder]="hidePlaceholder"
+				   [placeholder]="placeholder"
+				   [value]="search"
+				   (input)="searchStream.next($event.target.value)"
+				   (focus)="showLabel()"
+				   (blur)="hideLabelIfEmpty()"
+				   rlPopoutTrigger />
+			<rlPopoutList [disabled]="!canShowOptions"
+						  [options]="visibleItems$ | async"
+						  [template]="template"
+						  [transform]="transform"
+						  (select)="selectItem($event)">
+				<rlPopoutItem class="rl-select-option-custom" *ngIf="allowCustomOption" (trigger)="selectCustom()">{{search}}</rlPopoutItem>
+			</rlPopoutList>
+		</div>
 	</div>
 	<div class="collapsed" [hidden]="!collapsed">
 		<span>{{getDisplayName(value)}}</span>

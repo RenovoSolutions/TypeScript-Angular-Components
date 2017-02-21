@@ -1,6 +1,7 @@
 <li class="rl-select-option"
 	[class.focused]="focused"
 	(mouseover)="focus()"
-	(mouseleave)="blur()">
+	(mouseleave)="blur()"
+	(click)="select()">
 	<ng-content></ng-content>
 </li>
