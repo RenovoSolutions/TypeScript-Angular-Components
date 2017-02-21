@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef, ElementRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, Optional, OnInit, OnChanges, SimpleChange, ViewChild, ContentChild, TemplateRef, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { Observable, BehaviorSubject, Subject } from 'rxjs';
 import { find, filter, isEqual, cloneDeep } from 'lodash';
 
@@ -64,6 +64,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 
 	transformService: __transform.ITransformService;
 	searchUtility: __search.ISearchUtility;
+	changeDetector: ChangeDetectorRef;
 
 	get visibleItems$(): Observable<T[]> {
 		return this._visibleItems.asObservable();
@@ -83,10 +84,12 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			, object: __object.ObjectUtility
 			, array: __array.ArrayUtility
 			, guid: __guid.GuidService
-			, searchService: __search.SearchUtility) {
+			, searchService: __search.SearchUtility
+			, changeDetector: ChangeDetectorRef) {
 		super(rlForm, componentValidator, object, array, guid);
 		this.transformService = transformService;
 		this.searchUtility = searchService;
+		this.changeDetector = changeDetector;
 		this.inputType = 'typeahead';
 		this.search = '';
 		this._visibleItems = new BehaviorSubject(null);
@@ -144,6 +147,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 				if (!isEqual(data, this.cacheDisplayList)) {
 					this.list.open();
 					this.cacheDisplayList = cloneDeep(data);
+					this.changeDetector.detectChanges();
 					return this._visibleItems.next(this.cacheDisplayList);
 				}
 			});
