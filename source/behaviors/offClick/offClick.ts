@@ -15,7 +15,17 @@ export interface IOffClickEvent extends MouseEvent {
 })
 export class OffClickDirective implements OnInit, OnDestroy {
 	@Output('offClick') offClick: EventEmitter<any> = new EventEmitter();
-	@Input('offClickActive') active: boolean = true;
+
+	private _active: boolean = true;
+	@Input('offClickActive') set active(value: boolean)
+	{
+		if (value) {
+			this.addListener();
+		} else {
+			this.removeListener();
+		}
+		this._active = value;
+	}
 
 	listener: { ($event: MouseEvent): void } = ($event: IOffClickEvent) => {
 		if ($event.rlEventIdentifier !== this.identifier) {
@@ -30,20 +40,10 @@ export class OffClickDirective implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		if (this.active) {
+		if (this._active) {
 			setTimeout(() => {
 				this.addListener();
 			});
-		}
-	}
-
-	ngOnChanges(changes: SimpleChanges): void {
-		if (changes['active']) {
-			if (changes['active'].currentValue) {
-				this.addListener();
-			} else {
-				this.removeListener();
-			}
 		}
 	}
 
