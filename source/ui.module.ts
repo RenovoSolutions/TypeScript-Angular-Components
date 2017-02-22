@@ -9,6 +9,7 @@ import { ButtonModule } from'./components/buttons/button.module';
 import { CARD_CONTAINER_DIRECTIVES } from'./components/cardContainer/index';
 import { CommaListComponent } from'./components/commaList/commaList';
 import { DIALOG_DIRECTIVES } from'./components/dialog/index';
+import { RecluseFormComponent } from'./components/form/RecluseForm';
 import { FormComponent } from'./components/form/form';
 import { INPUT_DIRECTIVES } from'./components/inputs/index';
 import { MultiStepIndicatorComponent } from'./components/multiStepIndicator/multiStepIndicator';
@@ -41,6 +42,7 @@ export const componentsList: any[] = [
 	CARD_CONTAINER_DIRECTIVES,
 	CommaListComponent,
 	DIALOG_DIRECTIVES,
+	RecluseFormComponent,
 	FormComponent,
 	INPUT_DIRECTIVES,
 	MultiStepIndicatorComponent,
