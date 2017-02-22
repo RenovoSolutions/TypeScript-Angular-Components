@@ -38,7 +38,8 @@ describe('TypeaheadComponent', () => {
 			validate: sinon.spy(() => Observable.empty()),
 		};
 
-		typeahead = new TypeaheadComponent(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility);
+		const changeDetectorMock = { detectChanges: sinon.spy() };
+		typeahead = new TypeaheadComponent(__transform.transform, null, validator, __object.objectUtility, __array.arrayUtility, __guid.guid, __search.searchUtility, <any>changeDetectorMock);
 
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;

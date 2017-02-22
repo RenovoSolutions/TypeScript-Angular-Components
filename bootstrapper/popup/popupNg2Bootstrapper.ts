@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { IDialogClosingHandler } from '../../source/components/dialog/dialogRoot.service';
 
@@ -9,6 +10,8 @@ import { IDialogClosingHandler } from '../../source/components/dialog/dialogRoot
 export class PopupBootstrapper {
 	content: string = 'Some content';
 	onClosing: IDialogClosingHandler;
+	options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+	getOptions = () => Observable.of(this.options);
 
 	constructor() {
 		this.onClosing = () => {
@@ -28,4 +31,6 @@ export class PopupBootstrapper {
 	save = (data) => {
 		console.log(data);
 	}
+
+	create = x => x;
 }

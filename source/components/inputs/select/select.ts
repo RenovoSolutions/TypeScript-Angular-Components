@@ -31,7 +31,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 	@Input() externalTemplate: TemplateRef<any>;
 
 	@ViewChild(BusyComponent) busy: BusyComponent;
-	@ViewChild(PopoutListComponent) list: PopoutListComponent<T>;
 	@ContentChild(TemplateRef) template: TemplateRef<any>;
 
 	private transformService: __transform.ITransformService;
@@ -56,7 +55,6 @@ export class SelectComponent<T> extends ValidatedInputComponent<T> implements Af
 		if (value != this.value) {
 			this.setValue(value);
 		}
-		this.list.close();
 		this.hideLabelIfEmpty();
 	}
 

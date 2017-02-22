@@ -7,15 +7,6 @@ describe('PopoutListService', () => {
 		listService = new PopoutListService<string>();
 	});
 
-	it('should close the list on a select event', (): void => {
-		const closeSpy = sinon.spy();
-		listService.close = closeSpy;
-
-		listService.select.next('value');
-
-		sinon.assert.calledOnce(closeSpy);
-	});
-
 	describe('showOptions', (): void => {
 		it('should close the options', (): void => {
 			listService._showOptions = true;
@@ -167,6 +158,15 @@ describe('PopoutListService', () => {
 			listService.selectCurrent();
 
 			sinon.assert.notCalled(emitSpy);
+		});
+
+		it('should close the list on a selection', (): void => {
+			const closeSpy = sinon.spy();
+			listService.close = closeSpy;
+
+			listService.selectCurrent();
+
+			sinon.assert.calledOnce(closeSpy);
 		});
 	});
 });
