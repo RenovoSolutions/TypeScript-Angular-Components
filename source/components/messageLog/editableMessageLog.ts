@@ -87,7 +87,7 @@ export function editableMessageLog(): angular.IDirective {
 		scope: {},
 		bindToController: {
 			service: '=',
-			pageSize: '=',
+			pageSize: '=?',
 			currentUser: '=?',
 			canDelete: '=?',
 		},
