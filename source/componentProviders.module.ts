@@ -15,6 +15,7 @@ import { MergeSort } from './components/cardContainer/sorts/mergeSort/mergeSort.
 
 import { AsyncHelper } from './services/async/async.service';
 import { AutosaveActionService } from './services/autosaveAction/autosaveAction.service';
+import { DOCUMENT_PROVIDER } from './services/document/document.provider';
 import { DocumentService } from './services/documentWrapper/documentWrapper.service';
 import { FormService } from './services/form/form.service';
 import { JQUERY_PROVIDER } from './services/jquery/jquery.provider';
@@ -66,8 +67,9 @@ const defaultThemeNg1: FactoryProvider = {
 		DefaultTheme,
 		defaultThemeNg1,
 		DialogRootService,
-		FormService,
+		DOCUMENT_PROVIDER,
 		DocumentService,
+		FormService,
 		BreakpointService,
 		VisibleBreakpointService,
 		JQUERY_PROVIDER,

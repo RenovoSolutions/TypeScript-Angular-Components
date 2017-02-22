@@ -20,10 +20,6 @@ export class PopoutListService<T> {
 	customItems: QueryList<PopoutItemComponent<T>>;
 	listItems: QueryList<PopoutItemComponent<T>>;
 
-	constructor() {
-		this.select.subscribe(() => this.close());
-	}
-
 	open(): void {
 		this._showOptions = true;
 	}
@@ -78,6 +74,7 @@ export class PopoutListService<T> {
 			this.current.trigger.emit(null);
 			this.focusIndex = null;
 		}
+		this.close();
 	}
 
 	get current(): PopoutItemComponent<T> {

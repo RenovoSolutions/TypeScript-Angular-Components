@@ -31,4 +31,6 @@ export class PopupBootstrapper {
 	save = (data) => {
 		console.log(data);
 	}
+
+	create = x => x;
 }

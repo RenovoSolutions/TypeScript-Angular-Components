@@ -26,4 +26,8 @@ export class PopoutItemComponent<T> {
 	blur(): void {
 		this.list.blur();
 	}
+
+	select(): void {
+		this.list.selectCurrent();
+	}
 }
