@@ -9,16 +9,22 @@ interface ICardContainerMock {
 	setSelected: Sinon.SinonSpy;
 }
 
+interface IGuidServiceMock {
+	random: Sinon.SinonSpy;
+}
+
 describe('SelectableCardComponent', () => {
 	let card: SelectableCardComponent<any>;
 	let cardContainer: ICardContainerMock;
+	let mockGuidService: IGuidServiceMock;
 
 	beforeEach(() => {
 		cardContainer = {
 			setSelected: sinon.spy(),
 		};
+		mockGuidService = { random: sinon.spy() };
 
-		card = new SelectableCardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), null, <any>cardContainer);
+		card = new SelectableCardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), mockGuidService, null, <any>cardContainer);
 		const randomId = 11;
 		card.selection = <any>{ id: randomId };
 	});

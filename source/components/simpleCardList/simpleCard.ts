@@ -36,12 +36,14 @@ export class SimpleCardComponent<T> extends FormComponent implements OnInit {
 	alternatingClass: string = '';
 
 	constructor(notification: __notification.NotificationService
-			, asyncHelper: AsyncHelper
-			, formService: FormService
-			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Optional() nullInjectionConflictsWithCardParameter: AsyncHelper
-			, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
-		super(notification, asyncHelper, formService, parentForm);
+		, asyncHelper: AsyncHelper
+		, formService: FormService
+		, guidService: services.guid.GuidService
+		, @Optional() @SkipSelf() parentForm: FormComponent
+		, @Optional() nullInjectionConflictsWithCardParameter: AsyncHelper
+		, @Optional() @Inject(forwardRef(() => SimpleCardListComponent)) list: SimpleCardListComponent<T>) {
+
+		super(notification, asyncHelper, formService, guidService, parentForm);
 		this.list = list || this.emptyList();
 	}
 

@@ -48,11 +48,13 @@ export class CardComponent<T> extends FormComponent {
 	cardContainer: CardContainerComponent<T>;
 
 	constructor(notification: __notification.NotificationService
-			, asyncHelper: AsyncHelper
-			, formService: FormService
-			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, asyncHelper, formService, parentForm);
+		, asyncHelper: AsyncHelper
+		, formService: FormService
+		, guidService: services.guid.GuidService
+		, @Optional() @SkipSelf() parentForm: FormComponent
+		, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
+
+		super(notification, asyncHelper, formService, guidService, parentForm);
 		this.cardContainer = cardContainer;
 		this.showContent$ = new BehaviorSubject(false);
 	}
