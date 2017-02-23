@@ -28,7 +28,7 @@ describe('FormComponent', (): void => {
 	beforeEach((): void => {
 		notification = { warning: sinon.spy() };
 		formService = {};
-		mockGuidService = { random: sinon.spy() };
+		mockGuidService = { random: sinon.spy(() => { return '2979637a-1fc1-4c5e-bf9d-a89154342aba'}) };
 
 		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, mockGuidService, null);
 		form.form = <any>{
@@ -62,7 +62,7 @@ describe('FormComponent', (): void => {
 		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, mockGuidService, parentForm);
 
 		sinon.assert.calledOnce(addControlSpy);
-		sinon.assert.calledWith(addControlSpy, '', form.form);
+		sinon.assert.calledWith(addControlSpy, `form-${mockGuidService.random()}`, form.form);
 	});
 
 	it('should reset the form', () => {

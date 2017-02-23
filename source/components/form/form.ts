@@ -78,7 +78,7 @@ export class FormComponent {
 	}
 
 	validate(): boolean {
-		return !this.form.invalid;
+		return this.form.valid;
 	}
 
 	reset(): void {
