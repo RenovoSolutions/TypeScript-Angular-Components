@@ -6,13 +6,19 @@ import { DialogRootService, IDialogClosingHandler } from './dialogRoot.service';
 
 import { AsyncHelper } from '../../services/async/async.service';
 
+interface IGuidServiceMock {
+	random: Sinon.SinonSpy;
+}
+
 describe('DialogComponent', (): void => {
 	let dialog: DialogComponent;
 	let dialogRoot: DialogRootService;
+	let mockGuidService: IGuidServiceMock;
 
 	beforeEach((): void => {
 		dialogRoot = new DialogRootService();
-		dialog = new DialogComponent(<any>{}, new AsyncHelper(), null, dialogRoot);
+		mockGuidService = { random: sinon.spy() };
+		dialog = new DialogComponent(<any>{}, new AsyncHelper(), null, dialogRoot, mockGuidService);
 	});
 
 	it('should open a dialog on the root with the current dialog\'s context', (): void => {

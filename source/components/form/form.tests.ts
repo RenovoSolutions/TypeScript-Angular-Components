@@ -15,16 +15,22 @@ interface IFormServiceMock {
 	getAggregateError?: Sinon.SinonSpy;
 }
 
+interface IGuidServiceMock {
+	random: Sinon.SinonSpy;
+}
+
 describe('FormComponent', (): void => {
 	let form: FormComponent;
 	let notification: INotificationMock;
 	let formService: IFormServiceMock;
+	let mockGuidService: IGuidServiceMock;
 
 	beforeEach((): void => {
 		notification = { warning: sinon.spy() };
 		formService = {};
+		mockGuidService = { random: sinon.spy(() => { return '2979637a-1fc1-4c5e-bf9d-a89154342aba'}) };
 
-		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, null);
+		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, mockGuidService, null);
 		form.form = <any>{
 			markAsPristine: sinon.spy(),
 		};
@@ -53,10 +59,10 @@ describe('FormComponent', (): void => {
 				addControl: addControlSpy,
 			},
 		};
-		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, parentForm);
+		form = new FormComponent(<any>notification, new AsyncHelper(), <any>formService, mockGuidService, parentForm);
 
 		sinon.assert.calledOnce(addControlSpy);
-		sinon.assert.calledWith(addControlSpy, '', form.form);
+		sinon.assert.calledWith(addControlSpy, `form-${mockGuidService.random()}`, form.form);
 	});
 
 	it('should reset the form', () => {

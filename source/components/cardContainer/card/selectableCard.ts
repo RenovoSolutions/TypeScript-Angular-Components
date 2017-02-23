@@ -36,11 +36,12 @@ export class SelectableCardComponent<T> extends CardComponent<T> {
 	}
 
 	constructor(notification: __notification.NotificationService
-			, asyncHelper: AsyncHelper
-			, formService: FormService
-			, @Optional() @SkipSelf() parentForm: FormComponent
-			, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
-		super(notification, asyncHelper, formService, parentForm, cardContainer);
+		, asyncHelper: AsyncHelper
+		, formService: FormService
+		, guidService: services.guid.GuidService
+		, @Optional() @SkipSelf() parentForm: FormComponent
+		, @Inject(forwardRef(() => CardContainerComponent)) cardContainer: CardContainerComponent<T>) {
+		super(notification, asyncHelper, formService, guidService, parentForm, cardContainer);
 	}
 
 	setSelected(value: boolean): void {

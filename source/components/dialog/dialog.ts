@@ -33,10 +33,12 @@ export class DialogComponent extends FormComponent {
 	dialogRoot: DialogRootService;
 
 	constructor(notification: __notification.NotificationService
-			, asyncHelper: AsyncHelper
-			, formService: FormService
-			, dialogRoot: DialogRootService) {
-		super(notification, asyncHelper, formService, null);
+		, asyncHelper: AsyncHelper
+		, formService: FormService
+		, dialogRoot: DialogRootService
+		, guidService: services.guid.GuidService) {
+
+		super(notification, asyncHelper, formService, guidService, null);
 		this.dialogRoot = dialogRoot;
 	}
 

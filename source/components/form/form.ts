@@ -39,9 +39,11 @@ export class FormComponent {
 	}
 
 	constructor(notification: __notification.NotificationService
-			, asyncHelper: AsyncHelper
-			, formService: FormService
-			, @Optional() @SkipSelf() parentForm: FormComponent) {
+		, asyncHelper: AsyncHelper
+		, formService: FormService
+		, guidService: services.guid.GuidService
+		, @Optional() @SkipSelf() parentForm: FormComponent) {
+
 		this.notification = notification;
 		this.asyncHelper = asyncHelper;
 		this.formService = formService;
@@ -51,7 +53,7 @@ export class FormComponent {
 		}
 
 		if (parentForm) {
-			parentForm.form.addControl('', this.form);
+			parentForm.form.addControl(`form-${guidService.random()}`, this.form);
 		}
 	}
 

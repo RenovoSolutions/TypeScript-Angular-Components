@@ -14,9 +14,14 @@ interface ICardContainerMock {
 	columnTemplates?: any;
 }
 
+interface IGuidServiceMock {
+	random: Sinon.SinonSpy;
+}
+
 describe('CardComponent', () => {
 	let card: CardComponent<any>;
 	let cardContainer: ICardContainerMock;
+	let mockGuidService: IGuidServiceMock;
 
 	beforeEach(() => {
 		cardContainer = {
@@ -25,8 +30,9 @@ describe('CardComponent', () => {
 				remove: sinon.spy(),
 			},
 		};
+		mockGuidService = { random: sinon.spy() };
 
-		card = new CardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), null, <any>cardContainer);
+		card = new CardComponent(new __notification.NotificationService(<any>{}, <any>{}), null, new FormService(), mockGuidService, null, <any>cardContainer);
 	});
 
 	it('should pass the item to the save handler', (): void => {
