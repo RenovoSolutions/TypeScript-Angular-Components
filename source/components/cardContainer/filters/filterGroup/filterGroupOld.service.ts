@@ -30,6 +30,8 @@ export interface IFilterGroupOld extends filters.IFilterWithCounts, filters.ISer
 	activeOption: IFilterOptionOld;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
+	setActiveOptionByValue(value: number): void;
+	setActiveOptionByLabel(label: string): void;
 }
 
 export class FilterGroupOld extends filters.SerializableFilter<any> implements IFilterGroupOld {
@@ -104,6 +106,28 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 		if (index >= 0 && index < this.options.length) {
 			this.activeOption = this.options[index];
 		}
+	}
+
+	setActiveOptionByValue(value: number): void {
+		_.each(this.options, (option: IFilterOptionOld): void => {
+			if (option.value === value) {
+				if (!option.active) {
+					this.activeOption = option;
+				}
+				return;
+			}
+		});
+	}
+
+	setActiveOptionByLabel(label: string): void {
+		_.each(this.options, (option: IFilterOptionOld): void => {
+			if (option.label === label) {
+				if (!option.active) {
+					this.activeOption = option;
+				}
+				return;
+			}
+		});
 	}
 
 	setOptionCounts(counts: number[]): void {
