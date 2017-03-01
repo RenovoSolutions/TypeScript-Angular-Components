@@ -15,13 +15,13 @@ import 'angular-mocks';
 import { Subject } from 'rxjs';
 
 interface IListMock {
-	openCard: Sinon.SinonSpy;
-	registerCard: Sinon.SinonSpy;
+	openCard: sinon.SinonSpy;
+	registerCard: sinon.SinonSpy;
 	alwaysOpenChanges: Subject<boolean>;
 }
 
 interface IAutosaveBehaviorMock {
-	autosave: Sinon.SinonSpy;
+	autosave: sinon.SinonSpy;
 }
 
 describe('SimpleCardController', () => {
@@ -101,7 +101,7 @@ describe('SimpleCardController', () => {
 			card.toggleContent();
 
 			sinon.assert.calledOnce(list.openCard);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>card.onOpen);
+			sinon.assert.calledOnce(<sinon.SinonSpy>card.onOpen);
 			expect(card.showContent).to.be.true;
 		});
 
@@ -111,7 +111,7 @@ describe('SimpleCardController', () => {
 			card.toggleContent();
 
 			sinon.assert.calledOnce(list.openCard);
-			sinon.assert.notCalled(<Sinon.SinonSpy>card.onOpen);
+			sinon.assert.notCalled(<sinon.SinonSpy>card.onOpen);
 			expect(card.showContent).to.be.false;
 		});
 
@@ -121,7 +121,7 @@ describe('SimpleCardController', () => {
 
 			card.toggleContent();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>card.onOpen);
+			sinon.assert.calledOnce(<sinon.SinonSpy>card.onOpen);
 			expect(card.showContent).to.be.true;
 		});
 	});

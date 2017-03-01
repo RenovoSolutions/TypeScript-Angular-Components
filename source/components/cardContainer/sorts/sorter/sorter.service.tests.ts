@@ -67,9 +67,9 @@ describe('Sorter', () => {
 			let result: ITestObject[] = sorter.sort(data, sort);
 			expect(result).to.equal(data);
 
-			let sortSpy: Sinon.SinonSpy = <Sinon.SinonSpy>mergeSort.sort;
+			let sortSpy: sinon.SinonSpy = <sinon.SinonSpy>mergeSort.sort;
 			sinon.assert.calledOnce(sortSpy);
-			let call: Sinon.SinonSpyCall = sortSpy.firstCall;
+			let call: sinon.SinonSpyCall = sortSpy.firstCall;
 			expect(call.args[0]).to.equal(data);
 
 			expect(call.args[1](object2, object1)).to.equal(types.CompareResult.greater);
@@ -125,7 +125,7 @@ describe('Sorter', () => {
 			let result: ITestObject[] = sorter.sort(data, sorts);
 			expect(result).to.equal(data);
 
-			let sortSpy: Sinon.SinonSpy = <Sinon.SinonSpy>mergeSort.sort;
+			let sortSpy: sinon.SinonSpy = <sinon.SinonSpy>mergeSort.sort;
 			sinon.assert.calledTwice(sortSpy);
 			expect(sortSpy.firstCall.args[1](object1, object2)).to.equal(types.CompareResult.less);
 			expect(sortSpy.secondCall.args[1](object1, object2)).to.equal(types.CompareResult.less);

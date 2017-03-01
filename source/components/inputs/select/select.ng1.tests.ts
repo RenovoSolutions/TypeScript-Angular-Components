@@ -7,7 +7,7 @@ import __test = services.test;
 import { controllerName, SelectController, moduleName } from './select.ng1';
 
 interface INgModelMock {
-	$setViewValue: Sinon.SinonSpy;
+	$setViewValue: sinon.SinonSpy;
 	$viewValue?: ITestOption;
 }
 
@@ -20,7 +20,7 @@ describe('SelectController', () => {
 	let dropdown: SelectController;
 	let ngModel: INgModelMock;
 	let options: ITestOption[];
-	let selectSpy: Sinon.SinonSpy;
+	let selectSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -70,7 +70,7 @@ describe('SelectController', () => {
 	});
 
 	describe('getOptions', (): void => {
-		let getOptions: Sinon.SinonSpy;
+		let getOptions: sinon.SinonSpy;
 
 		beforeEach((): void => {
 			let $q: angular.IQService = __test.angularFixture.inject('$q').$q;

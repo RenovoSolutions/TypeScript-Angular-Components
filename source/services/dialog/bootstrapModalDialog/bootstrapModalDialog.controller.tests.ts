@@ -7,13 +7,13 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface IBootstrapModalDialogMock {
-	modalClosing: Sinon.SinonSpy;
+	modalClosing: sinon.SinonSpy;
 }
 
 describe('BootsrapModalDialogController', () => {
 	let scope: angular.IScope;
 	let dialog: any;
-	let $controller: Sinon.SinonSpy;
+	let $controller: sinon.SinonSpy;
 	let bootstrapModalDialog: IBootstrapModalDialogMock;
 
 	beforeEach(() => {

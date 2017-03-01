@@ -29,8 +29,8 @@ describe('ClientServerDataSource', () => {
 	let dataService: IDataServiceMock;
 	let searchFilter: __genericSearchFilter.IGenericSearchFilter;
 	let source: ClientServerDataSource<number>;
-	let reloadedSpy: Sinon.SinonSpy;
-	let changedSpy: Sinon.SinonSpy;
+	let reloadedSpy: sinon.SinonSpy;
+	let changedSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		dataSourceProcessor = new DataSourceProcessorOld(__object.objectUtility, new Sorter(new MergeSort(), __transform.transform));
@@ -64,14 +64,14 @@ describe('ClientServerDataSource', () => {
 
 			mock.flushAll(dataService);
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
 		it('should make a request to reload the data when the search text changes', rlFakeAsync((): void => {
 			searchFilter.searchText = 'search';
 			source.refresh();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataService.get);
 
 			mock.flushAll(dataService)
 
@@ -86,7 +86,7 @@ describe('ClientServerDataSource', () => {
 			searchFilter.searchText = 'search 2';
 			source.refresh();
 
-			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.calledTwice(<sinon.SinonSpy>dataService.get);
 
 			mock.flushAll(dataService);
 
@@ -98,7 +98,7 @@ describe('ClientServerDataSource', () => {
 			searchFilter.searchText = '';
 			source.refresh();
 
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataService.get);
 
 			expect(source.dataSet).to.be.null;
 		});
@@ -107,7 +107,7 @@ describe('ClientServerDataSource', () => {
 			searchFilter.searchText = 'se';
 			source.refresh();
 
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataService.get);
 
 			expect(source.dataSet).to.be.null;
 		});
@@ -115,7 +115,7 @@ describe('ClientServerDataSource', () => {
 
 	describe('filter model', (): void => {
 		let filterModel: ITestFilterModel;
-		let validateSpy: Sinon.SinonSpy;
+		let validateSpy: sinon.SinonSpy;
 
 		beforeEach((): void => {
 			validateSpy = sinon.spy((model: ITestFilterModel): boolean => {
@@ -139,7 +139,7 @@ describe('ClientServerDataSource', () => {
 			filterModel = { prop: '123' };
 			source.refresh();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataService.get);
 
 			mock.flushAll(dataService);
 
@@ -154,7 +154,7 @@ describe('ClientServerDataSource', () => {
 			filterModel.prop = '456';
 			source.refresh();
 
-			sinon.assert.calledTwice(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.calledTwice(<sinon.SinonSpy>dataService.get);
 
 			mock.flushAll(dataService);
 
@@ -166,7 +166,7 @@ describe('ClientServerDataSource', () => {
 			filterModel = { prop: null };
 			source.refresh();
 
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataService.get);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataService.get);
 
 			expect(source.dataSet).to.be.null;
 		});

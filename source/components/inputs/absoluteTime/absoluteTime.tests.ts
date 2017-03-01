@@ -11,7 +11,7 @@ import { AbsoluteTimeComponent } from './absoluteTime';
 
 describe('AbsoluteTimeComponent', () => {
 	let time: AbsoluteTimeComponent;
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 
 	beforeEach(() => {
 		const validator: any = {

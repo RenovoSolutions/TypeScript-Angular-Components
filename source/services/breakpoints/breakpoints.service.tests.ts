@@ -38,7 +38,7 @@ describe('breakpoints', () => {
 	});
 
 	it('should signal subscribed listeners when the breakpoint changes', (): void => {
-		let breakpointChangeSpy: Sinon.SinonSpy = sinon.spy();
+		let breakpointChangeSpy: sinon.SinonSpy = sinon.spy();
 
 		visibleBreakpoint = sm;
 

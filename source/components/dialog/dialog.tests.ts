@@ -7,7 +7,7 @@ import { DialogRootService, IDialogClosingHandler } from './dialogRoot.service';
 import { AsyncHelper } from '../../services/async/async.service';
 
 interface IGuidServiceMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 describe('DialogComponent', (): void => {
@@ -66,8 +66,8 @@ describe('DialogComponent', (): void => {
 
 	describe('submitAndClose', (): void => {
 		let waitStream: Subject<boolean>;
-		let submitAndWaitSpy: Sinon.SinonSpy;
-		let closeSpy: Sinon.SinonSpy;
+		let submitAndWaitSpy: sinon.SinonSpy;
+		let closeSpy: sinon.SinonSpy;
 
 		beforeEach(() => {
 			waitStream = new Subject<boolean>();

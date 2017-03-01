@@ -14,7 +14,7 @@ import test = services.test;
 interface INgModelMock {
 	$viewValue: boolean;
 	$modelValue: boolean;
-	$setViewValue: Sinon.SinonSpy;
+	$setViewValue: sinon.SinonSpy;
 }
 
 describe('ButtonToggleController', () => {
@@ -42,7 +42,7 @@ describe('ButtonToggleController', () => {
 	it('should call toggle on the scope if a toggle function is specified', (): void => {
 		buildController();
 
-		let toggleSpy: Sinon.SinonSpy = sinon.spy();
+		let toggleSpy: sinon.SinonSpy = sinon.spy();
 		buttonToggle.onToggle = toggleSpy;
 
 		buttonToggle.clicked();

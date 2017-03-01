@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { SelectComponent } from './select';
 
 interface ITransformMock {
-	getValue: Sinon.SinonSpy;
+	getValue: sinon.SinonSpy;
 }
 
 interface ITestOption {
@@ -11,13 +11,13 @@ interface ITestOption {
 }
 
 interface IBusyMock {
-	trigger: Sinon.SinonSpy;
+	trigger: sinon.SinonSpy;
 }
 
 describe('SelectComponent', () => {
 	let dropdown: SelectComponent<ITestOption>;
 	let options: ITestOption[];
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 	let transformService: ITransformMock;
 	let busy: IBusyMock;
 

@@ -15,7 +15,7 @@ interface ITestObject {
 
 interface IFilterMock {
 	filter(value: number): boolean;
-	updateOptionCounts?: Sinon.SinonSpy;
+	updateOptionCounts?: sinon.SinonSpy;
 	type?: string;
 }
 

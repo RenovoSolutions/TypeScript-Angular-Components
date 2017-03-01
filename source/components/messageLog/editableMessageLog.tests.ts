@@ -12,7 +12,7 @@ import 'angular-mocks';
 
 
 interface IMockMessageLogService {
-	addMessage: Sinon.SinonSpy;
+	addMessage: sinon.SinonSpy;
 	busy: boolean;
 }
 

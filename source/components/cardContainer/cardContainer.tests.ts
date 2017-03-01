@@ -18,22 +18,22 @@ interface IDataSourceMock {
 	rawDataSet$: BehaviorSubject<any>;
 	dataSet$: BehaviorSubject<any>;
 	filteredDataSet$: BehaviorSubject<any>;
-	init: Sinon.SinonSpy;
+	init: sinon.SinonSpy;
 }
 
 interface IDataPagerMock {
 	pageSize$: BehaviorSubject<number>;
 	pageNumber$: BehaviorSubject<number>;
-	filter: Sinon.SinonSpy;
+	filter: sinon.SinonSpy;
 }
 
 interface IFilterMock {
-	filter: Sinon.SinonSpy;
+	filter: sinon.SinonSpy;
 }
 
 interface SortManagerMock {
-	updateSorts: Sinon.SinonSpy;
-	setup: Sinon.SinonSpy;
+	updateSorts: sinon.SinonSpy;
+	setup: sinon.SinonSpy;
 }
 
 describe('CardContainerComponent', () => {
@@ -138,7 +138,7 @@ describe('CardContainerComponent', () => {
 
 			okayToOpen = cardContainer.openCard();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>card.close);
+			sinon.assert.calledOnce(<sinon.SinonSpy>card.close);
 
 			expect(okayToOpen).to.be.true;
 		});

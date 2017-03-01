@@ -9,13 +9,13 @@ import { FormService } from '../../../services/form/form.service';
 import { CardComponent } from './card';
 
 interface ICardContainerMock {
-	openCard: Sinon.SinonSpy;
+	openCard: sinon.SinonSpy;
 	dataSource: any;
 	columnTemplates?: any;
 }
 
 interface IGuidServiceMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 describe('CardComponent', () => {
@@ -53,8 +53,8 @@ describe('CardComponent', () => {
 
 		card.remove();
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>cardContainer.dataSource.remove);
-		sinon.assert.calledWith(<Sinon.SinonSpy>cardContainer.dataSource.remove, item);
+		sinon.assert.calledOnce(<sinon.SinonSpy>cardContainer.dataSource.remove);
+		sinon.assert.calledWith(<sinon.SinonSpy>cardContainer.dataSource.remove, item);
 	});
 
 	it('should get a matching column template from the card container', (): void => {

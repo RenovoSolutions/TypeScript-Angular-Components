@@ -20,7 +20,7 @@ interface ITestObject {
 describe('TypeaheadListComponent', () => {
 	let typeaheadList: TypeaheadListComponent<ITestObject>;
 	let items: ITestObject[];
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 	let getItemsMock: IMockedRequest<ITestObject[]>;
 
 	beforeEach(() => {
@@ -108,7 +108,7 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
-			const onAddSpy: Sinon.SinonSpy = sinon.spy();
+			const onAddSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.onAdd = onAddSpy;
 
 			typeaheadList.add(items[0]);
@@ -152,7 +152,7 @@ describe('TypeaheadListComponent', () => {
 			typeaheadList.value = list;
 			typeaheadList.searchItems('2').subscribe(() => null);
 			getItemsMock.flush();
-			const onRemoveSpy: Sinon.SinonSpy = sinon.spy();
+			const onRemoveSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.onRemove = onRemoveSpy;
 
 			typeaheadList.remove(list[0]);

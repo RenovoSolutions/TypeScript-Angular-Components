@@ -4,7 +4,7 @@ import { CheckboxComponent } from './checkbox';
 
 describe('CheckboxComponent', () => {
 	let checkbox: CheckboxComponent;
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 
 	beforeEach(() => {
 		checkbox = new CheckboxComponent(<any>{}, null, null, null);

@@ -2,15 +2,15 @@ import { Observable } from 'rxjs';
 import { ButtonSubmitComponent } from './buttonSubmit';
 
 interface IMockForm {
-	submitAndWait: Sinon.SinonSpy;
+	submitAndWait: sinon.SinonSpy;
 }
 
 interface IMockBusy {
-	waitOn: Sinon.SinonSpy;
+	waitOn: sinon.SinonSpy;
 }
 
 interface IMockExceptionHandler {
-	call: Sinon.SinonSpy;
+	call: sinon.SinonSpy;
 }
 
 describe('ButtonSubmitComponent', (): void => {

@@ -5,8 +5,8 @@ import { MultiStepIndicatorComponent, IStep, IConfiguredStep } from './multiStep
 
 interface IRouterMock {
 	navigate: IMockedPromise<void>;
-	isActive: Sinon.SinonSpy;
-	createUrlTree: Sinon.SinonSpy;
+	isActive: sinon.SinonSpy;
+	createUrlTree: sinon.SinonSpy;
 }
 
 describe('MultiStepIndicatorComponent', () => {
@@ -85,8 +85,8 @@ describe('MultiStepIndicatorComponent', () => {
 
 		(<IMockedPromise<any>>step1.onClick).flush();
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step1.onClick);
-		sinon.assert.notCalled(<Sinon.SinonSpy>step2.onClick);
+		sinon.assert.calledOnce(<sinon.SinonSpy>step1.onClick);
+		sinon.assert.notCalled(<sinon.SinonSpy>step2.onClick);
 	}));
 
 	it('should clear the spinner when the promise resolves', rlFakeAsync((): void => {
@@ -101,7 +101,7 @@ describe('MultiStepIndicatorComponent', () => {
 
 		(<IMockedPromise<any>>step.onClick).flush();
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step.onClick);
+		sinon.assert.calledOnce(<sinon.SinonSpy>step.onClick);
 		expect((<IConfiguredStep>step).isLoading).to.be.false;
 	}));
 
@@ -114,7 +114,7 @@ describe('MultiStepIndicatorComponent', () => {
 
 		expect((<IConfiguredStep>step1).getCompleted()).to.be.true;
 		expect((<IConfiguredStep>step2).getCompleted()).to.be.true;
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isCompleted);
+		sinon.assert.calledOnce(<sinon.SinonSpy>step2.isCompleted);
 	});
 
 	it('should allow isValid to be supplied as a bool or a function', (): void => {
@@ -126,6 +126,6 @@ describe('MultiStepIndicatorComponent', () => {
 
 		expect((<IConfiguredStep>step1).getValid()).to.be.true;
 		expect((<IConfiguredStep>step2).getValid()).to.be.true;
-		sinon.assert.calledOnce(<Sinon.SinonSpy>step2.isValid);
+		sinon.assert.calledOnce(<sinon.SinonSpy>step2.isValid);
 	});
 });

@@ -6,13 +6,13 @@ import { AutosaveDirective, DEFAULT_AUTOSAVE_DEBOUNCE } from './autosave';
 interface IFormMock {
 	dirty: boolean;
 	form: {	statusChanges: Subject<void> };
-	validate: Sinon.SinonSpy;
-	submitAndWait: Sinon.SinonSpy;
-	saveForm: Sinon.SinonSpy;
+	validate: sinon.SinonSpy;
+	submitAndWait: sinon.SinonSpy;
+	saveForm: sinon.SinonSpy;
 }
 
 interface IAutosaveActionMock {
-	waitOn: Sinon.SinonSpy;
+	waitOn: sinon.SinonSpy;
 }
 
 describe('AutosaveDirective', () => {

@@ -5,7 +5,7 @@ import { FilterGroup } from './filterGroup.service';
 interface IFilterOptionMock {
 	label?: string;
 	type?: string;
-	predicate?: Sinon.SinonSpy;
+	predicate?: sinon.SinonSpy;
 	count?: number;
 	active?: boolean;
 	serialize?: { (): number };

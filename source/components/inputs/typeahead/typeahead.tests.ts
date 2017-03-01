@@ -13,7 +13,7 @@ import { ComponentValidator } from '../../../services/componentValidator/compone
 import { TypeaheadComponent, DEFAULT_SERVER_SEARCH_DEBOUNCE } from './typeahead';
 
 interface ITransformMock {
-	getValue: Sinon.SinonSpy;
+	getValue: sinon.SinonSpy;
 }
 
 interface ITestOption {
@@ -21,15 +21,15 @@ interface ITestOption {
 }
 
 interface IBusyMock {
-	waitOn: Sinon.SinonSpy;
-	waitOnObservableNext: Sinon.SinonSpy;
-	waitOnObservableCompletion: Sinon.SinonSpy;
-	setBusy: Sinon.SinonSpy;
+	waitOn: sinon.SinonSpy;
+	waitOnObservableNext: sinon.SinonSpy;
+	waitOnObservableCompletion: sinon.SinonSpy;
+	setBusy: sinon.SinonSpy;
 }
 
 describe('TypeaheadComponent', () => {
 	let typeahead: TypeaheadComponent<any>;
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 	let busy: IBusyMock;
 
 	beforeEach(() => {
@@ -203,7 +203,7 @@ describe('TypeaheadComponent', () => {
 		});
 
 		it('should collapse if allowCollapse is turned on', rlFakeAsync((): void => {
-			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: sinon.SinonSpy = sinon.spy();
 			typeahead.selector = <any>{ emit: selectSpy };
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
@@ -219,7 +219,7 @@ describe('TypeaheadComponent', () => {
 		}));
 
 		it('should call the select function without collapsing', rlFakeAsync((): void => {
-			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: sinon.SinonSpy = sinon.spy();
 			typeahead.clientSearch = true;
 			typeahead.selector = <any>{ emit: selectSpy };
 			initialLoad();
@@ -233,7 +233,7 @@ describe('TypeaheadComponent', () => {
 		}));
 
 		it('should call create with the search text if the search option is selected', rlFakeAsync((): void => {
-			let createSpy: Sinon.SinonSpy = sinon.spy(search => { return { value: search }; });
+			let createSpy: sinon.SinonSpy = sinon.spy(search => { return { value: search }; });
 			typeahead.clientSearch = true;
 			typeahead.allowCollapse = true;
 			typeahead.create = createSpy;

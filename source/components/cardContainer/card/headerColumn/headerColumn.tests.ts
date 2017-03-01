@@ -1,11 +1,11 @@
 import { CardHeaderColumnComponent } from './headerColumn';
 
 interface ITransformMock {
-	getValue: Sinon.SinonSpy;
+	getValue: sinon.SinonSpy;
 }
 
 interface ISizeForBreakpointsMock {
-	getClass: Sinon.SinonSpy;
+	getClass: sinon.SinonSpy;
 }
 
 describe('CardHeaderColumnComponent', () => {

@@ -4,7 +4,7 @@ import __number = services.number;
 import { SimpleCardListComponent } from './simpleCardList';
 
 interface ICardMock {
-	close?: Sinon.SinonSpy;
+	close?: sinon.SinonSpy;
 	alwaysOpen?: boolean;
 	alternatingClass?: string;
 }

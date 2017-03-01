@@ -1,7 +1,7 @@
 import { ColumnHeaderComponent } from './columnHeader';
 
 interface ISizeForBreakpointsMock {
-	getClass: Sinon.SinonSpy;
+	getClass: sinon.SinonSpy;
 }
 
 describe('ColumnHeaderComponent', () => {

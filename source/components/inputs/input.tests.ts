@@ -9,17 +9,17 @@ interface IFormMock {
 }
 
 interface IControlGroupMock {
-	addControl: Sinon.SinonSpy;
+	addControl: sinon.SinonSpy;
 }
 
 interface IGuidMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 interface IControlMock {
 	valueChanges?: Subject<number>;
-	setValue?: Sinon.SinonSpy;
-	markAsDirty?: Sinon.SinonSpy;
+	setValue?: sinon.SinonSpy;
+	markAsDirty?: sinon.SinonSpy;
 }
 
 describe('InputComponent', (): void => {
@@ -96,7 +96,7 @@ describe('InputComponent', (): void => {
 		const control: IControlMock = { setValue: sinon.spy(), markAsDirty: sinon.spy() };
 		input.control = <any>control;
 
-		const changeSpy: Sinon.SinonSpy = sinon.spy();
+		const changeSpy: sinon.SinonSpy = sinon.spy();
 		input.change.emit = changeSpy;
 
 		input.setValue(5);

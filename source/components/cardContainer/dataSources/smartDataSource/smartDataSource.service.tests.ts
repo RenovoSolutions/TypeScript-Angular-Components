@@ -11,13 +11,13 @@ describe('SmartDataSource', () => {
 	});
 
 	describe('init', () => {
-		let initialRequestSpy: Sinon.SinonSpy;
+		let initialRequestSpy: sinon.SinonSpy;
 		let initRequestStream: Subject<any>;
-		let toRequestStreamSpy: Sinon.SinonSpy;
+		let toRequestStreamSpy: sinon.SinonSpy;
 		let requestStream: Subject<any>;
-		let getDataSetSpy: Sinon.SinonSpy;
+		let getDataSetSpy: sinon.SinonSpy;
 		let getDataStream: Subject<any>;
-		let resolveReloadSpy: Sinon.SinonSpy;
+		let resolveReloadSpy: sinon.SinonSpy;
 		let sortList$: any;
 
 		beforeEach(() => {

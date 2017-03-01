@@ -7,7 +7,7 @@ interface ICardContainerMock {
 	selectionData$: BehaviorSubject<any>;
 	selectionFilteredData$: BehaviorSubject<any>;
 	dataSource: { pager?: any };
-	setSelected: Sinon.SinonSpy;
+	setSelected: sinon.SinonSpy;
 }
 
 describe('SelectionComponent', () => {

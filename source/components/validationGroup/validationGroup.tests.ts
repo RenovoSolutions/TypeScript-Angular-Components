@@ -6,12 +6,12 @@ import __validation = services.validation;
 import { ValidationGroupComponent, IGroupChanges } from './validationGroup';
 
 interface IControlMock {
-	updateValueAndValidity?: Sinon.SinonSpy;
+	updateValueAndValidity?: sinon.SinonSpy;
 }
 
 interface IComponentValidatorMock {
-	initValidator: Sinon.SinonSpy;
-	validate: Sinon.SinonSpy;
+	initValidator: sinon.SinonSpy;
+	validate: sinon.SinonSpy;
 }
 
 describe('ValidationGroupComponent', (): void => {

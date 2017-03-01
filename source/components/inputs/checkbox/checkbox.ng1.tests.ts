@@ -63,8 +63,8 @@ describe('CheckboxController', () => {
 
 		checkbox.toggle();
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>checkbox.onToggle);
-		let arg: any = (<Sinon.SinonSpy>checkbox.onToggle).firstCall.args[0];
+		sinon.assert.calledOnce(<sinon.SinonSpy>checkbox.onToggle);
+		let arg: any = (<sinon.SinonSpy>checkbox.onToggle).firstCall.args[0];
 		expect(arg.value).to.be.true;
 	});
 

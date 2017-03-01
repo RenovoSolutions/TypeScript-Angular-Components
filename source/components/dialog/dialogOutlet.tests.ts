@@ -1,10 +1,10 @@
 import { DialogOutletComponent } from './dialogOutlet';
 import { DialogRootService } from './dialogRoot.service';
 
-interface IJqueryBootstrapMock extends Sinon.SinonSpy {
+interface IJqueryBootstrapMock extends sinon.SinonSpy {
 	(): IJqueryBootstrapMock;
-	modal: Sinon.SinonSpy;
-	on: Sinon.SinonSpy;
+	modal: sinon.SinonSpy;
+	on: sinon.SinonSpy;
 }
 
 describe('DialogOutletComponent', (): void => {

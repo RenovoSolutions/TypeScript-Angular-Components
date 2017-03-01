@@ -6,9 +6,9 @@ import { IColumn } from '../../column';
 
 describe('SortManagerService', () => {
 	let sortManager: SortManagerService;
-	let getColumn: Sinon.SinonSpy;
+	let getColumn: sinon.SinonSpy;
 	let sorts: ISort[];
-	let sortSpy: Sinon.SinonSpy;
+	let sortSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		sortSpy = sinon.spy();

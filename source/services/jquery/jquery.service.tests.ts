@@ -12,8 +12,8 @@ import 'angular-mocks';
 
 describe('jqueryUtility', () => {
 	var jqueryUtility: IJQueryUtility;
-	var emptySpy: Sinon.SinonSpy;
-	var appendSpy: Sinon.SinonSpy;
+	var emptySpy: sinon.SinonSpy;
+	var appendSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);

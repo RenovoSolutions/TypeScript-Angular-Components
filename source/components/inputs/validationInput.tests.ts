@@ -8,14 +8,14 @@ import __validation = services.validation;
 import { ValidatedInputComponent, IInputChanges } from './validationInput';
 
 interface IControlMock {
-	updateValueAndValidity?: Sinon.SinonSpy;
-	setValue?: Sinon.SinonSpy;
-	valueChanges?: { subscribe: Sinon.SinonSpy };
+	updateValueAndValidity?: sinon.SinonSpy;
+	setValue?: sinon.SinonSpy;
+	valueChanges?: { subscribe: sinon.SinonSpy };
 }
 
 interface IComponentValidatorMock {
-	initValidator: Sinon.SinonSpy;
-	validate: Sinon.SinonSpy;
+	initValidator: sinon.SinonSpy;
+	validate: sinon.SinonSpy;
 }
 
 describe('ValidatedInputComponent', (): void => {

@@ -4,7 +4,7 @@ import { rlFakeAsync, rlTick } from 'rl-async-testing';
 import { CardSearchComponent, defaultSearchPlaceholder } from './cardSearch';
 
 interface ISearchFilterMock {
-	setSearch: Sinon.SinonSpy;
+	setSearch: sinon.SinonSpy;
 	searchText$: BehaviorSubject<string>;
 	minSearchLength?: number;
 }

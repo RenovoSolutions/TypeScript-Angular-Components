@@ -15,20 +15,20 @@ interface IAutosaveActionMock {
 interface IMockFormController {
 	$pristine: boolean;
 	$dirty: boolean;
-	$setPristine: Sinon.SinonSpy;
+	$setPristine: sinon.SinonSpy;
 	$valid: boolean;
 }
 
 interface INotificationMock {
-	warning: Sinon.SinonSpy;
+	warning: sinon.SinonSpy;
 }
 
 describe('autosave', () => {
 	let autosave: IAutosaveService;
 	let autosaveFactory: IAutosaveServiceFactory;
-	let saveSpy: Sinon.SinonSpy;
-	let waitOnSpy: Sinon.SinonSpy;
-	let setPristineSpy: Sinon.SinonSpy;
+	let saveSpy: sinon.SinonSpy;
+	let waitOnSpy: sinon.SinonSpy;
+	let setPristineSpy: sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
 	let notification: INotificationMock;

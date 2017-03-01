@@ -9,7 +9,7 @@ import { UserRatingComponent } from './userRating';
 
 describe('UserRatingComponent', () => {
 	let userRating: UserRatingComponent;
-	let setValue: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
 	let control: any;
 
 	beforeEach(() => {
