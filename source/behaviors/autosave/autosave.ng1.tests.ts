@@ -10,7 +10,7 @@ import test = services.test;
 import { IChild, IParentChildBehaviorService, serviceName as parentChildServiceName } from '../../services/parentChild/parentChild.service';
 
 interface IAutosaveServiceMock {
-	autosave: Sinon.SinonSpy;
+	autosave: sinon.SinonSpy;
 }
 
 interface IParentScope extends angular.IScope {
@@ -19,7 +19,7 @@ interface IParentScope extends angular.IScope {
 
 interface IMockFormController {
 	$pristine: boolean;
-	$setPristine: Sinon.SinonSpy;
+	$setPristine: sinon.SinonSpy;
 }
 
 interface IChildLinkMock extends IChild<any> {}
@@ -29,7 +29,7 @@ describe('AutosaveController', () => {
 	var autosave: AutosaveController;
 	var parentChildBehavior: IParentChildBehaviorService;
 	var $attrs: IAutosaveAttributes;
-	var autosaveSpy: Sinon.SinonSpy;
+	var autosaveSpy: sinon.SinonSpy;
 	var childLink: IChildLinkMock;
 
 	beforeEach(() => {
@@ -76,7 +76,7 @@ describe('AutosaveController', () => {
 			childLink = <any>{};
 		}
 
-		var $parse: any = (expression: string): Sinon.SinonSpy => {
+		var $parse: any = (expression: string): sinon.SinonSpy => {
 			if (expression === 'link') {
 				return sinon.spy((): IChildLinkMock => {
 					return childLink;

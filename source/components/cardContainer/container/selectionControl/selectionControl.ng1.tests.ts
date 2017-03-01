@@ -25,7 +25,7 @@ interface ICardContainerMock {
 	numberSelected: number;
 	numberSelectedChanges: Rx.Subject<number>;
 	dataSource: any;
-	selectionChanged: Sinon.SinonSpy;
+	selectionChanged: sinon.SinonSpy;
 }
 
 describe('selectionControl', () => {

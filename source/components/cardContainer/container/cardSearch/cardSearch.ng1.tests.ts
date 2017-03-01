@@ -12,9 +12,9 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface ISearchFilterMock {
-	subscribe: Sinon.SinonSpy;
-	trigger: Sinon.SinonSpy;
-	callback?: Sinon.SinonSpy;
+	subscribe: sinon.SinonSpy;
+	trigger: sinon.SinonSpy;
+	callback?: sinon.SinonSpy;
 	searchText?: string;
 }
 
@@ -30,7 +30,7 @@ describe('CardSearchController', () => {
 	let cardContainer: ICardContainerMock;
 	let filter: ISearchFilterMock;
 	let $timeout: angular.ITimeoutService;
-	let refreshSpy: Sinon.SinonSpy;
+	let refreshSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -43,7 +43,7 @@ describe('CardSearchController', () => {
 				filter.searchText = search;
 				filter.callback();
 			}),
-			subscribe: sinon.spy((callback: Sinon.SinonSpy): void => { filter.callback = callback; }),
+			subscribe: sinon.spy((callback: sinon.SinonSpy): void => { filter.callback = callback; }),
 		};
 
 		cardContainer = {

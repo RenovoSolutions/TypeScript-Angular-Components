@@ -38,7 +38,7 @@ describe('DataServiceDataSource', () => {
 			new DataServiceDataSource(dataService.get, dataSourceProcessor, arrayUtility);
 			mock.flushAll(dataService)
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.processAndCount);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceProcessor.processAndCount);
 		}));
 
 		it('should make an initial request to the server for data', rlFakeAsync((): void => {
@@ -46,9 +46,9 @@ describe('DataServiceDataSource', () => {
 
 			let source: IAsyncDataSource<number> = new DataServiceDataSource<number>(dataService.get, dataSourceProcessor, arrayUtility);
 
-			let reloadedSpy: Sinon.SinonSpy = sinon.spy();
+			let reloadedSpy: sinon.SinonSpy = sinon.spy();
 			source.reloaded.subscribe(reloadedSpy);
-			let changedSpy: Sinon.SinonSpy = sinon.spy();
+			let changedSpy: sinon.SinonSpy = sinon.spy();
 			source.changed.subscribe(changedSpy);
 
 			mock.flushAll(dataService);

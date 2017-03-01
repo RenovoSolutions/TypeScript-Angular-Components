@@ -7,10 +7,10 @@ import { DataSourceBaseOld } from './dataSourceBaseOld.service';
 import { IDataSourceOld } from './dataSource';
 
 interface IDataSourceProcessorMock {
-	process: Sinon.SinonSpy;
-	processAndCount: Sinon.SinonSpy;
-	sort: Sinon.SinonSpy;
-	page: Sinon.SinonSpy;
+	process: sinon.SinonSpy;
+	processAndCount: sinon.SinonSpy;
+	sort: sinon.SinonSpy;
+	page: sinon.SinonSpy;
 }
 
 describe('DataSourceBaseOld', () => {
@@ -42,7 +42,7 @@ describe('DataSourceBaseOld', () => {
 
 	describe('count', (): void => {
 		it('should push count changes to consumers', (): void => {
-			const countSpy: Sinon.SinonSpy = sinon.spy();
+			const countSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.countChanges.subscribe(countSpy);
 			dataSourceBase.count = 3;
 			sinon.assert.calledOnce(countSpy);
@@ -130,53 +130,53 @@ describe('DataSourceBaseOld', () => {
 
 	describe('onSortChange', (): void => {
 		it('should reapply sorts and paging and signal redrawing', (): void => {
-			let redrawSpy: Sinon.SinonSpy = sinon.spy();
+			let redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.onSortChange();
 
 			sinon.assert.calledOnce(redrawSpy);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.sort);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceProcessor.page);
 		});
 
 		it('should not reapply if data is being reloaded', (): void => {
-			let redrawSpy: Sinon.SinonSpy = sinon.spy();
+			let redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.onSortChange();
 
 			sinon.assert.notCalled(redrawSpy);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.sort);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataSourceProcessor.sort);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataSourceProcessor.page);
 		});
 	});
 
 	describe('onPagingChange', (): void => {
 		it('should reapply paging and signal redrawing', (): void => {
-			const redrawSpy: Sinon.SinonSpy = sinon.spy();
+			const redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.onPagingChange();
 
 			sinon.assert.calledOnce(redrawSpy);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceProcessor.page);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceProcessor.page);
 		});
 
 		it('should not reapply if data is being reloaded', (): void => {
-			const redrawSpy: Sinon.SinonSpy = sinon.spy();
+			const redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.onPagingChange();
 
 			sinon.assert.notCalled(redrawSpy);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceProcessor.page);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataSourceProcessor.page);
 		});
 
 		it('should subscribe for changes on the pager', (): void => {
-			const pagingSpy: Sinon.SinonSpy = sinon.spy();
+			const pagingSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.onPagingChange = pagingSpy;
 			dataSourceBase.pager = <any>{
 				pageSizeChanges: new Subject<number>(),
@@ -201,24 +201,24 @@ describe('DataSourceBaseOld', () => {
 		});
 
 		it('should process the data and signal redrawing', (): void => {
-			let redrawSpy: Sinon.SinonSpy = sinon.spy();
+			let redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.refresh();
 
 			sinon.assert.calledOnce(redrawSpy);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceBase.processData);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceBase.processData);
 		});
 
 		it('should not refresh if data is being reloaded', (): void => {
-			let redrawSpy: Sinon.SinonSpy = sinon.spy();
+			let redrawSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.redrawing.subscribe(redrawSpy);
 
 			dataSourceBase.loadingDataSet = true;
 			dataSourceBase.refresh();
 
 			sinon.assert.notCalled(redrawSpy);
-			sinon.assert.notCalled(<Sinon.SinonSpy>dataSourceBase.processData);
+			sinon.assert.notCalled(<sinon.SinonSpy>dataSourceBase.processData);
 		});
 	});
 
@@ -228,9 +228,9 @@ describe('DataSourceBaseOld', () => {
 		});
 
 		it('should remove an item and signal removed and changed', (): void => {
-			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			let removeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.removed.subscribe(removeSpy);
-			let changeSpy: Sinon.SinonSpy = sinon.spy();
+			let changeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
@@ -242,9 +242,9 @@ describe('DataSourceBaseOld', () => {
 		});
 
 		it('should not signal remvoed or changed if item is not found', (): void => {
-			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			let removeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.removed.subscribe(removeSpy);
-			let changeSpy: Sinon.SinonSpy = sinon.spy();
+			let changeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
@@ -258,23 +258,23 @@ describe('DataSourceBaseOld', () => {
 		it('should refresh after removing an item', (): void => {
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.remove(2);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceBase.refresh);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceBase.refresh);
 		});
 	});
 
 	describe('push', (): void => {
 		it('should add item and signal added and changed', (): void => {
 			dataSourceBase.refresh = <any>sinon.spy();
-			let addSpy: Sinon.SinonSpy = sinon.spy();
+			let addSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.added.subscribe(addSpy);
-			let changeSpy: Sinon.SinonSpy = sinon.spy();
+			let changeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.push(4);
 
 			expect(dataSourceBase.rawDataSet).to.deep.equal([1, 2, 3, 4]);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceBase.refresh);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceBase.refresh);
 			sinon.assert.calledOnce(addSpy);
 			sinon.assert.calledOnce(changeSpy);
 		});
@@ -282,9 +282,9 @@ describe('DataSourceBaseOld', () => {
 
 	describe('replace', (): void => {
 		it('should not signal replaced or changed if old item is not found', (): void => {
-			let replaceSpy: Sinon.SinonSpy = sinon.spy();
+			let replaceSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.replaced.subscribe(replaceSpy);
-			let changeSpy: Sinon.SinonSpy = sinon.spy();
+			let changeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
@@ -297,16 +297,16 @@ describe('DataSourceBaseOld', () => {
 
 		it('should replace item and signal replaced and changed', (): void => {
 			dataSourceBase.refresh = sinon.spy();
-			let replaceSpy: Sinon.SinonSpy = sinon.spy();
+			let replaceSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.replaced.subscribe(replaceSpy);
-			let changeSpy: Sinon.SinonSpy = sinon.spy();
+			let changeSpy: sinon.SinonSpy = sinon.spy();
 			dataSourceBase.changed.subscribe(changeSpy);
 
 			dataSourceBase.rawDataSet = [1, 2, 3];
 			dataSourceBase.replace(3, 4);
 
 			expect(dataSourceBase.rawDataSet).to.deep.equal([1, 2, 4]);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSourceBase.refresh);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSourceBase.refresh);
 			sinon.assert.calledOnce(replaceSpy);
 			sinon.assert.calledOnce(changeSpy);
 		});

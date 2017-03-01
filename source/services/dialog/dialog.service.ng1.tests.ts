@@ -16,15 +16,15 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface IDialogMock {
-	open: Sinon.SinonSpy;
+	open: sinon.SinonSpy;
 }
 
 interface IAutosaveFactoryMock {
-	getInstance: Sinon.SinonSpy;
+	getInstance: sinon.SinonSpy;
 }
 
 interface IAutosaveMock {
-	autosave: Sinon.SinonSpy;
+	autosave: sinon.SinonSpy;
 }
 
 describe('dialog', () => {

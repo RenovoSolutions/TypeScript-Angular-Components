@@ -1,1 +1,5 @@
-declare var sinon: Sinon.SinonStatic;
+import { SinonStatic } from 'sinon';
+
+declare global {
+  const sinon: SinonStatic;
+}

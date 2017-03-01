@@ -8,7 +8,7 @@ describe('ButtonToggleComponent', () => {
 	});
 
 	it('should update the value and emit a change event when the button is toggled', (): void => {
-		const changeSpy: Sinon.SinonSpy = sinon.spy();
+		const changeSpy: sinon.SinonSpy = sinon.spy();
 
 		buttonToggle.change.emit = changeSpy;
 

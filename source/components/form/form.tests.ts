@@ -7,16 +7,16 @@ import { FormComponent } from './form';
 import { AsyncHelper } from '../../services/async/async.service';
 
 interface INotificationMock {
-	warning: Sinon.SinonSpy;
+	warning: sinon.SinonSpy;
 }
 
 interface IFormServiceMock {
-	isFormValid?: Sinon.SinonSpy;
-	getAggregateError?: Sinon.SinonSpy;
+	isFormValid?: sinon.SinonSpy;
+	getAggregateError?: sinon.SinonSpy;
 }
 
 interface IGuidServiceMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 describe('FormComponent', (): void => {

@@ -18,9 +18,9 @@ import 'angular-mocks';
 
 
 interface ITestDataService {
-	saveMessage: Sinon.SinonSpy;
-	getMessages: Sinon.SinonSpy;
-	deleteMessage: Sinon.SinonSpy;
+	saveMessage: sinon.SinonSpy;
+	getMessages: sinon.SinonSpy;
+	deleteMessage: sinon.SinonSpy;
 }
 
 describe('messageLog', () => {

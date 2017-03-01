@@ -3,13 +3,13 @@
 import { ButtonAsyncComponent } from './buttonAsync';
 
 interface IMockBusy {
-	waitOn: Sinon.SinonSpy;
+	waitOn: sinon.SinonSpy;
 }
 
 describe('ButtonAsyncComponent', () => {
 	let button: ButtonAsyncComponent;
 	let busy: IMockBusy;
-	let action: Sinon.SinonSpy;
+	let action: sinon.SinonSpy;
 
 	beforeEach(() => {
 		button = new ButtonAsyncComponent();

@@ -5,7 +5,7 @@ import { ObservableDataSource } from './observableDataSource.service';
 describe('ObservableDataSource', () => {
 	let dataSource: ObservableDataSource<any>;
 	let stream: Subject<any>;
-	let processSpy: Sinon.SinonSpy;
+	let processSpy: sinon.SinonSpy;
 	let loading: boolean;
 	let rawDataSet: any[];
 	let dataSet: any[];

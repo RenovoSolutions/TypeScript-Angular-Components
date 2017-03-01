@@ -66,7 +66,7 @@ describe('promiseUtility', () => {
 		});
 
 		it('should invoke the value with dependencies if type is function or an array with a function as the last param', done => {
-			let func: Sinon.SinonSpy = sinon.spy((value: number): number => { return value - 1; });
+			let func: sinon.SinonSpy = sinon.spy((value: number): number => { return value - 1; });
 			func.$inject = ['value'];
 			let array: any[] = ['value', sinon.spy((value: number): number => { return value * 2; })];
 

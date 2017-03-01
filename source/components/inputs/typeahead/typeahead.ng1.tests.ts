@@ -62,7 +62,7 @@ describe('TypeaheadController', () => {
 		it('should return an empty list if no text is entered', (): void => {
 			buildController();
 
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
 			typeahead.refresh('');
@@ -75,7 +75,7 @@ describe('TypeaheadController', () => {
 			buildController();
 
 			// simulate a server-side search
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when([items[0], items[1]]); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when([items[0], items[1]]); });
 			typeahead.getItems = getItemsSpy;
 
 			typeahead.refresh('Item ');
@@ -94,7 +94,7 @@ describe('TypeaheadController', () => {
 		it('should apply the search string if useClientSearching is on', (): void => {
 			buildController(null, true);
 
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
 			typeahead.refresh('A');
@@ -113,7 +113,7 @@ describe('TypeaheadController', () => {
 			, (): void => {
 				buildController(null, true);
 
-				let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+				let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 				typeahead.getItems = getItemsSpy;
 				typeahead.refresh('A');
 				scope.$digest();
@@ -131,10 +131,10 @@ describe('TypeaheadController', () => {
 			});
 
 		it('should add a special search option to the list if a create handler is provided and no match is found', (): void => {
-			let createSpy: Sinon.SinonSpy = sinon.spy();
+			let createSpy: sinon.SinonSpy = sinon.spy();
 			buildController(null, true, createSpy);
 
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
 			typeahead.refresh('A');
@@ -163,7 +163,7 @@ describe('TypeaheadController', () => {
 			buildController(null, true);
 
 			let items: string[] = [];
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 			typeahead.refresh('A');
 			scope.$digest();
@@ -182,7 +182,7 @@ describe('TypeaheadController', () => {
 			buildController(null, true);
 
 			let items: string[] = ['Item 1'];
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 			typeahead.refresh('I');
 			scope.$digest();
@@ -214,7 +214,7 @@ describe('TypeaheadController', () => {
 
 		it('should collapse if a select handler is provided and allowCollapse is turned on', (): void => {
 			let allowCollapse: boolean = true;
-			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: sinon.SinonSpy = sinon.spy();
 			buildController(null, true, null, selectSpy, allowCollapse);
 			initialLoad();
 
@@ -228,7 +228,7 @@ describe('TypeaheadController', () => {
 		});
 
 		it('should call the select function without collapsing', (): void => {
-			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: sinon.SinonSpy = sinon.spy();
 			buildController(null, true, null, selectSpy);
 			initialLoad();
 
@@ -242,7 +242,7 @@ describe('TypeaheadController', () => {
 		});
 
 		it('should call create with the search text if the search option is selected', (): void => {
-			let createSpy: Sinon.SinonSpy = sinon.spy((wrappedSearch: any): any => { return wrappedSearch; });
+			let createSpy: sinon.SinonSpy = sinon.spy((wrappedSearch: any): any => { return wrappedSearch; });
 			buildController(null, true, createSpy);
 			initialLoad();
 
@@ -257,7 +257,7 @@ describe('TypeaheadController', () => {
 		});
 
 		function initialLoad() {
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<string[]> => { return $q.when(items); });
 			typeahead.getItems = getItemsSpy;
 
 			typeahead.refresh('A');
@@ -265,19 +265,19 @@ describe('TypeaheadController', () => {
 		}
 	});
 
-	function buildController(transform?: Sinon.SinonSpy | string
+	function buildController(transform?: sinon.SinonSpy | string
 						, useClientSearching?: boolean
-						, create?: Sinon.SinonSpy
-						, select?: Sinon.SinonSpy
+						, create?: sinon.SinonSpy
+						, select?: sinon.SinonSpy
 						, allowCollapse?: boolean): void {
 		buildControllerWithoutInit(transform, useClientSearching, create, select, allowCollapse);
 		typeahead.$onInit();
 	}
 
-	function buildControllerWithoutInit(transform?: Sinon.SinonSpy | string
+	function buildControllerWithoutInit(transform?: sinon.SinonSpy | string
 						, useClientSearching?: boolean
-						, create?: Sinon.SinonSpy
-						, select?: Sinon.SinonSpy
+						, create?: sinon.SinonSpy
+						, select?: sinon.SinonSpy
 						, allowCollapse?: boolean): void {
 		let ngModel: any = {
 			$viewValue: null,

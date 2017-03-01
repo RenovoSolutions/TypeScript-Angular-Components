@@ -3,12 +3,12 @@ import { Observable, Subject } from 'rxjs';
 import { PopoutListComponent } from './popoutList';
 
 interface ITransformMock {
-	getValue: Sinon.SinonSpy;
+	getValue: sinon.SinonSpy;
 }
 
 interface IListServiceMock {
-	open: Sinon.SinonSpy;
-	close: Sinon.SinonSpy;
+	open: sinon.SinonSpy;
+	close: sinon.SinonSpy;
 	select: Subject<any>;
 	customItems: any[];
 }

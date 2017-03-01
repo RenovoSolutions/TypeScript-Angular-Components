@@ -62,7 +62,7 @@ describe('TypeaheadListController', () => {
 			, (): void => {
 				buildController();
 
-				let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+				let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
 				typeaheadList.getItems = getItemsSpy;
 				typeaheadList.searchItems('2');
 				scope.$digest();
@@ -76,7 +76,7 @@ describe('TypeaheadListController', () => {
 
 		it('should load the items when searching is disabled', (): void => {
 			buildController();
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
 			typeaheadList.getItems = getItemsSpy;
 			typeaheadList.$onChanges({
 				disableSearching: <any>{ currentValue: true },
@@ -91,7 +91,7 @@ describe('TypeaheadListController', () => {
 
 		it('should load the items on init if searching is disabled', (): void => {
 			buildControllerWithoutInit();
-			let getItemsSpy: Sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
+			let getItemsSpy: sinon.SinonSpy = sinon.spy((): angular.IPromise<ITestObject[]> => { return $q.when(items); });
 			typeaheadList.getItems = getItemsSpy;
 			typeaheadList.disableSearching = true;
 			typeaheadList.$onInit();
@@ -110,7 +110,7 @@ describe('TypeaheadListController', () => {
 			buildController(list);
 			typeaheadList.searchItems('2');
 			scope.$digest();
-			let addEventSpy: Sinon.SinonSpy = sinon.spy();
+			let addEventSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.add = addEventSpy;
 
 			typeaheadList.addItem(items[0]);
@@ -131,7 +131,7 @@ describe('TypeaheadListController', () => {
 			buildController(list);
 			typeaheadList.searchItems('2');
 			scope.$digest();
-			let removeEventSpy: Sinon.SinonSpy = sinon.spy();
+			let removeEventSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.remove = removeEventSpy;
 
 			typeaheadList.removeItem(list[0]);
@@ -148,7 +148,7 @@ describe('TypeaheadListController', () => {
 	describe('behavior', (): void => {
 		it('should provide an add function for the parent to trigger an item to be added', (): void => {
 			buildController();
-			let addSpy: Sinon.SinonSpy = sinon.spy();
+			let addSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.addItem = addSpy;
 			typeaheadList.$onInit();
 			let item: ITestObject = { id: 13 };
@@ -162,7 +162,7 @@ describe('TypeaheadListController', () => {
 
 		it('should provide a remove function for the parent to trigger an item to be removed', (): void => {
 			buildController();
-			let removeSpy: Sinon.SinonSpy = sinon.spy();
+			let removeSpy: sinon.SinonSpy = sinon.spy();
 			typeaheadList.removeItem = removeSpy;
 			typeaheadList.$onInit();
 			let item: ITestObject = { id: 13 };

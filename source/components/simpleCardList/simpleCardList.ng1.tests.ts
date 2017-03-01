@@ -8,7 +8,7 @@ import 'angular-mocks';
 import { Subject } from 'rxjs';
 
 interface ICardBehaviorMock {
-	close: Sinon.SinonSpy;
+	close: sinon.SinonSpy;
 }
 
 describe('SimpleCardListController', () => {
@@ -46,7 +46,7 @@ describe('SimpleCardListController', () => {
 
 	it('should expose changes to alwaysOpen as a stream', (): void => {
 		buildController();
-		const alwaysOpenSpy: Sinon.SinonSpy = sinon.spy();
+		const alwaysOpenSpy: sinon.SinonSpy = sinon.spy();
 		list.alwaysOpenChanges.subscribe(alwaysOpenSpy);
 
 		list.alwaysOpenChange(true);

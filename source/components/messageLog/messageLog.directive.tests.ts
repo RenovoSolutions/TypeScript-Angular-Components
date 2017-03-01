@@ -23,15 +23,15 @@ interface IMockMessageLogService {
 	hasBackwardMessages: boolean;
 	busy: boolean;
 	pageSize: number;
-	getNextPage: Sinon.SinonSpy;
-	getTopPage: Sinon.SinonSpy;
-	updateMessage: Sinon.SinonSpy;
-	addMessage: Sinon.SinonSpy;
+	getNextPage: sinon.SinonSpy;
+	getTopPage: sinon.SinonSpy;
+	updateMessage: sinon.SinonSpy;
+	addMessage: sinon.SinonSpy;
 }
 
 
 interface IDialogMock {
-	openForm: Sinon.SinonSpy;
+	openForm: sinon.SinonSpy;
 }
 
 describe('messageLog', () => {

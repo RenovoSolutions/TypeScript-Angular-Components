@@ -17,18 +17,18 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface ICardContainerMock {
-	openCard: Sinon.SinonSpy;
+	openCard: sinon.SinonSpy;
 }
 
 interface ICardChildBehaviorMock {
-	initCard?: Sinon.SinonSpy;
-	validateCard?: Sinon.SinonSpy;
-	saveCard?: Sinon.SinonSpy;
-	clickCard?: Sinon.SinonSpy;
+	initCard?: sinon.SinonSpy;
+	validateCard?: sinon.SinonSpy;
+	saveCard?: sinon.SinonSpy;
+	clickCard?: sinon.SinonSpy;
 }
 
 interface IAutosaveBehaviorMock {
-	autosave: Sinon.SinonSpy;
+	autosave: sinon.SinonSpy;
 }
 
 describe('CardController', () => {
@@ -64,7 +64,7 @@ describe('CardController', () => {
 		});
 
 		it('should provide a function for setting the selected property', (): void => {
-			let selectSpy: Sinon.SinonSpy = sinon.spy();
+			let selectSpy: sinon.SinonSpy = sinon.spy();
 			buildController();
 			card.selectionChanged = selectSpy;
 
@@ -83,12 +83,12 @@ describe('CardController', () => {
 
 		it('should provide a function for refreshing the data source', (): void => {
 			buildController();
-			let refreshSpy: Sinon.SinonSpy = sinon.spy();
+			let refreshSpy: sinon.SinonSpy = sinon.spy();
 			card.refresh.subscribe(refreshSpy);
 
 			scope.refresh();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>card.source.refresh);
+			sinon.assert.calledOnce(<sinon.SinonSpy>card.source.refresh);
 			sinon.assert.calledOnce(refreshSpy);
 		});
 
@@ -99,8 +99,8 @@ describe('CardController', () => {
 
 			scope.remove();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>card.source.remove);
-			sinon.assert.calledWith(<Sinon.SinonSpy>card.source.remove, item);
+			sinon.assert.calledOnce(<sinon.SinonSpy>card.source.remove);
+			sinon.assert.calledWith(<sinon.SinonSpy>card.source.remove, item);
 		});
 	});
 

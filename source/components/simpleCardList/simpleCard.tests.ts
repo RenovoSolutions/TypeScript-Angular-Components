@@ -2,15 +2,15 @@ import { SimpleCardComponent } from './simpleCard';
 import { SimpleCardListComponent } from './simpleCardList';
 
 interface IListMock {
-	openCard: Sinon.SinonSpy;
+	openCard: sinon.SinonSpy;
 }
 
 interface IFormMock {
-	submit: Sinon.SinonSpy;
+	submit: sinon.SinonSpy;
 }
 
 interface IGuidServiceMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 describe('SimpleCardComponent', () => {
@@ -33,7 +33,7 @@ describe('SimpleCardComponent', () => {
 	});
 
 	describe('open close', (): void => {
-		let submitSpy: Sinon.SinonSpy;
+		let submitSpy: sinon.SinonSpy;
 
 		beforeEach((): void => {
 			submitSpy = sinon.spy(() => true);
@@ -61,7 +61,7 @@ describe('SimpleCardComponent', () => {
 		});
 
 		it('should signal the list and then open if the card is closed', (): void => {
-			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
+			const onOpenSpy: sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 
 			expect(card.showContent).to.be.false;
@@ -74,7 +74,7 @@ describe('SimpleCardComponent', () => {
 		});
 
 		it('should not open the card if the list returns false', (): void => {
-			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
+			const onOpenSpy: sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 			list.openCard = sinon.spy(() => false);
 
@@ -87,7 +87,7 @@ describe('SimpleCardComponent', () => {
 
 		it('should be able to open with an empty list', (): void => {
 			card = new SimpleCardComponent(null, null, null, mockGuidService, null, null, null);
-			const onOpenSpy: Sinon.SinonSpy = sinon.spy();
+			const onOpenSpy: sinon.SinonSpy = sinon.spy();
 			card.onOpen.emit = onOpenSpy;
 			card.ngOnInit();
 

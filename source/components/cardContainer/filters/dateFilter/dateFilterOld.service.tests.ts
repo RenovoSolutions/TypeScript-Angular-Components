@@ -70,7 +70,7 @@ describe('DateFilterOld', (): void => {
 
 	describe('trigger change', (): void => {
 		it('should trigger a change when dateFrom or dateTo changes', (): void => {
-			const onChangeSpy: Sinon.SinonSpy = sinon.spy();
+			const onChangeSpy: sinon.SinonSpy = sinon.spy();
 			dateFilter.onChange = onChangeSpy;
 
 			dateFilter.dateFrom = moment('2000-01-01T05:16:00.000');
@@ -84,7 +84,7 @@ describe('DateFilterOld', (): void => {
 		});
 
 		it('should not trigger a change when dateFrom or dateTo is set without changing', (): void => {
-			const onChangeSpy: Sinon.SinonSpy = sinon.spy();
+			const onChangeSpy: sinon.SinonSpy = sinon.spy();
 
 			const dateFrom: moment.Moment = moment('2000-01-01T05:16:00.000');
 			const dateTo: moment.Moment = moment('1999-11-15T05:16:00.000');

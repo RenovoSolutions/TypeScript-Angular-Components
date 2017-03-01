@@ -10,7 +10,7 @@ import { TabsetComponent, TabComponent, TabHeaderComponent } from './index';
 describe('TabsetComponent', () => {
 	let tabset: TabsetComponent;
 	let fakeTabComponentQueryList: QueryList<TabComponent>;
-	let tabsetTabsSpy: Sinon.SinonSpy;
+	let tabsetTabsSpy: sinon.SinonSpy;
 	let tabHeader: TabHeaderComponent;
 	beforeEach(() => {
 		tabset = new TabsetComponent();

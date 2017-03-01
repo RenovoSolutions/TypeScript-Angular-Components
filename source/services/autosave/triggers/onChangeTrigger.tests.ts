@@ -17,14 +17,14 @@ interface IMockFormController {
 	$pristine: boolean;
 	$dirty: boolean;
 	$valid: boolean;
-	$setPristine: Sinon.SinonSpy;
+	$setPristine: sinon.SinonSpy;
 }
 
 describe('onChangeTrigger', () => {
 	let trigger: ITrigger<OnChangeSettings>;
-	let saveSpy: Sinon.SinonSpy;
-	let triggerSpy: Sinon.SinonSpy;
-	let setPristineSpy: Sinon.SinonSpy;
+	let saveSpy: sinon.SinonSpy;
+	let triggerSpy: sinon.SinonSpy;
+	let setPristineSpy: sinon.SinonSpy;
 	let baseContentForm: IMockFormController;
 	let $rootScope: ng.IRootScopeService;
 	let emptyChangeListener: { (): IListener };
@@ -131,7 +131,7 @@ describe('onChangeTrigger', () => {
 
 	it('should reset the debounce timer on form changes', rlFakeAsync((): void => {
 		let triggerChange: { (): void };
-		let changeListener: any = (callback: { (): void }): Sinon.SinonSpy => {
+		let changeListener: any = (callback: { (): void }): sinon.SinonSpy => {
 			triggerChange = callback;
 			return sinon.spy();
 		};

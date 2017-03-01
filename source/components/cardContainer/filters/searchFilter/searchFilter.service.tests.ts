@@ -3,8 +3,8 @@ import { Observable } from 'rxjs';
 import { SearchFilter } from './searchFilter.service';
 
 interface SearchUtilityMock {
-	search: Sinon.SinonSpy;
-	tokenizedSearch: Sinon.SinonSpy;
+	search: sinon.SinonSpy;
+	tokenizedSearch: sinon.SinonSpy;
 }
 
 describe('SearchFilter', () => {

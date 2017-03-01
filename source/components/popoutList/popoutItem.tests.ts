@@ -1,7 +1,7 @@
 import { PopoutItemComponent } from './popoutItem';
 
 interface IListServiceMock {
-	isFocused: Sinon.SinonSpy;
+	isFocused: sinon.SinonSpy;
 }
 
 describe('PopoutItemComponent', () => {

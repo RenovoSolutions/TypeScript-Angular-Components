@@ -9,7 +9,7 @@ import * as angular from 'angular';
 import 'angular-mocks';
 
 interface IModalMock {
-	open: Sinon.SinonSpy;
+	open: sinon.SinonSpy;
 }
 
 describe('bootstrapModalDialog', () => {
@@ -17,8 +17,8 @@ describe('bootstrapModalDialog', () => {
 	let $uibModal: IModalMock;
 	let $rootScope: angular.IRootScopeService;
 	let $controller: angular.IControllerService;
-	let dismissSpy: Sinon.SinonSpy;
-	let closeSpy: Sinon.SinonSpy;
+	let dismissSpy: sinon.SinonSpy;
+	let closeSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -46,7 +46,7 @@ describe('bootstrapModalDialog', () => {
 	});
 
 	it('should call the closeHandler when the dialog closes', (): void => {
-		let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return true; });
+		let closeHandler: sinon.SinonSpy = sinon.spy((): boolean => { return true; });
 		bootstrapModalDialog.open(null, closeHandler);
 		$rootScope.$digest();
 
@@ -57,7 +57,7 @@ describe('bootstrapModalDialog', () => {
 	});
 
 	it('should prevent the dialog from closing if the close handler returns false', (): void => {
-		let closeHandler: Sinon.SinonSpy = sinon.spy((): boolean => { return false; });
+		let closeHandler: sinon.SinonSpy = sinon.spy((): boolean => { return false; });
 		bootstrapModalDialog.open(null, closeHandler);
 		$rootScope.$digest();
 

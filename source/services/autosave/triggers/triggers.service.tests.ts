@@ -23,8 +23,8 @@ describe('autosaveTriggers', () => {
 
 		triggerService.setTriggers('none', sinon.spy());
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>triggerService.triggers.none.setTrigger);
-		sinon.assert.notCalled(<Sinon.SinonSpy>triggerService.triggers.onChange.setTrigger);
+		sinon.assert.calledOnce(<sinon.SinonSpy>triggerService.triggers.none.setTrigger);
+		sinon.assert.notCalled(<sinon.SinonSpy>triggerService.triggers.onChange.setTrigger);
 	});
 
 	it('should default to onChange', (): void => {
@@ -33,7 +33,7 @@ describe('autosaveTriggers', () => {
 
 		triggerService.setTriggers(null, sinon.spy());
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>triggerService.triggers.onChange.setTrigger);
-		sinon.assert.notCalled(<Sinon.SinonSpy>triggerService.triggers.none.setTrigger);
+		sinon.assert.calledOnce(<sinon.SinonSpy>triggerService.triggers.onChange.setTrigger);
+		sinon.assert.notCalled(<sinon.SinonSpy>triggerService.triggers.none.setTrigger);
 	});
 });

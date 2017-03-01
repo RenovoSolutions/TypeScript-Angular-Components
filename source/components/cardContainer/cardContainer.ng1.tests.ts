@@ -22,14 +22,14 @@ import 'angular-mocks';
 import { Subject } from 'rxjs';
 
 interface IDataSourceMock {
-	refresh: Sinon.SinonSpy;
-	onSortChange?: Sinon.SinonSpy;
+	refresh: sinon.SinonSpy;
+	onSortChange?: sinon.SinonSpy;
 	pager?: IDataPagerMock;
 	filters?: IFilterMock[];
 	rawDataSet?: any[];
 	dataSet?: any[];
 	filteredDataSet?: any[];
-	initPager: Sinon.SinonSpy;
+	initPager: sinon.SinonSpy;
 	changed: Subject<void>;
 	redrawing: Subject<void>;
 }
@@ -37,12 +37,12 @@ interface IDataSourceMock {
 interface IDataPagerMock {
 	pageSize: number;
 	pageNumber: number;
-	filter: Sinon.SinonSpy;
+	filter: sinon.SinonSpy;
 }
 
 interface IFilterMock {
 	type: string;
-	filter: Sinon.SinonSpy;
+	filter: sinon.SinonSpy;
 }
 
 describe('CardContainerController', () => {
@@ -132,7 +132,7 @@ describe('CardContainerController', () => {
 
 			okayToOpen = cardContainer.openCard();
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>behavior.close);
+			sinon.assert.calledOnce(<sinon.SinonSpy>behavior.close);
 
 			expect(okayToOpen).to.be.true;
 		});
@@ -453,8 +453,8 @@ describe('CardContainerController', () => {
 			expect(dataSource.rawDataSet[0].viewData).to.exist;
 			expect(dataSource.rawDataSet[1].viewData).to.exist;
 
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.redrawing.subscribe);
-			sinon.assert.calledOnce(<Sinon.SinonSpy>dataSource.changed.subscribe);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSource.redrawing.subscribe);
+			sinon.assert.calledOnce(<sinon.SinonSpy>dataSource.changed.subscribe);
 		});
 
 		it('should add view data to new items when changed is fire', (): void => {
@@ -480,7 +480,7 @@ describe('CardContainerController', () => {
 			dataSource.dataSet = dataSource.rawDataSet;
 			dataSource.filteredDataSet = dataSource.rawDataSet;
 			buildController();
-			const numberSelectedSpy: Sinon.SinonSpy = sinon.spy();
+			const numberSelectedSpy: sinon.SinonSpy = sinon.spy();
 			cardContainer.numberSelectedChanges.subscribe(numberSelectedSpy);
 
 			_.each(dataSource.dataSet, (item: any): void => {
@@ -507,7 +507,7 @@ describe('CardContainerController', () => {
 		});
 
 		it('should fire selectionChangedEvent when selectionChanged is called', (): void => {
-			let selectionSpy: Sinon.SinonSpy = sinon.spy();
+			let selectionSpy: sinon.SinonSpy = sinon.spy();
 			buildController();
 
 			cardContainer.selectionChangedEvent = selectionSpy;

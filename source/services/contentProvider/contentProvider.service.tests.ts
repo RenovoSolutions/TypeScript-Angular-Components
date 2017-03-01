@@ -9,8 +9,8 @@ import 'angular-mocks';
 
 describe('contentProvider', () => {
 	var contentProvider: IContentProviderService;
-	var transcludeSpy: Sinon.SinonSpy;
-	var filterSpy: Sinon.SinonSpy;
+	var transcludeSpy: sinon.SinonSpy;
+	var filterSpy: sinon.SinonSpy;
 	var jqueryClone: any;
 
 	beforeEach(() => {
@@ -51,7 +51,7 @@ describe('contentProvider', () => {
 	});
 
 	it('should call the action with the new content when the content changes', (): void => {
-		var actionSpy: Sinon.SinonSpy = sinon.spy();
+		var actionSpy: sinon.SinonSpy = sinon.spy();
 
 		contentProvider.contentChanges.subscribe(actionSpy);
 		actionSpy.reset();
@@ -63,7 +63,7 @@ describe('contentProvider', () => {
 	});
 
 	it('should call the action immediately if there is already content', (): void => {
-		var actionSpy: Sinon.SinonSpy = sinon.spy();
+		var actionSpy: sinon.SinonSpy = sinon.spy();
 
 		contentProvider.setContent(jqueryClone);
 

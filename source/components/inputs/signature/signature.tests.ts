@@ -5,13 +5,13 @@ import { SignatureComponent } from './signature';
 import { emptySignature } from './emptySignature';
 
 interface ICanvasMock {
-	jSignature: Sinon.SinonSpy;
+	jSignature: sinon.SinonSpy;
 }
 
 describe('SignatureComponent', () => {
 	let signature: SignatureComponent;
-	let setValue: Sinon.SinonSpy;
-	let jqueryMock: Sinon.SinonSpy;
+	let setValue: sinon.SinonSpy;
+	let jqueryMock: sinon.SinonSpy;
 
 	beforeEach(() => {
 		const validator: any = {

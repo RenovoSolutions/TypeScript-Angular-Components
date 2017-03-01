@@ -8,7 +8,7 @@ import { SelectableCardContainerComponent	} from './selectableCardContainer';
 interface IDataSourceMock {
 	dataSet$: BehaviorSubject<any>;
 	filteredDataSet$: BehaviorSubject<any>;
-	init: Sinon.SinonSpy;
+	init: sinon.SinonSpy;
 }
 
 describe('SelectableCardContainerComponent', () => {

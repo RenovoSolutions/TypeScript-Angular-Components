@@ -14,7 +14,7 @@ import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 import { SortDirection } from '../../sorts/sort';
 
 interface IDataServiceMock {
-	get: Sinon.SinonSpy;
+	get: sinon.SinonSpy;
 }
 
 interface ITestFilter extends filters.ISerializableFilter<number> {

@@ -7,17 +7,17 @@ import __timeout = services.timeout;
 import { ButtonLongClickComponent } from './buttonLongClick';
 
 interface IMockBusy {
-	waitOn: Sinon.SinonSpy;
+	waitOn: sinon.SinonSpy;
 }
 
 interface IMockNotification {
-	warning: Sinon.SinonSpy;
+	warning: sinon.SinonSpy;
 }
 
 describe('ButtonLongClickComponent', () => {
 	let button: ButtonLongClickComponent;
 	let busy: IMockBusy;
-	let action: Sinon.SinonSpy;
+	let action: sinon.SinonSpy;
 	let notification: IMockNotification;
 
 	beforeEach(() => {

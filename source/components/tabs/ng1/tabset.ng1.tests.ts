@@ -17,7 +17,7 @@ describe('TabsetController', () => {
 	beforeEach(() => {
 		angular.mock.module(moduleName);
 		buildController();
-		let findPositionMock: Sinon.SinonSpy = sinon.spy((elem: IElementMock): number => {
+		let findPositionMock: sinon.SinonSpy = sinon.spy((elem: IElementMock): number => {
 			return elem.position;
 		});
 		tabset.findPosition = findPositionMock;

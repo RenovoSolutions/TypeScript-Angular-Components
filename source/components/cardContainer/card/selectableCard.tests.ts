@@ -6,11 +6,11 @@ import { FormService } from '../../../services/form/form.service';
 import { SelectableCardComponent } from './selectableCard';
 
 interface ICardContainerMock {
-	setSelected: Sinon.SinonSpy;
+	setSelected: sinon.SinonSpy;
 }
 
 interface IGuidServiceMock {
-	random: Sinon.SinonSpy;
+	random: sinon.SinonSpy;
 }
 
 describe('SelectableCardComponent', () => {

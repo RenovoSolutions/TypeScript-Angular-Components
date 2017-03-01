@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 interface IFilterOptionMock {
 	label?: string;
 	type?: string;
-	filter?: Sinon.SinonSpy;
+	filter?: sinon.SinonSpy;
 	count?: number;
 	active?: boolean;
 	serialize?: { (): number };

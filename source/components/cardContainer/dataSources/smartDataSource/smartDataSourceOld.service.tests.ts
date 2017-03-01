@@ -14,19 +14,19 @@ import { MergeSort } from '../../sorts/mergeSort/mergeSort.service';
 import { SortDirection } from '../../sorts/sort';
 
 interface IDataServiceMock {
-	get: Sinon.SinonSpy;
+	get: sinon.SinonSpy;
 }
 
 interface ITestFilter extends filters.ISerializableFilter<number> {
 	value: number;
 	trigger: Function;
-	dispose: Sinon.SinonSpy;
+	dispose: sinon.SinonSpy;
 }
 
 interface IDataSourceProcessorMock {
-	process: Sinon.SinonSpy;
-	sort: Sinon.SinonSpy;
-	page: Sinon.SinonSpy;
+	process: sinon.SinonSpy;
+	sort: sinon.SinonSpy;
+	page: sinon.SinonSpy;
 }
 
 describe('SmartDataSourceOld', () => {

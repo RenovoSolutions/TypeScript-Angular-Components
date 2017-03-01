@@ -13,16 +13,16 @@ import { Sorter } from '../sorts/sorter/sorter.service';
 import { MergeSort } from '../sorts/mergeSort/mergeSort.service';
 
 interface IDataServiceMock {
-	get: Sinon.SinonSpy;
+	get: sinon.SinonSpy;
 }
 
 describe('AsyncDataSource', () => {
 	let dataSourceProcessor: DataSourceProcessorOld;
 	let dataService: IDataServiceMock;
 	let source: AsyncDataSource<number>;
-	let reloadedSpy: Sinon.SinonSpy;
-	let changedSpy: Sinon.SinonSpy;
-	let redrawingSpy: Sinon.SinonSpy;
+	let reloadedSpy: sinon.SinonSpy;
+	let changedSpy: sinon.SinonSpy;
+	let redrawingSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		dataService = {
@@ -47,7 +47,7 @@ describe('AsyncDataSource', () => {
 
 		mock.flushAll(dataService);
 
-		sinon.assert.calledOnce(<Sinon.SinonSpy>source.processData);
+		sinon.assert.calledOnce(<sinon.SinonSpy>source.processData);
 	}));
 
 	it('should fire changed, reloaded, and redrawing events when the reload completeds', rlFakeAsync((): void => {

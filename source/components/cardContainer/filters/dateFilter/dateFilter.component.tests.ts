@@ -11,8 +11,8 @@ interface ITestObj {
 }
 
 interface IDateFilterMock {
-	setDateFrom: Sinon.SinonSpy;
-	setDateTo: Sinon.SinonSpy;
+	setDateFrom: sinon.SinonSpy;
+	setDateTo: sinon.SinonSpy;
 	dateFrom$?: Observable<moment.Moment>;
 }
 
@@ -79,8 +79,8 @@ describe('DateFilterComponent', (): void => {
 	});
 
 	it('should set the date to null and count to 0', (): void => {
-		const setDateSpy: Sinon.SinonSpy = sinon.spy();
-		const setCountSpy: Sinon.SinonSpy = sinon.spy();
+		const setDateSpy: sinon.SinonSpy = sinon.spy();
+		const setCountSpy: sinon.SinonSpy = sinon.spy();
 		dateFilter.setDate = setDateSpy;
 		dateFilter.setCount = setCountSpy;
 

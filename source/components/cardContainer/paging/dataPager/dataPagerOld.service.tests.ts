@@ -31,8 +31,8 @@ describe('DataPagerOld', () => {
 	});
 
 	it('should push paging changes to consumers', (): void => {
-		const pageNumberSpy: Sinon.SinonSpy = sinon.spy();
-		const pageSizeSpy: Sinon.SinonSpy = sinon.spy();
+		const pageNumberSpy: sinon.SinonSpy = sinon.spy();
+		const pageSizeSpy: sinon.SinonSpy = sinon.spy();
 
 		dataPager.pageNumberChanges.subscribe(pageNumberSpy);
 		dataPager.pageSizeChanges.subscribe(pageSizeSpy);

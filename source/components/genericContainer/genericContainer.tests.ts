@@ -13,7 +13,7 @@ import 'angular-mocks';
 describe('GenericContainerController', () => {
 	let controller: GenericContainerController;
 	let scope: angular.IScope;
-	let swapSpy: Sinon.SinonSpy;
+	let swapSpy: sinon.SinonSpy;
 
 	beforeEach(() => {
 		angular.mock.module(moduleName);
@@ -48,7 +48,7 @@ describe('GenericContainerController', () => {
 		controller.refresh();
 
 		sinon.assert.calledOnce(swapSpy);
-		let result: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let result: sinon.SinonSpyCall = swapSpy.firstCall;
 
 		let defaultTemplate: string = controller.default;
 		expect(result.args[0]).to.equal(defaultTemplate);
@@ -65,7 +65,7 @@ describe('GenericContainerController', () => {
 		controller.refresh();
 
 		sinon.assert.calledOnce(swapSpy);
-		let result: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let result: sinon.SinonSpyCall = swapSpy.firstCall;
 
 		expect(result.args[0]).to.equal(templates.type1);
 	});
@@ -82,7 +82,7 @@ describe('GenericContainerController', () => {
 		controller.refresh();
 
 		sinon.assert.calledOnce(swapSpy);
-		let firstResult: Sinon.SinonSpyCall = swapSpy.firstCall;
+		let firstResult: sinon.SinonSpyCall = swapSpy.firstCall;
 
 		expect(firstResult.args[0]).to.equal(templates.type1);
 
@@ -91,7 +91,7 @@ describe('GenericContainerController', () => {
 		});
 
 		sinon.assert.calledTwice(swapSpy);
-		let secondResult: Sinon.SinonSpyCall = swapSpy.secondCall;
+		let secondResult: sinon.SinonSpyCall = swapSpy.secondCall;
 
 		expect(secondResult.args[0]).to.equal(templates.type2);
 	});

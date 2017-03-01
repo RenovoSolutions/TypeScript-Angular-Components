@@ -5,7 +5,7 @@ import { PagerComponent } from './pager';
 interface IDataPagerMock {
 	pageSize$: BehaviorSubject<number>;
 	pageNumber$: BehaviorSubject<number>;
-	setPage: Sinon.SinonSpy;
+	setPage: sinon.SinonSpy;
 }
 
 interface IDataSourceMock {
