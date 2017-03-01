@@ -44,6 +44,7 @@
 		<template let-option>Value - {{option.value}}</template>
 	</rlTypeahead>
 	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead with create" [getItems]="getOptions" clientSearch="true" transform="value" [create]="createOption" allowCollapse="true"></rlTypeahead>
+	<rlTypeahead [(value)]="typeaheadSelection" prefix="Search for a" label="Typeahead long debounce" [getItems]="searchOptions" transform="value" allowCollapse="true" [debounce]="10000"></rlTypeahead>
 </div>
 <div>
 	<rlTypeaheadList [(value)]="selections" label="Typeahead list" [getItems]="getOptions" clientSearch="true" transform="value"></rlTypeaheadList>
