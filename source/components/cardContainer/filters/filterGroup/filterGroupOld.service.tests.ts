@@ -150,4 +150,60 @@ describe('FilterGroupOld', () => {
 
 		expect(filterGroup.serialize()).to.equal(4);
 	});
+
+	it('should notify when the active option is changed from the default', () => {
+		// arrange
+		let nonDefaultOption: IFilterOptionMock = {
+			active: false,
+			value: 0,
+		};
+		let defaultOption: IFilterOptionMock = {
+			active: true,
+			value: 1,
+		};
+		let changeFromDefaultSpy = sinon.spy();
+
+		filterGroup = buildFilter({
+			options: [nonDefaultOption, defaultOption],
+		});
+		filterGroup.initOptions();
+		filterGroup.changeFromDefault$.subscribe(changeFromDefaultSpy);
+
+		// act
+		filterGroup.setActiveOptionByValue(nonDefaultOption.value);
+
+		// assert
+		sinon.assert.calledOnce(changeFromDefaultSpy);
+	});
+
+	it('should not notify when the active option is changed from a non-default option', () => {
+		// arrange
+		let nonDefaultOption: IFilterOptionMock = {
+			active: false,
+			value: 0,
+		};
+		let defaultOption: IFilterOptionMock = {
+			active: true,
+			value: 1,
+		};
+		let anotherOption: IFilterOptionMock = {
+			active: false,
+			value: 2,
+		}
+		let changeFromDefaultSpy = sinon.spy();
+
+		filterGroup = buildFilter({
+			options: [nonDefaultOption, defaultOption],
+		});
+		filterGroup.initOptions();
+		filterGroup.changeFromDefault$.subscribe(changeFromDefaultSpy);
+		filterGroup.setActiveOptionByValue(nonDefaultOption.value);
+		changeFromDefaultSpy.reset();
+
+		// act
+		filterGroup.setActiveOptionByValue(anotherOption.value);
+
+		// assert
+		sinon.assert.notCalled(changeFromDefaultSpy);
+	});
 });

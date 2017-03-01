@@ -150,7 +150,10 @@ export class CardContainerController {
 			//*use card container event service?
 			$scope.$on('updateDisabledSelections', this.updateDisabledSelections);
 
-			this.dataSource.changed.subscribe(this.addViewData);
+			this.dataSource.changed.subscribe(() => {
+				this.addViewData();
+				this.updateVisualColumnSorting();
+			});
 			this.dataSource.redrawing.subscribe(this.clearFilteredSelections);
 
 			this.addViewData();
@@ -163,6 +166,11 @@ export class CardContainerController {
 				},
 				flipSort: true,
 			};
+		}
+		else {
+			this.dataSource.changed.subscribe(() => {
+				this.updateVisualColumnSorting();
+			});
 		}
 
 		if (this.dataSource.sorts == null) {

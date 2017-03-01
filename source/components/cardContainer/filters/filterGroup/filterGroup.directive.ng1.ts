@@ -31,6 +31,10 @@ export class FilterGroupController {
 		this.expanded = true;
 	}
 
+	$onInit(): void {
+		this.filterGroup.changeFromDefault$.subscribe(() => this.expanded = false);
+	}
+
 	get headerTitle(): string {
 		if (!this.disabled) {
 			return this.filterGroup.label + ': ' + this.filterGroup.activeOption.label

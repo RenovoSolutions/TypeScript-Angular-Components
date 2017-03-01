@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { ReplaySubject, Observable } from 'rxjs/Rx';
 
 import { services, filters } from 'typescript-angular-utilities';
 import __object = services.object;
@@ -28,8 +29,11 @@ export interface IFilterGroupOld extends filters.IFilterWithCounts, filters.ISer
 	type: string;
 	options: IFilterOptionOld[];
 	activeOption: IFilterOptionOld;
+	changeFromDefault$: ReplaySubject<any>;
 	setActiveOption(index: number): void;
 	setOptionCounts(counts: number[]): void;
+	setActiveOptionByValue(value: number): void;
+	setActiveOptionByLabel(label: string): void;
 }
 
 export class FilterGroupOld extends filters.SerializableFilter<any> implements IFilterGroupOld {
@@ -39,7 +43,9 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 	template: string = '<rl-filter-group filter-group="filter" source="dataSource"></rl-filter-group>';
 	settings: IFilterGroupSettingsOld;
 
+	private _defaultOption: IFilterOptionOld;
 	private _activeOption: IFilterOptionOld;
+	private _changeFromDefault$: ReplaySubject<any>;
 
 	object: __object.IObjectUtility;
 
@@ -47,6 +53,7 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 		super();
 		this.object = object;
 
+		this._changeFromDefault$ = new ReplaySubject<any>(1);
 		this.settings = settings;
 		this.label = settings.label;
 		this.type = settings.type != null ? settings.type : settings.label;
@@ -55,7 +62,8 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 
 	initOptions():void {
 		this.options = this.settings.options;
-		this.activeOption = this.setDefaultOption();
+		this._defaultOption = this.setDefaultOption();
+		this.activeOption = this._defaultOption;
 
 		_.each(this.options, (option: IFilterOptionOld): void => {
 			if (_.isUndefined(option.type)) {
@@ -66,11 +74,18 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 		});
 	}
 
+	get changeFromDefault$(): ReplaySubject<any> {
+		return this._changeFromDefault$;
+	}
+
 	get activeOption(): IFilterOptionOld {
 		return this._activeOption;
 	}
 
 	set activeOption(value: IFilterOptionOld) {
+		if (this._activeOption == this._defaultOption && value != this._defaultOption) {
+			this._changeFromDefault$.next(value);
+		}
 		this._activeOption = value;
 		this.onChange(false);
 	}
@@ -104,6 +119,28 @@ export class FilterGroupOld extends filters.SerializableFilter<any> implements I
 		if (index >= 0 && index < this.options.length) {
 			this.activeOption = this.options[index];
 		}
+	}
+
+	setActiveOptionByValue(value: number): void {
+		_.each(this.options, (option: IFilterOptionOld): void => {
+			if (option.value === value) {
+				if (!option.active) {
+					this.activeOption = option;
+				}
+				return;
+			}
+		});
+	}
+
+	setActiveOptionByLabel(label: string): void {
+		_.each(this.options, (option: IFilterOptionOld): void => {
+			if (option.label === label) {
+				if (!option.active) {
+					this.activeOption = option;
+				}
+				return;
+			}
+		});
 	}
 
 	setOptionCounts(counts: number[]): void {

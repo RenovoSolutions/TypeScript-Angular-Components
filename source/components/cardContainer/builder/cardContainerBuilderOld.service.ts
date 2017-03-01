@@ -40,6 +40,7 @@ export interface ICardContainerBuilderOld {
 	useSelection(): void;
 	renderFilters(): void;
 	saveWhenInvalid(): void;
+	findColumnByFieldName(fieldName: string): IColumn<any>;
 }
 
 
@@ -99,6 +100,10 @@ export class CardContainerBuilderOld implements ICardContainerBuilderOld {
 
 	addColumn<TItemType>(column: IColumn<TItemType>): void {
 		this._columns.push(column);
+	}
+
+	findColumnByFieldName(fieldName: string): IColumn<any> {
+		return this._columns.find(column => column.fieldName === fieldName);
 	}
 
 	useClickableCards(): void {
