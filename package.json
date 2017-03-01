@@ -93,7 +93,7 @@
     "@types/core-js": "~0.9.34",
     "@types/jquery": "~2.0.32",
     "@types/jquery.jsignature": "~2.0.28",
-    "@types/lodash": "~4.14.36",
+    "@types/lodash": "4.14.36",
     "@types/moment-timezone": "0.2.31",
     "@types/sinon": "1.16.31",
     "angular": "~1.5.3",
