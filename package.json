@@ -86,6 +86,7 @@
     "@angular/upgrade": "~2.4.0",
     "@types/angular": "1.5.16",
     "@types/angular-ui-bootstrap": "~0.13.35",
+    "@types/angular-mocks": "^1.5.9",
     "@types/bootstrap": "~3.3.32",
     "@types/bootstrap-touchspin": "0.0.29",
     "@types/chai": "~3.4.33",
