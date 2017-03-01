@@ -10,7 +10,7 @@ import __search = services.search;
 
 import { ComponentValidator } from '../../../services/componentValidator/componentValidator.service';
 
-import { TypeaheadComponent, DEFAULT_SERVER_SEARCH_DEBOUNCE } from './typeahead';
+import { TypeaheadComponent, DEFAULT_SERVER_SEARCH_DEBOUNCE, DEFAULT_CLIENT_SEARCH_DEBOUNCE } from './typeahead';
 
 interface ITransformMock {
 	getValue: Sinon.SinonSpy;
@@ -67,6 +67,38 @@ describe('TypeaheadComponent', () => {
 		typeahead.ngOnInit();
 
 		expect(typeahead.collapsed).to.be.true;
+	});
+
+	describe('debounce', () => {
+		it('should use the default server search debounce by default', () => {
+			typeahead.ngOnInit();
+			expect(typeahead.loadDelay).to.equal(DEFAULT_SERVER_SEARCH_DEBOUNCE);
+		});
+
+		it('should use the default client search debounce if client searching is on', () => {
+			typeahead.clientSearch = true;
+			typeahead.ngOnInit();
+			expect(typeahead.loadDelay).to.equal(DEFAULT_CLIENT_SEARCH_DEBOUNCE);
+		});
+
+		it('should use the custom debounce when client searching is off', () => {
+			const debounce = 10000;
+			typeahead.debounce = debounce;
+
+			typeahead.ngOnInit();
+
+			expect(typeahead.loadDelay).to.equal(debounce);
+		});
+
+		it('should use the custom debounce when client searching is on', () => {
+			const debounce = 10000;
+			typeahead.debounce = debounce;
+
+			typeahead.clientSearch = true;
+			typeahead.ngOnInit();
+
+			expect(typeahead.loadDelay).to.equal(debounce);
+		});
 	});
 
 	describe('loadItems', (): void => {
