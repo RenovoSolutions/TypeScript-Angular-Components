@@ -2,7 +2,7 @@
 	<label ng-show="select.selection" class="label-slide angular-animate">
 		{{::select.label}}
 	</label>
-	<div class="rl-select-wrap" tabindex="0" ng-blur="select.close()">
+	<div class="rl-select-wrap" ng-class="{ 'rl-select-wrap-open': select.showOptions }" tabindex="0" ng-blur="select.close()">
 		<div class="form-control rl-select-trigger"
 			ng-class="{ 'disabled': select.ngDisabled, 'rl-select-open': select.showOptions }"
 			ng-mousedown="select.toggle()">
