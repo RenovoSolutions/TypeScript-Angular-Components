@@ -41,6 +41,7 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	@Input() allowCollapse: boolean;
 	@Input() create: { (value: string): T };
 	@Input() caseSensitiveSearching: boolean;
+	@Input() debounce: number;
 	@Output() selector: EventEmitter<T> = new EventEmitter<T>();
 
 
@@ -158,7 +159,12 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 	ngOnInit(): void {
 		super.ngOnInit();
 
-		this.loadDelay = this.clientSearch ? DEFAULT_CLIENT_SEARCH_DEBOUNCE : DEFAULT_SERVER_SEARCH_DEBOUNCE;
+		if (this.debounce) {
+			this.loadDelay = this.debounce;
+		} else {
+			this.loadDelay = this.clientSearch ? DEFAULT_CLIENT_SEARCH_DEBOUNCE : DEFAULT_SERVER_SEARCH_DEBOUNCE;
+		}
+
 		this.prefix = this.prefix || 'Search for';
 		this.placeholder = this.label != null ? this.prefix + ' ' + this.label.toLowerCase() : 'Search';
 
