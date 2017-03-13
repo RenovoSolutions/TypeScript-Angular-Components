@@ -17,7 +17,7 @@ import * as genericContainerNg1 from './genericContainer/genericContainer';
 import * as inputNg1 from './inputs/input.ng1';
 import * as lazyLoadNg1 from './lazyLoad/lazyLoad';
 import * as longClickButtonNg1 from './buttons/buttonLongClick/buttonLongClick.ng1';
-import * as messageLogNg1 from './messageLog/messageLog.module';
+import * as messageLogNg1 from './messageLog/ng1/messageLog.module';
 import * as radioNg1 from './inputs/radio/radio.module';
 import * as ratingBarNg1 from './ratingBar/ratingBar.ng1';
 import * as richTextEditorNg1 from './richTextEditor/richTextEditor';
