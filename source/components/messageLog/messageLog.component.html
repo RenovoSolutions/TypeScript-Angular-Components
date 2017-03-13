@@ -1,0 +1,42 @@
+<rlBusy [loading]="loading" size="2x"></rlBusy>
+<div class="content-group"
+		*ngFor="let entry of messages"
+		[class.system-note]="entry.isSystemNote">
+		<!--rl-alias="entry as {{log.messageAs}}"-->
+		{{entry | json}}
+	<!--<rl-generic-container selector="log.getEntrySelector(entry)" templates="log.templates">
+		<template default>
+			<div class="message-body">
+				<div class="message-content">
+					<div ng-bind-html="entry.message"></div>
+				</div>
+				<span class="message-button" ng-if="log.canEditEntry(entry)">
+					<rlButtonAsync type="message-default flat" action="log.editMessage(entry)" size="xs"><i class="fa fa-edit"></i></rlButtonAsync>
+				</span>
+				<span class="message-button" ng-if="log.canDeleteEntry(entry)">
+					<rlButtonAsync type="message-danger flat" action="log.messageLog.deleteMessage(entry)" size="xs"><i class="fa fa-remove"></i></rlButtonAsync>
+				</span>
+			</div>
+			<div class="message-byline">
+				<div class="byline">{{entry.createdBy.name}}</div>
+				<div class="byline">
+					{{ entry.createdDate | rlDate:true }}
+					<span  ng-if="entry.edited" class="edited-note" rl-popover="log.tooltipTemplate" popover-trigger="mouseenter">(edited)</span></div>
+			</div>
+		</template>
+	</rl-generic-container>-->
+</div>
+<div class="alert alert-info" *ngIf="!(messages && messages.length) && !loading">No existing messages</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="text-center">
+			<rlButtonAsync [action]="getTop" [disabled]="loading">
+				<span [hidden]="!hasPreviousPage">Top <i class="fa fa-caret-up"></i></span>
+				<span [hidden]="hasPreviousPage"><i class="fa fa-refresh"></i> Refresh</span>
+			</rlButtonAsync>
+			<rlButtonAsync [disabled]="hasNextPage == false || loading" [action]="getOlder">
+				Older <i class="fa fa-caret-right"></i>
+			</rlButtonAsync>
+		</div>
+	</div>
+</div>
