@@ -42,7 +42,7 @@
 				<div class="alert alert-info" ng-show="cardContainer.dataSource.needsRefinedSearch">
 					Please refine your search results
 				</div>
-				<div class="alert alert-info" ng-show="cardContainer.dataSource.isEmpty">
+				<div class="alert alert-info" ng-show="cardContainer.dataSource.isEmpty && !cardContainer.dataSource.loadingDataSet">
 					There are no items to show
 				</div>
 
