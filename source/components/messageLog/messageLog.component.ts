@@ -1,4 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ContentChild, TemplateRef } from '@angular/core';
+import { clone } from 'lodash';
 
 export interface ILogPage {
 	pageNumber: number;
@@ -18,6 +19,8 @@ export class MessageLogComponent {
 
 	@Output() page: EventEmitter<ILogPage> = new EventEmitter<ILogPage>();
 
+	@ContentChild(TemplateRef) template: TemplateRef<any>;
+
 	get hasPreviousPage(): boolean {
 		return this.pageNumber > 1;
 	}
@@ -36,5 +39,9 @@ export class MessageLogComponent {
 			pageNumber: this.pageNumber,
 			pageSize: this.pageSize,
 		});
+	}
+
+	newTemplate(): TemplateRef<any> {
+		return clone(this.template);
 	}
 }
