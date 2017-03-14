@@ -8,7 +8,7 @@ import { services } from 'typescript-angular-utilities';
 import __array = services.array;
 import __date = services.date;
 
-import { IMessage, IMessageLogDataService, IUser } from '../../source/components/messageLog/messageLog.module';
+import { IMessage, IMessageLogDataService, IUser } from '../../source/components/messageLog/ng1/messageLog.module';
 
 export const moduleName: string = 'MessageLogTestModule';
 
@@ -98,7 +98,7 @@ export class MessageLogNg1Directive extends UpgradeComponent {
 
 angular.module(moduleName, [])
 	.component('tsMessageLogNg1', {
-		template: require('./messageLogTest.html'),
+		template: require('./messageLogNg1Test.html'),
 		controller: 'MessageLogTestController',
 		controllerAs: 'messageLog',
 	})
