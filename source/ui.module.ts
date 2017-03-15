@@ -13,6 +13,7 @@ import { RecluseFormComponent } from'./components/form/RecluseForm';
 import { FormComponent } from'./components/form/form';
 import { INPUT_DIRECTIVES } from'./components/inputs/index';
 import { MultiStepIndicatorComponent } from'./components/multiStepIndicator/multiStepIndicator';
+import { MessageLogComponent } from'./components/messageLog/messageLog.component';
 import { RatingBarComponent } from'./components/ratingBar/ratingBar';
 import { SimpleCardContainer } from'./components/simpleCardContainer/simpleCardContainer';
 import { SIMPLE_CARD_DIRECTIVES } from './components/simpleCardList/index';
@@ -46,6 +47,7 @@ export const componentsList: any[] = [
 	FormComponent,
 	INPUT_DIRECTIVES,
 	MultiStepIndicatorComponent,
+	MessageLogComponent,
 	RatingBarComponent,
 	SimpleCardContainer,
 	SIMPLE_CARD_DIRECTIVES,

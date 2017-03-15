@@ -9,13 +9,13 @@ import {
 	moduleName as jqueryModuleName,
 	serviceName as jqueryServiceName,
 	IJQueryUtility,
-} from '../../services/jquery/jquery.service';
+} from '../../../services/jquery/jquery.service';
 
 import { IMessageLogDataService, IMessageLog, IMessage, factoryName, IMessageLogFactory, IUser } from './messageLog.service';
-import * as componentServices from '../../services/services.module';
+import * as componentServices from '../../../services/services.module';
 import __dialog = componentServices.dialog;
 
-import { ITemplateLoader, serviceName as templateLoaderService } from '../../services/templateLoader/templateLoader.service';
+import { ITemplateLoader, serviceName as templateLoaderService } from '../../../services/templateLoader/templateLoader.service';
 
 export var directiveName: string = 'rlMessageLog';
 export var controllerName: string = 'MessageLogController';

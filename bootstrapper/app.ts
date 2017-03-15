@@ -14,7 +14,7 @@ import * as componentsDowngrade from '../source/componentsDowngrade';
 import { moduleName as inputModuleName } from './inputs/inputBootstrapper';
 import { moduleName as buttonModuleName } from './buttons/buttonBootstrapper';
 import { moduleName as popupModuleName } from './popup/popupBootstrapper';
-import { moduleName as messageLogModuleName } from './messageLog/messageLogBootstrapper';
+import { moduleName as messageLogModuleName } from './messageLog/messageLogNg1Bootstrapper';
 import { moduleName as cardModuleName } from './cards/cardContainerBootstrapper';
 import { moduleName as tabModuleName } from './tabs/tabsBootstrapper';
 import { moduleName as formModuleName } from './forms/formsBootstrapper';
@@ -42,7 +42,9 @@ import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
 import { FormsNg1BootstrapperComponent, FormsNg1Directive } from './forms/formsBootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
-import { MessageLogNg1BootstrapperComponent, MessageLogNg1Directive } from './messageLog/messageLogBootstrapper';
+import { MessageLogNg1BootstrapperComponent, MessageLogNg1Directive } from './messageLog/messageLogNg1Bootstrapper';
+import { MessageLogNg2BootstrapperComponent } from './messageLog/messageLogNg2Bootstrapper';
+import { MessageLogRootComponent } from './messageLog/messageLogRoot';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent, MiscNg1Directive, MiscNg2Directive } from './misc/miscBootstrapper';
@@ -114,6 +116,8 @@ angular.module(moduleName, [
 
 		MessageLogNg1BootstrapperComponent,
 		MessageLogNg1Directive,
+		MessageLogNg2BootstrapperComponent,
+		MessageLogRootComponent,
 
 		MiscRootComponent,
 		MiscNg1BootstrapperComponent,

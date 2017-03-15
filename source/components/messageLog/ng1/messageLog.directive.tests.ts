@@ -10,12 +10,12 @@ import {
 	EditPermissions,
 	IUser
 } from './messageLog.module';
-import { defaultThemeValueName } from '../componentsDefaultTheme';
+import { defaultThemeValueName } from '../../componentsDefaultTheme';
 
 import * as angular from 'angular';
 import 'angular-mocks';
 
-import { serviceName as dialogServiceName, IAutosaveDialogSettings } from '../../services/dialog/dialog.service.ng1';
+import { serviceName as dialogServiceName, IAutosaveDialogSettings } from '../../../services/dialog/dialog.service.ng1';
 
 interface IMockMessageLogService {
 	visibleMessages: number[];

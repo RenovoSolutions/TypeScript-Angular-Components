@@ -1,0 +1,22 @@
+<rlBusy [loading]="loading" size="2x"></rlBusy>
+<div class="content-group"
+		*ngFor="let entry of messages"
+		[class.system-note]="entry.isSystemNote">
+	<span *ngIf="template">
+		<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: entry }"></template>
+	</span>
+</div>
+<div class="alert alert-info" *ngIf="!(messages && messages.length) && !loading">No existing messages</div>
+<div class="row">
+	<div class="col-xs-12">
+		<div class="text-center">
+			<rlButtonAsync [action]="getTop" [disabled]="loading">
+				<span [hidden]="!hasPreviousPage">Top <i class="fa fa-caret-up"></i></span>
+				<span [hidden]="hasPreviousPage"><i class="fa fa-refresh"></i> Refresh</span>
+			</rlButtonAsync>
+			<rlButtonAsync [disabled]="hasNextPage == false || loading" [action]="getOlder">
+				Older <i class="fa fa-caret-right"></i>
+			</rlButtonAsync>
+		</div>
+	</div>
+</div>

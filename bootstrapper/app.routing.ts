@@ -22,7 +22,9 @@ import { MsiBootstrapperComponent } from './msi/msiBootstrapper.ng2';
 import { FormsRootComponent } from './forms/formsRoot';
 import { FormsNg1BootstrapperComponent } from './forms/formsBootstrapper';
 import { FormsBootstrapper } from './forms/formsNg2Bootstrapper';
-import { MessageLogNg1BootstrapperComponent } from './messageLog/messageLogBootstrapper';
+import { MessageLogNg1BootstrapperComponent } from './messageLog/messageLogNg1Bootstrapper';
+import { MessageLogNg2BootstrapperComponent } from './messageLog/messageLogNg2Bootstrapper';
+import { MessageLogRootComponent } from './messageLog/messageLogRoot';
 import { MiscRootComponent } from './misc/miscRoot';
 import { MiscNgContextBootstrapper } from './misc/miscNg2Context';
 import { MiscNg1BootstrapperComponent, MiscNg2BootstrapperComponent } from './misc/miscBootstrapper';
@@ -86,7 +88,11 @@ const appRoutes: Routes = [
 	},
 	{
 		path: 'messageLog',
-		component: MessageLogNg1BootstrapperComponent,
+		component: MessageLogRootComponent,
+		children: [
+			{ path: 'ng1', component: MessageLogNg1BootstrapperComponent },
+			{ path: 'ng2', component: MessageLogNg2BootstrapperComponent },
+		],
 	},
 	{
 		path: 'misc',
