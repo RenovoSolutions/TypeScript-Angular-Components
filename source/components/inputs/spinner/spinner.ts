@@ -57,7 +57,6 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		this.inputType = 'spinner';
 		this.numberUtility = number;
 		this.stringUtility = string;
-		this.showLabel();
 	}
 
 	focus(): void {
