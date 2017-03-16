@@ -70,7 +70,7 @@ export class SpinnerComponent extends ValidatedInputComponent<number> implements
 		}
 
 		super.ngAfterViewInit();
-		this.value = this.value || 0;
+		this.value = this.value;
 		this.setDisabled(this.disabled);
 		this.control.valueChanges.subscribe(value => {
 			const roundedValue: number = this.round(value);
