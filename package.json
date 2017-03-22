@@ -16,6 +16,7 @@
   "main": "./source/ui.module.js",
   "typings": "./source/ui.module.d.ts",
   "scripts": {
+    "prepublish": "npm run build && gulp bundle-css",
     "update": "npm install && npm run bundle-deps",
     "update.wipe-npm": "gulp wipe-npm-update",
     "version": "gulp version -v ",
