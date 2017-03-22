@@ -6,7 +6,7 @@ import { DataSourceBase } from '../dataSourceBase.service';
 import { ISort, SortDirection } from '../../sorts/sort';
 import { toRequestStream, throttled } from './smartDataActions';
 
-export const defaultDebounce = 1000;
+const defaultDebounce:number = 1000;
 
 export class SmartDataSource<TDataType> extends DataSourceBase<TDataType> {
 	throttled$: BehaviorSubject<boolean>;

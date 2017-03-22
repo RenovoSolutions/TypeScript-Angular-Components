@@ -1,7 +1,9 @@
 import { Subject } from 'rxjs';
 import { rlFakeAsync, rlTick } from 'rl-async-testing';
 
-import { SmartDataSource, defaultDebounce } from './smartDataSource.service';
+import { SmartDataSource } from './smartDataSource.service';
+
+const defaultDebounce:number = 1000;
 
 describe('SmartDataSource', () => {
 	let source: SmartDataSource<any>;
