@@ -17,9 +17,13 @@ export var serviceName: string = 'uiBootstrapModelDialog';
 
 export interface IBootstrapModalDialogService extends IDialogService<IBootstrapModalDialogSettings> { }
 
-export interface IBootstrapModalDialogSettings extends ng.ui.bootstrap.IModalSettings {
+export interface IBootstrapModalDialogSettings  {
 	resolveToDialog?: boolean;
 	dialogAs?: string;
+	resolve?: any;
+	scope?: any;
+	template?: any;
+	controller?: any;
 }
 
 export interface IPromptScope extends ng.IScope {
@@ -34,7 +38,7 @@ export class BootstrapModalDialogService implements IDialogImplementation<IBoots
 	closeHandler: IDialogCloseHandler;
 
 	static $inject: string[] = ['$uibModal', '$rootScope', promiseServiceName];
-	constructor(private $modal: ng.ui.bootstrap.IModalService
+	constructor(private $modal: any
 			, private $rootScope: ng.IRootScopeService
 			, private promise: IPromiseUtility) { }
 
