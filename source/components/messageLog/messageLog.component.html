@@ -1,7 +1,7 @@
 <rlBusy [loading]="loading" size="2x"></rlBusy>
-<div class="content-group"
+<div class="rl-messages"
 		*ngFor="let entry of messages"
-		[class.system-note]="entry.isSystemNote">
+		[class.rl-message-system]="entry.isSystemNote">
 	<span *ngIf="template">
 		<template [ngTemplateOutlet]="newTemplate()" [ngOutletContext]="{ $implicit: entry }"></template>
 	</span>
