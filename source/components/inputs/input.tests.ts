@@ -10,6 +10,7 @@ interface IFormMock {
 
 interface IControlGroupMock {
 	addControl: sinon.SinonSpy;
+	removeControl: sinon.SinonSpy;
 }
 
 interface IGuidMock {
@@ -29,7 +30,7 @@ describe('InputComponent', (): void => {
 
 	beforeEach((): void => {
 		rlForm = {
-			form: { addControl: sinon.spy() },
+			form: { addControl: sinon.spy(), removeControl: sinon.spy() },
 		};
 		guid = { random: sinon.spy() };
 
@@ -147,5 +148,12 @@ describe('InputComponent', (): void => {
 		input.isLabelShowing();
 
 		expect(input.hidePlaceholder).to.be.true;
+	});
+
+	it('should remove the control from the form when ngOnDestroy is called', () => {
+		input.ngOnDestroy();
+
+		sinon.assert.calledOnce(rlForm.form.removeControl);
+		sinon.assert.calledWith(rlForm.form.removeControl, input.name);
 	});
 });
