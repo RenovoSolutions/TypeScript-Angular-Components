@@ -1,4 +1,4 @@
-import { Component, AfterViewInit, OnInit, EventEmitter, AnimationEntryMetadata } from '@angular/core';
+import { Component, AfterViewInit, OnInit, EventEmitter, AnimationEntryMetadata, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 
 import { services } from 'typescript-angular-utilities';
@@ -12,7 +12,7 @@ export const baseInputs: string[] = ['name', 'label', 'value', 'disabled','warni
 export const baseOutputs: string[] = ['change', 'valueChange'];
 export const baseAnimations = [slide.animation];
 
-export class InputComponent<T> implements AfterViewInit, OnInit {
+export class InputComponent<T> implements AfterViewInit, OnInit, OnDestroy {
 	name: string;
 	label: string = '';
 	disabled: boolean;
@@ -55,6 +55,12 @@ export class InputComponent<T> implements AfterViewInit, OnInit {
 		this.control.valueChanges.subscribe(value => {
 			this.value = value;
 		});
+	}
+
+	ngOnDestroy() {
+		if (this.rlForm) {
+			this.rlForm.form.removeControl(this.name);
+		}
 	}
 
 	initControl(): void {
