@@ -9,6 +9,7 @@ import { BaseButtonComponent, baseInputs } from '../baseButton';
 })
 export class ButtonRouteComponent extends BaseButtonComponent {
 	@Input() link: string;
+	@Input() queryParams: any;
 	@Input() activeClass: string = 'active';
 	@Input() newTab: boolean;
 
