@@ -146,11 +146,11 @@ export class TypeaheadComponent<T> extends ValidatedInputComponent<T> implements
 			// triggers the subscription
 			this.busy.waitOnObservableNext(loadRequest).subscribe(data => {
 				if (!isEqual(data, this.cacheDisplayList)) {
-					this.list.open();
 					this.cacheDisplayList = cloneDeep(data);
-					this.changeDetector.detectChanges();
-					return this._visibleItems.next(this.cacheDisplayList);
 				}
+				this.list.open();
+				this.changeDetector.detectChanges();
+				return this._visibleItems.next(this.cacheDisplayList);
 			});
 		}
 
