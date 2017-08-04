@@ -44,7 +44,7 @@ describe('TypeaheadComponent', () => {
 		setValue = sinon.spy();
 		typeahead.setValue = setValue;
 
-		busy = { waitOn: sinon.spy(x => x), waitOnObservableNext: sinon.spy(x => x), waitOnObservableCompletion: sinon.spy(x => x), setBusy: sinon.spy(x => x)};
+		busy = { waitOn: sinon.spy(x => x), waitOnObservableNext: sinon.spy(x => x), waitOnObservableCompletion: sinon.spy(x => x), setBusy: sinon.spy(x => x) };
 		typeahead.busy = <any>busy;
 		typeahead.list = <any>{
 			open: sinon.spy(),
@@ -303,7 +303,7 @@ describe('TypeaheadComponent', () => {
 			expect(typeahead.search).to.be.empty;
 		});
 
-		it('should only update when new value is emitted', rlFakeAsync(() => {
+		it('should always update when new value is emitted', rlFakeAsync(() => {
 			typeahead.clientSearch = true;
 			let listChangeDetector = sinon.spy();
 			let getItemsMock: IMockedRequest<string> = mock.request(items);
@@ -331,7 +331,7 @@ describe('TypeaheadComponent', () => {
 
 			getItemsMock.flush();
 
-			sinon.assert.calledThrice(listChangeDetector);
+			sinon.assert.callCount(listChangeDetector, 4);
 
 		}));
 
