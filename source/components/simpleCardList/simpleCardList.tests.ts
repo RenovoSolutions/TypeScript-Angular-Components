@@ -6,7 +6,6 @@ import { SimpleCardListComponent } from './simpleCardList';
 interface ICardMock {
 	close?: sinon.SinonSpy;
 	alwaysOpen?: boolean;
-	alternatingClass?: string;
 }
 
 describe('SimpleCardListComponent', () => {
@@ -66,20 +65,5 @@ describe('SimpleCardListComponent', () => {
 		});
 
 		expect(card.alwaysOpen).to.be.true;
-	});
-
-	it('should set class card-odd on the even indexed cards', (): void => {
-		const card1: ICardMock = {};
-		const card2: ICardMock = {};
-		cards.push(<any>card1);
-		cards.push(<any>card2);
-		list.alwaysOpen = true;
-
-		list.ngAfterViewChecked();
-
-		expect(card1.alternatingClass).to.equal('card-odd');
-		expect(card1.alwaysOpen).to.be.true;
-		expect(card2.alternatingClass).to.be.empty;
-		expect(card2.alwaysOpen).to.be.true;
 	});
 });

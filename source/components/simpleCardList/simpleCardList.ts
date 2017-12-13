@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChange, OnChanges, AfterViewChecked, ContentChildren, QueryList } from '@angular/core';
+import { Component, Input, SimpleChange, OnChanges, ContentChildren, QueryList } from '@angular/core';
 import { every, each } from 'lodash';
 
 import { services } from 'typescript-angular-utilities';
@@ -18,7 +18,7 @@ export interface IListChanges {
 				<ng-content></ng-content>
 			</span>`,
 })
-export class SimpleCardListComponent<T> implements OnChanges, AfterViewChecked {
+export class SimpleCardListComponent<T> implements OnChanges {
 	@Input() alwaysOpen: boolean;
 
 	@ContentChildren(SimpleCardComponent) cardChildren: QueryList<SimpleCardComponent<T>>;
@@ -43,17 +43,5 @@ export class SimpleCardListComponent<T> implements OnChanges, AfterViewChecked {
 		if (changes.alwaysOpen) {
 			each(this.cards, card => { card.alwaysOpen = changes.alwaysOpen.currentValue; });
 		}
-	}
-
-	ngAfterViewChecked(): void {
-		each(this.cards, (card: SimpleCardComponent<T>, index: number): void => {
-			// mark the even indexed cards as 'odd', since they are the first, third, etc in the view
-			card.alternatingClass = this.numberUtility.isEven(index)
-								? 'card-odd'
-								: '';
-			if (this.alwaysOpen != null) {
-				card.alwaysOpen = this.alwaysOpen;
-			}
-		});
 	}
 }
