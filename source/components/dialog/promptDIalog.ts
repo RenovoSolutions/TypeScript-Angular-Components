@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 
 import { DialogComponent } from './dialog';
+import { DialogRootService } from './dialogRoot.service';
 
 @Component({
 	selector: 'rlPromptDialog',
@@ -15,18 +17,24 @@ export class PromptDialogComponent {
 
 	@ViewChild(DialogComponent) dialog: DialogComponent;
 
+	constructor(private dialogRoot: DialogRootService) { }
+
 	open(): void {
 		this.dialog.open();
 	}
 
 	accept(): void {
 		this.onAccept.emit(null);
-		this.dialog.close();
+		if (this.dialog.isOpen()) {
+			this.dialog.close();
+		}
 	}
 
 	cancel(): void {
 		this.onCancel.emit(null);
-		this.dialog.close();
+		if (this.dialog.isOpen()) {
+			this.dialog.close();
+		}
 	}
 
 	dismiss(): void {

@@ -22,6 +22,7 @@ describe('DialogComponent', (): void => {
 	});
 
 	it('should open a dialog on the root with the current dialog\'s context', (): void => {
+		dialog.dialogId = '123';
 		dialog.header = <any>{};
 		dialog.content = <any>{};
 		dialog.footer = <any>{};
@@ -34,6 +35,7 @@ describe('DialogComponent', (): void => {
 
 		sinon.assert.calledOnce(openSpy);
 		const arg = openSpy.firstCall.args[0];
+		expect(arg.id).to.equal(dialog.dialogId);
 		expect(isFunction(arg.onClosing));
 		expect(arg.header).to.equal(dialog.header);
 		expect(arg.content).to.equal(dialog.content);
