@@ -41,27 +41,43 @@ describe('DialogComponent', (): void => {
 		expect(arg.autosave).to.equal(dialog.autosave);
 		expect(arg.size).to.equal(dialog.size);
 		expect(isFunction(arg.submitAndClose));
+
+		// cleanup active subscriptions
+		dialogRoot.closeDialog.next();
 	});
 
-	it('should fire a close event on the root', (): void => {
+	it('should fire a close event on the root if the dialog is active', (): void => {
 		const closeSpy = sinon.spy();
 		dialogRoot.closeDialog.subscribe(closeSpy);
+		dialog.isActive = true;
 
 		dialog.close();
 
 		sinon.assert.calledOnce(closeSpy);
 	});
 
-	it('should set dismissing and fire a close event on the root', (): void => {
+	it('should set dismissing and fire a close event on the root if the dialog is active', (): void => {
 		expect(dialogRoot.dismissing).to.be.false;
 
 		const closeSpy = sinon.spy();
 		dialogRoot.closeDialog.subscribe(closeSpy);
+		dialog.isActive = true;
 
 		dialog.dismiss();
 
 		expect(dialogRoot.dismissing).to.be.true;
 		sinon.assert.calledOnce(closeSpy);
+	});
+
+	it('should do nothing if the dialog is inactive', (): void => {
+		const closeSpy = sinon.spy();
+		dialogRoot.closeDialog.subscribe(closeSpy);
+		dialog.isActive = false;
+
+		dialog.close();
+		dialog.dismiss();
+
+		sinon.assert.notCalled(closeSpy);
 	});
 
 	describe('submitAndClose', (): void => {
@@ -75,6 +91,7 @@ describe('DialogComponent', (): void => {
 			dialog.submitAndWait = submitAndWaitSpy;
 			closeSpy = sinon.spy();
 			dialog.close = closeSpy;
+			dialog.isActive = true;
 		});
 
 		it('should close the dialog when the submit completes', (): void => {
