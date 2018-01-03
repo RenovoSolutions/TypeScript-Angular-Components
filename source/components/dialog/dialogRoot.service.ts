@@ -3,6 +3,7 @@ import { Subject } from 'rxjs';
 import { DialogHeaderTemplate, DialogContentTemplate, DialogFooterTemplate } from './templates/index';
 
 export interface IDialogContent {
+	id?: string;
 	onClosing?: IDialogClosingHandler;
 	header?: DialogHeaderTemplate;
 	content?: DialogContentTemplate;

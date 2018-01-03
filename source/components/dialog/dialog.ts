@@ -31,6 +31,7 @@ export class DialogComponent extends FormComponent {
 	@ContentChild(DialogFooterTemplate) footer: DialogFooterTemplate;
 
 	dialogRoot: DialogRootService;
+	dialogId: string;
 
 	constructor(notification: __notification.NotificationService
 		, asyncHelper: AsyncHelper
@@ -40,10 +41,18 @@ export class DialogComponent extends FormComponent {
 
 		super(notification, asyncHelper, formService, guidService, null);
 		this.dialogRoot = dialogRoot;
+		this.dialogId = guidService.random();
+	}
+
+	isOpen() {
+		return this.dialogRoot.dialogContext
+			? this.dialogRoot.dialogContext.id === this.dialogId
+			: false;
 	}
 
 	open(): void {
 		this.dialogRoot.openDialog.next({
+			id: this.dialogId,
 			onClosing: this.wrapOnClosing,
 			header: this.header,
 			content: this.content,
