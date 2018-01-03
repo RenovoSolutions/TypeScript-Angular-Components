@@ -1,4 +1,5 @@
 import { Observable } from 'rxjs';
+import { Subject } from 'rxjs/Subject';
 import { Component, Input, ContentChild, forwardRef } from '@angular/core';
 
 import { services } from 'typescript-angular-utilities';
@@ -31,6 +32,7 @@ export class DialogComponent extends FormComponent {
 	@ContentChild(DialogFooterTemplate) footer: DialogFooterTemplate;
 
 	dialogRoot: DialogRootService;
+	isActive: boolean;
 
 	constructor(notification: __notification.NotificationService
 		, asyncHelper: AsyncHelper
@@ -52,15 +54,28 @@ export class DialogComponent extends FormComponent {
 			submitAndClose: () => this.submitAndClose(),
 			size: this.size,
 		});
+		const inactive$ = new Subject()
+		this.dialogRoot.openDialog.takeUntil(inactive$).subscribe(() => {
+			this.isActive = false;
+			inactive$.next();
+		});
+		this.dialogRoot.closeDialog.takeUntil(inactive$).subscribe(() => {
+			this.isActive = false
+			inactive$.next();
+		});
 	}
 
 	close(): void {
-		this.dialogRoot.closeDialog.next(null);
+		if (this.isActive) {
+			this.dialogRoot.closeDialog.next(null);
+		}
 	}
 
 	dismiss(): void {
-		this.dialogRoot.dismissing = true;
-		this.dialogRoot.closeDialog.next(null);
+		if (this.isActive) {
+			this.dialogRoot.dismissing = true;
+			this.dialogRoot.closeDialog.next(null);
+		}
 	}
 
 	submitAndClose = (): Observable<any> => {
