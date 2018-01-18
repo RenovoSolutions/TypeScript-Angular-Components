@@ -22,6 +22,7 @@ export class DialogOutletComponent implements AfterViewInit {
 			this.jquery('.rlModal').modal('show');
 		});
 		dialogRoot.closeDialog.subscribe((): void => {
+			dialogRoot.dialogContext = null;
 			this.jquery('.rlModal').modal('hide');
 		});
 		this.dialogSize$ = dialogRoot.openDialog.map(dialog => {
