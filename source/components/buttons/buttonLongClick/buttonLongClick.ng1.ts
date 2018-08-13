@@ -86,4 +86,27 @@ let longClickButton: angular.IComponentOptions = buildButton({
 
 angular.module(moduleName, [downgrade.moduleName, promiseModuleName])
 	.component(componentName, longClickButton)
-	.controller(controllerName, LongClickButtonController);
+	.controller(controllerName, LongClickButtonController)
+	.directive('myTouchstart', [function () {
+		return function(scope, element, attr) {
+
+			element.on('touchstart', function(event) {
+				scope.$apply(function() {
+					scope.$eval(attr.myTouchstart);
+				});
+
+				event.preventDefault();
+			});
+		};
+	}]).directive('myTouchend', [function() {
+		return function(scope, element, attr) {
+
+			element.on('touchend', function(event) {
+				scope.$apply(function() {
+					scope.$eval(attr.myTouchend);
+				});
+
+				event.preventDefault();
+			});
+		};
+	}]);

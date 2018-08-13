@@ -1,6 +1,9 @@
 <button class="btn btn-long-click {{button.types}} {{button.configuredSize}}"
 		ng-class="{ 'btn-loading': button.busy }"
 		ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()"
+		my-touchstart="button.startAction()"
+		my-touchend="button.stopAction()"
+
 		ng-disabled="button.busy || button.ngDisabled">
 	<span ng-transclude class="long-click-text btn-content">
 		<i ng-show="button.icon != null" class="fa fa-{{button.icon}}"></i> {{button.text}}
