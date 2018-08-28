@@ -1,4 +1,5 @@
 <button class="btn btn-long-click {{button.types}} {{button.configuredSize}}"
+		type="button"
 		ng-class="{ 'btn-loading': button.busy }"
 		ng-mousedown="button.startAction()" ng-mouseleave="button.stopAction()" ng-mouseup="button.stopAction()"
 		my-touchstart="button.startAction()"
