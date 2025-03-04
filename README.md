@@ -1,3 +1,6 @@
+> [!WARNING]
+> After a good run, and serving it's purpose, this codebase is now archived.
+
 # TypeScript-Angular-Components
 Contains various TypeScript Angular controls and components.
 
